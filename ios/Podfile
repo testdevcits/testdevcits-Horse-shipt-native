@@ -15,6 +15,12 @@ if linkage != nil
 end
 
 target 'HorseShipt' do
+
+ # === 1. Add these lines for React Native Google Maps on iOS ===
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-maps/Google', :path => rn_maps_path
+  # ==============================================================
+
   config = use_native_modules!
 
   use_react_native!(

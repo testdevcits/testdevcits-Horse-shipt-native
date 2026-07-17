@@ -1,0 +1,66 @@
+export interface Horse {
+  _id: string;
+  owner: string;
+  registeredName: string;
+  barnName: string;
+  breed: string;
+  otherBreed: string;
+  colour: string;
+  age: string;
+  sex: string;
+  defaultStallSize: string;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface GetHorsesResponse {
+  success: boolean;
+  horses: Horse[];
+}
+
+export interface CreateHorsePayload {
+  registeredName: string;
+  barnName: string;
+  breed: string;
+  colour: string;
+  age: string;
+  sex: string;
+  defaultStallSize: string;
+  notes?: string;
+}
+
+
+export interface Shipment {
+  _id: string;
+  shipmentCode: string;
+  status: 'pending' | 'assigned' | 'in-transit' | 'delivered' | 'cancelled';
+  pickupLocation: string;
+  deliveryLocation: string;
+  pickupDateRange: {
+    start: string;
+    end: string;
+  };
+  deliveryDateRange: {
+    start: string;
+    end: string;
+  };
+  numberOfHorses: number;
+  totalPrice: number | null;
+  isInProgress: boolean;
+  isCompleted: boolean;
+  publish: boolean;
+  shipper: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  horses: any[]; // You can further define this if needed
+}
+
+export interface GetShipmentsResponse {
+  success: boolean;
+  count: number;
+  shipments: Shipment[];
+}
