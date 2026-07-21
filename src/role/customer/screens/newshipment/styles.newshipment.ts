@@ -1,0 +1,97 @@
+import { StyleSheet, Dimensions } from "react-native";
+import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
+
+const { width } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: COLORS.background },
+  header: { 
+    padding: SPACING.lg, 
+    backgroundColor: COLORS.white,
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  title: { fontSize: 20, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  cancelBtn: { color: COLORS.textSecondary, fontFamily: FONTS.medium },
+  
+  // Stepper
+  stepperContainer: { 
+    flexDirection: 'row', 
+    paddingHorizontal: SPACING.lg, 
+    paddingVertical: SPACING.md,
+    gap: 8 
+  },
+  stepBar: { flex: 1, height: 4, borderRadius: 2, backgroundColor: COLORS.grey200 },
+  stepBarActive: { backgroundColor: COLORS.goldPrimary },
+
+  content: { flex: 1, padding: SPACING.lg },
+  
+  // Form Card
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    padding: SPACING.lg,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    marginBottom: SPACING.xl
+  },
+  label: { 
+    fontFamily: FONTS.bold, 
+    fontSize: 14, 
+    color: COLORS.goldDarkText, 
+    marginBottom: SPACING.sm 
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.grey300,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.md
+  },
+  mapPlaceholder: {
+    width: '100%',
+    height: 200,
+    backgroundColor: COLORS.grey100,
+    borderRadius: RADIUS.sm,
+    marginBottom: SPACING.lg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  
+  footer: {
+    flexDirection: 'row',
+    padding: SPACING.lg,
+    backgroundColor: COLORS.white,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
+    gap: SPACING.md
+  },
+  btn: {
+    flex: 1,
+    height: 50,
+    borderRadius: RADIUS.sm,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  btnPrev: { backgroundColor: COLORS.grey100 },
+  btnNext: { backgroundColor: COLORS.goldPrimary },
+  btnText: { fontFamily: FONTS.bold, color: COLORS.white },
+  btnTextPrev: { color: COLORS.textSecondary },
+
+  // Summary styles
+  summaryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+    paddingBottom: SPACING.sm,
+    marginBottom: SPACING.md
+  }
+});
+
+export default styles;

@@ -251,7 +251,7 @@ const Splash = ({ navigation }) => {
     // Note: If 'token' exists, your RootNavigator (AppNavigation) will 
     // automatically swap the screens. If not, we manually move to Login.
     if (!token) {
-      navigation?.replace('Login');
+      navigation?.replace('Welcome');
     }
     // If token exists, do nothing here. AppNavigation.tsx will handle the swap 
     // to DriverRoot/ShipperRoot/CustomerRoot automatically.

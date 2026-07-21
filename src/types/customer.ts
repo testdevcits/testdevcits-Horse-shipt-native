@@ -64,3 +64,21 @@ export interface GetShipmentsResponse {
   count: number;
   shipments: Shipment[];
 }
+
+
+
+export interface TopRatedShipper {
+  id: string;
+  name: string;
+  profileImage: string;
+  rating: number;
+  reviewCount: number;
+  reviewText: string;
+  region: string;
+  googleReviewLink: string | null;
+}
+
+export interface TopRatedShippersResponse {
+  success: boolean;
+  data: TopRatedShipper[];
+}

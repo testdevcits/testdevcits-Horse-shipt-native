@@ -6,6 +6,7 @@ import AppNavigation from './src/navigations/AppNavigation'
 import { store } from './src/app/store'
 import { Provider } from 'react-redux';
 import { COLORS } from './src/constants'
+import Toast from 'react-native-toast-message'
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <Provider store={store}>
           <AppNavigation />
+          <Toast/>
         </Provider>
       </SafeAreaView>
     </SafeAreaProvider>

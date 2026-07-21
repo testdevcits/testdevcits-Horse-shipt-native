@@ -1,5 +1,6 @@
 import axiosClient from "../axiosClient";
-import { GetHorsesResponse, Horse, CreateHorsePayload, GetShipmentsResponse } from "../../types/customer";
+import { GetHorsesResponse, Horse, CreateHorsePayload, GetShipmentsResponse, TopRatedShippersResponse } from "../../types/customer";
+import { GetNotificationsResponse } from "../../types/notification";
 
 /**
  * Customer specific API services
@@ -33,16 +34,73 @@ const customerService = {
     return axiosClient.delete(`/api/customer/horses/${horseId}`);
   },
 
-
-
-
-
   getMyShipments: async (): Promise<GetShipmentsResponse> => {
     // Based on the JSON you provided, the endpoint is:
     return axiosClient.get('/api/customer/shipments/completed');
-
-
   },
+
+
+  // ... NOtification System 
+
+  getNotifications: async (): Promise<GetNotificationsResponse> => {
+    return axiosClient.get('/api/customer/notification-activity');
+  },
+
+  markAsRead: async (notificationIds: string[]): Promise<{ success: boolean }> => {
+    return axiosClient.post('/api/customer/notifications/mark-read', { notificationIds });
+  },
+
+  deleteNotifications: async (notificationIds: string[]): Promise<{ success: boolean }> => {
+    return axiosClient.post('/api/customer/notifications/delete', { notificationIds });
+  },
+
+
+  //Chat System 
+  getChatShippers: async (): Promise<{ success: boolean; data: any[] }> => {
+    return axiosClient.get('/api/customer/chat/shippers');
+  },
+
+  // Get or Create Room by Shipment ID
+  getChatRoom: async (shipmentId: string): Promise<{ success: boolean; room: any; roomId: string; shipment: any }> => {
+    return axiosClient.post('/api/customer/chat/room', { shipmentId });
+  },
+
+  // Fetch Message History
+  getChatMessages: async (roomId: string): Promise<{ success: boolean; messages: any[] }> => {
+    return axiosClient.get(`/api/customer/chat/rooms/${roomId}/messages`);
+  },
+
+  // Send New Message (Text or Media)
+  sendMessage: async (roomId: string, payload: { message?: string; media?: any[] }): Promise<any> => {
+    return axiosClient.post(`/api/customer/chat/rooms/${roomId}/messages`, payload);
+  },
+
+  //payment apis 
+  getPayments: async (): Promise<{ success: boolean; payments: any[]; total: number }> => {
+    return axiosClient.get('/api/customer/payments');
+  },
+
+  //Review apis 
+  getReceivedReviews: async (): Promise<{ success: boolean; data: any[] }> => {
+    return axiosClient.get('/api/customer/reviews/received');
+  },
+
+
+   // Dynamic method to update a specific notification setting
+  updateNotificationSetting: async (key: string, value: boolean): Promise<any> => {
+    return axiosClient.put(`/api/customer/notifications/${key}`, { value });
+  },
+
+  // Fetch current notification settings (assuming an endpoint exists or provided by user/me)
+  getNotificationSettings: async (): Promise<any> => {
+    return axiosClient.get('/api/customer/notifications/settings');
+  },
+
+  getTopRatedShippers: async (): Promise<TopRatedShippersResponse> => {
+    return axiosClient.get('/api/customer/shippers/top-rated');
+  },
+
+
 };
 
 export default customerService;

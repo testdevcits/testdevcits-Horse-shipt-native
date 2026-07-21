@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
   },
-  backBtn: { padding: 5, marginLeft: -5 },
+  backBtn: { padding: 5 ,backgroundColor:COLORS.grey100,borderRadius:100},
 });
 
 export default AppHeader;

@@ -14,12 +14,12 @@ import {
 import { COLORS, FONTS } from '../constants';
 import MyHorses from '../role/customer/screens/myhorses/MyHorses';
 import MyShipments from '../role/customer/screens/myshipments/MyShipments';
-
+import HomeScreen from '../role/customer/screens/home/HomeScreen';
+import ShipperList from '../role/customer/screens/chats/Shipperlist';
+import NewShipment from '../role/customer/screens/newshipment/NewShipment';
+  
 // Placeholder Screens (Replace with your actual components)
-const HomeScreen = () => <View style={styles.screen} />;
-const NewShipmentScreen = () => <View style={styles.screen} />;
- const ChatsScreen = () => <View style={styles.screen} />;
-const SettingsScreen = () => <View style={styles.screen} />;
+  const SettingsScreen = () => <View style={styles.screen} />;
 
 const Tab = createBottomTabNavigator();
 
@@ -65,7 +65,7 @@ const CustomerTabs = () => {
       {/* 3. CENTER BUTTON (Differnced & Larger) */}
       <Tab.Screen
         name="New"
-        component={NewShipmentScreen}
+        component={NewShipment}
         options={{
           tabBarLabel: 'New',
           tabBarIcon: ({ color }) => (
@@ -89,7 +89,7 @@ const CustomerTabs = () => {
       {/* 4. HORSES */}
       <Tab.Screen
         name="Chats"
-        component={ChatsScreen}
+        component={ShipperList}
         options={{
           tabBarLabel: 'Chats',
           tabBarIcon: ({ color, size }) => <MessageCircle size={size} color={color} />,

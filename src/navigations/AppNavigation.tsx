@@ -9,14 +9,18 @@ import ShipperNavigation from './ShipperNavigation';
 import CustomerNavigation from './CustomerNavigation';
 import { useAppSelector } from '../hooks/redux';
 import Splash from '../role/auth/splash/Splash';
+import WelcomeScreen from '../role/auth/welcome/Welcome';
+import RegisterScreen from '../role/auth/register/RegisterScreen';
 
 
 
 // Define the type for all routes
 export type RootStackParamList = {
     Splash: undefined;
+    Welcome: undefined;
     Login: undefined;
     Signup: undefined;
+    Register: undefined;
     // Tabs: undefined;
     // DeliveryVerification: undefined
 
@@ -43,39 +47,13 @@ const AppNavigation = () => {
 
     return (
         <NavigationContainer>
-            {/* <Stack.Navigator
-                initialRouteName="Splash"
-                screenOptions={{ headerShown: false }}
-            >
-                <Stack.Screen
-                    name="Splash"
-                    component={Splash}
-                />
 
-                <Stack.Screen
-                    name="Login"
-                    component={Login}
-                />
-                <Stack.Screen
-                    name="Signup"
-                    component={Signup}
-                />
-
-                <Stack.Screen
-                    name="Tabs"
-                    component={TabsNavigation}
-                />
-
-                <Stack.Screen
-                    name="DeliveryVerification"
-                    component={DeliveryVerificationScreen}
-                />
-
-            </Stack.Navigator> */}
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 {!token ? (
                     // Public Screens
                     <>
+                        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+                        <Stack.Screen name="Register" component={RegisterScreen} />
                         <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen name="Signup" component={Signup} />
                     </>

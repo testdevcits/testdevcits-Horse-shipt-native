@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
- 
+
 
 export default StyleSheet.create({
   button: {
@@ -15,8 +15,8 @@ export default StyleSheet.create({
     alignItems: 'center',
 
     paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.lg,
-    marginHorizontal: SPACING.lg
+    paddingVertical: SPACING.md,
+    // marginHorizontal: SPACING.lg
   },
 
   disabledButton: {
