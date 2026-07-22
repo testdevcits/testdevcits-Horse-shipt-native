@@ -1,11 +1,16 @@
 import axiosClient from "../axiosClient";
-import { GetHorsesResponse, Horse, CreateHorsePayload, GetShipmentsResponse, TopRatedShippersResponse } from "../../types/customer";
+import { GetHorsesResponse, Horse, CreateHorsePayload, GetShipmentsResponse, TopRatedShippersResponse, CustomerProfileResponse } from "../../types/customer";
 import { GetNotificationsResponse } from "../../types/notification";
 
 /**
  * Customer specific API services
  */
 const customerService = {
+
+
+  getProfile:async():Promise<CustomerProfileResponse> =>{
+ return axiosClient.get('/api/customer/profile');
+  },
   /**
    * Fetch all horses belonging to the logged-in customer
    */

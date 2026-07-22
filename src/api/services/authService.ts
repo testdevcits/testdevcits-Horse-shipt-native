@@ -1,36 +1,15 @@
-// // // src/services/authService.ts
 
-// // import axiosClient from "../axiosClient";
-
-
-// // export interface LoginResponse {
-// //   success: boolean;
-// //   message: string;
-// //   token?: string;
-// //   driver?: any;
-// //   data?: {
-// //     token: string;
-// //     driver: any;
-// //   };
-// // }
-
-// // const login = async (userData: Record<string, string>): Promise<LoginResponse> => {
-// //   // Update '/api/driver/login' to match your backend's actual endpoint route
-// //   return axiosClient.post('/api/driver/driver/login', userData);
-// // };
-
-// // const authService = { login };
-// // export default authService;
-
-
-// // src/api/services/authService.ts
 // import axiosClient from "../axiosClient";
 // import { AppUser, UserRole } from "../../types/auth";
 
+// /**
+//  * Shared logic to unify user data structure from backend
+//  */
 // const transformResponse = (response: any): { user: AppUser; token: string } => {
-//   const data = response.data;
+//   // Handle cases where interceptors return response.data or the whole response
+//   const data = response.data || response;
 
-//   // Logic for Driver
+//   // Logic for Driver (Based on your previous setup)
 //   if (data.driver || response.driver) {
 //     const d = data.driver || response.driver;
 //     return {
@@ -52,6 +31,7 @@
 //   }
 
 //   // Logic for Customer and Shipper
+//   // Note: verify-otp response puts user data directly in 'data'
 //   return {
 //     token: data.token,
 //     user: {
@@ -69,31 +49,46 @@
 //   };
 // };
 
-// const login = async (userData: any, role: UserRole) => {
-//   // Determine endpoint based on role selected on the Signup/Login UI
-//   const endpoints = {
-//     driver: '/api/driver/driver/login',
-//     shipper: '/api/auth/login', // Adjust based on your actual routes
-//     customer: '/api/auth/login'
-//   };
+// /**
+//  * AUTH SERVICE
+//  */
+// const authService = {
+//   /**
+//    * 1. Login
+//    */
+//   login: async (userData: any, role: UserRole) => {
+//     const endpoints = {
+//       driver: '/api/driver/driver/login',
+//       shipper: '/api/auth/login',
+//       customer: '/api/auth/login'
+//     };
+//     const response = await axiosClient.post(endpoints[role], userData);
+//     return transformResponse(response);
+//   },
 
-//   const response = await axiosClient.post(endpoints[role], userData);
-//   return transformResponse(response);
-// };
+//   /**
+//    * 2. Signup - Phase 1 (Trigger OTP)
+//    */
+//   signup: async (payload: any): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
+//     // payload: { name, email, password, role }
+//     return axiosClient.post('/api/auth/signup', payload);
+//   },
 
-// export default { login };
-
+//   /**
+//    * 3. Verify Signup OTP - Phase 2 (Complete registration & Get Token)
+//    */
+//   verifySignupOtp: async (payload: { email: string; role: UserRole; otp: string }) => {
+//     const response = await axiosClient.post('/api/auth/signup/verify-otp', payload);
+//     // Since this endpoint returns a token, we transform it so Redux can save the session immediately
+//     return transformResponse(response);
+//   },
 import axiosClient from "../axiosClient";
 import { AppUser, UserRole } from "../../types/auth";
 
-/**
- * Shared logic to unify user data structure from backend
- */
-const transformResponse = (response: any): { user: AppUser; token: string } => {
-  // Handle cases where interceptors return response.data or the whole response
+const transformResponse = (response: any, selectedRole?: UserRole): { user: AppUser; token: string } => {
   const data = response.data || response;
 
-  // Logic for Driver (Based on your previous setup)
+  // 1. Logic for Driver (If backend returns 'driver' object instead of 'role')
   if (data.driver || response.driver) {
     const d = data.driver || response.driver;
     return {
@@ -102,27 +97,25 @@ const transformResponse = (response: any): { user: AppUser; token: string } => {
         id: d._id,
         name: d.name,
         email: d.email,
-        role: 'driver',
+        role: 'driver', // Manually assigning because API doesn't provide it
         profileImage: d.profileImage?.url,
         phoneNumber: d.phone,
         metadata: {
           license: d.licenseNumber,
           status: d.driverStatus,
-          assignedVehicles: d.assignedVehicles
         }
       }
     };
   }
 
-  // Logic for Customer and Shipper
-  // Note: verify-otp response puts user data directly in 'data'
+  // 2. Logic for Customer and Shipper (Standard Role handling)
   return {
     token: data.token,
     user: {
       id: data._id,
       name: data.name,
       email: data.email,
-      role: data.role as UserRole,
+      role: (data.role || selectedRole) as UserRole, // Fallback to selectedRole
       profileImage: data.profileImage?.url,
       phoneNumber: data.mobile || data.phone,
       metadata: {
@@ -133,13 +126,7 @@ const transformResponse = (response: any): { user: AppUser; token: string } => {
   };
 };
 
-/**
- * AUTH SERVICE
- */
 const authService = {
-  /**
-   * 1. Login
-   */
   login: async (userData: any, role: UserRole) => {
     const endpoints = {
       driver: '/api/driver/driver/login',
@@ -147,25 +134,21 @@ const authService = {
       customer: '/api/auth/login'
     };
     const response = await axiosClient.post(endpoints[role], userData);
-    return transformResponse(response);
+    return transformResponse(response, role); // Pass role to ensure it's set
   },
 
-  /**
-   * 2. Signup - Phase 1 (Trigger OTP)
-   */
-  signup: async (payload: any): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
+
+    signup: async (payload: any): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
     // payload: { name, email, password, role }
     return axiosClient.post('/api/auth/signup', payload);
   },
 
-  /**
-   * 3. Verify Signup OTP - Phase 2 (Complete registration & Get Token)
-   */
   verifySignupOtp: async (payload: { email: string; role: UserRole; otp: string }) => {
     const response = await axiosClient.post('/api/auth/signup/verify-otp', payload);
-    // Since this endpoint returns a token, we transform it so Redux can save the session immediately
-    return transformResponse(response);
+    return transformResponse(response, payload.role);
   },
+
+
 
   /**
    * 4. Forgot Password

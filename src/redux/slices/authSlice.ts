@@ -1,6 +1,6 @@
 // // import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // // import authService from '../../api/services/authService';
- 
+
 // // // The AsyncThunk handles the async logic
 // // export const loginUser = createAsyncThunk(
 // //   'auth/login',
@@ -71,11 +71,11 @@
 //   async ({ credentials, role }: { credentials: any; role: UserRole }, thunkAPI) => {
 //     try {
 //       const response = await authService.login(credentials, role);
-      
+
 //       // Persist to local storage for Splash screen retrieval
 //       await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
 //       await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
-      
+
 //       return response; // { user, token }
 //     } catch (error: any) {
 //       const message = error.response?.data?.message || 'Login Failed';
@@ -189,20 +189,38 @@ const STORAGE_KEYS = {
 /**
  * Thunk to handle Login
  */
+// export const loginUser = createAsyncThunk(
+//   'auth/login',
+//   async ({ credentials, role }: { credentials: any; role: UserRole }, thunkAPI) => {
+//     try {
+//       const response = await authService.login(credentials, role);
+
+//       // Persist to local storage
+//       await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+//       await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+
+//       return response; // { user, token }
+//     } catch (error: any) {
+//       const message = error.response?.data?.message || 'Login Failed';
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
+
 export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ credentials, role }: { credentials: any; role: UserRole }, thunkAPI) => {
     try {
       const response = await authService.login(credentials, role);
-      
-      // Persist to local storage
+
+      // Professional apps save the specific role separately to handle 
+      // the "Driver Role Missing" issue on rehydration
       await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
       await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
-      
-      return response; // { user, token }
+
+      return response;
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Login Failed';
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Login Failed');
     }
   }
 );
@@ -210,23 +228,35 @@ export const loginUser = createAsyncThunk(
 /**
  * Thunk to handle App Initialization (Rehydration)
  */
+// export const rehydrateAuth = createAsyncThunk(
+//   'auth/rehydrate',
+//   async (_, thunkAPI) => {
+//     try {
+//       const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+//       const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+
+//       if (token && userData) {
+//         return {
+//           token,
+//           user: JSON.parse(userData) as AppUser
+//         };
+//       }
+//       return thunkAPI.rejectWithValue('No session found');
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue('Persistence error');
+//     }
+//   }
+// );
+
 export const rehydrateAuth = createAsyncThunk(
   'auth/rehydrate',
-  async (_, thunkAPI) => {
-    try {
-      const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
-      const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
-
-      if (token && userData) {
-        return { 
-          token, 
-          user: JSON.parse(userData) as AppUser 
-        };
-      }
-      return thunkAPI.rejectWithValue('No session found');
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Persistence error');
+  async () => {
+    const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+    const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+    if (token && userData) {
+      return { token, user: JSON.parse(userData) as AppUser };
     }
+    throw new Error('No session');
   }
 );
 
@@ -241,7 +271,7 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 const initialState: AuthState = {
   user: null,
   token: null,
-  isLoading: true, 
+  isLoading: true,
   error: null,
 };
 
@@ -254,7 +284,7 @@ const authSlice = createSlice({
      * Used for OTP verification or social logins
      */
     setCredentials: (
-      state, 
+      state,
       action: PayloadAction<{ user: AppUser; token: string }>
     ) => {
       const { user, token } = action.payload;

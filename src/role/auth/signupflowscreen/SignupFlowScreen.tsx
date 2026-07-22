@@ -30,7 +30,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const [resendTimer, setResendTimer] = useState(0);  
+  const [resendTimer, setResendTimer] = useState(0);
 
   // Form State
   const [name, setName] = useState('');
@@ -116,10 +116,17 @@ const SignupFlowScreen = ({ navigation }: any) => {
       console.log("OTP Verification Result:", result);
 
       if (result && result.token) {
-        // 3. Update Redux State
-        dispatch(setCredentials(result));
+
         // 4. Move to Success Step
         setStep(3);
+
+
+        // 3. Update Redux State
+        setTimeout(() => {
+          dispatch(setCredentials(result));
+        }, 1500)
+
+
       } else {
         throw new Error("Invalid response structure");
       }
@@ -149,8 +156,18 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   const renderStepper = (current: number) => (
     <View style={styles.stepperContainer}>
-      {[1, 2].map((item) => (
-        <View key={item} style={[styles.stepLine, { width: 40, backgroundColor: item <= current ? COLORS.goldPrimary : COLORS.grey200 }]} />
+      {/* Change [1, 2] to [1, 2, 3] */}
+      {[1, 2, 3].map((item) => (
+        <View
+          key={item}
+          style={[
+            styles.stepLine,
+            {
+              width: 40,
+              backgroundColor: item <= current ? COLORS.goldPrimary : COLORS.grey200
+            }
+          ]}
+        />
       ))}
     </View>
   );
@@ -185,7 +202,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
             {/* STEP 1: INFORMATION */}
             {step === 1 && (
               <View style={styles.formContainer}>
-                <AppText style={styles.title}>Create Account 1/2</AppText>
+                <AppText style={styles.title}>Create Account 1/3</AppText>
                 {renderStepper(1)}
 
                 <Input label="Full Name" placeholder="John Doe" value={name} onChangeText={(t) => { setName(t); setErrors(p => ({ ...p, name: '' })); }} error={errors.name} />
@@ -206,7 +223,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
             {/* STEP 2: OTP */}
             {step === 2 && (
               <View style={styles.formContainer}>
-                <AppText style={styles.title}>Verify Email 2/2</AppText>
+                <AppText style={styles.title}>Verify Email 2/3</AppText>
                 {renderStepper(2)}
                 <AppText style={[styles.subtitle, { textAlign: 'center' }]}>
                   We sent a 6-digit code to{" "}
@@ -242,6 +259,10 @@ const SignupFlowScreen = ({ navigation }: any) => {
             {/* STEP 3: SUCCESS (RESTORED COMPLETELY) */}
             {step === 3 && (
               <View style={styles.formContainer}>
+                {/* ADDED THESE TWO LINES BELOW */}
+                <AppText style={styles.title}>Complete 3/3</AppText>
+                {renderStepper(3)}
+
                 <View style={styles.successIconWrapper}>
                   <Image source={imageIndex.HorseIcon} style={styles.successIcon} resizeMode="contain" />
                 </View>

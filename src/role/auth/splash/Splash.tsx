@@ -196,10 +196,133 @@
 
 
 
+// import React, { useEffect, useRef } from 'react';
+// import { View, Text, Animated, Easing, ActivityIndicator } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { Truck } from 'lucide-react-native';
+
+// import { COLORS } from '../../../constants';
+// import styles from './styles.splash';
+// import { rehydrateAuth } from '../../../redux/slices/authSlice';
+// import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+
+// const Splash = ({ navigation }: any) => {
+//   // const navigation = useNavigation<any>();
+//   const dispatch = useAppDispatch();
+//   const { isLoading, token } = useAppSelector((state) => state.auth); // 'state' is automatically typed!
+
+//   // Animation refs
+//   const truckSlideIn = useRef(new Animated.Value(-150)).current;
+//   const engineVibration = useRef(new Animated.Value(0)).current;
+//   const speedLines = useRef(new Animated.Value(0)).current;
+//   const fadeContent = useRef(new Animated.Value(0)).current;
+
+//   useEffect(() => {
+//     // 1. Run Entrance Animations
+//     startAnimations();
+
+//     // 2. Start checking for existing session
+//     // We wrap this in a small timeout to ensure the user sees our beautiful animation
+//     const initApp = async () => {
+//       const startTime = Date.now();
+
+//       // Dispatch the Thunk (This handles AsyncStorage -> Redux automatically)
+//       await dispatch(rehydrateAuth());
+
+//       const endTime = Date.now();
+//       const duration = endTime - startTime;
+//       const minimumDisplayTime = 2500; // 2.5 seconds minimum
+
+//       // If data loaded too fast, wait the remaining time
+//       if (duration < minimumDisplayTime) {
+//         setTimeout(() => {
+//           handleNavigation();
+//         }, minimumDisplayTime - duration);
+//       } else {
+//         handleNavigation();
+//       }
+//     };
+
+//     initApp();
+//   }, []);
+
+//   const handleNavigation = () => {
+//     // Note: If 'token' exists, your RootNavigator (AppNavigation) will 
+//     // automatically swap the screens. If not, we manually move to Login.
+//     if (!token) {
+//       navigation?.replace('RoleSelection');
+//     }
+//     // If token exists, do nothing here. AppNavigation.tsx will handle the swap 
+//     // to DriverRoot/ShipperRoot/CustomerRoot automatically.
+//   };
+
+//   const startAnimations = () => {
+//     Animated.parallel([
+//       Animated.timing(truckSlideIn, {
+//         toValue: 0,
+//         duration: 1000,
+//         easing: Easing.out(Easing.back(1)),
+//         useNativeDriver: true,
+//       }),
+//       Animated.timing(fadeContent, {
+//         toValue: 1,
+//         duration: 800,
+//         delay: 400,
+//         useNativeDriver: true,
+//       }),
+//     ]).start();
+
+//     Animated.loop(
+//       Animated.sequence([
+//         Animated.timing(engineVibration, { toValue: -2.5, duration: 90, useNativeDriver: true }),
+//         Animated.timing(engineVibration, { toValue: 0.5, duration: 90, useNativeDriver: true }),
+//       ])
+//     ).start();
+
+//     Animated.loop(
+//       Animated.timing(speedLines, { toValue: -120, duration: 900, easing: Easing.linear, useNativeDriver: true })
+//     ).start();
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.logoWrapper}>
+//         <View style={styles.linesClipContainer}>
+//           <Animated.View style={[styles.speedLinesContainer, { transform: [{ translateX: speedLines }] }]}>
+//             <View style={[styles.speedLine, { width: 40 }]} />
+//             <View style={[styles.speedLine, { width: 25, marginTop: 12, marginLeft: 15 }]} />
+//             <View style={[styles.speedLine, { width: 35, marginTop: 12, marginLeft: -5 }]} />
+//           </Animated.View>
+//         </View>
+
+//         <Animated.View
+//           style={[
+//             styles.truckContainer,
+//             { transform: [{ translateX: truckSlideIn }, { translateY: engineVibration }] },
+//           ]}>
+//           <Truck size={90} color={COLORS.primary} strokeWidth={1.75} />
+//         </Animated.View>
+//       </View>
+
+//       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
+//         <Text style={styles.titleText}>FLEETRUN</Text>
+//         <Text style={styles.subtitleText}>LOGISTICS PORTAL</Text>
+
+//         <ActivityIndicator size="small" color={COLORS.primary} style={styles.loader} />
+//       </Animated.View>
+//     </View>
+//   );
+// };
+
+// export default Splash;
+
+
+
+
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Animated, Easing, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
 import { Truck } from 'lucide-react-native';
 
 import { COLORS } from '../../../constants';
@@ -208,9 +331,8 @@ import { rehydrateAuth } from '../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 const Splash = ({ navigation }: any) => {
-  // const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { isLoading, token } = useAppSelector((state) => state.auth); // 'state' is automatically typed!
+  const { token } = useAppSelector((state) => state.auth);
 
   // Animation refs
   const truckSlideIn = useRef(new Animated.Value(-150)).current;
@@ -219,42 +341,67 @@ const Splash = ({ navigation }: any) => {
   const fadeContent = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // 1. Run Entrance Animations
     startAnimations();
 
-    // 2. Start checking for existing session
-    // We wrap this in a small timeout to ensure the user sees our beautiful animation
     const initApp = async () => {
       const startTime = Date.now();
 
-      // Dispatch the Thunk (This handles AsyncStorage -> Redux automatically)
+      // 1. Try to restore user session (token/user data)
       await dispatch(rehydrateAuth());
+
+      // 2. Check if a role was ever selected
+      const savedRole = await AsyncStorage.getItem('@user_role');
+
+      console.log("===savedRole=", savedRole)
 
       const endTime = Date.now();
       const duration = endTime - startTime;
-      const minimumDisplayTime = 2500; // 2.5 seconds minimum
+      const minimumDisplayTime = 2500;
 
-      // If data loaded too fast, wait the remaining time
-      if (duration < minimumDisplayTime) {
-        setTimeout(() => {
-          handleNavigation();
-        }, minimumDisplayTime - duration);
-      } else {
-        handleNavigation();
-      }
+      const waitTime = Math.max(0, minimumDisplayTime - duration);
+
+      setTimeout(() => {
+        handleNavigation(savedRole);
+      }, waitTime);
     };
 
     initApp();
   }, []);
 
-  const handleNavigation = () => {
-    // Note: If 'token' exists, your RootNavigator (AppNavigation) will 
-    // automatically swap the screens. If not, we manually move to Login.
+  /**
+   * Logic Flow:
+   * 1. If Token exists -> Do nothing (AppNavigation will automatically show Home)
+   * 2. If Token NOT exists:
+   *    a. If Role NOT exists -> Go to RoleSelection (First time user)
+   *    b. If Role exists -> Go to Welcome/Login (Returning but not logged in)
+   */
+  // const handleNavigation = (savedRole: string | null) => {
+  //   if (!token) {
+  //     if (savedRole===null|| savedRole ==="") {
+  //       // No role found? Force user to pick one.
+  //       navigation?.replace('RoleSelection');
+  //     } else {
+  //       // Role exists, they just need to log in.
+  //       navigation?.replace('Welcome');
+  //     }
+  //   }
+  //   // If token exists, AppNavigation.tsx handles the switch to Home automatically
+  // };
+
+  const handleNavigation = (savedRole: string | null) => {
+    console.log("Checking Navigation. Token:", token, "SavedRole:", savedRole);
+
     if (!token) {
-      navigation?.replace('RoleSelection');
+      // Use a falsy check. This covers null, undefined, and empty string ""
+      // Also check for the string "null" which sometimes happens with storage
+      if (!savedRole || savedRole === "null") {
+        console.log("No role found. Going to RoleSelection");
+        navigation?.replace('RoleSelection');
+      } else {
+        console.log("Role found:", savedRole, ". Going to Welcome");
+        navigation?.replace('Welcome');
+      }
     }
-    // If token exists, do nothing here. AppNavigation.tsx will handle the swap 
-    // to DriverRoot/ShipperRoot/CustomerRoot automatically.
   };
 
   const startAnimations = () => {
@@ -308,7 +455,6 @@ const Splash = ({ navigation }: any) => {
       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
         <Text style={styles.titleText}>FLEETRUN</Text>
         <Text style={styles.subtitleText}>LOGISTICS PORTAL</Text>
-
         <ActivityIndicator size="small" color={COLORS.primary} style={styles.loader} />
       </Animated.View>
     </View>
@@ -316,5 +462,3 @@ const Splash = ({ navigation }: any) => {
 };
 
 export default Splash;
-
-

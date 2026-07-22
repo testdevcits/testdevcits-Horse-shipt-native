@@ -1,10 +1,10 @@
 
-
+import AppHeader from "./common/AppHeader"
 export { default as Button } from "./common/Button/AppButton"
 export { default as Input } from "./common/Input/Input"
 export { default as ConfirmationModal } from "./common/ConfirmationModal"
 export { default as AppText } from "./common/AppText"
-export { default as AppHeader } from "./common/AppHeader"
+// export { default as AppHeader } from "./common/AppHeader"
 export { FloatingButton } from "./common/FloatingButton"
 export { AppLoader } from "./common/AppLoader"
 export { EmptyState } from "./common/EmptyState"
@@ -22,6 +22,10 @@ export { default as PaymentCard } from "./cards/PaymentCard"
 export { default as ReviewCard } from "./cards/ReviewCard"   
 export { default as ShipperCard } from "./cards/ShipperCard"
 
+
+export {
+    AppHeader
+}
 
 
 

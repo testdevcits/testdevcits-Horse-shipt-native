@@ -9,4 +9,9 @@ export default {
     Google: require("../images/google.png"),
     Facebook: require("../images/facebook.png"),
 
+    //tabsIcon 
+    Home: require("../images/home.png"),
+    Shipments: require("../images/shipments.png"),
+    Horse: require("../images/horse.png"),
+    Chat: require("../images/chat.png"),
 }
