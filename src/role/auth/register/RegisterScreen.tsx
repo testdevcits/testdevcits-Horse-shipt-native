@@ -7,6 +7,7 @@ import {
     StatusBar,
     Image,
     ScrollView,
+    Platform,
 } from 'react-native';
 import { Apple } from 'lucide-react-native'; // Standard icons
 import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
@@ -18,8 +19,22 @@ import imageIndex from '../../../assets/images/imageIndex';
 // Local component for the Google Icon (since it's multi-colored)
 const GoogleIcon = () => (
     <Image
-        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png' }}
+        source={imageIndex.Google}
         style={{ width: 18, height: 18, marginRight: 10 }}
+    />
+);
+
+const FacebookIcon = () => (
+    <Image
+        source={imageIndex.Facebook}
+        style={{ width: 18, height: 18, marginRight: 10, tintColor: COLORS.white }}
+    />
+);
+
+const AppleIcon = () => (
+    <Image
+        source={imageIndex.Apple}
+        style={{ width: 18, height: 18, marginRight: 10, tintColor: COLORS.white }}
     />
 );
 
@@ -73,7 +88,7 @@ const RegisterScreen = ({ navigation }: any) => {
                         <AppButton
                             title="Create an account"
                             buttonStyle={styles.primaryBtn}
-                            onPress={() => navigation.navigate('SignupForm')}
+                            onPress={() => navigation.navigate('SignupFlowScreen')}
                         />
 
                         <View style={styles.dividerRow}>
@@ -81,12 +96,16 @@ const RegisterScreen = ({ navigation }: any) => {
                         </View>
 
                         {/* Social Logins */}
-                        <AppButton
-                            title="Continue with Apple"
-                            leftIcon={<Apple color={COLORS.white} size={20} style={{ marginRight: 10 }} />}
-                            buttonStyle={styles.appleBtn}
-                            textStyle={styles.whiteBtnText}
-                        />
+                        {
+                            Platform.OS === "ios" &&
+                            <AppButton
+                                title="Continue with Apple"
+                                leftIcon={<AppleIcon />}
+                                buttonStyle={styles.appleBtn}
+                                textStyle={styles.whiteBtnText}
+                            />
+                        }
+
 
                         <AppButton
                             title="Continue with Google"
@@ -95,12 +114,12 @@ const RegisterScreen = ({ navigation }: any) => {
                             textStyle={styles.darkBtnText}
                         />
 
-                        {/* <AppButton
+                        <AppButton
                             title="Continue with Facebook"
-                            leftIcon={<Facebook color={COLORS.white} size={20} fill={COLORS.white} style={{ marginRight: 10 }} />}
+                            leftIcon={<FacebookIcon />}
                             buttonStyle={styles.facebookBtn}
                             textStyle={styles.whiteBtnText}
-                        /> */}
+                        />
                     </View>
 
                     {/* 5. Footer Link */}
@@ -127,7 +146,7 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT * 0.45, // Slightly shorter than welcome to fit more buttons
+        height: SCREEN_HEIGHT * 0.40, // Slightly shorter than welcome to fit more buttons
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -172,20 +191,17 @@ const styles = StyleSheet.create({
         paddingTop: SPACING.xl,
     },
     textSection: {
-        alignItems: 'center',
         gap: SPACING.sm,
     },
     title: {
         fontSize: 28,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
-        textAlign: 'center',
     },
     description: {
         fontSize: 14,
         fontFamily: FONTS.medium,
-        color: COLORS.textSecondary,
-        textAlign: 'center',
+        color: COLORS.textPrimary,
         lineHeight: 20,
         paddingHorizontal: SPACING.sm,
     },
@@ -227,11 +243,9 @@ const styles = StyleSheet.create({
     },
     whiteBtnText: {
         color: COLORS.white,
-        fontFamily: FONTS.bold,
     },
     darkBtnText: {
         color: COLORS.textPrimary,
-        fontFamily: FONTS.bold,
     },
     loginRow: {
         alignItems: 'center',
@@ -240,11 +254,11 @@ const styles = StyleSheet.create({
     loginText: {
         fontSize: 14,
         color: COLORS.grey600,
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.regular,
     },
     loginLink: {
         color: COLORS.goldPrimary,
-        fontFamily: FONTS.bold,
+        fontFamily: FONTS.semiBold,
     },
 });
 

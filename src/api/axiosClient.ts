@@ -1,4 +1,4 @@
- 
+
 
 // import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,7 +58,7 @@
 //   (response: AxiosResponse) => {
 //     // Log success
 //     console.log(`✅ [${response.status}] Response from: ${response.config.url}`);
-    
+
 //     // Return only the data portion to your services
 //     return response.data;
 //   },
@@ -93,7 +93,7 @@
 //  */
 // const parseApiError = (error: AxiosError<any>) => {
 //   const data = error.response?.data;
-  
+
 //   // Custom logic based on how your backend sends errors
 //   const message = 
 //     data?.message || 
@@ -117,6 +117,7 @@ import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig, AxiosResp
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from '../app/store';
 import { logoutUser } from '../redux/slices/authSlice';
+import Toast from 'react-native-toast-message';
 
 const BASE_URL = 'https://horse-shipt.vercel.app';
 
@@ -146,7 +147,7 @@ axiosClient.interceptors.request.use(
     console.log('🚀 ╔═══════════ AXIOS REQUEST ═══════════╗');
     console.log(`   ║ 🔗 URL:    ${fullUrl}`);
     console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
-    
+
     if (config.data) {
       if (config.data instanceof FormData) {
         console.log('   ║ 📦 PAYLOAD: [FormData Body]');
@@ -173,7 +174,7 @@ axiosClient.interceptors.response.use(
     console.log(`   ║ 🔗 URL:  ${response.config.url}`);
     console.log('   ║ 📄 DATA:', JSON.stringify(response.data, null, 2));
     console.log('   ╚════════════════════════════════════════════╝');
-    
+
     return response.data;
   },
   async (error: AxiosError) => {
@@ -187,6 +188,11 @@ axiosClient.interceptors.response.use(
     console.log(`   ║ 🔗 URL:     ${url}`);
     console.log(`   ║ 📝 MESSAGE: ${error.message}`);
     console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
+    Toast.show({
+      type: 'error',
+      text1: "Error",
+      text2: JSON.stringify(errorBody?.message, null, 2),
+    });
     console.log('   ╚══════════════════════════════════════════════╝');
 
     // Handle 401 Unauthorized
@@ -209,12 +215,12 @@ axiosClient.interceptors.response.use(
  */
 const parseApiError = (error: AxiosError<any>) => {
   const data = error.response?.data;
-  
+
   // Custom logic to find error message in different backend formats
-  const message = 
-    data?.message || 
-    data?.error || 
-    data?.msg || 
+  const message =
+    data?.message ||
+    data?.error ||
+    data?.msg ||
     'Something went wrong. Please try again.';
 
   return {

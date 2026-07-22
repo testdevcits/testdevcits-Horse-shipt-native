@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: FONTS.bold, // Applied DM Sans Bold
     fontSize: 28,
-    color: COLORS.textWhite,
+    color: COLORS.textSecondary,
     letterSpacing: 4,
   },
   subtitleText: {

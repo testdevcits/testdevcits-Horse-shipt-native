@@ -25,7 +25,7 @@ export default StyleSheet.create({
 
   title: {
     color: COLORS.white,
-    fontFamily: FONTS.semiBold,
+    fontFamily: FONTS.medium  ,
     fontSize: FONT_SIZE.lg,
     marginHorizontal: SPACING.sm,
   },

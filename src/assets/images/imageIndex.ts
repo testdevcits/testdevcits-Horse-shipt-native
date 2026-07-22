@@ -4,4 +4,9 @@ export default {
     LogoIcon: require("../images/logo_icon.png"),
     HorseIcon: require("../images/horseicon.png"),
     Logo: require("../images/logo.png"),
+
+    Apple: require("../images/apple.png"),
+    Google: require("../images/google.png"),
+    Facebook: require("../images/facebook.png"),
+
 }

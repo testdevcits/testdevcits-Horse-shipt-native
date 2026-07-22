@@ -207,7 +207,7 @@ import styles from './styles.splash';
 import { rehydrateAuth } from '../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
-const Splash = ({ navigation }) => {
+const Splash = ({ navigation }: any) => {
   // const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { isLoading, token } = useAppSelector((state) => state.auth); // 'state' is automatically typed!
@@ -251,7 +251,7 @@ const Splash = ({ navigation }) => {
     // Note: If 'token' exists, your RootNavigator (AppNavigation) will 
     // automatically swap the screens. If not, we manually move to Login.
     if (!token) {
-      navigation?.replace('Welcome');
+      navigation?.replace('RoleSelection');
     }
     // If token exists, do nothing here. AppNavigation.tsx will handle the swap 
     // to DriverRoot/ShipperRoot/CustomerRoot automatically.
@@ -316,3 +316,5 @@ const Splash = ({ navigation }) => {
 };
 
 export default Splash;
+
+
