@@ -20,8 +20,11 @@ export const useNotificationSettings = () => {
       try {
         const res = await customerService.getNotificationSettings();
         if (res.success) setSettings(res.data);
-      } catch (e) { console.log(e); }
-      finally { setLoading(false); }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoading(false);
+      }
     };
     init();
   }, []);
@@ -33,14 +36,25 @@ export const useNotificationSettings = () => {
     setSettings(prev => ({ ...prev, [key]: newValue }));
 
     try {
-      const res = await customerService.updateNotificationSetting(key, newValue);
+      const res = await customerService.updateNotificationSetting(
+        key,
+        newValue,
+      );
       if (res.success) {
-        Toast.show({ type: 'success', text1: 'Preferences Updated', position: 'top' });
+        Toast.show({
+          type: 'success',
+          text1: 'Preferences Updated',
+          position: 'top',
+        });
       }
     } catch (error) {
       // 2. Rollback on failure
       setSettings(prev => ({ ...prev, [key]: !newValue }));
-      Toast.show({ type: 'error', text1: 'Update Failed', text2: 'Please try again later' });
+      Toast.show({
+        type: 'error',
+        text1: 'Update Failed',
+        text2: 'Please try again later',
+      });
     }
   };
 

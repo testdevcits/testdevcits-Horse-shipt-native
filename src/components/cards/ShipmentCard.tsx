@@ -8,26 +8,26 @@ import moment from 'moment';
 const { width } = Dimensions.get('window');
 
 const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
-  const horsePhoto = item.horses[0]?.photo?.url;
+  const horsePhoto = item?.horses[0]?.photo?.url;
 
   // Dynamic Status Colors
-  const statusColor = item.isInProgress ? COLORS.info : COLORS.success;
-  const statusBg = item.isInProgress ? '#E0F2FE' : '#DCFCE7';
+  const statusColor = item?.isInProgress ? COLORS.info : COLORS.success;
+  const statusBg = item?.isInProgress ? '#E0F2FE' : '#DCFCE7';
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onView} style={styles.card}>
       {/* Top Section: ID and Status */}
       <View style={styles.header}>
         <View>
-          <AppText style={styles.shipmentCode}>{item.shipmentCode}</AppText>
+          <AppText style={styles.shipmentCode}>{item?.shipmentCode}</AppText>
           <AppText style={styles.dateLabel}>
-            Requested {moment(item.pickupDateRange.start).format('MMM DD, YYYY')}
+            Requested {moment(item?.pickupDateRange?.start).format('MMM DD, YYYY')}
           </AppText>
         </View>
         <View style={[styles.statusBadge, { backgroundColor: statusBg }]}>
           <View style={[styles.dot, { backgroundColor: statusColor }]} />
           <AppText style={[styles.statusText, { color: statusColor }]}>
-            {item.status.toUpperCase()}
+            {item?.status.toUpperCase()}
           </AppText>
         </View>
       </View>
@@ -43,9 +43,9 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
           </View>
 
           <View style={styles.locations}>
-            <AppText numberOfLines={1} style={styles.locationTitle}>{item.pickupLocation}</AppText>
+            <AppText numberOfLines={1} style={styles.locationTitle}>{item?.pickupLocation}</AppText>
             <View style={{ height: 20 }} /> {/* Spacing for the line */}
-            <AppText numberOfLines={1} style={styles.locationTitle}>{item.deliveryLocation}</AppText>
+            <AppText numberOfLines={1} style={styles.locationTitle}>{item?.deliveryLocation}</AppText>
           </View>
         </View>
 
@@ -60,12 +60,12 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
             <User size={14} color={COLORS.textLight} />
-            <AppText style={styles.metaValue}>{item.shipper.name}</AppText>
+            <AppText style={styles.metaValue}>{item?.shipper?.name}</AppText>
           </View>
           <View style={styles.divider} />
           <View style={styles.metaItem}>
             <Info size={14} color={COLORS.textLight} />
-            <AppText style={styles.metaValue}>{item.numberOfHorses} Horses</AppText>
+            <AppText style={styles.metaValue}>{item?.numberOfHorses} Horses</AppText>
           </View>
         </View>
 

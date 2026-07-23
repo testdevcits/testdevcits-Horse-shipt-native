@@ -1,183 +1,179 @@
-import React, { memo } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Edit3, Trash2, ShieldCheck, Info, Calendar, Ruler } from 'lucide-react-native';
-import AppText from '../common/AppText';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
-
-interface HorseCardProps {
-  item: any;
-  onEdit: () => void;
-  onDelete: () => void;
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Pencil, Trash2 } from 'lucide-react-native';
+ import { SPACING, RADIUS, FONT_SIZE, ICON_SIZE } from '../../constants/dimensions';
+import { COLORS, FONTS } from '../../constants';
+ 
+// Using your provided interface
+export interface Horse {
+    _id: string;
+    owner: string;
+    registeredName: string;
+    barnName: string;
+    breed: string;
+    otherBreed: string;
+    colour: string;
+    age: string;
+    sex: string;
+    defaultStallSize: string;
+    notes: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
 }
 
-const HorseCard = ({ item, onEdit, onDelete }: HorseCardProps) => {
-  return (
-    <View style={styles.card}>
-      {/* Top Section: Header & Badge */}
-      <View style={styles.headerRow}>
-        <View style={styles.nameContainer}>
-          <AppText style={styles.barnName}>{item.barnName}</AppText>
-          <View style={styles.sexBadge}>
-             <AppText style={styles.sexText}>{item.sex}</AppText>
-          </View>
-        </View>
-        
-        <View style={styles.actions}>
-          <TouchableOpacity onPress={onEdit} style={styles.iconBtn} activeOpacity={0.7}>
-            <Edit3 size={18} color={COLORS.goldPrimary} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onDelete} style={[styles.iconBtn, styles.deleteBtn]} activeOpacity={0.7}>
-            <Trash2 size={18} color={COLORS.error} />
-          </TouchableOpacity>
-        </View>
-      </View>
+interface HorseCardProps {
+    item: Horse;
+    onEdit: (item: Horse) => void;
+    onDelete: (id: string) => void;
+}
 
-      <AppText style={styles.regName}>{item.registeredName}</AppText>
+const HorseCard: React.FC<HorseCardProps> = ({ item, onEdit, onDelete }) => {
+    return (
+        <View style={styles.cardContainer}>
+            {/* Header: Registered Name and Lucide Action Icons */}
+            <View style={styles.header}>
+                <Text style={styles.horseNameText}>{item.registeredName}</Text>
+                <View style={styles.actionButtons}>
+                    <TouchableOpacity 
+                        onPress={() => onEdit(item)} 
+                        activeOpacity={0.7}
+                        style={styles.iconButton}
+                    >
+                        <Pencil 
+                            size={ICON_SIZE.md} 
+                            color={COLORS.goldPrimary} 
+                            strokeWidth={1.8} 
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => onDelete(item._id)} 
+                        activeOpacity={0.7}
+                    >
+                        <Trash2 
+                            size={ICON_SIZE.md} 
+                            color={COLORS.error} 
+                            strokeWidth={1.8} 
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
 
-      {/* Divider */}
-      <View style={styles.divider} />
+            {/* Details Grid: 2 Column Layout */}
+            <View style={styles.detailsGrid}>
+                {/* Left Column */}
+                <View style={styles.column}>
+                    <DetailItem label="Barn Name" value={item.barnName} />
+                    <DetailItem label="Sex" value={item.sex} />
+                    <DetailItem label="Age" value={`${item.age} Years`} />
+                </View>
 
-      {/* Info Grid */}
-      <View style={styles.infoGrid}>
-        <View style={styles.infoItem}>
-          <ShieldCheck size={14} color={COLORS.goldPrimary} style={styles.infoIcon} />
-          <AppText style={styles.infoLabel}>{item.breed}</AppText>
+                {/* Right Column */}
+                <View style={styles.column}>
+                    <DetailItem label="Color" value={item.colour} />
+                    <DetailItem 
+                        label="Breed" 
+                        value={item.breed === 'Other' ? item.otherBreed : item.breed} 
+                    />
+                    <DetailItem label="Stall" value={item.defaultStallSize} />
+                </View>
+            </View>
+
+            {/* Notes Section: Matches the inset tan box */}
+            {item.notes ? (
+                <View style={styles.notesContainer}>
+                    <Text style={styles.notesLabel}>NOTES :</Text>
+                    <Text style={styles.notesText}>{item.notes}</Text>
+                </View>
+            ) : null}
         </View>
-
-        <View style={styles.infoItem}>
-          <Calendar size={14} color={COLORS.goldPrimary} style={styles.infoIcon} />
-          <AppText style={styles.infoLabel}>{item.age} Years</AppText>
-        </View>
-
-        <View style={styles.infoItem}>
-          <Info size={14} color={COLORS.goldPrimary} style={styles.infoIcon} />
-          <AppText style={styles.infoLabel}>{item.colour}</AppText>
-        </View>
-
-        <View style={styles.infoItem}>
-          <Ruler size={14} color={COLORS.goldPrimary} style={styles.infoIcon} />
-          <AppText style={styles.infoLabel}>{item.defaultStallSize}</AppText>
-        </View>
-      </View>
-
-      {/* Footer Notes (Optional/Subtle) */}
-      {item.notes && (
-        <View style={styles.notesContainer}>
-          <AppText numberOfLines={1} style={styles.notesText}>
-            "{item.notes}"
-          </AppText>
-        </View>
-      )}
-    </View>
-  );
+    );
 };
 
+/**
+ * Sub-component for individual detail rows (e.g. Sex : Stallion)
+ */
+const DetailItem = ({ label, value }: { label: string; value: string }) => (
+    <View style={styles.detailRow}>
+        <Text style={styles.label}>{label} : </Text>
+        <Text style={styles.value}>{value || 'N/A'}</Text>
+    </View>
+);
+
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg, // More rounded for modern look
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    
-    // Deeper, softer shadow for premium feel
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.07,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  nameContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  barnName: {
-    fontFamily: FONTS.bold,
-    fontSize: 20,
-    color: COLORS.textPrimary,
-    marginRight: SPACING.sm,
-  },
-  sexBadge: {
-    backgroundColor: COLORS.goldLightBg, // Light gold background
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-  },
-  sexText: {
-    fontSize: 10,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  regName: {
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-    fontSize: 14,
-    marginTop: 2,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: COLORS.divider,
-    marginVertical: SPACING.md,
-  },
-  infoGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: SPACING.md,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    minWidth: '40%', // Creates a nice 2-column grid
-  },
-  infoIcon: {
-    marginRight: 6,
-  },
-  infoLabel: {
-    fontSize: 13,
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.medium,
-  },
-  actions: {
-    flexDirection: 'row',
-  },
-  iconBtn: {
-    width: 34,
-    height: 34,
-    borderRadius: 10,
-    backgroundColor: COLORS.grey50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.grey100,
-  },
-  deleteBtn: {
-    marginLeft: SPACING.sm,
-    backgroundColor: '#FFF5F5', // Very light red
-    borderColor: '#FED7D7',
-  },
-  notesContainer: {
-    marginTop: SPACING.md,
-    paddingTop: SPACING.sm,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
-    borderStyle: 'dashed',
-  },
-  notesText: {
-    fontSize: 12,
-    fontFamily: FONTS.italic,
-    color: COLORS.textLight,
-  },
+    cardContainer: {
+        backgroundColor: COLORS.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.lg,
+        borderWidth: 1,
+        borderColor: COLORS.border,
+        marginBottom: SPACING.md,
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: SPACING.md,
+    },
+    horseNameText: {
+        fontSize: FONT_SIZE.lg,
+        fontFamily: FONTS.bold,
+        color: COLORS.textPrimary,
+    },
+    actionButtons: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    iconButton: {
+        marginRight: SPACING.md,
+    },
+    detailsGrid: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    column: {
+        flex: 1,
+    },
+    detailRow: {
+        flexDirection: 'row',
+        marginBottom: SPACING.xs,
+        flexWrap: 'wrap',
+    },
+    label: {
+        fontSize: FONT_SIZE.md,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.goldPrimary,
+    },
+    value: {
+        fontSize: FONT_SIZE.md,
+        fontFamily: FONTS.medium,
+        color: COLORS.textPrimary,
+    },
+    notesContainer: {
+        backgroundColor: COLORS.goldLightBg,
+        borderRadius: RADIUS.sm,
+        padding: SPACING.md,
+        borderWidth: 1,
+        borderColor: COLORS.goldBorder,
+        marginTop: SPACING.md,
+    },
+    notesLabel: {
+        fontSize: FONT_SIZE.md,
+        fontFamily: FONTS.bold,
+        color: COLORS.goldPrimary,
+        marginBottom: 2,
+    },
+    notesText: {
+        fontSize: FONT_SIZE.md,
+        fontFamily: FONTS.medium,
+        color: COLORS.textSecondary,
+        lineHeight: 20,
+    },
 });
 
-export default memo(HorseCard);
+export default HorseCard;

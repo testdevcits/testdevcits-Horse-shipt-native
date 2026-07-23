@@ -1,118 +1,179 @@
+ 
+
 import React, { memo } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { MapPin, Circle, ChevronRight, Calendar, Info, Package } from 'lucide-react-native';
+import { MapPin, Calendar, ExternalLink, Truck } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 
-const STATUS_MAP: any = {
-  open_for_offers: { label: 'Open for Offers', color: '#2563EB', bg: '#EFF6FF' },
-  assigned: { label: 'Assigned', color: '#7C3AED', bg: '#F5F3FF' },
-  delivered: { label: 'Delivered', color: COLORS.success, bg: '#F0FDF4' },
-  in_transit: { label: 'In Transit', color: COLORS.warning, bg: '#FFFBEB' },
-};
-
-const ShipmentCardDetailed = memo(({ item, onPress }: { item: any; onPress: () => void }) => {
-  const status = STATUS_MAP[item.status] || { label: item.status, color: COLORS.grey500, bg: COLORS.grey100 };
+const ShipmentHorizontalCard = memo(({ item, onPress }: { item: any; onPress: () => void }) => {
   const horse = item.horses[0];
 
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.9} onPress={onPress}>
-      {/* Top Header: ID & Status */}
-      <View style={styles.header}>
-        <View style={styles.idBadge}>
-          <Package size={14} color={COLORS.textSecondary} />
-          <AppText style={styles.idText}>{item.shipmentCode}</AppText>
-        </View>
-        <View style={[styles.statusBadge, { backgroundColor: status.bg }]}>
-          <View style={[styles.dot, { backgroundColor: status.color }]} />
-          <AppText style={[styles.statusText, { color: status.color }]}>{status.label}</AppText>
-        </View>
-      </View>
 
-      {/* Main Content: Map Path */}
-      <View style={styles.body}>
-        <View style={styles.pathColumn}>
-          <Circle size={10} color={COLORS.primary} fill={COLORS.primary} />
-          <View style={styles.dottedLine} />
-          <MapPin size={14} color={COLORS.error} fill={COLORS.error} />
+      {/* 1. Left Section: Horse Image */}
+      <Image
+        source={{ uri:  horse.photo.url || 'https://via.placeholder.com/150' }}
+        style={styles.image}
+      />
+
+      {/* 2. Middle Section: Details */}
+      <View style={styles.content}>
+        <View style={styles.titleRow}>
+          <AppText style={styles.title} numberOfLines={2}>
+            {item.horsesCount || 1} Horse Shipping from {item.origin} to {item.destination}
+          </AppText>
+
+          {/* External Link Button */}
+          <TouchableOpacity style={styles.exportBtn}>
+            <ExternalLink size={18} color={COLORS.white} />
+          </TouchableOpacity>
         </View>
-        
-        <View style={styles.locationColumn}>
-          <View style={styles.locItem}>
-            <AppText style={styles.locTitle}>{item.pickupLocation}</AppText>
-            <AppText style={styles.locDate}>
-               {new Date(item.pickupDateRange.start).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </AppText>
-          </View>
-          <View style={[styles.locItem, { marginTop: SPACING.lg }]}>
-            <AppText style={styles.locTitle}>{item.deliveryLocation}</AppText>
-            <AppText style={styles.locDate}>
-               {new Date(item.deliveryDateRange.end).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </AppText>
+
+        {/* Status Badge */}
+        <View style={styles.statusRow}>
+          <AppText style={styles.label}>Delivery</AppText>
+          <View style={styles.badge}>
+            <AppText style={styles.badgeText}>Today</AppText>
           </View>
         </View>
 
-        <Image source={{ uri: horse.photo.url }} style={styles.horseThumb} />
+        {/* Address Row */}
+        <View style={styles.infoRow}>
+          <MapPin size={20} color={COLORS.grey500} />
+          <AppText style={styles.infoText}>{item.address || 'Address Name here'}</AppText>
+        </View>
+
+        {/* Date Row */}
+        <View style={styles.infoRow}>
+          <Calendar size={20} color={COLORS.grey500} />
+          <AppText style={styles.infoText}>{item.date || 'January 02, 2024'}</AppText>
+        </View>
       </View>
 
-      <View style={styles.divider} />
-
-      {/* Footer: Horse Count & Details */}
-      <View style={styles.footer}>
-        <View style={styles.footerDetail}>
-           <AppText style={styles.footerLabel}>HORSES</AppText>
-           <AppText style={styles.footerValue}>{item.numberOfHorses}</AppText>
+      {/* 3. Right Section: Vertical Progress Timeline */}
+      <View style={styles.timelineContainer}>
+        <View style={styles.dot} />
+        <View style={styles.dashedLine} />
+        <View style={styles.truckCircle}>
+          <Truck size={14} color={COLORS.greenPrimary} fill={COLORS.greenPrimary} />
         </View>
-        <View style={styles.vDivider} />
-        <View style={styles.footerDetail}>
-           <AppText style={styles.footerLabel}>BREED</AppText>
-           <AppText style={styles.footerValue} numberOfLines={1}>{horse.breed}</AppText>
-        </View>
-        <TouchableOpacity style={styles.detailsBtn}>
-           <AppText style={styles.detailsBtnText}>Track</AppText>
-           <ChevronRight size={14} color={COLORS.primary} />
-        </TouchableOpacity>
+        <View style={styles.dashedLine} />
+        <View style={styles.dot} />
       </View>
+
     </TouchableOpacity>
   );
 });
 
 const styles = StyleSheet.create({
   card: {
+    flexDirection: 'row',
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.md,
-    marginBottom: SPACING.lg,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.divider,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
+    borderColor: COLORS.border,
+    overflow: 'hidden',
+    height: 180, // Fixed height to match design aspect ratio
+    marginVertical: SPACING.sm,
+    marginHorizontal:SPACING.sm
   },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.md },
-  idBadge: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: COLORS.grey50, paddingHorizontal: 10, paddingVertical: 4, borderRadius: RADIUS.round },
-  idText: { fontSize: 11, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  statusBadge: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 4, borderRadius: RADIUS.round },
-  statusText: { fontSize: 10, fontFamily: FONTS.bold, textTransform: 'uppercase' },
-  dot: { width: 6, height: 6, borderRadius: 3 },
-  body: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: SPACING.xs },
-  pathColumn: { alignItems: 'center', width: 20, marginTop: 4 },
-  dottedLine: { width: 1, height: 40, backgroundColor: COLORS.divider, marginVertical: 4 },
-  locationColumn: { flex: 1, marginLeft: SPACING.sm },
-  locItem: { justifyContent: 'center' },
-  locTitle: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  locDate: { fontSize: 11, color: COLORS.textSecondary, marginTop: 2 },
-  horseThumb: { width: 64, height: 64, borderRadius: RADIUS.lg, backgroundColor: COLORS.grey100 },
-  divider: { height: 1, backgroundColor: COLORS.divider, marginVertical: SPACING.md },
-  footer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
-  footerDetail: { flex: 1 },
-  footerLabel: { fontSize: 9, fontFamily: FONTS.bold, color: COLORS.textLight, letterSpacing: 1 },
-  footerValue: { fontSize: 13, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
-  vDivider: { width: 1, height: 20, backgroundColor: COLORS.divider },
-  detailsBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingLeft: SPACING.md },
-  detailsBtnText: { color: COLORS.primary, fontFamily: FONTS.bold, fontSize: 13 }
+  image: {
+    width: '40%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  content: {
+    flex: 1,
+    padding: SPACING.md,
+    justifyContent: 'space-between',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  title: {
+    flex: 1,
+    fontSize: 17,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey800,
+    lineHeight: 22,
+    paddingRight: SPACING.sm,
+  },
+  exportBtn: {
+    backgroundColor: COLORS.primary, // Gold color #B69556
+    padding: 6,
+    borderRadius: RADIUS.sm,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    marginVertical: SPACING.xs,
+  },
+  label: {
+    fontSize: 18,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey800,
+  },
+  badge: {
+    borderWidth: 1.5,
+    borderColor: COLORS.greenActive,
+    backgroundColor: COLORS.greenLightBg,
+    paddingHorizontal: 14 ,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round,
+  },
+  badgeText: {
+    color: COLORS.greenActive,
+    fontFamily: FONTS.medium,
+    fontSize: 14,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  infoText: {
+    fontSize: 14,
+    fontFamily: FONTS.regular,
+    color: COLORS.grey700,
+  },
+  /* Timeline Styles */
+  timelineContainer: {
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: SPACING.lg,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: COLORS.grey300,
+    backgroundColor: COLORS.white,
+  },
+  dashedLine: {
+    width: 1,
+    flex: 1,
+    borderStyle: 'dashed',
+    borderWidth: 1,
+    borderColor: COLORS.grey300,
+    marginVertical: 2,
+  },
+  truckCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.greenActive,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
 });
 
-export default ShipmentCardDetailed;
+export default ShipmentHorizontalCard;

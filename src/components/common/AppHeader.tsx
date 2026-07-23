@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../hooks/redux';
 import imageIndex from '../../assets/images/imageIndex';
 
@@ -34,7 +34,7 @@ const AppHeader = memo(({ title, showBack, onBack, rightElement }: HeaderProps) 
             <ChevronLeft color={COLORS.textPrimary} size={26} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={onBack} style={styles.iconBtn}>
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} style={styles.iconBtn}>
             <Menu color={COLORS.textPrimary} size={26} />
           </TouchableOpacity>
         )}

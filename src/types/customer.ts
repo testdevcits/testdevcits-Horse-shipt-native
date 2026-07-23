@@ -104,3 +104,30 @@ export interface CustomerProfileResponse {
     bannerImage: string;
   };
 }
+export interface ProfileImage {
+  url: string;
+  public_id: string;
+  _id: string;
+}
+
+export interface CustomerProfileData {
+  _id: string;
+  uniqueId: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+  profileImage: ProfileImage;
+  isActive: boolean;
+  // Mocked for UI based on screenshot
+  shipmentCount?: number;
+  rating?: number;
+}
+
+export interface CustomerProfileResponse {
+  success: boolean;
+  message: string;
+  data: CustomerProfileData;
+}

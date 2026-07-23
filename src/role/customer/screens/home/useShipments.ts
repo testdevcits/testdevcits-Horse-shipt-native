@@ -10,7 +10,7 @@ export const useShipments = () => {
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      
+
       const res = await customerService.getMyShipments();
       if (res.success) {
         // Optionally sort by newest first if the API doesn't
@@ -28,10 +28,10 @@ export const useShipments = () => {
     fetchShipments();
   }, [fetchShipments]);
 
-  return { 
-    shipments, 
-    loading, 
-    refreshing, 
-    refresh: fetchShipments 
+  return {
+    shipments,
+    loading,
+    refreshing,
+    refresh: fetchShipments,
   };
 };

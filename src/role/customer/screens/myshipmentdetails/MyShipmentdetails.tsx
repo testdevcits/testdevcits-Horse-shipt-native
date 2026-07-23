@@ -19,7 +19,7 @@ import {
   User,
   Info,
   Circle,
-  MoreHorizontal
+  MoreHorizontal,
 } from 'lucide-react-native';
 import moment from 'moment';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
@@ -27,52 +27,64 @@ import { AppText } from '../../../../components';
 
 const MyShipmentDetails = ({ route, navigation }: any) => {
   const { item } = route.params;
-  const horse = item.horses[0];
+  const horse = item?.horses[0];
 
   // Helper for Status Colors
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'assigned': return { bg: '#EBF8FF', text: COLORS.info };
-      case 'delivered': return { bg: '#F0FFF4', text: COLORS.success };
-      case 'in-progress': return { bg: '#FFFBEB', text: COLORS.warning };
-      default: return { bg: COLORS.grey100, text: COLORS.textSecondary };
+      case 'assigned':
+        return { bg: '#EBF8FF', text: COLORS.info };
+      case 'delivered':
+        return { bg: '#F0FFF4', text: COLORS.success };
+      case 'in-progress':
+        return { bg: '#FFFBEB', text: COLORS.warning };
+      default:
+        return { bg: COLORS.grey100, text: COLORS.textSecondary };
     }
   };
 
-  const statusStyle = getStatusStyle(item.status);
+  const statusStyle = getStatusStyle(item?.status);
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      
+
       {/* PROFESSIONAL HEADER */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backBtn}
+        >
           <X size={24} color={COLORS.textPrimary} />
         </TouchableOpacity>
         <View style={styles.headerTitleCenter}>
           <AppText style={styles.headerSub}>SHIPMENT ID</AppText>
-          <AppText style={styles.headerMain}>{item.shipmentCode}</AppText>
+          <AppText style={styles.headerMain}>{item?.shipmentCode}</AppText>
         </View>
         <TouchableOpacity style={styles.backBtn}>
           <MoreHorizontal size={24} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-        
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scroll}
+      >
         {/* STATUS & DATE SUMMARY */}
         <View style={styles.summaryCard}>
-          <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
+          <View
+            style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}
+          >
             <AppText style={[styles.statusText, { color: statusStyle.text }]}>
-              {item.status.toUpperCase()}
+              {item?.status?.toUpperCase()}
             </AppText>
           </View>
           <View style={styles.summaryDivider} />
           <View style={styles.dateGroup}>
             <Calendar size={16} color={COLORS.textSecondary} />
             <AppText style={styles.summaryDate}>
-              Est. Arrival: {moment(item.deliveryDateRange?.start).format('MMM DD')}
+              Est. Arrival:{' '}
+              {moment(item?.deliveryDateRange?.start).format('MMM DD')}
             </AppText>
           </View>
         </View>
@@ -82,20 +94,38 @@ const MyShipmentDetails = ({ route, navigation }: any) => {
           <AppText style={styles.cardTitle}>TIMELINE</AppText>
           <View style={styles.timelineRow}>
             <View style={styles.timelineVisual}>
-              <Circle size={12} color={COLORS.goldPrimary} fill={COLORS.goldPrimary} />
+              <Circle
+                size={12}
+                color={COLORS.goldPrimary}
+                fill={COLORS.goldPrimary}
+              />
               <View style={styles.dashedLine} />
-              <MapPin size={18} color={COLORS.goldPrimary} fill={COLORS.goldPrimary} />
+              <MapPin
+                size={18}
+                color={COLORS.goldPrimary}
+                fill={COLORS.goldPrimary}
+              />
             </View>
             <View style={styles.timelineContent}>
               <View style={styles.locBlock}>
                 <AppText style={styles.locLabel}>PICKUP FROM</AppText>
-                <AppText style={styles.locName}>{item.pickupLocation}</AppText>
-                <AppText style={styles.locDate}>{moment(item.pickupDateRange.start).format('ddd, MMM DD YYYY')}</AppText>
+                <AppText style={styles.locName}>{item?.pickupLocation}</AppText>
+                <AppText style={styles.locDate}>
+                  {moment(item?.pickupDateRange?.start).format(
+                    'ddd, MMM DD YYYY',
+                  )}
+                </AppText>
               </View>
               <View style={styles.locBlock}>
                 <AppText style={styles.locLabel}>DELIVERY TO</AppText>
-                <AppText style={styles.locName}>{item.deliveryLocation}</AppText>
-                <AppText style={styles.locDate}>{moment(item.deliveryDateRange?.start).format('ddd, MMM DD YYYY')}</AppText>
+                <AppText style={styles.locName}>
+                  {item?.deliveryLocation}
+                </AppText>
+                <AppText style={styles.locDate}>
+                  {moment(item?.deliveryDateRange?.start).format(
+                    'ddd, MMM DD YYYY',
+                  )}
+                </AppText>
               </View>
             </View>
           </View>
@@ -104,18 +134,22 @@ const MyShipmentDetails = ({ route, navigation }: any) => {
         {/* QUICK DETAILS GRID */}
         <View style={styles.grid}>
           <View style={styles.gridItem}>
-             <Truck size={20} color={COLORS.goldPrimary} />
-             <View>
-               <AppText style={styles.gridSub}>STALL TYPE</AppText>
-               <AppText style={styles.gridMain}>{horse?.requestedStallSize || '1/2 Box'}</AppText>
-             </View>
+            <Truck size={20} color={COLORS.goldPrimary} />
+            <View>
+              <AppText style={styles.gridSub}>STALL TYPE</AppText>
+              <AppText style={styles.gridMain}>
+                {horse?.requestedStallSize || '1/2 Box'}
+              </AppText>
+            </View>
           </View>
           <View style={styles.gridItem}>
-             <Info size={20} color={COLORS.goldPrimary} />
-             <View>
-               <AppText style={styles.gridSub}>HORSES</AppText>
-               <AppText style={styles.gridMain}>{item.numberOfHorses} Head</AppText>
-             </View>
+            <Info size={20} color={COLORS.goldPrimary} />
+            <View>
+              <AppText style={styles.gridSub}>HORSES</AppText>
+              <AppText style={styles.gridMain}>
+                {item?.numberOfHorses} Head
+              </AppText>
+            </View>
           </View>
         </View>
 
@@ -127,11 +161,15 @@ const MyShipmentDetails = ({ route, navigation }: any) => {
               <User size={24} color={COLORS.goldPrimary} />
             </View>
             <View style={styles.profileInfo}>
-              <AppText style={styles.profileName}>{item.shipper.name}</AppText>
-              <AppText style={styles.profileSub}>{item.shipper.email}</AppText>
+              <AppText style={styles.profileName}>
+                {item?.shipper?.name}
+              </AppText>
+              <AppText style={styles.profileSub}>
+                {item?.shipper?.email}
+              </AppText>
             </View>
             <TouchableOpacity style={styles.contactBtn}>
-               <AppText style={styles.contactText}>Message</AppText>
+              <AppText style={styles.contactText}>Message</AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -169,61 +207,73 @@ const MyShipmentDetails = ({ route, navigation }: any) => {
           </View>
         </View> */}
 
-
-{/* HORSE PROFILE SECTION - LISTING ALL HORSES */}
+        {/* HORSE PROFILE SECTION - LISTING ALL HORSES */}
         <View style={styles.sectionHeaderRow}>
-            <AppText style={styles.sectionHeader}>HORSES IN SHIPMENT</AppText>
-            <View style={styles.countBadge}>
-                <AppText style={styles.countText}>{item.horses?.length || 0}</AppText>
-            </View>
+          <AppText style={styles.sectionHeader}>HORSES IN SHIPMENT</AppText>
+          <View style={styles.countBadge}>
+            <AppText style={styles.countText}>
+              {item?.horses?.length || 0}
+            </AppText>
+          </View>
         </View>
 
-        {item.horses?.map((horse: any, index: number) => (
-          <View key={horse._id || index} style={[styles.horseMainCard, { marginBottom: SPACING.lg }]}>
+        {item?.horses?.map((horse: any, index: number) => (
+          <View
+            key={horse._id || index}
+            style={[styles.horseMainCard, { marginBottom: SPACING.lg }]}
+          >
             <Image
-              source={{ uri: horse?.photo?.url || 'https://via.placeholder.com/400' }}
+              source={{
+                uri: horse?.photo?.url || 'https://via.placeholder.com/400',
+              }}
               style={styles.heroImage}
             />
             {/* Index Tag */}
             <View style={styles.horseIndexTag}>
-               <AppText style={styles.horseIndexText}>Horse #{index + 1}</AppText>
+              <AppText style={styles.horseIndexText}>
+                Horse #{index + 1}
+              </AppText>
             </View>
 
             <View style={styles.horseDetailsBody}>
               <View style={styles.horseHeader}>
-                 <AppText style={styles.horseNameText}>{horse?.barnName || 'Horse'}</AppText>
-                 <View style={styles.genderChip}>
-                   <AppText style={styles.genderChipText}>{horse?.sex}</AppText>
-                 </View>
+                <AppText style={styles.horseNameText}>
+                  {horse?.barnName || 'Horse'}
+                </AppText>
+                <View style={styles.genderChip}>
+                  <AppText style={styles.genderChipText}>{horse?.sex}</AppText>
+                </View>
               </View>
-              <AppText style={styles.horseRegName}>{horse?.registeredName}</AppText>
-              
+              <AppText style={styles.horseRegName}>
+                {horse?.registeredName}
+              </AppText>
+
               <View style={styles.chipContainer}>
                 <View style={styles.chip}>
-                    <AppText style={styles.chipText}>{horse?.breed}</AppText>
+                  <AppText style={styles.chipText}>{horse?.breed}</AppText>
                 </View>
                 <View style={styles.chip}>
-                    <AppText style={styles.chipText}>{horse?.age} yrs</AppText>
+                  <AppText style={styles.chipText}>{horse?.age} yrs</AppText>
                 </View>
                 <View style={styles.chip}>
-                    <AppText style={styles.chipText}>{horse?.colour}</AppText>
+                  <AppText style={styles.chipText}>{horse?.colour}</AppText>
                 </View>
                 <View style={styles.chip}>
-                    <AppText style={styles.chipText}>{horse?.requestedStallSize}</AppText>
+                  <AppText style={styles.chipText}>
+                    {horse?.requestedStallSize}
+                  </AppText>
                 </View>
               </View>
 
               {horse?.notes && (
                 <View style={styles.notesBox}>
                   <AppText style={styles.notesLabel}>Owner Notes:</AppText>
-                  <AppText style={styles.notesContent}>{horse.notes}</AppText>
+                  <AppText style={styles.notesContent}>{horse?.notes}</AppText>
                 </View>
               )}
             </View>
           </View>
         ))}
-
-
 
         <View style={{ height: 120 }} />
       </ScrollView>
@@ -234,7 +284,7 @@ const MyShipmentDetails = ({ route, navigation }: any) => {
           <FileText size={20} color={COLORS.textPrimary} />
           <AppText style={styles.secondaryBtnText}>Docs</AppText>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.primaryBtn}>
           <Navigation size={20} color={COLORS.white} />
           <AppText style={styles.primaryBtnText}>Track Shipment</AppText>
@@ -258,11 +308,20 @@ const styles = StyleSheet.create({
   },
   backBtn: { padding: 8 },
   headerTitleCenter: { alignItems: 'center' },
-  headerSub: { fontSize: 10, fontFamily: FONTS.bold, color: COLORS.textLight, letterSpacing: 1 },
-  headerMain: { fontSize: 16, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  
+  headerSub: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: COLORS.textLight,
+    letterSpacing: 1,
+  },
+  headerMain: {
+    fontSize: 16,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+
   scroll: { padding: SPACING.md },
-  
+
   summaryCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -273,11 +332,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
-  statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: RADIUS.round },
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: RADIUS.round,
+  },
   statusText: { fontSize: 12, fontFamily: FONTS.bold },
-  summaryDivider: { width: 1, height: 20, backgroundColor: COLORS.divider, marginHorizontal: SPACING.md },
+  summaryDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: COLORS.divider,
+    marginHorizontal: SPACING.md,
+  },
   dateGroup: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  summaryDate: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textPrimary },
+  summaryDate: {
+    fontSize: 14,
+    fontFamily: FONTS.medium,
+    color: COLORS.textPrimary,
+  },
 
   card: {
     backgroundColor: COLORS.white,
@@ -287,14 +359,30 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
-  cardTitle: { fontSize: 12, fontFamily: FONTS.bold, color: COLORS.textLight, marginBottom: 16, letterSpacing: 0.5 },
-  
+  cardTitle: {
+    fontSize: 12,
+    fontFamily: FONTS.bold,
+    color: COLORS.textLight,
+    marginBottom: 16,
+    letterSpacing: 0.5,
+  },
+
   timelineRow: { flexDirection: 'row' },
   timelineVisual: { alignItems: 'center', width: 24, paddingVertical: 4 },
-  dashedLine: { flex: 1, width: 2, backgroundColor: COLORS.divider, marginVertical: 4 },
+  dashedLine: {
+    flex: 1,
+    width: 2,
+    backgroundColor: COLORS.divider,
+    marginVertical: 4,
+  },
   timelineContent: { flex: 1, paddingLeft: SPACING.md },
   locBlock: { marginBottom: 24 },
-  locLabel: { fontSize: 10, fontFamily: FONTS.bold, color: COLORS.textLight, marginBottom: 4 },
+  locLabel: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: COLORS.textLight,
+    marginBottom: 4,
+  },
   locName: { fontSize: 16, fontFamily: FONTS.bold, color: COLORS.goldPrimary },
   locDate: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
 
@@ -314,27 +402,94 @@ const styles = StyleSheet.create({
   gridMain: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.textPrimary },
 
   profileRow: { flexDirection: 'row', alignItems: 'center' },
-  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   profileInfo: { flex: 1, marginLeft: 12 },
-  profileName: { fontSize: 15, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  profileName: {
+    fontSize: 15,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
   profileSub: { fontSize: 12, color: COLORS.textLight },
-  contactBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 6, borderWidth: 1, borderColor: COLORS.goldPrimary },
-  contactText: { color: COLORS.goldPrimary, fontSize: 12, fontFamily: FONTS.bold },
+  contactBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: COLORS.goldPrimary,
+  },
+  contactText: {
+    color: COLORS.goldPrimary,
+    fontSize: 12,
+    fontFamily: FONTS.bold,
+  },
 
-  sectionHeader: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.textLight, marginTop: 10, marginBottom: 12 },
-  horseMainCard: { backgroundColor: COLORS.white, borderRadius: RADIUS.lg, overflow: 'hidden', borderWidth: 1, borderColor: COLORS.divider },
+  sectionHeader: {
+    fontSize: 14,
+    fontFamily: FONTS.bold,
+    color: COLORS.textLight,
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  horseMainCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
   heroImage: { width: '100%', height: 220 },
   horseDetailsBody: { padding: SPACING.lg },
-  horseHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  horseNameText: { fontSize: 22, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  genderChip: { backgroundColor: '#EBF8FF', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
+  horseHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  horseNameText: {
+    fontSize: 22,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  genderChip: {
+    backgroundColor: '#EBF8FF',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
   genderChipText: { color: COLORS.info, fontSize: 11, fontFamily: FONTS.bold },
   horseRegName: { fontSize: 14, color: COLORS.textSecondary, marginBottom: 16 },
   chipContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { backgroundColor: COLORS.grey50, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1, borderColor: COLORS.divider },
-  chipText: { fontSize: 12, color: COLORS.textPrimary, fontFamily: FONTS.medium },
-  notesBox: { marginTop: 20, padding: 12, backgroundColor: COLORS.grey50, borderRadius: 8 },
-  notesLabel: { fontSize: 12, fontFamily: FONTS.bold, color: COLORS.textSecondary, marginBottom: 4 },
+  chip: {
+    backgroundColor: COLORS.grey50,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
+  chipText: {
+    fontSize: 12,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+  },
+  notesBox: {
+    marginTop: 20,
+    padding: 12,
+    backgroundColor: COLORS.grey50,
+    borderRadius: 8,
+  },
+  notesLabel: {
+    fontSize: 12,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+    marginBottom: 4,
+  },
   notesContent: { fontSize: 13, color: COLORS.textPrimary, lineHeight: 18 },
 
   footer: {
@@ -364,7 +519,11 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     height: 54,
   },
-  secondaryBtnText: { fontSize: 15, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  secondaryBtnText: {
+    fontSize: 15,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
   primaryBtn: {
     flex: 2,
     flexDirection: 'row',
@@ -383,11 +542,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 12,
   },
-  // sectionHeader: { 
-  //   fontSize: 14, 
-  //   fontFamily: FONTS.bold, 
-  //   color: COLORS.textLight, 
-  //   letterSpacing: 0.5 
+  // sectionHeader: {
+  //   fontSize: 14,
+  //   fontFamily: FONTS.bold,
+  //   color: COLORS.textLight,
+  //   letterSpacing: 0.5
   // },
   countBadge: {
     backgroundColor: COLORS.goldPrimary,

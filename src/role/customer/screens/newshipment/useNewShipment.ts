@@ -121,6 +121,10 @@ const useNewShipment = () => {
     }
   };
 
+  const onSaveDraft=()=>{
+
+  }
+
   return {
     form,
     updateForm,
@@ -130,7 +134,8 @@ const useNewShipment = () => {
     handlePublish,
     loading,
     isPublishModalVisible,
-    setIsPublishModalVisible
+    setIsPublishModalVisible,
+    onSaveDraft
   };
 };
 

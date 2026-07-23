@@ -5,15 +5,7 @@ const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  header: { 
-    padding: SPACING.lg, 
-    backgroundColor: COLORS.white,
-    flexDirection: 'row', 
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  title: { fontSize: 20, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  cancelBtn: { color: COLORS.textSecondary, fontFamily: FONTS.medium },
+  
   
   // Stepper
   stepperContainer: { 

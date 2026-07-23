@@ -13,6 +13,11 @@
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="${usesCleartextTraffic}"
       android:supportsRtl="true">
+
+    <!-- Add your Google Maps API Key here -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -25,9 +30,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-       <!-- Add your Google Maps API Key here -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB9xCC-TZ0ZY6zHShavQvD45blCq7AXVRQ" />
+       
     </application>
 </manifest>

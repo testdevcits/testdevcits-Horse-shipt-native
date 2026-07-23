@@ -1,129 +1,4 @@
-// import React from 'react';
-// import { StyleSheet, View, Platform } from 'react-native';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { 
-//   Home, 
-//   Package, 
-//   PlusSquare, 
-//   Wind, 
-//   Settings, 
-//   ChartBar,
-//   MessageCircle
-// } from 'lucide-react-native';
-
-// import { COLORS, FONTS } from '../constants';
-// import MyHorses from '../role/customer/screens/myhorses/MyHorses';
-// import MyShipments from '../role/customer/screens/myshipments/MyShipments';
-// import HomeScreen from '../role/customer/screens/home/HomeScreen';
-// import ShipperList from '../role/customer/screens/chats/Shipperlist';
-// import NewShipment from '../role/customer/screens/newshipment/NewShipment';
-
-// // Placeholder Screens (Replace with your actual components)
-//   const SettingsScreen = () => <View style={styles.screen} />;
-
-// const Tab = createBottomTabNavigator();
-
-// const CustomerTabs = () => {
-//   return (
-//     <Tab.Navigator
-//       screenOptions={{
-//         headerShown: false,
-//         tabBarActiveTintColor: COLORS.goldPrimary,
-//         tabBarInactiveTintColor: COLORS.textLight,
-//         tabBarLabelStyle: {
-//           fontFamily: FONTS.medium,
-//           fontSize: 10,
-//           paddingBottom: Platform.OS === 'ios' ? 0 : 8,
-//         },
-//         tabBarStyle: {
-//           backgroundColor: COLORS.surface,
-//           height: Platform.OS === 'ios' ? 85 : 65,
-//           borderTopColor: COLORS.border,
-//           borderTopWidth: 1,
-//         },
-//       }}
-//     >
-//       {/* 1. HOME (Renamed from Dashboard) */}
-//       <Tab.Screen
-//         name="Home"
-//         component={HomeScreen}
-//         options={{
-//           tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
-//         }}
-//       />
-
-//       {/* 2. SHIPMENTS */}
-//       <Tab.Screen
-//         name="Shipments"
-//         component={MyShipments}
-//         options={{
-//           tabBarLabel: 'Shipments',
-//           tabBarIcon: ({ color, size }) => <Package size={size} color={color} />,
-//         }}
-//       />
-
-//       {/* 3. CENTER BUTTON (Differnced & Larger) */}
-//       <Tab.Screen
-//         name="New"
-//         component={NewShipment}
-//         options={{
-//           tabBarLabel: 'New',
-//           tabBarIcon: ({ color }) => (
-//             <View style={styles.centerIconWrapper}>
-//                <PlusSquare size={32} color={color} strokeWidth={2.2} />
-//             </View>
-//           ),
-//         }}
-//       />
-
-//       {/* 4. HORSES */}
-//       <Tab.Screen
-//         name="Horses"
-//         component={MyHorses}
-//         options={{
-//           tabBarLabel: 'Horses',
-//           tabBarIcon: ({ color, size }) => <Wind size={size} color={color} />,
-//         }}
-//       />
-
-//       {/* 4. HORSES */}
-//       <Tab.Screen
-//         name="Chats"
-//         component={ShipperList}
-//         options={{
-//           tabBarLabel: 'Chats',
-//           tabBarIcon: ({ color, size }) => <MessageCircle size={size} color={color} />,
-//         }}
-//       />
-
-//       {/* 5. SETTINGS */}
-//       <Tab.Screen
-//         name="Settings"
-//         component={SettingsScreen}
-//         options={{
-//           tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
-//         }}
-//       />
-//     </Tab.Navigator>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   screen: {
-//     flex: 1,
-//     backgroundColor: COLORS.background,
-//   },
-//   centerIconWrapper: {
-//     // This provides the "differnced" look without a heavy box
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginTop: -4, // Pull it slightly higher for visual balance
-//   }
-// });
-
-// export default CustomerTabs;
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -131,6 +6,7 @@ import {
   Platform,
   Dimensions,
   Image,
+  Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, Package, MessageCircle, Plus, Smartphone } from 'lucide-react-native';
@@ -148,6 +24,29 @@ const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
 
 const CustomTabBar = ({ state, descriptors, navigation }: any) => {
+  // 3. Create a state to track keyboard visibility
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    // Android triggers 'Did' events, iOS can use 'Will' for smoother transitions
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const keyboardDidShowListener = Keyboard.addListener(showEvent, () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener(hideEvent, () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  // 4. If keyboard is visible, return null to hide the entire tab bar
+  if (isKeyboardVisible) return null;
   return (
     <View style={styles.mainContainer}>
       {/* This View creates the white background with the "Hump" shadow */}
@@ -217,6 +116,9 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
 };
 
 const CustomerTabs = () => {
+
+
+
   return (
     <Tab.Navigator
       tabBar={(props) => <CustomTabBar {...props} />}

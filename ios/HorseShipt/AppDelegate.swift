@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
 
      // 2. Add this line here (replace with your actual Google Maps API Key)
-    GMSServices.provideAPIKey("AIzaSyB9xCC-TZ0ZY6zHShavQvD45blCq7AXVRQ")
+    GMSServices.provideAPIKey("AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw")
 
     
     let delegate = ReactNativeDelegate()
