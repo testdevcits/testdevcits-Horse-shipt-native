@@ -329,6 +329,7 @@ import { COLORS } from '../../../constants';
 import styles from './styles.splash';
 import { rehydrateAuth } from '../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { AppText } from '../../../components';
 
 const Splash = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -453,8 +454,8 @@ const Splash = ({ navigation }: any) => {
       </View>
 
       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
-        <Text style={styles.titleText}>FLEETRUN</Text>
-        <Text style={styles.subtitleText}>LOGISTICS PORTAL</Text>
+        <AppText style={styles.titleText}>Horse Shipt</AppText>
+        <AppText style={styles.subtitleText}>LOGISTICS PORTAL</AppText>
         <ActivityIndicator size="small" color={COLORS.primary} style={styles.loader} />
       </Animated.View>
     </View>

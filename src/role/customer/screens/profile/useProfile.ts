@@ -17,7 +17,7 @@ export const useProfile = () => {
       const response = await customerService.getProfile();
       
       if (response.success) {
-        setProfile(response.data);
+        setProfile(response?.data);
       } else {
         setError(response.message || "Failed to fetch profile");
       }

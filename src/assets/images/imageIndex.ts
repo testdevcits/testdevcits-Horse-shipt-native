@@ -24,4 +24,8 @@ export default {
     Drawer_Shipments: require("../images/drawer_shipments.png"),
 
 
+    addedithorseiocn:require("../images/addedithorseiocn.png"),
+    racinghorse:require("../images/racinghorse.gif"),
+
+
 }

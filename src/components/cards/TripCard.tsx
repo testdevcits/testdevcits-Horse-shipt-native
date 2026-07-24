@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { MapPin, Calendar, ArrowRight, Compass } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SPACING } from '../../constants';
+import AppText from '../common/AppText';
 
 // Import your custom constants (verify relative paths for your folder structure)
  
@@ -20,18 +21,18 @@ interface TripCardProps {
     <View style={[styles.card, containerStyle]}>
       {/* Route Header & Badging */}
       <View style={styles.cardHeader}>
-        <Text style={styles.routeHeader}>ROUTE</Text>
+        <AppText style={styles.routeHeader}>ROUTE</AppText>
         {status && (
           <View style={[
             styles.statusBadge, 
             status === 'inTransit' ? styles.statusBadgeActive : styles.statusBadgePending
           ]}>
-            <Text style={[
+            <AppText style={[
               styles.statusBadgeText,
               status === 'inTransit' ? styles.statusActiveText : styles.statusPendingText
             ]}>
               {status === 'inTransit' ? 'In Transit' : status}
-            </Text>
+            </AppText>
           </View>
         )}
       </View>
@@ -40,18 +41,18 @@ interface TripCardProps {
       <View style={styles.routeRow}>
         <View style={styles.locationWrapper}>
           <MapPin size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
-          <Text style={styles.locationText} numberOfLines={2}>
+          <AppText style={styles.locationText} numberOfLines={2}>
             {shipmentData.pickupLocation || 'Unknown'}
-          </Text>
+          </AppText>
         </View>
         
         <ArrowRight size={ICON_SIZE.xs} color={COLORS.textLight} style={styles.arrowIcon} />
         
         <View style={styles.locationWrapper}>
           <MapPin size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
-          <Text style={styles.locationText} numberOfLines={2}>
+          <AppText style={styles.locationText} numberOfLines={2}>
             {shipmentData.deliveryLocation || 'Unknown'}
-          </Text>
+          </AppText>
         </View>
       </View>
       
@@ -59,14 +60,14 @@ interface TripCardProps {
       <View style={styles.footerRow}>
         <View style={styles.infoBadge}>
           <Calendar size={ICON_SIZE.xs} color={COLORS.textSecondary} />
-          <Text style={styles.infoText}>N/A</Text>
+          <AppText style={styles.infoText}>N/A</AppText>
         </View>
         
         <View style={styles.infoBadge}>
           <Compass size={ICON_SIZE.xs} color={COLORS.textSecondary} />
-          <Text style={styles.infoText}>
+          <AppText style={styles.infoText}>
             {shipmentData.numberOfHorses || 0} {shipmentData.numberOfHorses === 1 ? 'horse' : 'horses'}
-          </Text>
+          </AppText>
         </View>
       </View>
       
@@ -77,7 +78,7 @@ interface TripCardProps {
           activeOpacity={0.8}
           onPress={() => onCompletePress(item._id)}
         >
-          <Text style={styles.actionButtonText}>Complete Delivery</Text>
+          <AppText style={styles.actionButtonText}>Complete Delivery</AppText>
         </TouchableOpacity>
       )}
     </View>

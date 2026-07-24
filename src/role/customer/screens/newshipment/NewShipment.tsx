@@ -1,6 +1,21 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, TextInput, SafeAreaView, Image } from 'react-native';
-import { MapPin, Calendar, Camera, Upload, Trash2, Edit2, CheckCircle2 } from 'lucide-react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+  Image,
+} from 'react-native';
+import {
+  MapPin,
+  Calendar,
+  Camera,
+  Upload,
+  Trash2,
+  Edit2,
+  CheckCircle2,
+} from 'lucide-react-native';
 import styles from './styles.newshipment';
 import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
 import { COLORS } from '../../../../constants';
@@ -11,14 +26,21 @@ import HorseDetailsStep from './stepsscreens/HorseDetailsStep';
 import ReviewStep from './stepsscreens/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
 
-
 const NewShipment = () => {
   const {
-    currentStep, form, updateForm, nextStep, prevStep,
-    isPublishModalVisible, setIsPublishModalVisible, handlePublish, loading, onSaveDraft
+    currentStep,
+    form,
+    updateForm,
+    nextStep,
+    prevStep,
+    errors,
+    pickImage,
+    pickDocument,
+    handlePublish,
+    loading,
+    isPublishModalVisible,
+    setIsPublishModalVisible,
   } = useNewShipment();
-
-
 
   const renderStepper = () => (
     <View style={styles.stepperContainer}>
@@ -31,47 +53,67 @@ const NewShipment = () => {
     </View>
   );
 
-  const renderPickupStep = () => (
-    <PickupStep form={form} updateForm={updateForm} onNext={nextStep} onPrevious={prevStep} />
-  );
-  const renderDeliveryStep = () => (
-    <DeliveryStep form={form} updateForm={updateForm} onNext={nextStep} onPrevious={prevStep} />
-  );
-  const renderHorseDetailsStep = () => (
-    <HorseDetailsStep form={form} updateForm={updateForm} onNext={nextStep} onPrevious={prevStep} />
-  );
-  const renderShipmentInfoStep = () => (
-    <ShipmentInfoStep form={form} updateForm={updateForm} onNext={nextStep} onPrevious={prevStep} />
-  );
-
-  const renderReview = () => (
-    <ReviewStep form={form}
-      onPublish={handlePublish}
-      onSaveDraft={onSaveDraft}
-    />
-  );
-
   return (
     <View style={styles.container}>
       <AppHeader />
       {renderStepper()}
       <View style={{ flex: 1 }}>
-        {currentStep === 0 && renderPickupStep()}
-        {currentStep === 1 && renderDeliveryStep()}
-        {currentStep === 2 && renderHorseDetailsStep()}
-        {currentStep === 3 && renderShipmentInfoStep()}
-        {currentStep === 4 && renderReview()}
+        {currentStep === 0 && (
+          <PickupStep
+            form={form}
+            updateForm={updateForm}
+            errors={errors}
+            onNext={nextStep}
+          />
+        )}
+        {currentStep === 1 && (
+          <DeliveryStep
+            form={form}
+            updateForm={updateForm}
+            errors={errors}
+            onNext={nextStep}
+          />
+        )}
+        {currentStep === 2 && (
+          <HorseDetailsStep
+            form={form}
+            updateForm={updateForm}
+            errors={errors}
+            onNext={nextStep}
+          />
+        )}
+        {currentStep === 3 && (
+          <ShipmentInfoStep
+            form={form}
+            updateForm={updateForm}
+            pickImage={pickImage}
+            pickDocument={pickDocument}
+            onNext={nextStep}
+          />
+        )}
+        {currentStep === 4 && (
+          <ReviewStep
+            form={form}
+            onPublish={() => setIsPublishModalVisible(true)}
+          />
+        )}
       </View>
 
       <View style={styles.footer}>
         {currentStep > 0 && (
-          <TouchableOpacity style={[styles.btn, styles.btnPrev]} onPress={prevStep}>
+          <TouchableOpacity
+            style={[styles.btn, styles.btnPrev]}
+            onPress={prevStep}
+          >
             <AppText style={styles.btnTextPrev}>Previous</AppText>
           </TouchableOpacity>
         )}
 
         {currentStep < STEPS.length - 1 ? (
-          <TouchableOpacity style={[styles.btn, styles.btnNext]} onPress={nextStep}>
+          <TouchableOpacity
+            style={[styles.btn, styles.btnNext]}
+            onPress={nextStep}
+          >
             <AppText style={styles.btnText}>Next</AppText>
           </TouchableOpacity>
         ) : (

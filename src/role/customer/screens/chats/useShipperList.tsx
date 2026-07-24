@@ -25,10 +25,16 @@ const useShipperList = () => {
 
   const filteredShippers = useMemo(() => {
     return shippers.filter(s => {
-      const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           s.shipmentCode.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus = activeFilter === 'All' ? true : 
-                           activeFilter === 'Online' ? s.isOnline : !s.isOnline;
+      // Search matches either shipper name or shipment code
+      const matchesSearch = 
+        s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        s.shipmentCode.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Filter matches Online/Offline status
+      const matchesStatus = 
+        activeFilter === 'All' ? true : 
+        activeFilter === 'Online' ? s.isOnline : !s.isOnline;
+
       return matchesSearch && matchesStatus;
     });
   }, [shippers, searchQuery, activeFilter]);

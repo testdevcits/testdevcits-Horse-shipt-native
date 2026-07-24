@@ -12,12 +12,14 @@ import { MapPin, Calendar as CalendarIcon, Target } from 'lucide-react-native';
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants'; // Ensure this path is correct
+import { useNavigation } from '@react-navigation/native';
 
 interface PickupStepProps {
   form: any;
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
+  errors:any
 }
 
 const PickupStep: React.FC<PickupStepProps> = ({
@@ -25,7 +27,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
+  errors
 }) => {
+  const navigation=useNavigation()
   const [activeDateType, setActiveDateType] = useState<'start' | 'end' | null>(
     null,
   );
@@ -63,12 +67,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
         keyboardShouldPersistTaps="handled" // Important for Google Places
       >
         {/* 1. PROGRESS */}
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressDash, styles.activeDash]} />
-          {[...Array(4)].map((_, i) => (
-            <View key={i} style={styles.progressDash} />
-          ))}
-        </View>
+         
 
         {/* 2. HEADER */}
         <View style={styles.titleRow}>
@@ -93,11 +92,13 @@ const PickupStep: React.FC<PickupStepProps> = ({
 
         {/* 4. PICKUP LOCATION (Google Places Autocomplete) */}
         <AppText style={styles.inputLabel}>Pickup Location</AppText>
-        <View style={styles.autocompleteWrapper}>
-          <GooglePlacesAutocomplete
+
+         <View style={styles.autocompleteWrapper}>
+          <GooglePlacesAutocomplete 
             placeholder="Enter pickup address"
             fetchDetails={true}
             onPress={(data, details = null) => {
+              console.log("=====data==========details========",data,details)
               updateForm({
                 pickupLocation: data.description,
                 pickupLat: details?.geometry.location.lat,
@@ -122,6 +123,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
             enablePoweredByContainer={false}
           />
         </View>
+           {errors.pickupLocation && <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>}
 
         {/* 5. START DATE */}
         <AppText style={styles.inputLabel}>Pickup Start Date</AppText>
@@ -141,6 +143,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
             </AppText>
           </View>
         </TouchableOpacity>
+
+        {errors.pickupStartDate && <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>}
 
         {/* 6. END DATE */}
         <AppText style={styles.inputLabel}>Pickup End Date</AppText>

@@ -54,6 +54,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+    <string>Horse Shipt needs access to your camera to take a selfie for attendance verification.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Horse Shipt needs access to your gallery to upload profile photos and documents.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>DMSans_24pt-Thin.ttf</string>

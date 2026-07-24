@@ -53,28 +53,51 @@ const MyHorses = ({ navigation }) => {
         Manage your horses, update their details, and keep all transportation
         information in one place.
       </AppText>
-      <AppText onPress={()=>navigation.navigate("AddEditHorse")}
+      <AppText
+        onPress={() => navigation.navigate('AddEditHorse')}
         style={{
           padding: SPACING.sm,
           backgroundColor: COLORS.primary,
           alignSelf: 'flex-start',
           color: COLORS.white,
           fontFamily: FONTS.semiBold,
-          marginHorizontal:SPACING.lg,
-          borderRadius:10,
-          paddingHorizontal:50
+          marginHorizontal: SPACING.lg,
+          borderRadius: 10,
+          paddingHorizontal: 50,
         }}
       >
         + Horse
       </AppText>
-      {/* <FlatList
-                data={horses}
-                keyExtractor={(item) => item._id}
-                contentContainerStyle={styles.listContent}
-                renderItem={({ item }) => <HorseCard item={item} onDelete={() => handleDelete(item._id)} onEdit={() => handleEdit(item)} />}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchHorses(); }} />}
-                ListEmptyComponent={!loading ? <EmptyState icon={Wind} title="No Horses Found" message="You haven't added any horses yet. Click the + button to start." /> : null}
-            /> */}
+      <FlatList
+        data={horses}
+        keyExtractor={item => item._id}
+        contentContainerStyle={styles.listContent}
+        renderItem={({ item }) => (
+          <HorseCard
+            item={item}
+            onDelete={() => handleDelete(item._id)}
+            onEdit={() => handleEdit(item)}
+          />
+        )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              fetchHorses();
+            }}
+          />
+        }
+        ListEmptyComponent={
+          !loading ? (
+            <EmptyState
+              icon={Wind}
+              title="No Horses Found"
+              message="You haven't added any horses yet. Click the + button to start."
+            />
+          ) : null
+        }
+      />
     </View>
   );
 };

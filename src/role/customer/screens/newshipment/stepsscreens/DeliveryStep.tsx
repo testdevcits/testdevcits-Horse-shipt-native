@@ -53,14 +53,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({ form, updateForm, onNext, o
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* 1. PROGRESS - Second dash active */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressDash} />
-          <View style={[styles.progressDash, styles.activeDash]} />
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-        </View>
+        
 
         {/* 2. HEADER */}
         <View style={styles.titleRow}>

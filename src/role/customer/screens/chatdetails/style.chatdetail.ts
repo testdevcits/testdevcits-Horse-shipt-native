@@ -2,53 +2,64 @@ import { StyleSheet, Platform } from "react-native";
 import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9FBFC' },
-  // Header
+  container: { flex: 1, backgroundColor: COLORS.white },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  
+  // Header Design
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     backgroundColor: COLORS.white,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
     ...Platform.select({ ios: { paddingTop: 50 } }),
   },
-  headerInfo: { flex: 1, marginLeft: SPACING.md },
-  headerName: { fontFamily: FONTS.bold, fontSize: 16, color: COLORS.textPrimary },
-  headerSub: { fontSize: 11, color: COLORS.goldPrimary, fontFamily: FONTS.bold },
-  
-  // List
-  listContent: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.lg },
-  
-  // Bubbles
-  bubbleWrapper: { marginBottom: SPACING.md, maxWidth: '80%' },
-  myBubbleWrapper: { alignSelf: 'flex-end' },
-  otherBubbleWrapper: { alignSelf: 'flex-start' },
-  
+  headerAvatar: { width: 38, height: 38, borderRadius: 19, marginLeft: SPACING.xs },
+  headerInfo: { flex: 1, marginLeft: SPACING.sm },
+  headerTitle: { fontFamily: FONTS.bold, fontSize: 15, color: COLORS.textPrimary },
+  headerSubtitle: { fontSize: 12, color: COLORS.textSecondary, fontFamily: FONTS.regular },
+
+  // Message List
+  listContent: { paddingHorizontal: SPACING.lg, paddingBottom: SPACING.xl },
+
+  // Bubble Layout
+  messageWrapper: { marginBottom: SPACING.xl, width: '100%' },
+  myWrapper: { alignItems: 'flex-start' }, // Images show "Me" bubbles are left-aligned too but with different color
+  otherWrapper: { alignItems: 'flex-start' },
+
+  bubbleHeader: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    width: '100%', 
+    marginBottom: 6,
+    paddingHorizontal: 2
+  },
+  senderName: { fontFamily: FONTS.bold, fontSize: 13, color: COLORS.textPrimary },
+  timestamp: { fontSize: 11, color: COLORS.textLight, fontFamily: FONTS.regular },
+
   bubble: {
     padding: SPACING.md,
-    borderRadius: RADIUS.lg,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 1,
+    borderRadius: 8, // Square-ish corners like HorseShipt
+    maxWidth: '90%',
   },
-  myBubble: { backgroundColor: COLORS.goldPrimary, borderBottomRightRadius: 2 },
-  otherBubble: { backgroundColor: COLORS.white, borderBottomLeftRadius: 2, borderWidth: 1, borderColor: COLORS.divider },
-  
-  messageText: { fontSize: 14, lineHeight: 20, fontFamily: FONTS.medium },
-  myMessageText: { color: COLORS.white },
-  otherMessageText: { color: COLORS.textPrimary },
-  
-  timeText: { fontSize: 9, marginTop: 4, alignSelf: 'flex-end', opacity: 0.7 },
-  myTimeText: { color: 'rgba(255,255,255,0.8)' },
-  otherTimeText: { color: COLORS.textLight },
+  myBubble: { backgroundColor: COLORS.goldPrimary }, // Tan/Gold Color
+  otherBubble: { backgroundColor: '#F2F4F5' }, // Light Grey Color
 
-  // Media
-  mediaImage: { width: 220, height: 150, borderRadius: RADIUS.md, marginBottom: 4 },
+  messageText: { fontSize: 14, lineHeight: 21, fontFamily: FONTS.regular },
+  myText: { color: COLORS.white },
+  otherText: { color: COLORS.textSecondary },
 
-  // Input
-  inputWrapper: {
+  mediaImage: { 
+    width: 240, 
+    height: 160, 
+    borderRadius: 6, 
+    marginBottom: SPACING.xs 
+  },
+
+  // Footer / Input Area
+  footer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: SPACING.md,
@@ -57,25 +68,72 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.divider,
     paddingBottom: Platform.OS === 'ios' ? 30 : SPACING.md,
   },
-  inputField: {
+  inputBox: {
     flex: 1,
-    backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.round,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: 10,
-    fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
-    marginHorizontal: SPACING.sm,
-    maxHeight: 100,
+    height: 46,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    borderRadius: 6,
+    justifyContent: 'center',
+    paddingHorizontal: SPACING.md,
+    marginRight: SPACING.sm,
   },
-  sendBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.goldPrimary,
+  textInput: {
+    fontFamily: FONTS.regular,
+    fontSize: 14,
+    color: COLORS.textPrimary,
+  },
+  squareActionBtn: {
+    width: 46,
+    height: 46,
+    backgroundColor: '#F2F4F5',
+    borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+    marginLeft: SPACING.xs,
+  },
+  sendBtn: {
+    backgroundColor: COLORS.goldPrimary,
+  },
+
+
+
+   draftPreviewContainer: {
+    padding: SPACING.md,
+    backgroundColor: COLORS.white,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
+  },
+  draftImageWrapper: {
+    width: 100,
+    height: 100,
+    borderRadius: RADIUS.md,
+    position: 'relative',
+    // Give shadow to separate from background
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  draftImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: RADIUS.md,
+  },
+  cancelDraftBtn: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: COLORS.error, // Your red color
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.white,
+  },
 });
 
 export default styles;

@@ -57,7 +57,7 @@ const ShipmentHorizontalCard = memo(({ item, onPress }: { item: any; onPress: ()
         <View style={styles.dot} />
         <View style={styles.dashedLine} />
         <View style={styles.truckCircle}>
-          <Truck size={14} color={COLORS.greenPrimary} fill={COLORS.greenPrimary} />
+          <Truck size={10} color={COLORS.greenPrimary} fill={COLORS.greenPrimary} />
         </View>
         <View style={styles.dashedLine} />
         <View style={styles.dot} />
@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: COLORS.greenActive,
     backgroundColor: COLORS.greenLightBg,
-    paddingHorizontal: 14 ,
+    paddingHorizontal: 10 ,
     paddingVertical: 4,
     borderRadius: RADIUS.round,
   },
   badgeText: {
     color: COLORS.greenActive,
     fontFamily: FONTS.medium,
-    fontSize: 14,
+    fontSize: 10,
   },
   infoRow: {
     flexDirection: 'row',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   infoText: {
-    fontSize: 14,
+    fontSize: 10,
     fontFamily: FONTS.regular,
     color: COLORS.grey700,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   truckCircle: {
     width: 32,
     height: 32,
-    borderRadius: 14,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.greenActive,
     alignItems: 'center',

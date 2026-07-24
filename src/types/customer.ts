@@ -131,3 +131,5 @@ export interface CustomerProfileResponse {
   message: string;
   data: CustomerProfileData;
 }
+
+

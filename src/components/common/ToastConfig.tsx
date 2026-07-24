@@ -4,7 +4,7 @@ import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
-
+ 
 const { width } = Dimensions.get('window');
 
 /**

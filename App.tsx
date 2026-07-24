@@ -10,36 +10,39 @@ import AppNavigation from './src/navigations/AppNavigation';
 import { store } from './src/app/store';
 import { COLORS } from './src/constants';
 import { toastConfig } from './src/components/common/ToastConfig';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const App = () => {
   return (
     // 1. GestureHandlerRootView must wrap EVERYTHING for Reanimated/Bottom Sheets to work
     <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
-        {/* 2. Redux Provider */}
-        <Provider store={store}>
-          {/* 3. StatusBar Configuration */}
-          <StatusBar
-            backgroundColor={COLORS.background}
-            barStyle={'dark-content'}
-            translucent={false}
-          />
-          <SafeAreaView style={{ flex: 1 }}>
-            {/* 
-              Note: We removed SafeAreaView from here. 
-              Professional apps usually handle SafeArea inside screens 
+        <BottomSheetModalProvider>
+          {/* 2. Redux Provider */}
+          <Provider store={store}>
+            {/* 3. StatusBar Configuration */}
+            <StatusBar
+              backgroundColor={COLORS.background}
+              barStyle={'dark-content'}
+              translucent={false}
+            />
+            <SafeAreaView style={{ flex: 1 }}>
+              {/*
+              Note: We removed SafeAreaView from here.
+              Professional apps usually handle SafeArea inside screens
               to allow Maps/Images to go full-screen under the notch.
           */}
-            <AppNavigation />
-          </SafeAreaView>
+              <AppNavigation />
+            </SafeAreaView>
 
-          {/* 4. Toast at the absolute top of the visual stack */}
-          <Toast
-            config={toastConfig}
-            topOffset={Platform.OS === 'ios' ? 60 : 40}
-            visibilityTime={2500}
-          />
-        </Provider>
+            {/* 4. Toast at the absolute top of the visual stack */}
+            <Toast
+              config={toastConfig}
+              topOffset={Platform.OS === 'ios' ? 60 : 40}
+              visibilityTime={2500}
+            />
+          </Provider>
+        </BottomSheetModalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
@@ -55,7 +58,7 @@ export default App;
 
 // import React from 'react';
 // import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-// import {StyleSheet, View} from 'react-native'; // remove PROVIDER_GOOGLE import if not using Google Maps
+// import { StyleSheet, View } from 'react-native'; // remove PROVIDER_GOOGLE import if not using Google Maps
 
 // const styles = StyleSheet.create({
 //   container: {

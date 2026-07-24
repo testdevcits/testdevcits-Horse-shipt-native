@@ -15,6 +15,8 @@ interface ShipmentInfoStepProps {
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
+  pickDocument: any;
+  pickImage:any
 }
 
 const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
@@ -22,6 +24,8 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
+  pickDocument,
+  pickImage
 }) => {
   const horseName = form.horses[0]?.registeredName || 'Horse Name';
 
@@ -36,15 +40,6 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* 1. PROGRESS - Fourth dash active */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-          <View style={[styles.progressDash, styles.activeDash]} />
-          <View style={styles.progressDash} />
-        </View>
-
         {/* 2. HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
@@ -85,6 +80,20 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             A picture enhances your listing, making it more appealing and
             increasing likelihood of attracting carriers.
           </AppText>
+
+          <TouchableOpacity
+            style={styles.uploadBox}
+            onPress={() => pickImage(0)}
+          >
+            {form.horses[0].photo ? (
+              <Image
+                source={{ uri: form.horses[0].photo.uri }}
+                style={styles.uploadedImage}
+              />
+            ) : (
+              <ImagePlus size={32} color={COLORS.grey400} />
+            )}
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -113,11 +122,17 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 
         <View style={styles.docRow}>
           <AppText style={styles.docLabel}>Coggins</AppText>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.miniUploadBtn}
             onPress={() => handleDocumentUpload('coggins')}
           >
             <AppText style={styles.miniUploadText}>Upload</AppText>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={styles.miniUploadBtn}
+            onPress={() => pickDocument(0, 'coggins')}
+          >
+            <AppText>{form.horses[0].coggins ? 'Change' : 'Upload'}</AppText>
           </TouchableOpacity>
         </View>
 

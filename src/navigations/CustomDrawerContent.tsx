@@ -17,6 +17,7 @@ import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, ICON_SIZE } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
+import { AppText } from '../components';
 
 /**
  * Props for our internal Menu Item component
@@ -47,7 +48,7 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
                 resizeMode="contain"
             />
         </View>
-        <Text style={styles.menuLabel}>{label}</Text>
+        <AppText style={styles.menuLabel}>{label}</AppText>
     </TouchableOpacity>
 );
 
@@ -63,7 +64,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                     style={styles.logoIcon}
                     resizeMode="contain"
                 />
-                <Text style={styles.logoText}>HorseShipt</Text>
+                <AppText style={styles.logoText}>HorseShipt</AppText>
             </View>
 
             <DrawerContentScrollView
@@ -140,7 +141,8 @@ const styles = StyleSheet.create({
     menuItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: SPACING.lg,
+        paddingVertical: SPACING.xs,
+
         paddingHorizontal: SPACING.md,
         marginBottom: SPACING.xs,
     },

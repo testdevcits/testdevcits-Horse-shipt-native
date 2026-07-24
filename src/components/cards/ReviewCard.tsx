@@ -1,44 +1,49 @@
 import React, { memo } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Star, Quote } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { Star } from 'lucide-react-native';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from '../common/AppText';
 
 const ReviewCard = memo(({ item }: { item: any }) => {
   const renderStars = (count: number) => {
+    // HorseShipt Yellow/Gold
+    const STAR_COLOR = '#FACC15'; 
+
     return Array(5).fill(0).map((_, i) => (
       <Star 
         key={i} 
-        size={14} 
-        color={i < count ? COLORS.goldPrimary : COLORS.grey200} 
-        fill={i < count ? COLORS.goldPrimary : 'transparent'} 
+        size={16} // Reduced from 24
+        color={i < count ? STAR_COLOR : COLORS.grey200} 
+        fill={i < count ? STAR_COLOR : 'transparent'} 
+        strokeWidth={1.5}
       />
     ));
   };
 
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <Image 
-          source={{ uri: item.shipperId?.profileImage?.url }} 
-          style={styles.avatar} 
-        />
-        <View style={styles.headerInfo}>
-          <AppText style={styles.name}>{item.shipperName}</AppText>
-          <View style={styles.starRow}>{renderStars(item.rating)}</View>
-        </View>
-        <AppText style={styles.date}>
-          {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-        </AppText>
+      {/* Stars on top */}
+      <View style={styles.starRow}>
+        {renderStars(item.rating || 5)}
       </View>
       
-      <View style={styles.contentWrapper}>
-        <Quote size={16} color={COLORS.goldBorder} style={styles.quoteIcon} />
-        <AppText style={styles.reviewText}>{item.reviewText}</AppText>
-      </View>
+      {/* Review Text */}
+      <AppText style={styles.reviewText} numberOfLines={4}>
+        {item.reviewText}
+      </AppText>
 
-      <View style={styles.badge}>
-        <AppText style={styles.badgeText}>Verified Shipment</AppText>
+      {/* Profile Footer */}
+      <View style={styles.profileContainer}>
+        <Image 
+          source={{ uri: item.shipperId?.profileImage?.url || 'https://via.placeholder.com/150' }} 
+          style={styles.avatar} 
+        />
+        <View style={styles.userInfo}>
+          <AppText style={styles.name}>{item.shipperName || 'Mark'}</AppText>
+          <AppText style={styles.date}>
+            {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US') : '11/28/2023'}
+          </AppText>
+        </View>
       </View>
     </View>
   );
@@ -47,27 +52,58 @@ const ReviewCard = memo(({ item }: { item: any }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
+    borderRadius: RADIUS.md, 
+    padding: SPACING.lg, // Reduced from xl
     borderWidth: 1,
     borderColor: COLORS.divider,
-    shadowColor: "#000",
+    width: 280, // Slightly narrower for horizontal lists
+    // Subtle shadow
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.04,
-    shadowRadius: 12,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 2,
+    marginRight: SPACING.md,
   },
-  header: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md },
-  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: COLORS.grey100 },
-  headerInfo: { flex: 1, marginLeft: SPACING.md },
-  name: { fontFamily: FONTS.bold, fontSize: 16, color: COLORS.textPrimary },
-  starRow: { flexDirection: 'row', gap: 2, marginTop: 2 },
-  date: { fontSize: 11, color: COLORS.textLight, fontFamily: FONTS.medium },
-  contentWrapper: { flexDirection: 'row', gap: SPACING.sm },
-  quoteIcon: { marginTop: 4 },
-  reviewText: { flex: 1, fontSize: 14, color: COLORS.textSecondary, lineHeight: 22, fontFamily: FONTS.regular },
-  badge: { alignSelf: 'flex-start', backgroundColor: COLORS.goldLightBg, paddingHorizontal: 8, paddingVertical: 4, borderRadius: RADIUS.xs, marginTop: SPACING.md },
-  badgeText: { fontSize: 10, fontFamily: FONTS.bold, color: COLORS.goldPrimary, textTransform: 'uppercase' }
+  starRow: { 
+    flexDirection: 'row', 
+    gap: 3, 
+    marginBottom: SPACING.md // Reduced from xl
+  },
+  reviewText: { 
+    fontFamily: FONTS.medium, 
+    fontSize: FONT_SIZE.lg, // Reduced to 16px (lg)
+    color: COLORS.textPrimary,
+    lineHeight: 22, // Adjusted for smaller font
+    marginBottom: SPACING.xl, // Reduced gap
+    minHeight: 66, // Keeps cards uniform height (3 lines)
+  },
+  profileContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center',
+    marginTop: 'auto' // Pushes footer to bottom if card height is fixed
+  },
+  avatar: { 
+    width: 42, // Reduced from 56
+    height: 42, 
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.grey100 
+  },
+  userInfo: { 
+    marginLeft: SPACING.sm 
+  },
+  name: { 
+    fontFamily: FONTS.bold, 
+    fontSize: FONT_SIZE.md, // Reduced to 14px (md)
+    color: COLORS.textPrimary,
+    includeFontPadding: false,
+  },
+  date: { 
+    fontFamily: FONTS.regular, 
+    fontSize: FONT_SIZE.sm, // Reduced to 12px (sm)
+    color: COLORS.textSecondary,
+    marginTop: 0 
+  },
 });
 
 export default ReviewCard;

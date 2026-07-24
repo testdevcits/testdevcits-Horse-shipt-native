@@ -14,7 +14,7 @@ const PaymentDetails = () => {
   const navigation = useNavigation();
   const { payment } = route.params;
 
-  const onCopy = () => Share.share({ message: payment.transactionId });
+  const onCopy = () => Share.share({ message: payment?.transactionId });
 
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ const PaymentDetails = () => {
           <ChevronLeft color={COLORS.textPrimary} />
         </TouchableOpacity>
         <AppText style={styles.headerTitle}>Receipt Details</AppText>
-        <TouchableOpacity onPress={() => Linking.openURL(payment.receiptUrl)}>
+        <TouchableOpacity onPress={() => Linking.openURL(payment?.receiptUrl)}>
           <Download size={20} color={COLORS.goldPrimary} />
         </TouchableOpacity>
       </View>
@@ -36,8 +36,8 @@ const PaymentDetails = () => {
             <Verified size={32} color={COLORS.white} fill={COLORS.success} />
           </View>
           <AppText style={styles.heroStatus}>Payment Succeeded</AppText>
-          <AppText style={styles.heroAmount}>${payment.amount.toFixed(2)}</AppText>
-          <AppText style={styles.heroDate}>{payment.paymentDateTime}</AppText>
+          <AppText style={styles.heroAmount}>${payment?.amount.toFixed(2)}</AppText>
+          <AppText style={styles.heroDate}>{payment?.paymentDateTime}</AppText>
         </View>
 
         {/* Transaction ID Section */}
@@ -45,7 +45,7 @@ const PaymentDetails = () => {
           <View style={styles.idRow}>
             <View>
               <AppText style={styles.label}>TRANSACTION ID</AppText>
-              <AppText style={styles.idText}>{payment.transactionId}</AppText>
+              <AppText style={styles.idText}>{payment?.transactionId}</AppText>
             </View>
             <TouchableOpacity onPress={onCopy} style={styles.copyBtn}>
               <Copy size={16} color={COLORS.goldPrimary} />
@@ -61,8 +61,8 @@ const PaymentDetails = () => {
                <User size={24} color={COLORS.grey400} />
             </View>
             <View style={{ flex: 1 }}>
-              <AppText style={styles.shipperName}>{payment.shipper.name}</AppText>
-              <AppText style={styles.shipperEmail}>{payment.shipper.email}</AppText>
+              <AppText style={styles.shipperName}>{payment?.shipper?.name}</AppText>
+              <AppText style={styles.shipperEmail}>{payment?.shipper?.email}</AppText>
             </View>
             <TouchableOpacity style={styles.phoneBtn}>
                <Phone size={18} color={COLORS.white} />
@@ -75,19 +75,19 @@ const PaymentDetails = () => {
         <View style={styles.infoCard}>
           <View style={styles.routeRow}>
             <MapPin size={18} color={COLORS.goldPrimary} />
-            <AppText style={styles.routeText}>{payment.pickupLocation}</AppText>
+            <AppText style={styles.routeText}>{payment?.pickupLocation}</AppText>
           </View>
           <View style={styles.routeLine} />
           <View style={styles.routeRow}>
             <MapPin size={18} color={COLORS.error} />
-            <AppText style={styles.routeText}>{payment.deliveryLocation}</AppText>
+            <AppText style={styles.routeText}>{payment?.deliveryLocation}</AppText>
           </View>
         </View>
 
         {/* External Link */}
         <TouchableOpacity 
           style={styles.receiptBtn} 
-          onPress={() => Linking.openURL(payment.receiptUrl)}
+          onPress={() => Linking.openURL(payment?.receiptUrl)}
         >
           <AppText style={styles.receiptBtnText}>View Official Stripe Receipt</AppText>
           <ExternalLink size={16} color={COLORS.goldPrimary} />

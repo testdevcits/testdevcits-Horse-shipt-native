@@ -1,45 +1,55 @@
 import React from 'react';
-import { View, FlatList, TextInput, TouchableOpacity, SafeAreaView, RefreshControl } from 'react-native';
-import { Search, MessageCircleOff } from 'lucide-react-native';
+import { View, FlatList, RefreshControl } from 'react-native';
+import { MessageCircleOff } from 'lucide-react-native';
 import useShipperList from './useShipperList';
 import styles from './styles.shipperlist';
-import { AppText, ChatlistCard, EmptyState, ErrorView, SearchBarCompt } from '../../../../components';
+import { 
+  AppHeader, 
+  AppText, 
+  ChatlistCard, 
+  EmptyState, 
+  ErrorView, 
+  SearchBarCompt, 
+  AppSelect // Make sure to add 'customSelectorStyle' prop support in AppSelect.tsx
+} from '../../../../components';
 import { COLORS } from '../../../../constants';
-
 
 const ShipperList = ({ navigation }) => {
   const {
-    shippers, loading, error, searchQuery, setSearchQuery,
-    activeFilter, setActiveFilter, refresh
+    shippers, 
+    loading, 
+    error, 
+    searchQuery, 
+    setSearchQuery, 
+    activeFilter, 
+    setActiveFilter, 
+    refresh
   } = useShipperList();
 
   return (
     <View style={styles.container}>
-      {/* Search Header */}
+      <AppHeader />
+      
+      {/* Header with Search and Filter Dropdown */}
       <View style={styles.header}>
-        <AppText style={styles.screenTitle}>Shipment Chats</AppText>
+        <AppText style={styles.screenTitle}>Messages</AppText>
+        
         <SearchBarCompt
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search shipment or shipper"
-        // containerStyle={{ marginTop: 10 }} // Optional: add extra margin if needed
+          placeholder="Search"
         />
-      </View>
 
-      {/* Modern Segmented Filter */}
-      <View style={styles.filterWrapper}>
-        <View style={styles.filterTrack}>
-          {['All', 'Online', 'Offline'].map((f) => (
-            <TouchableOpacity
-              key={f}
-              onPress={() => setActiveFilter(f as any)}
-              style={[styles.filterBtn, activeFilter === f && styles.activeFilterBtn]}
-            >
-              <AppText style={[styles.filterText, activeFilter === f && styles.activeFilterText]}>
-                {f}
-              </AppText>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.filterContainer}>
+          <AppSelect
+            label="" // Empty label for header style
+            value={activeFilter}
+            options={['All', 'Online', 'Offline']}
+            placeholder="Filter"
+            onSelect={(item) => setActiveFilter(item as any)}
+            // Passing a style override to make it small and fit the header
+            customSelectorStyle={styles.miniSelect}
+          />
         </View>
       </View>
 
@@ -48,18 +58,21 @@ const ShipperList = ({ navigation }) => {
       ) : (
         <FlatList
           data={shippers}
-          keyExtractor={(item) => item.shipmentId}
-          renderItem={({ item }) => <ChatlistCard item={item}
-          // onPress={() => { navigation.navigate("ChatDetails", { shipmentId: item?.shipmentId }) }}
-
-
-          />
-
-          }
-
-
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <ChatlistCard 
+              item={item} 
+              onPress={() => navigation.navigate("ChatDetails", { shipmentId: item?.shipmentId })} 
+            />
+          )}
           contentContainerStyle={styles.list}
-          refreshControl={<RefreshControl refreshing={loading && shippers.length > 0} onRefresh={refresh} tintColor={COLORS.goldPrimary} />}
+          refreshControl={
+            <RefreshControl 
+              refreshing={loading && shippers.length > 0} 
+              onRefresh={refresh} 
+              tintColor={COLORS.goldPrimary} 
+            />
+          }
           ListEmptyComponent={
             !loading ? (
               <EmptyState

@@ -1,149 +1,295 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
 import {
   View,
   TouchableOpacity,
-  Modal,
-  FlatList,
   StyleSheet,
-   
-  TextInput,
+  ViewStyle,
 } from 'react-native';
-import { ChevronDown, Search, X } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { ChevronDown, Search, X, Check } from 'lucide-react-native';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetBackdrop,
+  BottomSheetFlatList,
+  BottomSheetTextInput,
+} from '@gorhom/bottom-sheet';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, ICON_SIZE } from '../../constants';
 import AppText from './AppText';
- 
+
 interface AppSelectProps {
-  label: string;
+  label?: string;
   value: string;
   options: string[];
   placeholder: string;
   error?: string;
   onSelect: (item: string) => void;
   searchable?: boolean;
+  customSelectorStyle?: ViewStyle;
 }
 
-const AppSelect = ({ label, value, options, placeholder, error, onSelect, searchable = false }: AppSelectProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const AppSelect = memo(({
+  label,
+  value,
+  options,
+  placeholder,
+  error,
+  onSelect,
+  searchable = false,
+  customSelectorStyle,
+}: AppSelectProps) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredOptions = options.filter(item =>
-    item.toLowerCase().includes(searchQuery.toLowerCase())
+  // Snap points for the bottom sheet (e.g., 50% and 85% of screen)
+  const snapPoints = useMemo(() => ['50%', '85%'], []);
+
+  const filteredOptions = useMemo(() => 
+    options.filter(item =>
+      item.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+    [options, searchQuery]
   );
 
-  const handleSelect = (item: string) => {
-    onSelect(item);
-    setModalVisible(false);
+  // Handlers
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleDismissModal = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
     setSearchQuery('');
-  };
+  }, []);
+
+  const handleSelect = useCallback((item: string) => {
+    onSelect(item);
+    handleDismissModal();
+  }, [onSelect, handleDismissModal]);
+
+  // Backdrop component
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.5}
+      />
+    ),
+    []
+  );
 
   return (
     <View style={styles.container}>
-      <AppText style={styles.label}>{label}</AppText>
-      
+      {label && <AppText style={styles.label}>{label}</AppText>}
+
       <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => setModalVisible(true)}
-        style={[styles.selector, error ? styles.errorBorder : null]}
+        activeOpacity={0.6}
+        onPress={handlePresentModalPress}
+        style={[
+          styles.selector,
+          customSelectorStyle,
+          error ? styles.errorBorder : null,
+        ]}
       >
-        <AppText style={[styles.valueText, !value && styles.placeholder]}>
+        <AppText 
+            style={[styles.valueText, !value && styles.placeholderText]}
+            numberOfLines={1}
+        >
           {value || placeholder}
         </AppText>
-        <ChevronDown size={20} color={COLORS.textSecondary} />
+        <ChevronDown size={ICON_SIZE.sm} color={COLORS.textSecondary} />
       </TouchableOpacity>
 
-      {error ? <AppText style={styles.errorText}>{error}</AppText> : null}
+      {error && <AppText style={styles.errorText}>{error}</AppText>}
 
-      <Modal animationType="slide" visible={modalVisible} transparent={false}>
-        <View style={styles.modalContainer}>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose
+        handleIndicatorStyle={styles.sheetIndicator}
+        backgroundStyle={styles.sheetBackground}
+      >
+        <BottomSheetView style={styles.modalContent}>
+          {/* Header */}
           <View style={styles.modalHeader}>
-            <AppText style={styles.modalTitle}>{label}</AppText>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <X size={24} color={COLORS.textPrimary} />
+            <AppText style={styles.modalTitle}>{label || 'Select Option'}</AppText>
+            <TouchableOpacity onPress={handleDismissModal} style={styles.closeBtn}>
+              <X size={ICON_SIZE.md} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
+          {/* Search Bar */}
           {searchable && (
             <View style={styles.searchContainer}>
-              <Search size={20} color={COLORS.textLight} style={styles.searchIcon} />
-              <TextInput
+              <Search size={ICON_SIZE.sm} color={COLORS.textLight} />
+              <BottomSheetTextInput
                 placeholder="Search..."
+                placeholderTextColor={COLORS.textLight}
                 style={styles.searchInput}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 autoCorrect={false}
               />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={() => setSearchQuery('')}>
+                    <X size={14} color={COLORS.textLight} />
+                </TouchableOpacity>
+              )}
             </View>
           )}
 
-          <FlatList
+          {/* List */}
+          <BottomSheetFlatList
             data={filteredOptions}
             keyExtractor={(item) => item}
             contentContainerStyle={styles.listContent}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[styles.optionItem, value === item && styles.selectedOption]}
-                onPress={() => handleSelect(item)}
-              >
-                <AppText style={[styles.optionText, value === item && styles.selectedOptionText]}>
-                  {item}
-                </AppText>
-              </TouchableOpacity>
-            )}
+            renderItem={({ item }) => {
+              const isSelected = value === item;
+              return (
+                <TouchableOpacity
+                  style={[styles.optionItem, isSelected && styles.selectedOption]}
+                  onPress={() => handleSelect(item)}
+                >
+                  <AppText style={[styles.optionText, isSelected && styles.selectedOptionText]}>
+                    {item}
+                  </AppText>
+                  {isSelected && (
+                    <Check size={18} color={COLORS.goldPrimary} strokeWidth={3} />
+                  )}
+                </TouchableOpacity>
+              );
+            }}
           />
-        </View>
-      </Modal>
+        </BottomSheetView>
+      </BottomSheetModal>
     </View>
   );
-};
-
-export default AppSelect;
+});
 
 const styles = StyleSheet.create({
-  container: { marginBottom: SPACING.md },
-  label: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginBottom: 8 },
+  container: { 
+    marginBottom: SPACING.md 
+  },
+  label: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey700,
+    marginBottom: SPACING.xs,
+    marginLeft: 2,
+  },
   selector: {
-    height: 52,
+    height: 54,
     borderWidth: 1,
     borderColor: COLORS.inputBorder,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
+    // Soft Shadow
+    elevation: 1,
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
-  valueText: { fontSize: 14, color: COLORS.textPrimary, fontFamily: FONTS.regular },
-  placeholder: { color: COLORS.textLight },
-  errorBorder: { borderColor: COLORS.error },
-  errorText: { color: COLORS.error, fontSize: 12, marginTop: 4 },
-  modalContainer: { flex: 1, backgroundColor: COLORS.white },
+  valueText: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+    flex: 1,
+  },
+  placeholderText: { 
+    color: COLORS.textLight,
+    fontFamily: FONTS.regular 
+  },
+  errorBorder: { 
+    borderColor: COLORS.error,
+    borderWidth: 1.5 
+  },
+  errorText: { 
+    color: COLORS.error, 
+    fontSize: FONT_SIZE.xs, 
+    marginTop: 4,
+    fontFamily: FONTS.medium,
+    marginLeft: 4,
+  },
+
+  /* Bottom Sheet Styles */
+  sheetBackground: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.xl,
+  },
+  sheetIndicator: {
+    backgroundColor: COLORS.grey300,
+    width: 40,
+  },
+  modalContent: {
+    flex: 1,
+  },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
-  modalTitle: { fontSize: 18, fontFamily: FONTS.bold },
+  modalTitle: { 
+    fontSize: FONT_SIZE.lg, 
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  closeBtn: {
+    padding: 4,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     margin: SPACING.lg,
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.sm,
-    height: 45,
+    borderRadius: RADIUS.md,
+    height: 48,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
   },
-  searchIcon: { marginRight: 10 },
-  searchInput: { flex: 1, height: '100%', fontFamily: FONTS.regular },
-  listContent: { paddingHorizontal: SPACING.lg },
+  searchInput: { 
+    flex: 1, 
+    height: '100%', 
+    fontFamily: FONTS.regular,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textPrimary,
+    marginLeft: SPACING.sm,
+  },
+  listContent: { 
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.xxxl, 
+  },
   optionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: SPACING.lg,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
-  selectedOption: { backgroundColor: COLORS.goldLightBg },
-  optionText: { fontSize: 16, color: COLORS.textPrimary },
-  selectedOptionText: { color: COLORS.goldPrimary, fontFamily: FONTS.bold },
+  selectedOption: { 
+    backgroundColor: 'transparent', // We use the checkmark and text color instead for premium feel
+  },
+  optionText: { 
+    fontSize: FONT_SIZE.md, 
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+  },
+  selectedOptionText: { 
+    color: COLORS.goldPrimary, 
+    fontFamily: FONTS.bold 
+  },
 });
+
+export default AppSelect;

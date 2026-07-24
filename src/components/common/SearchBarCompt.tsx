@@ -35,7 +35,7 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
     <View style={[styles.container, containerStyle]}>
       <Search size={18} color={COLORS.grey400} strokeWidth={2} />
       
-      <TextInput
+      <TextInput allowFontScaling={false}
         style={styles.input}
         value={value}
         onChangeText={onChangeText}

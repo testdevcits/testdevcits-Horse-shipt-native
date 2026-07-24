@@ -74,14 +74,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         keyboardShouldPersistTaps="handled"
       >
         {/* PROGRESS BAR */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-          <View style={[styles.progressDash, styles.activeDash]} />
-          <View style={styles.progressDash} />
-          <View style={styles.progressDash} />
-        </View>
-
+         
         {/* HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>

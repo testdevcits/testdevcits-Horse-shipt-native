@@ -9,7 +9,13 @@ import {
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Package, MessageCircle, Plus, Smartphone } from 'lucide-react-native';
+import {
+  Home,
+  Package,
+  MessageCircle,
+  Plus,
+  Smartphone,
+} from 'lucide-react-native';
 
 // Import your actual screens
 import HomeScreen from '../role/customer/screens/home/HomeScreen';
@@ -29,8 +35,10 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
 
   useEffect(() => {
     // Android triggers 'Did' events, iOS can use 'Will' for smoother transitions
-    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
     const keyboardDidShowListener = Keyboard.addListener(showEvent, () => {
       setKeyboardVisible(true);
@@ -73,15 +81,44 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
             const renderIcon = (color: string) => {
               const size = 26;
               switch (route.name) {
-                case 'Home': return <Image source={imageIndex.Home} style={{ width: 26, height: 26, tintColor: color }} />;
-                case 'Shipments': return <Image source={imageIndex.Shipments} style={{ width: 26, height: 26, tintColor: color }} />;
-                case 'New': return null; // We handle center button separately
+                case 'Home':
+                  return (
+                    <Image
+                      source={imageIndex.Home}
+                      style={{ width: 26, height: 26, tintColor: color }}
+                      resizeMode="center"
+                    />
+                  );
+                case 'Shipments':
+                  return (
+                    <Image
+                      source={imageIndex.Shipments}
+                      style={{ width: 26, height: 26, tintColor: color }}
+                      resizeMode="center"
+                    />
+                  );
+                case 'New':
+                  return null; // We handle center button separately
                 case 'Horses':
-                  // To match your image exactly, use a Horse Icon/Image 
+                  // To match your image exactly, use a Horse Icon/Image
                   // If Lucide doesn't have it, we use a placeholder icon
-                  return <Image source={imageIndex.Horse} style={{ width: 26, height: 26, tintColor: color }} />;;
-                case 'Chats': return <Image source={imageIndex.Chat} style={{ width: 26, height: 26, tintColor: color }} />;;
-                default: return null;
+                  return (
+                    <Image
+                      source={imageIndex.Horse}
+                      style={{ width: 26, height: 26, tintColor: color }}
+                      resizeMode="center"
+                    />
+                  );
+                case 'Chats':
+                  return (
+                    <Image
+                      source={imageIndex.Chat}
+                      style={{ width: 26, height: 26, tintColor: color }}
+                      resizeMode="center"
+                    />
+                  );
+                default:
+                  return null;
               }
             };
 
@@ -94,7 +131,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
                   activeOpacity={0.8}
                   style={styles.centerButton}
                 >
-                  <Plus size={32} color="#FFF" strokeWidth={3} />
+                  <Plus size={24} color="#FFF" strokeWidth={3} />
                 </TouchableOpacity>
               );
             }
@@ -116,12 +153,9 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
 };
 
 const CustomerTabs = () => {
-
-
-
   return (
     <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
+      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
       }}
@@ -189,7 +223,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A06333', // Brown color from your image
     justifyContent: 'center',
     alignItems: 'center',
-    top: -35, // Floats the button upwards into the hump
+    top: -30, // Floats the button upwards into the hump
     // Stronger shadow for the button itself
     shadowColor: '#A06333',
     shadowOffset: { width: 0, height: 4 },

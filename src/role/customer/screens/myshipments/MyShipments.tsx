@@ -4,6 +4,7 @@ import { Truck } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS } from '../../../../constants';
 import useMyShipments, { ShipmentTab } from './usemyshipments';
 import { AppHeader, AppLoader, AppText, EmptyState, ShipmentCard } from '../../../../components';
+import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 
 
 const MyShipments = ({ navigation }) => {
@@ -47,7 +48,7 @@ const MyShipments = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
-        renderItem={({ item }) => <ShipmentCard item={item} onView={() => { navigation.navigate("MyShipmentDetails", { item: item }) }} />}
+        renderItem={({ item }) => <ShipmentHorizontalCard item={item} onPress={() => { navigation.navigate("MyShipmentDetails", { item: item }) }} />}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchShipments} />}
         ListEmptyComponent={!loading ? (
           <EmptyState

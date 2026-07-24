@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import AppText from './AppText';
 
 
 // 1. Define Props for reusability (The "Conditions")
@@ -29,7 +30,7 @@ const SectionHeader = ({
     return (
         <View style={[styles.container, containerStyle]}>
             {/* Left Title */}
-            <Text style={styles.titleText}>{title}</Text>
+            <AppText style={styles.titleText}>{title}</AppText>
 
             {/* Right Action - Rendered based on condition */}
             {showAction && onPress && (
@@ -38,7 +39,7 @@ const SectionHeader = ({
                     onPress={onPress}
                     style={styles.actionButton}
                 >
-                    <Text style={styles.actionText}>{rightText}</Text>
+                    <AppText style={styles.actionText}>{rightText}</AppText>
 
                     {/* Simple Chevron Arrow */}
                      

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import customerService from '../../../../api/services/customerService';
+import { Platform } from 'react-native';
  
 const useChatDetails = (shipmentId: string) => {
   const [messages, setMessages] = useState<any[]>([]);
@@ -33,20 +34,59 @@ const useChatDetails = (shipmentId: string) => {
 
   useEffect(() => { initChat(); }, [initChat]);
 
-  const onSend = async (text: string) => {
-    if (!text.trim() || !room?._id) return;
+  // const onSend = async (text: string) => {
+  //   if (!text.trim() || !room?._id) return;
+  //   try {
+  //     setSending(true);
+  //     const res = await customerService.sendMessage(room._id, { message: text });
+  //     if (res.success) {
+  //       setMessages(prev => [res.data, ...prev]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Send Error:", error);
+  //   } finally {
+  //     setSending(false);
+  //   }
+  // };
+
+
+  const onSend = async (text?: string, imageFile?: any) => {
+    // If both are empty, don't send
+    if (!text?.trim() && !imageFile) return;
+    if (!room?._id) return;
+
     try {
       setSending(true);
-      const res = await customerService.sendMessage(room._id, { message: text });
+      
+      // Create FormData
+      const formData = new FormData();
+      
+      if (text?.trim()) {
+        formData.append('message', text);
+      }
+
+      if (imageFile) {
+        formData.append('image', {
+          uri: Platform.OS === 'android' ? imageFile.path : imageFile.path.replace('file://', ''),
+          type: imageFile.mime || 'image/jpeg',
+          name: imageFile.filename || `chat_image_${Date.now()}.jpg`,
+        } as any);
+      }
+
+      const res = await customerService.sendMessage(room._id, formData);
+      
       if (res.success) {
         setMessages(prev => [res.data, ...prev]);
+        return true; // Return true to signal the UI to clear input
       }
     } catch (error) {
       console.error("Send Error:", error);
+      return false;
     } finally {
       setSending(false);
     }
   };
+
 
   return {
     messages,

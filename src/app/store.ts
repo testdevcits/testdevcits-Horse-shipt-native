@@ -10,10 +10,12 @@
 // src/app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../redux/slices/authSlice';
+import horseReducer from '../redux/slices/horseSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    horse: horseReducer,
   },
 });
 

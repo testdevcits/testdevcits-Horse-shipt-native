@@ -4,85 +4,73 @@ import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.background, 
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: COLORS.background,
   },
   header: {
-    backgroundColor: COLORS.white,
-    padding: SPACING.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
+    paddingHorizontal: SPACING.xl,
+    paddingTop: SPACING.xxxl,
+    paddingBottom: SPACING.xl,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
+    marginBottom: SPACING.sm,
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 14,
+    fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
-    marginTop: 4,
+    lineHeight: 20,
   },
-  sectionHeader: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.xl,
-    paddingBottom: SPACING.md,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-  },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  settingsBox: {
     backgroundColor: COLORS.white,
     marginHorizontal: SPACING.lg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.lg,
-    marginBottom: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    // Soft Elevation
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8 },
-      android: { elevation: 2 }
-    })
-  },
-  iconBox: {
-    width: 44,
-    height: 44,
     borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldLightBg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingVertical: SPACING.sm,
+    // Subtle shadow for the container
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
-  textContainer: {
-    flex: 1,
-    marginRight: SPACING.sm,
+  settingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 18,
+    paddingHorizontal: SPACING.lg,
   },
   itemTitle: {
-    fontFamily: FONTS.bold,
+    flex: 1,
+    fontFamily: FONTS.medium,
     fontSize: 15,
     color: COLORS.textPrimary,
-  },
-  itemDesc: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-    lineHeight: 16,
+    paddingRight: SPACING.md,
   },
   footer: {
-    padding: SPACING.xl,
+    padding: SPACING.xxxl,
     alignItems: 'center',
   },
   footerText: {
     fontSize: 12,
     color: COLORS.textLight,
-    fontFamily: FONTS.medium,
+    fontFamily: FONTS.regular,
   }
 });
 
