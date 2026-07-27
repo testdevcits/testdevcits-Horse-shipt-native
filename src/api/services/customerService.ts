@@ -6,6 +6,13 @@ import {
   GetShipmentsResponse,
   TopRatedShippersResponse,
   CustomerProfileResponse,
+  GetTermsConditionsResponse,
+  NotificationSubscriptionPayload,
+  NotificationSubscriptionResponse,
+  GetShipmentByIdResponse,
+  GetQuotesResponse,
+  GetQuestionsResponse,
+  MatchingShippersResponse,
 } from '../../types/customer';
 import { GetNotificationsResponse } from '../../types/notification';
 
@@ -56,7 +63,19 @@ const customerService = {
     return axiosClient.get('/api/customer/shipments/completed');
   },
 
-  // createShipment :async () :
+  getShipmentById: async (
+    shipmentId: string,
+  ): Promise<GetShipmentByIdResponse> => {
+    return axiosClient.get(`/api/customer/shipments/${shipmentId}`);
+  },
+
+  createShipment: async (payload: FormData) => {
+    return axiosClient.post('/api/customer/shipments', payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 
   // ... NOtification System
 
@@ -146,8 +165,42 @@ const customerService = {
     return axiosClient.get('/api/customer/shippers/top-rated');
   },
 
-  createShipment: async () => {
-    return axiosClient.post('/api/customer/shipments');
+  getShipperProfile: async (
+    id: string,
+  ): Promise<{ success: boolean; data: any }> => {
+    return axiosClient.get(`/api/customer/shipper-profile/${id}`);
+  },
+
+  getTermsAndConditions: async (): Promise<GetTermsConditionsResponse> => {
+    return axiosClient.get('/api/admin/terms-condition/active');
+  },
+
+  subscribeNotifications: async (
+    payload: NotificationSubscriptionPayload,
+  ): Promise<NotificationSubscriptionResponse> => {
+    return axiosClient.post('/api/customer/notifications/subscribe', payload);
+  },
+
+  getQuotes: async (
+    shipmentId: string,
+    page = 1,
+    limit = 5,
+  ): Promise<GetQuotesResponse> => {
+    return axiosClient.get(
+      `/api/customer/quotes/${shipmentId}?page=${page}&limit=${limit}`,
+    );
+  },
+
+  getQuestions: async (shipmentId: string): Promise<GetQuestionsResponse> => {
+    return axiosClient.get(`/api/questions/${shipmentId}`);
+  },
+
+  getMatchingShippers: async (
+    shipmentId: string,
+  ): Promise<MatchingShippersResponse> => {
+    return axiosClient.get(
+      `/api/customer/shipments/${shipmentId}/matching-shippers`,
+    );
   },
 };
 

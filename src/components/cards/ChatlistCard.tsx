@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS, FONTS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatListCard;
+export default memo(ChatListCard);

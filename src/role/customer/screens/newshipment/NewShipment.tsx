@@ -64,6 +64,7 @@ const NewShipment = () => {
             updateForm={updateForm}
             errors={errors}
             onNext={nextStep}
+            
           />
         )}
         {currentStep === 1 && (
@@ -72,6 +73,7 @@ const NewShipment = () => {
             updateForm={updateForm}
             errors={errors}
             onNext={nextStep}
+            onPrevious={prevStep}
           />
         )}
         {currentStep === 2 && (
@@ -80,6 +82,7 @@ const NewShipment = () => {
             updateForm={updateForm}
             errors={errors}
             onNext={nextStep}
+            onPrevious={prevStep}
           />
         )}
         {currentStep === 3 && (
@@ -89,6 +92,7 @@ const NewShipment = () => {
             pickImage={pickImage}
             pickDocument={pickDocument}
             onNext={nextStep}
+            onPrevious={prevStep}
           />
         )}
         {currentStep === 4 && (

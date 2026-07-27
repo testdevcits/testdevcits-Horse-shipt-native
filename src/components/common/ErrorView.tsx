@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 import { AlertCircle, RefreshCcw } from 'lucide-react-native';
 import AppText from './AppText';
 import { COLORS, FONTS, RADIUS } from '../../constants';
@@ -16,7 +16,7 @@ const ErrorView = ({ message, onRetry }: { message: string; onRetry: () => void 
     </View>
 );
 
-export default ErrorView
+export default memo(ErrorView)
 
 const styles = StyleSheet.create({
     centerContainer: {

@@ -8,7 +8,7 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE } from '../../../constants';
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 
@@ -71,69 +71,71 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.57, // Takes top 60% of screen
+    height: SCREEN_HEIGHT * 0.57,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.1)', // Subtle darkening for the mist effect
+    backgroundColor: 'rgba(0,0,0,0.15)', // Using a slight tint
   },
   contentCard: {
     flex: 1,
     backgroundColor: COLORS.white,
-    marginTop: -RADIUS.xl * 2, // Overlaps the image
+    marginTop: -RADIUS.xl * 2, // Smooth overlap
     borderTopLeftRadius: RADIUS.xl * 1.5,
     borderTopRightRadius: RADIUS.xl * 1.5,
     paddingHorizontal: SPACING.xxl,
     alignItems: 'center',
+    // Optional: Add shadow for depth
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
-
   logoIcon: {
     width: 100,
     height: 100,
-    marginTop: -50,
+    marginTop: -50, // Half of height to center on the edge
+    borderRadius: RADIUS.md,
   },
   textSection: {
     marginTop: SPACING.xl,
     gap: SPACING.md,
-
+    width: '100%',
   },
   title: {
-    fontSize: 32,
+    fontSize: FONT_SIZE.heading, // 32
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     textAlign: "left",
   },
   description: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.md, // 16
     fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
+    color: COLORS.textSecondary,
     textAlign: 'left',
     lineHeight: 24,
-    paddingHorizontal: SPACING.sm,
-
-
   },
   buttonContainer: {
     width: '100%',
-    marginTop: 'auto', // Pushes buttons to bottom
-    marginBottom: 40,
+    marginTop: 'auto', 
+    marginBottom: SPACING.xxxl, // Using token (32) instead of 40 for consistency
     gap: SPACING.lg,
   },
-
   loginRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingBottom: SPACING.xxl,
-    marginBottom: SPACING.lg,
-
   },
   loginText: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.grey600,
     fontFamily: FONTS.regular,
   },
   loginLink: {
     color: COLORS.goldPrimary,
-    fontFamily: FONTS.medium,
+    fontFamily: FONTS.bold, // Bold makes it look more clickable
   },
 });
 

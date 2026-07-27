@@ -133,3 +133,136 @@ export interface CustomerProfileResponse {
 }
 
 
+export interface TermsCondition {
+  _id: string;
+  title: string;
+  content: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface GetTermsConditionsResponse {
+  success: boolean;
+  message: string;
+  data: TermsCondition[];
+}
+
+export interface NotificationSubscriptionPayload {
+  subscription: {
+    endpoint: string;
+    expirationTime: number | null;
+    keys: {
+      p256dh: string;
+      auth: string;
+    };
+  };
+}
+
+export interface NotificationSubscriptionResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface GetShipmentByIdResponse {
+  success: boolean;
+  shipment: Shipment;
+}
+
+
+export interface GetQuotesResponse {
+  success: boolean;
+  shipmentId: string;
+  totalQuotes: number;
+  currentPage: number;
+  totalPages: number;
+  quotes: Quote[];
+}
+
+export interface Quote {
+  _id: string;
+  shipment: string;
+  contractId: string;
+  totalPrice: number;
+  currency: string;
+  paymentMethod: string;
+  paymentDue: string;
+  paymentStatus: string;
+  platformFee: number;
+  balanceInWallet: number;
+  notes: string;
+  status: string;
+  termsAccepted: boolean;
+  contractAccepted: boolean;
+  tripStatus: string;
+  isTrackingActive: boolean;
+  cancellationWindowDays: number;
+  cancellationLastDate: string;
+  isCancelled: boolean;
+  refundAmount: number;
+  refundStatus: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+
+  contract: {
+    url: string;
+    public_id: string;
+  };
+
+  shipperContract: {
+    url: string;
+    public_id: string;
+  } | null;
+
+  shipper: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+
+  currentLocation: {
+    lat: number | null;
+    lng: number | null;
+    updatedAt: string | null;
+  };
+
+  vehicle: any;
+  transportType: string | null;
+  stallsRequired: number | null;
+  stripePaymentIntentId: string | null;
+  stripeTransferId: string | null;
+  paidAt: string | null;
+  paymentReleasedAt: string | null;
+  customerSignature: string | null;
+  shipperSignature: string;
+  contractAcceptedAt: string | null;
+  assignedDriver: any;
+  tripStartedAt: string | null;
+  deliveredAt: string | null;
+  cancelledAt: string | null;
+  cancelReason: string;
+  expiresAt: string | null;
+}
+
+export interface GetQuestionsResponse {
+  success: boolean;
+  questions: Question[];
+}
+
+export interface Question {
+  _id: string;
+  question: string;
+  answer?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+export interface MatchingShippersResponse {
+  success: boolean;
+  count: number;
+  shippers: string[];
+  invitedShippers: string[];
+}

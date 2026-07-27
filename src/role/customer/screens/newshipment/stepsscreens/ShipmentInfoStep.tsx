@@ -6,7 +6,15 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { ImagePlus, FileText, Package } from 'lucide-react-native';
+import {
+  ImagePlus,
+  FileText,
+  Package,
+  CheckCircle2,
+  X,
+  Trash2,
+  FileCheck,
+} from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input } from '../../../../../components';
 
@@ -15,8 +23,9 @@ interface ShipmentInfoStepProps {
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
-  pickDocument: any;
-  pickImage:any
+  pickDocument: (index: number, type: string) => void;
+  pickImage: (index: number) => void;
+  removeFile: (index: number, type: string) => void;
 }
 
 const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
@@ -25,145 +34,147 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
   onNext,
   onPrevious,
   pickDocument,
-  pickImage
+  pickImage,
+  removeFile,
 }) => {
-  const horseName = form.horses[0]?.registeredName || 'Horse Name';
+  const renderDocumentRow = (
+    horseIndex: number,
+    type: 'coggins' | 'healthCert',
+    label: string,
+  ) => {
+    const file = form.horses[horseIndex][type];
 
-  // Stubs for upload logic
-  const handlePhotoUpload = () => console.log('Pick Photo');
-  const handleDocumentUpload = (type: string) => console.log('Pick Doc:', type);
+    return (
+      <View style={styles.docCard}>
+        <View style={styles.docInfo}>
+          <View style={[styles.docIconBox, file && styles.docIconBoxSuccess]}>
+            {file ? (
+              <FileCheck size={20} color={COLORS.greenActive} />
+            ) : (
+              <FileText size={20} color={COLORS.grey400} />
+            )}
+          </View>
+          <View>
+            <AppText style={styles.docLabel}>{label}</AppText>
+            {file ? (
+              <AppText style={styles.fileName} numberOfLines={1}>
+                {file.name}
+              </AppText>
+            ) : (
+              <AppText style={styles.fileStatus}>No file selected</AppText>
+            )}
+          </View>
+        </View>
+
+        {file ? (
+          <TouchableOpacity
+            onPress={() => removeFile(horseIndex, type)}
+            style={styles.removeBtn}
+          >
+            <Trash2 size={18} color={COLORS.error} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.miniUploadBtn}
+            onPress={() => pickDocument(horseIndex, type)}
+          >
+            <AppText style={styles.miniUploadText}>Upload</AppText>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
       >
-        {/* 2. HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPrevious}>
             <AppText style={styles.cancelText}>Cancel</AppText>
           </TouchableOpacity>
         </View>
 
-        {/* 3. INSTRUCTIONAL CARD */}
         <View style={styles.instructionCard}>
           <View style={styles.iconBox}>
             <Package size={24} color={COLORS.primary} />
           </View>
           <View style={styles.instructionTextContent}>
-            <AppText style={styles.instructionTitle}>
-              Shipment Information
-            </AppText>
+            <AppText style={styles.instructionTitle}>Documentation</AppText>
             <AppText style={styles.instructionSub}>
-              Upload photos, documents, and any additional details for your
-              shipment.
+              Upload photos and health papers for each horse in this shipment.
             </AppText>
           </View>
         </View>
 
-        {/* 4. HORSE BANNER */}
-        <View style={styles.horseBanner}>
-          <AppText style={styles.horseBannerText}>
-            Horse 1 - {horseName}
+        {/* MAP THROUGH EVERY HORSE IN THE FORM */}
+        {form.horses.map((horse: any, index: number) => (
+          <View key={index} style={styles.horseCard}>
+            <View style={styles.horseHeader}>
+              <AppText style={styles.horseHeaderText}>
+                HORSE {index + 1}: {horse.registeredName || 'Unnamed Horse'}
+              </AppText>
+            </View>
+
+            <View style={styles.cardPadding}>
+              {/* PHOTO UPLOAD */}
+              <AppText style={styles.sectionLabel}>Horse Photo</AppText>
+              <TouchableOpacity
+                style={[
+                  styles.uploadBox,
+                  horse?.photo && styles.uploadBoxActive,
+                ]}
+                onPress={() => pickImage(index)}
+              >
+                {horse?.photo ? (
+                  <View style={styles.imagePreviewContainer}>
+                    <Image
+                      source={{ uri: horse?.photo?.uri }}
+                      style={styles.uploadedImage}
+                    />
+                    <TouchableOpacity
+                      style={styles.closeImageBtn}
+                      onPress={() => removeFile(index, 'photo')}
+                    >
+                      <X size={16} color={COLORS.white} />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View style={styles.uploadPlaceholder}>
+                    <ImagePlus size={32} color={COLORS.primary} />
+                    <AppText style={styles.uploadBtnText}>Add Photo</AppText>
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              {/* DOCUMENTS */}
+              <AppText style={[styles.sectionLabel, { marginTop: SPACING.md }]}>
+                Required Documents
+              </AppText>
+              {renderDocumentRow(index, 'coggins', 'Coggins Test')}
+              {renderDocumentRow(index, 'healthCert', 'Health Certificate')}
+            </View>
+          </View>
+        ))}
+
+        {/* GENERAL NOTES */}
+        <View style={styles.notesSection}>
+          <AppText style={styles.sectionLabel}>
+            Additional Shipment Notes
           </AppText>
+          <Input
+            placeholder="Example: My horse needs hay every 4 hours..."
+            multiline
+            numberOfLines={4}
+            value={form.generalNotes}
+            onChangeText={v => updateForm({ generalNotes: v })}
+            style={styles.textArea}
+            textAlignVertical="top"
+          />
         </View>
-
-        {/* 5. PHOTO UPLOAD SECTION */}
-        <View style={styles.sectionHeader}>
-          <AppText style={styles.sectionTitle}>
-            Upload a photo of the horse
-          </AppText>
-          <AppText style={styles.sectionSub}>
-            A picture enhances your listing, making it more appealing and
-            increasing likelihood of attracting carriers.
-          </AppText>
-
-          <TouchableOpacity
-            style={styles.uploadBox}
-            onPress={() => pickImage(0)}
-          >
-            {form.horses[0].photo ? (
-              <Image
-                source={{ uri: form.horses[0].photo.uri }}
-                style={styles.uploadedImage}
-              />
-            ) : (
-              <ImagePlus size={32} color={COLORS.grey400} />
-            )}
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity
-          style={styles.uploadBox}
-          onPress={handlePhotoUpload}
-          activeOpacity={0.7}
-        >
-          {form.horses[0]?.photo ? (
-            <Image
-              source={{ uri: form.horses[0].photo }}
-              style={styles.uploadedImage}
-            />
-          ) : (
-            <ImagePlus size={32} color={COLORS.grey400} />
-          )}
-        </TouchableOpacity>
-
-        {/* 6. DOCUMENTS SECTION */}
-        <View style={styles.sectionHeader}>
-          <AppText style={styles.sectionTitle}>Documents</AppText>
-          <AppText style={styles.sectionSub}>
-            Provide the required paperwork to facilitate a smooth and safe
-            delivery process.
-          </AppText>
-        </View>
-
-        <View style={styles.docRow}>
-          <AppText style={styles.docLabel}>Coggins</AppText>
-          {/* <TouchableOpacity
-            style={styles.miniUploadBtn}
-            onPress={() => handleDocumentUpload('coggins')}
-          >
-            <AppText style={styles.miniUploadText}>Upload</AppText>
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={styles.miniUploadBtn}
-            onPress={() => pickDocument(0, 'coggins')}
-          >
-            <AppText>{form.horses[0].coggins ? 'Change' : 'Upload'}</AppText>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.docRow}>
-          <AppText style={styles.docLabel}>Health certificate</AppText>
-          <TouchableOpacity
-            style={styles.miniUploadBtn}
-            onPress={() => handleDocumentUpload('health')}
-          >
-            <AppText style={styles.miniUploadText}>Upload</AppText>
-          </TouchableOpacity>
-        </View>
-
-        {/* 7. GENERAL INFORMATION */}
-        <View style={styles.sectionHeader}>
-          <AppText style={styles.sectionTitle}>General Information</AppText>
-          <AppText style={styles.sectionSub}>
-            Describe any specific preferences or restrictions you may have for
-            the shipment.
-          </AppText>
-        </View>
-
-        <Input
-          placeholder="Type here"
-          multiline
-          numberOfLines={5}
-          value={form.generalNotes}
-          onChangeText={v => updateForm({ generalNotes: v })}
-          style={styles.textArea}
-          textAlignVertical="top"
-        />
 
         {/* FOOTER */}
         <View style={styles.footer}>
@@ -180,23 +191,9 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
+  container: { flex: 1, backgroundColor: '#F8F9FA' },
   scrollView: { flex: 1 },
   scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
-
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: SPACING.xl,
-    marginTop: 10,
-  },
-  progressDash: {
-    flex: 1,
-    height: 3,
-    backgroundColor: COLORS.grey300,
-    borderRadius: 2,
-  },
-  activeDash: { backgroundColor: COLORS.primary },
 
   titleRow: {
     flexDirection: 'row',
@@ -217,8 +214,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   iconBox: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     backgroundColor: COLORS.goldLightBg,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
@@ -236,90 +233,131 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     lineHeight: 18,
-    marginTop: 2,
   },
 
-  horseBanner: {
-    backgroundColor: COLORS.goldLightBg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.sm,
+  // Horse Card
+  horseCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
     marginBottom: SPACING.lg,
-  },
-  horseBannerText: {
-    fontFamily: FONTS.semiBold,
-    color: COLORS.textPrimary,
-    fontSize: 14,
-  },
-
-  sectionHeader: { marginBottom: SPACING.md, marginTop: SPACING.sm },
-  sectionTitle: {
-    fontSize: 15,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  sectionSub: {
-    fontSize: 12,
-    fontFamily: FONTS.regular,
-    color: COLORS.grey500,
-    marginTop: 4,
-    lineHeight: 17,
-  },
-
-  // Upload Area
-  uploadBox: {
-    height: 120,
-    borderWidth: 1.5,
+    overflow: 'hidden',
+    borderWidth: 1,
     borderColor: COLORS.divider,
-    borderStyle: 'dashed', // Replicates the visual in image
+    elevation: 2,
+  },
+  horseHeader: {
+    backgroundColor: COLORS.grey100,
+    padding: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+  },
+  horseHeaderText: {
+    fontFamily: FONTS.bold,
+    color: COLORS.grey700,
+    fontSize: 13,
+    letterSpacing: 0.5,
+  },
+  cardPadding: { padding: SPACING.md },
+
+  sectionLabel: {
+    fontSize: 14,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey800,
+    marginBottom: SPACING.sm,
+  },
+
+  // Photo Upload
+  uploadBox: {
+    height: 160,
+    borderWidth: 1.5,
+    borderColor: COLORS.grey300,
+    borderStyle: 'dashed',
     borderRadius: RADIUS.md,
+    backgroundColor: '#FBFCFE',
+    overflow: 'hidden',
+  },
+  uploadBoxActive: { borderStyle: 'solid', borderColor: COLORS.primary },
+  uploadPlaceholder: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.grey50,
-    marginBottom: SPACING.xl,
   },
-  uploadedImage: { width: '100%', height: '100%', borderRadius: RADIUS.md },
+  uploadBtnText: {
+    marginTop: 8,
+    fontFamily: FONTS.medium,
+    color: COLORS.primary,
+    fontSize: 14,
+  },
+  imagePreviewContainer: { flex: 1, width: '100%' },
+  uploadedImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  closeImageBtn: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 6,
+    borderRadius: 20,
+  },
 
-  // Document Rows
-  docRow: {
+  // Doc Cards
+  docCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.white,
+    padding: SPACING.sm,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    borderRadius: RADIUS.sm,
-    padding: SPACING.sm,
-    paddingHorizontal: SPACING.md,
     marginBottom: SPACING.sm,
+    backgroundColor: COLORS.white,
   },
+  docInfo: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  docIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.grey100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.sm,
+  },
+  docIconBoxSuccess: { backgroundColor: COLORS.greenLightBg },
   docLabel: {
     fontSize: 14,
-    fontFamily: FONTS.medium,
+    fontFamily: FONTS.semiBold,
     color: COLORS.textPrimary,
   },
+  fileName: {
+    fontSize: 11,
+    fontFamily: FONTS.regular,
+    color: COLORS.greenActive,
+    marginTop: 2,
+  },
+  fileStatus: {
+    fontSize: 11,
+    fontFamily: FONTS.regular,
+    color: COLORS.grey400,
+    marginTop: 2,
+  },
   miniUploadBtn: {
-    backgroundColor: COLORS.grey100,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.sm,
   },
-  miniUploadText: {
-    fontSize: 12,
-    fontFamily: FONTS.semiBold,
-    color: COLORS.grey700,
-  },
+  miniUploadText: { fontSize: 12, fontFamily: FONTS.bold, color: COLORS.white },
+  removeBtn: { padding: 8 },
 
+  notesSection: { marginTop: SPACING.md },
   textArea: {
-    height: 120,
+    height: 100,
     paddingTop: SPACING.md,
+    backgroundColor: COLORS.white,
   },
 
   footer: {
     flexDirection: 'row',
     paddingVertical: SPACING.lg,
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
     gap: SPACING.md,
     marginTop: SPACING.xl,
   },
@@ -331,7 +369,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.grey50,
   },
   prevButtonText: { fontFamily: FONTS.bold, color: COLORS.grey600 },
   nextButton: {

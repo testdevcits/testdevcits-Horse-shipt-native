@@ -13,13 +13,14 @@ import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants'; // Ensure this path is correct
 import { useNavigation } from '@react-navigation/native';
+import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 
 interface PickupStepProps {
   form: any;
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
-  errors:any
+  errors: any;
 }
 
 const PickupStep: React.FC<PickupStepProps> = ({
@@ -27,9 +28,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
-  errors
+  errors,
 }) => {
-  const navigation=useNavigation()
+  const navigation = useNavigation();
   const [activeDateType, setActiveDateType] = useState<'start' | 'end' | null>(
     null,
   );
@@ -67,7 +68,6 @@ const PickupStep: React.FC<PickupStepProps> = ({
         keyboardShouldPersistTaps="handled" // Important for Google Places
       >
         {/* 1. PROGRESS */}
-         
 
         {/* 2. HEADER */}
         <View style={styles.titleRow}>
@@ -93,12 +93,12 @@ const PickupStep: React.FC<PickupStepProps> = ({
         {/* 4. PICKUP LOCATION (Google Places Autocomplete) */}
         <AppText style={styles.inputLabel}>Pickup Location</AppText>
 
-         <View style={styles.autocompleteWrapper}>
-          <GooglePlacesAutocomplete 
+        <View style={styles.autocompleteWrapper}>
+          {/* <GooglePlacesAutocomplete
             placeholder="Enter pickup address"
             fetchDetails={true}
             onPress={(data, details = null) => {
-              console.log("=====data==========details========",data,details)
+              console.log('=====data==========details========', data, details);
               updateForm({
                 pickupLocation: data.description,
                 pickupLat: details?.geometry.location.lat,
@@ -121,9 +121,25 @@ const PickupStep: React.FC<PickupStepProps> = ({
             )}
             styles={autocompleteStyles}
             enablePoweredByContainer={false}
+          /> */}
+
+           
+
+          <LocationPicker
+            value={form.pickupLocation}
+            placeholder="Pickup Address"
+            onSelect={location => {
+              updateForm({
+                pickupLocation: location.address,
+                pickupLat: location.latitude,
+                pickupLng: location.longitude,
+              });
+            }}
           />
         </View>
-           {errors.pickupLocation && <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>}
+        {errors.pickupLocation && (
+          <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>
+        )}
 
         {/* 5. START DATE */}
         <AppText style={styles.inputLabel}>Pickup Start Date</AppText>
@@ -144,7 +160,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
           </View>
         </TouchableOpacity>
 
-        {errors.pickupStartDate && <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>}
+        {errors.pickupStartDate && (
+          <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>
+        )}
 
         {/* 6. END DATE */}
         <AppText style={styles.inputLabel}>Pickup End Date</AppText>

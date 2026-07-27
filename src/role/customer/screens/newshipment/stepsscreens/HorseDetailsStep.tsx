@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
-import { Info } from 'lucide-react-native';
+import { Info, PlusCircle } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
@@ -26,32 +27,58 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   onNext,
   onPrevious,
 }) => {
-  // 1. Initialize the Hook
-  const { horses, loading } = useMyHorses();
+  const { horses: savedHorses, loading } = useMyHorses();
 
-  // 2. Prepare options for the Select component (Array of strings)
-  const horseOptions = useMemo(() => {
-    return horses.map((h: Horse) => h.registeredName);
-  }, [horses]);
+  // 1. SYNC HORSES ARRAY BASED ON NUMBER
+  const handleNumberOfHorsesChange = (val: string) => {
+    const num = parseInt(val) || 0;
+    if (num > 10) return; // Safety limit
 
-  // 3. Helper to update form fields
-  const updateHorseField = (field: string, value: any) => {
+    let updatedHorses = [...form.horses];
+
+    if (num > updatedHorses.length) {
+      // Add new empty horse objects
+      const diff = num - updatedHorses.length;
+      for (let i = 0; i < diff; i++) {
+        updatedHorses.push({
+          registeredName: '',
+          barnName: '',
+          breed: '',
+          colour: '',
+          age: '',
+          sex: '',
+          height: '',
+          stallType: '',
+        });
+      }
+    } else {
+      // Remove last horses if number decreased
+      updatedHorses = updatedHorses.slice(0, num);
+    }
+
+    updateForm({ numberOfHorses: num, horses: updatedHorses });
+  };
+
+  // 2. UPDATING SPECIFIC HORSE FIELDS
+  const updateHorseField = (index: number, field: string, value: any) => {
     const updatedHorses = [...form.horses];
-    updatedHorses[0] = { ...updatedHorses[0], [field]: value };
+    updatedHorses[index] = { ...updatedHorses[index], [field]: value };
     updateForm({ horses: updatedHorses });
   };
 
-  // 4. Handle selecting a saved horse (Auto-fill logic)
-  const handleHorseSelect = (selectedName: string) => {
-    const selectedHorse = horses.find(
+  // 3. AUTO-FILL LOGIC FOR SAVED HORSES
+  const horseOptions = useMemo(() => {
+    return savedHorses.map((h: Horse) => h.registeredName);
+  }, [savedHorses]);
+
+  const handleHorseSelect = (index: number, selectedName: string) => {
+    const selectedHorse = savedHorses.find(
       (h: Horse) => h.registeredName === selectedName,
     );
 
     if (selectedHorse) {
-      // Auto-populate the form with the saved horse's data
       const updatedHorses = [...form.horses];
-      updatedHorses[0] = {
-        ...updatedHorses[0],
+      updatedHorses[index] = {
         registeredName: selectedHorse.registeredName,
         barnName: selectedHorse.barnName || '',
         breed: selectedHorse.breed || '',
@@ -59,23 +86,34 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         age: selectedHorse.age?.toString() || '',
         sex: selectedHorse.sex || '',
         height: selectedHorse.height || '',
+        stallType: selectedHorse.requestedStallSize || '',
       };
       updateForm({ horses: updatedHorses });
     } else {
-      updateHorseField('registeredName', selectedName);
+      updateHorseField(index, 'registeredName', selectedName);
     }
   };
+
+  // 4. VALIDATION LOGIC
+  const isFormValid = useMemo(() => {
+    if (!form.numberOfHorses || form.numberOfHorses < 1) return false;
+
+    // Check if every horse in the array has required fields
+    return form.horses.every(
+      (h: any) =>
+        h.registeredName?.trim() !== '' &&
+        h.breed !== '' &&
+        h.sex !== '' &&
+        h.stallType !== '',
+    );
+  }, [form.horses, form.numberOfHorses]);
 
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
       >
-        {/* PROGRESS BAR */}
-         
-        {/* HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
           <TouchableOpacity onPress={onPrevious}>
@@ -83,146 +121,156 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           </TouchableOpacity>
         </View>
 
-        {/* INSTRUCTIONAL CARD */}
-        <View style={styles.instructionCard}>
-          <View style={styles.iconBox}>
-            {loading ? (
-              <ActivityIndicator size="small" color={COLORS.primary} />
-            ) : (
-              <Info size={24} color={COLORS.primary} />
-            )}
-          </View>
-          <View style={styles.instructionTextContent}>
-            <AppText style={styles.instructionTitle}>Horse Details</AppText>
-            <AppText style={styles.instructionSub}>
-              Select a saved horse or enter new details below.
+        {/* CONDITION: IF CUSTOMER HAS NO SAVED HORSES */}
+        {!loading && savedHorses.length === 0 && (
+          <View style={styles.noHorsesAlert}>
+            <PlusCircle size={20} color={COLORS.primary} />
+            <AppText style={styles.noHorsesText}>
+              You don't have any saved horses. Enter details manually below.
             </AppText>
           </View>
-        </View>
+        )}
 
         <Input
-          label="Number of horses"
-          placeholder="1"
+          label="Total Number of Horses"
+          placeholder="e.g. 3"
           keyboardType="numeric"
           value={form.numberOfHorses?.toString()}
-          onChangeText={v => updateForm({ numberOfHorses: v })}
+          onChangeText={handleNumberOfHorsesChange}
         />
 
-        <AppText style={styles.sectionLabel}>Horse 1</AppText>
-
-        {/* REGISTERED NAME - Now using Hook Data */}
-        <AppSelect
-          label="Registered Name"
-          placeholder={loading ? 'Loading horses...' : 'Select or type name'}
-          value={form.horses[0].registeredName}
-          options={horseOptions}
-          onSelect={handleHorseSelect}
-          searchable
-        />
-
-        <Input
-          label="Barn Name"
-          placeholder="e.g. Thunder"
-          value={form.horses[0].barnName}
-          onChangeText={v => updateHorseField('barnName', v)}
-        />
-
-        <AppSelect
-          label="Breed"
-          placeholder="Select breed"
-          value={form.horses[0].breed}
-          options={breedsList}
-          onSelect={v => updateHorseField('breed', v)}
-          searchable
-        />
-
-        <Input
-          label="Colour"
-          placeholder="e.g. Brown"
-          value={form.horses[0].colour}
-          onChangeText={v => updateHorseField('colour', v)}
-        />
-
-        <Input
-          label="Age"
-          placeholder="e.g. 5"
-          keyboardType="numeric"
-          value={form.horses[0].age}
-          onChangeText={v => updateHorseField('age', v)}
-        />
-
-        <AppSelect
-          label="Sex"
-          placeholder="Select sex"
-          value={form.horses[0].sex}
-          options={sexes}
-          onSelect={v => updateHorseField('sex', v)}
-        />
-
-        <Input
-          label="Height ( hands )"
-          placeholder="e.g. 15.2"
-          value={form.horses[0].height}
-          onChangeText={v => updateHorseField('height', v)}
-        />
-
-        <AppSelect
-          label="Request Stall Size"
-          placeholder="Select"
-          value={form.horses[0].stallType}
-          options={stallTypes}
-          onSelect={v => updateHorseField('stallType', v)}
-        />
-
-        {/* RADIO BUTTONS SECTION */}
-        <AppText style={styles.radioLabel}>
-          Does your horse have special requirement?
-        </AppText>
-        <View style={styles.radioGroup}>
-          <TouchableOpacity
-            style={styles.radioButton}
-            onPress={() => updateForm({ hasSpecialRequirement: true })}
-          >
-            <View
-              style={[
-                styles.radioOuter,
-                form.hasSpecialRequirement && styles.radioOuterActive,
-              ]}
-            >
-              {form.hasSpecialRequirement && <View style={styles.radioInner} />}
+        {/* 5. DYNAMICALLY MAP HORSES */}
+        {form.horses.map((horse: any, index: number) => (
+          <View key={index} style={styles.horseSection}>
+            <View style={styles.dividerRow}>
+              <View style={styles.line} />
+              <AppText style={styles.sectionLabel}>HORSE {index + 1}</AppText>
+              <View style={styles.line} />
             </View>
-            <AppText style={styles.radioText}>Yes</AppText>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.radioButton}
-            onPress={() => updateForm({ hasSpecialRequirement: false })}
-          >
-            <View
-              style={[
-                styles.radioOuter,
-                !form.hasSpecialRequirement && styles.radioOuterActive,
-              ]}
-            >
-              {!form.hasSpecialRequirement && (
-                <View style={styles.radioInner} />
-              )}
+            <AppSelect
+              label="Registered Name"
+              placeholder={
+                loading ? 'Loading...' : 'Select saved horse or type'
+              }
+              value={horse.registeredName}
+              options={horseOptions}
+              onSelect={val => handleHorseSelect(index, val)}
+              searchable
+            />
+
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Input
+                  label="Barn Name"
+                  placeholder="e.g. Thunder"
+                  value={horse.barnName}
+                  onChangeText={v => updateHorseField(index, 'barnName', v)}
+                />
+              </View>
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <AppSelect
+                  label="Sex"
+                  placeholder="Select"
+                  value={horse.sex}
+                  options={sexes}
+                  onSelect={v => updateHorseField(index, 'sex', v)}
+                />
+              </View>
             </View>
-            <AppText style={styles.radioText}>No</AppText>
-          </TouchableOpacity>
-        </View>
 
-        {form.hasSpecialRequirement && (
-          <Input
-            label="Special Requirement Details"
-            placeholder="Please explain (medication, loading issues, etc.)"
-            multiline
-            numberOfLines={3}
-            value={form.specialRequirementDetails}
-            onChangeText={v => updateForm({ specialRequirementDetails: v })}
-            textAlignVertical="top"
-            style={{ height: 100 }}
-          />
+            <AppSelect
+              label="Breed"
+              placeholder="Select breed"
+              value={horse.breed}
+              options={breedsList}
+              onSelect={v => updateHorseField(index, 'breed', v)}
+              searchable
+            />
+
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Input
+                  label="Age"
+                  placeholder="Age"
+                  keyboardType="numeric"
+                  value={horse.age}
+                  onChangeText={v => updateHorseField(index, 'age', v)}
+                />
+              </View>
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <Input
+                  label="Colour"
+                  placeholder="e.g. Bay"
+                  value={horse.colour}
+                  onChangeText={v => updateHorseField(index, 'colour', v)}
+                />
+              </View>
+            </View>
+
+            <AppSelect
+              label="Request Stall Size"
+              placeholder="Select Stall"
+              value={horse.stallType}
+              options={stallTypes}
+              onSelect={v => updateHorseField(index, 'stallType', v)}
+            />
+          </View>
+        ))}
+
+        {/* SPECIAL REQUIREMENTS (Global for the shipment) */}
+        {form.horses.length > 0 && (
+          <>
+            <AppText style={styles.radioLabel}>
+              Does this shipment have special requirements?
+            </AppText>
+            <View style={styles.radioGroup}>
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => updateForm({ hasSpecialRequirement: true })}
+              >
+                <View
+                  style={[
+                    styles.radioOuter,
+                    form.hasSpecialRequirement && styles.radioOuterActive,
+                  ]}
+                >
+                  {form.hasSpecialRequirement && (
+                    <View style={styles.radioInner} />
+                  )}
+                </View>
+                <AppText style={styles.radioText}>Yes</AppText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => updateForm({ hasSpecialRequirement: false })}
+              >
+                <View
+                  style={[
+                    styles.radioOuter,
+                    !form.hasSpecialRequirement && styles.radioOuterActive,
+                  ]}
+                >
+                  {!form.hasSpecialRequirement && (
+                    <View style={styles.radioInner} />
+                  )}
+                </View>
+                <AppText style={styles.radioText}>No</AppText>
+              </TouchableOpacity>
+            </View>
+
+            {form.hasSpecialRequirement && (
+              <Input
+                label="Details"
+                placeholder="Describe medication, behavior, etc."
+                multiline
+                value={form.specialRequirementDetails}
+                onChangeText={v => updateForm({ specialRequirementDetails: v })}
+                style={{ height: 80 }}
+              />
+            )}
+          </>
         )}
 
         {/* FOOTER */}
@@ -230,7 +278,17 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           <TouchableOpacity style={styles.prevButton} onPress={onPrevious}>
             <AppText style={styles.prevButtonText}>Previous</AppText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.nextButton} onPress={onNext}>
+          <TouchableOpacity
+            style={[styles.nextButton, !isFormValid && styles.disabledButton]}
+            onPress={() =>
+              isFormValid
+                ? onNext()
+                : Alert.alert(
+                    'Missing Info',
+                    'Please complete all horse details.',
+                  )
+            }
+          >
             <AppText style={styles.nextButtonText}>Next</AppText>
           </TouchableOpacity>
         </View>
@@ -239,24 +297,10 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   );
 };
 
-// ... Styles remain the same as the previous step ...
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scrollView: { flex: 1 },
   scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: SPACING.xl,
-    marginTop: 10,
-  },
-  progressDash: {
-    flex: 1,
-    height: 3,
-    backgroundColor: COLORS.grey300,
-    borderRadius: 2,
-  },
-  activeDash: { backgroundColor: COLORS.primary },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -269,40 +313,42 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   cancelText: { color: COLORS.primary, fontFamily: FONTS.medium },
-  instructionCard: {
+  noHorsesAlert: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.goldLightBg,
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    gap: 10,
+  },
+  noHorsesText: {
+    flex: 1,
+    fontSize: 13,
+    color: COLORS.primary,
+    fontFamily: FONTS.medium,
+  },
+  horseSection: {
+    marginBottom: SPACING.xl,
+    backgroundColor: '#FBFAf8', // Light tint to distinguish horses
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
+  dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.md,
   },
-  iconBox: {
-    width: 50,
-    height: 50,
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: SPACING.md,
-  },
-  instructionTextContent: { flex: 1 },
-  instructionTitle: {
-    fontSize: 18,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  instructionSub: {
-    fontSize: 13,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    lineHeight: 18,
-    marginTop: 2,
-  },
+  line: { flex: 1, height: 1, backgroundColor: COLORS.grey300 },
   sectionLabel: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: FONTS.bold,
-    color: COLORS.grey400,
-    marginTop: SPACING.md,
-    marginBottom: SPACING.sm,
+    color: COLORS.grey500,
+    marginHorizontal: 10,
   },
+  row: { flexDirection: 'row', justifyContent: 'space-between' },
   radioLabel: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
@@ -310,7 +356,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     marginBottom: SPACING.sm,
   },
-  radioGroup: { flexDirection: 'column', gap: 12, marginBottom: SPACING.md },
+  radioGroup: { flexDirection: 'row', gap: 30, marginBottom: SPACING.md },
   radioButton: { flexDirection: 'row', alignItems: 'center' },
   radioOuter: {
     height: 20,
@@ -337,9 +383,6 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     paddingVertical: SPACING.lg,
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
     gap: SPACING.md,
     marginTop: SPACING.xl,
   },
@@ -351,7 +394,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.grey50,
   },
   prevButtonText: { fontFamily: FONTS.bold, color: COLORS.grey600 },
   nextButton: {
@@ -362,6 +404,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  disabledButton: { backgroundColor: COLORS.grey300 },
   nextButtonText: { fontFamily: FONTS.bold, color: COLORS.white },
 });
 

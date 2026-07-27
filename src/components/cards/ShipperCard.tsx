@@ -19,11 +19,13 @@ interface ShipperCardProps {
     shipmentsCount: number;
     region: string;
     isFavorite?: boolean;
+    
   };
   onPress: () => void;
+   customstyle?:any;
 }
 
-const ShipperCard = memo(({ item, onPress }: ShipperCardProps) => {
+const ShipperCard = memo(({ item, onPress,customstyle}: ShipperCardProps) => {
   // Logic to render 5 stars
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map(index => (
@@ -41,7 +43,7 @@ const ShipperCard = memo(({ item, onPress }: ShipperCardProps) => {
   };
 
   return (
-    <Pressable onPress={onPress} style={styles.card}>
+    <Pressable onPress={onPress} style={[styles.card,customstyle]}>
       {/* Top Row: Avatar and Heart */}
       <View style={styles.headerRow}>
         {item?.profileImage === '/default-avatar.png' ? (

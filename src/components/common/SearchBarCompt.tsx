@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   View,
   TextInput,
@@ -16,6 +16,8 @@ interface SearchBarProps {
   placeholder?: string;
   containerStyle?: StyleProp<ViewStyle>;
   onClear?: () => void;
+  editable?:boolean;
+  pointerEvents?:any
 }
 
 const SearchBarCompt: React.FC<SearchBarProps> = ({
@@ -24,6 +26,8 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
   placeholder = "Search...",
   containerStyle,
   onClear,
+  editable,
+  pointerEvents
 }) => {
   
   const handleClear = () => {
@@ -45,6 +49,8 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
         autoCapitalize="none"
         autoCorrect={false}
         underlineColorAndroid="transparent"
+        editable={editable}
+        pointerEvents={pointerEvents}
       />
 
       {value.length > 0 && (
@@ -59,7 +65,7 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
   );
 };
 
-export default SearchBarCompt;
+export default memo(SearchBarCompt);
 
 const styles = StyleSheet.create({
   container: {

@@ -81,7 +81,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
         {/* 4. TOTAL HORSES BANNER */}
         <View style={styles.banner}>
           <AppText style={styles.bannerText}>
-            Total horses : {form.numberOfHorses || 1}
+            Total horses : {form?.numberOfHorses || 1}
           </AppText>
         </View>
 
@@ -94,13 +94,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <View style={styles.detailRow}>
             <MapPin size={18} color={COLORS.primary} />
             <AppText style={styles.detailText}>
-              {form.pickupLocation || 'Address Name here'}
+              {form?.pickupLocation || 'Address Name here'}
             </AppText>
           </View>
           <View style={styles.detailRow}>
             <CalendarIcon size={18} color={COLORS.primary} />
             <AppText style={styles.detailText}>
-              On {formatDate(form.pickupStartDate)}
+              On {formatDate(form?.pickupStartDate)}
             </AppText>
           </View>
 
@@ -111,13 +111,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <View style={styles.detailRow}>
             <MapPin size={18} color={COLORS.primary} />
             <AppText style={styles.detailText}>
-              {form.deliveryLocation || 'Address Name here'}
+              {form?.deliveryLocation || 'Address Name here'}
             </AppText>
           </View>
           <View style={styles.detailRow}>
             <CalendarIcon size={18} color={COLORS.primary} />
             <AppText style={styles.detailText}>
-              before {formatDate(form.deliveryEndDate)}
+              before {formatDate(form?.deliveryEndDate)}
             </AppText>
           </View>
 
@@ -150,17 +150,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
             <InfoRow
               label="Registered Name"
-              value={form.horses[0].registeredName}
+              value={form?.horses[0].registeredName}
             />
-            <InfoRow label="Barn Name" value={form.horses[0].barnName} />
-            <InfoRow label="Breed" value={form.horses[0].breed} />
-            <InfoRow label="Colour" value={form.horses[0].colour} />
-            <InfoRow label="Age" value={`${form.horses[0].age} years old`} />
-            <InfoRow label="Sex" value={form.horses[0].sex} />
-            <InfoRow label="Height" value={`${form.horses[0].height} hands`} />
+            <InfoRow label="Barn Name" value={form?.horses[0].barnName} />
+            <InfoRow label="Breed" value={form?.horses[0].breed} />
+            <InfoRow label="Colour" value={form?.horses[0].colour} />
+            <InfoRow label="Age" value={`${form?.horses[0].age} years old`} />
+            <InfoRow label="Sex" value={form?.horses[0].sex} />
+            <InfoRow label="Height" value={`${form?.horses[0].height} hands`} />
             <InfoRow
               label="Special Needs"
-              value={form.hasSpecialRequirement ? 'Yes' : 'No'}
+              value={form?.hasSpecialRequirement ? 'Yes' : 'No'}
             />
 
             <View style={styles.notesContainer}>
@@ -168,13 +168,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 Additional Information:{' '}
               </AppText>
               <AppText style={styles.notesText}>
-                {form.generalNotes || 'None provided.'}
+                {form?.generalNotes || 'None provided.'}
               </AppText>
             </View>
 
-            {form.horses[0].photo && (
+            {form?.horses[0]?.photo && (
               <Image
-                source={{ uri: form.horses[0].photo }}
+                source={{ uri: form?.horses[0]?.photo }}
                 style={styles.horseImagePreview}
                 resizeMode="cover"
               />

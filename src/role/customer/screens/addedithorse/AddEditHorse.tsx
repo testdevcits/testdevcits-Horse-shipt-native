@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,19 +6,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../../../../constants';
 
 import { HorseSchema } from './schema';
-import {
-  AppHeader,
-  AppLoader,
-  AppSelect,
-  Input,
-  AppText,
-} from '../../../../components';
+import { AppHeader, AppLoader, Input, AppText } from '../../../../components';
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
 import { breedsList, sexes, stallTypes } from './constants';
@@ -27,6 +22,12 @@ import { useDispatch } from 'react-redux';
 import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';
 import HorseActionModal from './HorseActionModal';
+
+const AppSelect = lazy(() =>
+  import('../../../../components').then(module => ({
+    default: module.AppSelect,
+  })),
+);
 
 const AddEditHorse = () => {
   const navigation = useNavigation();
@@ -192,37 +193,42 @@ const AddEditHorse = () => {
                   error={touched.age ? errors.age : ''}
                 />
 
-                <AppSelect
-                  label={'Breed'}
-                  placeholder="Select Breed"
-                  options={breedsList}
-                  value={values.breed}
-                  searchable
-                  onSelect={item => setFieldValue('breed', item)}
-                  error={touched.breed ? (errors.breed as string) : ''}
-                />
+                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                  <AppSelect
+                    label={'Breed'}
+                    placeholder="Select Breed"
+                    options={breedsList}
+                    value={values.breed}
+                    searchable
+                    onSelect={item => setFieldValue('breed', item)}
+                    error={touched.breed ? (errors.breed as string) : ''}
+                  />
+                </Suspense>
 
-                <AppSelect
-                  label={'Sex'}
-                  placeholder="Select Sex"
-                  options={sexes}
-                  value={values.sex}
-                  onSelect={item => setFieldValue('sex', item)}
-                  error={touched.sex ? (errors.sex as string) : ''}
-                />
-
-                <AppSelect
-                  label={'Stall Type'}
-                  placeholder="Select Stall Type"
-                  options={stallTypes}
-                  value={values.defaultStallSize}
-                  onSelect={item => setFieldValue('defaultStallSize', item)}
-                  error={
-                    touched.defaultStallSize
-                      ? (errors.defaultStallSize as string)
-                      : ''
-                  }
-                />
+                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                  <AppSelect
+                    label={'Sex'}
+                    placeholder="Select Sex"
+                    options={sexes}
+                    value={values.sex}
+                    onSelect={item => setFieldValue('sex', item)}
+                    error={touched.sex ? (errors.sex as string) : ''}
+                  />
+                </Suspense>
+                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                  <AppSelect
+                    label={'Stall Type'}
+                    placeholder="Select Stall Type"
+                    options={stallTypes}
+                    value={values.defaultStallSize}
+                    onSelect={item => setFieldValue('defaultStallSize', item)}
+                    error={
+                      touched.defaultStallSize
+                        ? (errors.defaultStallSize as string)
+                        : ''
+                    }
+                  />
+                </Suspense>
 
                 <Input
                   label={'Notes (General Info)'}
