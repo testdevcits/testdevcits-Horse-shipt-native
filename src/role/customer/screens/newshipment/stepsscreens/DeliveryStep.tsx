@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
- import { MapPin, Calendar as CalendarIcon, Target } from 'lucide-react-native';
+import { MapPin, Calendar as CalendarIcon, Target } from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
- 
+
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 
 interface DeliveryStepProps {
@@ -12,6 +12,7 @@ interface DeliveryStepProps {
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
+  errors: any;
 }
 
 const DeliveryStep: React.FC<DeliveryStepProps> = ({
@@ -19,6 +20,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
+  errors,
 }) => {
   const [activeDateType, setActiveDateType] = useState<'start' | 'end' | null>(
     null,
@@ -79,37 +81,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
 
         {/* 4. DELIVERY LOCATION (Updated Keys) */}
         <AppText style={styles.inputLabel}>Delivery Location</AppText>
-        <View style={styles.autocompleteWrapper}>
-          {/* <GooglePlacesAutocomplete
-            placeholder="Enter delivery address"
-            fetchDetails={true}
-            onPress={(data, details = null) => {
-              updateForm({
-                deliveryLocation: data.description,
-                deliveryLat: details?.geometry.location.lat,
-                deliveryLng: details?.geometry.location.lng,
-              });
-            }}
-            query={{
-              key: GOOGLE_MAPS_APIKEY,
-              language: 'en',
-            }}
-            renderLeftButton={() => (
-              <View style={styles.inputIconLeft}>
-                <MapPin size={18} color={COLORS.primary} />
-              </View>
-            )}
-            renderRightButton={() => (
-              <TouchableOpacity style={styles.inputIconRight}>
-                <Target size={18} color={COLORS.primary} />
-              </TouchableOpacity>
-            )}
-            styles={autocompleteStyles}
-            enablePoweredByContainer={false}
-          /> */}
-
-
-
+         
           <LocationPicker
             value={form.deliveryLocation}
             placeholder="Delivery Address"
@@ -121,8 +93,13 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
               });
             }}
           />
- 
-        </View>
+
+          {errors.deliveryLocation && (
+            <AppText style={styles.errorText}>
+              {errors.deliveryLocation}
+            </AppText>
+          )}
+         
 
         {/* 5. DELIVERY START DATE */}
         <AppText style={styles.inputLabel}>Delivery Start Date</AppText>
@@ -341,6 +318,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButtonText: { fontFamily: FONTS.bold, color: COLORS.white },
+  errorText: {
+    color: COLORS.error,
+    fontSize: 12,
+  },
 });
 
 export default DeliveryStep;

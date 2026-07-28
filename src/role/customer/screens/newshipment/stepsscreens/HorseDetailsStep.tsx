@@ -19,6 +19,7 @@ interface HorseDetailsStepProps {
   updateForm: (updates: any) => void;
   onNext: () => void;
   onPrevious: () => void;
+  errors:any
 }
 
 const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
@@ -26,6 +27,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
+  errors
 }) => {
   const { horses: savedHorses, loading } = useMyHorses();
 

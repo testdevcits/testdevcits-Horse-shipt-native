@@ -93,39 +93,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
         {/* 4. PICKUP LOCATION (Google Places Autocomplete) */}
         <AppText style={styles.inputLabel}>Pickup Location</AppText>
 
-        <View style={styles.autocompleteWrapper}>
-          {/* <GooglePlacesAutocomplete
-            placeholder="Enter pickup address"
-            fetchDetails={true}
-            onPress={(data, details = null) => {
-              console.log('=====data==========details========', data, details);
-              updateForm({
-                pickupLocation: data.description,
-                pickupLat: details?.geometry.location.lat,
-                pickupLng: details?.geometry.location.lng,
-              });
-            }}
-            query={{
-              key: GOOGLE_MAPS_APIKEY,
-              language: 'en',
-            }}
-            renderLeftButton={() => (
-              <View style={styles.inputIconLeft}>
-                <MapPin size={18} color={COLORS.primary} />
-              </View>
-            )}
-            renderRightButton={() => (
-              <TouchableOpacity style={styles.inputIconRight}>
-                <Target size={18} color={COLORS.primary} />
-              </TouchableOpacity>
-            )}
-            styles={autocompleteStyles}
-            enablePoweredByContainer={false}
-          /> */}
-
-           
-
-          <LocationPicker
+           <LocationPicker
             value={form.pickupLocation}
             placeholder="Pickup Address"
             onSelect={location => {
@@ -136,7 +104,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
               });
             }}
           />
-        </View>
+         
         {errors.pickupLocation && (
           <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>
         )}
@@ -369,6 +337,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButtonText: { fontFamily: FONTS.bold, color: COLORS.white },
+  errorText: {
+    color: COLORS.error,
+    fontSize: 12,
+  },
 });
 
 export default PickupStep;

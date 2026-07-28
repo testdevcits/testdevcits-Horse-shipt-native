@@ -1,21 +1,6 @@
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-  Image,
-} from 'react-native';
-import {
-  MapPin,
-  Calendar,
-  Camera,
-  Upload,
-  Trash2,
-  Edit2,
-  CheckCircle2,
-} from 'lucide-react-native';
+import { View, TouchableOpacity } from 'react-native';
+
 import styles from './styles.newshipment';
 import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
 import { COLORS } from '../../../../constants';
@@ -36,10 +21,12 @@ const NewShipment = () => {
     errors,
     pickImage,
     pickDocument,
+    removeFile,
     handlePublish,
     loading,
     isPublishModalVisible,
     setIsPublishModalVisible,
+    setCurrentStep,
   } = useNewShipment();
 
   const renderStepper = () => (
@@ -64,7 +51,6 @@ const NewShipment = () => {
             updateForm={updateForm}
             errors={errors}
             onNext={nextStep}
-            
           />
         )}
         {currentStep === 1 && (
@@ -93,12 +79,15 @@ const NewShipment = () => {
             pickDocument={pickDocument}
             onNext={nextStep}
             onPrevious={prevStep}
+            removeFile={removeFile} // <--- ADD THIS LINE
           />
         )}
         {currentStep === 4 && (
           <ReviewStep
             form={form}
             onPublish={() => setIsPublishModalVisible(true)}
+            onSaveDraft={() => setIsPublishModalVisible(true)}
+            onEditSection={() => setCurrentStep(0)}
           />
         )}
       </View>

@@ -170,7 +170,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             multiline
             numberOfLines={4}
             value={form.generalNotes}
-            onChangeText={v => updateForm({ generalNotes: v })}
+            onChangeText={v => updateForm({ additionalInfo: v })}
             style={styles.textArea}
             textAlignVertical="top"
           />

@@ -129,19 +129,22 @@ const useNewShipment = () => {
   const pickImage = async (index: number) => {
     try {
       const image = await ImagePicker.openPicker({
-        width: 1000,
-        height: 1000,
-        cropping: true,
-        includeBase64: false,
+        /* settings */
       });
 
-      const updatedHorses = [...form.horses];
-      updatedHorses[index].photo = {
-        uri: image.path,
-        type: image.mime,
-        name: `horse_photo_${index}.jpg`,
-      };
-      setForm(prev => ({ ...prev, horses: updatedHorses }));
+      setForm(prev => {
+        const newHorses = [...prev.horses];
+        // Create a NEW object for the horse at this index
+        newHorses[index] = {
+          ...newHorses[index],
+          photo: {
+            uri: image.path,
+            type: image.mime,
+            name: `horse_photo_${index}.jpg`,
+          },
+        };
+        return { ...prev, horses: newHorses };
+      });
     } catch (e: any) {
       if (e.message !== 'User cancelled image selection') console.log(e);
     }
@@ -281,6 +284,7 @@ const useNewShipment = () => {
     loading,
     isPublishModalVisible,
     setIsPublishModalVisible,
+    setCurrentStep
   };
 };
 
