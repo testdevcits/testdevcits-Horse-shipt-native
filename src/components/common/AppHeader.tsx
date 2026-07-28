@@ -15,75 +15,80 @@ interface HeaderProps {
 }
 
 // 2. Wrap the component in memo
-const AppHeader = memo(({ title, showBack, onBack, rightElement }: HeaderProps) => {
-  const navigation = useNavigation<any>();
-  const { user } = useAppSelector((state) => state.auth);
+const AppHeader = memo(
+  ({ title, showBack, onBack, rightElement }: HeaderProps) => {
+    const navigation = useNavigation<any>();
+    const { user } = useAppSelector(state => state.auth);
 
-  // Helper to handle profile image size
-  const profileImageSize = user?.profileImage ? 34 : 24;
+    // Helper to handle profile image size
+    const profileImageSize = user?.profileImage ? 40 : 24;
 
-  return (
-    <View style={styles.header}>
-      {/* LEFT SECTION */}
-      <View style={styles.leftContainer}>
-        {showBack ? (
-          <TouchableOpacity
-            onPress={onBack ? onBack : () => navigation.goBack()}
-            style={styles.iconBtn}
-          >
-            <ChevronLeft color={COLORS.textPrimary} size={26} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} style={styles.iconBtn}>
-            <Menu color={COLORS.textPrimary} size={26} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {/* CENTER SECTION (TITLE) */}
-      <View style={styles.titleContainer}>
-        <AppText numberOfLines={1} style={styles.title}>
-          {title}
-        </AppText>
-      </View>
-
-      {/* RIGHT SECTION */}
-      <View style={styles.rightContainer}>
-        {rightElement ? (
-          rightElement
-        ) : (
-          <>
+    return (
+      <View style={styles.header}>
+        {/* LEFT SECTION */}
+        <View style={styles.leftContainer}>
+          {showBack ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate("Notifications")}
+              onPress={onBack ? onBack : () => navigation.goBack()}
               style={styles.iconBtn}
             >
-              <BellIcon color={COLORS.textPrimary} size={22} />
+              <ChevronLeft color={COLORS.textPrimary} size={24} />
             </TouchableOpacity>
-
+          ) : (
             <TouchableOpacity
-              onPress={() => navigation.navigate("Profile")}
-              style={styles.profileBtn}
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              style={styles.iconBtn}
             >
-              <Image
-                source={
-                  user?.profileImage
-                    ? { uri: user.profileImage }
-                    : imageIndex.AccountIcon
-                }
-                style={{
-                  width: profileImageSize,
-                  height: profileImageSize,
-                  borderRadius: profileImageSize / 2,
-                  backgroundColor: COLORS.grey200
-                }}
-              />
+              <Menu color={COLORS.textPrimary} size={24} />
             </TouchableOpacity>
-          </>
-        )}
+          )}
+        </View>
+
+        {/* CENTER SECTION (TITLE) */}
+        <View style={styles.titleContainer}>
+          <AppText numberOfLines={1} style={styles.title}>
+            {title}
+          </AppText>
+        </View>
+
+        {/* RIGHT SECTION */}
+        <View style={styles.rightContainer}>
+          {rightElement ? (
+            rightElement
+          ) : (
+            <>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Notifications')}
+                style={styles.iconBtn}
+              >
+                <BellIcon color={COLORS.textPrimary} size={20} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Profile')}
+                style={styles.profileBtn}
+              >
+                <Image
+                  source={
+                    user?.profileImage
+                      ? { uri: user.profileImage }
+                      : imageIndex.AccountIcon
+                  }
+                  style={{
+                    width: profileImageSize,
+                    height: profileImageSize,
+                    borderRadius: profileImageSize / 2,
+                    backgroundColor: COLORS.grey200,
+                  }}
+                />
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   header: {

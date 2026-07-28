@@ -27,6 +27,7 @@ import {
   EmptyState,
   ErrorView,
 } from '../../../../components';
+import imageIndex from '../../../../assets/images/imageIndex';
 
 // Components
 
@@ -110,28 +111,34 @@ const ShipperDetail = () => {
         {/* Banner and Profile Image */}
         <View style={styles.headerSection}>
           <Image
-            source={{
-              uri:
-                shipper.bannerImage ||
-                'https://images.unsplash.com/photo-1500382017468-9049fee74a62',
-            }}
+            source={
+              shipper?.bannerImage
+                ? {
+                    uri: shipper?.bannerImage,
+                  }
+                : imageIndex.HorseBg
+            }
             style={styles.bannerImage}
           />
           <View style={styles.profileImageContainer}>
             <Image
-              source={{ uri: shipper.profileImage }}
+              source={
+                shipper?.profileImage !=="/default-avatar.png"
+                  ? { uri: shipper?.profileImage }
+                  : imageIndex.AccountIcon
+              }
               style={styles.profileImage}
             />
           </View>
         </View>
 
-        <AppText style={styles.mainName}>{shipper.name}</AppText>
+        <AppText style={styles.mainName}>{shipper?.name}</AppText>
 
         {/* Stats Card */}
         <View style={styles.statsCard}>
           <View style={styles.statBox}>
             <AppText style={styles.statValue}>
-              {shipper.totalReviews || 0}
+              {shipper?.totalReviews || 0}
             </AppText>
             <AppText style={styles.statLabel}>Reviews</AppText>
           </View>
@@ -139,7 +146,7 @@ const ShipperDetail = () => {
           <View style={styles.statBox}>
             <View style={styles.ratingRow}>
               <AppText style={styles.statValue}>
-                {shipper.rating > 0 ? shipper.rating.toFixed(1) : 'New'}
+                {shipper?.rating > 0 ? shipper?.rating.toFixed(1) : 'New'}
               </AppText>
               <Star
                 size={14}
@@ -152,7 +159,7 @@ const ShipperDetail = () => {
           <View style={styles.vDivider} />
           <View style={styles.statBox}>
             <AppText style={styles.statValue}>
-              {shipper.completedShipments || 0}
+              {shipper?.completedShipments || 0}
             </AppText>
             <AppText style={styles.statLabel}>Shipments</AppText>
           </View>
@@ -162,12 +169,12 @@ const ShipperDetail = () => {
         <View style={styles.contentPadding}>
           <View style={styles.locationContainer}>
             <MapPin size={18} color={COLORS.goldPrimary} />
-            <AppText style={styles.locationLabel}>{shipper.region}</AppText>
+            <AppText style={styles.locationLabel}>{shipper?.region}</AppText>
           </View>
 
           <AppText style={styles.sectionTitleSmall}>Description</AppText>
           <AppText style={styles.descriptionText}>
-            Professional equine transporter serving {shipper.region}. We pride
+            Professional equine transporter serving {shipper?.region}. We pride
             ourselves on safety, clear communication, and the well-being of your
             horses.
           </AppText>
@@ -176,14 +183,14 @@ const ShipperDetail = () => {
         {/* Reviews Section */}
         <View style={styles.section}>
           <AppText style={styles.sectionTitle}>Reviews</AppText>
-          {shipper.reviews && shipper.reviews.length > 0 ? (
+          {shipper?.reviews && shipper?.reviews.length > 0 ? (
             <>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.horizontalScroll}
               >
-                {shipper.reviews.map((rev: any, idx: number) =>
+                {shipper?.reviews.map((rev: any, idx: number) =>
                   renderReviewCard(rev, idx),
                 )}
               </ScrollView>
@@ -205,13 +212,13 @@ const ShipperDetail = () => {
         {/* Shipments Section */}
         <View style={styles.section}>
           <AppText style={styles.sectionTitle}>Shipment History</AppText>
-          {shipper.completedShipments > 0 ? (
+          {shipper?.completedShipments > 0 ? (
             <View style={styles.contentPadding}>
               <View style={styles.shipmentCard}>
                 <AppText style={styles.shipmentTitle}>Activity Summary</AppText>
                 <AppText style={styles.descriptionText}>
                   This shipper has successfully completed{' '}
-                  {shipper.completedShipments} horse transports on HorseShipt.
+                  {shipper?.completedShipments} horse transports on HorseShipt.
                 </AppText>
               </View>
             </View>

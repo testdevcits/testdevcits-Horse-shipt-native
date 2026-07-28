@@ -55,10 +55,11 @@ const HomeScreen = ({ navigation }) => {
             source={imageIndex.Banner}
             style={{
               width: SCREEN_WIDTH - 16,
-              height: SCREEN_HEIGHT / 4,
+              height: 216,
               alignSelf: 'center',
               borderRadius: 20,
             }}
+            resizeMode="stretch"
           />
         </Pressable>
         <FlatList
@@ -74,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
             <ShipmentCardDetailed
               item={item}
               onPress={() => {
-                /* Navigate to details */
+                navigation.navigate('MyShipmentDetails', { item: item });
               }}
             />
           )}
@@ -99,11 +100,14 @@ const HomeScreen = ({ navigation }) => {
             )
           }
         />
-        <SectionHeader
-          title="My Favorite Shippers"
-          onPress={() => navigation.navigate('TopShippers')}
-        />
-        {shippers && !shipperloading && (
+        {!shipperloading && !loading && (
+          <SectionHeader
+            title="My Favorite Shippers"
+            onPress={() => navigation.navigate('TopShippers')}
+          />
+        )}
+
+        {shippers && !shipperloading && !loading && (
           <FlatList
             data={shippers}
             horizontal={true}

@@ -36,16 +36,12 @@ const useShipmentDetails = (shipmentId: string) => {
       }
 
       if (questionsResponse.success) {
-        setQuestions(questionsResponse.questions ?? []);
+        setQuestions(questionsResponse.data ?? []);
       }
 
       if (matchingShippersResponse.success) {
-        setMatchingShippers(
-          matchingShippersResponse.shippers ?? [],
-        );
-        setInvitedShippers(
-          matchingShippersResponse.invitedShippers ?? [],
-        );
+        setMatchingShippers(matchingShippersResponse.shippers ?? []);
+        setInvitedShippers(matchingShippersResponse.invitedShippers ?? []);
       }
     } catch (error) {
       console.error('Failed to fetch shipment details:', error);

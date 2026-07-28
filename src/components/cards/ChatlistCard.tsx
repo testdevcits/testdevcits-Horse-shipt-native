@@ -2,29 +2,46 @@ import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS, FONTS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
+import imageIndex from '../../assets/images/imageIndex';
 
-const ChatListCard = ({ item, onPress }: { item: any, onPress: () => void }) => {
+const ChatListCard = ({
+  item,
+  onPress,
+}: {
+  item: any;
+  onPress: () => void;
+}) => {
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.7} onPress={onPress}>
       {/* 1. Left Status Dot */}
       <View style={styles.indicatorContainer}>
-        {item.unread && <View style={styles.unreadDot} />}
+        {item?.unread && <View style={styles.unreadDot} />}
       </View>
 
       {/* 2. Avatar */}
-      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <Image
+        source={item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon}
+        style={styles.avatar}
+      />
 
       {/* 3. Middle Content */}
       <View style={styles.content}>
         <View style={styles.topRow}>
-          <AppText style={styles.name} numberOfLines={1}>{item.name}</AppText>
-          <AppText style={styles.time}>{item.lastMessageTime || '5min ago'}</AppText>
+          <AppText style={styles.name} numberOfLines={1}>
+            {item?.name}
+          </AppText>
+          <AppText style={styles.time}>
+            {item?.lastMessageTime || '5min ago'}
+          </AppText>
         </View>
-        
-        <AppText style={styles.shipmentId}>Shipment ID {item.shipmentCode}</AppText>
-        
+
+        <AppText style={styles.shipmentId}>
+          Shipment ID {item?.shipmentCode}
+        </AppText>
+
         <AppText style={styles.snippet} numberOfLines={1}>
-          {item.lastMessage || 'Lorem ipsum dolor sit amet consectetur. Nulla...'}
+          {item?.lastMessage ||
+            'Lorem ipsum dolor sit amet consectetur. Nulla...'}
         </AppText>
       </View>
     </TouchableOpacity>

@@ -19,13 +19,12 @@ interface ShipperCardProps {
     shipmentsCount: number;
     region: string;
     isFavorite?: boolean;
-    
   };
   onPress: () => void;
-   customstyle?:any;
+  customstyle?: any;
 }
 
-const ShipperCard = memo(({ item, onPress,customstyle}: ShipperCardProps) => {
+const ShipperCard = memo(({ item, onPress, customstyle }: ShipperCardProps) => {
   // Logic to render 5 stars
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map(index => (
@@ -43,7 +42,7 @@ const ShipperCard = memo(({ item, onPress,customstyle}: ShipperCardProps) => {
   };
 
   return (
-    <Pressable onPress={onPress} style={[styles.card,customstyle]}>
+    <Pressable onPress={onPress} style={[styles.card, customstyle]}>
       {/* Top Row: Avatar and Heart */}
       <View style={styles.headerRow}>
         {item?.profileImage === '/default-avatar.png' ? (
@@ -54,7 +53,7 @@ const ShipperCard = memo(({ item, onPress,customstyle}: ShipperCardProps) => {
 
         <TouchableOpacity activeOpacity={0.7}>
           <Heart
-            size={24}
+            size={18}
             color={COLORS.primary}
             fill={item?.isFavorite ? COLORS.primary : 'transparent'}
           />
@@ -77,7 +76,7 @@ const ShipperCard = memo(({ item, onPress,customstyle}: ShipperCardProps) => {
       {/* Footer Row: Shipments and Location */}
       <View style={styles.footerRow}>
         <AppText style={styles.footerText}>
-          {item?.shipmentsCount} shipments
+          {item?.shipmentsCount || 0} shipments
         </AppText>
 
         <View style={styles.locationRow}>
@@ -101,6 +100,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey200,
     marginHorizontal: SPACING.sm,
     marginVertical: SPACING.sm,
+
     // Elevation for Android / Shadow for iOS
   },
   headerRow: {
@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   avatar: {
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
     borderRadius: 35, // Circular
     backgroundColor: COLORS.grey100,
   },
   name: {
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: FONTS.bold,
     color: COLORS.grey800,
     marginBottom: SPACING.xs,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     marginRight: SPACING.sm,
   },
   ratingText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: FONTS.medium,
     color: COLORS.grey800,
   },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   footerText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: FONTS.medium,
     color: COLORS.grey700,
   },

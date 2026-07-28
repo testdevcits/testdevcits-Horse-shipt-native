@@ -1,16 +1,42 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import { Truck } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS } from '../../../../constants';
 import useMyShipments, { ShipmentTab } from './usemyshipments';
-import { AppHeader, AppLoader, AppText, EmptyState, ShipmentCard } from '../../../../components';
+import {
+  AppHeader,
+  AppLoader,
+  AppText,
+  EmptyState,
+  ShipmentCard,
+} from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 
-
 const MyShipments = ({ navigation }) => {
-  const { filteredData, loading, refreshing, activeTab, setActiveTab, counts, fetchShipments } = useMyShipments();
+  const {
+    filteredData,
+    loading,
+    refreshing,
+    activeTab,
+    setActiveTab,
+    counts,
+    fetchShipments,
+  } = useMyShipments();
 
-  const tabs: ShipmentTab[] = ['Upcoming', 'Draft', 'In Progress', 'Completed', 'Cancelled'];
+  const tabs: ShipmentTab[] = [
+    'Upcoming',
+    'Draft',
+    'In Progress',
+    'Completed',
+    'Cancelled',
+  ];
 
   const renderTab = (tab: ShipmentTab) => {
     const isActive = activeTab === tab;
@@ -24,9 +50,15 @@ const MyShipments = ({ navigation }) => {
         onPress={() => setActiveTab(tab)}
         style={[styles.tab, isActive && styles.activeTab]}
       >
-        <AppText style={[styles.tabText, isActive && styles.activeTabText]}>{tab}</AppText>
+        <AppText style={[styles.tabText, isActive && styles.activeTabText]}>
+          {tab}
+        </AppText>
         <View style={[styles.countBadge, isActive && styles.activeCountBadge]}>
-          <AppText style={[styles.countText, isActive && styles.activeCountText]}>{count}</AppText>
+          <AppText
+            style={[styles.countText, isActive && styles.activeCountText]}
+          >
+            {count}
+          </AppText>
         </View>
       </TouchableOpacity>
     );
@@ -37,7 +69,11 @@ const MyShipments = ({ navigation }) => {
       <AppHeader title="My Shipments" />
 
       <View style={styles.tabWrapper}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabScroll}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabScroll}
+        >
           {tabs.map(renderTab)}
         </ScrollView>
       </View>
@@ -46,17 +82,28 @@ const MyShipments = ({ navigation }) => {
 
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item._id}
+        keyExtractor={item => item._id}
         contentContainerStyle={styles.list}
-        renderItem={({ item }) => <ShipmentHorizontalCard item={item} onPress={() => { navigation.navigate("MyShipmentDetails", { item: item }) }} />}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchShipments} />}
-        ListEmptyComponent={!loading ? (
-          <EmptyState
-            icon={Truck}
-            title={`No ${activeTab} Shipments`}
-            message="Your shipments will appear here once they reach this stage."
+        renderItem={({ item }) => (
+          <ShipmentHorizontalCard
+            item={item}
+            onPress={() => {
+              navigation.navigate('MyShipmentDetails', { item: item });
+            }}
           />
-        ) : null}
+        )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchShipments} />
+        }
+        ListEmptyComponent={
+          !loading ? (
+            <EmptyState
+              icon={Truck}
+              title={`No ${activeTab} Shipments`}
+              message="Your shipments will appear here once they reach this stage."
+            />
+          ) : null
+        }
       />
     </View>
   );
@@ -64,7 +111,11 @@ const MyShipments = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  tabWrapper: { backgroundColor: COLORS.surface, borderBottomWidth: 1, borderBottomColor: COLORS.divider },
+  tabWrapper: {
+    backgroundColor: COLORS.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+  },
   tabScroll: { paddingHorizontal: SPACING.md, paddingVertical: 12 },
   tab: {
     flexDirection: 'row',
@@ -72,14 +123,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginRight: 10,
-    borderRadius: 20
+    borderRadius: 20,
   },
   activeTab: { backgroundColor: COLORS.goldPrimary },
-  tabText: { fontSize: 13, fontFamily: FONTS.medium, color: COLORS.textSecondary },
+  tabText: {
+    fontSize: 13,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
   activeTabText: { color: COLORS.white },
-  countBadge: { backgroundColor: COLORS.grey200, paddingHorizontal: 6, borderRadius: 10, marginLeft: 6 },
+  countBadge: {
+    backgroundColor: COLORS.grey200,
+    paddingHorizontal: 6,
+    borderRadius: 10,
+    marginLeft: 6,
+  },
   activeCountBadge: { backgroundColor: 'rgba(255,255,255,0.3)' },
-  countText: { fontSize: 10, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  countText: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
   activeCountText: { color: COLORS.white },
   list: { padding: SPACING.md, paddingBottom: 40 },
 });

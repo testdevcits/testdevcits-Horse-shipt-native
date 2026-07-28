@@ -64,7 +64,7 @@ const ShipperList = ({ navigation }) => {
           renderItem={({ item }) => (
             <ChatlistCard 
               item={item} 
-              onPress={() => navigation.navigate("ChatDetails", { shipmentId: item?.shipmentId })} 
+              // onPress={() => navigation.navigate("ChatDetails", { shipmentId: item?.shipmentId })} 
             />
           )}
           contentContainerStyle={styles.list}

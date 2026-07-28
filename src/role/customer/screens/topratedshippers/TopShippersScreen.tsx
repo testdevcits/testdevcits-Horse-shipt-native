@@ -46,6 +46,8 @@ const TopShippersScreen = () => {
     refresh,
   } = useShippers();
 
+  console.log('==============================', shippers);
+
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
   };
@@ -88,77 +90,76 @@ const TopShippersScreen = () => {
     );
   };
 
-  // const renderHeader = () => {
-  //   const filtersActive = Object.values(activeFilters).some(
-  //     v => v !== 'All' && v !== 'Any Price',
-  //   );
+  const renderHeader = () => {
+    const filtersActive = Object.values(activeFilters).some(
+      v => v !== 'All' && v !== 'Any Price',
+    );
 
-  //   return (
-  //     <View style={styles.headerContainer}>
-  //       <View style={styles.titleRow}>
-  //         <View>
-  //           <AppText style={styles.title}>Top Shippers</AppText>
-  //           <AppText style={styles.subtitle}>
-  //             Verified professionals for your horses
-  //           </AppText>
-  //         </View>
-  //         <TouchableOpacity
-  //           style={[
-  //             styles.filterCircle,
-  //             filtersActive && styles.filterCircleActive,
-  //           ]}
-  //           onPress={() => setIsFilterVisible(true)}
-  //         >
-  //           <SlidersHorizontal
-  //             size={20}
-  //             color={filtersActive ? COLORS.white : COLORS.goldPrimary}
-  //           />
-  //         </TouchableOpacity>
-  //       </View>
+    return (
+      <View style={styles.headerContainer}>
+        <View style={styles.titleRow}>
+          <View>
+            <AppText style={styles.title}>Top Shippers</AppText>
+            <AppText style={styles.subtitle}>
+              Verified professionals for your horses
+            </AppText>
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.filterCircle,
+              filtersActive && styles.filterCircleActive,
+            ]}
+            onPress={() => setIsFilterVisible(true)}
+          >
+            <SlidersHorizontal
+              size={20}
+              color={filtersActive ? COLORS.white : COLORS.goldPrimary}
+            />
+          </TouchableOpacity>
+        </View>
 
-  //       <SearchBarCompt
-  //         value={searchQuery}
-  //         onChangeText={setSearchQuery}
-  //         placeholder="Search name or location..."
-  //         containerStyle={styles.searchBar}
-  //       />
+        <SearchBarCompt
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search name or location..."
+          containerStyle={styles.searchBar}
+        />
 
-  //       <ScrollView
-  //         horizontal
-  //         showsHorizontalScrollIndicator={false}
-  //         contentContainerStyle={styles.filterScroll}
-  //       >
-  //         {QUICK_FILTERS.map(f => (
-  //           <TouchableOpacity
-  //             key={f}
-  //             onPress={() => updateFilter('quick', f)}
-  //             style={[
-  //               styles.filterChip,
-  //               activeFilters.quick === f && styles.activeChip,
-  //             ]}
-  //           >
-  //             <AppText
-  //               style={[
-  //                 styles.chipText,
-  //                 activeFilters.quick === f && styles.activeChipText,
-  //               ]}
-  //             >
-  //               {f}
-  //             </AppText>
-  //           </TouchableOpacity>
-  //         ))}
-  //       </ScrollView>
-  //     </View>
-  //   );
-  // };
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterScroll}
+        >
+          {QUICK_FILTERS.map(f => (
+            <TouchableOpacity
+              key={f}
+              onPress={() => updateFilter('quick', f)}
+              style={[
+                styles.filterChip,
+                activeFilters.quick === f && styles.activeChip,
+              ]}
+            >
+              <AppText
+                style={[
+                  styles.chipText,
+                  activeFilters.quick === f && styles.activeChipText,
+                ]}
+              >
+                {f}
+              </AppText>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <AppHeader showBack={true} title="Top Shippers" />
       <FlatList
         data={shippers}
-        keyExtractor={item => item.id}
-        // ListHeaderComponent={renderHeader}
+        keyExtractor={(item, index) => item._id ?? index.toString()} // ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <ShipperCard
             item={item}
@@ -189,7 +190,7 @@ const TopShippersScreen = () => {
       />
 
       {/* Premium Filter Modal */}
-      {/* <Modal
+      <Modal
         visible={isFilterVisible}
         animationType="slide"
         transparent
@@ -254,7 +255,7 @@ const TopShippersScreen = () => {
             </View>
           </View>
         </View>
-      </Modal> */}
+      </Modal>
     </View>
   );
 };

@@ -99,7 +99,6 @@
 //   //   }
 //   // };
 
-
 //   // Inside Splash.tsx useEffect
 //   useEffect(() => {
 //     dispatch(rehydrateAuth());
@@ -194,8 +193,6 @@
 
 // export default Splash;
 
-
-
 // import React, { useEffect, useRef } from 'react';
 // import { View, Text, Animated, Easing, ActivityIndicator } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
@@ -248,12 +245,12 @@
 //   }, []);
 
 //   const handleNavigation = () => {
-//     // Note: If 'token' exists, your RootNavigator (AppNavigation) will 
+//     // Note: If 'token' exists, your RootNavigator (AppNavigation) will
 //     // automatically swap the screens. If not, we manually move to Login.
 //     if (!token) {
 //       navigation?.replace('RoleSelection');
 //     }
-//     // If token exists, do nothing here. AppNavigation.tsx will handle the swap 
+//     // If token exists, do nothing here. AppNavigation.tsx will handle the swap
 //     // to DriverRoot/ShipperRoot/CustomerRoot automatically.
 //   };
 
@@ -317,11 +314,15 @@
 
 // export default Splash;
 
-
-
-
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, Easing, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Animated,
+  Easing,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
 import { Truck } from 'lucide-react-native';
 
@@ -330,10 +331,11 @@ import styles from './styles.splash';
 import { rehydrateAuth } from '../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { AppText } from '../../../components';
+import imageIndex from '../../../assets/images/imageIndex';
 
 const Splash = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector(state => state.auth);
 
   // Animation refs
   const truckSlideIn = useRef(new Animated.Value(-150)).current;
@@ -353,7 +355,7 @@ const Splash = ({ navigation }: any) => {
       // 2. Check if a role was ever selected
       const savedRole = await AsyncStorage.getItem('@user_role');
 
-      console.log("===savedRole=", savedRole)
+      console.log('===savedRole=', savedRole);
 
       const endTime = Date.now();
       const duration = endTime - startTime;
@@ -390,16 +392,16 @@ const Splash = ({ navigation }: any) => {
   // };
 
   const handleNavigation = (savedRole: string | null) => {
-    console.log("Checking Navigation. Token:", token, "SavedRole:", savedRole);
+    console.log('Checking Navigation. Token:', token, 'SavedRole:', savedRole);
 
     if (!token) {
       // Use a falsy check. This covers null, undefined, and empty string ""
       // Also check for the string "null" which sometimes happens with storage
-      if (!savedRole || savedRole === "null") {
-        console.log("No role found. Going to RoleSelection");
+      if (!savedRole || savedRole === 'null') {
+        console.log('No role found. Going to RoleSelection');
         navigation?.replace('RoleSelection');
       } else {
-        console.log("Role found:", savedRole, ". Going to Welcome");
+        console.log('Role found:', savedRole, '. Going to Welcome');
         navigation?.replace('Welcome');
       }
     }
@@ -423,13 +425,26 @@ const Splash = ({ navigation }: any) => {
 
     Animated.loop(
       Animated.sequence([
-        Animated.timing(engineVibration, { toValue: -2.5, duration: 90, useNativeDriver: true }),
-        Animated.timing(engineVibration, { toValue: 0.5, duration: 90, useNativeDriver: true }),
-      ])
+        Animated.timing(engineVibration, {
+          toValue: -2.5,
+          duration: 90,
+          useNativeDriver: true,
+        }),
+        Animated.timing(engineVibration, {
+          toValue: 0.5,
+          duration: 90,
+          useNativeDriver: true,
+        }),
+      ]),
     ).start();
 
     Animated.loop(
-      Animated.timing(speedLines, { toValue: -120, duration: 900, easing: Easing.linear, useNativeDriver: true })
+      Animated.timing(speedLines, {
+        toValue: -120,
+        duration: 900,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
     ).start();
   };
 
@@ -437,26 +452,55 @@ const Splash = ({ navigation }: any) => {
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
         <View style={styles.linesClipContainer}>
-          <Animated.View style={[styles.speedLinesContainer, { transform: [{ translateX: speedLines }] }]}>
+          <Animated.View
+            style={[
+              styles.speedLinesContainer,
+              { transform: [{ translateX: speedLines }] },
+            ]}
+          >
             <View style={[styles.speedLine, { width: 40 }]} />
-            <View style={[styles.speedLine, { width: 25, marginTop: 12, marginLeft: 15 }]} />
-            <View style={[styles.speedLine, { width: 35, marginTop: 12, marginLeft: -5 }]} />
+            <View
+              style={[
+                styles.speedLine,
+                { width: 25, marginTop: 12, marginLeft: 15 },
+              ]}
+            />
+            <View
+              style={[
+                styles.speedLine,
+                { width: 35, marginTop: 12, marginLeft: -5 },
+              ]}
+            />
           </Animated.View>
         </View>
 
         <Animated.View
           style={[
             styles.truckContainer,
-            { transform: [{ translateX: truckSlideIn }, { translateY: engineVibration }] },
-          ]}>
-          <Truck size={90} color={COLORS.primary} strokeWidth={1.75} />
+            {
+              transform: [
+                { translateX: truckSlideIn },
+                { translateY: engineVibration },
+              ],
+            },
+          ]}
+        >
+          <Image
+            source={imageIndex.racinghorse}
+            style={{ height: 100, width: 100 }}
+            resizeMode="center"
+          />
         </Animated.View>
       </View>
 
       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
         <AppText style={styles.titleText}>Horse Shipt</AppText>
-        <AppText style={styles.subtitleText}>LOGISTICS PORTAL</AppText>
-        <ActivityIndicator size="small" color={COLORS.primary} style={styles.loader} />
+        {/* <AppText style={styles.subtitleText}>LOGISTICS PORTAL</AppText> */}
+        <ActivityIndicator
+          size="small"
+          color={COLORS.primary}
+          style={styles.loader}
+        />
       </Animated.View>
     </View>
   );

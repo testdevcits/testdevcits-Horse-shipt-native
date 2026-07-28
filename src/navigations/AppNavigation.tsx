@@ -17,8 +17,6 @@
 // import VerifyOtp from '../role/auth/verifyotp/VerifyOtp';
 // import RoleSelection from '../role/auth/roleselection/RoleSelection';
 
-
-
 // // Define the type for all routes
 // export type RootStackParamList = {
 //     Splash: undefined;
@@ -46,15 +44,11 @@
 // const AppNavigation = () => {
 //     const { user, token, isLoading } = useAppSelector((state: any) => state.auth);
 
-
 //     console.log("=============1====123456", user, token)
-
-
 
 //     if (isLoading) {
 //         return <Splash />;
 //     }
-
 
 //     return (
 //         <NavigationContainer>
@@ -73,8 +67,6 @@
 //                         <Stack.Screen name="ResetPassword" component={ResetPassword} />
 //                         <Stack.Screen name="VerifyOtp" component={VerifyOtp} />
 
-
-
 //                     </>
 //                 ) : (
 //                     // Protected Role-Based Screens
@@ -90,8 +82,6 @@
 // };
 
 // export default AppNavigation;
-
-
 
 // import React from 'react';
 // import { NavigationContainer } from '@react-navigation/native';
@@ -134,7 +124,6 @@
 
 // const AppNavigation = () => {
 //     const { user, token, isLoading } = useAppSelector((state) => state.auth);
-
 
 //     if (isLoading) {
 //         <ActivityIndicator size={"large"} style={{ flex: 1 }} />
@@ -201,36 +190,36 @@ import VerifyOtp from '../role/auth/verifyotp/VerifyOtp';
 import { useSavedRole } from '../hooks/useSavedRole';
 
 export type RootStackParamList = {
-    Splash: undefined;
-    Welcome: undefined;
-    RoleSelection: undefined;
-    Login: undefined;
-    DriverNavigator: undefined;
-    ShipperNavigation: undefined;
-    CustomerNavigation: undefined;
-    Register: undefined;
-    SignupFlowScreen: undefined;
-    ForgotPassword: undefined;
-    ResetPassword: undefined;
-    VerifyOtp: { email: string };
+  Splash: undefined;
+  Welcome: undefined;
+  RoleSelection: undefined;
+  Login: undefined;
+  DriverNavigator: undefined;
+  ShipperNavigation: undefined;
+  CustomerNavigation: undefined;
+  Register: undefined;
+  SignupFlowScreen: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
+  VerifyOtp: { email: string };
 
-    // ... add others
+  // ... add others
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
-    const { user, token, isLoading } = useAppSelector((state) => state.auth);
-    const { role, isLoadingRole } = useSavedRole()
+  const { user, token, isLoading } = useAppSelector(state => state.auth);
+  const { role, isLoadingRole } = useSavedRole();
 
-    // If still checking AsyncStorage, show Splash or Loader
-    if (isLoading) {
-        return <Splash />; // Use your Splash component as the loader
-    }
+  // If still checking AsyncStorage, show Splash or Loader
+  if (isLoading) {
+    return <Splash />; // Use your Splash component as the loader
+  }
 
-    return (
-        <NavigationContainer>
-            {/* <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
+  return (
+    <NavigationContainer>
+      {/* <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
                 {!token ? (
                     // AUTHENTICATION SCREENS
                     <Stack.Group>
@@ -259,42 +248,58 @@ const AppNavigation = () => {
                 )}
             </Stack.Navigator> */}
 
-
-            <Stack.Navigator screenOptions={{ headerShown: false }}  >
-                {isLoading ? (
-                    <Stack.Screen name="Splash" component={Splash} />
-                ) : !token ? (
-                    // AUTH FLOW
-                    <>
-                        {/* 
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {isLoading ? (
+          <Stack.Screen name="Splash" component={Splash} />
+        ) : !token ? (
+          // AUTH FLOW
+          <>
+            {/* 
                IMPORTANT: If Splash navigates to RoleSelection, 
                but Welcome is at the TOP of this list, 
                React Navigation might snap to Welcome first.
             */}
-                        {
-                            (isLoadingRole === false && !role) && <Stack.Screen name="RoleSelection" component={RoleSelection} />
-                        }
-                        
+            {isLoadingRole === false && !role && (
+              <Stack.Screen name="RoleSelection" component={RoleSelection} />
+            )}
 
-                        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-                        <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="Register" component={RegisterScreen} />
-                        <Stack.Screen name="SignupFlowScreen" component={SignupFlowScreen} />
-                        <Stack.Screen name="ForgotPassword" component={PasswordRecovery} />
-                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                        <Stack.Screen name="VerifyOtp" component={VerifyOtp} />
-                    </>
-                ) : (
-                    // APP FLOW
-                    <>
-                        {user?.role === 'driver' && <Stack.Screen name="DriverNavigator" component={DriverNavigator} />}
-                        {user?.role === 'shipper' && <Stack.Screen name="ShipperNavigation" component={ShipperNavigation} />}
-                        {user?.role === 'customer' && <Stack.Screen name="CustomerNavigation" component={CustomerNavigation} />}
-                    </>
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen
+              name="SignupFlowScreen"
+              component={SignupFlowScreen}
+            />
+            <Stack.Screen name="ForgotPassword" component={PasswordRecovery} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen name="VerifyOtp" component={VerifyOtp} />
+          </>
+        ) : (
+          // APP FLOW
+          <>
+            {user?.role === 'driver' && (
+              <Stack.Screen
+                name="DriverNavigator"
+                component={DriverNavigator}
+              />
+            )}
+            {user?.role === 'shipper' && (
+              <Stack.Screen
+                name="ShipperNavigation"
+                component={ShipperNavigation}
+              />
+            )}
+            {user?.role === 'customer' && (
+              <Stack.Screen
+                name="CustomerNavigation"
+                component={CustomerNavigation}
+              />
+            )}
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default AppNavigation;

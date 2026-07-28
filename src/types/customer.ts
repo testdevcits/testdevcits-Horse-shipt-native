@@ -248,7 +248,7 @@ export interface Quote {
 
 export interface GetQuestionsResponse {
   success: boolean;
-  questions: Question[];
+  data:  {};
 }
 
 export interface Question {
@@ -265,4 +265,83 @@ export interface MatchingShippersResponse {
   count: number;
   shippers: string[];
   invitedShippers: string[];
+}
+
+export interface ShipperReviewsResponse {
+  success: boolean;
+  message: string;
+  data: ShipperReviewsData;
+}
+
+export interface ShipperReviewsData {
+  shipper: Shipper;
+  reviews: Review[];
+  pagination: Pagination;
+}
+
+export interface Shipper {
+  _id: string;
+  name: string;
+  googleReviewLink: string | null;
+  locale: Locale;
+  profileImage: ProfileImage;
+}
+
+export interface Locale {
+  address: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface ProfileImage {
+  _id: string;
+  url: string;
+  public_id: string;
+}
+
+export interface Review {
+  _id: string;
+  customer?: string;
+  rating?: number;
+  review?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+export interface Pagination {
+  currentPage: number;
+  limit: number;
+  totalRecords: number;
+  totalPages: number;
+}
+
+export interface CancelQuoteRequest {
+  reason: string;
+}
+
+export interface CancelQuoteResponse {
+  success: boolean;
+  message: string;
+  data: {
+    totalAmount: number;
+    platformFee: number;
+    refundAmount: number;
+    refundStatus: string;
+  };
+}
+
+export interface PayQuoteResponse {
+  success: boolean;
+  message: string;
+  clientSecret: string;
+  paymentIntentId: string;
+  amount: number;
+  currency: string;
+}
+
+export interface AcceptQuoteResponse {
+  success: boolean;
+  message: string;
+  data: any; // This will be your updated Quote object
 }

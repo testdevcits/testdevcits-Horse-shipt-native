@@ -11,6 +11,8 @@ import { store } from './src/app/store';
 import { COLORS } from './src/constants';
 import { toastConfig } from './src/components/common/ToastConfig';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 
 const App = () => {
   return (
@@ -32,7 +34,9 @@ const App = () => {
               Professional apps usually handle SafeArea inside screens
               to allow Maps/Images to go full-screen under the notch.
           */}
-              <AppNavigation />
+              <StripeProvider publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}>
+                <AppNavigation />
+              </StripeProvider>
             </SafeAreaView>
 
             {/* 4. Toast at the absolute top of the visual stack */}

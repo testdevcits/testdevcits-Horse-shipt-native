@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.background, // F8FAFC from your file
     },
     titleText: {
-        fontFamily: FONTS.medium,
-        fontSize: FONT_SIZE.xxl, // 20px based on your dimensions
+        fontFamily: FONTS.semiBold,
+        fontSize: FONT_SIZE.xl, // 20px based on your dimensions
         color: COLORS.grey900,   // Dark text #111827
     },
     actionButton: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         fontFamily: FONTS.regular,
-        fontSize: FONT_SIZE.lg,
+        fontSize: FONT_SIZE.sm,
         color: COLORS.primary,   // Your Gold color #B69556
     },
     chevron: {

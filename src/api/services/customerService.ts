@@ -13,6 +13,10 @@ import {
   GetQuotesResponse,
   GetQuestionsResponse,
   MatchingShippersResponse,
+  CancelQuoteRequest,
+  CancelQuoteResponse,
+  PayQuoteResponse,
+  AcceptQuoteResponse,
 } from '../../types/customer';
 import { GetNotificationsResponse } from '../../types/notification';
 
@@ -22,6 +26,14 @@ import { GetNotificationsResponse } from '../../types/notification';
 const customerService = {
   getProfile: async (): Promise<CustomerProfileResponse> => {
     return axiosClient.get('/api/customer/profile');
+  },
+
+  updateProfile: async (payload: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+  }): Promise<CustomerProfileResponse> => {
+    return axiosClient.put('/api/customer/profile-details', payload);
   },
   /**
    * Fetch all horses belonging to the logged-in customer
@@ -126,11 +138,18 @@ const customerService = {
   // Send New Message (Text or Media)
   sendMessage: async (
     roomId: string,
-    payload: { message?: string; media?: any[] },
+    payload: FormData | { message: string },
   ): Promise<any> => {
     return axiosClient.post(
       `/api/customer/chat/rooms/${roomId}/messages`,
       payload,
+      payload instanceof FormData
+        ? {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        : undefined,
     );
   },
 
@@ -158,7 +177,7 @@ const customerService = {
 
   // Fetch current notification settings (assuming an endpoint exists or provided by user/me)
   getNotificationSettings: async (): Promise<any> => {
-    return axiosClient.get('/api/customer/notifications/settings');
+    return axiosClient.get('/api/customer/notifications');
   },
 
   getTopRatedShippers: async (): Promise<TopRatedShippersResponse> => {
@@ -169,6 +188,23 @@ const customerService = {
     id: string,
   ): Promise<{ success: boolean; data: any }> => {
     return axiosClient.get(`/api/customer/shipper-profile/${id}`);
+  },
+
+  // in your shipment.service.ts
+  inviteShipper: async (
+    shipmentId: string,
+    shipperId: string,
+  ): Promise<any> => {
+    return axiosClient.post(`/api/customer/shipments/send-invitation`, {
+      shipmentId,
+      shipperId,
+    });
+  },
+
+  getShippersReviewById: async (
+    id: string,
+  ): Promise<{ success: boolean; data: any }> => {
+    return axiosClient.get(`/api/customer/shipper${id}`);
   },
 
   getTermsAndConditions: async (): Promise<GetTermsConditionsResponse> => {
@@ -191,8 +227,30 @@ const customerService = {
     );
   },
 
+  payQuote: async (quoteId: string): Promise<PayQuoteResponse> => {
+    return axiosClient.post(`/api/customer/quotes/${quoteId}/pay`);
+  },
+
+  acceptQuote: async (
+    quoteId: string,
+    payload: { customerSignature: string },
+  ): Promise<AcceptQuoteResponse> => {
+    return axiosClient.put(`/api/customer/quotes/${quoteId}/accept`, payload);
+  },
+
+  cancelQuote: async (
+    quoteId: string,
+    payload: CancelQuoteRequest,
+  ): Promise<CancelQuoteResponse> => {
+    return axiosClient.post(`/api/customer/quotes/${quoteId}/cancel`, payload);
+  },
+
   getQuestions: async (shipmentId: string): Promise<GetQuestionsResponse> => {
     return axiosClient.get(`/api/questions/${shipmentId}`);
+  },
+
+  submitAnswer: async (questionId: string, answer: string): Promise<any> => {
+    return axiosClient.post('/api/questions/answer', { questionId, answer });
   },
 
   getMatchingShippers: async (

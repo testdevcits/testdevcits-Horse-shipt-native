@@ -61,6 +61,7 @@ import PickupStep from '../role/customer/screens/newshipment/stepsscreens/Pickup
 import TopShippersScreen from '../role/customer/screens/topratedshippers/TopShippersScreen';
 import ShipperDetail from '../role/customer/screens/topratedshippers/ShipperDetail';
 import Profile from '../role/customer/screens/profile/Profile';
+import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,10 @@ const CustomerNavigation = () => {
       <Stack.Screen name="MapScreen" component={MapScreen} />
       <Stack.Screen name="PickupStep" component={PickupStep} />
       <Stack.Screen name="Profile" component={Profile} />
+
+      <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
+
+
     </Stack.Navigator>
   );
 };

@@ -40,38 +40,47 @@ const MyHorses = ({ navigation }) => {
     <View style={styles.container}>
       <AppHeader />
       <AppLoader visible={loading && !refreshing} />
-      <AppText
-        style={{
-          margin: SPACING.lg,
-          fontSize: FONT_SIZE.xl,
-          fontFamily: FONTS.semiBold,
-        }}
-      >
-        My Horses
-      </AppText>
-      <AppText style={{ margin: SPACING.lg, marginTop: 0 }}>
-        Manage your horses, update their details, and keep all transportation
-        information in one place.
-      </AppText>
-      <AppText
-        onPress={() => navigation.navigate('AddEditHorse')}
-        style={{
-          padding: SPACING.sm,
-          backgroundColor: COLORS.primary,
-          alignSelf: 'flex-start',
-          color: COLORS.white,
-          fontFamily: FONTS.semiBold,
-          marginHorizontal: SPACING.lg,
-          borderRadius: 10,
-          paddingHorizontal: 50,
-        }}
-      >
-        + Horse
-      </AppText>
+
       <FlatList
         data={horses}
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={() => {
+          return (
+            <>
+              <AppText
+                style={{
+                  // margin: SPACING.lg,
+                  fontSize: FONT_SIZE.xl,
+                  fontFamily: FONTS.semiBold,
+                }}
+              >
+                My Horses
+              </AppText>
+              <AppText style={{   marginTop: 0 }}>
+                Manage your horses, update their details, and keep all
+                transportation information in one place.
+              </AppText>
+              <AppText
+                onPress={() => navigation.navigate('AddEditHorse')}
+                style={{
+                  padding: SPACING.sm,
+                  backgroundColor: COLORS.primary,
+                  alignSelf: 'flex-start',
+                  color: COLORS.white,
+                  fontFamily: FONTS.semiBold,
+                  borderRadius: 10,
+                  paddingHorizontal: 50,
+                  marginVertical:SPACING.sm
+
+                }}
+              >
+                + Horse
+              </AppText>
+            </>
+          );
+        }}
         renderItem={({ item }) => (
           <HorseCard
             item={item}
