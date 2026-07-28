@@ -10,7 +10,8 @@ import {
   EmptyState, 
   ErrorView, 
   SearchBarCompt, 
-  AppSelect // Make sure to add 'customSelectorStyle' prop support in AppSelect.tsx
+  AppSelect, // Make sure to add 'customSelectorStyle' prop support in AppSelect.tsx
+  AppLoader
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 
@@ -29,6 +30,7 @@ const ShipperList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppHeader />
+      <AppLoader visible={loading} />
       
       {/* Header with Search and Filter Dropdown */}
       <View style={styles.header}>
