@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
 import customerService from '../../../api/services/customerService';
 import { NotificationActivity } from '../../../types/notification';
- 
+
 
 const useNotifications = () => {
   const [notifications, setNotifications] = useState<NotificationActivity[]>([]);
@@ -11,7 +11,7 @@ const useNotifications = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [activeFilter, setActiveFilter] = useState<'all' | 'unread'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -19,7 +19,7 @@ const useNotifications = () => {
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      
+
       setError(null);
       const res = await customerService.getNotifications();
       if (res.success) {
@@ -42,7 +42,7 @@ const useNotifications = () => {
   }, [notifications, activeFilter]);
 
   const toggleSelect = (id: string) => {
-    setSelectedIds(prev => 
+    setSelectedIds(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
@@ -60,7 +60,7 @@ const useNotifications = () => {
     try {
       setActionLoading(true);
       await customerService.markAsRead(selectedIds);
-      setNotifications(prev => prev.map(n => 
+      setNotifications(prev => prev.map(n =>
         selectedIds.includes(n._id) ? { ...n, read: true } : n
       ));
       setSelectedIds([]);
@@ -75,9 +75,9 @@ const useNotifications = () => {
     if (selectedIds.length === 0) return;
     Alert.alert("Delete", `Delete ${selectedIds.length} notifications?`, [
       { text: "Cancel", style: "cancel" },
-      { 
-        text: "Delete", 
-        style: "destructive", 
+      {
+        text: "Delete",
+        style: "destructive",
         onPress: async () => {
           try {
             setActionLoading(true);

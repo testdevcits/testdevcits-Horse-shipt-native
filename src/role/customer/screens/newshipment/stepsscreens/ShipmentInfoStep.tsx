@@ -10,22 +10,25 @@ import {
   ImagePlus,
   FileText,
   Package,
-  CheckCircle2,
   X,
   Trash2,
   FileCheck,
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input } from '../../../../../components';
+import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 
 interface ShipmentInfoStepProps {
-  form: any;
-  updateForm: (updates: any) => void;
+  form: NewShipmentForm;
+  updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
-  pickDocument: (index: number, type: string) => void;
+  pickDocument: (index: number, type: 'coggins' | 'healthCert') => void;
   pickImage: (index: number) => void;
-  removeFile: (index: number, type: string) => void;
+  removeFile: (
+    index: number,
+    type: 'photo' | 'coggins' | 'healthCert',
+  ) => void;
 }
 
 const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
@@ -42,7 +45,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
     type: 'coggins' | 'healthCert',
     label: string,
   ) => {
-    const file = form.horses[horseIndex][type];
+    const file = form.horses[horseIndex]?.[type];
 
     return (
       <View style={styles.docCard}>
@@ -54,7 +57,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
               <FileText size={20} color={COLORS.grey400} />
             )}
           </View>
-          <View>
+          <View style={{ flex: 1 }}>
             <AppText style={styles.docLabel}>{label}</AppText>
             {file ? (
               <AppText style={styles.fileName} numberOfLines={1}>
@@ -94,7 +97,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
           <TouchableOpacity onPress={onPrevious}>
-            <AppText style={styles.cancelText}>Cancel</AppText>
+            <AppText style={styles.cancelText}>Back</AppText>
           </TouchableOpacity>
         </View>
 
@@ -110,8 +113,8 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
           </View>
         </View>
 
-        {/* MAP THROUGH EVERY HORSE IN THE FORM */}
-        {form.horses.map((horse: any, index: number) => (
+        {/* HORSES DOCUMENTATION */}
+        {form.horses.map((horse: NewShipmentHorse, index: number) => (
           <View key={index} style={styles.horseCard}>
             <View style={styles.horseHeader}>
               <AppText style={styles.horseHeaderText}>
@@ -169,7 +172,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             placeholder="Example: My horse needs hay every 4 hours..."
             multiline
             numberOfLines={4}
-            value={form.generalNotes}
+            value={form.additionalInfo}
             onChangeText={v => updateForm({ additionalInfo: v })}
             style={styles.textArea}
             textAlignVertical="top"
@@ -193,7 +196,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F8F9FA' },
   scrollView: { flex: 1 },
-  scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
+  scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
 
   titleRow: {
     flexDirection: 'row',
@@ -235,7 +238,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  // Horse Card
   horseCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
@@ -266,7 +268,6 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm,
   },
 
-  // Photo Upload
   uploadBox: {
     height: 160,
     borderWidth: 1.5,
@@ -299,7 +300,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
-  // Doc Cards
   docCard: {
     flexDirection: 'row',
     alignItems: 'center',

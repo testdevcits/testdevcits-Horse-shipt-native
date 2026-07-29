@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import {
   MapPin,
   Calendar,
@@ -8,15 +15,44 @@ import {
   ExternalLink,
 } from 'lucide-react-native';
 import moment from 'moment';
-import { AppText, MapModal } from '../../../../../components';
+import { AppText, Button, MapModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import PublishedSuccessModal from '../PublishedSuccessModal';
+import { useNavigation } from '@react-navigation/native';
+import customerService from '../../../../../api/services/customerService';
 
-const OverviewTab = ({ data }: any) => {
+const OverviewTab = ({ data,quoteId }: any) => {
+
+
+ 
+  const navigation = useNavigation();
   const [isHorseDetailsOpen, setIsHorseDetailsOpen] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
+  const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const openUrl = (url: string | null) => {
     if (url) Linking.openURL(url);
+  };
+
+  const handlePublish = async (id: string) => {
+    setLoading(true);
+    try {
+      const res = await customerService.publishShipment(id);
+      if (res.success) {
+        // Show the Success Modal we created earlier
+        setIsSuccessModalVisible(true);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to publish shipment.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleViewShipment = () => {
+    setIsSuccessModalVisible(false);
+    navigation.goBack(); // Or specific details page
   };
 
   return (
@@ -116,11 +152,42 @@ const OverviewTab = ({ data }: any) => {
             <View style={styles.divider} />
           </View>
         ))}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity style={styles.addDocBtn}>
+            <AppText style={styles.addDocText}>Add document</AppText>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.addDocBtn}>
-          <AppText style={styles.addDocText}>Add document</AppText>
-        </TouchableOpacity>
+          {data?.publish === false && (
+            <TouchableOpacity
+              onPress={() => handlePublish(data?._id)}
+              style={styles.addDocBtn}
+            >
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <AppText style={styles.addDocText}>Publish</AppText>
+              )}
+            </TouchableOpacity>
+          )}
+        </View>
+        {data.status === 'assigned' && (
+          <Button
+            title="Track Shipment"
+            onPress={() =>
+              navigation.navigate('LiveTracking', { shipmentId: quoteId })
+            }
+          />
+        )}
       </View>
+
+      <PublishedSuccessModal
+        visible={isSuccessModalVisible}
+        onClose={() => {
+          setIsSuccessModalVisible(false);
+          navigation.goBack(); // Return to home if they just close
+        }}
+        onViewShipment={handleViewShipment}
+      />
 
       <MapModal
         visible={isMapVisible}

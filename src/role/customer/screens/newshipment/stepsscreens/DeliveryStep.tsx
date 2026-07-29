@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { MapPin, Calendar as CalendarIcon, Target } from 'lucide-react-native';
+import { MapPin, Calendar as CalendarIcon } from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
-
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
+import { NewShipmentForm } from '../interfaces';
 
 interface DeliveryStepProps {
-  form: any;
-  updateForm: (updates: any) => void;
+  form: NewShipmentForm;
+  updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
   errors: any;
@@ -29,12 +29,22 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
   const formatDate = (date: any) => {
     if (!date) return 'Select Date';
     const d = new Date(date);
+    if (isNaN(d.getTime())) return 'Select Date';
     return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}/${d.getFullYear()}`;
   };
 
-  // --- HANDLERS ---
+  const getSafeDateStr = (dateVal: any) => {
+    try {
+      const d = new Date(dateVal);
+      if (!isNaN(d.getTime())) {
+        return d.toISOString().split('T')[0];
+      }
+    } catch (e) {}
+    return new Date().toISOString().split('T')[0];
+  };
+
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
   const handleOpenEnd = useCallback(() => setActiveDateType('end'), []);
   const handleCloseCalendar = useCallback(() => setActiveDateType(null), []);
@@ -58,15 +68,15 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* 2. HEADER */}
+        {/* HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
           <TouchableOpacity onPress={onPrevious}>
-            <AppText style={styles.cancelText}>Cancel</AppText>
+            <AppText style={styles.cancelText}>Back</AppText>
           </TouchableOpacity>
         </View>
 
-        {/* 3. INSTRUCTION (Updated for Delivery) */}
+        {/* INSTRUCTION */}
         <View style={styles.instructionCard}>
           <View style={styles.iconBox}>
             <MapPin size={24} color={COLORS.primary} />
@@ -79,29 +89,24 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           </View>
         </View>
 
-        {/* 4. DELIVERY LOCATION (Updated Keys) */}
+        {/* DELIVERY LOCATION */}
         <AppText style={styles.inputLabel}>Delivery Location</AppText>
-         
-          <LocationPicker
-            value={form.deliveryLocation}
-            placeholder="Delivery Address"
-            onSelect={location => {
-              updateForm({
-                deliveryLocation: location.address,
-                deliveryLat: location.latitude,
-                deliveryLng: location.longitude,
-              });
-            }}
-          />
+        <LocationPicker
+          value={form.deliveryLocation}
+          placeholder="Delivery Address"
+          onSelect={location => {
+            updateForm({
+              deliveryLocation: location.address,
+              deliveryLat: location.latitude,
+              deliveryLng: location.longitude,
+            });
+          }}
+        />
+        {errors.deliveryLocation && (
+          <AppText style={styles.errorText}>{errors.deliveryLocation}</AppText>
+        )}
 
-          {errors.deliveryLocation && (
-            <AppText style={styles.errorText}>
-              {errors.deliveryLocation}
-            </AppText>
-          )}
-         
-
-        {/* 5. DELIVERY START DATE */}
+        {/* DELIVERY START DATE */}
         <AppText style={styles.inputLabel}>Delivery Start Date</AppText>
         <TouchableOpacity
           style={styles.selectorField}
@@ -119,8 +124,11 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             </AppText>
           </View>
         </TouchableOpacity>
+        {errors.deliveryStartDate && (
+          <AppText style={styles.errorText}>{errors.deliveryStartDate}</AppText>
+        )}
 
-        {/* 6. DELIVERY END DATE */}
+        {/* DELIVERY END DATE */}
         <AppText style={styles.inputLabel}>Delivery End Date</AppText>
         <TouchableOpacity
           style={styles.selectorField}
@@ -138,6 +146,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             </AppText>
           </View>
         </TouchableOpacity>
+        {errors.deliveryEndDate && (
+          <AppText style={styles.errorText}>{errors.deliveryEndDate}</AppText>
+        )}
 
         {/* FOOTER */}
         <View style={styles.footer}>
@@ -150,7 +161,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         </View>
       </ScrollView>
 
-      {/* MODAL (Updated logic for delivery) */}
+      {/* CALENDAR MODAL */}
       <AppCalendarModal
         visible={activeDateType !== null}
         onClose={handleCloseCalendar}
@@ -158,18 +169,14 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         title={activeDateType === 'start' ? 'Delivery Start' : 'Delivery End'}
         initialDate={
           activeDateType === 'start'
-            ? new Date(form.deliveryStartDate || new Date())
-                .toISOString()
-                .split('T')[0]
-            : new Date(form.deliveryEndDate || new Date())
-                .toISOString()
-                .split('T')[0]
+            ? getSafeDateStr(form.deliveryStartDate)
+            : getSafeDateStr(form.deliveryEndDate)
         }
         minDate={
           activeDateType === 'end' && form.deliveryStartDate
-            ? new Date(form.deliveryStartDate).toISOString().split('T')[0]
+            ? getSafeDateStr(form.deliveryStartDate)
             : form.pickupStartDate
-            ? new Date(form.pickupStartDate).toISOString().split('T')[0]
+            ? getSafeDateStr(form.pickupStartDate)
             : new Date().toISOString().split('T')[0]
         }
       />
@@ -177,46 +184,10 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
   );
 };
 
-// Styles remain identical to PickupStep for consistent UI
-const autocompleteStyles = {
-  container: { flex: 0 },
-  textInput: {
-    height: 55,
-    backgroundColor: COLORS.white,
-    fontFamily: FONTS.medium,
-    fontSize: 15,
-    paddingLeft: 45,
-    paddingRight: 45,
-    color: COLORS.textPrimary,
-  },
-  listView: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.md,
-    marginTop: 2,
-    elevation: 5,
-    zIndex: 1000,
-  },
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scrollView: { flex: 1 },
-  scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: SPACING.xl,
-    marginTop: 10,
-  },
-  progressDash: {
-    flex: 1,
-    height: 3,
-    backgroundColor: COLORS.grey300,
-    borderRadius: 2,
-  },
-  activeDash: { backgroundColor: COLORS.primary },
+  scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -262,14 +233,6 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm,
     marginTop: SPACING.md,
   },
-  autocompleteWrapper: {
-    zIndex: 10,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.md,
-  },
-  inputIconLeft: { position: 'absolute', left: 15, top: 18, zIndex: 11 },
-  inputIconRight: { position: 'absolute', right: 15, top: 18, zIndex: 11 },
   selectorField: {
     height: 55,
     borderWidth: 1,
@@ -280,7 +243,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
-    zIndex: 1,
   },
   fieldInner: { flexDirection: 'row', alignItems: 'center', flex: 1 },
   iconMargin: { marginRight: 10 },
@@ -321,6 +283,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: COLORS.error,
     fontSize: 12,
+    marginTop: 4,
   },
 });
 

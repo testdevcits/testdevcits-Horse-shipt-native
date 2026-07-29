@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles.newshipment';
-import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
-import { COLORS } from '../../../../constants';
+import { AppHeader, ConfirmationModal } from '../../../../components';
 import useNewShipment, { STEPS } from './useNewShipment';
 import PickupStep from './stepsscreens/PickupStep';
 import DeliveryStep from './stepsscreens/DeliveryStep';
 import HorseDetailsStep from './stepsscreens/HorseDetailsStep';
 import ReviewStep from './stepsscreens/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
+import DraftSuccessModal from './DraftSuccessModal';
 
 const NewShipment = () => {
+  const navigation = useNavigation();
   const {
     currentStep,
     form,
@@ -22,10 +24,13 @@ const NewShipment = () => {
     pickImage,
     pickDocument,
     removeFile,
+    handleSaveDraft,
     handlePublish,
     loading,
     isPublishModalVisible,
     setIsPublishModalVisible,
+    isDraftModalVisible,
+    setIsDraftModalVisible,
     setCurrentStep,
   } = useNewShipment();
 
@@ -51,6 +56,7 @@ const NewShipment = () => {
             updateForm={updateForm}
             errors={errors}
             onNext={nextStep}
+            onPrevious={() => navigation.goBack()}
           />
         )}
         {currentStep === 1 && (
@@ -79,43 +85,16 @@ const NewShipment = () => {
             pickDocument={pickDocument}
             onNext={nextStep}
             onPrevious={prevStep}
-            removeFile={removeFile} // <--- ADD THIS LINE
+            removeFile={removeFile}
           />
         )}
         {currentStep === 4 && (
           <ReviewStep
             form={form}
             onPublish={() => setIsPublishModalVisible(true)}
-            onSaveDraft={() => setIsPublishModalVisible(true)}
-            onEditSection={() => setCurrentStep(0)}
+            onSaveDraft={handleSaveDraft}
+            onEditSection={stepIndex => setCurrentStep(stepIndex)}
           />
-        )}
-      </View>
-
-      <View style={styles.footer}>
-        {currentStep > 0 && (
-          <TouchableOpacity
-            style={[styles.btn, styles.btnPrev]}
-            onPress={prevStep}
-          >
-            <AppText style={styles.btnTextPrev}>Previous</AppText>
-          </TouchableOpacity>
-        )}
-
-        {currentStep < STEPS.length - 1 ? (
-          <TouchableOpacity
-            style={[styles.btn, styles.btnNext]}
-            onPress={nextStep}
-          >
-            <AppText style={styles.btnText}>Next</AppText>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={[styles.btn, styles.btnNext]}
-            onPress={() => setIsPublishModalVisible(true)}
-          >
-            <AppText style={styles.btnText}>Publish Shipment</AppText>
-          </TouchableOpacity>
         )}
       </View>
 
@@ -127,6 +106,18 @@ const NewShipment = () => {
         description="Are you sure you want to save and publish this shipment? Pickup and Horse details cannot be edited later."
         confirmText="Save & Publish"
         isLoading={loading}
+      />
+
+      <DraftSuccessModal
+        visible={isDraftModalVisible}
+        onReview={() => {
+          setIsDraftModalVisible(false);
+          setIsPublishModalVisible(true);
+        }}
+        onDashboard={() => {
+          setIsDraftModalVisible(false);
+          navigation.goBack();
+        }}
       />
     </View>
   );

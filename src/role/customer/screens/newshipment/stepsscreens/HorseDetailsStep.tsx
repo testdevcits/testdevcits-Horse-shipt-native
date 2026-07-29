@@ -1,25 +1,25 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
-import { Info, PlusCircle } from 'lucide-react-native';
+import { PlusCircle } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
 import { Horse } from '../../../../../types/customer';
 import { breedsList, sexes, stallTypes } from '../../addedithorse/constants';
+import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 
 interface HorseDetailsStepProps {
-  form: any;
-  updateForm: (updates: any) => void;
+  form: NewShipmentForm;
+  updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
-  errors:any
+  errors: any;
 }
 
 const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
@@ -27,48 +27,28 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   updateForm,
   onNext,
   onPrevious,
-  errors
 }) => {
   const { horses: savedHorses, loading } = useMyHorses();
 
-  // 1. SYNC HORSES ARRAY BASED ON NUMBER
   const handleNumberOfHorsesChange = (val: string) => {
-    const num = parseInt(val) || 0;
-    if (num > 10) return; // Safety limit
-
-    let updatedHorses = [...form.horses];
-
-    if (num > updatedHorses.length) {
-      // Add new empty horse objects
-      const diff = num - updatedHorses.length;
-      for (let i = 0; i < diff; i++) {
-        updatedHorses.push({
-          registeredName: '',
-          barnName: '',
-          breed: '',
-          colour: '',
-          age: '',
-          sex: '',
-          height: '',
-          stallType: '',
-        });
-      }
-    } else {
-      // Remove last horses if number decreased
-      updatedHorses = updatedHorses.slice(0, num);
+    const num = Math.max(1, parseInt(val) || 1);
+    if (num > 10) {
+      Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
+      return;
     }
-
-    updateForm({ numberOfHorses: num, horses: updatedHorses });
+    updateForm({ numberOfHorses: num });
   };
 
-  // 2. UPDATING SPECIFIC HORSE FIELDS
-  const updateHorseField = (index: number, field: string, value: any) => {
+  const updateHorseField = (
+    index: number,
+    field: keyof NewShipmentHorse,
+    value: any,
+  ) => {
     const updatedHorses = [...form.horses];
     updatedHorses[index] = { ...updatedHorses[index], [field]: value };
     updateForm({ horses: updatedHorses });
   };
 
-  // 3. AUTO-FILL LOGIC FOR SAVED HORSES
   const horseOptions = useMemo(() => {
     return savedHorses.map((h: Horse) => h.registeredName);
   }, [savedHorses]);
@@ -81,14 +61,16 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
     if (selectedHorse) {
       const updatedHorses = [...form.horses];
       updatedHorses[index] = {
+        ...updatedHorses[index],
         registeredName: selectedHorse.registeredName,
         barnName: selectedHorse.barnName || '',
         breed: selectedHorse.breed || '',
         colour: selectedHorse.colour || '',
         age: selectedHorse.age?.toString() || '',
         sex: selectedHorse.sex || '',
-        height: selectedHorse.height || '',
-        stallType: selectedHorse.requestedStallSize || '',
+        requestedStallSize:
+          selectedHorse.defaultStallSize || selectedHorse.requestedStallSize || 'Box',
+        generalInfo: selectedHorse.notes || '',
       };
       updateForm({ horses: updatedHorses });
     } else {
@@ -96,17 +78,14 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
     }
   };
 
-  // 4. VALIDATION LOGIC
   const isFormValid = useMemo(() => {
     if (!form.numberOfHorses || form.numberOfHorses < 1) return false;
-
-    // Check if every horse in the array has required fields
     return form.horses.every(
-      (h: any) =>
+      (h: NewShipmentHorse) =>
         h.registeredName?.trim() !== '' &&
-        h.breed !== '' &&
-        h.sex !== '' &&
-        h.stallType !== '',
+        h.breed?.trim() !== '' &&
+        h.sex?.trim() !== '' &&
+        h.requestedStallSize?.trim() !== '',
     );
   }, [form.horses, form.numberOfHorses]);
 
@@ -119,11 +98,10 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
           <TouchableOpacity onPress={onPrevious}>
-            <AppText style={styles.cancelText}>Cancel</AppText>
+            <AppText style={styles.cancelText}>Back</AppText>
           </TouchableOpacity>
         </View>
 
-        {/* CONDITION: IF CUSTOMER HAS NO SAVED HORSES */}
         {!loading && savedHorses.length === 0 && (
           <View style={styles.noHorsesAlert}>
             <PlusCircle size={20} color={COLORS.primary} />
@@ -135,14 +113,13 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
 
         <Input
           label="Total Number of Horses"
-          placeholder="e.g. 3"
+          placeholder="e.g. 1"
           keyboardType="numeric"
           value={form.numberOfHorses?.toString()}
           onChangeText={handleNumberOfHorsesChange}
         />
 
-        {/* 5. DYNAMICALLY MAP HORSES */}
-        {form.horses.map((horse: any, index: number) => (
+        {form.horses.map((horse: NewShipmentHorse, index: number) => (
           <View key={index} style={styles.horseSection}>
             <View style={styles.dividerRow}>
               <View style={styles.line} />
@@ -213,14 +190,13 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
             <AppSelect
               label="Request Stall Size"
               placeholder="Select Stall"
-              value={horse.stallType}
+              value={horse.requestedStallSize}
               options={stallTypes}
-              onSelect={v => updateHorseField(index, 'stallType', v)}
+              onSelect={v => updateHorseField(index, 'requestedStallSize', v)}
             />
           </View>
         ))}
 
-        {/* SPECIAL REQUIREMENTS (Global for the shipment) */}
         {form.horses.length > 0 && (
           <>
             <AppText style={styles.radioLabel}>
@@ -287,7 +263,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
                 ? onNext()
                 : Alert.alert(
                     'Missing Info',
-                    'Please complete all horse details.',
+                    'Please fill in registered name, breed, sex, and stall size for all horses.',
                   )
             }
           >
@@ -302,7 +278,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scrollView: { flex: 1 },
-  scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
+  scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -332,7 +308,7 @@ const styles = StyleSheet.create({
   },
   horseSection: {
     marginBottom: SPACING.xl,
-    backgroundColor: '#FBFAf8', // Light tint to distinguish horses
+    backgroundColor: '#FBFAf8',
     padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,

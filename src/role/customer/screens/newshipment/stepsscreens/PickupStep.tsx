@@ -4,20 +4,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Platform,
 } from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { MapPin, Calendar as CalendarIcon, Target } from 'lucide-react-native';
+import { MapPin, Calendar as CalendarIcon } from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
-import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants'; // Ensure this path is correct
-import { useNavigation } from '@react-navigation/native';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
+import { NewShipmentForm } from '../interfaces';
 
 interface PickupStepProps {
-  form: any;
-  updateForm: (updates: any) => void;
+  form: NewShipmentForm;
+  updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
   errors: any;
@@ -30,7 +27,6 @@ const PickupStep: React.FC<PickupStepProps> = ({
   onPrevious,
   errors,
 }) => {
-  const navigation = useNavigation();
   const [activeDateType, setActiveDateType] = useState<'start' | 'end' | null>(
     null,
   );
@@ -38,12 +34,22 @@ const PickupStep: React.FC<PickupStepProps> = ({
   const formatDate = (date: any) => {
     if (!date) return 'Select Date';
     const d = new Date(date);
+    if (isNaN(d.getTime())) return 'Select Date';
     return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}/${d.getFullYear()}`;
   };
 
-  // --- HANDLERS ---
+  const getSafeDateStr = (dateVal: any) => {
+    try {
+      const d = new Date(dateVal);
+      if (!isNaN(d.getTime())) {
+        return d.toISOString().split('T')[0];
+      }
+    } catch (e) {}
+    return new Date().toISOString().split('T')[0];
+  };
+
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
   const handleOpenEnd = useCallback(() => setActiveDateType('end'), []);
   const handleCloseCalendar = useCallback(() => setActiveDateType(null), []);
@@ -65,11 +71,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled" // Important for Google Places
+        keyboardShouldPersistTaps="handled"
       >
-        {/* 1. PROGRESS */}
-
-        {/* 2. HEADER */}
+        {/* HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
           <TouchableOpacity onPress={onPrevious}>
@@ -77,7 +81,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
           </TouchableOpacity>
         </View>
 
-        {/* 3. INSTRUCTION */}
+        {/* INSTRUCTION */}
         <View style={styles.instructionCard}>
           <View style={styles.iconBox}>
             <MapPin size={24} color={COLORS.primary} />
@@ -90,26 +94,25 @@ const PickupStep: React.FC<PickupStepProps> = ({
           </View>
         </View>
 
-        {/* 4. PICKUP LOCATION (Google Places Autocomplete) */}
+        {/* PICKUP LOCATION */}
         <AppText style={styles.inputLabel}>Pickup Location</AppText>
+        <LocationPicker
+          value={form.pickupLocation}
+          placeholder="Pickup Address"
+          onSelect={location => {
+            updateForm({
+              pickupLocation: location.address,
+              pickupLat: location.latitude,
+              pickupLng: location.longitude,
+            });
+          }}
+        />
 
-           <LocationPicker
-            value={form.pickupLocation}
-            placeholder="Pickup Address"
-            onSelect={location => {
-              updateForm({
-                pickupLocation: location.address,
-                pickupLat: location.latitude,
-                pickupLng: location.longitude,
-              });
-            }}
-          />
-         
         {errors.pickupLocation && (
           <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>
         )}
 
-        {/* 5. START DATE */}
+        {/* START DATE */}
         <AppText style={styles.inputLabel}>Pickup Start Date</AppText>
         <TouchableOpacity
           style={styles.selectorField}
@@ -132,7 +135,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
           <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>
         )}
 
-        {/* 6. END DATE */}
+        {/* END DATE */}
         <AppText style={styles.inputLabel}>Pickup End Date</AppText>
         <TouchableOpacity
           style={styles.selectorField}
@@ -151,10 +154,14 @@ const PickupStep: React.FC<PickupStepProps> = ({
           </View>
         </TouchableOpacity>
 
-        {/* FOOTER - Moved inside ScrollView to avoid zIndex issues with dropdown on some Android versions, or keep outside if preferred */}
+        {errors.pickupEndDate && (
+          <AppText style={styles.errorText}>{errors.pickupEndDate}</AppText>
+        )}
+
+        {/* FOOTER */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.prevButton} onPress={onPrevious}>
-            <AppText style={styles.prevButtonText}>Previous</AppText>
+            <AppText style={styles.prevButtonText}>Cancel</AppText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.nextButton} onPress={onNext}>
             <AppText style={styles.nextButtonText}>Next</AppText>
@@ -162,7 +169,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
         </View>
       </ScrollView>
 
-      {/* MODAL */}
+      {/* CALENDAR MODAL */}
       <AppCalendarModal
         visible={activeDateType !== null}
         onClose={handleCloseCalendar}
@@ -170,12 +177,12 @@ const PickupStep: React.FC<PickupStepProps> = ({
         title={activeDateType === 'start' ? 'Pickup Start' : 'Pickup End'}
         initialDate={
           activeDateType === 'start'
-            ? new Date(form.pickupStartDate).toISOString().split('T')[0]
-            : new Date(form.pickupEndDate).toISOString().split('T')[0]
+            ? getSafeDateStr(form.pickupStartDate)
+            : getSafeDateStr(form.pickupEndDate)
         }
         minDate={
           activeDateType === 'end' && form.pickupStartDate
-            ? new Date(form.pickupStartDate).toISOString().split('T')[0]
+            ? getSafeDateStr(form.pickupStartDate)
             : new Date().toISOString().split('T')[0]
         }
       />
@@ -183,45 +190,10 @@ const PickupStep: React.FC<PickupStepProps> = ({
   );
 };
 
-const autocompleteStyles = {
-  container: { flex: 0 },
-  textInput: {
-    height: 55,
-    backgroundColor: COLORS.white,
-    fontFamily: FONTS.medium,
-    fontSize: 15,
-    paddingLeft: 45,
-    paddingRight: 45,
-    color: COLORS.textPrimary,
-  },
-  listView: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.md,
-    marginTop: 2,
-    elevation: 5,
-    zIndex: 1000,
-  },
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scrollView: { flex: 1 },
-  scrollContent: { padding: SPACING.lg, paddingBottom: 100 },
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: SPACING.xl,
-    marginTop: 10,
-  },
-  progressDash: {
-    flex: 1,
-    height: 3,
-    backgroundColor: COLORS.grey300,
-    borderRadius: 2,
-  },
-  activeDash: { backgroundColor: COLORS.primary },
+  scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -269,25 +241,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
   },
 
-  autocompleteWrapper: {
-    zIndex: 10, // Ensures results float over other inputs
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.md,
-  },
-  inputIconLeft: {
-    position: 'absolute',
-    left: 15,
-    top: 18,
-    zIndex: 11,
-  },
-  inputIconRight: {
-    position: 'absolute',
-    right: 15,
-    top: 18,
-    zIndex: 11,
-  },
-
   selectorField: {
     height: 55,
     borderWidth: 1,
@@ -298,7 +251,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
-    zIndex: 1, // Keep lower than autocomplete
   },
   fieldInner: { flexDirection: 'row', alignItems: 'center', flex: 1 },
   iconMargin: { marginRight: 10 },
@@ -340,6 +292,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: COLORS.error,
     fontSize: 12,
+    marginTop: 4,
   },
 });
 

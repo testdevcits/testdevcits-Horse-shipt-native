@@ -17,6 +17,7 @@ import {
   CancelQuoteResponse,
   PayQuoteResponse,
   AcceptQuoteResponse,
+  PublishShipmentResponse,
 } from '../../types/customer';
 import { GetNotificationsResponse } from '../../types/notification';
 
@@ -87,6 +88,10 @@ const customerService = {
         'Content-Type': 'multipart/form-data',
       },
     });
+  },
+
+  publishShipment: async (shipmentId: string): Promise<PublishShipmentResponse> => {
+    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/publish`);
   },
 
   // ... NOtification System

@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
             <ShipmentCardDetailed
               item={item}
               onPress={() => {
-                navigation.navigate('MyShipmentDetails', { item: item });
+                navigation.navigate('MyShipmentDetails', { item: item,quoteId:item?.quoteId });
               }}
             />
           )}

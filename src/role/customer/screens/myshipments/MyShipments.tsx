@@ -88,7 +88,7 @@ const MyShipments = ({ navigation }) => {
           <ShipmentHorizontalCard
             item={item}
             onPress={() => {
-              navigation.navigate('MyShipmentDetails', { item: item });
+              navigation.navigate('MyShipmentDetails', { item: item ,quoteId:item?.quoteId});
             }}
           />
         )}

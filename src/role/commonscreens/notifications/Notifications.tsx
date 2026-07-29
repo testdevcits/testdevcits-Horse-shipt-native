@@ -63,7 +63,7 @@ const Notifications = () => {
 
     return (
         <View style={styles.container}>
-            <AppHeader  showBack={true} title='Notifications'/>
+            <AppHeader showBack={true} title='Notifications' />
             <AppLoader visible={actionLoading} />
 
             {/* 1. Header Segmented Filter */}
@@ -127,3 +127,188 @@ const Notifications = () => {
 };
 
 export default Notifications;
+
+
+// import React, { useMemo } from 'react';
+// import { View, FlatList, TouchableOpacity, RefreshControl, Animated as RNAnimated } from 'react-native';
+// import {
+//     MessageSquare, Truck, Trash2, CheckCircle2,
+//     Bell, BellOff, Info, CreditCard, Tag, Search,
+//     MoreVertical, Check, Archive,
+//     CheckSquare
+// } from 'lucide-react-native';
+// import { RectButton } from 'react-native-gesture-handler';
+// import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+// import moment from 'moment';
+
+// import { COLORS } from '../../../constants';
+// import styles from './styles.notification';
+// import useNotifications from './useNotifications';
+// import { AppHeader, AppLoader, AppText, EmptyState } from '../../../components';
+
+// const Notifications = () => {
+//     const {
+//         notifications, loading, refreshing, actionLoading,
+//         activeFilter, setActiveFilter, selectedIds,
+//         toggleSelect, selectAll, handleMarkRead, handleDelete,
+//         fetchNotifications, clearSelection
+//     } = useNotifications();
+
+//     // Grouping Logic: Today, Yesterday, Earlier
+//     const groupedNotifications = useMemo(() => {
+//         const groups: { [key: string]: any[] } = {
+//             Today: [],
+//             Yesterday: [],
+//             Earlier: [],
+//         };
+
+//         notifications.forEach(n => {
+//             const date = moment(n.createdAt);
+//             if (date.isSame(moment(), 'day')) groups.Today.push(n);
+//             else if (date.isSame(moment().subtract(1, 'days'), 'day')) groups.Yesterday.push(n);
+//             else groups.Earlier.push(n);
+//         });
+
+//         return Object.keys(groups)
+//             .filter(key => groups[key].length > 0)
+//             .map(key => ({ title: key, data: groups[key] }));
+//     }, [notifications]);
+
+//     const getIcon = (type: string) => {
+//         switch (type) {
+//             case 'chat_message': return { Icon: MessageSquare, color: '#3B82F6' };
+//             case 'shipment_update': return { Icon: Truck, color: COLORS.goldPrimary };
+//             case 'payment': return { Icon: CreditCard, color: '#10B981' };
+//             case 'offer': return { Icon: Tag, color: '#8B5CF6' };
+//             default: return { Icon: Info, color: COLORS.grey500 };
+//         }
+//     };
+
+//     const renderRightActions = (id: string, progress: RNAnimated.AnimatedInterpolation<number>) => {
+//         const trans = progress.interpolate({
+//             inputRange: [0, 1],
+//             outputRange: [80, 0],
+//         });
+//         return (
+//             <View style={styles.swipeContainer}>
+//                 <RNAnimated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+//                     <RectButton style={[styles.swipeAction, { backgroundColor: COLORS.error }]} onPress={() => handleDelete(id)}>
+//                         <Trash2 size={20} color={COLORS.white} />
+//                     </RectButton>
+//                 </RNAnimated.View>
+//             </View>
+//         );
+//     };
+
+//     const renderNotification = ({ item }: any) => {
+//         const isSelected = selectedIds.includes(item._id);
+//         const isSelectionMode = selectedIds.length > 0;
+//         const { Icon, color } = getIcon(item.type);
+
+//         return (
+//             <ReanimatedSwipeable
+//                 renderRightActions={(prog) => renderRightActions(item._id, prog)}
+//             >
+//                 <TouchableOpacity
+//                     style={[styles.card, !item.read && styles.unreadCard, isSelected && styles.selectedCard]}
+//                     onPress={() => isSelectionMode ? toggleSelect(item._id) : null}
+//                     onLongPress={() => {
+//                         toggleSelect(item._id);
+//                     }}
+//                     activeOpacity={0.9}
+//                 >
+//                     <View style={styles.cardInner}>
+//                         {isSelectionMode && (
+//                             <View style={styles.selectionCircle}>
+//                                 <View style={[styles.checkbox, isSelected && styles.checkboxActive]}>
+//                                     {isSelected && <Check size={14} color={COLORS.white} strokeWidth={3} />}
+//                                 </View>
+//                             </View>
+//                         )}
+
+//                         <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
+//                             <Icon size={22} color={color} />
+//                         </View>
+
+//                         <View style={styles.contentContainer}>
+//                             <View style={styles.row}>
+//                                 <AppText style={[styles.title, !item.read && styles.boldText]} numberOfLines={1}>
+//                                     {item.title}
+//                                 </AppText>
+//                                 <AppText style={styles.time}>{moment(item.createdAt).fromNow(true)}</AppText>
+//                             </View>
+//                             <AppText style={styles.message} numberOfLines={2}>{item.message}</AppText>
+//                         </View>
+
+//                         {!item.read && <View style={styles.indicator} />}
+//                     </View>
+//                 </TouchableOpacity>
+//             </ReanimatedSwipeable>
+//         );
+//     };
+
+//     return (
+//         <View style={styles.container}>
+//             <AppHeader showBack title="Activity" />
+//             <AppLoader visible={actionLoading} />
+
+//             {/* Filter Tabs */}
+//             <View style={styles.tabWrapper}>
+//                 <View style={styles.segmentedControl}>
+//                     {['all', 'unread'].map((tab) => (
+//                         <TouchableOpacity
+//                             key={tab}
+//                             style={[styles.tabBtn, activeFilter === tab && styles.tabBtnActive]}
+//                             onPress={() => setActiveFilter(tab as any)}
+//                         >
+//                             <AppText style={[styles.tabLabel, activeFilter === tab && styles.tabLabelActive]}>
+//                                 {tab === 'all' ? 'All Activity' : 'Unread'}
+//                             </AppText>
+//                         </TouchableOpacity>
+//                     ))}
+//                 </View>
+//                 <TouchableOpacity style={styles.searchBtn}>
+//                     <Search size={20} color={COLORS.grey500} />
+//                 </TouchableOpacity>
+//             </View>
+
+//             {/* Bulk Action Toolbar (Floating) */}
+//             {selectedIds.length > 0 && (
+//                 <RNAnimated.View style={styles.floatingToolbar}>
+//                     <TouchableOpacity onPress={clearSelection} style={styles.toolbarClose}>
+//                         <CheckSquare size={20} color={COLORS.white} />
+//                         <AppText style={styles.toolbarText}>{selectedIds.length} Selected</AppText>
+//                     </TouchableOpacity>
+//                     <View style={styles.toolbarActions}>
+//                         <TouchableOpacity onPress={handleMarkRead} style={styles.actionIcon}><Archive size={20} color={COLORS.white} /></TouchableOpacity>
+//                         <TouchableOpacity onPress={handleDelete} style={styles.actionIcon}><Trash2 size={20} color={COLORS.white} /></TouchableOpacity>
+//                     </View>
+//                 </RNAnimated.View>
+//             )}
+
+//             <FlatList
+//                 data={groupedNotifications}
+//                 keyExtractor={(item) => item.title}
+//                 renderItem={({ item }) => (
+//                     <View>
+//                         <View style={styles.sectionHeader}>
+//                             <AppText style={styles.sectionTitle}>{item.title}</AppText>
+//                         </View>
+//                         <FlatList
+//                             data={item.data}
+//                             keyExtractor={(n) => n._id}
+//                             renderItem={renderNotification}
+//                         />
+//                     </View>
+//                 )}
+//                 contentContainerStyle={styles.listPadding}
+//                 refreshControl={
+//                     <RefreshControl refreshing={refreshing} onRefresh={fetchNotifications} tintColor={COLORS.goldPrimary} />
+//                 }
+//                 ListEmptyComponent={<EmptyState icon={BellOff} title="All quiet for now" message="We'll notify you about shipment updates and offers." />}
+//             />
+//         </View>
+//     );
+// };
+
+// export default Notifications;

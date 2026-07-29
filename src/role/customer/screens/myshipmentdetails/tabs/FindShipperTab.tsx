@@ -10,6 +10,7 @@ import { MapPin, Mail, Star, Check } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
+import imageIndex from '../../../../../assets/images/imageIndex';
 
 const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
   const [inviting, setInviting] = useState(false);
@@ -24,7 +25,7 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
     if (inviting) return;
     setInviting(true);
     try {
-      const res = await customerService.inviteShipper(shipmentId, profile.id);
+      const res = await customerService.inviteShipper(shipmentId, profile?.id);
       if (res) {
         setIsInvited(true);
       }
@@ -39,21 +40,25 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
     <View style={styles.card}>
       <View style={styles.headerRow}>
         <Image
-          source={{
-            uri: profile.profileImage || 'https://via.placeholder.com/150',
-          }}
+          source={
+            profile?.profileImage
+              ? {
+                  uri: profile?.profileImage,
+                }
+              : imageIndex.AccountIcon
+          }
           style={styles.avatar}
         />
         <View style={styles.headerInfo}>
           <View style={styles.nameRow}>
-            <AppText style={styles.shipperName}>{profile.name}</AppText>
+            <AppText style={styles.shipperName}>{profile?.name}</AppText>
             <View style={styles.ratingBadge}>
               <Star
                 size={12}
                 color={COLORS.goldPrimary}
                 fill={COLORS.goldPrimary}
               />
-              <AppText style={styles.ratingText}>{profile.rating || 0}</AppText>
+              <AppText style={styles.ratingText}>{profile?.rating || 0}</AppText>
             </View>
           </View>
           <AppText style={styles.shipperTitle}>Horse transport shipper</AppText>
@@ -64,13 +69,13 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
         <View style={styles.infoLine}>
           <MapPin size={16} color={COLORS.goldPrimary} />
           <AppText style={styles.infoText} numberOfLines={1}>
-            {profile.region || 'N/A'}
+            {profile?.region || 'N/A'}
           </AppText>
         </View>
         <View style={styles.infoLine}>
           <Mail size={16} color={COLORS.goldPrimary} />
           <AppText style={styles.infoText} numberOfLines={1}>
-            {profile.email || 'N/A'}
+            {profile?.email || 'N/A'}
           </AppText>
         </View>
       </View>
@@ -79,13 +84,13 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
         <View style={styles.statBox}>
           <AppText style={styles.statLabel}>COMPLETED</AppText>
           <AppText style={styles.statValue}>
-            {profile.completedShipments || 0}
+            {profile?.completedShipments || 0}
           </AppText>
         </View>
         <View style={styles.statBox}>
           <AppText style={styles.statLabel}>REVIEWS</AppText>
           <AppText style={styles.statValue}>
-            {profile.totalReviews || 0}
+            {profile?.totalReviews || 0}
           </AppText>
         </View>
       </View>
@@ -172,11 +177,11 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
 
       {profiles.map(profile => (
         <ShipperProfileCard
-          key={profile.id}
+          key={profile?.id}
           profile={profile}
           shipmentId={shipmentId}
           // Ensure invited is treated as an array of IDs
-          alreadyInvited={invited?.includes(profile.id)}
+          alreadyInvited={invited?.includes(profile?.id)}
         />
       ))}
 

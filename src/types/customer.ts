@@ -345,3 +345,9 @@ export interface AcceptQuoteResponse {
   message: string;
   data: any; // This will be your updated Quote object
 }
+
+export interface PublishShipmentResponse {
+  success: boolean;
+  message: string;
+  data?: any; // This will return the updated shipment object with status 'published'
+}

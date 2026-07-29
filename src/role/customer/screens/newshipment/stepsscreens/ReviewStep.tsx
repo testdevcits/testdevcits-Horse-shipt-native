@@ -14,11 +14,13 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText } from '../../../../../components';
+import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 
 interface ReviewStepProps {
-  form: any;
+  form: NewShipmentForm;
   onPublish: () => void;
   onSaveDraft: () => void;
   onEditSection: (stepIndex: number) => void;
@@ -30,11 +32,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   onSaveDraft,
   onEditSection,
 }) => {
+  const navigation = useNavigation();
   const [isHorseExpanded, setIsHorseExpanded] = useState(true);
 
   const formatDate = (date: any) => {
     if (!date) return 'Not set';
     const d = new Date(date);
+    if (isNaN(d.getTime())) return 'Not set';
     return d.toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
@@ -55,15 +59,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* 2. HEADER */}
+        {/* HEADER */}
         <View style={styles.titleRow}>
           <AppText style={styles.mainTitle}>New Shipment</AppText>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <AppText style={styles.cancelText}>Cancel</AppText>
           </TouchableOpacity>
         </View>
 
-        {/* 3. INSTRUCTIONAL CARD */}
+        {/* INSTRUCTIONAL CARD */}
         <View style={styles.instructionCard}>
           <View style={styles.iconBox}>
             <Star size={24} color={COLORS.primary} fill={COLORS.primary} />
@@ -78,14 +82,14 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           </View>
         </View>
 
-        {/* 4. TOTAL HORSES BANNER */}
+        {/* TOTAL HORSES BANNER */}
         <View style={styles.banner}>
           <AppText style={styles.bannerText}>
             Total horses : {form?.numberOfHorses || 1}
           </AppText>
         </View>
 
-        {/* 5. PICKUP & DELIVERY CARD */}
+        {/* PICKUP & DELIVERY CARD */}
         <View style={styles.summaryCard}>
           {/* Pickup Section */}
           <View style={styles.sectionHeader}>
@@ -126,11 +130,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             onPress={() => onEditSection(0)}
           >
             <Edit3 size={16} color={COLORS.white} />
-            <AppText style={styles.editBtnText}>Edit details</AppText>
+            <AppText style={styles.editBtnText}>Edit Pickup & Delivery</AppText>
           </TouchableOpacity>
         </View>
 
-        {/* 6. HORSE DETAILS ACCORDION */}
+        {/* HORSE DETAILS ACCORDION */}
         <TouchableOpacity
           style={styles.accordionHeader}
           onPress={() => setIsHorseExpanded(!isHorseExpanded)}
@@ -146,49 +150,98 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
         {isHorseExpanded && (
           <View style={styles.horseDetailsContainer}>
-            <AppText style={styles.horseSubHeader}>HORSE 1</AppText>
+            {form.horses.map((horse: NewShipmentHorse, index: number) => (
+              <View
+                key={index}
+                style={{
+                  marginBottom: 20,
+                  borderBottomWidth: index !== form.horses.length - 1 ? 1 : 0,
+                  borderBottomColor: COLORS.divider,
+                  paddingBottom: 10,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <AppText style={styles.horseSubHeader}>
+                    HORSE {index + 1}
+                  </AppText>
+                  <TouchableOpacity onPress={() => onEditSection(2)}>
+                    <AppText
+                      style={{
+                        fontSize: 12,
+                        fontFamily: FONTS.medium,
+                        color: COLORS.primary,
+                      }}
+                    >
+                      Edit
+                    </AppText>
+                  </TouchableOpacity>
+                </View>
 
-            <InfoRow
-              label="Registered Name"
-              value={form?.horses[0].registeredName}
-            />
-            <InfoRow label="Barn Name" value={form?.horses[0].barnName} />
-            <InfoRow label="Breed" value={form?.horses[0].breed} />
-            <InfoRow label="Colour" value={form?.horses[0].colour} />
-            <InfoRow label="Age" value={`${form?.horses[0].age} years old`} />
-            <InfoRow label="Sex" value={form?.horses[0].sex} />
-            <InfoRow label="Height" value={`${form?.horses[0].height} hands`} />
-            <InfoRow
-              label="Special Needs"
-              value={form?.hasSpecialRequirement ? 'Yes' : 'No'}
-            />
+                <InfoRow
+                  label="Registered Name"
+                  value={horse.registeredName}
+                />
+                {!!horse.barnName && (
+                  <InfoRow label="Barn Name" value={horse.barnName} />
+                )}
+                <InfoRow label="Breed" value={horse.breed} />
+                <InfoRow label="Sex" value={horse.sex} />
+                {!!horse.age && (
+                  <InfoRow label="Age" value={`${horse.age} years`} />
+                )}
+                {!!horse.colour && (
+                  <InfoRow label="Colour" value={horse.colour} />
+                )}
+                <InfoRow
+                  label="Stall Size"
+                  value={horse.requestedStallSize || 'Box'}
+                />
+
+                {horse.photo?.uri && (
+                  <Image
+                    source={{ uri: horse.photo.uri }}
+                    style={styles.horseImagePreview}
+                    resizeMode="cover"
+                  />
+                )}
+              </View>
+            ))}
+
+            {form.hasSpecialRequirement && (
+              <View style={styles.notesContainer}>
+                <AppText style={styles.infoLabel}>
+                  Special Requirements:{' '}
+                </AppText>
+                <AppText style={styles.notesText}>
+                  {form.specialRequirementDetails || 'None details provided.'}
+                </AppText>
+              </View>
+            )}
 
             <View style={styles.notesContainer}>
               <AppText style={styles.infoLabel}>
-                Additional Information:{' '}
+                General Shipment Notes:{' '}
               </AppText>
               <AppText style={styles.notesText}>
-                {form?.generalNotes || 'None provided.'}
+                {form.additionalInfo || 'None provided.'}
               </AppText>
             </View>
-
-            {form?.horses[0]?.photo && (
-              <Image
-                source={{ uri: form?.horses[0]?.photo }}
-                style={styles.horseImagePreview}
-                resizeMode="cover"
-              />
-            )}
           </View>
         )}
 
-        {/* 7. FOOTER BUTTONS */}
+        {/* FOOTER BUTTONS */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.draftBtn} onPress={onSaveDraft}>
             <AppText style={styles.draftBtnText}>Save as draft</AppText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.publishBtn} onPress={onPublish}>
-            <AppText style={styles.publishBtnText}>Publish</AppText>
+            <AppText style={styles.publishBtnText}>Save & Publish</AppText>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -200,20 +253,6 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scrollView: { flex: 1 },
   scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
-
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: SPACING.xl,
-    marginTop: 10,
-  },
-  progressDash: {
-    flex: 1,
-    height: 3,
-    backgroundColor: COLORS.grey300,
-    borderRadius: 2,
-  },
-  activeDash: { backgroundColor: COLORS.primary },
 
   titleRow: {
     flexDirection: 'row',
@@ -263,7 +302,6 @@ const styles = StyleSheet.create({
   },
   bannerText: { fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
 
-  // Summary Card
   summaryCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
@@ -306,7 +344,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  // Accordion
   accordionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -353,7 +390,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  // Footer
   footer: {
     flexDirection: 'row',
     gap: SPACING.md,

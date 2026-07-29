@@ -25,16 +25,11 @@ export const StepSchemas = [
         registeredName: Yup.string().required('Registered name is required'),
         breed: Yup.string().required('Breed is required'),
         sex: Yup.string().required('Sex is required'),
-
-        //  photo: Yup.mixed().required('Photo is required'),
-        // coggins: Yup.mixed().required('Coggins is required'),
-        // healthCert: Yup.mixed().required('Health Certificate is required'),
-        
       }),
     ),
   }),
   // Step 3: Documents
-  Yup.object().shape({
-    // Documents can be optional or required based on business logic
-  }),
+  Yup.object().shape({}),
+  // Step 4: Review
+  Yup.object().shape({}),
 ];

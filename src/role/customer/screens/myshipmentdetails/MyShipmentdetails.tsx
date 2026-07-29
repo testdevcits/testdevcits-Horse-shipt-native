@@ -26,7 +26,7 @@ import { getFormattedDate } from '../../../../utils/helpers';
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
 const MyShipmentDetails = ({ route }: any) => {
-  const { item } = route.params;
+  const { item,quoteId } = route.params;
   const [activeTab, setActiveTab] = useState('Overview');
   const [isRatingVisible, setIsRatingVisible] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
@@ -42,6 +42,9 @@ const MyShipmentDetails = ({ route }: any) => {
     onRefresh,
   } = useShipmentDetails(item._id);
 
+
+ 
+
   const data = shipment || item;
 
   if (loading && !refreshing) return <AppLoader visible={true} />;
@@ -50,7 +53,7 @@ const MyShipmentDetails = ({ route }: any) => {
     switch (activeTab) {
       case 'Overview':
         return (
-          <OverviewTab data={data} onReview={() => setIsRatingVisible(true)} />
+          <OverviewTab data={data} onReview={() => setIsRatingVisible(true)} quoteId={quoteId} />
         );
       case 'Quotes':
         return <QuotesTab quotes={quotes} onSelectQuote={setSelectedQuote} />;
@@ -61,6 +64,7 @@ const MyShipmentDetails = ({ route }: any) => {
           <FindShipperTab
             matching={matchingShippers}
             invited={invitedShippers}
+            shipmentId={item?._id}
           />
         );
       default:

@@ -57,11 +57,11 @@ import Payments from '../role/customer/screens/payments/Payments';
 import PaymentDetails from '../role/customer/screens/paymentdetails/PaymentDetails';
 import ReviewsScreen from '../role/customer/screens/reviews/ReviewsScreen';
 import MapScreen from '../role/commonscreens/mapscreen/MapScreen';
-import PickupStep from '../role/customer/screens/newshipment/stepsscreens/PickupStep';
 import TopShippersScreen from '../role/customer/screens/topratedshippers/TopShippersScreen';
 import ShipperDetail from '../role/customer/screens/topratedshippers/ShipperDetail';
 import Profile from '../role/customer/screens/profile/Profile';
 import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
+import LiveTrackingScreen from '../role/customer/screens/tracking/LiveTrackingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,7 +70,6 @@ const CustomerNavigation = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Drawer is now the root of the customer flow */}
       <Stack.Screen name="CustomerDrawer" component={CustomerDrawer} />
-
       {/* Screens that should NOT have a drawer/tabs (Full screen) */}
       <Stack.Screen name="AddEditHorse" component={AddEditHorse} />
       <Stack.Screen name="MyShipmentDetails" component={MyShipmentDetails} />
@@ -82,12 +81,10 @@ const CustomerNavigation = () => {
       <Stack.Screen name="TopShippers" component={TopShippersScreen} />
       <Stack.Screen name="ShipperDetail" component={ShipperDetail} />
       <Stack.Screen name="MapScreen" component={MapScreen} />
-      <Stack.Screen name="PickupStep" component={PickupStep} />
       <Stack.Screen name="Profile" component={Profile} />
-
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
-
-
+      <Stack.Screen name="LiveTracking" component={LiveTrackingScreen} />
+        
     </Stack.Navigator>
   );
 };
