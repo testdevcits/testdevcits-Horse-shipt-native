@@ -348,7 +348,7 @@ const LocationPickerCore: React.FC<{
       )}
 
       {/* SEARCH HEADER */}
-      <SafeAreaView style={styles.searchHeader}>
+      <View style={styles.searchHeader}>
         <View style={[styles.searchBox, isSearchFocused && styles.searchBoxActive]}>
           <TouchableOpacity 
             onPress={isSearchFocused ? () => setIsSearchFocused(false) : onClose}
@@ -406,7 +406,7 @@ const LocationPickerCore: React.FC<{
             />
           </View>
         )}
-      </SafeAreaView>
+      </View>
 
       {/* CONTROLS */}
       {!isSearchFocused && (

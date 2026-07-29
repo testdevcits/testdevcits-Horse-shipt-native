@@ -36,6 +36,14 @@ const customerService = {
   }): Promise<CustomerProfileResponse> => {
     return axiosClient.put('/api/customer/profile-details', payload);
   },
+
+  updateProfileImage: async (formData: FormData): Promise<any> => {
+  return axiosClient.put('/api/customer/profile-image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+},
   /**
    * Fetch all horses belonging to the logged-in customer
    */

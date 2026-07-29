@@ -11,7 +11,8 @@ const ChatListCard = ({
   item: any;
   onPress: () => void;
 }) => {
-  return (
+
+   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.7} onPress={onPress}>
       {/* 1. Left Status Dot */}
       <View style={styles.indicatorContainer}>

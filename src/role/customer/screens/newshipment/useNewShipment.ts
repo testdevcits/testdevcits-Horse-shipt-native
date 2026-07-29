@@ -29,7 +29,9 @@ const useNewShipment = () => {
   const [errors, setErrors] = useState<any>({});
   const [isPublishModalVisible, setIsPublishModalVisible] = useState(false);
   const [isDraftModalVisible, setIsDraftModalVisible] = useState(false);
-  const [createdShipmentId, setCreatedShipmentId] = useState<string | null>(null);
+  const [createdShipmentId, setCreatedShipmentId] = useState<string | null>(
+    null,
+  );
   const navigation = useNavigation();
 
   const [form, setForm] = useState<NewShipmentForm>({
@@ -79,7 +81,49 @@ const useNewShipment = () => {
       return newState;
     });
     setErrors({});
-  }, []);
+  }, []); 
+
+  const INITIAL_FORM_STATE: NewShipmentForm = {
+  pickupLocation: '',
+  pickupLat: 0,
+  pickupLng: 0,
+  pickupTimeOption: 'between',
+  pickupStartDate: new Date(),
+  pickupEndDate: new Date(),
+  deliveryLocation: '',
+  deliveryLat: 0,
+  deliveryLng: 0,
+  deliveryTimeOption: 'between',
+  deliveryStartDate: new Date(),
+  deliveryEndDate: new Date(),
+  numberOfHorses: 1,
+  additionalInfo: '',
+  recipientEmail: '',
+  hasSpecialRequirement: false,
+  specialRequirementDetails: '',
+  horses: [{ 
+    registeredName: '',
+    barnName: '',
+    breed: '',
+    colour: '',
+    age: '',
+    sex: '',
+    requestedStallSize: 'Box',
+    generalInfo: '',
+    photo: null,
+    coggins: null,
+    healthCert: null,
+  }],
+};
+
+  const resetAllData = useCallback(() => {
+  setForm(INITIAL_FORM_STATE);
+  setCurrentStep(0);
+  setCreatedShipmentId(null);
+  setErrors({});
+  setIsPublishModalVisible(false);
+  setIsDraftModalVisible(false);
+}, []);
 
   const pickImage = async (index: number) => {
     try {
@@ -285,10 +329,15 @@ const useNewShipment = () => {
         if (success && shipment?._id) {
           shipmentId = shipment._id;
           setCreatedShipmentId(shipment._id);
+          navigation.goBack();
         } else {
-          Alert.alert('Error', response?.message || 'Failed to create shipment.');
+          Alert.alert(
+            'Error',
+            response?.message || 'Failed to create shipment.',
+          );
           setLoading(false);
           setIsPublishModalVisible(false);
+          navigation.goBack();
           return false;
         }
       }
@@ -303,6 +352,8 @@ const useNewShipment = () => {
             onPress: () => navigation.goBack(),
           },
         ]);
+         resetAllData(); // <--- THIS RESETS EVERYTHING
+        navigation.goBack()
         return true;
       }
       return false;
@@ -312,6 +363,7 @@ const useNewShipment = () => {
         'Error',
         error?.response?.data?.message || 'Failed to publish shipment',
       );
+      navigation.goBack()
       return false;
     } finally {
       setLoading(false);

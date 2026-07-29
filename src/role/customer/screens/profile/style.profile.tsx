@@ -114,6 +114,14 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   showMoreText: { color: COLORS.textPrimary, fontFamily: FONTS.medium },
+  uploadOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
 });
 
 

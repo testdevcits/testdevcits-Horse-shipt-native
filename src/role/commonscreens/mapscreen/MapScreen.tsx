@@ -128,7 +128,7 @@ const MapScreen = ({ navigation }: any) => {
       </MapView>
 
       {/* 2. TOP SEARCH UI */}
-      <SafeAreaView style={styles.searchContainer}>
+      <View style={styles.searchContainer}>
         <View style={styles.searchHeader}>
           <TouchableOpacity
             style={styles.backButton}
@@ -167,10 +167,10 @@ const MapScreen = ({ navigation }: any) => {
                 </View>
                 <View style={{ flex: 1 }}>
                   <AppText style={styles.searchRowTitle} numberOfLines={1}>
-                    {data.structured_formatting.main_text}
+                    {data?.structured_formatting.main_text}
                   </AppText>
                   <AppText style={styles.searchRowSub} numberOfLines={1}>
-                    {data.structured_formatting.secondary_text}
+                    {data?.structured_formatting.secondary_text}
                   </AppText>
                 </View>
               </Pressable>
@@ -182,7 +182,7 @@ const MapScreen = ({ navigation }: any) => {
             )}
           />
         </View>
-      </SafeAreaView>
+      </View>
 
       {/* 3. FLOATING TOOLS */}
       <View style={styles.mapTools}>

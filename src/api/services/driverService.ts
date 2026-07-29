@@ -26,11 +26,22 @@ const verifyDeliveryOtp = async (
   return axiosClient.post(`/api/driver/driver/shipment/${shipmentId}/verify-delivery-otp`, { otp });
 };
 
+
+// Start trip
+const startTrip = async (
+  quoteId: string
+): Promise<{ success: boolean; message: string }> => {
+  return axiosClient.post('/api/shipper/driver/start-trip', {
+    quoteId,
+  });
+};
+
 const driverService = {
   getMe,
   updateLocation,
   sendDeliveryOtp,
   verifyDeliveryOtp,
+  startTrip
 };
 
 export default driverService;

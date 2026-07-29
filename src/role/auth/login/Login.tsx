@@ -1,5 +1,3 @@
- 
-
 import React, { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   View,
@@ -24,6 +22,7 @@ import { loginUser } from '../../../redux/slices/authSlice';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const Login = () => {
   const navigation = useNavigation<any>();
@@ -40,8 +39,12 @@ const Login = () => {
 
   // 4. Keyboard Listeners Logic
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
+      setIsKeyboardOpen(true),
+    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
+      setIsKeyboardOpen(false),
+    );
 
     return () => {
       showSubscription.remove();
@@ -70,8 +73,30 @@ const Login = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const userRole = await AsyncStorage.getItem("@user_role")
-      await dispatch(loginUser({ credentials: { email: email.trim().toLowerCase(), password, role: userRole }, role: userRole })).unwrap();
+      const userRole = await AsyncStorage.getItem('@user_role');
+      // Use a falsy check to handle null, undefined, and "" all at once
+      if (!userRole || userRole.trim() === '') {
+        Toast.show({
+          type: 'info',
+          text1: 'Role Required',
+          text2: 'Please select your role to continue.',
+          position: 'bottom',
+        });
+
+        // Use replace so the user cannot swipe back to the restricted screen
+        navigation.replace('RoleSelection');
+      } else {
+        await dispatch(
+          loginUser({
+            credentials: {
+              email: email.trim().toLowerCase(),
+              password,
+              role: userRole,
+            },
+            role: userRole,
+          }),
+        ).unwrap();
+      }
     } catch (err: any) {
       Alert.alert('Authentication Error', err || 'Invalid credentials');
     } finally {
@@ -81,14 +106,20 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
       {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}
       <ImageBackground
         source={imageIndex.HorseBg}
         style={[
           styles.headerImage,
-          { height: isKeyboardOpen ? SCREEN_HEIGHT * 0.20 : SCREEN_HEIGHT * 0.45 }
+          {
+            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+          },
         ]}
         resizeMode="cover"
       >
@@ -108,8 +139,11 @@ const Login = () => {
             </View>
           </View> */}
 
-          <Image source={imageIndex.Logo} style={styles.logoIcon} resizeMode="contain" />
-
+          <Image
+            source={imageIndex.Logo}
+            style={styles.logoIcon}
+            resizeMode="contain"
+          />
 
           <ScrollView
             contentContainerStyle={styles.scrollContent}
@@ -119,7 +153,8 @@ const Login = () => {
             <View style={styles.textHeader}>
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
               <AppText style={styles.subtitle}>
-                Sign in to manage your shipments, track your horses in real time, and access trusted transportation services.
+                Sign in to manage your shipments, track your horses in real
+                time, and access trusted transportation services.
               </AppText>
             </View>
 
@@ -127,7 +162,10 @@ const Login = () => {
               label="Email Address"
               placeholder="antestmail@123.com"
               value={email}
-              onChangeText={(t) => { setEmail(t); setErrors(p => ({ ...p, email: '' })); }}
+              onChangeText={t => {
+                setEmail(t);
+                setErrors(p => ({ ...p, email: '' }));
+              }}
               keyboardType="email-address"
               autoCapitalize="none"
               error={errors.email}
@@ -138,25 +176,42 @@ const Login = () => {
               label="Password"
               placeholder="••••••••"
               value={password}
-              onChangeText={(t) => { setPassword(t); setErrors(p => ({ ...p, password: '' })); }}
+              onChangeText={t => {
+                setPassword(t);
+                setErrors(p => ({ ...p, password: '' }));
+              }}
               isPassword={!isPasswordVisible}
               error={errors.password}
               leftIcon={<Lock size={20} color={COLORS.textSecondary} />}
               rightIcon={
-                <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                  {isPasswordVisible ? <EyeOff size={20} color={COLORS.textSecondary} /> : <Eye size={20} color={COLORS.textSecondary} />}
+                <TouchableOpacity
+                  onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                >
+                  {isPasswordVisible ? (
+                    <EyeOff size={20} color={COLORS.textSecondary} />
+                  ) : (
+                    <Eye size={20} color={COLORS.textSecondary} />
+                  )}
                 </TouchableOpacity>
               }
             />
 
             <View style={styles.utilRow}>
-              <TouchableOpacity style={styles.checkboxRow} onPress={() => setRememberMe(!rememberMe)}>
+              <TouchableOpacity
+                style={styles.checkboxRow}
+                onPress={() => setRememberMe(!rememberMe)}
+              >
                 <TouchableOpacity
                   style={styles.checkboxRow}
                   onPress={() => setRememberMe(!rememberMe)}
                   activeOpacity={0.7}
                 >
-                  <View style={[styles.checkbox, rememberMe && styles.checkboxActive]}>
+                  <View
+                    style={[
+                      styles.checkbox,
+                      rememberMe && styles.checkboxActive,
+                    ]}
+                  >
                     {rememberMe && (
                       <Check
                         size={14}
@@ -168,16 +223,27 @@ const Login = () => {
                 </TouchableOpacity>
                 <AppText style={styles.utilText}>Remember me</AppText>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ForgotPassword')}
+              >
                 <AppText style={styles.forgotText}>Forgot Password?</AppText>
               </TouchableOpacity>
             </View>
 
-            <AppButton title="Sign In" isLoading={isLoading} onPress={handleSignIn} buttonStyle={styles.signInBtn} />
+            <AppButton
+              title="Sign In"
+              isLoading={isLoading}
+              onPress={handleSignIn}
+              buttonStyle={styles.signInBtn}
+            />
 
             <View style={styles.footer}>
-              <AppText style={styles.footerText}>Don't have an account? </AppText>
-              <TouchableOpacity onPress={() => navigation.navigate('SignupFlowScreen')}>
+              <AppText style={styles.footerText}>
+                Don't have an account?{' '}
+              </AppText>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SignupFlowScreen')}
+              >
                 <AppText style={styles.footerLink}>Create an account</AppText>
               </TouchableOpacity>
             </View>

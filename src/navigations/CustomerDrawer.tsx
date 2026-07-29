@@ -9,6 +9,7 @@ import Profile from '../role/customer/screens/profile/Profile';
 import HomeScreen from '../role/customer/screens/home/HomeScreen';
 import MyShipments from '../role/customer/screens/myshipments/MyShipments';
 import ShipperList from '../role/customer/screens/chats/Shipperlist';
+import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,8 +32,9 @@ const CustomerDrawer = () => {
 
       <Drawer.Screen name="Settings" component={NotificationSettings} />
       <Drawer.Screen name="Profile" component={Profile} />
-
-
+      <Drawer.Screen name="HelpCenter" component={HelpCenter} />
+      <Drawer.Screen name="Chats" component={ShipperList} />
+      <Drawer.Screen name="Shipments" component={MyShipments} />
     </Drawer.Navigator>
   );
 };

@@ -96,7 +96,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             label="Help Center"
             iconSource={imageIndex.Help}
             onPress={() => {
-              /* Handle Help action */
+              navigation.navigate('HelpCenter');
             }}
             isLast={true}
           />

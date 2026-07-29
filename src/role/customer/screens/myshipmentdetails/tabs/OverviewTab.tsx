@@ -176,6 +176,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
             onPress={() =>
               navigation.navigate('LiveTracking', { shipmentId: quoteId })
             }
+            buttonStyle={{marginTop:10}}
           />
         )}
       </View>

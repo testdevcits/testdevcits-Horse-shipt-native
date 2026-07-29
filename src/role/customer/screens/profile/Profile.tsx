@@ -214,6 +214,7 @@ import {
   Alert,
   StyleSheet,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import { MessageCircle, PencilLine, Star, User, X } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, RADIUS } from '../../../../constants';
@@ -229,7 +230,14 @@ import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 
 const Profile = ({ navigation }: any) => {
-  const { profile, loading, isUpdating, updateProfile } = useProfile();
+  const {
+    profile,
+    loading,
+    isUpdating,
+    updateProfile,
+    uploading,
+    uploadAvatar,
+  } = useProfile();
   const [activeTab, setActiveTab] = useState('Profile');
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
@@ -294,29 +302,41 @@ const Profile = ({ navigation }: any) => {
           {/* Avatar Section */}
           <View style={styles.avatarSection}>
             <View style={styles.imageWrapper}>
-              {profile?.profileImage ? (
+              {/* Profile Image Logic - Handles nested .url from your JSON */}
+              {profile?.profileImage?.url ? (
                 <Image
-                  source={{ uri: profile.profileImage }}
+                  source={{ uri: profile.profileImage.url }}
                   style={styles.avatar}
                 />
               ) : (
-                <View
-                  style={[
-                    styles.avatar,
-                    {
-                      backgroundColor: COLORS.grey200,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    },
-                  ]}
-                >
-                  <User size={50} color={COLORS.grey400} />
+                <View style={[styles.avatar, styles.placeholderAvatar]}>
+                  <User size={40} color={COLORS.grey400} />
+                </View>
+              )}
+
+              {/* Loader Overlay: Shown only during upload */}
+              {uploading && (
+                <View style={styles.uploadOverlay}>
+                  <ActivityIndicator color={COLORS.white} size="small" />
                 </View>
               )}
             </View>
-            <TouchableOpacity style={styles.editPictureBtn}>
-              <PencilLine size={16} color={COLORS.textPrimary} />
-              <Text style={styles.editPictureText}>Edit picture</Text>
+
+            {/* Edit Button */}
+            <TouchableOpacity
+              onPress={uploadAvatar}
+              style={[styles.editPictureBtn, uploading && { opacity: 0.7 }]}
+              disabled={uploading}
+              activeOpacity={0.8}
+            >
+              {uploading ? (
+                <Text style={styles.editPictureText}>Processing...</Text>
+              ) : (
+                <>
+                  <PencilLine size={16} color={COLORS.textPrimary} />
+                  <Text style={styles.editPictureText}>Edit picture</Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -460,6 +480,7 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
   },
   saveBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: 16 },
+   
 });
 
 export default Profile;

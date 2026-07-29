@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import customerService from '../../../../api/services/customerService';
 import { CustomerProfileData } from '../../../../types/customer';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<CustomerProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+    const [uploading, setUploading] = useState(false);
+
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -40,6 +43,44 @@ export const useProfile = () => {
     }
   };
 
+   const uploadAvatar = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        mediaType: 'photo',
+      });
+
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append('image', {
+        uri: image.path,
+        type: image.mime,
+        name: image.filename || 'profile.jpg',
+      } as any);
+
+      const response = await customerService.updateProfileImage(formData);
+
+      if (response.success) {
+        // Update local state immediately with the new URL
+        setProfile((prev: any) => ({
+          ...prev,
+          profileImage: response.profileImage,
+        }));
+        return { success: true };
+      }
+    } catch (error: any) {
+      if (error.message !== 'User cancelled image selection') {
+        console.error('Upload Error:', error);
+      }
+      return { success: false };
+    } finally {
+      setUploading(false);
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile]);
@@ -49,6 +90,8 @@ export const useProfile = () => {
     loading,
     isUpdating,
     error,
+      uploading, // Return this to show a loader over the avatar
+    uploadAvatar, 
     refetch: fetchProfile,
     updateProfile: handleUpdateProfile,
   };

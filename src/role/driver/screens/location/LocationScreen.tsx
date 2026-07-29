@@ -1,5 +1,3 @@
-
-
 // src/screens/location/LocationScreen.tsx
 import React, { useState } from 'react';
 import {
@@ -8,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-
 } from 'react-native';
 import { Map, Compass, Zap } from 'lucide-react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -20,19 +17,23 @@ import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 
 // Import our new helper methods
-import { requestLocationPermission, openDeviceSettings } from '../../../../utils/permissionHelper';
+import {
+  requestLocationPermission,
+  openDeviceSettings,
+} from '../../../../utils/permissionHelper';
 import driverService from '../../../../api/services/driverService';
-import { RouteMapModal } from './RouteMapModal';
 import styles from './styles.location';
-
-
+import { RouteMapModal } from './RouteMapModal';
 
 const LocationScreen = () => {
   const { driver, activeShipment, loading } = useDriverMe();
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAutoTracking, setIsAutoTracking] = useState(false);
-  const [liveCoords, setLiveCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [liveCoords, setLiveCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   // Modal Configuration State
   const [modalConfig, setModalConfig] = useState({
@@ -42,16 +43,18 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
-  const fallbackLat = activeShipment?.shipment?.currentLocation?.latitude ?? 22.7378479;
-  const fallbackLng = activeShipment?.shipment?.currentLocation?.longitude ?? 75.8882395;
+  const fallbackLat =
+    activeShipment?.shipment?.currentLocation?.latitude ?? 22.7378479;
+  const fallbackLng =
+    activeShipment?.shipment?.currentLocation?.longitude ?? 75.8882395;
   const displayLat = liveCoords ? liveCoords.lat : fallbackLat;
   const displayLng = liveCoords ? liveCoords.lng : fallbackLng;
 
   const closeModal = () => {
-    setModalConfig((prev) => ({ ...prev, isVisible: false }));
+    setModalConfig(prev => ({ ...prev, isVisible: false }));
   };
 
   // Live Sync handler using helper
@@ -81,7 +84,7 @@ const LocationScreen = () => {
 
     // Permission granted, query geolocation hardware
     Geolocation.getCurrentPosition(
-      async (position) => {
+      async position => {
         const { latitude, longitude, speed, heading } = position.coords;
         setLiveCoords({ lat: latitude, lng: longitude });
 
@@ -97,19 +100,22 @@ const LocationScreen = () => {
             setModalConfig({
               isVisible: true,
               title: 'Location Synced',
-              description: `Success! Live position (Lat: ${latitude.toFixed(5)}, Lng: ${longitude.toFixed(5)}) has been shared with dispatch.`,
+              description: `Success! Live position (Lat: ${latitude.toFixed(
+                5,
+              )}, Lng: ${longitude.toFixed(5)}) has been shared with dispatch.`,
               type: 'success',
               confirmText: 'Got It',
               cancelText: 'Close',
               onConfirm: closeModal,
             });
-            setMapVisible(true)
+            setMapVisible(true);
           }
         } catch (apiError: any) {
           setModalConfig({
             isVisible: true,
             title: 'Sync Failed',
-            description: apiError?.message || 'Failed to transmit coordinates to server.',
+            description:
+              apiError?.message || 'Failed to transmit coordinates to server.',
             type: 'danger',
             confirmText: 'Retry',
             cancelText: 'Close',
@@ -122,11 +128,13 @@ const LocationScreen = () => {
           setIsUpdating(false);
         }
       },
-      (error) => {
+      error => {
         setModalConfig({
           isVisible: true,
           title: 'GPS Signal Lock Failed',
-          description: error.message || 'Could not acquire active position markers from device hardware.',
+          description:
+            error.message ||
+            'Could not acquire active position markers from device hardware.',
           type: 'danger',
           confirmText: 'OK',
           cancelText: 'Close',
@@ -134,7 +142,7 @@ const LocationScreen = () => {
         });
         setIsUpdating(false);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
     );
   };
 
@@ -143,20 +151,22 @@ const LocationScreen = () => {
 
     if (nextState) {
       // Run quick check when initiating auto tracking
-      const hasPermission = await requestLocationPermission((title, message) => {
-        setModalConfig({
-          isVisible: true,
-          title,
-          description: message,
-          type: 'warning',
-          confirmText: 'Configure',
-          cancelText: 'Cancel',
-          onConfirm: () => {
-            closeModal();
-            openDeviceSettings();
-          },
-        });
-      });
+      const hasPermission = await requestLocationPermission(
+        (title, message) => {
+          setModalConfig({
+            isVisible: true,
+            title,
+            description: message,
+            type: 'warning',
+            confirmText: 'Configure',
+            cancelText: 'Cancel',
+            onConfirm: () => {
+              closeModal();
+              openDeviceSettings();
+            },
+          });
+        },
+      );
       if (!hasPermission) return;
     }
 
@@ -175,16 +185,9 @@ const LocationScreen = () => {
     });
   };
 
-
   const [mapVisible, setMapVisible] = useState(false);
 
-  // Mock locations for example
-  const shipmentSample = {
-    pickupLocation: "New Mexico, USA",
-    deliveryLocation: "Washington, DC, USA",
-    pickupCoords: { latitude: 34.9727305, longitude: -105.0323635 },
-    deliveryCoords: { latitude: 38.9072873, longitude: -77.0369274 },
-  };
+   
 
   if (loading && !driver) {
     return (
@@ -215,14 +218,20 @@ const LocationScreen = () => {
                 <Map size={22} color={COLORS.white} />
               </View>
               <View style={styles.headerTextWrapper}>
-                <AppText style={styles.cardHeaderTitle}>Location Tracking</AppText>
-                <AppText style={styles.cardHeaderSubtitle}>Update and open your live map</AppText>
+                <AppText style={styles.cardHeaderTitle}>
+                  Location Tracking
+                </AppText>
+                <AppText style={styles.cardHeaderSubtitle}>
+                  Update and open your live map
+                </AppText>
               </View>
             </View>
 
             <View style={styles.highlightInfoBox}>
               <AppText style={styles.highlightLabel}>DRIVER</AppText>
-              <AppText style={styles.driverName}>{driver?.name || 'Test Driver'}</AppText>
+              <AppText style={styles.driverName}>
+                {driver?.name || 'Test Driver'}
+              </AppText>
               <AppText style={styles.coordinateText}>
                 Lat {displayLat.toFixed(5)}, Lng {displayLng.toFixed(5)}
               </AppText>
@@ -238,8 +247,14 @@ const LocationScreen = () => {
                 <ActivityIndicator color={COLORS.white} size="small" />
               ) : (
                 <>
-                  <Compass size={18} color={COLORS.white} style={styles.btnIcon} />
-                  <AppText style={styles.buttonText}>Update My Location</AppText>
+                  <Compass
+                    size={18}
+                    color={COLORS.white}
+                    style={styles.btnIcon}
+                  />
+                  <AppText style={styles.buttonText}>
+                    Update My Location
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
@@ -247,7 +262,7 @@ const LocationScreen = () => {
             <TouchableOpacity
               style={[
                 styles.goldButton,
-                isAutoTracking && styles.autoTrackActiveButton
+                isAutoTracking && styles.autoTrackActiveButton,
               ]}
               onPress={handleToggleAutoTrack}
               activeOpacity={0.8}
@@ -269,25 +284,24 @@ const LocationScreen = () => {
       </View>
 
       <ConfirmationModal
-        isVisible={modalConfig.isVisible}
+        isVisible={modalConfig?.isVisible}
         onClose={closeModal}
-        onConfirm={modalConfig.onConfirm}
-        title={modalConfig.title}
-        description={modalConfig.description}
-        type={modalConfig.type}
-        confirmText={modalConfig.confirmText}
-        cancelText={modalConfig.cancelText}
+        onConfirm={modalConfig?.onConfirm}
+        title={modalConfig?.title}
+        description={modalConfig?.description}
+        type={modalConfig?.type}
+        confirmText={modalConfig?.confirmText}
+        cancelText={modalConfig?.cancelText}
       />
-
 
       {/* Put the Modal instance directly at the root of the screen component */}
       <RouteMapModal
         visible={mapVisible}
         onClose={() => setMapVisible(false)}
-        pickupLocation={shipmentSample.pickupLocation}
-        deliveryLocation={shipmentSample.deliveryLocation}
-        pickupCoords={shipmentSample.pickupCoords}
-        deliveryCoords={shipmentSample.deliveryCoords}
+        pickupLocation={activeShipment?.shipment?.pickupLocation}
+        deliveryLocation={activeShipment?.shipment?.deliveryLocation}
+        pickupCoords={activeShipment?.shipment?.pickupCoords}
+        deliveryCoords={activeShipment?.shipment?.deliveryCoords}
       />
     </View>
   );

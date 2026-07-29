@@ -561,6 +561,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
         if (acceptRes) {
           Alert.alert('Success', 'Payment successful and quote accepted!');
           onClose();
+          navigation.goBack()
           if (onRefresh) onRefresh();
         }
       }

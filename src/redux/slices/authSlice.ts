@@ -49,8 +49,6 @@
 // // export const { logout } = authSlice.actions;
 // // export default authSlice.reducer;
 
-
-
 // import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import authService from '../../api/services/authService';
@@ -96,9 +94,9 @@
 //       const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
 
 //       if (token && userData) {
-//         return { 
-//           token, 
-//           user: JSON.parse(userData) as AppUser 
+//         return {
+//           token,
+//           user: JSON.parse(userData) as AppUser
 //         };
 //       }
 //       return thunkAPI.rejectWithValue('No session found');
@@ -184,6 +182,7 @@ import { AuthState, AppUser, UserRole } from '../../types/auth';
 const STORAGE_KEYS = {
   TOKEN: '@user_token',
   USER: '@user_data',
+  ROLE: '@user_role',
 };
 
 /**
@@ -209,20 +208,28 @@ const STORAGE_KEYS = {
 
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async ({ credentials, role }: { credentials: any; role: UserRole }, thunkAPI) => {
+  async (
+    { credentials, role }: { credentials: any; role: UserRole },
+    thunkAPI,
+  ) => {
     try {
       const response = await authService.login(credentials, role);
 
-      // Professional apps save the specific role separately to handle 
+      // Professional apps save the specific role separately to handle
       // the "Driver Role Missing" issue on rehydration
       await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-      await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.USER,
+        JSON.stringify(response.user),
+      );
 
       return response;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Login Failed');
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || 'Login Failed',
+      );
     }
-  }
+  },
 );
 
 /**
@@ -248,23 +255,24 @@ export const loginUser = createAsyncThunk(
 //   }
 // );
 
-export const rehydrateAuth = createAsyncThunk(
-  'auth/rehydrate',
-  async () => {
-    const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
-    const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
-    if (token && userData) {
-      return { token, user: JSON.parse(userData) as AppUser };
-    }
-    throw new Error('No session');
+export const rehydrateAuth = createAsyncThunk('auth/rehydrate', async () => {
+  const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+  const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+  if (token && userData) {
+    return { token, user: JSON.parse(userData) as AppUser };
   }
-);
+  throw new Error('No session');
+});
 
 /**
  * Thunk to handle Logout
  */
 export const logoutUser = createAsyncThunk('auth/logout', async () => {
-  await AsyncStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
+  await AsyncStorage.multiRemove([
+    STORAGE_KEYS.TOKEN,
+    STORAGE_KEYS.USER,
+    STORAGE_KEYS.ROLE,
+  ]);
   return true;
 });
 
@@ -285,7 +293,7 @@ const authSlice = createSlice({
      */
     setCredentials: (
       state,
-      action: PayloadAction<{ user: AppUser; token: string }>
+      action: PayloadAction<{ user: AppUser; token: string }>,
     ) => {
       const { user, token } = action.payload;
       state.user = user;
@@ -293,20 +301,20 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      // Note: In a professional app, you should also trigger 
+      // Note: In a professional app, you should also trigger
       // AsyncStorage saving here if not handled in the component.
       AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token);
       AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
     },
 
-    clearAuthError: (state) => {
+    clearAuthError: state => {
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     // --- Login ---
     builder
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginUser.pending, state => {
         state.isLoading = true;
         state.error = null;
       })
@@ -327,14 +335,14 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.isLoading = false;
       })
-      .addCase(rehydrateAuth.rejected, (state) => {
+      .addCase(rehydrateAuth.rejected, state => {
         state.user = null;
         state.token = null;
         state.isLoading = false;
       });
 
     // --- Logout ---
-    builder.addCase(logoutUser.fulfilled, (state) => {
+    builder.addCase(logoutUser.fulfilled, state => {
       state.user = null;
       state.token = null;
       state.error = null;
