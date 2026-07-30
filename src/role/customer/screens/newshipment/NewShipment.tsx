@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import styles from './styles.newshipment';
 import { AppHeader, ConfirmationModal } from '../../../../components';
@@ -14,6 +14,9 @@ import DraftSuccessModal from './DraftSuccessModal';
 
 const NewShipment = () => {
   const navigation = useNavigation();
+  const route = useRoute<any>();
+  const isEdit = route.params?.isEdit;
+
   const {
     currentStep,
     form,
@@ -47,7 +50,7 @@ const NewShipment = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader />
+      <AppHeader showBack={true} title={isEdit ? "Edit Shipment" : "New Shipment"} />
       {renderStepper()}
       <View style={{ flex: 1 }}>
         {currentStep === 0 && (

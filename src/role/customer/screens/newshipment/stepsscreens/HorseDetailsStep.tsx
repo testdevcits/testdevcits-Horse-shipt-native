@@ -7,6 +7,7 @@ import {
   Alert,
 } from 'react-native';
 import { PlusCircle } from 'lucide-react-native';
+import { useRoute } from '@react-navigation/native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
@@ -28,9 +29,12 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   onNext,
   onPrevious,
 }) => {
+  const route = useRoute<any>();
+  const isEdit = route.params?.isEdit;
   const { horses: savedHorses, loading } = useMyHorses();
 
   const handleNumberOfHorsesChange = (val: string) => {
+    if (isEdit) return;
     const num = Math.max(1, parseInt(val) || 1);
     if (num > 10) {
       Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
@@ -117,6 +121,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           keyboardType="numeric"
           value={form.numberOfHorses?.toString()}
           onChangeText={handleNumberOfHorsesChange}
+          disabled={isEdit}
+          editable={!isEdit}
         />
 
         {form.horses.map((horse: NewShipmentHorse, index: number) => (

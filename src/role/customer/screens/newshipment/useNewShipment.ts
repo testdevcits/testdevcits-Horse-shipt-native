@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { pick } from '@react-native-documents/picker';
 import { StepSchemas } from './validation';
 import customerService from '../../../../api/services/customerService';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NewShipmentForm, NewShipmentHorse } from './interfaces';
 
 export const STEPS = ['Pickup', 'Delivery', 'Horses', 'Documents', 'Review'];
@@ -58,18 +58,72 @@ const createInitialFormState = (): NewShipmentForm => ({
   horses: [{ ...defaultHorse }],
 });
 
+const parseShipmentDataToForm = (data: any): NewShipmentForm => {
+  const horses = (data?.horses || []).map((h: any) => ({
+    registeredName: h.registeredName || h.name || '',
+    barnName: h.barnName || '',
+    breed: h.breed || '',
+    colour: h.colour || '',
+    age: h.age ? h.age.toString() : '',
+    sex: h.sex || '',
+    requestedStallSize: h.requestedStallSize || h.stallSize || 'Box',
+    generalInfo: h.generalInfo || h.notes || '',
+    photo: h.photo?.url ? { uri: h.photo.url, type: 'image/jpeg', name: 'photo.jpg' } : null,
+    coggins: h.coggins?.url ? { uri: h.coggins.url, type: 'application/pdf', name: 'coggins.pdf' } : null,
+    healthCert: h.healthCert?.url ? { uri: h.healthCert.url, type: 'application/pdf', name: 'health.pdf' } : null,
+  }));
+
+  return {
+    pickupLocation: data.pickupLocation || '',
+    pickupLat: data.pickupLat || 0,
+    pickupLng: data.pickupLng || 0,
+    pickupTimeOption: data.pickupTimeOption || 'between',
+    pickupStartDate: data.pickupDateRange?.start ? new Date(data.pickupDateRange.start) : getTomorrow(),
+    pickupEndDate: data.pickupDateRange?.end ? new Date(data.pickupDateRange.end) : getTomorrow(),
+    deliveryLocation: data.deliveryLocation || '',
+    deliveryLat: data.deliveryLat || 0,
+    deliveryLng: data.deliveryLng || 0,
+    deliveryTimeOption: data.deliveryTimeOption || 'between',
+    deliveryStartDate: data.deliveryDateRange?.start ? new Date(data.deliveryDateRange.start) : getDayAfterTomorrow(),
+    deliveryEndDate: data.deliveryDateRange?.end ? new Date(data.deliveryDateRange.end) : getDayAfterTomorrow(),
+    numberOfHorses: horses.length || data.numberOfHorses || 1,
+    additionalInfo: data.additionalInfo || data.notes || '',
+    recipientEmail: data.recipientEmail || '',
+    hasSpecialRequirement: !!data.hasSpecialRequirement,
+    specialRequirementDetails: data.specialRequirementDetails || '',
+    horses: horses.length > 0 ? horses : [{ ...defaultHorse }],
+  };
+};
+
 const useNewShipment = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const route = useRoute<any>();
+  const isEdit = route.params?.isEdit;
+  const shipmentData = route.params?.shipmentData;
+
+  const [currentStep, setCurrentStep] = useState(() => (isEdit ? 3 : 0));
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<any>({});
   const [isPublishModalVisible, setIsPublishModalVisible] = useState(false);
   const [isDraftModalVisible, setIsDraftModalVisible] = useState(false);
   const [createdShipmentId, setCreatedShipmentId] = useState<string | null>(
-    null,
+    shipmentData?._id || null,
   );
   const navigation = useNavigation();
 
-  const [form, setForm] = useState<NewShipmentForm>(createInitialFormState);
+  const [form, setForm] = useState<NewShipmentForm>(() => {
+    if (isEdit && shipmentData) {
+      return parseShipmentDataToForm(shipmentData);
+    }
+    return createInitialFormState();
+  });
+
+  useEffect(() => {
+    if (isEdit && shipmentData) {
+      setForm(parseShipmentDataToForm(shipmentData));
+      setCreatedShipmentId(shipmentData._id);
+      setCurrentStep(3);
+    }
+  }, [isEdit, shipmentData]);
 
   const updateForm = useCallback((updates: Partial<NewShipmentForm>) => {
     setForm(prev => {
@@ -266,6 +320,46 @@ const useNewShipment = () => {
     return formData;
   };
 
+  const buildUpdateFormData = () => {
+    const formData = new FormData();
+
+    if (form.additionalInfo) {
+      formData.append('additionalInfo', form.additionalInfo);
+    }
+
+    form.horses.forEach((horse, index) => {
+      const notesVal = horse.generalInfo || '';
+      formData.append(`horses[${index}][generalInfo]`, notesVal);
+      formData.append(`horses[${index}][notes]`, notesVal);
+
+      if (horse.coggins && horse.coggins.uri) {
+        formData.append(`horses[${index}][cogins]`, {
+          uri: horse.coggins.uri,
+          name: horse.coggins.name || `coggins_${index + 1}.jpg`,
+          type: horse.coggins.type || 'image/jpeg',
+        } as any);
+      }
+
+      if (horse.healthCert && horse.healthCert.uri) {
+        formData.append(`horses[${index}][healthCertificate]`, {
+          uri: horse.healthCert.uri,
+          name: horse.healthCert.name || `health_${index + 1}.jpg`,
+          type: horse.healthCert.type || 'image/jpeg',
+        } as any);
+      }
+
+      if (horse.photo && horse.photo.uri) {
+        formData.append(`horses[${index}][otherDocuments]`, {
+          uri: horse.photo.uri,
+          name: horse.photo.name || `other_${index + 1}.jpg`,
+          type: horse.photo.type || 'image/jpeg',
+        } as any);
+      }
+    });
+
+    return formData;
+  };
+
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
@@ -299,6 +393,23 @@ const useNewShipment = () => {
   const handlePublish = async () => {
     setLoading(true);
     try {
+      const targetId = shipmentData?._id || createdShipmentId;
+
+      if (isEdit && targetId) {
+        const formData = buildUpdateFormData();
+        await customerService.updateShipmentMetadata(targetId, formData);
+        setIsPublishModalVisible(false);
+        setIsDraftModalVisible(false);
+        Alert.alert('Success', 'Shipment updated successfully!', [
+          {
+            text: 'OK',
+            onPress: () => navigation.goBack(),
+          },
+        ]);
+        navigation.goBack();
+        return true;
+      }
+
       let shipmentId = createdShipmentId;
 
       if (!shipmentId) {
@@ -332,8 +443,8 @@ const useNewShipment = () => {
             onPress: () => navigation.goBack(),
           },
         ]);
-        resetAllData(); // <--- THIS RESETS EVERYTHING
-        navigation.goBack()
+        resetAllData();
+        navigation.goBack();
         return true;
       }
       return false;
@@ -341,9 +452,9 @@ const useNewShipment = () => {
       console.error('Publish Error:', error);
       Alert.alert(
         'Error',
-        error?.response?.data?.message || 'Failed to publish shipment',
+        error?.response?.data?.message || 'Failed to update or publish shipment',
       );
-      navigation.goBack()
+      navigation.goBack();
       return false;
     } finally {
       setLoading(false);
@@ -376,7 +487,15 @@ const useNewShipment = () => {
   };
 
   const prevStep = () => {
-    if (currentStep > 0) setCurrentStep(prev => prev - 1);
+    if (isEdit) {
+      if (currentStep > 3) {
+        setCurrentStep(prev => prev - 1);
+      } else {
+        navigation.goBack();
+      }
+    } else {
+      if (currentStep > 0) setCurrentStep(prev => prev - 1);
+    }
   };
 
   return {

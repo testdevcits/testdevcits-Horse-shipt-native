@@ -102,7 +102,7 @@ const Input = ({
           allowFontScaling={false}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          editable={!disabled}
+          editable={!disabled && props.editable !== false}
         />
 
         {renderRightIcon()}

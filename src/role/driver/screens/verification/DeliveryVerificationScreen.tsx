@@ -124,7 +124,7 @@ const DeliveryVerificationScreen = () => {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Tabs' }],
+                routes: [{ name: 'DriverTabs' }],
             })
         );
     };

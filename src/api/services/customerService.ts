@@ -102,6 +102,13 @@ const customerService = {
     return axiosClient.patch(`/api/customer/shipments/${shipmentId}/publish`);
   },
 
+  updateShipmentMetadata: async (shipmentId: string, payload: any) => {
+    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+    });
+  },
+
   // ... NOtification System
 
   getNotifications: async (): Promise<GetNotificationsResponse> => {
@@ -178,6 +185,15 @@ const customerService = {
   //Review apis
   getReceivedReviews: async (): Promise<{ success: boolean; data: any[] }> => {
     return axiosClient.get('/api/customer/reviews/received');
+  },
+
+  createReview: async (payload: {
+    shipperId: string;
+    shipmentId: string;
+    rating: number;
+    reviewText: string;
+  }): Promise<{ success: boolean; message?: string; data?: any }> => {
+    return axiosClient.post('/api/customer/reviews', payload);
   },
 
   // Dynamic method to update a specific notification setting

@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { X, Star, User } from 'lucide-react-native';
 import {
@@ -15,15 +17,18 @@ import {
   FONTS,
   RADIUS,
   SPACING,
-  FONT_SIZE,
 } from '../../../../constants';
 import { AppText } from '../../../../components';
+import customerService from '../../../../api/services/customerService';
 
 interface Props {
   visible: boolean;
   onClose: () => void;
   shipperName: string;
   shipmentTitle: string;
+  shipperId?: string;
+  shipmentId?: string;
+  onSuccess?: () => void;
 }
 
 const RatingModal = ({
@@ -31,9 +36,48 @@ const RatingModal = ({
   onClose,
   shipperName,
   shipmentTitle,
+  shipperId,
+  shipmentId,
+  onSuccess,
 }: Props) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmitReview = async () => {
+    if (!rating || rating === 0) {
+      Alert.alert('Rating Required', 'Please select at least 1 star rating.');
+      return;
+    }
+    if (!shipperId || !shipmentId) {
+      Alert.alert('Error', 'Missing shipper or shipment information.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await customerService.createReview({
+        shipperId,
+        shipmentId,
+        rating,
+        reviewText: review.trim(),
+      });
+
+      if (res.success || (res as any).data) {
+        Alert.alert('Success', res.message || 'Review added successfully');
+        setRating(0);
+        setReview('');
+        if (onSuccess) onSuccess();
+        onClose();
+      } else {
+        // Alert.alert('Error', res.message || 'Failed to submit review.');
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error?.response?.data?.message || error?.message || 'Failed to submit review.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -93,8 +137,16 @@ const RatingModal = ({
               onChangeText={setReview}
             />
 
-            <TouchableOpacity style={styles.confirmBtn} onPress={onClose}>
-              <AppText style={styles.confirmBtnText}>Confirm</AppText>
+            <TouchableOpacity
+              style={styles.confirmBtn}
+              onPress={handleSubmitReview}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <ActivityIndicator color={COLORS.white} />
+              ) : (
+                <AppText style={styles.confirmBtnText}>Submit Review</AppText>
+              )}
             </TouchableOpacity>
 
             <AppText style={styles.footerText}>

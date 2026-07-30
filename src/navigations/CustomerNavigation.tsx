@@ -63,6 +63,8 @@ import Profile from '../role/customer/screens/profile/Profile';
 import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
 import LiveTrackingScreen from '../role/customer/screens/tracking/LiveTrackingScreen';
 
+import NewShipment from '../role/customer/screens/newshipment/NewShipment';
+
 const Stack = createNativeStackNavigator();
 
 const CustomerNavigation = () => {
@@ -71,6 +73,7 @@ const CustomerNavigation = () => {
       {/* Drawer is now the root of the customer flow */}
       <Stack.Screen name="CustomerDrawer" component={CustomerDrawer} />
       {/* Screens that should NOT have a drawer/tabs (Full screen) */}
+      <Stack.Screen name="NewShipment" component={NewShipment} />
       <Stack.Screen name="AddEditHorse" component={AddEditHorse} />
       <Stack.Screen name="MyShipmentDetails" component={MyShipmentDetails} />
       <Stack.Screen name="ChatDetails" component={ChatDetails} />
@@ -84,7 +87,6 @@ const CustomerNavigation = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       <Stack.Screen name="LiveTracking" component={LiveTrackingScreen} />
-        
     </Stack.Navigator>
   );
 };

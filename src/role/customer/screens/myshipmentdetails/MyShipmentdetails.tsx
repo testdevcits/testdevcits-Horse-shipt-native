@@ -20,16 +20,18 @@ import OverviewTab from './tabs/OverviewTab';
 import QuotesTab from './tabs/QuotesTab';
 import QuestionsTab from './tabs/QuestionsTab';
 import FindShipperTab from './tabs/FindShipperTab';
-import { Dot } from 'lucide-react-native';
+import { Dot, Pencil } from 'lucide-react-native';
 import { getFormattedDate } from '../../../../utils/helpers';
+import { useNavigation } from '@react-navigation/native';
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
-const MyShipmentDetails = ({ route }: any) => {
-  const { item,quoteId } = route.params;
+const MyShipmentDetails = ({ route, }: any) => {
+  const { item, quoteId } = route.params;
   const [activeTab, setActiveTab] = useState('Overview');
   const [isRatingVisible, setIsRatingVisible] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
+  const navigation = useNavigation()
 
   const {
     shipment,
@@ -42,10 +44,14 @@ const MyShipmentDetails = ({ route }: any) => {
     onRefresh,
   } = useShipmentDetails(item._id);
 
-
- 
-
   const data = shipment || item;
+
+  const handleEditShipment = () => {
+    navigation.navigate('NewShipment', {
+      isEdit: true,
+      shipmentData: data,
+    });
+  };
 
   if (loading && !refreshing) return <AppLoader visible={true} />;
 
@@ -53,7 +59,11 @@ const MyShipmentDetails = ({ route }: any) => {
     switch (activeTab) {
       case 'Overview':
         return (
-          <OverviewTab data={data} onReview={() => setIsRatingVisible(true)} quoteId={quoteId} />
+          <OverviewTab
+            data={data}
+            onReview={() => setIsRatingVisible(true)}
+            quoteId={quoteId}
+          />
         );
       case 'Quotes':
         return <QuotesTab quotes={quotes} onSelectQuote={setSelectedQuote} />;
@@ -74,7 +84,7 @@ const MyShipmentDetails = ({ route }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title={data.shipmentCode} />
+      <AppHeader showBack={true} title={data?.shipmentCode} />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
@@ -84,14 +94,30 @@ const MyShipmentDetails = ({ route }: any) => {
           <View style={styles.headerInfo}>
             <View style={styles.titleRow}>
               <AppText style={styles.shipmentTitle}>Shipment Title</AppText>
-              <TouchableOpacity>
-                <Dot size={24} color={COLORS.textPrimary} />
-              </TouchableOpacity>
+
+              {
+                data?.status !== "delivered" &&
+                <TouchableOpacity
+                  onPress={handleEditShipment}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: 4,
+                  }}
+                >
+                  <Pencil size={16} color={COLORS.goldPrimary} />
+                  <AppText style={{ color: COLORS.goldPrimary, fontSize: 13 }}>
+                    Edit
+                  </AppText>
+                </TouchableOpacity>
+              }
+
             </View>
 
             <View style={styles.idRow}>
               <AppText style={styles.shipmentId}>
-                {data.shipmentCode || ''}
+                {data?.shipmentCode || ''}
               </AppText>
               <View style={styles.statusBadge}>
                 <AppText style={styles.statusText}>Open offer</AppText>
@@ -157,12 +183,14 @@ const MyShipmentDetails = ({ route }: any) => {
           </ScrollView>
 
           {/* MODALS */}
-          {/* <RatingModal
-        visible={isRatingVisible}
-        onClose={() => setIsRatingVisible(false)}
-        shipperName={data.shipper?.name || 'Shipper'}
-        shipmentTitle={data.shipmentCode}
-      /> */}
+          <RatingModal
+            visible={isRatingVisible}
+            onClose={() => setIsRatingVisible(false)}
+            shipperName={data?.shipper?.name || 'Shipper'}
+            shipmentTitle={data?.shipmentCode}
+            shipperId={data?.shipper?._id || data?.shipper}
+            shipmentId={data?._id}
+          />
           <QuoteDetailModal
             visible={!!selectedQuote}
             quote={selectedQuote}
