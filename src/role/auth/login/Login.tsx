@@ -12,7 +12,7 @@ import {
   Keyboard, // 2. Added Keyboard
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Mail, Lock, Eye, EyeOff, Check } from 'lucide-react-native';
+import { Mail, Lock, Check } from 'lucide-react-native';
 import { COLORS, RADIUS, SCREEN_HEIGHT } from '../../../constants';
 import AppText from '../../../components/common/AppText';
 import { Input } from '../../../components';
@@ -32,7 +32,6 @@ const Login = () => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false); // 3. Keyboard state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
@@ -73,32 +72,24 @@ const Login = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const userRole = await AsyncStorage.getItem('@user_role');
-      // Use a falsy check to handle null, undefined, and "" all at once
-      if (!userRole || userRole.trim() === '') {
-        Toast.show({
-          type: 'info',
-          text1: 'Role Required',
-          text2: 'Please select your role to continue.',
-          position: 'bottom',
-        });
-
-        // Use replace so the user cannot swipe back to the restricted screen
-        navigation.replace('RoleSelection');
-      } else {
-        await dispatch(
-          loginUser({
-            credentials: {
-              email: email.trim().toLowerCase(),
-              password,
-              role: userRole,
-            },
-            role: userRole,
-          }),
-        ).unwrap();
+      let userRole = await AsyncStorage.getItem('@user_role');
+      if (!userRole || userRole.trim() === '' || userRole === 'null') {
+        userRole = 'customer';
+        await AsyncStorage.setItem('@user_role', 'customer');
       }
+
+      await dispatch(
+        loginUser({
+          credentials: {
+            email: email.trim().toLowerCase(),
+            password,
+            role: userRole as any,
+          },
+          role: userRole as any,
+        }),
+      ).unwrap();
     } catch (err: any) {
-      Alert.alert('Authentication Error', err || 'Invalid credentials');
+      Alert.alert('Authentication Error', err?.message || err || 'Invalid credentials');
     } finally {
       setIsLoading(false);
     }
@@ -180,20 +171,9 @@ const Login = () => {
                 setPassword(t);
                 setErrors(p => ({ ...p, password: '' }));
               }}
-              isPassword={!isPasswordVisible}
+              isPassword={true}
               error={errors.password}
               leftIcon={<Lock size={20} color={COLORS.textSecondary} />}
-              rightIcon={
-                <TouchableOpacity
-                  onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-                >
-                  {isPasswordVisible ? (
-                    <EyeOff size={20} color={COLORS.textSecondary} />
-                  ) : (
-                    <Eye size={20} color={COLORS.textSecondary} />
-                  )}
-                </TouchableOpacity>
-              }
             />
 
             <View style={styles.utilRow}>

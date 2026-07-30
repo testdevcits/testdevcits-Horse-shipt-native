@@ -215,13 +215,16 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await authService.login(credentials, role);
 
-      // Professional apps save the specific role separately to handle
-      // the "Driver Role Missing" issue on rehydration
+      // Save token, user data, and selected/returned role
       await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
       await AsyncStorage.setItem(
         STORAGE_KEYS.USER,
         JSON.stringify(response.user),
       );
+      const userRole = response.user?.role || role;
+      if (userRole) {
+        await AsyncStorage.setItem(STORAGE_KEYS.ROLE, userRole);
+      }
 
       return response;
     } catch (error: any) {
@@ -315,16 +318,13 @@ const authSlice = createSlice({
     // --- Login ---
     builder
       .addCase(loginUser.pending, state => {
-        state.isLoading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
         state.error = action.payload as string;
       });
 

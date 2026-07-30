@@ -187,7 +187,6 @@ import CustomerNavigation from './CustomerNavigation';
 import PasswordRecovery from '../role/auth/passwordrecovery/PasswordRecovery';
 import ResetPassword from '../role/auth/resetpassword/ResetPassword';
 import VerifyOtp from '../role/auth/verifyotp/VerifyOtp';
-import { useSavedRole } from '../hooks/useSavedRole';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -210,59 +209,19 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
   const { user, token, isLoading } = useAppSelector(state => state.auth);
-  const { role, isLoadingRole } = useSavedRole();
 
-  // If still checking AsyncStorage, show Splash or Loader
+  // Initial session rehydration loading
   if (isLoading) {
-    return <Splash />; // Use your Splash component as the loader
+    return <Splash />;
   }
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-                {!token ? (
-                    // AUTHENTICATION SCREENS
-                    <Stack.Group>
-                        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-                        <Stack.Screen name="RoleSelection" component={RoleSelection} />
-                        <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="Register" component={RegisterScreen} />
-                        <Stack.Screen name="SignupFlowScreen" component={SignupFlowScreen} />
-                        <Stack.Screen name="ForgotPassword" component={PasswordRecovery} />
-                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                        <Stack.Screen name="VerifyOtp" component={VerifyOtp} />
-                    </Stack.Group>
-                ) : (
-                    // MAIN APP SCREENS (Based on Role)
-                    <Stack.Group>
-                        {user?.role === 'driver' && (
-                            <Stack.Screen name="DriverNavigator" component={DriverNavigator} />
-                        )}
-                        {user?.role === 'shipper' && (
-                            <Stack.Screen name="ShipperNavigation" component={ShipperNavigation} />
-                        )}
-                        {user?.role === 'customer' && (
-                            <Stack.Screen name="CustomerNavigation" component={CustomerNavigation} />
-                        )}
-                    </Stack.Group>
-                )}
-            </Stack.Navigator> */}
-
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isLoading ? (
-          <Stack.Screen name="Splash" component={Splash} />
-        ) : !token ? (
+        {!token ? (
           // AUTH FLOW
           <>
-            {/* 
-               IMPORTANT: If Splash navigates to RoleSelection, 
-               but Welcome is at the TOP of this list, 
-               React Navigation might snap to Welcome first.
-            */}
-            {isLoadingRole === false && !role && (
-              <Stack.Screen name="RoleSelection" component={RoleSelection} />
-            )}
-
+            <Stack.Screen name="RoleSelection" component={RoleSelection} />
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={RegisterScreen} />
@@ -289,7 +248,7 @@ const AppNavigation = () => {
                 component={ShipperNavigation}
               />
             )}
-            {user?.role === 'customer' && (
+            {(user?.role === 'customer' || !user?.role) && (
               <Stack.Screen
                 name="CustomerNavigation"
                 component={CustomerNavigation}

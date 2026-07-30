@@ -1,5 +1,3 @@
- 
-
 import React, { useState } from 'react';
 import {
   TextInput,
@@ -7,16 +5,16 @@ import {
   TextInputProps,
   TouchableOpacity,
 } from 'react-native';
- import styles from './Input.styles';
+import styles from './Input.styles';
 import { COLORS } from '../../../constants';
 import AppText from '../AppText';
- 
+import { Eye, EyeOff } from 'lucide-react-native';
 
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
   isPassword?: boolean;
-  leftIcon?: React.ReactNode; // Added left icon prop
+  leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   onRightIconPress?: () => void;
   disabled?: boolean;
@@ -30,10 +28,56 @@ const Input = ({
   rightIcon,
   onRightIconPress,
   disabled,
+  secureTextEntry,
   ...props
 }: InputProps) => {
-  const [secureText, setSecureText] = useState(isPassword);
+  const [showPassword, setShowPassword] = useState(false);
   const [focused, setFocused] = useState(false);
+
+  const isSecure =
+    secureTextEntry !== undefined
+      ? secureTextEntry
+      : isPassword
+      ? !showPassword
+      : false;
+
+  const renderRightIcon = () => {
+    if (rightIcon) {
+      if (onRightIconPress) {
+        return (
+          <TouchableOpacity onPress={onRightIconPress} hitSlop={10}>
+            {rightIcon}
+          </TouchableOpacity>
+        );
+      }
+      if (isPassword) {
+        return (
+          <TouchableOpacity
+            onPress={() => setShowPassword(prev => !prev)}
+            hitSlop={10}>
+            {rightIcon}
+          </TouchableOpacity>
+        );
+      }
+      return rightIcon;
+    }
+
+    if (isPassword) {
+      return (
+        <TouchableOpacity
+          onPress={() => setShowPassword(prev => !prev)}
+          hitSlop={10}>
+          {showPassword ? (
+            <EyeOff size={20} color={COLORS.textSecondary} />
+          ) : (
+            <Eye size={20} color={COLORS.textSecondary} />
+          )}
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <View style={styles.container}>
@@ -46,38 +90,22 @@ const Input = ({
           error && styles.errorBorder,
           disabled && styles.disabledBorder,
         ]}>
-        
-        {/* Left Icon Render Block */}
         {leftIcon ? (
-          <View style={styles.leftIconContainer}>
-            {leftIcon}
-          </View>
+          <View style={styles.leftIconContainer}>{leftIcon}</View>
         ) : null}
 
         <TextInput
           {...props}
           style={styles.input}
-          secureTextEntry={secureText}
+          secureTextEntry={isSecure}
           placeholderTextColor={COLORS.textLight}
           allowFontScaling={false}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          disabled={disabled}
+          editable={!disabled}
         />
 
-        {isPassword ? (
-          <TouchableOpacity
-            onPress={() => setSecureText(!secureText)}
-            hitSlop={10}>
-            {rightIcon}
-          </TouchableOpacity>
-        ) : rightIcon ? (
-          <TouchableOpacity
-            onPress={onRightIconPress}
-            hitSlop={10}>
-            {rightIcon}
-          </TouchableOpacity>
-        ) : null}
+        {renderRightIcon()}
       </View>
 
       {!!error && <AppText style={styles.error}>{error}</AppText>}
