@@ -4,67 +4,75 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ImageSourcePropType,
+  Linking,
 } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-
-// Import constants
+import {
+  Home,
+  Package,
+  ClipboardList,
+  Disc,
+  User,
+  MessageSquare,
+  DollarSign,
+  Star,
+  Settings,
+  ShieldCheck,
+  LogOut,
+  ChevronRight,
+} from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
+import { SPACING, FONT_SIZE } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
-interface DrawerMenuItemProps {
+interface DrawerItemProps {
   label: string;
-  iconSource: ImageSourcePropType;
+  IconComponent: React.ElementType;
   onPress: () => void;
   isActive?: boolean;
-  isLast?: boolean;
+  hasChevron?: boolean;
 }
 
-const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
+const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
   label,
-  iconSource,
+  IconComponent,
   onPress,
   isActive,
-  isLast,
+  hasChevron,
 }) => (
   <TouchableOpacity
-    style={[
-      styles.menuItem,
-      isActive && styles.menuItemActive,
-      isLast ? { marginBottom: 0 } : null,
-    ]}
+    style={[styles.menuItem, isActive && styles.menuItemActive]}
     onPress={onPress}
     activeOpacity={0.7}
   >
     <View style={styles.iconContainer}>
-      <Image
-        source={iconSource}
-        style={[styles.menuIcon, isActive && styles.menuIconActive]}
-        resizeMode="contain"
+      <IconComponent
+        size={20}
+        color={isActive ? '#A06333' : '#374151'}
+        strokeWidth={1.8}
       />
     </View>
     <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
       {label}
     </AppText>
+    {hasChevron && (
+      <ChevronRight size={18} color="#9CA3AF" style={styles.chevron} />
+    )}
   </TouchableOpacity>
 );
 
-const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
+const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useDispatch();
 
-  // Active drawer route name (e.g., 'MainTabs', 'Profile', 'HelpCenter', etc.)
   const currentDrawerRoute = state?.routes[state?.index]?.name;
-
-  // Active bottom tab route name inside 'MainTabs'
   const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
   const mainTabsState = mainTabsRoute?.state;
   const currentActiveTab = mainTabsState?.routes
@@ -89,9 +97,14 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
     navigation.closeDrawer();
   };
 
+  const openGoogleReview = () => {
+    Linking.openURL('https://google.com');
+    navigation.closeDrawer();
+  };
+
   return (
     <View style={styles.safeArea}>
-      {/* Header Section with Logo */}
+      {/* Header Section */}
       <View style={styles.headerContainer}>
         <Image
           source={imageIndex.LogoIcon}
@@ -107,65 +120,84 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.menuContainer}>
-          <DrawerMenuItem
+          <ShipperDrawerMenuItem
             label="Home"
-            iconSource={imageIndex.Drawer_Home}
+            IconComponent={Home}
             isActive={isTabActive('Home')}
             onPress={() => navigateToTab('Home')}
           />
-          <DrawerMenuItem
-            label="Shipping"
-            iconSource={imageIndex.Shipping}
-            isActive={isTabActive('New')}
-            onPress={() => navigateToTab('New')}
+          <ShipperDrawerMenuItem
+            label="Shipment"
+            IconComponent={Package}
+            hasChevron={true}
+            isActive={isTabActive('Post')}
+            onPress={() => navigateToTab('Post')}
           />
-          <DrawerMenuItem
-            label="My Shipments"
-            iconSource={imageIndex.Drawer_Shipments}
-            isActive={isTabActive('Shipments')}
-            onPress={() => navigateToTab('Shipments')}
+          <ShipperDrawerMenuItem
+            label="My Quotes"
+            IconComponent={ClipboardList}
+            isActive={isTabActive('MyQuotes')}
+            onPress={() => navigateToTab('MyQuotes')}
           />
-          <DrawerMenuItem
-            label="My Horses"
-            iconSource={imageIndex.Horse}
-            isActive={isTabActive('Horses')}
-            onPress={() => navigateToTab('Horses')}
+          <ShipperDrawerMenuItem
+            label="My Vehicles"
+            IconComponent={Disc}
+            isActive={isDrawerRouteActive('MyVehicles')}
+            onPress={() => navigateToRoute('MyVehicles')}
           />
-          <DrawerMenuItem
+          <ShipperDrawerMenuItem
+            label="Truck Driver"
+            IconComponent={User}
+            isActive={isDrawerRouteActive('TruckDriver')}
+            onPress={() => navigateToRoute('TruckDriver')}
+          />
+          <ShipperDrawerMenuItem
             label="Chat"
-            iconSource={imageIndex.Messages}
+            IconComponent={MessageSquare}
             isActive={isTabActive('Chats')}
             onPress={() => navigateToTab('Chats')}
           />
-          <DrawerMenuItem
-            label="Profile"
-            iconSource={imageIndex.AccountIcon}
-            isActive={isDrawerRouteActive('Profile')}
-            onPress={() => navigateToRoute('Profile')}
+          <ShipperDrawerMenuItem
+            label="Earnings"
+            IconComponent={DollarSign}
+            isActive={isDrawerRouteActive('Earnings')}
+            onPress={() => navigateToRoute('Earnings')}
           />
-          <DrawerMenuItem
-            label="Help Center"
-            iconSource={imageIndex.Help}
-            isActive={isDrawerRouteActive('HelpCenter')}
-            onPress={() => navigateToRoute('HelpCenter')}
+          <ShipperDrawerMenuItem
+            label="Google review"
+            IconComponent={Star}
+            isActive={isDrawerRouteActive('GoogleReview')}
+            onPress={() => navigateToRoute('GoogleReview')}
           />
-          <DrawerMenuItem
-            label="Privacy Policy"
-            iconSource={imageIndex.Help}
+          <ShipperDrawerMenuItem
+            label="Settings"
+            IconComponent={Settings}
+            isActive={isDrawerRouteActive('Settings')}
+            onPress={() => navigateToRoute('Settings')}
+          />
+          <ShipperDrawerMenuItem
+            label="Privacy policy"
+            IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
-            isLast={true}
           />
         </View>
       </DrawerContentScrollView>
 
+      {/* Footer / Logout */}
       <View style={styles.footerContainer}>
-        <DrawerMenuItem
-          label="Logout"
-          iconSource={imageIndex.Help}
+        <TouchableOpacity
+          style={styles.menuItem}
           onPress={() => dispatch(logoutUser())}
-          isLast={true}
-        />
+          activeOpacity={0.7}
+        >
+          <View style={styles.iconContainer}>
+            <LogOut size={20} color="#EF4444" strokeWidth={1.8} />
+          </View>
+          <AppText style={[styles.menuLabel, { color: '#EF4444' }]}>
+            Logout
+          </AppText>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -175,8 +207,6 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.white,
-    borderTopRightRadius: RADIUS.lg,
-    borderBottomRightRadius: RADIUS.lg,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -185,7 +215,7 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
     paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
+    borderBottomColor: '#F3F4F6',
   },
   logoIcon: {
     width: 32,
@@ -193,56 +223,53 @@ const styles = StyleSheet.create({
     marginRight: SPACING.xs,
   },
   logoText: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: 22,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    letterSpacing: -0.3,
+    color: '#1F2937',
+    letterSpacing: -0.5,
   },
   drawerScroll: {
-    paddingTop: SPACING.sm,
+    paddingTop: SPACING.xs,
   },
   menuContainer: {
-    paddingHorizontal: SPACING.xs,
+    paddingHorizontal: 0,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.xs + 2,
-    paddingHorizontal: SPACING.sm,
-    marginBottom: SPACING.xs,
-    borderRadius: RADIUS.sm,
+    paddingVertical: 14,
+    paddingHorizontal: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F9FAFB',
   },
   menuItemActive: {
-    backgroundColor: '#F5EBE1',
+    backgroundColor: '#FBF5EB',
   },
   iconContainer: {
-    width: 28,
-    height: 28,
+    width: 26,
+    height: 26,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  menuIcon: {
-    width: ICON_SIZE.sm,
-    height: ICON_SIZE.sm,
-  },
-  menuIconActive: {
-    tintColor: '#A06333',
+    marginRight: SPACING.xs,
   },
   menuLabel: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
-    marginLeft: SPACING.xs,
+    color: '#374151',
+    flex: 1,
   },
   menuLabelActive: {
     color: '#A06333',
     fontFamily: FONTS.bold,
   },
+  chevron: {
+    marginLeft: 'auto',
+  },
   footerContainer: {
-    padding: SPACING.xs,
+    paddingVertical: SPACING.xs,
     borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
+    borderTopColor: '#F3F4F6',
   },
 });
 
-export default CustomDrawerContent;
+export default CustomShipperDrawerContent;

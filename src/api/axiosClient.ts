@@ -149,11 +149,18 @@ axiosClient.interceptors.request.use(
     console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
 
     if (config.data) {
-      if (config.data instanceof FormData) {
+      if (
+        config.data instanceof FormData ||
+        (config.data && typeof config.data === 'object' && (config.data as any)._parts)
+      ) {
         console.log('   ║ 📦 PAYLOAD: [FormData Body]');
         console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
       } else {
-        console.log('   ║ 📦 PAYLOAD:', JSON.stringify(config.data, null, 2));
+        try {
+          console.log('   ║ 📦 PAYLOAD:', JSON.stringify(config.data, null, 2));
+        } catch (e) {
+          console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
+        }
       }
     } else {
       console.log('   ║ 📦 PAYLOAD: No Body');

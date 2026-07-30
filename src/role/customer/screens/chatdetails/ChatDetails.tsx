@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { ChevronLeft, Send, Upload, MoreVertical, X } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
@@ -24,15 +25,18 @@ import imageIndex from '../../../../assets/images/imageIndex';
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { shipmentId }: any = route.params;
+  const { shipmentId, name }: any = route.params || {};
   const [inputText, setInputText] = useState('');
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
 
+  const { user } = useSelector((state: any) => state.auth || {});
+  const MY_ROLE = user?.role || 'customer';
+
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
 
-  const MY_ROLE = 'customer';
+  const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
 
   const handleSend = async () => {
     const success = await sendMessage(inputText, selectedImage);
@@ -43,6 +47,7 @@ const ChatDetails = () => {
   };
 
   const formatMessageTime = (dateStr: string) => {
+    if (!dateStr) return '';
     const date = new Date(dateStr);
     const day = date.toLocaleDateString('en-US', { weekday: 'short' });
     const time = date
@@ -52,7 +57,9 @@ const ChatDetails = () => {
   };
 
   const renderMessage = ({ item }: any) => {
-    const isMe = item.senderRole === MY_ROLE;
+    const isMe =
+      item.senderRole === MY_ROLE ||
+      (user?._id && item.senderId === user._id);
     const hasMedia = item.media && item.media.length > 0;
 
     return (
@@ -64,7 +71,7 @@ const ChatDetails = () => {
       >
         <View style={styles.bubbleHeader}>
           <AppText style={styles.senderName}>
-            {isMe ? 'You' : 'Shipper'}
+            {isMe ? 'You' : partnerName}
           </AppText>
           <AppText style={styles.timestamp}>
             {formatMessageTime(item.createdAt)}
@@ -156,7 +163,7 @@ const ChatDetails = () => {
           style={styles.headerAvatar}
         />
         <View style={styles.headerInfo}>
-          <AppText style={styles.headerTitle}>Shipper</AppText>
+          <AppText style={styles.headerTitle}>{partnerName}</AppText>
           <AppText style={styles.headerSubtitle}>
             Shipment ID {shipment?.shipmentCode || 'HS-SHIP-0000'}
           </AppText>

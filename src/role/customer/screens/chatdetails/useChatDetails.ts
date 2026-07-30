@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import customerService from '../../../../api/services/customerService';
+import shipperService from '../../../../api/services/shipperService';
 import { Platform } from 'react-native';
 
 const useChatDetails = (shipmentId: string) => {
@@ -9,20 +10,36 @@ const useChatDetails = (shipmentId: string) => {
   const [shipment, setShipment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-  const { user } = useSelector((state: any) => state.auth); // To identify "Me"
+  const { user } = useSelector((state: any) => state.auth || {});
+
+  const isShipper = user?.role === 'shipper';
 
   const initChat = useCallback(async () => {
     try {
       setLoading(true);
-      const roomRes = await customerService.getChatRoom(shipmentId);
-      if (roomRes.success) {
+      let roomRes: any;
+      if (isShipper) {
+        roomRes = await shipperService.getOrCreateChatRoom(shipmentId);
+      } else {
+        roomRes = await customerService.getChatRoom(shipmentId);
+      }
+
+      if (roomRes?.success) {
         setRoom(roomRes.room);
         setShipment(roomRes.shipment);
 
-        const msgRes = await customerService.getChatMessages(roomRes.roomId);
-        if (msgRes.success) {
+        const roomId = roomRes.roomId || roomRes.room?._id;
+        let msgRes: any;
+        if (isShipper) {
+          msgRes = await shipperService.getChatRoomMessages(roomId);
+        } else {
+          msgRes = await customerService.getChatMessages(roomId);
+        }
+
+        if (msgRes?.success) {
           // Sort messages by latest first for inverted FlatList
-          setMessages(msgRes.messages.reverse());
+          const rawMsgs = msgRes.messages || [];
+          setMessages([...rawMsgs].reverse());
         }
       }
     } catch (error) {
@@ -30,38 +47,22 @@ const useChatDetails = (shipmentId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [shipmentId]);
+  }, [shipmentId, isShipper]);
 
   useEffect(() => {
     initChat();
   }, [initChat]);
 
-  // const onSend = async (text: string) => {
-  //   if (!text.trim() || !room?._id) return;
-  //   try {
-  //     setSending(true);
-  //     const res = await customerService.sendMessage(room._id, { message: text });
-  //     if (res.success) {
-  //       setMessages(prev => [res.data, ...prev]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Send Error:", error);
-  //   } finally {
-  //     setSending(false);
-  //   }
-  // };
-
   const onSend = async (text?: string, imageFile?: any) => {
-    if (!text?.trim() && !imageFile) return;
-    if (!room?._id) return;
+    if (!text?.trim() && !imageFile) return false;
+    const roomId = room?._id;
+    if (!roomId) return false;
 
     try {
       setSending(true);
-
-      let res;
+      let res: any;
 
       if (imageFile) {
-        // Send as FormData when image exists
         const formData = new FormData();
 
         if (text?.trim()) {
@@ -77,16 +78,25 @@ const useChatDetails = (shipmentId: string) => {
           name: imageFile.filename || `chat_image_${Date.now()}.jpg`,
         } as any);
 
-        res = await customerService.sendMessage(room._id, formData);
+        if (isShipper) {
+          res = await shipperService.sendChatMessage(roomId, formData);
+        } else {
+          res = await customerService.sendMessage(roomId, formData);
+        }
       } else {
-        // Send as normal JSON when only text
-        res = await customerService.sendMessage(room._id, {
-          message: text?.trim(),
-        });
+        const payload = { message: text?.trim() };
+        if (isShipper) {
+          res = await shipperService.sendChatMessage(roomId, payload);
+        } else {
+          res = await customerService.sendMessage(roomId, payload);
+        }
       }
 
-      if (res.success) {
-        setMessages(prev => [res.data, ...prev]);
+      if (res?.success) {
+        const newMsg = res.data || res.message;
+        if (newMsg) {
+          setMessages(prev => [newMsg, ...prev]);
+        }
         return true;
       }
 

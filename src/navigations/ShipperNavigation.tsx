@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ShipperDrawer from './ShipperDrawer';
+import ChatDetails from '../role/customer/screens/chatdetails/ChatDetails';
+import Notifications from '../role/commonscreens/notifications/Notifications';
+
+const Stack = createNativeStackNavigator();
 
 const ShipperNavigation = () => {
   return (
-    <View>
-      <Text>ShipperNavigation</Text>
-    </View>
-  )
-}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ShipperDrawer" component={ShipperDrawer} />
+      <Stack.Screen name="ChatDetails" component={ChatDetails} />
+      <Stack.Screen name="Notifications" component={Notifications} />
+    </Stack.Navigator>
+  );
+};
 
-export default ShipperNavigation
+export default ShipperNavigation;

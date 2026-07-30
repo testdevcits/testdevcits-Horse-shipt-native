@@ -2,11 +2,12 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomerTabs from './CustomerTabs';
 
-// Import screens you want in the drawer menu
+// Additional Drawer Screens
 import NotificationSettings from '../role/customer/screens/notificationsettings/NotificationSettings';
 import CustomDrawerContent from './CustomDrawerContent';
 import Profile from '../role/customer/screens/profile/Profile';
 import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
+import PrivacyPolicyScreen from '../role/shipper/screens/privacy/PrivacyPolicyScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +30,7 @@ const CustomerDrawer = () => {
       <Drawer.Screen name="Settings" component={NotificationSettings} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="HelpCenter" component={HelpCenter} />
+      <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
     </Drawer.Navigator>
   );
 };

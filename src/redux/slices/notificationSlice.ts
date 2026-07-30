@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import customerService from '../../api/services/customerService';
+import shipperService from '../../api/services/shipperService';
 import { NotificationActivity } from '../../types/notification';
 
 interface NotificationState {
@@ -20,20 +21,33 @@ const initialState: NotificationState = {
 
 export const fetchNotificationsThunk = createAsyncThunk(
   'notification/fetchNotifications',
-  async (arg: { isRefresh?: boolean } | void, { rejectWithValue }) => {
+  async (arg: { isRefresh?: boolean } | void, { getState, rejectWithValue }) => {
     try {
-      const res = await customerService.getNotifications();
-      if (res.success) {
+      const state: any = getState();
+      const isShipper = state?.auth?.user?.role === 'shipper';
+
+      let res: any;
+      if (isShipper) {
+        res = await shipperService.getNotificationActivity();
+      } else {
+        res = await customerService.getNotifications();
+      }
+
+      if (res?.success || res?.data) {
         const rawData = res.data || [];
-        const notifications: NotificationActivity[] = rawData.map(n => ({
+        const notifications: NotificationActivity[] = rawData.map((n: any) => ({
           ...n,
-          read: typeof n.read === 'boolean' 
-            ? n.read 
-            : (typeof (n as any).isRead === 'boolean' ? (n as any).isRead : !!(n as any).readAt),
+          read:
+            typeof n.read === 'boolean'
+              ? n.read
+              : typeof n.isRead === 'boolean'
+              ? n.isRead
+              : !!n.readAt,
         }));
-        const unreadCount = typeof res.unreadCount === 'number' 
-          ? res.unreadCount 
-          : notifications.filter(n => !n.read).length;
+        const unreadCount =
+          typeof res.unreadCount === 'number'
+            ? res.unreadCount
+            : notifications.filter(n => !n.read).length;
         return { notifications, unreadCount };
       }
       return rejectWithValue('Failed to fetch notifications');
