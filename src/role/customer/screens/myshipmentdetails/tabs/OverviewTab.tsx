@@ -16,16 +16,20 @@ import {
 } from 'lucide-react-native';
 import moment from 'moment';
 import { AppText, Button, MapModal } from '../../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../../constants';
 import PublishedSuccessModal from '../PublishedSuccessModal';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
 
-const OverviewTab = ({ data,quoteId }: any) => {
-
-
- 
-  const navigation = useNavigation();
+const OverviewTab = ({ data, quoteId }: any) => {
+  const navigation = useNavigation<any>();
   const [isHorseDetailsOpen, setIsHorseDetailsOpen] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
@@ -40,7 +44,6 @@ const OverviewTab = ({ data,quoteId }: any) => {
     try {
       const res = await customerService.publishShipment(id);
       if (res.success) {
-        // Show the Success Modal we created earlier
         setIsSuccessModalVisible(true);
       }
     } catch (error) {
@@ -52,7 +55,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
 
   const handleViewShipment = () => {
     setIsSuccessModalVisible(false);
-    navigation.goBack(); // Or specific details page
+    navigation.goBack();
   };
 
   return (
@@ -68,32 +71,32 @@ const OverviewTab = ({ data,quoteId }: any) => {
       <View style={styles.card}>
         {/* Pickup */}
         <View style={styles.routeItem}>
-          <MapPin size={22} color={COLORS.textSecondary} />
+          <MapPin size={ICON_SIZE.sm} color={COLORS.textSecondary} />
           <View style={styles.routeInfo}>
             <AppText style={styles.routeTitle}>Pickup</AppText>
             <AppText style={styles.routeAddress}>{data.pickupLocation}</AppText>
             <View style={styles.routeDateRow}>
-              <Calendar size={18} color={COLORS.textSecondary} />
+              <Calendar size={ICON_SIZE.xs} color={COLORS.textSecondary} />
               <AppText style={styles.routeDate}>
-                On {moment(data.pickupDateRange.start).format('MMMM DD, YYYY')}
+                On {moment(data.pickupDateRange?.start).format('MMMM DD, YYYY')}
               </AppText>
             </View>
           </View>
         </View>
 
         {/* Delivery */}
-        <View style={[styles.routeItem, { marginTop: SPACING.xl }]}>
-          <MapPin size={22} color={COLORS.textSecondary} />
+        <View style={[styles.routeItem, { marginTop: SPACING.md }]}>
+          <MapPin size={ICON_SIZE.sm} color={COLORS.textSecondary} />
           <View style={styles.routeInfo}>
             <AppText style={styles.routeTitle}>Delivery</AppText>
             <AppText style={styles.routeAddress}>
               {data.deliveryLocation}
             </AppText>
             <View style={styles.routeDateRow}>
-              <Calendar size={18} color={COLORS.textSecondary} />
+              <Calendar size={ICON_SIZE.xs} color={COLORS.textSecondary} />
               <AppText style={styles.routeDate}>
                 before{' '}
-                {moment(data.deliveryDateRange.end).format('MMMM DD, YYYY')}
+                {moment(data.deliveryDateRange?.end).format('MMMM DD, YYYY')}
               </AppText>
             </View>
           </View>
@@ -103,7 +106,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
           style={styles.viewMapBtn}
           onPress={() => setIsMapVisible(true)}
         >
-          <MapIcon size={18} color={COLORS.white} />
+          <MapIcon size={ICON_SIZE.sm} color={COLORS.white} />
           <AppText style={styles.viewMapText}>View Map</AppText>
         </TouchableOpacity>
       </View>
@@ -115,7 +118,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
       >
         <AppText style={styles.accordionTitle}>Horse Details</AppText>
         <ChevronDown
-          size={24}
+          size={ICON_SIZE.sm}
           color={COLORS.textPrimary}
           style={{
             transform: [{ rotate: isHorseDetailsOpen ? '180deg' : '0deg' }],
@@ -127,16 +130,16 @@ const OverviewTab = ({ data,quoteId }: any) => {
       <View style={styles.card}>
         <AppText style={styles.sectionTitle}>Documents</AppText>
 
-        {data.horses.map((horse: any, index: number) => (
+        {data.horses?.map((horse: any, index: number) => (
           <View key={index} style={styles.documentGroup}>
             <AppText style={styles.horseNameLabel}>Horse {index + 1}</AppText>
 
             <View style={styles.docItem}>
               <AppText style={styles.docName}>Coggins.pdf</AppText>
               <TouchableOpacity
-                onPress={() => openUrl(horse.documents.coggins.url)}
+                onPress={() => openUrl(horse.documents?.coggins?.url)}
               >
-                <ExternalLink size={18} color={COLORS.goldPrimary} />
+                <ExternalLink size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
               </TouchableOpacity>
             </View>
             <View style={styles.divider} />
@@ -144,9 +147,9 @@ const OverviewTab = ({ data,quoteId }: any) => {
             <View style={styles.docItem}>
               <AppText style={styles.docName}>Health certificate.pdf</AppText>
               <TouchableOpacity
-                onPress={() => openUrl(horse.documents.healthCertificate.url)}
+                onPress={() => openUrl(horse.documents?.healthCertificate?.url)}
               >
-                <ExternalLink size={18} color={COLORS.goldPrimary} />
+                <ExternalLink size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
               </TouchableOpacity>
             </View>
             <View style={styles.divider} />
@@ -163,7 +166,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
               style={styles.addDocBtn}
             >
               {loading ? (
-                <ActivityIndicator />
+                <ActivityIndicator color={COLORS.white} />
               ) : (
                 <AppText style={styles.addDocText}>Publish</AppText>
               )}
@@ -176,7 +179,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
             onPress={() =>
               navigation.navigate('LiveTracking', { shipmentId: quoteId })
             }
-            buttonStyle={{marginTop:10}}
+            buttonStyle={{ marginTop: SPACING.sm }}
           />
         )}
       </View>
@@ -185,7 +188,7 @@ const OverviewTab = ({ data,quoteId }: any) => {
         visible={isSuccessModalVisible}
         onClose={() => {
           setIsSuccessModalVisible(false);
-          navigation.goBack(); // Return to home if they just close
+          navigation.goBack();
         }}
         onViewShipment={handleViewShipment}
       />
@@ -200,7 +203,6 @@ const OverviewTab = ({ data,quoteId }: any) => {
           pickupLocation: data.pickupLocation,
           deliveryLocation: data.deliveryLocation,
           status: data.status,
-          // estimatedTime: '3 days 4 hours', // Optional logic
         }}
       />
     </View>
@@ -208,49 +210,49 @@ const OverviewTab = ({ data,quoteId }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { paddingBottom: 40 },
+  container: { paddingBottom: SPACING.xl },
   subHeaderBar: {
     backgroundColor: COLORS.goldLightBg,
-    padding: SPACING.md,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
+    padding: SPACING.sm,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
     borderRadius: RADIUS.xs,
   },
   subHeaderText: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.goldDarkText,
   },
   card: {
     backgroundColor: COLORS.white,
-    marginHorizontal: SPACING.lg,
-    padding: SPACING.lg,
+    marginHorizontal: SPACING.md,
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    marginTop: SPACING.md,
+    marginTop: SPACING.sm,
   },
-  routeItem: { flexDirection: 'row', gap: SPACING.md },
+  routeItem: { flexDirection: 'row', gap: SPACING.sm },
   routeInfo: { flex: 1 },
   routeTitle: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginBottom: 2,
   },
   routeAddress: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
   },
   routeDateRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.sm,
-    marginTop: SPACING.sm,
+    gap: SPACING.xs,
+    marginTop: SPACING.xs,
   },
   routeDate: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
   },
@@ -259,15 +261,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
     borderRadius: RADIUS.sm,
-    marginTop: SPACING.xl,
-    width: 140,
-    gap: SPACING.sm,
+    marginTop: SPACING.md,
+    alignSelf: 'flex-start',
+    gap: SPACING.xs,
   },
   viewMapText: {
     color: COLORS.white,
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
   },
 
@@ -277,39 +280,39 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: COLORS.goldLightBg,
-    marginHorizontal: SPACING.lg,
-    padding: SPACING.lg,
-    marginTop: SPACING.md,
+    marginHorizontal: SPACING.md,
+    padding: SPACING.md,
+    marginTop: SPACING.sm,
     borderRadius: RADIUS.xs,
   },
   accordionTitle: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.goldDarkText,
   },
 
   // Documents Section
   sectionTitle: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.sm,
     color: COLORS.textPrimary,
   },
-  documentGroup: { marginBottom: SPACING.sm },
+  documentGroup: { marginBottom: SPACING.xs },
   horseNameLabel: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.xs,
     fontFamily: FONTS.medium,
   },
   docItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: SPACING.sm,
+    paddingVertical: SPACING.xs,
   },
   docName: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     fontFamily: FONTS.medium,
   },
@@ -320,15 +323,16 @@ const styles = StyleSheet.create({
   },
   addDocBtn: {
     backgroundColor: COLORS.goldPrimary,
-    paddingVertical: 12,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
     borderRadius: RADIUS.sm,
     alignItems: 'center',
-    marginTop: SPACING.lg,
-    width: 160,
+    marginTop: SPACING.md,
+    minWidth: 120,
   },
   addDocText: {
     color: COLORS.white,
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
   },
 });

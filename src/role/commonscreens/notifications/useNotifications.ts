@@ -94,6 +94,17 @@ const useNotifications = () => {
     ]);
   };
 
+  const handleMarkSingleRead = async (id: string) => {
+    try {
+      await customerService.markAsRead([id]);
+      setNotifications(prev => prev.map(n =>
+        n._id === id ? { ...n, read: true } : n
+      ));
+    } catch (err) {
+      console.error("Failed to mark notification as read", err);
+    }
+  };
+
   return {
     notifications: filteredData,
     loading,
@@ -106,6 +117,7 @@ const useNotifications = () => {
     toggleSelect,
     selectAll,
     handleMarkRead,
+    handleMarkSingleRead,
     handleDelete,
     fetchNotifications,
     clearSelection: () => setSelectedIds([])

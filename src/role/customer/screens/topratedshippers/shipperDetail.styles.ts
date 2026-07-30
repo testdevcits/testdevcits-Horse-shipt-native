@@ -5,35 +5,35 @@ const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
-  scrollContent: { paddingBottom: SPACING.xxl },
+  scrollContent: { paddingBottom: SPACING.xxxl },
 
   // Header
-  headerSection: { alignItems: 'center', marginBottom: SPACING.xl },
+  headerSection: { alignItems: 'center', marginBottom: SPACING.md },
   bannerImage: {
-    width: width - SPACING.lg * 2,
-    height: 160,
-    borderRadius: RADIUS.lg,
-    marginTop: SPACING.md, // Adjusted for AppHeader
+    width: width - SPACING.md * 2,
+    height: 130,
+    borderRadius: RADIUS.md,
+    marginTop: SPACING.sm,
   },
   profileImageContainer: {
-    marginTop: -45,
-    padding: 4,
+    marginTop: -36,
+    padding: 3,
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.round,
-    elevation: 4,
+    elevation: 3,
     shadowColor: COLORS.black,
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
   },
   profileImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
+    width: 72,
+    height: 72,
+    borderRadius: 36,
     backgroundColor: COLORS.grey100,
   },
   mainName: {
     textAlign: 'center',
-    fontSize: FONT_SIZE.xxl,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.grey900,
   },
@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
   // Stats Card
   statsCard: {
     flexDirection: 'row',
-    marginHorizontal: SPACING.lg,
-    marginVertical: SPACING.xl,
-    padding: SPACING.lg,
+    marginHorizontal: SPACING.md,
+    marginVertical: SPACING.md,
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.grey100,
@@ -52,87 +52,87 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statBox: { flex: 1, alignItems: 'center' },
-  statValue: { fontSize: 18, fontFamily: FONTS.bold, color: COLORS.grey900 },
+  statValue: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.grey900 },
   ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  statLabel: { fontSize: 11, color: COLORS.grey500, fontFamily: FONTS.medium, marginTop: 4, textTransform: 'uppercase' },
-  vDivider: { width: 1, height: 30, backgroundColor: COLORS.grey100 },
+  statLabel: { fontSize: FONT_SIZE.xs, color: COLORS.grey500, fontFamily: FONTS.medium, marginTop: 2, textTransform: 'uppercase' },
+  vDivider: { width: 1, height: 24, backgroundColor: COLORS.grey100 },
 
   // Content
-  contentPadding: { paddingHorizontal: SPACING.lg },
-  locationContainer: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: SPACING.xl },
-  locationLabel: { fontSize: 16, fontFamily: FONTS.medium, color: COLORS.grey700 },
-  sectionTitleSmall: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
-  descriptionText: { fontSize: 14, color: COLORS.grey600, lineHeight: 22, fontFamily: FONTS.regular },
+  contentPadding: { paddingHorizontal: SPACING.md },
+  locationContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, marginBottom: SPACING.md },
+  locationLabel: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.medium, color: COLORS.grey700 },
+  sectionTitleSmall: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
+  descriptionText: { fontSize: FONT_SIZE.xs, color: COLORS.grey600, lineHeight: 18, fontFamily: FONTS.regular },
 
   // Sections Common
-  section: { marginTop: SPACING.xl },
-  sectionTitle: { 
-    fontSize: 18, 
-    fontFamily: FONTS.bold, 
-    color: COLORS.grey900, 
-    marginLeft: SPACING.lg,
-    marginBottom: SPACING.md 
+  section: { marginTop: SPACING.md },
+  sectionTitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey900,
+    marginLeft: SPACING.md,
+    marginBottom: SPACING.sm,
   },
 
   // Review Card
-  horizontalScroll: { paddingLeft: SPACING.lg, paddingRight: SPACING.sm },
+  horizontalScroll: { paddingLeft: SPACING.md, paddingRight: SPACING.xs },
   reviewCard: {
-    width: width * 0.75,
+    width: width * 0.7,
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    marginRight: SPACING.md,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.sm,
+    marginRight: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.grey100,
     shadowColor: COLORS.black,
-    shadowOpacity: 0.03,
-    shadowRadius: 10,
-    elevation: 2,
+    shadowOpacity: 0.02,
+    shadowRadius: 6,
+    elevation: 1,
   },
-  starRow: { flexDirection: 'row', gap: 2, marginBottom: SPACING.sm },
-  reviewBody: { fontSize: 13, color: COLORS.grey700, lineHeight: 20, fontFamily: FONTS.regular, minHeight: 60 },
-  reviewFooter: { flexDirection: 'row', alignItems: 'center', marginTop: SPACING.md, gap: 10 },
-  avatarPlaceholder: { 
-    width: 32, 
-    height: 32, 
-    borderRadius: 16, 
-    backgroundColor: COLORS.grey50, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+  starRow: { flexDirection: 'row', gap: 2, marginBottom: SPACING.xs },
+  reviewBody: { fontSize: FONT_SIZE.xs, color: COLORS.grey700, lineHeight: 16, fontFamily: FONTS.regular, minHeight: 48 },
+  reviewFooter: { flexDirection: 'row', alignItems: 'center', marginTop: SPACING.sm, gap: SPACING.xs },
+  avatarPlaceholder: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: COLORS.grey50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  reviewerAvatar: { width: 32, height: 32, borderRadius: 16 },
-  reviewerName: { fontSize: 13, fontFamily: FONTS.bold, color: COLORS.grey800 },
-  reviewDate: { fontSize: 11, color: COLORS.grey400, fontFamily: FONTS.regular },
+  reviewerAvatar: { width: 28, height: 28, borderRadius: 14 },
+  reviewerName: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.grey800 },
+  reviewDate: { fontSize: FONT_SIZE.xs, color: COLORS.grey400, fontFamily: FONTS.regular },
 
   // Shipment Card
   shipmentCard: {
     backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.md,
-    padding: SPACING.lg,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.md,
     borderWidth: 1,
     borderColor: COLORS.grey100,
   },
-  shipmentTitle: { fontSize: 15, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
-  
+  shipmentTitle: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
+
   // Empty states
-  emptyContainer: { 
-    height: 180, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+  emptyContainer: {
+    height: 140,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   // Buttons
   showMoreBtn: {
-    marginHorizontal: SPACING.lg,
+    marginHorizontal: SPACING.md,
     backgroundColor: COLORS.grey50,
-    padding: 12,
-    borderRadius: RADIUS.md,
+    padding: SPACING.sm,
+    borderRadius: RADIUS.sm,
     alignItems: 'center',
-    marginTop: SPACING.md,
+    marginTop: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.grey200,
   },
-  showMoreText: { fontSize: 14, color: COLORS.grey700, fontFamily: FONTS.bold },
+  showMoreText: { fontSize: FONT_SIZE.sm, color: COLORS.grey700, fontFamily: FONTS.bold },
 });
 
 export default styles;

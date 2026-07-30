@@ -8,7 +8,14 @@ import {
 } from 'react-native';
 import { MapPin, Mail, Star, Check } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
 import imageIndex from '../../../../../assets/images/imageIndex';
 
@@ -16,7 +23,6 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
   const [inviting, setInviting] = useState(false);
   const [isInvited, setIsInvited] = useState(alreadyInvited);
 
-  // Update local state if the prop changes
   useEffect(() => {
     setIsInvited(alreadyInvited);
   }, [alreadyInvited]);
@@ -42,9 +48,7 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
         <Image
           source={
             profile?.profileImage
-              ? {
-                  uri: profile?.profileImage,
-                }
+              ? { uri: profile?.profileImage }
               : imageIndex.AccountIcon
           }
           style={styles.avatar}
@@ -54,7 +58,7 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
             <AppText style={styles.shipperName}>{profile?.name}</AppText>
             <View style={styles.ratingBadge}>
               <Star
-                size={12}
+                size={ICON_SIZE.xs}
                 color={COLORS.goldPrimary}
                 fill={COLORS.goldPrimary}
               />
@@ -67,13 +71,13 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
 
       <View style={styles.detailsSection}>
         <View style={styles.infoLine}>
-          <MapPin size={16} color={COLORS.goldPrimary} />
+          <MapPin size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.region || 'N/A'}
           </AppText>
         </View>
         <View style={styles.infoLine}>
-          <Mail size={16} color={COLORS.goldPrimary} />
+          <Mail size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.email || 'N/A'}
           </AppText>
@@ -97,7 +101,7 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
 
       {isInvited ? (
         <View style={styles.requestedBtn}>
-          <Check size={18} color={COLORS.greenPrimary} />
+          <Check size={ICON_SIZE.sm} color={COLORS.greenPrimary} />
           <AppText style={styles.requestedText}>Quote Requested</AppText>
         </View>
       ) : (
@@ -105,6 +109,7 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
           style={styles.inviteBtn}
           onPress={handleInvite}
           disabled={inviting}
+          activeOpacity={0.8}
         >
           {inviting ? (
             <ActivityIndicator size="small" color={COLORS.white} />
@@ -121,7 +126,6 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // We stringify the matching array so useEffect only triggers when IDs actually change
   const matchingKey = JSON.stringify(matching);
 
   const fetchAllProfiles = useCallback(async () => {
@@ -133,8 +137,6 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
 
     setLoading(true);
     try {
-      // Fetch each profile individually but in parallel
-      // We wrap each call in a try/catch so one fail doesn't break the whole list
       const promises = matching.map(async (id: string) => {
         try {
           const res = await customerService.getShipperProfile(id);
@@ -180,7 +182,6 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
           key={profile?.id}
           profile={profile}
           shipmentId={shipmentId}
-          // Ensure invited is treated as an array of IDs
           alreadyInvited={invited?.includes(profile?.id)}
         />
       ))}
@@ -199,38 +200,39 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
 export default FindShipperTab;
 
 const styles = StyleSheet.create({
-  tabContainer: { paddingBottom: 40 },
-  centerLoader: { paddingVertical: 80, alignItems: 'center' },
+  tabContainer: { paddingBottom: SPACING.xl },
+  centerLoader: { paddingVertical: 60, alignItems: 'center' },
   loaderText: {
-    marginTop: 12,
+    marginTop: SPACING.sm,
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
   },
-  subHeaderBar: { paddingHorizontal: SPACING.lg, marginVertical: SPACING.md },
+  subHeaderBar: { paddingHorizontal: SPACING.md, marginVertical: SPACING.sm },
   subHeaderText: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   card: {
     backgroundColor: COLORS.white,
-    marginHorizontal: SPACING.lg,
-    padding: SPACING.lg,
+    marginHorizontal: SPACING.md,
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    marginBottom: SPACING.md,
-    elevation: 2,
+    marginBottom: SPACING.sm,
+    elevation: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.03,
     shadowRadius: 4,
   },
-  headerRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: COLORS.grey100,
   },
   headerInfo: { flex: 1 },
@@ -240,72 +242,84 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shipperName: {
-    fontSize: 17,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  shipperTitle: { fontSize: 13, color: COLORS.textSecondary, marginTop: 2 },
+  shipperTitle: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    marginTop: 1,
+  },
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFF8E6',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 2,
+    borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: '#FFEBC2',
-    gap: 4,
+    gap: 3,
   },
   ratingText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.goldDarkText,
   },
-  detailsSection: { marginTop: 12, gap: 6 },
-  infoLine: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  infoText: { fontSize: 14, color: COLORS.textSecondary, flex: 1 },
-  statsRow: { flexDirection: 'row', gap: 12, marginTop: 16 },
+  detailsSection: { marginTop: SPACING.sm, gap: 4 },
+  infoLine: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
+  infoText: { fontSize: FONT_SIZE.sm, color: COLORS.textSecondary, flex: 1 },
+  statsRow: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.md },
   statBox: {
     flex: 1,
     backgroundColor: '#F8FAFC',
-    padding: 10,
-    borderRadius: 6,
+    padding: SPACING.xs + 2,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
-  statLabel: { fontSize: 10, color: COLORS.textLight, fontFamily: FONTS.bold },
+  statLabel: { fontSize: FONT_SIZE.xs, color: COLORS.textLight, fontFamily: FONTS.bold },
   statValue: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginTop: 4,
+    marginTop: 2,
   },
   inviteBtn: {
     backgroundColor: COLORS.goldPrimary,
-    height: 48,
-    borderRadius: 8,
+    height: 44,
+    borderRadius: RADIUS.sm,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: SPACING.md,
   },
-  inviteBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: 15 },
+  inviteBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
   requestedBtn: {
     backgroundColor: '#E6F7F0',
-    height: 48,
-    borderRadius: 8,
+    height: 44,
+    borderRadius: RADIUS.sm,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
-    gap: 8,
+    marginTop: SPACING.md,
+    gap: SPACING.xs,
     borderWidth: 1,
     borderColor: '#A9E2CC',
   },
   requestedText: {
     color: COLORS.greenPrimary,
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
   },
-  emptyState: { alignItems: 'center', marginTop: 60 },
-  emptyText: { color: COLORS.textLight, fontFamily: FONTS.medium },
+  emptyState: { alignItems: 'center', marginTop: 40 },
+  emptyText: {
+    color: COLORS.textLight,
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
+  },
 });

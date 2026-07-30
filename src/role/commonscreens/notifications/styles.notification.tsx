@@ -1,6 +1,5 @@
-// src/screens/notifications/notifications.styles.ts
 import { StyleSheet } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS } from "../../../constants";
+import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +8,8 @@ const styles = StyleSheet.create({
   },
   headerPillContainer: {
     backgroundColor: COLORS.white,
-    padding: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.round,
-    padding: 4,
+    padding: 3,
   },
   pillBtn: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 8,
     alignItems: 'center',
     borderRadius: RADIUS.round,
   },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   pillText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.grey600,
   },
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
@@ -60,30 +60,34 @@ const styles = StyleSheet.create({
   selectionCount: {
     fontFamily: FONTS.bold,
     color: COLORS.goldPrimary,
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
   },
   ribbonActions: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: SPACING.lg,
+  },
+  actionBtn: {
+    padding: 4,
   },
   // Card Styling
   list: {
     padding: SPACING.md,
-    paddingBottom: 120,
+    paddingBottom: 100,
   },
   card: {
     flexDirection: 'row',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
     padding: SPACING.md,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: COLORS.divider,
     shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
-    shadowRadius: 10,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 6,
+    elevation: 1,
   },
   unreadCard: {
     borderColor: COLORS.goldBorder,
@@ -95,45 +99,45 @@ const styles = StyleSheet.create({
   },
   checkContainer: {
     justifyContent: 'center',
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
   iconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: RADIUS.md,
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.sm,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.white,
   },
   cardBody: {
     flex: 1,
-    marginLeft: SPACING.md,
+    marginLeft: SPACING.sm,
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 4,
+    alignItems: 'center',
+    marginBottom: 2,
   },
   cardTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     flex: 1,
-    marginRight: 8,
+    marginRight: 6,
   },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: COLORS.goldPrimary,
-    marginTop: 6,
   },
   cardMsg: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     lineHeight: 18,
-    marginBottom: 8,
+    marginBottom: 6,
+    fontFamily: FONTS.regular,
   },
   cardFooter: {
     flexDirection: 'row',
@@ -141,141 +145,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardTime: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     fontFamily: FONTS.medium,
   },
 });
 
 export default styles;
-
-// import { StyleSheet, Platform } from 'react-native';
-// import { COLORS, RADIUS, SPACING, FONTS } from '../../../constants';
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1, backgroundColor: COLORS.white },
-//   tabWrapper: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingHorizontal: SPACING.lg,
-//     paddingVertical: SPACING.md,
-//     gap: 12,
-//   },
-//   segmentedControl: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     backgroundColor: COLORS.grey100,
-//     borderRadius: RADIUS.md,
-//     padding: 4,
-//   },
-//   tabBtn: {
-//     flex: 1,
-//     paddingVertical: 8,
-//     alignItems: 'center',
-//     borderRadius: RADIUS.sm,
-//   },
-//   tabBtnActive: {
-//     backgroundColor: COLORS.white,
-//     elevation: 2,
-//     shadowColor: '#000',
-//     shadowOpacity: 0.05,
-//   },
-//   tabLabel: { fontSize: 13, fontFamily: FONTS.medium, color: COLORS.grey500 },
-//   tabLabelActive: { color: COLORS.textPrimary, fontFamily: FONTS.bold },
-//   searchBtn: {
-//     padding: 8,
-//     backgroundColor: COLORS.grey100,
-//     borderRadius: RADIUS.md,
-//   },
-
-//   sectionHeader: {
-//     paddingHorizontal: SPACING.lg,
-//     paddingTop: SPACING.lg,
-//     paddingBottom: SPACING.sm,
-//   },
-//   sectionTitle: {
-//     fontSize: 12,
-//     fontFamily: FONTS.bold,
-//     color: COLORS.textLight,
-//     textTransform: 'uppercase',
-//     letterSpacing: 1,
-//   },
-
-//   listPadding: { paddingBottom: 100 },
-//   card: {
-//     backgroundColor: COLORS.white,
-//     paddingHorizontal: SPACING.lg,
-//     paddingVertical: SPACING.md,
-//   },
-//   unreadCard: { backgroundColor: '#F9FAFB' },
-//   selectedCard: { backgroundColor: COLORS.goldLightBg },
-//   cardInner: { flexDirection: 'row', alignItems: 'center' },
-
-//   selectionCircle: { marginRight: SPACING.md },
-//   checkbox: {
-//     width: 22,
-//     height: 22,
-//     borderRadius: 11,
-//     borderWidth: 2,
-//     borderColor: COLORS.grey300,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   checkboxActive: {
-//     backgroundColor: COLORS.goldPrimary,
-//     borderColor: COLORS.goldPrimary,
-//   },
-
-//   iconContainer: {
-//     width: 48,
-//     height: 48,
-//     borderRadius: 24,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   contentContainer: { flex: 1, marginLeft: SPACING.md },
-//   row: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     marginBottom: 2,
-//   },
-//   title: { fontSize: 15, color: COLORS.textPrimary, fontFamily: FONTS.medium },
-//   boldText: { fontFamily: FONTS.bold },
-//   message: { fontSize: 13, color: COLORS.textSecondary, lineHeight: 18 },
-//   time: { fontSize: 11, color: COLORS.textLight },
-//   indicator: {
-//     width: 8,
-//     height: 8,
-//     borderRadius: 4,
-//     backgroundColor: COLORS.goldPrimary,
-//     marginLeft: 8,
-//   },
-
-//   swipeContainer: { width: 80, flexDirection: 'row' },
-//   swipeAction: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-
-//   floatingToolbar: {
-//     position: 'absolute',
-//     bottom: 30,
-//     left: 20,
-//     right: 20,
-//     backgroundColor: COLORS.grey900,
-//     borderRadius: RADIUS.round,
-//     flexDirection: 'row',
-//     paddingHorizontal: 20,
-//     paddingVertical: 14,
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     zIndex: 100,
-//     ...Platform.select({
-//       ios: { shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 10 },
-//     }),
-//   },
-//   toolbarClose: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-//   toolbarText: { color: COLORS.white, fontFamily: FONTS.bold },
-//   toolbarActions: { flexDirection: 'row', gap: 20 },
-//   actionIcon: { padding: 4 },
-// });
-
-// export default styles;

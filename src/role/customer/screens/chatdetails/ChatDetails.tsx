@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   FlatList,
@@ -8,47 +8,43 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { ChevronLeft, Send, Upload, MoreVertical, X } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './style.chatdetail';
-import { COLORS } from '../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
 import { AppText, PhotoSourceSheet } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
+import imageIndex from '../../../../assets/images/imageIndex';
+
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { shipmentId }: any = route.params;
   const [inputText, setInputText] = useState('');
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
-  const [photoBase64, setPhotoBase64] = useState<string | undefined>();
-  const [photoUri, setPhotoUri] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
 
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
 
-  // Determine the user's role to identify "isMe"
-  // Based on your JSON, we'll assume the App User is the 'customer'
   const MY_ROLE = 'customer';
 
   const handleSend = async () => {
-    // Call hook with both text and the selected image object
     const success = await sendMessage(inputText, selectedImage);
     if (success) {
       setInputText('');
-      setSelectedImage(null); // Clear the draft preview
+      setSelectedImage(null);
     }
   };
 
   const formatMessageTime = (dateStr: string) => {
     const date = new Date(dateStr);
-    const day = date.toLocaleDateString('en-US', { weekday: 'long' });
+    const day = date.toLocaleDateString('en-US', { weekday: 'short' });
     const time = date
       .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       .toLowerCase();
@@ -100,14 +96,6 @@ const ChatDetails = () => {
     );
   };
 
-  const handlePickedImage = (image: PickerImage) => {
-    if (image.data) {
-      setPhotoBase64(image.data);
-      setPhotoUri(image.path);
-    }
-  };
-
-  // Improved Pick Handlers with Permissions
   const pickPhotoFromGallery = async () => {
     const hasPermission = await permissionService.request('gallery');
     if (!hasPermission) return;
@@ -151,6 +139,8 @@ const ChatDetails = () => {
       </View>
     );
 
+  const canSend = !!inputText.trim() || !!selectedImage;
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -159,10 +149,10 @@ const ChatDetails = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ChevronLeft color={COLORS.textPrimary} size={28} />
+          <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
         </TouchableOpacity>
         <Image
-          source={{ uri: 'https://via.placeholder.com/150' }}
+          source={imageIndex.AccountIcon}
           style={styles.headerAvatar}
         />
         <View style={styles.headerInfo}>
@@ -172,7 +162,7 @@ const ChatDetails = () => {
           </AppText>
         </View>
         <TouchableOpacity>
-          <MoreVertical color={COLORS.textPrimary} size={22} />
+          <MoreVertical color={COLORS.textPrimary} size={ICON_SIZE.sm} />
         </TouchableOpacity>
       </View>
 
@@ -183,7 +173,6 @@ const ChatDetails = () => {
         inverted
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        // Optional: Add Date Separator logic here if needed
       />
 
       {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
@@ -198,7 +187,7 @@ const ChatDetails = () => {
               style={styles.cancelDraftBtn}
               onPress={() => setSelectedImage(null)}
             >
-              <X size={16} color={COLORS.white} strokeWidth={3} />
+              <X size={ICON_SIZE.xs} color={COLORS.white} strokeWidth={2.5} />
             </TouchableOpacity>
           </View>
         </View>
@@ -208,7 +197,7 @@ const ChatDetails = () => {
       <View style={styles.footer}>
         <View style={styles.inputBox}>
           <TextInput
-            placeholder="Type a message"
+            placeholder="Type a message..."
             style={styles.textInput}
             value={inputText}
             onChangeText={setInputText}
@@ -220,19 +209,25 @@ const ChatDetails = () => {
         <TouchableOpacity
           onPress={() => setShowPhotoSheet(!showPhotoSheet)}
           style={styles.squareActionBtn}
+          activeOpacity={0.7}
         >
-          <Upload size={20} color={COLORS.textSecondary} />
+          <Upload size={ICON_SIZE.sm} color={COLORS.textSecondary} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.squareActionBtn, styles.sendBtn]}
+          style={[
+            styles.squareActionBtn,
+            styles.sendBtn,
+            (!canSend || sending) && styles.disabledSendBtn,
+          ]}
           onPress={handleSend}
-          disabled={sending || (!inputText.trim() && !selectedImage)}
+          disabled={sending || !canSend}
+          activeOpacity={0.8}
         >
           {sending ? (
             <ActivityIndicator color={COLORS.white} size="small" />
           ) : (
-            <Send size={20} color={COLORS.white} />
+            <Send size={ICON_SIZE.sm} color={COLORS.white} />
           )}
         </TouchableOpacity>
       </View>
@@ -242,8 +237,7 @@ const ChatDetails = () => {
         onClose={() => setShowPhotoSheet(!showPhotoSheet)}
         onCamera={takeProfilePhoto}
         onGallery={pickPhotoFromGallery}
-        hasImage={true} // Set true if user already has a photo
-        // onRemove={() => console.log('Remove logic')}
+        hasImage={true}
       />
     </KeyboardAvoidingView>
   );

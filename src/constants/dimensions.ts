@@ -32,9 +32,9 @@ export const FONT_SIZE = {
   lg: 16,
   xl: 18,
   xxl: 20,
-  title: 24,
-  heading: 28,
-  display: 32,
+  title: 22,
+  heading: 24,
+  display: 28,
 } as const;
 
 export const ICON_SIZE = {

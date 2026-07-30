@@ -1,14 +1,21 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
-  scrollPadding: { paddingBottom: 40 },
+  scrollPadding: { paddingBottom: SPACING.xxxl },
 
   // Header Info
   headerInfo: {
-    padding: SPACING.lg,
-    paddingTop: SPACING.xl,
+    paddingHorizontal: SPACING.md,
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.sm,
     backgroundColor: COLORS.white,
   },
   titleRow: {
@@ -17,80 +24,80 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shipmentTitle: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.grey900,
   },
   idRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
-    gap: 12,
+    marginTop: SPACING.xs,
+    gap: SPACING.sm,
   },
   shipmentId: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.grey700,
   },
   statusBadge: {
     backgroundColor: COLORS.goldLightBg,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
     borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: COLORS.goldPrimary,
   },
   statusText: {
     color: COLORS.goldPrimary,
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
   },
   listedText: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.grey600,
-    marginTop: 12,
+    marginTop: SPACING.xs,
   },
 
   // Tabs
-  tabContainer: { 
-    borderBottomWidth: 1, 
+  tabContainer: {
+    borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
-    marginTop: 10,
+    marginTop: SPACING.xs,
   },
   tabButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.xs,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },
-  tabButtonActive: { 
+  tabButtonActive: {
     borderBottomColor: COLORS.goldPrimary,
   },
   tabLabel: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.grey600,
   },
-  tabLabelActive: { 
-    color: COLORS.goldPrimary, 
-    fontFamily: FONTS.semiBold 
+  tabLabelActive: {
+    color: COLORS.goldPrimary,
+    fontFamily: FONTS.semiBold,
   },
   tabBadge: {
-    backgroundColor: '#F3EBD8', // Light beige color from image
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 12,
+    backgroundColor: '#F3EBD8',
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 1,
+    borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: '#DCCEB2',
-    minWidth: 24,
+    minWidth: 20,
     alignItems: 'center',
   },
   tabBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.goldDarkText,
   },

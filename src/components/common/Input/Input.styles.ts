@@ -1,38 +1,32 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
- 
 export default StyleSheet.create({
   container: {
-    marginBottom: SPACING.lg,
-     
+    marginBottom: SPACING.sm,
   },
 
   label: {
-    marginBottom: SPACING.sm,
+    marginBottom: 4,
     fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
   },
 
   leftIconContainer: {
-  marginRight: 10, // Gives spacing between the icon and the typed text
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+    marginRight: SPACING.xs,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-
     borderWidth: 1,
     borderColor: COLORS.border,
-
-    borderRadius: RADIUS.md,
-
-    paddingHorizontal: SPACING.lg,
-    height: 52,
-
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.md,
+    height: 46,
     backgroundColor: COLORS.white,
   },
 
@@ -47,14 +41,14 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
-   },
+  },
 
   error: {
-    marginTop: 5,
+    marginTop: 2,
     color: COLORS.error,
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
   },
 

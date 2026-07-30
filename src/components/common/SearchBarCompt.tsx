@@ -8,7 +8,14 @@ import {
   StyleProp,
 } from 'react-native';
 import { Search, XCircle } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../constants';
 
 interface SearchBarProps {
   value: string;
@@ -16,20 +23,19 @@ interface SearchBarProps {
   placeholder?: string;
   containerStyle?: StyleProp<ViewStyle>;
   onClear?: () => void;
-  editable?:boolean;
-  pointerEvents?:any
+  editable?: boolean;
+  pointerEvents?: any;
 }
 
 const SearchBarCompt: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
-  placeholder = "Search...",
+  placeholder = 'Search...',
   containerStyle,
   onClear,
   editable,
-  pointerEvents
+  pointerEvents,
 }) => {
-  
   const handleClear = () => {
     onChangeText('');
     if (onClear) onClear();
@@ -37,9 +43,10 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Search size={18} color={COLORS.grey400} strokeWidth={2} />
-      
-      <TextInput allowFontScaling={false}
+      <Search size={ICON_SIZE.sm} color={COLORS.grey400} strokeWidth={2} />
+
+      <TextInput
+        allowFontScaling={false}
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
@@ -54,11 +61,11 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
       />
 
       {value.length > 0 && (
-        <TouchableOpacity 
-          onPress={handleClear} 
+        <TouchableOpacity
+          onPress={handleClear}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <XCircle size={18} color={COLORS.grey300} fill={COLORS.grey100} />
+          <XCircle size={ICON_SIZE.sm} color={COLORS.grey300} fill={COLORS.grey100} />
         </TouchableOpacity>
       )}
     </View>
@@ -71,20 +78,20 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.grey50, // Matches your grey50 constant
-    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.grey50,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    height: 48,
+    height: 42,
   },
   input: {
     flex: 1,
     height: '100%',
-    marginLeft: SPACING.sm,
+    marginLeft: SPACING.xs,
     fontFamily: FONTS.medium,
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
-    paddingVertical: 0, // Fixes vertical alignment on some Android versions
+    paddingVertical: 0,
   },
 });

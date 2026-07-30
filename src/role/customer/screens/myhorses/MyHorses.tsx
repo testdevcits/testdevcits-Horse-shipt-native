@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import { Edit2, Trash2, Wind } from 'lucide-react-native';
+import { View, FlatList, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
+import { Wind } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
@@ -21,11 +15,10 @@ import {
   AppLoader,
   AppText,
   EmptyState,
-  FloatingButton,
   HorseCard,
 } from '../../../../components';
 
-const MyHorses = ({ navigation }) => {
+const MyHorses = ({ navigation }: any) => {
   const {
     horses,
     loading,
@@ -46,41 +39,22 @@ const MyHorses = ({ navigation }) => {
         keyExtractor={item => item._id}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() => {
-          return (
-            <>
-              <AppText
-                style={{
-                  // margin: SPACING.lg,
-                  fontSize: FONT_SIZE.xl,
-                  fontFamily: FONTS.semiBold,
-                }}
-              >
-                My Horses
-              </AppText>
-              <AppText style={{   marginTop: 0 }}>
-                Manage your horses, update their details, and keep all
-                transportation information in one place.
-              </AppText>
-              <AppText
-                onPress={() => navigation.navigate('AddEditHorse')}
-                style={{
-                  padding: SPACING.sm,
-                  backgroundColor: COLORS.primary,
-                  alignSelf: 'flex-start',
-                  color: COLORS.white,
-                  fontFamily: FONTS.semiBold,
-                  borderRadius: 10,
-                  paddingHorizontal: 50,
-                  marginVertical:SPACING.sm
-
-                }}
-              >
-                + Horse
-              </AppText>
-            </>
-          );
-        }}
+        ListHeaderComponent={() => (
+          <View style={styles.headerWrap}>
+            <AppText style={styles.headerTitle}>My Horses</AppText>
+            <AppText style={styles.headerSubtitle}>
+              Manage your horses, update their details, and keep all
+              transportation information in one place.
+            </AppText>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddEditHorse')}
+              activeOpacity={0.8}
+              style={styles.addBtn}
+            >
+              <AppText style={styles.addBtnText}>+ Horse</AppText>
+            </TouchableOpacity>
+          </View>
+        )}
         renderItem={({ item }) => (
           <HorseCard
             item={item}
@@ -91,6 +65,7 @@ const MyHorses = ({ navigation }) => {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
+            tintColor={COLORS.goldPrimary}
             onRefresh={() => {
               setRefreshing(true);
               fetchHorses();
@@ -113,7 +88,34 @@ const MyHorses = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  listContent: { padding: SPACING.lg, paddingBottom: 100 },
+  listContent: { padding: SPACING.md, paddingBottom: 100 },
+  headerWrap: { marginBottom: SPACING.sm },
+  headerTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  headerSubtitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+    marginBottom: SPACING.sm,
+    lineHeight: 16,
+  },
+  addBtn: {
+    backgroundColor: COLORS.goldPrimary,
+    paddingVertical: SPACING.xs + 2,
+    paddingHorizontal: SPACING.lg,
+    alignSelf: 'flex-start',
+    borderRadius: RADIUS.sm,
+    marginBottom: SPACING.sm,
+  },
+  addBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
 });
 
 export default MyHorses;

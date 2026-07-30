@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING } from '../../constants';
+import { COLORS, FONTS, SPACING, FONT_SIZE, RADIUS } from '../../constants';
 import AppText from '../common/AppText';
 import imageIndex from '../../assets/images/imageIndex';
 
@@ -11,8 +11,7 @@ const ChatListCard = ({
   item: any;
   onPress: () => void;
 }) => {
-
-   return (
+  return (
     <TouchableOpacity style={styles.card} activeOpacity={0.7} onPress={onPress}>
       {/* 1. Left Status Dot */}
       <View style={styles.indicatorContainer}>
@@ -53,29 +52,29 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     backgroundColor: COLORS.white,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
     alignItems: 'center',
   },
   indicatorContainer: {
-    width: 20,
+    width: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
   unreadDot: {
     width: 8,
     height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.greenActive, // Use your #10B981
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.greenActive || '#10B981',
   },
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: COLORS.grey100,
-    marginHorizontal: SPACING.sm,
+    marginHorizontal: SPACING.xs,
   },
   content: {
     flex: 1,
@@ -89,23 +88,23 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     flex: 1,
   },
   time: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     fontFamily: FONTS.regular,
   },
   shipmentId: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
     marginBottom: 2,
   },
   snippet: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     fontFamily: FONTS.regular,
   },

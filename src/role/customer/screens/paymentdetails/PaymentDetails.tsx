@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Linking, StyleSheet, Share } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { 
-  ChevronLeft, Copy, ExternalLink, 
-  Download, Verified, MapPin, 
-  User, Mail, Phone 
+import {
+  ChevronLeft, Copy, ExternalLink,
+  Download, Verified, MapPin,
+  User, Mail, Phone
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
- 
+
 const PaymentDetails = () => {
   const route = useRoute<any>();
   const navigation = useNavigation();
@@ -58,14 +58,14 @@ const PaymentDetails = () => {
         <View style={styles.infoCard}>
           <View style={styles.shipperRow}>
             <View style={styles.avatar}>
-               <User size={24} color={COLORS.grey400} />
+              <User size={24} color={COLORS.grey400} />
             </View>
             <View style={{ flex: 1 }}>
               <AppText style={styles.shipperName}>{payment?.shipper?.name}</AppText>
               <AppText style={styles.shipperEmail}>{payment?.shipper?.email}</AppText>
             </View>
             <TouchableOpacity style={styles.phoneBtn}>
-               <Phone size={18} color={COLORS.white} />
+              <Phone size={18} color={COLORS.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -85,8 +85,8 @@ const PaymentDetails = () => {
         </View>
 
         {/* External Link */}
-        <TouchableOpacity 
-          style={styles.receiptBtn} 
+        <TouchableOpacity
+          style={styles.receiptBtn}
           onPress={() => Linking.openURL(payment?.receiptUrl)}
         >
           <AppText style={styles.receiptBtnText}>View Official Stripe Receipt</AppText>
@@ -99,31 +99,31 @@ const PaymentDetails = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: SPACING.lg, backgroundColor: COLORS.white },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md, backgroundColor: COLORS.white, borderBottomWidth: 1, borderBottomColor: COLORS.divider },
   backBtn: { padding: 4 },
-  headerTitle: { fontFamily: FONTS.bold, fontSize: 18, color: COLORS.textPrimary },
+  headerTitle: { fontFamily: FONTS.bold, fontSize: FONT_SIZE.lg, color: COLORS.textPrimary },
   content: { padding: SPACING.lg },
-  heroCard: { alignItems: 'center', marginBottom: SPACING.xl },
-  successCircle: { marginBottom: SPACING.md },
-  heroStatus: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.success, textTransform: 'uppercase', letterSpacing: 1 },
-  heroAmount: { fontSize: 42, fontFamily: FONTS.bold, color: COLORS.textPrimary, marginVertical: 4 },
-  heroDate: { fontSize: 13, color: COLORS.textSecondary },
-  infoCard: { backgroundColor: COLORS.white, borderRadius: RADIUS.lg, padding: SPACING.lg, marginBottom: SPACING.lg, borderWidth: 1, borderColor: COLORS.divider },
+  heroCard: { alignItems: 'center', marginBottom: SPACING.lg },
+  successCircle: { marginBottom: SPACING.sm },
+  heroStatus: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.success, textTransform: 'uppercase', letterSpacing: 1 },
+  heroAmount: { fontSize: FONT_SIZE.heading, fontFamily: FONTS.bold, color: COLORS.textPrimary, marginVertical: 2 },
+  heroDate: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary },
+  infoCard: { backgroundColor: COLORS.white, borderRadius: RADIUS.md, padding: SPACING.md, marginBottom: SPACING.md, borderWidth: 1, borderColor: COLORS.divider },
   idRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  label: { fontSize: 10, fontFamily: FONTS.bold, color: COLORS.textLight, letterSpacing: 1 },
-  idText: { fontSize: 13, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginTop: 4 },
+  label: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textLight, letterSpacing: 1 },
+  idText: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginTop: 2 },
   copyBtn: { padding: 8, backgroundColor: COLORS.goldLightBg, borderRadius: RADIUS.sm },
-  sectionTitle: { fontSize: 12, fontFamily: FONTS.bold, color: COLORS.textSecondary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: SPACING.sm, marginLeft: 4 },
+  sectionTitle: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textSecondary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: SPACING.xs, marginLeft: 4 },
   shipperRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: COLORS.grey100, alignItems: 'center', justifyContent: 'center' },
-  shipperName: { fontFamily: FONTS.bold, fontSize: 15, color: COLORS.textPrimary },
-  shipperEmail: { fontSize: 12, color: COLORS.textSecondary },
-  phoneBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: COLORS.goldPrimary, alignItems: 'center', justifyContent: 'center' },
+  avatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: COLORS.grey100, alignItems: 'center', justifyContent: 'center' },
+  shipperName: { fontFamily: FONTS.bold, fontSize: FONT_SIZE.sm, color: COLORS.textPrimary },
+  shipperEmail: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary },
+  phoneBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.goldPrimary, alignItems: 'center', justifyContent: 'center' },
   routeRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
-  routeText: { flex: 1, fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textPrimary },
-  routeLine: { width: 2, height: 20, backgroundColor: COLORS.goldBorder, marginLeft: 8, marginVertical: 4 },
-  receiptBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: SPACING.lg, backgroundColor: COLORS.goldLightBg, borderRadius: RADIUS.lg, borderStyle: 'dashed', borderWidth: 1, borderColor: COLORS.goldPrimary },
-  receiptBtnText: { fontFamily: FONTS.bold, color: COLORS.goldPrimary, fontSize: 14 }
+  routeText: { flex: 1, fontSize: FONT_SIZE.sm, fontFamily: FONTS.medium, color: COLORS.textPrimary },
+  routeLine: { width: 2, height: 16, backgroundColor: COLORS.goldBorder, marginLeft: 8, marginVertical: 2 },
+  receiptBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: SPACING.md, backgroundColor: COLORS.goldLightBg, borderRadius: RADIUS.md, borderStyle: 'dashed', borderWidth: 1, borderColor: COLORS.goldPrimary },
+  receiptBtnText: { fontFamily: FONTS.bold, color: COLORS.goldPrimary, fontSize: FONT_SIZE.sm }
 });
 
 export default PaymentDetails;

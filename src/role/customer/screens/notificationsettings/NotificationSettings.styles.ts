@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
+import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from "../../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,21 +13,21 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   header: {
-    paddingHorizontal: SPACING.xl,
-    paddingTop: SPACING.xxxl,
-    paddingBottom: SPACING.xl,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.lg,
+    paddingBottom: SPACING.md,
   },
   title: {
-    fontSize: 20,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.xs,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   settingsBox: {
     backgroundColor: COLORS.white,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.border,
-    paddingVertical: SPACING.sm,
+    paddingVertical: SPACING.xs,
     // Subtle shadow for the container
     ...Platform.select({
       ios: {
@@ -53,22 +53,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 18,
-    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
   },
   itemTitle: {
     flex: 1,
     fontFamily: FONTS.medium,
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
-    paddingRight: SPACING.md,
+    paddingRight: SPACING.sm,
   },
   footer: {
-    padding: SPACING.xxxl,
+    padding: SPACING.lg,
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     fontFamily: FONTS.regular,
   }

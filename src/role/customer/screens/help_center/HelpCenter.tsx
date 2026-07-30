@@ -13,7 +13,7 @@ import {
   ChevronRight,
   MessageCircle,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';
 
 const HelpCenter = ({ navigation }: any) => {
@@ -26,13 +26,13 @@ const HelpCenter = ({ navigation }: any) => {
       <AppHeader showBack={true} title="Help Center" />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Main Support Card (Matching your image) */}
+        {/* Main Support Card */}
         <View style={styles.helpCard}>
           {/* Header Row */}
           <View style={styles.cardHeader}>
             <View style={styles.headerLeft}>
               <View style={styles.questionIconBox}>
-                <HelpCircle size={22} color={COLORS.goldPrimary} />
+                <HelpCircle size={20} color={COLORS.goldPrimary} />
               </View>
               <View>
                 <AppText style={styles.cardTitle}>Customer Help</AppText>
@@ -59,7 +59,7 @@ const HelpCenter = ({ navigation }: any) => {
               onPress={handleEmailPress}
             >
               <View style={styles.mailIconBox}>
-                <Mail size={20} color={COLORS.goldPrimary} />
+                <Mail size={18} color={COLORS.goldPrimary} />
               </View>
               <View>
                 <AppText style={styles.emailLabel}>HELP EMAIL</AppText>
@@ -71,7 +71,7 @@ const HelpCenter = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* Additional FAQ Section for a complete page feel */}
+        {/* Additional FAQ Section */}
         <AppText style={styles.sectionLabel}>
           Frequently Asked Questions
         </AppText>
@@ -92,7 +92,7 @@ const FaqItem = ({ title, isLast }: { title: string; isLast?: boolean }) => (
     style={[styles.faqItem, isLast && { borderBottomWidth: 0 }]}
   >
     <AppText style={styles.faqText}>{title}</AppText>
-    <ChevronRight size={18} color={COLORS.grey400} />
+    <ChevronRight size={16} color={COLORS.grey400} />
   </TouchableOpacity>
 );
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
-    padding: SPACING.lg,
+    padding: SPACING.md,
   },
   helpCard: {
     backgroundColor: COLORS.white,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
     overflow: 'hidden',
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.lg,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: SPACING.lg,
+    padding: SPACING.md,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -129,20 +129,20 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   questionIconBox: {
-    width: 40,
-    height: 40,
+    width: 36,
+    height: 36,
     backgroundColor: COLORS.goldLightBg,
     borderRadius: RADIUS.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   cardSubtitle: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
   },
@@ -151,13 +151,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.divider,
   },
   cardBody: {
-    padding: SPACING.lg,
+    padding: SPACING.md,
   },
   description: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
-    lineHeight: 20,
-    marginBottom: SPACING.lg,
+    lineHeight: 18,
+    marginBottom: SPACING.md,
     fontFamily: FONTS.medium,
   },
   emailHighlightBox: {
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   mailIconBox: {
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.divider,
@@ -181,22 +181,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emailLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.goldPrimary,
     letterSpacing: 1,
   },
   emailValue: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     marginTop: 2,
   },
   sectionLabel: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
     marginLeft: 4,
   },
   faqContainer: {
@@ -209,12 +209,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: SPACING.lg,
+    padding: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
   faqText: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
   },

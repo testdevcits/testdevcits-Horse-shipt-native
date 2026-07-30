@@ -1,39 +1,36 @@
-import { StyleSheet } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
+import { StyleSheet } from 'react-native';
+import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
-  header: { 
-    backgroundColor: COLORS.white, 
-    paddingHorizontal: SPACING.lg, 
-    gap: SPACING.sm, // Reduced gap for a tighter look
+  header: {
+    backgroundColor: COLORS.white,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    gap: SPACING.xs,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider
+    borderBottomColor: COLORS.divider,
   },
-  screenTitle: { 
-    fontSize: 24, 
-    fontFamily: FONTS.medium, 
+  screenTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: 4
-  },
-  
-  // Container for the dropdown to prevent full-width stretching
-  filterContainer: {
-    alignSelf: 'flex-start',
-    width: 140, // Fixed width to match the "Unread" box design
-     
-    marginTop:0
-     
+    marginBottom: 2,
   },
 
-  // Style override for the AppSelect component
+  filterContainer: {
+    alignSelf: 'flex-start',
+    width: 130,
+    marginTop: SPACING.xs,
+  },
+
   miniSelect: {
-    height: 38, // Small height to match the HorseShipt design
-    paddingHorizontal: SPACING.md,
+    height: 36,
+    paddingHorizontal: SPACING.sm,
     borderRadius: RADIUS.sm,
     borderColor: COLORS.grey200,
     backgroundColor: COLORS.white,
-    marginBottom: -10, // Remove the default bottom margin
+    marginBottom: 0,
   },
 
   list: { paddingBottom: 100 },

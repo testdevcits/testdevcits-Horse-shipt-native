@@ -38,12 +38,12 @@ const customerService = {
   },
 
   updateProfileImage: async (formData: FormData): Promise<any> => {
-  return axiosClient.put('/api/customer/profile-image', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-},
+    return axiosClient.put('/api/customer/profile-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
   /**
    * Fetch all horses belonging to the logged-in customer
    */
@@ -111,7 +111,7 @@ const customerService = {
   markAsRead: async (
     notificationIds: string[],
   ): Promise<{ success: boolean }> => {
-    return axiosClient.post('/api/customer/notifications/mark-read', {
+    return axiosClient.patch('/api/customer/notification-activity/read', {
       notificationIds,
     });
   },
@@ -158,10 +158,10 @@ const customerService = {
       payload,
       payload instanceof FormData
         ? {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
         : undefined,
     );
   },

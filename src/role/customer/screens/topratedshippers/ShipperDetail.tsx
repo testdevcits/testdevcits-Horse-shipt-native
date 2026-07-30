@@ -10,14 +10,13 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import {
   Star,
   MapPin,
-  Calendar,
   User,
   MessageSquare,
   Package,
 } from 'lucide-react-native';
 
 // Constants & Hooks
-import { COLORS, SPACING } from '../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 import styles from './shipperDetail.styles';
 import { useShipperDetails } from './useShipperDetails';
 import {
@@ -29,13 +28,10 @@ import {
 } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
-// Components
-
 const ShipperDetail = () => {
   const route = useRoute<any>();
   const navigation = useNavigation();
 
-  // Get ID from params (handling both item object or direct id)
   const shipperId = route.params?.item?.id || route.params?.id;
 
   const { shipper, loading, refreshing, error, refresh } =
@@ -68,7 +64,7 @@ const ShipperDetail = () => {
         {[1, 2, 3, 4, 5].map(s => (
           <Star
             key={s}
-            size={14}
+            size={ICON_SIZE.xs}
             color={COLORS.goldPrimary}
             fill={s <= (item?.rating || 5) ? COLORS.goldPrimary : 'transparent'}
           />
@@ -80,7 +76,7 @@ const ShipperDetail = () => {
       </AppText>
       <View style={styles.reviewFooter}>
         <View style={styles.avatarPlaceholder}>
-          <User size={16} color={COLORS.grey400} />
+          <User size={ICON_SIZE.xs} color={COLORS.grey400} />
         </View>
         <View>
           <AppText style={styles.reviewerName}>
@@ -123,7 +119,7 @@ const ShipperDetail = () => {
           <View style={styles.profileImageContainer}>
             <Image
               source={
-                shipper?.profileImage !=="/default-avatar.png"
+                shipper?.profileImage !== '/default-avatar.png'
                   ? { uri: shipper?.profileImage }
                   : imageIndex.AccountIcon
               }
@@ -149,7 +145,7 @@ const ShipperDetail = () => {
                 {shipper?.rating > 0 ? shipper?.rating.toFixed(1) : 'New'}
               </AppText>
               <Star
-                size={14}
+                size={ICON_SIZE.xs}
                 color={COLORS.goldPrimary}
                 fill={COLORS.goldPrimary}
               />
@@ -168,7 +164,7 @@ const ShipperDetail = () => {
         {/* Location & Description */}
         <View style={styles.contentPadding}>
           <View style={styles.locationContainer}>
-            <MapPin size={18} color={COLORS.goldPrimary} />
+            <MapPin size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
             <AppText style={styles.locationLabel}>{shipper?.region}</AppText>
           </View>
 
@@ -232,8 +228,6 @@ const ShipperDetail = () => {
             </View>
           )}
         </View>
-
-        <View style={{ height: 40 }} />
       </ScrollView>
     </View>
   );

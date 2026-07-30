@@ -1,471 +1,3 @@
-// import React, { useEffect, useState, useRef } from 'react';
-// import {
-//   Modal,
-//   StyleSheet,
-//   View,
-//   TouchableOpacity,
-//   ScrollView,
-//   Alert,
-//   ActivityIndicator,
-//   TextInput,
-// } from 'react-native';
-// import {
-//   X,
-//   FileText,
-//   CreditCard,
-//   ChevronRight,
-//   DollarSign,
-//   User,
-//   Activity,
-//   Check,
-//   CheckCircle2,
-//   AlertCircle,
-// } from 'lucide-react-native';
-// import moment from 'moment';
-// import SignatureScreen from 'react-native-signature-canvas';
-// import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
-// import { AppText } from '../../../../components';
-// import { useNavigation } from '@react-navigation/native';
-// import customerService from '../../../../api/services/customerService';
-// import { CardField, useStripe } from '@stripe/stripe-react-native';
-
-// const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
-//   const navigation = useNavigation<any>();
-//   const { confirmPayment } = useStripe(); // Stripe Hook
-//   const [cardDetails, setCardDetails] = useState<any>(null); // To check if card is valid
-
-//   const sigRef = useRef<any>(null);
-//   const [isAcceptedTerms, setIsAcceptedTerms] = useState(false);
-//   const [signature, setSignature] = useState<string | null>(null);
-//   const [loading, setLoading] = useState(false);
-//   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
-//   const [cancelReason, setCancelReason] = useState('');
-//   const [isAccepted, setIsAccepted] = useState(
-//     quote?.status === 'accepted' ? true : false,
-//   );
-
-//   useEffect(() => {
-//     if (quote) {
-//       setIsAccepted(quote?.status === 'accepted');
-//     }
-//   }, [quote, visible]);
-
-//   if (!quote) return null;
-
-//   const handleProcessFlow = async () => {
-//     if (!cardDetails?.complete) {
-//       return Alert.alert('Invalid Card', 'Please enter complete card details.');
-//     }
-//     // 1. Validation
-//     if (!isAcceptedTerms)
-//       return Alert.alert('Required', 'Please agree to the terms.');
-//     if (!signature)
-//       return Alert.alert('Required', 'Please provide your signature.');
-
-//     setLoading(true);
-
-//     try {
-//       // --- STEP 1: RUN PAY API ---
-//       console.log('Step 1: Running Pay API...');
-//       const payResponse = await customerService.payQuote(quote?._id);
-//       // Expected: { success: true, clientSecret: '...', amount: 500 }
-
-//       if (!payResponse.success || !payResponse.clientSecret) {
-//         throw new Error('Failed to initialize payment.');
-//       }
-
-//       // --- STEP 2: STRIPE PAYMENT ---
-//       console.log('Step 2: Confirming Stripe Payment...');
-//       const { error, paymentIntent } = await confirmPayment(
-//         payResponse.clientSecret,
-//         {
-//           paymentMethodType: 'Card',
-//         },
-//       );
-
-//       if (error) {
-//         Alert.alert('Payment Error', error.message);
-//         setLoading(false);
-//         return;
-//       }
-
-//       if (
-//         paymentIntent?.status === 'Succeeded' ||
-//         paymentIntent?.status === 'RequiresCapture'
-//       ) {
-//         // --- STEP 3: RUN ACCEPT API ---
-//         console.log('Step 3: Payment Success, running Accept API...');
-//         const acceptRes = await customerService.acceptQuote(quote?._id, {
-//           customerSignature: signature,
-//           // paymentIntentId: paymentIntent.id, // Optional: pass intent ID to backend
-//         });
-
-//         if (acceptRes) {
-//           Alert.alert('Success', 'Payment processed and Quote accepted!');
-//           onClose();
-//           if (onRefresh) onRefresh();
-//         }
-//       }
-//     } catch (e: any) {
-//       Alert.alert('Process Failed', e.message || 'Something went wrong.');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleCancelShipment = async () => {
-//     if (!cancelReason.trim()) {
-//       Alert.alert('Reason Required', 'Please enter a reason for cancellation.');
-//       return;
-//     }
-
-//     setLoading(true);
-//     try {
-//       const payload = { cancelReason: cancelReason.trim() };
-//       const res = await customerService.cancelQuote(quote._id, payload);
-
-//       if (res.success) {
-//         Alert.alert(
-//           'Cancelled',
-//           'Your shipment has been cancelled successfully.',
-//         );
-//         setIsCancelModalVisible(false);
-//         onClose();
-//         if (onRefresh) onRefresh();
-//       }
-//     } catch (error: any) {
-//       Alert.alert(
-//         'Error',
-//         error?.response?.data?.message || 'Failed to cancel shipment.',
-//       );
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const openPdf = (url: string, title: string) => {
-//     navigation.navigate('PdfViewer', { title, url });
-//   };
-
-//   const SummaryBox = ({ label, value }: { label: string; value: any }) => (
-//     <View style={styles.summaryItem}>
-//       <AppText style={styles.summaryLabel}>{label}</AppText>
-//       <AppText style={styles.summaryValue}>{value || 'N/A'}</AppText>
-//     </View>
-//   );
-
-//   return (
-//     <Modal visible={visible} transparent animationType="slide">
-//       <View style={styles.overlay}>
-//         <View style={styles.content}>
-//           {/* HEADER SECTION */}
-//           <View style={styles.header}>
-//             <View>
-//               <AppText style={styles.reviewLabel}>QUOTE REVIEW</AppText>
-//               <AppText style={styles.title}>Accept Quote</AppText>
-//             </View>
-//             <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
-//               <X size={24} color={COLORS.textPrimary} />
-//             </TouchableOpacity>
-//           </View>
-
-//           {/* CANCELLATION BANNER */}
-//           <View style={styles.cancelBanner}>
-//             <AppText style={styles.cancelText}>
-//               You can cancel until{' '}
-//               <AppText style={{ fontFamily: FONTS.bold }}>
-//                 {moment(quote?.cancellationLastDate).format('MMM DD, hh:mm A')}
-//               </AppText>
-//             </AppText>
-//           </View>
-
-//           <ScrollView
-//             showsVerticalScrollIndicator={false}
-//             style={styles.scroll}
-//           >
-//             {/* STATS ROW */}
-//             <View style={styles.statsRow}>
-//               <View style={styles.statBox}>
-//                 <AppText style={styles.statLabel}>TOTAL PRICE</AppText>
-//                 <AppText style={styles.statPrice}>${quote?.totalPrice}</AppText>
-//               </View>
-//               <View style={styles.statBox}>
-//                 <AppText style={styles.statLabel}>STATUS</AppText>
-//                 <AppText style={styles.statValue}>{quote?.status}</AppText>
-//               </View>
-//             </View>
-
-//             {/* QUOTE SUMMARY */}
-//             <View style={styles.cardContainer}>
-//               <AppText style={styles.cardTitle}>Quote Summary</AppText>
-//               <View style={styles.summaryGrid}>
-//                 <SummaryBox label="SHIPPER" value={quote?.shipper?.name} />
-//                 <SummaryBox label="METHOD" value={quote?.paymentMethod} />
-//                 <SummaryBox label="DUE" value={quote?.paymentDue} />
-//                 <SummaryBox label="STATUS" value={quote?.paymentStatus} />
-//               </View>
-//             </View>
-
-//             {/* DOCUMENTS */}
-//             <View style={styles.cardContainer}>
-//               <AppText style={styles.cardTitle}>Documents</AppText>
-//               <TouchableOpacity
-//                 style={styles.docItem}
-//                 onPress={() => openPdf(quote?.contract.url, 'Contract')}
-//               >
-//                 <AppText style={styles.docName}>
-//                   Generated Quote Contract
-//                 </AppText>
-//                 <AppText style={styles.docAction}>View</AppText>
-//               </TouchableOpacity>
-//             </View>
-
-//             {/* ACCEPTANCE FORM */}
-//             {quote?.status === 'accepted' && (
-//               <View
-//                 style={[
-//                   styles.cardContainer,
-//                   {
-//                     borderColor: COLORS.goldPrimary,
-//                     backgroundColor: '#FFFCF5',
-//                   },
-//                 ]}
-//               >
-//                 <AppText style={styles.cardTitle}>Acceptance & Payment</AppText>
-
-//                 <TouchableOpacity
-//                   style={styles.termsRow}
-//                   onPress={() => setIsAcceptedTerms(!isAcceptedTerms)}
-//                 >
-//                   <View
-//                     style={[
-//                       styles.checkbox,
-//                       isAcceptedTerms && styles.checkboxActive,
-//                     ]}
-//                   >
-//                     {isAcceptedTerms && (
-//                       <Check size={14} color={COLORS.white} />
-//                     )}
-//                   </View>
-//                   <AppText style={styles.termsLabel}>
-//                     I agree to the terms and pricing.
-//                   </AppText>
-//                 </TouchableOpacity>
-
-//                 <View style={styles.signatureTitleRow}>
-//                   <AppText style={styles.signatureTitle}>
-//                     Your Signature *
-//                   </AppText>
-//                   {signature && (
-//                     <AppText style={{ color: COLORS.success, fontSize: 10 }}>
-//                       Captured
-//                     </AppText>
-//                   )}
-//                 </View>
-
-//                 <View style={{ flexDirection: 'row' }}>
-//                   <CreditCard size={16} color={COLORS.textSecondary} />
-//                   <AppText style={{ color: COLORS.textPrimary }}>
-//                     Card Details
-//                   </AppText>
-//                 </View>
-
-//                 {/* STRIPE CARD INPUT FIELD */}
-//                 <CardField
-//                   postalCodeEnabled={true} // Set to false if your backend doesn't require it
-//                   placeholder={{
-//                     number: '0000 0000 0000 0000',
-//                   }}
-//                   cardStyle={{
-//                     backgroundColor: '#FFFFFF',
-//                     textColor: COLORS.textPrimary,
-//                     placeholderColor: COLORS.textLight,
-//                     borderRadius: RADIUS.sm,
-//                   }}
-//                   style={styles.stripeCardField}
-//                   onCardChange={details => {
-//                     setCardDetails(details); // Tracks if the user finished typing the card
-//                   }}
-//                 />
-
-//                 <View style={styles.signatureWrap}>
-//                   <SignatureScreen
-//                     ref={sigRef}
-//                     onEnd={() => sigRef.current.readSignature()}
-//                     onOK={img => setSignature(img)}
-//                     webStyle={`.m-signature-pad--footer {display: none; margin: 0;}`}
-//                   />
-//                 </View>
-//                 <TouchableOpacity
-//                   onPress={() => {
-//                     sigRef.current.clearSignature();
-//                     setSignature(null);
-//                   }}
-//                 >
-//                   <AppText style={styles.clearText}>Clear Signature</AppText>
-//                 </TouchableOpacity>
-//               </View>
-//             )}
-
-//             <View style={{ height: 100 }} />
-//           </ScrollView>
-
-//           {/* FOOTER ACTIONS */}
-//           {/* <View style={styles.footer}>
-//             <TouchableOpacity
-//               style={styles.btnReject}
-//               onPress={onClose}
-//               disabled={loading}
-//             >
-//               <AppText style={styles.btnRejectText}>Cancel</AppText>
-//             </TouchableOpacity>
-//             <TouchableOpacity
-//               style={[
-//                 styles.btnAccept,
-//                 (!isAcceptedTerms || !signature) && styles.btnDisabled,
-//               ]}
-//               onPress={handleProcessFlow}
-//               disabled={loading}
-//             >
-//               {loading ? (
-//                 <ActivityIndicator color={COLORS.white} />
-//               ) : (
-//                 <AppText style={styles.btnAcceptText}>Pay & Accept</AppText>
-//               )}
-//             </TouchableOpacity>
-//           </View> */}
-
-//           {/* ACTION SECTION */}
-//           <View style={styles.footerActionContainer}>
-//             {/* CASE 1: QUOTE IS ALREADY ACCEPTED */}
-//             {quote?.status === 'accepted' && !quote?.isCancelled && (
-//               <View style={styles.acceptedContainer}>
-//                 <View style={styles.successMessageCard}>
-//                   <CheckCircle2 size={24} color={COLORS.greenPrimary} />
-//                   <View>
-//                     <AppText style={styles.successTitle}>
-//                       Quote Accepted
-//                     </AppText>
-//                     <AppText style={styles.successSub}>
-//                       Your shipment is booked and secured.
-//                     </AppText>
-//                   </View>
-//                 </View>
-
-//                 {/* CANCEL BUTTON: Visible if within cancellation window */}
-//                 <TouchableOpacity
-//                   style={styles.cancelBookingBtn}
-//                   onPress={() => setIsCancelModalVisible(true)}
-//                 >
-//                   <AlertCircle size={18} color={COLORS.error} />
-//                   <AppText style={styles.cancelBookingText}>
-//                     Cancel Shipment
-//                   </AppText>
-//                 </TouchableOpacity>
-//               </View>
-//             )}
-
-//             {/* CASE 2: QUOTE IS PENDING (Normal Accept Flow) */}
-//             {quote?.status === 'pending' && !quote?.isCancelled && (
-//               <>
-//                 <View style={styles.termsRow}>
-//                   <TouchableOpacity
-//                     style={[
-//                       styles.checkbox,
-//                       isAccepted && styles.checkboxActive,
-//                     ]}
-//                     onPress={() => setIsAccepted(!isAccepted)}
-//                   >
-//                     {isAccepted && (
-//                       <Check size={14} color={COLORS.white} strokeWidth={3} />
-//                     )}
-//                   </TouchableOpacity>
-//                   <AppText style={styles.termsText}>
-//                     By accepting the offer, I acknowledge that I have read and
-//                     agree to the terms of services.
-//                   </AppText>
-//                 </View>
-
-//                 <TouchableOpacity
-//                   style={[styles.acceptBtn, !isAccepted && styles.disabledBtn]}
-//                   disabled={!isAccepted || loading}
-//                   onPress={handleProcessFlow}
-//                 >
-//                   <AppText style={styles.acceptBtnText}>
-//                     {loading ? 'Processing...' : 'Pay & Accept Quote'}
-//                   </AppText>
-//                 </TouchableOpacity>
-//               </>
-//             )}
-
-//             {/* CASE 3: QUOTE IS REJECTED OR CANCELLED */}
-//             {(quote?.status === 'rejected' || quote?.isCancelled) && (
-//               <View style={styles.inactiveState}>
-//                 <AppText style={styles.inactiveText}>
-//                   This quote is no longer active.
-//                 </AppText>
-//               </View>
-//             )}
-//           </View>
-//         </View>
-//       </View>
-
-//       {/* --- CUSTOM ALERT WITH INPUT MODAL --- */}
-//       <Modal
-//         visible={isCancelModalVisible}
-//         transparent
-//         animationType="fade"
-//         onRequestClose={() => setIsCancelModalVisible(false)}
-//       >
-//         <View style={styles.promptOverlay}>
-//           <View style={styles.promptContent}>
-//             <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
-//             <AppText style={styles.promptSub}>
-//               Please provide a reason for cancelling this booking.
-//             </AppText>
-
-//             <TextInput
-//               style={styles.reasonInput}
-//               placeholder="Enter reason here..."
-//               placeholderTextColor={COLORS.textLight}
-//               multiline
-//               numberOfLines={3}
-//               value={cancelReason}
-//               onChangeText={setCancelReason}
-//             />
-
-//             <View style={styles.promptFooter}>
-//               <TouchableOpacity
-//                 style={styles.promptBtnSecondary}
-//                 onPress={() => {
-//                   setIsCancelModalVisible(false);
-//                   setCancelReason('');
-//                 }}
-//               >
-//                 <AppText style={styles.promptBtnTextSecondary}>Discard</AppText>
-//               </TouchableOpacity>
-
-//               <TouchableOpacity
-//                 style={styles.promptBtnPrimary}
-//                 onPress={handleCancelShipment}
-//                 disabled={loading}
-//               >
-//                 {loading ? (
-//                   <ActivityIndicator color={COLORS.white} size="small" />
-//                 ) : (
-//                   <AppText style={styles.promptBtnTextPrimary}>
-//                     Cancel Shipment
-//                   </AppText>
-//                 )}
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </View>
-//       </Modal>
-//     </Modal>
-//   );
-// };
-
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Modal,
@@ -483,14 +15,30 @@ import {
   Check,
   CheckCircle2,
   AlertCircle,
+  FileText,
+  ChevronRight,
+  ShieldCheck,
+  Trash2,
+  User,
+  Clock,
+  Calendar,
+  DollarSign,
 } from 'lucide-react-native';
 import moment from 'moment';
 import SignatureScreen from 'react-native-signature-canvas';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../constants';
 import { AppText } from '../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
+import Toast from 'react-native-toast-message';
 
 const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   const navigation = useNavigation<any>();
@@ -498,7 +46,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
 
   // States
   const sigRef = useRef<any>(null);
-  const [scrollEnabled, setScrollEnabled] = useState(true); // To fix Signature vs ScrollView conflict
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const [cardDetails, setCardDetails] = useState<any>(null);
   const [isAcceptedTerms, setIsAcceptedTerms] = useState(false);
   const [signature, setSignature] = useState<string | null>(null);
@@ -524,13 +72,43 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   const isCancelled = quote.isCancelled || quote.status === 'cancelled';
   const isRejected = quote.status === 'rejected';
 
+  const getStatusBadgeStyle = () => {
+    if (isAccepted) {
+      return {
+        bg: COLORS.greenLightBg || '#ECFDF5',
+        text: COLORS.greenPrimary || '#059669',
+        border: '#A7F3D0',
+      };
+    }
+    if (isCancelled || isRejected) {
+      return {
+        bg: '#FEF2F2',
+        text: COLORS.error || '#DC2626',
+        border: '#FCA5A5',
+      };
+    }
+    return {
+      bg: COLORS.goldLightBg || '#FFFBEB',
+      text: COLORS.goldPrimary || '#D97706',
+      border: '#FDE68A',
+    };
+  };
+
+  const statusStyle = getStatusBadgeStyle();
+
   const handleProcessFlow = async () => {
     if (!cardDetails?.complete)
-      return Alert.alert('Error', 'Please enter valid card details.');
+      return Alert.alert('Payment Error', 'Please enter valid card details.');
     if (!isAcceptedTerms)
-      return Alert.alert('Error', 'Please agree to the terms.');
+      return Alert.alert(
+        'Terms Error',
+        'Please agree to the terms and conditions.',
+      );
     if (!signature)
-      return Alert.alert('Error', 'Please provide your signature.');
+      return Alert.alert(
+        'Signature Required',
+        'Please draw your signature in the box provided.',
+      );
 
     setLoading(true);
     try {
@@ -559,9 +137,13 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
           customerSignature: signature,
         });
         if (acceptRes) {
-          Alert.alert('Success', 'Payment successful and quote accepted!');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: 'Payment successful and quote accepted!',
+          });
           onClose();
-          navigation.goBack()
+          navigation.goBack();
           if (onRefresh) onRefresh();
         }
       }
@@ -574,29 +156,42 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
 
   const handleCancelShipment = async () => {
     if (!cancelReason.trim())
-      return Alert.alert('Error', 'Reason is required.');
+      return Alert.alert('Required', 'Please enter a reason for cancellation.');
     setLoading(true);
     try {
       const res = await customerService.cancelQuote(quote._id, {
         reason: cancelReason.trim(),
       });
       if (res.success) {
-        Alert.alert('Success', 'Shipment cancelled.');
+        Alert.alert('Success', 'Shipment has been cancelled.');
         setIsCancelModalVisible(false);
         onClose();
         if (onRefresh) onRefresh();
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to cancel.');
+      Alert.alert('Error', 'Failed to cancel shipment.');
     } finally {
       setLoading(false);
     }
   };
 
-  const SummaryBox = ({ label, value }: { label: string; value: any }) => (
+  const SummaryBox = ({
+    icon: Icon,
+    label,
+    value,
+  }: {
+    icon: any;
+    label: string;
+    value: any;
+  }) => (
     <View style={styles.summaryItem}>
-      <AppText style={styles.summaryLabel}>{label}</AppText>
-      <AppText style={styles.summaryValue}>{value || 'N/A'}</AppText>
+      <View style={styles.summaryItemHeader}>
+        <Icon size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+        <AppText style={styles.summaryLabel}>{label}</AppText>
+      </View>
+      <AppText style={styles.summaryValue} numberOfLines={1}>
+        {value || 'N/A'}
+      </AppText>
     </View>
   );
 
@@ -604,90 +199,240 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.overlay}>
         <View style={styles.content}>
+          {/* TOP HANDLE BAR */}
+          <View style={styles.handleBarContainer}>
+            <View style={styles.handleBar} />
+          </View>
+
           {/* HEADER */}
           <View style={styles.header}>
-            <View>
+            <View style={styles.headerTitleWrap}>
               <AppText style={styles.reviewLabel}>QUOTE REVIEW</AppText>
               <AppText style={styles.title}>Quote Details</AppText>
             </View>
-            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
-              <X size={24} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.closeIcon}
+              activeOpacity={0.7}
+            >
+              <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={styles.scroll}
-            scrollEnabled={scrollEnabled} // Dynamic scroll lock
+            contentContainerStyle={styles.scrollContent}
+            scrollEnabled={scrollEnabled}
           >
-            {/* CANCELLATION BANNER */}
-            {!isCancelled && !isRejected && (
+            {/* CANCELLATION TIMEFRAME BANNER */}
+            {!isCancelled && !isRejected && quote.cancellationLastDate && (
               <View style={styles.cancelBanner}>
+                <Clock size={ICON_SIZE.sm} color="#B45309" style={{ marginRight: SPACING.xs }} />
                 <AppText style={styles.cancelText}>
-                  Cancel window:{' '}
-                  <AppText style={{ fontFamily: FONTS.bold }}>
+                  Cancel Window:{' '}
+                  <AppText style={{ fontFamily: FONTS.bold, color: '#92400E' }}>
                     {moment(quote.cancellationLastDate).format(
-                      'MMM DD, hh:mm A',
+                      'MMM DD, YYYY · hh:mm A',
                     )}
                   </AppText>
                 </AppText>
               </View>
             )}
 
-            <View style={styles.statsRow}>
-              <View style={styles.statBox}>
-                <AppText style={styles.statLabel}>TOTAL PRICE</AppText>
-                <AppText style={styles.statPrice}>${quote.totalPrice}</AppText>
+            {/* HERO PRICE & STATUS CARD */}
+            <View style={styles.heroCard}>
+              <View style={styles.heroLeft}>
+                <AppText style={styles.heroLabel}>TOTAL PRICE</AppText>
+                <AppText style={styles.heroPrice}>
+                  ${Number(quote.totalPrice || 0).toLocaleString()}
+                </AppText>
               </View>
-              <View style={styles.statBox}>
-                <AppText style={styles.statLabel}>STATUS</AppText>
-                <AppText
+              <View style={styles.heroRight}>
+                <View
                   style={[
-                    styles.statValue,
-                    { color: isAccepted ? COLORS.success : COLORS.goldPrimary },
+                    styles.statusBadge,
+                    {
+                      backgroundColor: statusStyle.bg,
+                      borderColor: statusStyle.border,
+                    },
                   ]}
                 >
-                  {quote.status}
-                </AppText>
+                  <AppText
+                    style={[styles.statusBadgeText, { color: statusStyle.text }]}
+                  >
+                    {quote.status?.toUpperCase() || 'PENDING'}
+                  </AppText>
+                </View>
               </View>
             </View>
 
             {/* QUOTE SUMMARY */}
             <View style={styles.cardContainer}>
-              <AppText style={styles.cardTitle}>Summary</AppText>
+              <AppText style={styles.cardTitle}>Overview & Payment Terms</AppText>
               <View style={styles.summaryGrid}>
-                <SummaryBox label="SHIPPER" value={quote.shipper?.name} />
-                <SummaryBox label="METHOD" value={quote.paymentMethod} />
-                <SummaryBox label="DUE" value={quote.paymentDue} />
-                <SummaryBox label="PAYMENT" value={quote.paymentStatus} />
+                <SummaryBox
+                  icon={User}
+                  label="SHIPPER"
+                  value={quote.shipper?.name}
+                />
+                <SummaryBox
+                  icon={CreditCard}
+                  label="METHOD"
+                  value={quote.paymentMethod}
+                />
+                <SummaryBox
+                  icon={Calendar}
+                  label="DUE"
+                  value={quote.paymentDue}
+                />
+                <SummaryBox
+                  icon={DollarSign}
+                  label="STATUS"
+                  value={quote.paymentStatus}
+                />
               </View>
             </View>
+
+            {/* CONTRACTS / DOCUMENTS SECTION */}
+            {(quote.contract?.url ||
+              quote.contract ||
+              quote.shipperContract?.url ||
+              quote.shipperContract) && (
+              <View style={styles.cardContainer}>
+                <AppText style={styles.cardTitle}>Contracts & Documents</AppText>
+
+                {(quote.contract?.url || typeof quote.contract === 'string') && (
+                  <TouchableOpacity
+                    style={styles.docItem}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      const contractUrl =
+                        typeof quote.contract === 'string'
+                          ? quote.contract
+                          : quote.contract.url;
+                      if (contractUrl) {
+                        onClose();
+                        navigation.navigate('PdfViewer', {
+                          url: contractUrl,
+                          title: 'Shipment Contract',
+                        });
+                      }
+                    }}
+                  >
+                    <View style={styles.docLeftRow}>
+                      <View style={styles.docIconBox}>
+                        <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                      </View>
+                      <View style={styles.docInfo}>
+                        <AppText style={styles.docName}>
+                          Shipment Contract
+                        </AppText>
+                        <AppText style={styles.docSub}>
+                          Official shipment agreement
+                        </AppText>
+                      </View>
+                    </View>
+                    <View style={styles.docActionWrap}>
+                      <AppText style={styles.docActionText}>View</AppText>
+                      <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+                    </View>
+                  </TouchableOpacity>
+                )}
+
+                {(quote.shipperContract?.url ||
+                  typeof quote.shipperContract === 'string') && (
+                  <TouchableOpacity
+                    style={[
+                      styles.docItem,
+                      (quote.contract?.url ||
+                        typeof quote.contract === 'string') && {
+                        marginTop: SPACING.sm,
+                      },
+                    ]}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      const shipperUrl =
+                        typeof quote.shipperContract === 'string'
+                          ? quote.shipperContract
+                          : quote.shipperContract.url;
+                      const docTitle =
+                        quote.shipperContract?.originalName || 'Shipper Contract';
+                      if (shipperUrl) {
+                        onClose();
+                        navigation.navigate('PdfViewer', {
+                          url: shipperUrl,
+                          title: docTitle,
+                        });
+                      }
+                    }}
+                  >
+                    <View style={styles.docLeftRow}>
+                      <View style={styles.docIconBox}>
+                        <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                      </View>
+                      <View style={styles.docInfo}>
+                        <AppText style={styles.docName} numberOfLines={1}>
+                          {quote.shipperContract?.originalName ||
+                            'Shipper Contract'}
+                        </AppText>
+                        <AppText style={styles.docSub}>
+                          Uploaded contract terms
+                        </AppText>
+                      </View>
+                    </View>
+                    <View style={styles.docActionWrap}>
+                      <AppText style={styles.docActionText}>View</AppText>
+                      <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
 
             {/* FORM: ONLY SHOWN IF PENDING */}
             {isPending && (
               <View style={[styles.cardContainer, styles.highlightCard]}>
-                <AppText style={styles.cardTitle}>Acceptance & Payment</AppText>
+                <View style={styles.highlightHeader}>
+                  <ShieldCheck size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                  <AppText style={styles.highlightTitle}>
+                    Acceptance & Payment
+                  </AppText>
+                </View>
+                <AppText style={styles.highlightSub}>
+                  Enter your card details and sign below to accept this quote.
+                </AppText>
 
-                {/* 1. STRIPE */}
+                {/* 1. STRIPE CARD FIELD */}
                 <View style={styles.inputLabelRow}>
-                  <CreditCard size={16} color={COLORS.textSecondary} />
+                  <CreditCard size={ICON_SIZE.sm} color={COLORS.grey700} />
                   <AppText style={styles.inputLabel}>Card Details</AppText>
                 </View>
-                <CardField
-                  postalCodeEnabled={true}
-                  style={styles.stripeCardField}
-                  cardStyle={{
-                    backgroundColor: '#FFFFFF',
-                    textColor: COLORS.textPrimary,
-                  }}
-                  onCardChange={setCardDetails}
-                />
+                <View style={styles.stripeCardContainer}>
+                  <CardField
+                    postalCodeEnabled={true}
+                    style={styles.stripeCardField}
+                    cardStyle={{
+                      backgroundColor: '#FFFFFF',
+                      textColor: COLORS.textPrimary,
+                      fontSize: FONT_SIZE.md,
+                    }}
+                    onCardChange={setCardDetails}
+                  />
+                </View>
 
-                {/* 2. SIGNATURE */}
+                {/* 2. SIGNATURE CANVAS */}
                 <View style={styles.signatureHeader}>
                   <AppText style={styles.inputLabel}>Your Signature *</AppText>
-                  {signature && (
-                    <AppText style={styles.capturedText}>Captured</AppText>
+                  {signature ? (
+                    <View style={styles.capturedBadge}>
+                      <Check size={ICON_SIZE.xs} color={COLORS.white} />
+                      <AppText style={styles.capturedText}>Captured</AppText>
+                    </View>
+                  ) : (
+                    <AppText style={styles.signatureSub}>
+                      Draw inside box
+                    </AppText>
                   )}
                 </View>
                 <View style={styles.signatureWrap}>
@@ -702,18 +447,23 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                     webStyle={`.m-signature-pad--footer {display: none;}`}
                   />
                 </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    sigRef.current.clearSignature();
-                    setSignature(null);
-                  }}
-                >
-                  <AppText style={styles.clearText}>Clear Signature</AppText>
-                </TouchableOpacity>
+                {signature && (
+                  <TouchableOpacity
+                    style={styles.clearBtn}
+                    onPress={() => {
+                      sigRef.current.clearSignature();
+                      setSignature(null);
+                    }}
+                  >
+                    <Trash2 size={ICON_SIZE.xs} color={COLORS.error} />
+                    <AppText style={styles.clearText}>Clear Signature</AppText>
+                  </TouchableOpacity>
+                )}
 
-                {/* 3. TERMS */}
+                {/* 3. TERMS & CONDITIONS CHECKBOX */}
                 <TouchableOpacity
                   style={styles.termsRow}
+                  activeOpacity={0.8}
                   onPress={() => setIsAcceptedTerms(!isAcceptedTerms)}
                 >
                   <View
@@ -723,44 +473,47 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                     ]}
                   >
                     {isAcceptedTerms && (
-                      <Check size={14} color={COLORS.white} />
+                      <Check size={ICON_SIZE.xs} color={COLORS.white} />
                     )}
                   </View>
                   <AppText style={styles.termsLabel}>
-                    I agree to the terms and conditions.
+                    I have reviewed and agree to the terms, conditions, and
+                    cancellation policy.
                   </AppText>
                 </TouchableOpacity>
               </View>
             )}
 
-            <View style={styles.cardContainer}>
-              <AppText style={styles.cardTitle}>Notes</AppText>
-              <AppText style={styles.notesText}>{quote.notes}</AppText>
-            </View>
-
-            <View style={{ height: 100 }} />
+            {/* NOTES */}
+            {quote.notes && (
+              <View style={styles.cardContainer}>
+                <AppText style={styles.cardTitle}>Notes & Remarks</AppText>
+                <AppText style={styles.notesText}>{quote.notes}</AppText>
+              </View>
+            )}
           </ScrollView>
 
-          {/* DYNAMIC FOOTER ACTIONS */}
+          {/* FOOTER ACTIONS */}
           <View style={styles.footerActionContainer}>
             {isAccepted && !quote.isCancelled && (
               <View style={styles.acceptedContainer}>
                 <View style={styles.successMessageCard}>
-                  <CheckCircle2 size={24} color={COLORS.greenPrimary} />
-                  <View>
+                  <CheckCircle2 size={ICON_SIZE.md} color={COLORS.greenPrimary} />
+                  <View style={{ flex: 1 }}>
                     <AppText style={styles.successTitle}>
-                      Quote Accepted
+                      Quote Accepted & Secured
                     </AppText>
                     <AppText style={styles.successSub}>
-                      Shipment is secured.
+                      Your shipment is confirmed.
                     </AppText>
                   </View>
                 </View>
                 <TouchableOpacity
                   style={styles.cancelBookingBtn}
+                  activeOpacity={0.8}
                   onPress={() => setIsCancelModalVisible(true)}
                 >
-                  <AlertCircle size={18} color={COLORS.error} />
+                  <AlertCircle size={ICON_SIZE.sm} color={COLORS.error} />
                   <AppText style={styles.cancelBookingText}>
                     Cancel Shipment
                   </AppText>
@@ -772,18 +525,30 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
               <TouchableOpacity
                 style={[
                   styles.acceptBtn,
-                  (!isAcceptedTerms || !signature || loading) &&
+                  (!isAcceptedTerms ||
+                    !signature ||
+                    !cardDetails?.complete ||
+                    loading) &&
                     styles.disabledBtn,
                 ]}
-                disabled={!isAcceptedTerms || !signature || loading}
+                disabled={
+                  !isAcceptedTerms ||
+                  !signature ||
+                  !cardDetails?.complete ||
+                  loading
+                }
+                activeOpacity={0.85}
                 onPress={handleProcessFlow}
               >
                 {loading ? (
                   <ActivityIndicator color={COLORS.white} />
                 ) : (
-                  <AppText style={styles.acceptBtnText}>
-                    Pay & Accept Quote
-                  </AppText>
+                  <View style={styles.acceptBtnInner}>
+                    <ShieldCheck size={ICON_SIZE.sm} color={COLORS.white} />
+                    <AppText style={styles.acceptBtnText}>
+                      Pay & Accept Quote
+                    </AppText>
+                  </View>
                 )}
               </TouchableOpacity>
             )}
@@ -804,9 +569,13 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
         <View style={styles.promptOverlay}>
           <View style={styles.promptContent}>
             <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
+            <AppText style={styles.promptSub}>
+              Please state the reason for cancelling this shipment quote:
+            </AppText>
             <TextInput
               style={styles.reasonInput}
-              placeholder="Reason for cancellation..."
+              placeholder="Enter reason here..."
+              placeholderTextColor={COLORS.textSecondary}
               multiline
               value={cancelReason}
               onChangeText={setCancelReason}
@@ -816,13 +585,17 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                 style={styles.promptBtnSecondary}
                 onPress={() => setIsCancelModalVisible(false)}
               >
-                <AppText>Discard</AppText>
+                <AppText style={styles.promptBtnTextSecondary}>
+                  Keep Booking
+                </AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.promptBtnPrimary}
                 onPress={handleCancelShipment}
               >
-                <AppText style={{ color: '#fff' }}>Confirm</AppText>
+                <AppText style={styles.promptBtnTextPrimary}>
+                  Confirm Cancel
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>
@@ -835,97 +608,167 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    padding: 15,
+    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    justifyContent: 'flex-end',
   },
   content: {
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
-    height: '95%',
+    backgroundColor: '#F8FAFC',
+    borderTopLeftRadius: RADIUS.xl,
+    borderTopRightRadius: RADIUS.xl,
+    height: '90%',
     overflow: 'hidden',
   },
+  handleBarContainer: {
+    alignItems: 'center',
+    paddingTop: SPACING.sm,
+    paddingBottom: SPACING.xs,
+    backgroundColor: COLORS.white,
+  },
+  handleBar: {
+    width: 36,
+    height: 4,
+    borderRadius: RADIUS.xs,
+    backgroundColor: '#CBD5E1',
+  },
   header: {
-    padding: 20,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#F1F5F9',
   },
+  headerTitleWrap: { flex: 1 },
   reviewLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.goldPrimary,
     fontFamily: FONTS.bold,
-    letterSpacing: 1,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
   },
-  title: { fontSize: 22, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  title: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginTop: 2,
+  },
   closeIcon: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    padding: 5,
-    borderRadius: 4,
+    width: 32,
+    height: 32,
+    borderRadius: RADIUS.round,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   cancelBanner: {
-    backgroundColor: '#FFF3CD',
-    padding: 12,
-    borderBottomWidth: 1,
-    borderColor: '#FFEEBA',
-  },
-  cancelText: { color: '#856404', fontSize: 12 },
-
-  scroll: { flex: 1, padding: 15 },
-  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 15 },
-  statBox: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    padding: 12,
-    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEF3C7',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: RADIUS.sm,
+    marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
+    borderColor: '#FDE68A',
   },
-  statLabel: {
-    fontSize: 9,
+  cancelText: {
+    color: '#92400E',
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    flex: 1,
+  },
+
+  scroll: { flex: 1 },
+  scrollContent: { padding: SPACING.md, paddingBottom: SPACING.xxl },
+
+  heroCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    marginBottom: SPACING.md,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  heroLeft: { flex: 1 },
+  heroLabel: {
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.bold,
-    marginBottom: 4,
+    letterSpacing: 0.5,
+    marginBottom: 2,
   },
-  statPrice: { fontSize: 18, fontFamily: FONTS.bold, color: '#856404' },
-  statValue: {
-    fontSize: 16,
+  heroPrice: {
+    fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    textTransform: 'capitalize',
+    color: COLORS.goldPrimary,
+  },
+  heroRight: { alignItems: 'flex-end' },
+  statusBadge: {
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.round,
+    borderWidth: 1,
+  },
+  statusBadgeText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    letterSpacing: 0.5,
   },
 
   cardContainer: {
     backgroundColor: COLORS.white,
-    padding: 15,
-    borderRadius: 8,
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
-    marginBottom: 15,
+    borderColor: '#E2E8F0',
+    marginBottom: SPACING.md,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.02,
+    shadowRadius: 4,
+    elevation: 1,
   },
   cardTitle: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: 12,
+    marginBottom: SPACING.sm,
   },
 
-  summaryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  summaryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
   summaryItem: {
     width: '48%',
-    padding: 8,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 4,
+    padding: SPACING.sm,
+    backgroundColor: '#F8FAFC',
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
+  },
+  summaryItemHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: 2,
   },
   summaryLabel: {
-    fontSize: 8,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.bold,
+    letterSpacing: 0.5,
   },
   summaryValue: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -934,251 +777,332 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 12,
+    padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: COLORS.goldPrimary,
-    borderRadius: 6,
+    borderColor: '#F1F5F9',
+    borderRadius: RADIUS.sm,
+    backgroundColor: '#FFFDF9',
   },
-  docName: { fontSize: 13, color: '#856404' },
-  docAction: { fontSize: 12, color: '#856404', fontFamily: FONTS.bold },
+  docLeftRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    flex: 1,
+  },
+  docIconBox: {
+    width: 32,
+    height: 32,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  docInfo: { flex: 1 },
+  docName: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.semiBold,
+  },
+  docSub: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
+    marginTop: 1,
+  },
+  docActionWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  docActionText: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.goldPrimary,
+    fontFamily: FONTS.bold,
+  },
+
+  highlightCard: {
+    borderColor: COLORS.goldPrimary,
+    backgroundColor: '#FFFDF7',
+    borderWidth: 1.5,
+  },
+  highlightHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: 2,
+  },
+  highlightTitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  highlightSub: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
+    marginBottom: SPACING.sm,
+  },
+
+  inputLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginTop: SPACING.sm,
+    marginBottom: SPACING.xs,
+  },
+  inputLabel: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+  },
+
+  stripeCardContainer: {
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: RADIUS.sm,
+    overflow: 'hidden',
+    marginBottom: SPACING.sm,
+  },
+  stripeCardField: {
+    width: '100%',
+    height: 46,
+  },
+
+  signatureHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.xs,
+  },
+  signatureSub: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
+  },
+  capturedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: COLORS.greenPrimary || '#059669',
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 2,
+    borderRadius: RADIUS.xs,
+  },
+  capturedText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+  },
+  signatureWrap: {
+    height: 140,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: RADIUS.sm,
+    overflow: 'hidden',
+    backgroundColor: COLORS.white,
+  },
+  clearBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    gap: 4,
+    marginTop: SPACING.xs,
+    paddingVertical: 2,
+  },
+  clearText: {
+    color: COLORS.error,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+  },
 
   termsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 15,
+    alignItems: 'flex-start',
+    gap: SPACING.sm,
+    marginTop: SPACING.sm,
+    paddingTop: SPACING.sm,
+    borderTopWidth: 1,
+    borderColor: '#F1F5F9',
   },
   checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 4,
-    borderWidth: 1,
+    width: 18,
+    height: 18,
+    borderRadius: RADIUS.xs,
+    borderWidth: 1.5,
     borderColor: COLORS.goldPrimary,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 2,
   },
   checkboxActive: { backgroundColor: COLORS.goldPrimary },
-  termsLabel: { fontSize: 13, color: COLORS.textPrimary },
-
-  signatureTitleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 8,
-  },
-  signatureTitle: { fontSize: 13, fontFamily: FONTS.bold },
-  signatureWrap: {
-    height: 150,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  clearText: {
-    color: COLORS.goldPrimary,
-    fontSize: 12,
-    marginTop: 8,
-    textAlign: 'right',
+  termsLabel: {
+    flex: 1,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.regular,
+    lineHeight: 16,
   },
 
-  footer: {
-    flexDirection: 'row',
-    gap: 10,
-    padding: 20,
+  notesText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    lineHeight: 20,
+  },
+
+  footerActionContainer: {
+    padding: SPACING.md,
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
-    borderColor: '#E9ECEF',
+    borderColor: '#F1F5F9',
   },
-  btnReject: {
-    flex: 1,
-    height: 48,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btnRejectText: { color: COLORS.textSecondary, fontFamily: FONTS.bold },
-  btnAccept: {
-    flex: 1.5,
-    height: 48,
-    borderRadius: 8,
-    backgroundColor: '#A3894F',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btnAcceptText: { color: COLORS.white, fontFamily: FONTS.bold },
-  btnDisabled: { backgroundColor: '#CCC' },
-  stripeCardField: {
-    width: '100%',
-    height: 50,
-    marginVertical: 10,
-  },
-  cardInfoBox: {
-    padding: 10, // CardField handles its own internal padding
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: '#E9ECEF',
-    borderRadius: 4,
-    marginTop: 15,
-  },
-  footerActionContainer: {
-    marginTop: SPACING.xl,
-    paddingBottom: SPACING.lg,
-  },
-
-  // Accepted State
-  acceptedContainer: {
-    gap: 15,
-  },
+  acceptedContainer: { gap: SPACING.sm },
   successMessageCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.greenLightBg,
-    padding: 16,
-    borderRadius: RADIUS.md,
-    gap: 12,
+    backgroundColor: '#ECFDF5',
+    padding: SPACING.sm,
+    borderRadius: RADIUS.sm,
+    gap: SPACING.sm,
     borderWidth: 1,
-    borderColor: COLORS.greenBorder,
+    borderColor: '#A7F3D0',
   },
   successTitle: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.greenPrimary,
+    color: '#065F46',
   },
   successSub: {
-    fontSize: 12,
-    color: COLORS.greenPrimary,
-    opacity: 0.8,
+    fontSize: FONT_SIZE.xs,
+    color: '#047857',
+    marginTop: 1,
   },
 
-  // Cancel Button Style
   cancelBookingBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    borderRadius: RADIUS.md,
+    height: 44,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
     borderColor: COLORS.error,
-    gap: 8,
+    gap: SPACING.xs,
+    backgroundColor: '#FEF2F2',
   },
   cancelBookingText: {
     color: COLORS.error,
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
   },
 
-  // Inactive state
   inactiveState: {
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    backgroundColor: '#F1F5F9',
+    borderRadius: RADIUS.sm,
   },
   inactiveText: {
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
-  },
-  // The legal disclaimer text next to the checkbox
-  termsText: {
-    flex: 1,
-    fontSize: 11,
-    color: COLORS.textSecondary,
-    lineHeight: 16,
-    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
   },
 
-  // The primary action button (Accept Offer)
   acceptBtn: {
     backgroundColor: COLORS.goldPrimary,
-    height: 54,
+    height: 48,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: SPACING.xl,
-    // Add subtle shadow for premium feel
     shadowColor: COLORS.goldPrimary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 2,
   },
-
-  // State applied when checkbox is not clicked or API is loading
+  acceptBtnInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
   disabledBtn: {
-    opacity: 0.5,
-    backgroundColor: COLORS.buttonDisabled || '#CBD5E1',
-    shadowOpacity: 0, // Remove shadow when disabled
+    opacity: 0.6,
+    backgroundColor: COLORS.black || '#000000',
+    shadowOpacity: 0,
     elevation: 0,
   },
-
-  // Text inside the accept button
   acceptBtnText: {
     color: COLORS.white,
-    fontSize: 16,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    letterSpacing: 0.5,
   },
 
-  // Prompt Modal Styles (Alert with Input look-alike)
   promptOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(15, 23, 42, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: SPACING.md,
   },
   promptContent: {
     width: '100%',
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    padding: 20,
-    elevation: 10,
+    padding: SPACING.md,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
   },
   promptTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     textAlign: 'center',
   },
   promptSub: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
     textAlign: 'center',
-    marginVertical: 10,
+    marginTop: 4,
+    marginBottom: SPACING.sm,
   },
   reasonInput: {
-    backgroundColor: COLORS.grey50,
+    backgroundColor: '#F8FAFC',
     borderWidth: 1,
-    borderColor: COLORS.divider,
+    borderColor: '#E2E8F0',
     borderRadius: RADIUS.sm,
-    padding: 12,
+    padding: SPACING.sm,
     height: 80,
     textAlignVertical: 'top',
     color: COLORS.textPrimary,
     fontFamily: FONTS.medium,
-    marginVertical: 15,
+    fontSize: FONT_SIZE.sm,
+    marginBottom: SPACING.md,
   },
   promptFooter: {
     flexDirection: 'row',
-    gap: 10,
+    gap: SPACING.sm,
   },
   promptBtnSecondary: {
     flex: 1,
-    height: 45,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.grey100,
+    backgroundColor: '#F1F5F9',
   },
   promptBtnTextSecondary: {
     color: COLORS.textSecondary,
     fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
   },
   promptBtnPrimary: {
-    flex: 2,
-    height: 45,
+    flex: 1.5,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: RADIUS.sm,
@@ -1187,54 +1111,7 @@ const styles = StyleSheet.create({
   promptBtnTextPrimary: {
     color: COLORS.white,
     fontFamily: FONTS.bold,
-  },
-  //new added
-  // Highlights the critical payment/signature section
-  highlightCard: {
-    borderColor: COLORS.goldPrimary,
-    backgroundColor: COLORS.goldLightBg || '#FFFCF5', // Soft gold tint
-    borderWidth: 1.5,
-  },
-
-  // Row container for Icon + Label (e.g., Card Details)
-  inputLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
-  },
-
-  // Standard label for input sections
-  inputLabel: {
-    fontSize: 14,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-
-  // Header row for the signature section
-  signatureHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 15,
-    marginBottom: 8,
-  },
-
-  // Small success indicator when signature is captured
-  capturedText: {
-    fontSize: 11,
-    fontFamily: FONTS.bold,
-    color: COLORS.success, // Green color
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-
-  // Styling for multiline notes with improved readability
-  notesText: {
-    fontSize: 14,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    lineHeight: 22, // Extra spacing for long paragraphs
+    fontSize: FONT_SIZE.sm,
   },
 });
 

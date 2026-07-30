@@ -4,13 +4,19 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
   Alert,
 } from 'react-native';
 import { MessageCircle, Send } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
@@ -35,7 +41,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
     try {
       await customerService.submitAnswer(questionId, answerText);
       Alert.alert('Success', 'Answer submitted successfully');
-      if (onRefresh) onRefresh(); // Refresh data to move question to answered list
+      if (onRefresh) onRefresh();
     } catch (error) {
       Alert.alert('Error', 'Failed to submit answer. Please try again.');
     } finally {
@@ -46,7 +52,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
   if (totalCount === 0) {
     return (
       <View style={styles.emptyWrap}>
-        <MessageCircle size={48} color={COLORS.grey200} />
+        <MessageCircle size={ICON_SIZE.xl} color={COLORS.grey200} />
         <AppText style={styles.emptyText}>No questions asked yet.</AppText>
       </View>
     );
@@ -113,7 +119,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                     {submitting === item._id ? (
                       <ActivityIndicator size="small" color={COLORS.white} />
                     ) : (
-                      <Send size={18} color={COLORS.white} />
+                      <Send size={ICON_SIZE.xs} color={COLORS.white} />
                     )}
                   </TouchableOpacity>
                 </View>
@@ -130,55 +136,55 @@ export default QuestionsTab;
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 20,
+    paddingBottom: SPACING.xl,
   },
   subHeaderBar: {
     backgroundColor: COLORS.goldLightBg,
-    padding: 12,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
-    borderRadius: 4,
+    padding: SPACING.sm,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
+    borderRadius: RADIUS.xs,
   },
   subHeaderText: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.goldDarkText,
   },
   cardContainer: {
     backgroundColor: COLORS.white,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
     overflow: 'hidden',
   },
   questionItem: {
-    padding: SPACING.lg,
+    padding: SPACING.md,
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
   },
   shipperName: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.goldDarkText,
-    marginBottom: 8,
+    marginBottom: SPACING.xs,
   },
   questionText: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
     lineHeight: 18,
-    marginBottom: 12,
+    marginBottom: SPACING.sm,
   },
   // Answered
   answerDisplay: {
-    marginTop: 4,
+    marginTop: 2,
   },
   answerText: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
-    lineHeight: 18,
+    lineHeight: 16,
   },
   boldText: {
     fontFamily: FONTS.bold,
@@ -188,28 +194,28 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    gap: 8,
+    gap: SPACING.xs,
   },
   textInput: {
     flex: 1,
-    minHeight: 80,
+    minHeight: 60,
     borderWidth: 1,
     borderColor: COLORS.divider,
     borderRadius: RADIUS.sm,
-    padding: 10,
+    padding: SPACING.xs,
     textAlignVertical: 'top',
     fontFamily: FONTS.medium,
-    fontSize: 13,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
   },
   sendBtn: {
     backgroundColor: COLORS.goldPrimary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   disabledBtn: {
     backgroundColor: COLORS.grey200,
@@ -217,12 +223,13 @@ const styles = StyleSheet.create({
   // Empty State
   emptyWrap: {
     alignItems: 'center',
-    padding: 60,
-    gap: 12,
+    padding: SPACING.xxxl,
+    gap: SPACING.sm,
   },
   emptyText: {
     color: COLORS.textLight,
     textAlign: 'center',
     fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
   },
 });

@@ -43,7 +43,6 @@ const AppSelect = memo(
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Snap points for the bottom sheet (e.g., 50% and 85% of screen)
     const snapPoints = useMemo(() => ['50%', '85%'], []);
 
     const filteredOptions = useMemo(
@@ -54,7 +53,6 @@ const AppSelect = memo(
       [options, searchQuery],
     );
 
-    // Handlers
     const handlePresentModalPress = useCallback(() => {
       bottomSheetModalRef.current?.present();
     }, []);
@@ -72,7 +70,6 @@ const AppSelect = memo(
       [onSelect, handleDismissModal],
     );
 
-    // Backdrop component
     const renderBackdrop = useCallback(
       (props: any) => (
         <BottomSheetBackdrop
@@ -128,14 +125,14 @@ const AppSelect = memo(
                 onPress={handleDismissModal}
                 style={styles.closeBtn}
               >
-                <X size={ICON_SIZE.md} color={COLORS.textPrimary} />
+                <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
             {/* Search Bar */}
             {searchable && (
               <View style={styles.searchContainer}>
-                <Search size={ICON_SIZE.sm} color={COLORS.textLight} />
+                <Search size={ICON_SIZE.xs} color={COLORS.textLight} />
                 <BottomSheetTextInput
                   placeholder="Search..."
                   placeholderTextColor={COLORS.textLight}
@@ -146,7 +143,7 @@ const AppSelect = memo(
                 />
                 {searchQuery.length > 0 && (
                   <TouchableOpacity onPress={() => setSearchQuery('')}>
-                    <X size={14} color={COLORS.textLight} />
+                    <X size={ICON_SIZE.xs} color={COLORS.textLight} />
                   </TouchableOpacity>
                 )}
               </View>
@@ -177,7 +174,7 @@ const AppSelect = memo(
                     </AppText>
                     {isSelected && (
                       <Check
-                        size={18}
+                        size={ICON_SIZE.xs}
                         color={COLORS.goldPrimary}
                         strokeWidth={3}
                       />
@@ -195,34 +192,33 @@ const AppSelect = memo(
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
   },
   label: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.grey700,
-    marginBottom: SPACING.xs,
+    marginBottom: 4,
     marginLeft: 2,
   },
   selector: {
-    height: 54,
+    height: 46,
     borderWidth: 1,
-    borderColor: COLORS.inputBorder,
-    borderRadius: RADIUS.md,
+    borderColor: COLORS.inputBorder || COLORS.border,
+    borderRadius: RADIUS.sm,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
-    // Soft Shadow
     elevation: 1,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.04,
     shadowRadius: 2,
   },
   valueText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     fontFamily: FONTS.medium,
     flex: 1,
@@ -238,7 +234,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: COLORS.error,
     fontSize: FONT_SIZE.xs,
-    marginTop: 4,
+    marginTop: 2,
     fontFamily: FONTS.medium,
     marginLeft: 4,
   },
@@ -246,11 +242,11 @@ const styles = StyleSheet.create({
   /* Bottom Sheet Styles */
   sheetBackground: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.xl,
+    borderRadius: RADIUS.lg,
   },
   sheetIndicator: {
     backgroundColor: COLORS.grey300,
-    width: 40,
+    width: 36,
   },
   modalContent: {
     flex: 1,
@@ -259,13 +255,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
   modalTitle: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -275,11 +271,11 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: SPACING.lg,
-    paddingHorizontal: SPACING.md,
+    margin: SPACING.md,
+    paddingHorizontal: SPACING.sm,
     backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.md,
-    height: 48,
+    borderRadius: RADIUS.sm,
+    height: 40,
     borderWidth: 1,
     borderColor: COLORS.grey200,
   },
@@ -287,27 +283,27 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
-    marginLeft: SPACING.sm,
+    marginLeft: SPACING.xs,
   },
   listContent: {
-    paddingHorizontal: SPACING.lg,
+    paddingHorizontal: SPACING.md,
     paddingBottom: SPACING.xxxl,
   },
   optionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
   selectedOption: {
-    backgroundColor: 'transparent', // We use the checkmark and text color instead for premium feel
+    backgroundColor: 'transparent',
   },
   optionText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     fontFamily: FONTS.medium,
   },

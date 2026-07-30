@@ -4,8 +4,7 @@ import { Pencil, Trash2 } from 'lucide-react-native';
 import { SPACING, RADIUS, FONT_SIZE, ICON_SIZE } from '../../constants/dimensions';
 import { COLORS, FONTS } from '../../constants';
 import AppText from '../common/AppText';
- 
-// Interface
+
 export interface Horse {
   _id: string;
   owner: string;
@@ -29,10 +28,6 @@ interface HorseCardProps {
   onDelete: (id: string) => void;
 }
 
-/**
- * Sub-component for individual detail rows
- * Memoized to prevent re-renders when the parent re-renders
- */
 const DetailItem = memo(({ label, value }: { label: string; value?: string }) => (
   <View style={styles.detailRow}>
     <AppText style={styles.label}>{label} : </AppText>
@@ -43,7 +38,6 @@ const DetailItem = memo(({ label, value }: { label: string; value?: string }) =>
 ));
 
 const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
-  // Safety check to ensure item exists
   if (!item) return null;
 
   return (
@@ -53,30 +47,30 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
         <AppText style={styles.horseNameText} numberOfLines={1}>
           {item?.registeredName || 'Unnamed Horse'}
         </AppText>
-        
+
         <View style={styles.actionButtons}>
-          <TouchableOpacity 
-            onPress={() => onEdit(item)} 
+          <TouchableOpacity
+            onPress={() => onEdit(item)}
             activeOpacity={0.6}
             style={styles.iconButton}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Pencil 
-              size={ICON_SIZE.sm} 
-              color={COLORS.goldPrimary} 
-              strokeWidth={2} 
+            <Pencil
+              size={ICON_SIZE.xs}
+              color={COLORS.goldPrimary}
+              strokeWidth={2}
             />
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            onPress={() => onDelete(item?._id)} 
+
+          <TouchableOpacity
+            onPress={() => onDelete(item?._id)}
             activeOpacity={0.6}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Trash2 
-              size={ICON_SIZE.sm} 
-              color={COLORS.error} 
-              strokeWidth={2} 
+            <Trash2
+              size={ICON_SIZE.xs}
+              color={COLORS.error}
+              strokeWidth={2}
             />
           </TouchableOpacity>
         </View>
@@ -88,30 +82,28 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
         <View style={styles.column}>
           <DetailItem label="Barn Name" value={item?.barnName} />
           <DetailItem label="Sex" value={item?.sex} />
-          <DetailItem 
-            label="Age" 
-            value={item?.age ? `${item.age} Years` : undefined} 
+          <DetailItem
+            label="Age"
+            value={item?.age ? `${item.age} Years` : undefined}
           />
         </View>
 
         {/* Right Column */}
         <View style={styles.column}>
           <DetailItem label="Color" value={item?.colour} />
-          <DetailItem 
-            label="Breed" 
-            value={item?.breed === 'Other' ? item?.otherBreed : item?.breed} 
+          <DetailItem
+            label="Breed"
+            value={item?.breed === 'Other' ? item?.otherBreed : item?.breed}
           />
           <DetailItem label="Stall" value={item?.defaultStallSize} />
         </View>
       </View>
 
-      {/* Notes Section: Conditional Rendering */}
+      {/* Notes Section */}
       {item?.notes ? (
         <View style={styles.notesContainer}>
           <AppText style={styles.notesLabel}>NOTES :</AppText>
-          <AppText style={styles.notesText}>
-            {item.notes}
-          </AppText>
+          <AppText style={styles.notesText}>{item.notes}</AppText>
         </View>
       ) : null}
     </View>
@@ -122,25 +114,24 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
-    padding: SPACING.lg,
+    padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    marginBottom: SPACING.md,
-    // Shadow for depth
-    elevation: 3,
+    borderColor: COLORS.divider,
+    marginBottom: SPACING.sm,
+    elevation: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.03,
     shadowRadius: 4,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
   },
   horseNameText: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     flex: 1,
@@ -151,7 +142,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconButton: {
-    marginRight: SPACING.lg,
+    marginRight: SPACING.md,
   },
   detailsGrid: {
     flexDirection: 'row',
@@ -167,35 +158,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.semiBold,
     color: COLORS.goldPrimary,
   },
   value: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
     flex: 1,
   },
   notesContainer: {
-    backgroundColor: COLORS.goldLightBg || '#FDF9F0', // Fallback if constant missing
+    backgroundColor: COLORS.goldLightBg || '#FDF9F0',
     borderRadius: RADIUS.sm,
-    padding: SPACING.md,
+    padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#F3E5C2', // Fallback if constant missing
-    marginTop: SPACING.md,
+    borderColor: COLORS.goldBorder || '#F3E5C2',
+    marginTop: SPACING.sm,
   },
   notesLabel: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.goldPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   notesText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
-    lineHeight: 20,
+    lineHeight: 16,
   },
 });
 

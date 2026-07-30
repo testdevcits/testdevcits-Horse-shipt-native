@@ -332,7 +332,7 @@ const useNewShipment = () => {
             onPress: () => navigation.goBack(),
           },
         ]);
-         resetAllData(); // <--- THIS RESETS EVERYTHING
+        resetAllData(); // <--- THIS RESETS EVERYTHING
         navigation.goBack()
         return true;
       }

@@ -10,7 +10,14 @@ import {
 } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { COLORS, SPACING, RADIUS, FONTS } from '../../../../constants';
+import {
+  COLORS,
+  SPACING,
+  RADIUS,
+  FONTS,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../constants';
 
 import { HorseSchema } from './schema';
 import { AppHeader, AppLoader, Input, AppText } from '../../../../components';
@@ -36,7 +43,7 @@ const AddEditHorse = () => {
   const dispatch = useDispatch();
   const [isSaving, setIsSaving] = useState(false);
 
-  const horse = route.params?.horse;
+  const horse = (route.params as any)?.horse;
   const isEdit = !!horse;
 
   const initialValues = {
@@ -51,8 +58,7 @@ const AddEditHorse = () => {
   };
 
   const handleSubmit = async (values: any) => {
-    setIsSaving(true); // This will trigger the HorseActionModal
-    // setLoading(true);
+    setIsSaving(true);
     try {
       if (isEdit) {
         await customerService.updateHorse(horse._id, values);
@@ -81,17 +87,9 @@ const AddEditHorse = () => {
         text2: error.message || 'Something went wrong',
       });
     } finally {
-      // setLoading(false);
       setIsSaving(false);
     }
   };
-
-  // Helper to render label with red asterisk
-  const renderLabel = (text: string) => (
-    <AppText style={styles.inputLabel}>
-      {text} <AppText style={{ color: COLORS.error }}>*</AppText>
-    </AppText>
-  );
 
   return (
     <View style={styles.container}>
@@ -122,7 +120,6 @@ const AddEditHorse = () => {
           {/* Info Card */}
           <View style={styles.infoCard}>
             <View style={styles.iconContainer}>
-              {/* Replace with your horse icon asset */}
               <Image
                 source={imageIndex.addedithorseiocn}
                 style={styles.placeholderIcon}
@@ -215,6 +212,7 @@ const AddEditHorse = () => {
                     error={touched.sex ? (errors.sex as string) : ''}
                   />
                 </Suspense>
+
                 <Suspense fallback={<ActivityIndicator size={'small'} />}>
                   <AppSelect
                     label={'Stall Type'}
@@ -234,8 +232,7 @@ const AddEditHorse = () => {
                   label={'Notes (General Info)'}
                   placeholder="Enter Notes about horse"
                   multiline
-                  numberOfLines={5}
-                  // containerStyle={styles.notesInput}
+                  numberOfLines={4}
                   value={values.notes}
                   onChangeText={handleChange('notes')}
                   error={touched.notes ? errors.notes : ''}
@@ -268,66 +265,68 @@ const AddEditHorse = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
-  scroll: { padding: SPACING.lg },
-  topHeader: { marginBottom: SPACING.lg },
+  scroll: { padding: SPACING.md },
+  topHeader: { marginBottom: SPACING.sm },
   mainTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  subTitle: { fontSize: 13, color: COLORS.textSecondary, lineHeight: 18 },
+  subTitle: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    lineHeight: 16,
+  },
 
   infoCard: {
     flexDirection: 'row',
     backgroundColor: '#FAF6EE',
-    padding: SPACING.md,
+    padding: SPACING.sm,
     borderRadius: RADIUS.md,
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.md,
     alignItems: 'center',
   },
   iconContainer: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: RADIUS.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },
   placeholderIcon: {
-    width: 30,
-    height: 30,
-
+    width: 24,
+    height: 24,
     tintColor: COLORS.primary,
-  }, // Replace with Asset
-  infoTextContainer: { flex: 1, marginLeft: SPACING.md },
+  },
+  infoTextContainer: { flex: 1, marginLeft: SPACING.sm },
   infoTitle: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  infoDesc: { fontSize: 11, color: COLORS.textSecondary, marginTop: 2 },
+  infoDesc: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, marginTop: 1 },
 
   form: { gap: SPACING.xs },
   inputLabel: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  notesInput: { height: 120, textAlignVertical: 'top' },
 
   btnContainer: {
-    marginTop: SPACING.xl,
+    marginTop: SPACING.md,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: SPACING.md,
-    paddingBottom: 40,
+    gap: SPACING.sm,
+    paddingBottom: SPACING.xxxl,
   },
   addBtn: {
     flex: 1,
     backgroundColor: COLORS.goldPrimary,
     borderRadius: RADIUS.sm,
-    height: 50,
+    height: 46,
   },
   cancelBtn: {
     flex: 1,
@@ -335,9 +334,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.divider,
     borderRadius: RADIUS.sm,
-    height: 50,
+    height: 46,
   },
-  cancelBtnText: { color: COLORS.textPrimary, fontFamily: FONTS.bold },
+  cancelBtnText: {
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
 });
 
 export default AddEditHorse;

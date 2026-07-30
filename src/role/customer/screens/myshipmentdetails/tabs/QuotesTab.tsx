@@ -2,7 +2,14 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { AppText } from '../../../../../components';
 import { ChevronRight, Star } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../../constants';
 import imageIndex from '../../../../../assets/images/imageIndex';
 
 const QuotesTab = ({ quotes, onSelectQuote }: any) => (
@@ -10,7 +17,7 @@ const QuotesTab = ({ quotes, onSelectQuote }: any) => (
     {/* Total Quotes Bar */}
     <View style={styles.subHeaderBar}>
       <AppText style={styles.subHeaderText}>
-        Total quotes : {quotes.length}
+        Total quotes : {quotes?.length || 0}
       </AppText>
     </View>
 
@@ -23,13 +30,14 @@ const QuotesTab = ({ quotes, onSelectQuote }: any) => (
       </View>
 
       {/* Quote Items */}
-      {quotes.map((q: any, index: number) => (
+      {quotes?.map((q: any, index: number) => (
         <TouchableOpacity
           key={q._id || index}
           style={[
             styles.quoteRow,
-            index === quotes.length - 1 && { borderBottomWidth: 0 }, // Remove border for last item
+            index === quotes.length - 1 && { borderBottomWidth: 0 },
           ]}
+          activeOpacity={0.8}
           onPress={() => onSelectQuote(q)}
         >
           <View style={styles.providerInfo}>
@@ -49,8 +57,8 @@ const QuotesTab = ({ quotes, onSelectQuote }: any) => (
                 {[1, 2, 3, 4, 5].map(s => (
                   <Star
                     key={s}
-                    size={14}
-                    color="#FBBF24" // Specific Gold/Amber color
+                    size={ICON_SIZE.xs}
+                    color="#FBBF24"
                     fill="#FBBF24"
                     style={{ marginRight: 2 }}
                   />
@@ -61,9 +69,9 @@ const QuotesTab = ({ quotes, onSelectQuote }: any) => (
 
           <View style={styles.priceContainer}>
             <AppText style={styles.priceText}>
-              ${Number(q.totalPrice).toLocaleString()}
+              ${Number(q.totalPrice || 0).toLocaleString()}
             </AppText>
-            <ChevronRight size={20} color={COLORS.textPrimary} />
+            <ChevronRight size={ICON_SIZE.sm} color={COLORS.textPrimary} />
           </View>
         </TouchableOpacity>
       ))}
@@ -78,44 +86,44 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.xl,
   },
   subHeaderBar: {
-    backgroundColor: '#F7F1E6', // Light beige to match image
-    padding: SPACING.md,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
+    backgroundColor: '#F7F1E6',
+    padding: SPACING.sm,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
     borderRadius: RADIUS.xs,
   },
   subHeaderText: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#333',
   },
   cardContainer: {
     backgroundColor: COLORS.white,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    overflow: 'hidden', // Ensures borders don't overlap rounded corners
+    overflow: 'hidden',
   },
   listHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
   listHeaderText: {
-    fontSize: 14,
-    color: '#4B5563', // Grey text
+    fontSize: FONT_SIZE.xs,
+    color: '#4B5563',
     fontFamily: FONTS.medium,
   },
   quoteRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: SPACING.lg,
+    padding: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
@@ -125,19 +133,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: COLORS.grey200,
   },
   nameAndRating: {
-    marginLeft: SPACING.md,
+    marginLeft: SPACING.sm,
   },
   providerName: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   ratingRow: {
     flexDirection: 'row',
@@ -146,10 +154,10 @@ const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.xs,
   },
   priceText: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },

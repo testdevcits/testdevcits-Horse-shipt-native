@@ -1,32 +1,27 @@
-// Button.styles.ts
 import { StyleSheet } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
-
-
 export default StyleSheet.create({
   button: {
-    // height: 52,
-    borderRadius: RADIUS.md,
+    height: 46,
+    borderRadius: RADIUS.sm,
     backgroundColor: COLORS.primary,
-
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md,
-    // marginHorizontal: SPACING.lg
+    paddingHorizontal: SPACING.md,
+    gap: SPACING.xs,
   },
 
   disabledButton: {
-    backgroundColor: COLORS.buttonDisabled,
+    backgroundColor: COLORS.buttonDisabled || '#CBD5E1',
+    opacity: 0.7,
   },
 
   title: {
     color: COLORS.white,
-    fontFamily: FONTS.medium  ,
-    fontSize: FONT_SIZE.lg,
-    marginHorizontal: SPACING.sm,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+    textAlign: 'center',
   },
 });

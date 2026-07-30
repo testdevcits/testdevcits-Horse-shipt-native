@@ -153,12 +153,14 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
         </View>
       </DrawerContentScrollView>
 
-      <DrawerMenuItem
-        label="Logout"
-        iconSource={imageIndex.Help}
-        onPress={() => dispatch(logoutUser())}
-        isLast={true}
-      />
+      <View style={styles.footerContainer}>
+        <DrawerMenuItem
+          label="Logout"
+          iconSource={imageIndex.Help}
+          onPress={() => dispatch(logoutUser())}
+          isLast={true}
+        />
+      </View>
     </View>
   );
 };
@@ -167,66 +169,73 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.white,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: RADIUS.lg,
+    borderBottomRightRadius: RADIUS.lg,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SPACING.xl,
-    paddingTop: SPACING.xxxl,
-    paddingBottom: SPACING.xxl,
+    paddingHorizontal: SPACING.md,
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
   },
   logoIcon: {
-    width: 40,
-    height: 40,
-    marginRight: SPACING.sm,
+    width: 32,
+    height: 32,
+    marginRight: SPACING.xs,
   },
   logoText: {
-    fontSize: FONT_SIZE.title,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    letterSpacing: -0.5,
+    letterSpacing: -0.3,
   },
   drawerScroll: {
-    paddingTop: 0,
+    paddingTop: SPACING.sm,
   },
   menuContainer: {
-    paddingHorizontal: SPACING.sm,
+    paddingHorizontal: SPACING.xs,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.sm,
-    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs + 2,
+    paddingHorizontal: SPACING.sm,
     marginBottom: SPACING.xs,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.sm,
   },
   menuItemActive: {
-    backgroundColor: '#F5EBE1', // Soft warm tint matching brand color
+    backgroundColor: '#F5EBE1',
   },
   iconContainer: {
-    width: 32,
-    height: 32,
+    width: 28,
+    height: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
   menuIcon: {
-    width: ICON_SIZE.md,
-    height: ICON_SIZE.md,
+    width: ICON_SIZE.sm,
+    height: ICON_SIZE.sm,
   },
   menuIconActive: {
     tintColor: '#A06333',
   },
   menuLabel: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
-    marginLeft: SPACING.md,
+    marginLeft: SPACING.xs,
   },
   menuLabelActive: {
     color: '#A06333',
     fontFamily: FONTS.bold,
+  },
+  footerContainer: {
+    padding: SPACING.xs,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
   },
 });
 

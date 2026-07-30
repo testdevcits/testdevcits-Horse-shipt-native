@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CreditCard, WalletCards } from 'lucide-react-native';
-import { COLORS, SPACING, FONTS } from '../../../../constants';
+import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
 import { AppLoader, AppText, EmptyState, ErrorView, PaymentCard } from '../../../../components';
 import { usePayments } from './usePayments';
  
@@ -48,10 +48,10 @@ const Payments = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  header: { padding: SPACING.lg, backgroundColor: COLORS.white, borderBottomWidth: 1, borderBottomColor: COLORS.divider },
-  title: { fontSize: 24, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  subtitle: { fontSize: 13, color: COLORS.textSecondary, marginTop: 4 },
-  list: { padding: SPACING.lg, paddingBottom: 100 },
+  header: { paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md, backgroundColor: COLORS.white, borderBottomWidth: 1, borderBottomColor: COLORS.divider },
+  title: { fontSize: FONT_SIZE.lg, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  subtitle: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, marginTop: 2 },
+  list: { padding: SPACING.md, paddingBottom: 100 },
 });
 
 export default Payments;
