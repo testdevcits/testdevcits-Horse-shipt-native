@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -12,23 +11,20 @@ import {
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 
-// Import your constants
+// Import constants
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE } from '../constants/dimensions';
+import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
-/**
- * Props for our internal Menu Item component
- * Changed icon type to ImageSourcePropType for PNGs
- */
 interface DrawerMenuItemProps {
   label: string;
   iconSource: ImageSourcePropType;
   onPress: () => void;
+  isActive?: boolean;
   isLast?: boolean;
 }
 
@@ -36,23 +32,62 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
   label,
   iconSource,
   onPress,
+  isActive,
   isLast,
 }) => (
   <TouchableOpacity
-    style={[styles.menuItem, isLast ? { marginBottom: 0 } : null]}
+    style={[
+      styles.menuItem,
+      isActive && styles.menuItemActive,
+      isLast ? { marginBottom: 0 } : null,
+    ]}
     onPress={onPress}
     activeOpacity={0.7}
   >
     <View style={styles.iconContainer}>
-      <Image source={iconSource} style={styles.menuIcon} resizeMode="contain" />
+      <Image
+        source={iconSource}
+        style={[styles.menuIcon, isActive && styles.menuIconActive]}
+        resizeMode="contain"
+      />
     </View>
-    <AppText style={styles.menuLabel}>{label}</AppText>
+    <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
+      {label}
+    </AppText>
   </TouchableOpacity>
 );
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
-  const { navigation } = props;
+  const { navigation, state } = props;
   const dispatch = useDispatch();
+
+  // Active drawer route name (e.g., 'MainTabs', 'Profile', 'HelpCenter', etc.)
+  const currentDrawerRoute = state?.routes[state?.index]?.name;
+
+  // Active bottom tab route name inside 'MainTabs'
+  const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
+  const mainTabsState = mainTabsRoute?.state;
+  const currentActiveTab = mainTabsState?.routes
+    ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
+    : 'Home';
+
+  const isTabActive = (tabName: string) => {
+    return currentDrawerRoute === 'MainTabs' && currentActiveTab === tabName;
+  };
+
+  const isDrawerRouteActive = (routeName: string) => {
+    return currentDrawerRoute === routeName;
+  };
+
+  const navigateToTab = (tabName: string) => {
+    navigation.navigate('MainTabs', { screen: tabName });
+    navigation.closeDrawer();
+  };
+
+  const navigateToRoute = (routeName: string) => {
+    navigation.navigate(routeName);
+    navigation.closeDrawer();
+  };
 
   return (
     <View style={styles.safeArea}>
@@ -75,29 +110,44 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
           <DrawerMenuItem
             label="Home"
             iconSource={imageIndex.Drawer_Home}
-            onPress={() => navigation.navigate('Home')}
+            isActive={isTabActive('Home')}
+            onPress={() => navigateToTab('Home')}
           />
           <DrawerMenuItem
             label="Shipping"
             iconSource={imageIndex.Shipping}
-            onPress={() => navigation.navigate('New')}
+            isActive={isTabActive('New')}
+            onPress={() => navigateToTab('New')}
           />
           <DrawerMenuItem
             label="My Shipments"
             iconSource={imageIndex.Drawer_Shipments}
-            onPress={() => navigation.navigate('Shipments')}
+            isActive={isTabActive('Shipments')}
+            onPress={() => navigateToTab('Shipments')}
+          />
+          <DrawerMenuItem
+            label="My Horses"
+            iconSource={imageIndex.Horse}
+            isActive={isTabActive('Horses')}
+            onPress={() => navigateToTab('Horses')}
           />
           <DrawerMenuItem
             label="Chat"
             iconSource={imageIndex.Messages}
-            onPress={() => navigation.navigate('Chats')}
+            isActive={isTabActive('Chats')}
+            onPress={() => navigateToTab('Chats')}
+          />
+          <DrawerMenuItem
+            label="Profile"
+            iconSource={imageIndex.AccountIcon}
+            isActive={isDrawerRouteActive('Profile')}
+            onPress={() => navigateToRoute('Profile')}
           />
           <DrawerMenuItem
             label="Help Center"
             iconSource={imageIndex.Help}
-            onPress={() => {
-              navigation.navigate('HelpCenter');
-            }}
+            isActive={isDrawerRouteActive('HelpCenter')}
+            onPress={() => navigateToRoute('HelpCenter')}
             isLast={true}
           />
         </View>
@@ -147,13 +197,16 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.xs,
-
+    paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
     marginBottom: SPACING.xs,
+    borderRadius: RADIUS.md,
+  },
+  menuItemActive: {
+    backgroundColor: '#F5EBE1', // Soft warm tint matching brand color
   },
   iconContainer: {
-    width: 32, // Fixed width to keep labels perfectly aligned
+    width: 32,
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
@@ -161,14 +214,19 @@ const styles = StyleSheet.create({
   menuIcon: {
     width: ICON_SIZE.md,
     height: ICON_SIZE.md,
-    // Optional: If your PNGs are monochrome and you want to match text color:
-    // tintColor: COLORS.textPrimary
+  },
+  menuIconActive: {
+    tintColor: '#A06333',
   },
   menuLabel: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
     marginLeft: SPACING.md,
+  },
+  menuLabelActive: {
+    color: '#A06333',
+    fontFamily: FONTS.bold,
   },
 });
 
