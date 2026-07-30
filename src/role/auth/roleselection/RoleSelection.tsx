@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     View,
@@ -21,6 +21,20 @@ type UserRole = 'customer' | 'shipper' | 'driver';
 const RoleSelection = ({ navigation }: any) => {
     const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
     const [isStoring, setIsStoring] = useState(false); // Add a small loading state for storage action
+
+    useEffect(() => {
+        const loadSavedRole = async () => {
+            try {
+                const savedRole = await AsyncStorage.getItem('@user_role');
+                if (savedRole && (savedRole === 'customer' || savedRole === 'shipper' || savedRole === 'driver')) {
+                    setSelectedRole(savedRole as UserRole);
+                }
+            } catch (error) {
+                console.error('Error loading saved role:', error);
+            }
+        };
+        loadSavedRole();
+    }, []);
 
     // 2. Updated handleContinue with AsyncStorage Logic
     const handleContinue = async () => {

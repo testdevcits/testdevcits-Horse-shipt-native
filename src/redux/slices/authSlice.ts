@@ -228,9 +228,14 @@ export const loginUser = createAsyncThunk(
 
       return response;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || 'Login Failed',
-      );
+      const data = error.response?.data;
+      const message =
+        error?.message ||
+        data?.errors?.[0] ||
+        data?.message ||
+        data?.error ||
+        'Login Failed';
+      return thunkAPI.rejectWithValue(message);
     }
   },
 );
@@ -313,6 +318,19 @@ const authSlice = createSlice({
     clearAuthError: state => {
       state.error = null;
     },
+
+    /**
+     * Synchronous reducer to update user profile fields (e.g. profileImage, name)
+     * Keeps Redux state and AsyncStorage in sync across all roles
+     */
+    updateUser: (state, action: PayloadAction<Partial<AppUser>>) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      } else {
+        state.user = action.payload as AppUser;
+      }
+      AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(state.user));
+    },
   },
   extraReducers: builder => {
     // --- Login ---
@@ -351,5 +369,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearAuthError, setCredentials } = authSlice.actions; // Exported here
+export const { clearAuthError, setCredentials, updateUser } = authSlice.actions; // Exported here
 export default authSlice.reducer;

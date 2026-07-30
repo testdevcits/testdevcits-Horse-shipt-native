@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, StatusBar } from 'react-native';
 import {
   COLORS,
   RADIUS,
@@ -58,6 +58,22 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     marginBottom: SPACING.xs,
     letterSpacing: -0.5,
+  },
+  roleBadgeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.xs,
+  },
+  roleBadgeLabel: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
+  roleBadgeValue: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.goldPrimary,
+    letterSpacing: 0.5,
   },
   subtitle: {
     fontSize: FONT_SIZE.md, // 14
@@ -120,6 +136,27 @@ const styles = StyleSheet.create({
     color: COLORS.goldPrimary,
     fontFamily: FONTS.bold, // Bold for better CTA visibility
     fontSize: FONT_SIZE.sm, // 12
+  },
+  changeRoleBtn: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 52 : (StatusBar.currentHeight ? StatusBar.currentHeight + 12 : 36),
+    right: SPACING.lg,
+    zIndex: 99,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs + 2,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(218, 165, 32, 0.4)',
+  },
+  changeRoleText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+    marginHorizontal: SPACING.xs,
+    letterSpacing: 0.5,
   },
 });
 

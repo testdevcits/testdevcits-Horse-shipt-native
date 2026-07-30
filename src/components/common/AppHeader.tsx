@@ -20,8 +20,18 @@ const AppHeader = memo(
     const navigation = useNavigation<any>();
     const { user } = useAppSelector(state => state.auth);
 
-    // Helper to handle profile image size
-    const profileImageSize = user?.profileImage ? 40 : 24;
+    const getAvatarUri = (profileImg: any): string | null => {
+      if (!profileImg) return null;
+      if (typeof profileImg === 'string' && profileImg.trim() !== '' && profileImg !== '/default-avatar.png') {
+        return profileImg;
+      }
+      if (typeof profileImg === 'object' && profileImg.url) {
+        return profileImg.url;
+      }
+      return null;
+    };
+
+    const avatarUri = getAvatarUri(user?.profileImage);
 
     return (
       <View style={styles.header}>
@@ -70,14 +80,14 @@ const AppHeader = memo(
               >
                 <Image
                   source={
-                    user?.profileImage
-                      ? { uri: user.profileImage }
+                    avatarUri
+                      ? { uri: avatarUri }
                       : imageIndex.AccountIcon
                   }
                   style={{
-                    width: profileImageSize,
-                    height: profileImageSize,
-                    borderRadius: profileImageSize / 2,
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
                     backgroundColor: COLORS.grey200,
                   }}
                 />

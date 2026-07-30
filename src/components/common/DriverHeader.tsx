@@ -41,6 +41,19 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
     // Extract initial for monogram box
     const firstLetter = name ? name.trim().charAt(0).toUpperCase() : 'D';
 
+    const getAvatarUri = (img: any): string | null => {
+        if (!img) return null;
+        if (typeof img === 'string' && img.trim() !== '' && img !== '/default-avatar.png') {
+            return img;
+        }
+        if (typeof img === 'object' && img.url) {
+            return img.url;
+        }
+        return null;
+    };
+
+    const avatarUri = getAvatarUri(profileImageUrl);
+
     return (
         <View style={[styles.safeArea, containerStyle]}>
             <View style={styles.headerRow}>
@@ -48,8 +61,8 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                 {/* Left Side: Avatar Box & Status Dot */}
                 <View style={styles.leftContainer}>
                     <View style={styles.avatarWrapper}>
-                        {profileImageUrl ? (
-                            <Image source={{ uri: profileImageUrl }} style={styles.avatarImage} />
+                        {avatarUri ? (
+                            <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
                         ) : (
                             <AppText style={styles.monogramText}>{firstLetter}</AppText>
                         )}

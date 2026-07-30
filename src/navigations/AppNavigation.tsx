@@ -221,8 +221,8 @@ const AppNavigation = () => {
         {!token ? (
           // AUTH FLOW
           <>
-            <Stack.Screen name="RoleSelection" component={RoleSelection} />
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="RoleSelection" component={RoleSelection} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen

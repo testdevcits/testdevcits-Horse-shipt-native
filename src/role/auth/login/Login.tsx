@@ -11,8 +11,8 @@ import {
   StatusBar,
   Keyboard, // 2. Added Keyboard
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Mail, Lock, Check } from 'lucide-react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { Mail, Lock, Check, UserCog, RefreshCw } from 'lucide-react-native';
 import { COLORS, RADIUS, SCREEN_HEIGHT } from '../../../constants';
 import AppText from '../../../components/common/AppText';
 import { Input } from '../../../components';
@@ -27,6 +27,7 @@ import Toast from 'react-native-toast-message';
 const Login = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
+  const isFocused = useIsFocused();
 
   // State Management
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false); // 3. Keyboard state
@@ -34,7 +35,20 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string>('');
   const [errors, setErrors] = useState({ email: '', password: '' });
+
+  useEffect(() => {
+    if (isFocused) {
+      AsyncStorage.getItem('@user_role').then(role => {
+        if (role && role !== 'null') {
+          setSelectedRole(role);
+        } else {
+          setSelectedRole('');
+        }
+      });
+    }
+  }, [isFocused]);
 
   // 4. Keyboard Listeners Logic
   useEffect(() => {
@@ -89,7 +103,11 @@ const Login = () => {
         }),
       ).unwrap();
     } catch (err: any) {
-      Alert.alert('Authentication Error', err?.message || err || 'Invalid credentials');
+      const errorMsg =
+        typeof err === 'string'
+          ? err
+          : err?.message || err?.errors?.[0] || 'Invalid credentials';
+      Alert.alert('Authentication Error', errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -102,6 +120,19 @@ const Login = () => {
         translucent
         backgroundColor="transparent"
       />
+
+      {/* Top Right Change Role Button */}
+      <TouchableOpacity
+        style={styles.changeRoleBtn}
+        onPress={() => navigation.navigate('RoleSelection')}
+        activeOpacity={0.8}
+      >
+        <UserCog size={16} color={COLORS.goldPrimary} />
+        <AppText style={styles.changeRoleText}>
+          {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
+        </AppText>
+        <RefreshCw size={12} color={COLORS.goldPrimary} />
+      </TouchableOpacity>
 
       {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}
       <ImageBackground
@@ -123,13 +154,6 @@ const Login = () => {
       >
         {/* 6. This View will now occupy 80-85% of the screen when keyboard is open */}
         <View style={styles.contentCard}>
-          {/*           
-          <View style={styles.logoOuterRing}>
-            <View style={styles.logoInnerRing}>
-              <Image source={imageIndex.LogoIcon} style={styles.logoIcon} resizeMode="contain" />
-            </View>
-          </View> */}
-
           <Image
             source={imageIndex.Logo}
             style={styles.logoIcon}
@@ -143,6 +167,15 @@ const Login = () => {
           >
             <View style={styles.textHeader}>
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
+
+              {/* Selected Role Badge Label */}
+              <View style={styles.roleBadgeContainer}>
+                <AppText style={styles.roleBadgeLabel}>Signing in as: </AppText>
+                <AppText style={styles.roleBadgeValue}>
+                  {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
+                </AppText>
+              </View>
+
               <AppText style={styles.subtitle}>
                 Sign in to manage your shipments, track your horses in real
                 time, and access trusted transportation services.

@@ -188,21 +188,29 @@ axiosClient.interceptors.response.use(
     console.log(`   ║ 🔗 URL:     ${url}`);
     console.log(`   ║ 📝 MESSAGE: ${error.message}`);
     console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
+    const errorMessage: string = String(
+      errorBody?.errors?.[0] ||
+      errorBody?.message ||
+      errorBody?.error ||
+      error.message ||
+      'An error occurred',
+    );
+
     Toast.show({
       type: 'error',
       text1: "Error",
-      text2: JSON.stringify(errorBody?.message, null, 2),
+      text2: errorMessage,
     });
     console.log('   ╚══════════════════════════════════════════════╝');
 
-    // Handle 401 Unauthorized
+    // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {
       const state = store.getState();
       if (state.auth.token) {
         console.warn('⚠️ Session Expired: Dispatching global logout...');
         store.dispatch(logoutUser());
+        return Promise.reject({ message: 'Session expired. Please login again.', status: 401 });
       }
-      return Promise.reject({ message: 'Session expired. Please login again.', status: 401 });
     }
 
     // Parse and reject with a clean error object
@@ -218,9 +226,11 @@ const parseApiError = (error: AxiosError<any>) => {
 
   // Custom logic to find error message in different backend formats
   const message =
+    data?.errors?.[0] ||
     data?.message ||
     data?.error ||
     data?.msg ||
+    error.message ||
     'Something went wrong. Please try again.';
 
   return {
