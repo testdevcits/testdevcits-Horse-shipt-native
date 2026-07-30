@@ -11,11 +11,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../redux/slices/authSlice';
 import horseReducer from '../redux/slices/horseSlice';
+import notificationReducer from '../redux/slices/notificationSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     horse: horseReducer,
+    notification: notificationReducer,
   },
 });
 

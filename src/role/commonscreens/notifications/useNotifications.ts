@@ -1,37 +1,26 @@
 // src/hooks/useNotifications.ts
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
-import customerService from '../../../api/services/customerService';
-import { NotificationActivity } from '../../../types/notification';
-
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import {
+  fetchNotificationsThunk,
+  markNotificationsReadThunk,
+  deleteNotificationsThunk,
+} from '../../../redux/slices/notificationSlice';
 
 const useNotifications = () => {
-  const [notifications, setNotifications] = useState<NotificationActivity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { notifications, loading, actionLoading, error } = useAppSelector(state => state.notification);
   const [refreshing, setRefreshing] = useState(false);
-  const [actionLoading, setActionLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [activeFilter, setActiveFilter] = useState<'all' | 'unread'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const fetchNotifications = useCallback(async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-
-      setError(null);
-      const res = await customerService.getNotifications();
-      if (res.success) {
-        setNotifications(res.data);
-      }
-    } catch (err: any) {
-      setError(err.message || "Unable to load notifications");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
+    if (isRefresh) setRefreshing(true);
+    await dispatch(fetchNotificationsThunk());
+    setRefreshing(false);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchNotifications();
@@ -58,16 +47,18 @@ const useNotifications = () => {
   const handleMarkRead = async () => {
     if (selectedIds.length === 0) return;
     try {
-      setActionLoading(true);
-      await customerService.markAsRead(selectedIds);
-      setNotifications(prev => prev.map(n =>
-        selectedIds.includes(n._id) ? { ...n, read: true } : n
-      ));
+      await dispatch(markNotificationsReadThunk(selectedIds)).unwrap();
       setSelectedIds([]);
     } catch (err) {
       Alert.alert("Error", "Failed to update notifications");
-    } finally {
-      setActionLoading(false);
+    }
+  };
+
+  const handleMarkSingleRead = async (id: string) => {
+    try {
+      await dispatch(markNotificationsReadThunk([id])).unwrap();
+    } catch (err) {
+      console.error("Failed to mark notification as read", err);
     }
   };
 
@@ -80,29 +71,14 @@ const useNotifications = () => {
         style: "destructive",
         onPress: async () => {
           try {
-            setActionLoading(true);
-            await customerService.deleteNotifications(selectedIds);
-            setNotifications(prev => prev.filter(n => !selectedIds.includes(n._id)));
+            await dispatch(deleteNotificationsThunk(selectedIds)).unwrap();
             setSelectedIds([]);
           } catch (err) {
             Alert.alert("Error", "Failed to delete notifications");
-          } finally {
-            setActionLoading(false);
           }
         }
       }
     ]);
-  };
-
-  const handleMarkSingleRead = async (id: string) => {
-    try {
-      await customerService.markAsRead([id]);
-      setNotifications(prev => prev.map(n =>
-        n._id === id ? { ...n, read: true } : n
-      ));
-    } catch (err) {
-      console.error("Failed to mark notification as read", err);
-    }
   };
 
   return {

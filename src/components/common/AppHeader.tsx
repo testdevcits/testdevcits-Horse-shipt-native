@@ -1,10 +1,11 @@
-import React, { memo } from 'react'; // 1. Import memo
+import React, { memo, useEffect } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { fetchNotificationsThunk } from '../../redux/slices/notificationSlice';
 import imageIndex from '../../assets/images/imageIndex';
 
 interface HeaderProps {
@@ -18,7 +19,17 @@ interface HeaderProps {
 const AppHeader = memo(
   ({ title, showBack, onBack, rightElement }: HeaderProps) => {
     const navigation = useNavigation<any>();
+    const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
+    const { unreadCount } = useAppSelector(state => state.notification);
+
+    const userId = user?._id || user?.id;
+
+    useEffect(() => {
+      if (userId) {
+        dispatch(fetchNotificationsThunk({ isRefresh: true }));
+      }
+    }, [userId, dispatch]);
 
     const getAvatarUri = (profileImg: any): string | null => {
       if (!profileImg) return null;
@@ -70,8 +81,18 @@ const AppHeader = memo(
               <TouchableOpacity
                 onPress={() => navigation.navigate('Notifications')}
                 style={styles.iconBtn}
+                activeOpacity={0.7}
               >
-                <BellIcon color={COLORS.textPrimary} size={20} />
+                <View style={styles.bellContainer}>
+                  <BellIcon color={COLORS.textPrimary} size={20} />
+                  {unreadCount > 0 && (
+                    <View style={styles.badge}>
+                      <AppText style={styles.badgeText}>
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </AppText>
+                    </View>
+                  )}
+                </View>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -132,6 +153,30 @@ const styles = StyleSheet.create({
   },
   iconBtn: {
     padding: 6,
+  },
+  bellContainer: {
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    top: -5,
+    right: -7,
+    backgroundColor: '#EF4444',
+    minWidth: 16,
+    height: 16,
+    borderRadius: 8,
+    paddingHorizontal: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: COLORS.white,
+  },
+  badgeText: {
+    color: COLORS.white,
+    fontSize: 9,
+    fontFamily: FONTS.bold,
+    textAlign: 'center',
+    lineHeight: 12,
   },
   profileBtn: {
     marginLeft: SPACING.xs,

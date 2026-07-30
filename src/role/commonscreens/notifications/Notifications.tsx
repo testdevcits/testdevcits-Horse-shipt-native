@@ -10,23 +10,24 @@ import styles from './styles.notification';
 import useNotifications from './useNotifications';
 import { AppHeader, AppLoader, AppText, EmptyState, ErrorView } from '../../../components';
 
-const getNotificationConfig = (type?: string) => {
-    switch (type) {
-        case 'chat_message':
-            return { Icon: MessageSquare, bg: '#EFF6FF', color: '#3B82F6' };
-        case 'shipment_update':
-        case 'upcoming_shipment':
-            return { Icon: Truck, bg: COLORS.goldLightBg, color: COLORS.goldPrimary };
-        case 'payment':
-            return { Icon: CreditCard, bg: '#ECFDF5', color: '#10B981' };
-        case 'offer':
-        case 'quote':
-            return { Icon: Tag, bg: '#F5F3FF', color: '#8B5CF6' };
-        case 'review':
-            return { Icon: Star, bg: '#FEF3C7', color: '#D97706' };
-        default:
-            return { Icon: Bell, bg: COLORS.goldLightBg, color: COLORS.goldPrimary };
+const getNotificationConfig = (type?: string, event?: string) => {
+    const key = (type || event || '').toLowerCase();
+    if (key.includes('vehicle_assigned') || key.includes('shipment') || key.includes('truck')) {
+        return { Icon: Truck, bg: COLORS.goldLightBg, color: COLORS.goldPrimary };
     }
+    if (key.includes('chat') || key.includes('message')) {
+        return { Icon: MessageSquare, bg: '#EFF6FF', color: '#3B82F6' };
+    }
+    if (key.includes('payment') || key.includes('paid')) {
+        return { Icon: CreditCard, bg: '#ECFDF5', color: '#10B981' };
+    }
+    if (key.includes('quote') || key.includes('offer')) {
+        return { Icon: Tag, bg: '#F5F3FF', color: '#8B5CF6' };
+    }
+    if (key.includes('review')) {
+        return { Icon: Star, bg: '#FEF3C7', color: '#D97706' };
+    }
+    return { Icon: Bell, bg: COLORS.goldLightBg, color: COLORS.goldPrimary };
 };
 
 const Notifications = () => {
@@ -48,7 +49,7 @@ const Notifications = () => {
     const renderNotification = ({ item }: any) => {
         const isSelected = selectedIds.includes(item._id);
         const isSelectionMode = selectedIds.length > 0;
-        const { Icon, bg, color } = getNotificationConfig(item.type);
+        const { Icon, bg, color } = getNotificationConfig(item.type, item.event);
         const formattedTime = item.createdAt ? moment(item.createdAt).fromNow() : moment().fromNow();
 
         return (
