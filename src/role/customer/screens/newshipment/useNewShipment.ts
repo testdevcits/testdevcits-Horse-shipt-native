@@ -23,6 +23,41 @@ const defaultHorse: NewShipmentHorse = {
   healthCert: null,
 };
 
+const getTomorrow = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+const getDayAfterTomorrow = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+const createInitialFormState = (): NewShipmentForm => ({
+  pickupLocation: '',
+  pickupLat: 0,
+  pickupLng: 0,
+  pickupTimeOption: 'between',
+  pickupStartDate: getTomorrow(),
+  pickupEndDate: getTomorrow(),
+  deliveryLocation: '',
+  deliveryLat: 0,
+  deliveryLng: 0,
+  deliveryTimeOption: 'between',
+  deliveryStartDate: getDayAfterTomorrow(),
+  deliveryEndDate: getDayAfterTomorrow(),
+  numberOfHorses: 1,
+  additionalInfo: '',
+  recipientEmail: '',
+  hasSpecialRequirement: false,
+  specialRequirementDetails: '',
+  horses: [{ ...defaultHorse }],
+});
+
 const useNewShipment = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -34,29 +69,7 @@ const useNewShipment = () => {
   );
   const navigation = useNavigation();
 
-  const [form, setForm] = useState<NewShipmentForm>({
-    pickupLocation: '',
-    pickupLat: 0,
-    pickupLng: 0,
-    pickupTimeOption: 'between',
-    pickupStartDate: new Date(),
-    pickupEndDate: new Date(),
-
-    deliveryLocation: '',
-    deliveryLat: 0,
-    deliveryLng: 0,
-    deliveryTimeOption: 'between',
-    deliveryStartDate: new Date(),
-    deliveryEndDate: new Date(),
-
-    numberOfHorses: 1,
-    additionalInfo: '',
-    recipientEmail: '',
-    hasSpecialRequirement: false,
-    specialRequirementDetails: '',
-
-    horses: [{ ...defaultHorse }],
-  });
+  const [form, setForm] = useState<NewShipmentForm>(createInitialFormState);
 
   const updateForm = useCallback((updates: Partial<NewShipmentForm>) => {
     setForm(prev => {
@@ -81,49 +94,16 @@ const useNewShipment = () => {
       return newState;
     });
     setErrors({});
-  }, []); 
-
-  const INITIAL_FORM_STATE: NewShipmentForm = {
-  pickupLocation: '',
-  pickupLat: 0,
-  pickupLng: 0,
-  pickupTimeOption: 'between',
-  pickupStartDate: new Date(),
-  pickupEndDate: new Date(),
-  deliveryLocation: '',
-  deliveryLat: 0,
-  deliveryLng: 0,
-  deliveryTimeOption: 'between',
-  deliveryStartDate: new Date(),
-  deliveryEndDate: new Date(),
-  numberOfHorses: 1,
-  additionalInfo: '',
-  recipientEmail: '',
-  hasSpecialRequirement: false,
-  specialRequirementDetails: '',
-  horses: [{ 
-    registeredName: '',
-    barnName: '',
-    breed: '',
-    colour: '',
-    age: '',
-    sex: '',
-    requestedStallSize: 'Box',
-    generalInfo: '',
-    photo: null,
-    coggins: null,
-    healthCert: null,
-  }],
-};
+  }, []);
 
   const resetAllData = useCallback(() => {
-  setForm(INITIAL_FORM_STATE);
-  setCurrentStep(0);
-  setCreatedShipmentId(null);
-  setErrors({});
-  setIsPublishModalVisible(false);
-  setIsDraftModalVisible(false);
-}, []);
+    setForm(createInitialFormState());
+    setCurrentStep(0);
+    setCreatedShipmentId(null);
+    setErrors({});
+    setIsPublishModalVisible(false);
+    setIsDraftModalVisible(false);
+  }, []);
 
   const pickImage = async (index: number) => {
     try {

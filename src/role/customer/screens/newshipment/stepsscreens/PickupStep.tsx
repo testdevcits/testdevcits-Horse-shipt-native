@@ -50,6 +50,12 @@ const PickupStep: React.FC<PickupStepProps> = ({
     return new Date().toISOString().split('T')[0];
   };
 
+  const getTomorrowStr = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  };
+
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
   const handleOpenEnd = useCallback(() => setActiveDateType('end'), []);
   const handleCloseCalendar = useCallback(() => setActiveDateType(null), []);
@@ -57,13 +63,72 @@ const PickupStep: React.FC<PickupStepProps> = ({
   const handleDateSelect = useCallback(
     (date: Date) => {
       if (activeDateType === 'start') {
-        updateForm({ pickupStartDate: date });
+        const updates: Partial<NewShipmentForm> = { pickupStartDate: date };
+
+        const currentEndDate = form.pickupEndDate
+          ? new Date(form.pickupEndDate)
+          : null;
+        let effectiveEndDate = currentEndDate;
+        if (!currentEndDate || currentEndDate.getTime() < date.getTime()) {
+          updates.pickupEndDate = date;
+          effectiveEndDate = date;
+        }
+
+        if (effectiveEndDate) {
+          const currentDelStart = form.deliveryStartDate
+            ? new Date(form.deliveryStartDate)
+            : null;
+          if (
+            currentDelStart &&
+            currentDelStart.getTime() < effectiveEndDate.getTime()
+          ) {
+            updates.deliveryStartDate = effectiveEndDate;
+            const currentDelEnd = form.deliveryEndDate
+              ? new Date(form.deliveryEndDate)
+              : null;
+            if (
+              currentDelEnd &&
+              currentDelEnd.getTime() < effectiveEndDate.getTime()
+            ) {
+              updates.deliveryEndDate = effectiveEndDate;
+            }
+          }
+        }
+
+        updateForm(updates);
       } else {
-        updateForm({ pickupEndDate: date });
+        const updates: Partial<NewShipmentForm> = { pickupEndDate: date };
+
+        const currentDelStart = form.deliveryStartDate
+          ? new Date(form.deliveryStartDate)
+          : null;
+        if (
+          currentDelStart &&
+          currentDelStart.getTime() < date.getTime()
+        ) {
+          updates.deliveryStartDate = date;
+          const currentDelEnd = form.deliveryEndDate
+            ? new Date(form.deliveryEndDate)
+            : null;
+          if (
+            currentDelEnd &&
+            currentDelEnd.getTime() < date.getTime()
+          ) {
+            updates.deliveryEndDate = date;
+          }
+        }
+
+        updateForm(updates);
       }
       setActiveDateType(null);
     },
-    [activeDateType, updateForm],
+    [
+      activeDateType,
+      form.pickupEndDate,
+      form.deliveryStartDate,
+      form.deliveryEndDate,
+      updateForm,
+    ],
   );
 
   return (
@@ -181,9 +246,11 @@ const PickupStep: React.FC<PickupStepProps> = ({
             : getSafeDateStr(form.pickupEndDate)
         }
         minDate={
-          activeDateType === 'end' && form.pickupStartDate
+          activeDateType === 'start'
+            ? getTomorrowStr()
+            : form.pickupStartDate
             ? getSafeDateStr(form.pickupStartDate)
-            : new Date().toISOString().split('T')[0]
+            : getTomorrowStr()
         }
       />
     </View>

@@ -45,6 +45,16 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
     return new Date().toISOString().split('T')[0];
   };
 
+  const getMinDeliveryStartStr = () => {
+    const refDate = form.pickupEndDate || form.pickupStartDate;
+    if (refDate) {
+      return getSafeDateStr(refDate);
+    }
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  };
+
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
   const handleOpenEnd = useCallback(() => setActiveDateType('end'), []);
   const handleCloseCalendar = useCallback(() => setActiveDateType(null), []);
@@ -52,13 +62,22 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
   const handleDateSelect = useCallback(
     (date: Date) => {
       if (activeDateType === 'start') {
-        updateForm({ deliveryStartDate: date });
+        const updates: Partial<NewShipmentForm> = { deliveryStartDate: date };
+
+        const currentDelEnd = form.deliveryEndDate
+          ? new Date(form.deliveryEndDate)
+          : null;
+        if (!currentDelEnd || currentDelEnd.getTime() < date.getTime()) {
+          updates.deliveryEndDate = date;
+        }
+
+        updateForm(updates);
       } else {
         updateForm({ deliveryEndDate: date });
       }
       setActiveDateType(null);
     },
-    [activeDateType, updateForm],
+    [activeDateType, form.deliveryEndDate, updateForm],
   );
 
   return (
@@ -173,11 +192,11 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             : getSafeDateStr(form.deliveryEndDate)
         }
         minDate={
-          activeDateType === 'end' && form.deliveryStartDate
+          activeDateType === 'start'
+            ? getMinDeliveryStartStr()
+            : form.deliveryStartDate
             ? getSafeDateStr(form.deliveryStartDate)
-            : form.pickupStartDate
-            ? getSafeDateStr(form.pickupStartDate)
-            : new Date().toISOString().split('T')[0]
+            : getMinDeliveryStartStr()
         }
       />
     </View>

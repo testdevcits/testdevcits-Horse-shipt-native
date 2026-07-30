@@ -54,8 +54,12 @@ const AppCalendarModal = memo(({
                 current={initialDate}
                 minDate={minDate}
                 onDayPress={(day: any) => {
-                  // day.timestamp is in UTC, convert to local Date object
-                  onSelect(new Date(day.timestamp));
+                  if (day?.dateString) {
+                    const [year, month, dayNum] = day.dateString.split('-').map(Number);
+                    onSelect(new Date(year, month - 1, dayNum, 0, 0, 0, 0));
+                  } else {
+                    onSelect(new Date(day.timestamp));
+                  }
                 }}
                 theme={{
                   backgroundColor: COLORS.white,
