@@ -29,11 +29,18 @@ import {
 } from 'lucide-react-native';
 import moment from 'moment';
 import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useSelector } from 'react-redux';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
+import styles from './styles.shipperhome';
 
 const { width } = Dimensions.get('window');
 
@@ -130,12 +137,16 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     if (item.pickupCoords && item.deliveryCoords && mapRef.current) {
       const coords = [
         {
-          latitude: item.pickupCoords.lat || item.pickupCoords.latitude || 22.96,
-          longitude: item.pickupCoords.lng || item.pickupCoords.longitude || 76.05,
+          latitude:
+            item.pickupCoords.lat || item.pickupCoords.latitude || 22.96,
+          longitude:
+            item.pickupCoords.lng || item.pickupCoords.longitude || 76.05,
         },
         {
-          latitude: item.deliveryCoords.lat || item.deliveryCoords.latitude || 23.83,
-          longitude: item.deliveryCoords.lng || item.deliveryCoords.longitude || 78.73,
+          latitude:
+            item.deliveryCoords.lat || item.deliveryCoords.latitude || 23.83,
+          longitude:
+            item.deliveryCoords.lng || item.deliveryCoords.longitude || 78.73,
         },
       ];
       mapRef.current.fitToCoordinates(coords, {
@@ -156,8 +167,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     }
     const pLat = item.pickupCoords.lat || item.pickupCoords.latitude || 22.745;
     const pLng = item.pickupCoords.lng || item.pickupCoords.longitude || 75.892;
-    const dLat = item.deliveryCoords?.lat || item.deliveryCoords?.latitude || pLat + 0.5;
-    const dLng = item.deliveryCoords?.lng || item.deliveryCoords?.longitude || pLng + 0.5;
+    const dLat =
+      item.deliveryCoords?.lat || item.deliveryCoords?.latitude || pLat + 0.5;
+    const dLng =
+      item.deliveryCoords?.lng || item.deliveryCoords?.longitude || pLng + 0.5;
 
     const midLat = (pLat + dLat) / 2;
     const midLng = (pLng + dLng) / 2;
@@ -174,7 +187,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="" showNotificationBell />
+      <AppHeader title="" />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -234,7 +247,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
           {/* Search Input Bar */}
           <View style={styles.searchBarContainer}>
-            <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
+            <Search
+              size={18}
+              color={COLORS.textSecondary}
+              style={styles.searchIcon}
+            />
             <TextInput
               style={styles.searchInput}
               placeholder="Search by pickup or delivery location..."
@@ -273,7 +290,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                   selectedFilter === 'dropoff' && styles.filterPillActive,
                 ]}
                 onPress={() =>
-                  setSelectedFilter(selectedFilter === 'dropoff' ? '' : 'dropoff')
+                  setSelectedFilter(
+                    selectedFilter === 'dropoff' ? '' : 'dropoff',
+                  )
                 }
               >
                 <AppText
@@ -297,7 +316,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <TouchableOpacity
               style={[
                 styles.viewToggleBtn,
-                viewMode === 'list' ? styles.viewToggleBtnActive : styles.viewToggleBtnInactive,
+                viewMode === 'list'
+                  ? styles.viewToggleBtnActive
+                  : styles.viewToggleBtnInactive,
               ]}
               onPress={() => setViewMode('list')}
             >
@@ -318,7 +339,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <TouchableOpacity
               style={[
                 styles.viewToggleBtn,
-                viewMode === 'map' ? styles.viewToggleBtnActive : styles.viewToggleBtnInactive,
+                viewMode === 'map'
+                  ? styles.viewToggleBtnActive
+                  : styles.viewToggleBtnInactive,
               ]}
               onPress={() => {
                 setViewMode('map');
@@ -378,11 +401,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                     : 'Thunder - Sky';
                 const horseSpecs =
                   item.horses && item.horses[0]
-                    ? `${item.horses[0].breed || 'Belgian Warmblood'} | ${item.horses[0].age || '2'}yr | ${item.horses[0].colour || 'Blood bay'}`
+                    ? `${item.horses[0].breed || 'Belgian Warmblood'} | ${
+                        item.horses[0].age || '2'
+                      }yr | ${item.horses[0].colour || 'Blood bay'}`
                     : 'Belgian Warmblood | 2yr | Blood bay';
 
                 const locationText = item.pickupLocation
-                  ? item.pickupLocation.split(',')[0] + ', ' + (item.pickupLocation.split(',')[1] || '')
+                  ? item.pickupLocation.split(',')[0] +
+                    ', ' +
+                    (item.pickupLocation.split(',')[1] || '')
                   : 'Ghbaleh, Lebanon';
 
                 return (
@@ -390,9 +417,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                     {/* Left Horse Image */}
                     <View style={styles.cardImageContainer}>
                       {horsePhoto ? (
-                        <Image source={{ uri: horsePhoto }} style={styles.cardImage} />
+                        <Image
+                          source={{ uri: horsePhoto }}
+                          style={styles.cardImage}
+                        />
                       ) : (
-                        <Image source={imageIndex.Banner} style={styles.cardImage} />
+                        <Image
+                          source={imageIndex.Banner}
+                          style={styles.cardImage}
+                        />
                       )}
                     </View>
 
@@ -415,7 +448,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                         <Calendar size={14} color={COLORS.textSecondary} />
                         <AppText style={styles.infoMetaText}>
                           {item.pickupDateRange?.start
-                            ? `Pickup ${moment(item.pickupDateRange.start).format('MMM DD')}`
+                            ? `Pickup ${moment(
+                                item.pickupDateRange.start,
+                              ).format('MMM DD')}`
                             : 'Pickup Jul 23-31'}
                         </AppText>
                       </View>
@@ -426,7 +461,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                       <TouchableOpacity
                         style={styles.externalActionBtn}
                         onPress={() =>
-                          Alert.alert('Shipment Details', `Shipment Code: ${item.shipmentCode}`)
+                          Alert.alert(
+                            'Shipment Details',
+                            `Shipment Code: ${item.shipmentCode}`,
+                          )
                         }
                       >
                         <ExternalLink size={14} color={COLORS.white} />
@@ -453,7 +491,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             {/* Shipments List Selection Card */}
             <View style={styles.mapShipmentsListCard}>
               <View style={styles.sectionHeaderRow}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <View
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+                >
                   <List size={18} color="#A06333" />
                   <AppText style={styles.mapSectionTitle}>
                     Shipments ({filteredShipments.length})
@@ -477,11 +517,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                   const isLast = index === filteredShipments.length - 1;
 
                   const pickupTitle = item.pickupLocation
-                    ? item.pickupLocation.split(',')[0] + ', ' + (item.pickupLocation.split(',')[1] || '')
+                    ? item.pickupLocation.split(',')[0] +
+                      ', ' +
+                      (item.pickupLocation.split(',')[1] || '')
                     : 'Ghbaleh, Lebanon';
 
                   const deliveryTitle = item.deliveryLocation
-                    ? item.deliveryLocation.split(',')[0] + ', ' + (item.deliveryLocation.split(',')[1] || '')
+                    ? item.deliveryLocation.split(',')[0] +
+                      ', ' +
+                      (item.deliveryLocation.split(',')[1] || '')
                     : 'Myanmar';
 
                   return (
@@ -502,13 +546,19 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
                       {/* Center Info Col */}
                       <View style={styles.mapSelectTextCol}>
-                        <AppText style={styles.mapSelectLocationTitle} numberOfLines={1}>
+                        <AppText
+                          style={styles.mapSelectLocationTitle}
+                          numberOfLines={1}
+                        >
                           {pickupTitle}
                         </AppText>
                         <AppText style={styles.mapSelectShipmentCode}>
                           {item.shipmentCode || 'HS-SHIP-2026-CODE'}
                         </AppText>
-                        <AppText style={styles.mapSelectDeliverySub} numberOfLines={1}>
+                        <AppText
+                          style={styles.mapSelectDeliverySub}
+                          numberOfLines={1}
+                        >
                           ➜ {deliveryTitle}
                         </AppText>
                       </View>
@@ -635,516 +685,5 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  scrollContent: {
-    padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
-  },
-
-  // Welcome Header
-  welcomeHeader: {
-    marginBottom: SPACING.md,
-  },
-  welcomeTitle: {
-    fontSize: FONT_SIZE.xl,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  welcomeSub: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-
-  // Stats Row
-  statsRow: {
-    flexDirection: 'row',
-    gap: SPACING.sm,
-    marginBottom: SPACING.md,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  statTextCol: {
-    flex: 1,
-  },
-  statTitle: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  statCount: {
-    fontSize: 26,
-    fontFamily: FONTS.bold,
-    color: '#A06333',
-    marginTop: 4,
-  },
-  statIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: RADIUS.xs,
-    backgroundColor: '#FBF5EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // New Opportunities Card
-  opportunitiesCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-    marginBottom: SPACING.lg,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  sectionHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  viewAllBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-  },
-  viewAllText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: '#A06333',
-  },
-  sectionSub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-    marginBottom: SPACING.md,
-  },
-
-  // Search Bar
-  searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FAFAFA',
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.xs,
-    paddingHorizontal: SPACING.sm,
-    marginBottom: SPACING.md,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    paddingVertical: 10,
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular,
-    color: COLORS.textPrimary,
-  },
-
-  // Filter Row
-  filterRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-    flexWrap: 'wrap',
-    gap: SPACING.xs,
-  },
-  filterLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
-    marginRight: 4,
-  },
-  filterPillsGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  filterPill: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: RADIUS.xs,
-    backgroundColor: '#FAFAFA',
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-  },
-  filterPillActive: {
-    backgroundColor: '#FFFBEB',
-    borderColor: COLORS.goldPrimary,
-  },
-  filterPillText: {
-    fontSize: 11,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  filterPillTextActive: {
-    color: COLORS.goldDarkText,
-    fontFamily: FONTS.bold,
-  },
-  filterIconBtn: {
-    padding: 6,
-    borderRadius: RADIUS.xs,
-    backgroundColor: '#FFFBEB',
-    borderWidth: 1,
-    borderColor: '#FDE68A',
-  },
-
-  // View Toggle Row
-  viewToggleRow: {
-    flexDirection: 'row',
-    gap: SPACING.sm,
-  },
-  viewToggleBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: RADIUS.xs,
-    gap: 6,
-  },
-  viewToggleBtnActive: {
-    backgroundColor: '#A06333',
-  },
-  viewToggleBtnInactive: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: '#A06333',
-  },
-  viewToggleBtnText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: '#A06333',
-  },
-  viewToggleBtnTextActive: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-  },
-
-  // Current Shipments Section
-  currentShipmentsSection: {
-    gap: SPACING.sm,
-  },
-  loaderContainer: {
-    paddingVertical: 40,
-    alignItems: 'center',
-  },
-  emptyContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.xl,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-  },
-  emptyTitle: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginTop: SPACING.xs,
-  },
-  emptySub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    marginTop: 4,
-  },
-
-  // Shipment Card
-  shipmentCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.sm,
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-    flexDirection: 'row',
-    gap: SPACING.sm,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
-    marginBottom: SPACING.xs,
-  },
-  cardImageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: RADIUS.xs,
-    overflow: 'hidden',
-    backgroundColor: '#F4F4F5',
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  cardInfoCol: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  horseTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  horseSpecs: {
-    fontSize: 10,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 1,
-  },
-  shipmentCode: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: '#A06333',
-    marginVertical: 3,
-  },
-  infoMetaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 2,
-  },
-  infoMetaText: {
-    fontSize: 10,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-    flex: 1,
-  },
-
-  // Right Action & Timeline Col
-  cardRightCol: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 2,
-  },
-  externalActionBtn: {
-    width: 26,
-    height: 26,
-    borderRadius: 6,
-    backgroundColor: '#A06333',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  timelineCol: {
-    alignItems: 'center',
-    gap: 2,
-  },
-  timelineDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#D1D5DB',
-  },
-  timelineDashedLine: {
-    width: 1,
-    height: 10,
-    backgroundColor: '#E5E7EB',
-  },
-  timelineTruckNode: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#D1FAE5',
-    borderWidth: 1,
-    borderColor: '#A7F3D0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // MAP VIEW MODE STYLES (MATCHING SCREENSHOT)
-  mapModeContainer: {
-    gap: SPACING.md,
-  },
-  mapShipmentsListCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-  },
-  mapSectionTitle: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: '#A06333',
-  },
-  mapSectionSub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-    marginBottom: SPACING.md,
-  },
-
-  // Map Selection Table
-  mapSelectionTable: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: RADIUS.sm,
-    overflow: 'hidden',
-  },
-  mapSelectItemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: SPACING.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
-    backgroundColor: COLORS.white,
-    gap: SPACING.xs,
-  },
-  mapSelectItemRowActive: {
-    backgroundColor: '#FFFBEB',
-  },
-  mapPinCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#FBF5EB',
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  mapSelectTextCol: {
-    flex: 1,
-  },
-  mapSelectLocationTitle: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  mapSelectShipmentCode: {
-    fontSize: 10,
-    fontFamily: FONTS.bold,
-    color: '#A06333',
-    marginTop: 1,
-  },
-  mapSelectDeliverySub: {
-    fontSize: 10,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  mapSelectActionsCol: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  swapIconCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#A06333',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  arrowIconCircle: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // Route Map Card
-  routeMapCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    borderWidth: 1,
-    borderColor: '#EEDCBD',
-  },
-  routeMapTitle: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  routeMapShipmentCode: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: '#A06333',
-    marginTop: 2,
-    marginBottom: SPACING.md,
-  },
-  mapWrapper: {
-    height: 320,
-    borderRadius: RADIUS.sm,
-    overflow: 'hidden',
-    marginBottom: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-  },
-  mapView: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  markerCircleGreen: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#10B981',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: COLORS.white,
-  },
-  markerCircleRed: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#EF4444',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: COLORS.white,
-  },
-
-  closeMapBtn: {
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.xs,
-    paddingVertical: 10,
-    alignItems: 'center',
-    backgroundColor: '#F4F4F5',
-  },
-  closeMapBtnText: {
-    color: COLORS.textPrimary,
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-  },
-});
 
 export default ShipperHomeScreen;

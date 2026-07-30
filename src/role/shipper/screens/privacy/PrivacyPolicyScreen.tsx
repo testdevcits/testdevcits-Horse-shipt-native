@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { AppHeader, AppText } from '../../../../components';
 import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
+import styles from './styles.privacypolicy';
 
 const PrivacyPolicyScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -100,27 +101,5 @@ const PrivacyPolicyScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: SPACING.xs,
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  webView: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-});
 
 export default PrivacyPolicyScreen;
