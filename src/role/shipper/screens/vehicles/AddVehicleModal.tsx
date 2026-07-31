@@ -4,10 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   Image,
-  Alert,
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -15,11 +12,11 @@ import {
   ChevronDown,
   ImagePlus,
   Compass,
-  Truck,
   Check,
 } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { AppHeader, AppText } from '../../../../components';
+import Toast from 'react-native-toast-message';
+import { AppHeader, AppText, Button as ButtonCompt, Input } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
@@ -61,6 +58,7 @@ const AddVehicleModal: React.FC<Props> = (props) => {
   const [notes, setNotes] = useState('');
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Dropdown Picker States
   const [activePicker, setActivePicker] = useState<'vehicleType' | 'stallType' | 'stallSize' | null>(null);
@@ -95,6 +93,7 @@ const AddVehicleModal: React.FC<Props> = (props) => {
     setStallSize('');
     setNotes('');
     setSelectedImage(null);
+    setErrors({});
   };
 
   const handlePickImage = async () => {
@@ -111,6 +110,9 @@ const AddVehicleModal: React.FC<Props> = (props) => {
           type: image.mime || 'image/jpeg',
           name: image.path.split('/').pop() || 'vehicle_img.jpg',
         });
+        if (errors.selectedImage) {
+          setErrors(prev => ({ ...prev, selectedImage: '' }));
+        }
       }
     } catch (error: any) {
       if (error?.code !== 'E_PICKER_CANCELLED') {
@@ -120,30 +122,32 @@ const AddVehicleModal: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = async () => {
+    const newErrors: Record<string, string> = {};
+
     if (!vehicleType) {
-      Alert.alert('Validation Error', 'Please select a vehicle type.');
-      return;
+      newErrors.vehicleType = 'Please select a vehicle type.';
     }
     if (!vehicleNumber.trim()) {
-      Alert.alert('Validation Error', 'Please enter a vehicle number.');
-      return;
+      newErrors.vehicleNumber = 'Please enter a vehicle number.';
     }
     if (!numberOfStalls.trim()) {
-      Alert.alert('Validation Error', 'Please enter number of stalls.');
-      return;
+      newErrors.numberOfStalls = 'Please enter number of stalls.';
     }
     if (!stallType) {
-      Alert.alert('Validation Error', 'Please select a stall type.');
-      return;
+      newErrors.stallType = 'Please select a stall type.';
     }
     if (!stallSize) {
-      Alert.alert('Validation Error', 'Please select a stall size.');
-      return;
+      newErrors.stallSize = 'Please select a stall size.';
     }
     if (!selectedImage && !vehicleToEdit) {
-      Alert.alert('Validation Error', 'Please upload at least one vehicle image.');
+      newErrors.selectedImage = 'Please upload at least one vehicle image.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
+    setErrors({});
 
     setLoading(true);
     try {
@@ -173,25 +177,37 @@ const AddVehicleModal: React.FC<Props> = (props) => {
       }
 
       if (res?.success || res?.vehicle || res?.data?.success) {
-        Alert.alert(
-          'Success',
-          res?.message ||
-          (vehicleToEdit
-            ? 'Vehicle updated successfully'
-            : 'Vehicle added successfully'),
-        );
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2:
+            res?.message ||
+            (vehicleToEdit
+              ? 'Vehicle updated successfully'
+              : 'Vehicle added successfully'),
+        });
         resetForm();
         if (onSuccess) onSuccess();
         handleClose();
       } else {
-        Alert.alert('Error', res?.message || 'Failed to save vehicle.');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to save vehicle.',
+        });
       }
     } catch (error: any) {
       console.error('Save Vehicle Error:', error);
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Failed to save vehicle details.',
-      );
+      const errMsg =
+        error?.message ||
+        error?.response?.data?.message ||
+        error?.raw?.message ||
+        'Failed to save vehicle details.';
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errMsg,
+      });
     } finally {
       setLoading(false);
     }
@@ -223,143 +239,173 @@ const AddVehicleModal: React.FC<Props> = (props) => {
           </View>
 
           {/* Form Fields */}
-          <AppText style={styles.label}>
-            Transport Type <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Transport Type *"
             placeholder="Trucking"
-            placeholderTextColor={COLORS.textLight}
             value={transportType}
             onChangeText={setTransportType}
           />
 
-          <AppText style={styles.label}>
-            Vehicle Type <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TouchableOpacity
-            style={styles.dropdownInput}
-            onPress={() => setActivePicker('vehicleType')}
-          >
-            <AppText
-              style={
-                vehicleType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-              }
-            >
-              {vehicleType || 'Select vehicle type'}
+          <View style={{ marginBottom: 12 }}>
+            <AppText style={styles.label}>
+              Vehicle Type <AppText style={styles.required}>*</AppText>
             </AppText>
-            <ChevronDown size={18} color={COLORS.textSecondary} />
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.dropdownInput,
+                !!errors.vehicleType && { borderColor: COLORS.error },
+              ]}
+              onPress={() => setActivePicker('vehicleType')}
+            >
+              <AppText
+                style={
+                  vehicleType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                }
+              >
+                {vehicleType || 'Select vehicle type'}
+              </AppText>
+              <ChevronDown size={18} color={COLORS.textSecondary} />
+            </TouchableOpacity>
+            {!!errors.vehicleType && (
+              <AppText style={styles.errorText}>{errors.vehicleType}</AppText>
+            )}
+          </View>
 
-          <AppText style={styles.label}>
-            Vehicle Number <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Vehicle Number *"
             placeholder="Enter Vehicle Number"
-            placeholderTextColor={COLORS.textLight}
             value={vehicleNumber}
-            onChangeText={setVehicleNumber}
+            error={errors.vehicleNumber}
+            onChangeText={(text) => {
+              setVehicleNumber(text);
+              if (errors.vehicleNumber) {
+                setErrors(prev => ({ ...prev, vehicleNumber: '' }));
+              }
+            }}
           />
 
-          <AppText style={styles.label}>
-            VIN Number (Optional) <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="VIN Number (Optional)"
             placeholder="Enter VIN Number"
-            placeholderTextColor={COLORS.textLight}
             value={vinNumber}
             onChangeText={setVinNumber}
           />
 
-          <AppText style={styles.label}>
-            Number of stalls <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Number of stalls *"
             placeholder="Enter Number of stalls"
-            placeholderTextColor={COLORS.textLight}
             keyboardType="numeric"
             value={numberOfStalls}
-            onChangeText={setNumberOfStalls}
+            error={errors.numberOfStalls}
+            onChangeText={(text) => {
+              setNumberOfStalls(text);
+              if (errors.numberOfStalls) {
+                setErrors(prev => ({ ...prev, numberOfStalls: '' }));
+              }
+            }}
           />
 
-          <AppText style={styles.label}>
-            Stall Type <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TouchableOpacity
-            style={styles.dropdownInput}
-            onPress={() => setActivePicker('stallType')}
-          >
-            <AppText
-              style={
-                stallType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-              }
-            >
-              {stallType || 'Select Stall Type'}
+          <View style={{ marginBottom: 12 }}>
+            <AppText style={styles.label}>
+              Stall Type <AppText style={styles.required}>*</AppText>
             </AppText>
-            <ChevronDown size={18} color={COLORS.textSecondary} />
-          </TouchableOpacity>
-
-          <AppText style={styles.label}>
-            Stall Size <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TouchableOpacity
-            style={styles.dropdownInput}
-            onPress={() => setActivePicker('stallSize')}
-          >
-            <AppText
-              style={
-                stallSize ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-              }
+            <TouchableOpacity
+              style={[
+                styles.dropdownInput,
+                !!errors.stallType && { borderColor: COLORS.error },
+              ]}
+              onPress={() => setActivePicker('stallType')}
             >
-              {stallSize || 'Select Stall Size'}
-            </AppText>
-            <ChevronDown size={18} color={COLORS.textSecondary} />
-          </TouchableOpacity>
-
-          <AppText style={styles.label}>
-            Upload Vehicle Images <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TouchableOpacity
-            style={styles.uploadDashedCard}
-            onPress={handlePickImage}
-            activeOpacity={0.8}
-          >
-            {selectedImage ? (
-              <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
-            ) : (
-              <View style={styles.uploadPlaceholder}>
-                <ImagePlus size={36} color={COLORS.textSecondary} />
-              </View>
+              <AppText
+                style={
+                  stallType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                }
+              >
+                {stallType || 'Select Stall Type'}
+              </AppText>
+              <ChevronDown size={18} color={COLORS.textSecondary} />
+            </TouchableOpacity>
+            {!!errors.stallType && (
+              <AppText style={styles.errorText}>{errors.stallType}</AppText>
             )}
-          </TouchableOpacity>
+          </View>
 
-          <AppText style={styles.label}>
-            Notes (General Info) <AppText style={styles.required}>*</AppText>
-          </AppText>
-          <TextInput
-            style={[styles.input, styles.textArea]}
+          <View style={{ marginBottom: 12 }}>
+            <AppText style={styles.label}>
+              Stall Size <AppText style={styles.required}>*</AppText>
+            </AppText>
+            <TouchableOpacity
+              style={[
+                styles.dropdownInput,
+                !!errors.stallSize && { borderColor: COLORS.error },
+              ]}
+              onPress={() => setActivePicker('stallSize')}
+            >
+              <AppText
+                style={
+                  stallSize ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                }
+              >
+                {stallSize || 'Select Stall Size'}
+              </AppText>
+              <ChevronDown size={18} color={COLORS.textSecondary} />
+            </TouchableOpacity>
+            {!!errors.stallSize && (
+              <AppText style={styles.errorText}>{errors.stallSize}</AppText>
+            )}
+          </View>
+
+          <View style={{ marginBottom: 12 }}>
+            <AppText style={styles.label}>
+              Upload Vehicle Images <AppText style={styles.required}>*</AppText>
+            </AppText>
+            <TouchableOpacity
+              style={[
+                styles.uploadDashedCard,
+                !!errors.selectedImage && { borderColor: COLORS.error },
+              ]}
+              onPress={handlePickImage}
+              activeOpacity={0.8}
+            >
+              {selectedImage ? (
+                <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
+              ) : (
+                <View style={styles.uploadPlaceholder}>
+                  <ImagePlus size={36} color={COLORS.textSecondary} />
+                </View>
+              )}
+            </TouchableOpacity>
+            {!!errors.selectedImage && (
+              <AppText style={styles.errorText}>{errors.selectedImage}</AppText>
+            )}
+          </View>
+
+          <Input
+            label="Notes (General Info)"
             placeholder="Enter Notes about vehicle specs, condition, etc..."
-            placeholderTextColor={COLORS.textLight}
             multiline
             numberOfLines={4}
             value={notes}
+            style={styles.textArea}
             onChangeText={setNotes}
           />
 
           {/* Bottom Action Buttons Row */}
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.cancelBtn} onPress={handleClose}>
-              <AppText style={styles.cancelBtnText}>Cancel</AppText>
-            </TouchableOpacity>
+            <ButtonCompt
+              title="Cancel"
+              onPress={handleClose}
+              buttonStyle={styles.cancelBtn}
+              textStyle={styles.cancelBtnText}
+            />
 
-            <TouchableOpacity style={styles.addVehicleBtn} onPress={handleSubmit}>
-              <AppText style={styles.addVehicleBtnText}>
-                {vehicleToEdit ? 'Save Vehicle' : 'Add Vehicle'}
-              </AppText>
-            </TouchableOpacity>
+            <ButtonCompt
+              title={vehicleToEdit ? 'Save Vehicle' : 'Add Vehicle'}
+              onPress={handleSubmit}
+              isLoading={loading}
+              buttonStyle={styles.addVehicleBtn}
+              textStyle={styles.addVehicleBtnText}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -392,6 +438,9 @@ const AddVehicleModal: React.FC<Props> = (props) => {
                   style={styles.pickerItem}
                   onPress={() => {
                     setVehicleType(item);
+                    if (errors.vehicleType) {
+                      setErrors(prev => ({ ...prev, vehicleType: '' }));
+                    }
                     setActivePicker(null);
                   }}
                 >
@@ -414,6 +463,9 @@ const AddVehicleModal: React.FC<Props> = (props) => {
                   style={styles.pickerItem}
                   onPress={() => {
                     setStallType(item);
+                    if (errors.stallType) {
+                      setErrors(prev => ({ ...prev, stallType: '' }));
+                    }
                     setActivePicker(null);
                   }}
                 >
@@ -436,6 +488,9 @@ const AddVehicleModal: React.FC<Props> = (props) => {
                   style={styles.pickerItem}
                   onPress={() => {
                     setStallSize(item);
+                    if (errors.stallSize) {
+                      setErrors(prev => ({ ...prev, stallSize: '' }));
+                    }
                     setActivePicker(null);
                   }}
                 >

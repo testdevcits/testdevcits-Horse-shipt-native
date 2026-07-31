@@ -20,6 +20,7 @@ import ShipmentCard from './cards/ShipmentCard';
 import PaymentCard from './cards/PaymentCard';
 import ReviewCard from './cards/ReviewCard';
 import ShipperCard from './cards/ShipperCard';
+import TruckDriverCard from './cards/TruckDriverCard';
 
 export {
   AppHeader,
@@ -35,6 +36,7 @@ export {
   AppText,
   FloatingButton,
   ShipperCard,
+  TruckDriverCard,
   AppLoader,
   EmptyState,
   ErrorView,
@@ -45,3 +47,6 @@ export {
   PaymentCard,
   ReviewCard,
 };
+
+export type { AppSelectRef } from './common/AppSelect';
+

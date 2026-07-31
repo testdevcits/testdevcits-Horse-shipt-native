@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  StyleSheet,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
   TextInput,
-  Image,
-  Alert,
-  ActivityIndicator,
   RefreshControl,
 } from 'react-native';
 import {
   Search,
   Plus,
   User,
-  Power,
-  Edit,
-  Trash2,
-  FileText,
-  Mail,
-  Phone,
-  Award,
   SlidersHorizontal,
 } from 'lucide-react-native';
-import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import Toast from 'react-native-toast-message';
+import {
+  AppHeader,
+  AppText,
+  AppLoader,
+  EmptyState,
+  TruckDriverCard,
+  ConfirmationModal,
+} from '../../../../components';
+import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import AddDriverModal from './AddDriverModal';
 import styles from './styles.truckdriver';
@@ -37,6 +34,14 @@ const TruckDriverScreen = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>(''); // '' | 'active' | 'inactive'
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [selectedDriverToEdit, setSelectedDriverToEdit] = useState<any>(null);
+
+  // Delete Driver Confirmation Modal State
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedDriverToDelete, setSelectedDriverToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchDrivers = async () => {
     try {
@@ -71,46 +76,51 @@ const TruckDriverScreen = () => {
     try {
       const res = await shipperService.toggleDriverStatus(id, !currentActiveStatus);
       if (res?.success) {
-        Alert.alert(
-          'Success',
-          `Driver ${!currentActiveStatus ? 'activated' : 'deactivated'} successfully.`,
-        );
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: `Driver ${!currentActiveStatus ? 'activated' : 'deactivated'} successfully.`,
+        });
         fetchDrivers();
       }
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Failed to update driver status.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.message || 'Failed to update driver status.',
+      });
     }
   };
 
-  const handleDeleteDriver = (id: string, driverName: string) => {
-    Alert.alert(
-      'Delete Driver',
-      `Are you sure you want to delete driver ${driverName}?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const res = await shipperService.deleteDriver(id);
-              if (res?.success) {
-                Alert.alert('Success', 'Driver deleted successfully.');
-                fetchDrivers();
-              }
-            } catch (error: any) {
-              Alert.alert(
-                'Error',
-                error?.response?.data?.message || 'Failed to delete driver.',
-              );
-            }
-          },
-        },
-      ],
-    );
+  const handleDeleteDriverPrompt = (id: string, driverName: string) => {
+    setSelectedDriverToDelete({ id, name: driverName });
+    setDeleteModalVisible(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedDriverToDelete) return;
+    setIsDeleting(true);
+    try {
+      const res = await shipperService.deleteDriver(selectedDriverToDelete.id);
+      if (res?.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Driver deleted successfully.',
+        });
+        setDeleteModalVisible(false);
+        setSelectedDriverToDelete(null);
+        fetchDrivers();
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.message || 'Failed to delete driver.',
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleEditDriver = (driver: any) => {
@@ -118,12 +128,131 @@ const TruckDriverScreen = () => {
     setIsAddModalVisible(true);
   };
 
+  const renderHeader = () => (
+    <View style={styles.topCard}>
+      <AppText style={styles.topTitle}>Truck Driver Management</AppText>
+      <AppText style={styles.topSub}>
+        Manage driver profiles, contact details, and license verification.
+      </AppText>
+
+      {/* Search Input Bar */}
+      <View style={styles.searchBarContainer}>
+        <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search by driver name or email..."
+          placeholderTextColor={COLORS.textLight}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+      </View>
+
+      {/* Filters & Add Driver Row */}
+      <View style={styles.filtersRow}>
+        <View style={styles.filterPillsGroup}>
+          <TouchableOpacity
+            style={[
+              styles.filterPill,
+              selectedStatus === 'active' && styles.filterPillActive,
+            ]}
+            onPress={() =>
+              setSelectedStatus(selectedStatus === 'active' ? '' : 'active')
+            }
+          >
+            <AppText
+              style={[
+                styles.filterPillText,
+                selectedStatus === 'active' && styles.filterPillTextActive,
+              ]}
+            >
+              Active
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.filterPill,
+              selectedStatus === 'inactive' && styles.filterPillActive,
+            ]}
+            onPress={() =>
+              setSelectedStatus(selectedStatus === 'inactive' ? '' : 'inactive')
+            }
+          >
+            <AppText
+              style={[
+                styles.filterPillText,
+                selectedStatus === 'inactive' && styles.filterPillTextActive,
+              ]}
+            >
+              Inactive
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.filterIconBtn}>
+            <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={styles.addDriverBtn}
+          onPress={() => {
+            setSelectedDriverToEdit(null);
+            setIsAddModalVisible(true);
+          }}
+          activeOpacity={0.8}
+        >
+          <Plus size={18} color={COLORS.white} strokeWidth={2.5} />
+          <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderEmpty = () => {
+    if (loading) return null;
+    return (
+      <View style={styles.emptyWrap}>
+        <EmptyState
+          icon={User}
+          title="No Drivers Found"
+          message="Add drivers to your fleet to assign them to transport vehicles and trips."
+        />
+        <TouchableOpacity
+          style={[styles.addDriverBtn, { marginTop: SPACING.md, alignSelf: 'center' }]}
+          onPress={() => {
+            setSelectedDriverToEdit(null);
+            setIsAddModalVisible(true);
+          }}
+        >
+          <Plus size={18} color={COLORS.white} />
+          <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <AppHeader title="Truck Driver Management"   />
+      <AppHeader title="Truck Driver Management" />
+      <AppLoader visible={loading && !refreshing} />
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
+      <FlatList
+        data={drivers}
+        keyExtractor={(item, index) => item._id || index.toString()}
+        renderItem={({ item }) => (
+          <TruckDriverCard
+            driver={item}
+            onToggleStatus={handleToggleStatus}
+            onEdit={handleEditDriver}
+            onDelete={handleDeleteDriverPrompt}
+          />
+        )}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={renderEmpty}
+        contentContainerStyle={[
+          styles.scrollContent,
+          drivers.length === 0 && { flexGrow: 1 },
+        ]}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -132,246 +261,7 @@ const TruckDriverScreen = () => {
             tintColor={COLORS.goldPrimary}
           />
         }
-      >
-        {/* Top Management Header Card */}
-        <View style={styles.topCard}>
-          <AppText style={styles.topTitle}>Truck Driver Management</AppText>
-          <AppText style={styles.topSub}>
-            Manage driver profiles, contact details, and license verification.
-          </AppText>
-
-          {/* Search Input Bar */}
-          <View style={styles.searchBarContainer}>
-            <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search by driver name or email..."
-              placeholderTextColor={COLORS.textLight}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-
-          {/* Filters & Add Driver Row */}
-          <View style={styles.filtersRow}>
-            <View style={styles.filterPillsGroup}>
-              <TouchableOpacity
-                style={[
-                  styles.filterPill,
-                  selectedStatus === 'active' && styles.filterPillActive,
-                ]}
-                onPress={() =>
-                  setSelectedStatus(selectedStatus === 'active' ? '' : 'active')
-                }
-              >
-                <AppText
-                  style={[
-                    styles.filterPillText,
-                    selectedStatus === 'active' && styles.filterPillTextActive,
-                  ]}
-                >
-                  Active
-                </AppText>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.filterPill,
-                  selectedStatus === 'inactive' && styles.filterPillActive,
-                ]}
-                onPress={() =>
-                  setSelectedStatus(selectedStatus === 'inactive' ? '' : 'inactive')
-                }
-              >
-                <AppText
-                  style={[
-                    styles.filterPillText,
-                    selectedStatus === 'inactive' && styles.filterPillTextActive,
-                  ]}
-                >
-                  Inactive
-                </AppText>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.filterIconBtn}>
-                <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              style={styles.addDriverBtn}
-              onPress={() => {
-                setSelectedDriverToEdit(null);
-                setIsAddModalVisible(true);
-              }}
-              activeOpacity={0.8}
-            >
-              <Plus size={18} color={COLORS.white} strokeWidth={2.5} />
-              <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Drivers List */}
-        {loading ? (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color={COLORS.goldPrimary} />
-          </View>
-        ) : drivers.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <User size={48} color={COLORS.textLight} />
-            <AppText style={styles.emptyTitle}>No Drivers Found</AppText>
-            <AppText style={styles.emptySub}>
-              Add drivers to your fleet to assign them to transport vehicles and trips.
-            </AppText>
-            <TouchableOpacity
-              style={[styles.addDriverBtn, { marginTop: SPACING.md }]}
-              onPress={() => setIsAddModalVisible(true)}
-            >
-              <Plus size={18} color={COLORS.white} />
-              <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          drivers.map((driver, index) => {
-            const isActive = driver.isActive ?? true;
-            const profileUrl = driver.profileImage?.url || null;
-
-            return (
-              <View key={driver._id || index} style={styles.driverCard}>
-                {/* Driver Top Profile Bar */}
-                <View style={styles.driverHeaderRow}>
-                  <View style={styles.avatarContainer}>
-                    {profileUrl ? (
-                      <Image source={{ uri: profileUrl }} style={styles.avatarImg} />
-                    ) : (
-                      <User size={24} color={COLORS.goldPrimary} />
-                    )}
-                  </View>
-
-                  <View style={styles.driverNameCol}>
-                    <AppText style={styles.driverName}>
-                      {driver.name || 'Unnamed Driver'}
-                    </AppText>
-                    <View
-                      style={[
-                        styles.activeBadge,
-                        isActive ? styles.badgeActiveBg : styles.badgeInactiveBg,
-                      ]}
-                    >
-                      <AppText
-                        style={[
-                          styles.activeBadgeText,
-                          isActive ? styles.badgeActiveText : styles.badgeInactiveText,
-                        ]}
-                      >
-                        {isActive ? 'Active' : 'Inactive'}
-                      </AppText>
-                    </View>
-                  </View>
-                </View>
-
-                {/* Top Action Pills (Deactivate, Edit, Delete) */}
-                <View style={styles.actionPillsRow}>
-                  <TouchableOpacity
-                    style={styles.actionBtnPill}
-                    onPress={() => handleToggleStatus(driver._id, isActive)}
-                  >
-                    <Power size={15} color={isActive ? '#D97706' : '#10B981'} />
-                    <AppText style={styles.actionBtnPillText}>
-                      {isActive ? 'Deactivate' : 'Activate'}
-                    </AppText>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.actionBtnPill}
-                    onPress={() => handleEditDriver(driver)}
-                  >
-                    <Edit size={15} color={COLORS.textPrimary} />
-                    <AppText style={styles.actionBtnPillText}>Edit</AppText>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.actionBtnPill}
-                    onPress={() => handleDeleteDriver(driver._id, driver.name)}
-                  >
-                    <Trash2 size={15} color="#EF4444" />
-                    <AppText style={[styles.actionBtnPillText, { color: '#EF4444' }]}>
-                      Delete
-                    </AppText>
-                  </TouchableOpacity>
-                </View>
-
-                {/* Detail Specification Cards */}
-                <View style={styles.specCardsContainer}>
-                  {/* Name Card */}
-                  <View style={styles.specDetailCard}>
-                    <View style={styles.specIconBox}>
-                      <User size={18} color={COLORS.goldPrimary} />
-                    </View>
-                    <View style={styles.specTextCol}>
-                      <AppText style={styles.specLabelTitle}>Name</AppText>
-                      <AppText style={styles.specLabelVal}>{driver.name || 'N/A'}</AppText>
-                    </View>
-                  </View>
-
-                  {/* License Card */}
-                  <View style={styles.specDetailCard}>
-                    <View style={styles.specIconBox}>
-                      <Award size={18} color={COLORS.goldPrimary} />
-                    </View>
-                    <View style={styles.specTextCol}>
-                      <AppText style={styles.specLabelTitle}>License</AppText>
-                      <AppText style={styles.specLabelVal}>
-                        {driver.licenseNumber || 'N/A'}
-                      </AppText>
-                    </View>
-                  </View>
-
-                  {/* Email Card */}
-                  <View style={styles.specDetailCard}>
-                    <View style={styles.specIconBox}>
-                      <Mail size={18} color={COLORS.goldPrimary} />
-                    </View>
-                    <View style={styles.specTextCol}>
-                      <AppText style={styles.specLabelTitle}>Email</AppText>
-                      <AppText style={styles.specLabelVal}>
-                        {driver.email || 'N/A'}
-                      </AppText>
-                    </View>
-                  </View>
-
-                  {/* Phone Card */}
-                  <View style={styles.specDetailCard}>
-                    <View style={styles.specIconBox}>
-                      <Phone size={18} color={COLORS.goldPrimary} />
-                    </View>
-                    <View style={styles.specTextCol}>
-                      <AppText style={styles.specLabelTitle}>Phone</AppText>
-                      <AppText style={styles.specLabelVal}>
-                        {driver.phone || 'N/A'}
-                      </AppText>
-                    </View>
-                  </View>
-
-                  {/* Notes Card */}
-                  {driver.notes ? (
-                    <View style={styles.specDetailCard}>
-                      <View style={styles.specIconBox}>
-                        <FileText size={18} color={COLORS.goldPrimary} />
-                      </View>
-                      <View style={styles.specTextCol}>
-                        <AppText style={styles.specLabelTitle}>Notes</AppText>
-                        <AppText style={styles.specLabelVal}>{driver.notes}</AppText>
-                      </View>
-                    </View>
-                  ) : null}
-                </View>
-              </View>
-            );
-          })
-        )}
-      </ScrollView>
+      />
 
       {/* Add / Edit Driver Modal */}
       <AddDriverModal
@@ -380,11 +270,24 @@ const TruckDriverScreen = () => {
         onSuccess={fetchDrivers}
         driverToEdit={selectedDriverToEdit}
       />
+
+      {/* Delete Driver Confirmation Modal */}
+      <ConfirmationModal
+        isVisible={deleteModalVisible}
+        onClose={() => {
+          setDeleteModalVisible(false);
+          setSelectedDriverToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Driver"
+        description={`Are you sure you want to delete driver ${selectedDriverToDelete?.name || ''}?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={isDeleting}
+      />
     </View>
   );
 };
 
 export default TruckDriverScreen;
-
-
-

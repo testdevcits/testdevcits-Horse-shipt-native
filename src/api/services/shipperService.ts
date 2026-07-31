@@ -120,7 +120,7 @@ const shipperService = {
     success: boolean;
     message?: string;
   }> => {
-    return axiosClient.patch(`/api/shipper/drivers/${id}/status`, {
+    return axiosClient.patch(`/api/shipper/drivers/${id}/toggle-status`, {
       isActive,
     });
   },
@@ -132,8 +132,11 @@ const shipperService = {
   ): Promise<{
     success: boolean;
     message?: string;
+    vehicle?: any;
+    driver?: any;
   }> => {
-    return axiosClient.patch(`/api/shipper/vehicles/${vehicleId}/driver`, {
+    return axiosClient.post('/api/shipper/vehicles/assign-driver', {
+      vehicleId,
       driverId,
     });
   },

@@ -138,8 +138,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textArea: {
-    height: 90,
+    // height: 90,
     textAlignVertical: 'top',
+  },
+  errorText: {
+    color: COLORS.error,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    marginTop: 2,
   },
 
   // Action Buttons Row

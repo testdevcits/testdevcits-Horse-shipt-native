@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   ScrollView,
   TouchableOpacity,
   Image,
-  Alert,
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
@@ -13,13 +12,20 @@ import {
   Truck,
   Box,
   Layers,
-  UserCheck,
   FileText,
   UserPlus,
+  UserCheck,
   Edit,
   Trash2,
 } from 'lucide-react-native';
-import { AppHeader, AppText } from '../../../../components';
+import Toast from 'react-native-toast-message';
+import {
+  AppHeader,
+  AppText,
+  ConfirmationModal,
+  AppSelect,
+  AppSelectRef,
+} from '../../../../components';
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
@@ -28,6 +34,16 @@ const MyVehiclesScreen = ({ navigation }: any) => {
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Driver Assignment State
+  const [drivers, setDrivers] = useState<any[]>([]);
+  const [selectedVehicleForDriver, setSelectedVehicleForDriver] = useState<any>(null);
+  const driverSelectRef = useRef<AppSelectRef>(null);
+
+  // Delete Confirmation Modal State
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<{ id: string; vehicleNum: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchVehicles = async () => {
     try {
@@ -43,45 +59,140 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     }
   };
 
+  const fetchDrivers = async () => {
+    try {
+      const res = await shipperService.getDrivers();
+      if (res?.success || res?.drivers || res?.data) {
+        const list = res?.drivers || res?.data || [];
+        setDrivers(list);
+        return list;
+      }
+    } catch (error) {
+      console.error('Fetch Drivers Error:', error);
+    }
+    return [];
+  };
+
   useEffect(() => {
     const unsubscribe = navigation?.addListener?.('focus', () => {
       fetchVehicles();
+      fetchDrivers();
     });
     fetchVehicles();
+    fetchDrivers();
     return unsubscribe;
   }, [navigation]);
 
   const onRefresh = () => {
     setRefreshing(true);
     fetchVehicles();
+    fetchDrivers();
+  };
+
+  const handleOpenAssignDriver = async (vehicle: any) => {
+    setSelectedVehicleForDriver(vehicle);
+    let currentDrivers = drivers;
+    if (!currentDrivers || currentDrivers.length === 0) {
+      currentDrivers = await fetchDrivers();
+    }
+
+    if (!currentDrivers || currentDrivers.length === 0) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Drivers Found',
+        text2: 'Please add drivers to your carrier profile first.',
+      });
+      return;
+    }
+
+    driverSelectRef.current?.present();
+  };
+
+  const handleSelectDriver = async (driverDisplayName: string) => {
+    if (!selectedVehicleForDriver) return;
+
+    const foundDriver = drivers.find(
+      d => (d.name || d.email || 'Unnamed Driver') === driverDisplayName,
+    );
+    if (!foundDriver) return;
+
+    const driverId = foundDriver._id || foundDriver.id;
+    const vehicleId = selectedVehicleForDriver._id;
+
+    try {
+      const res = await shipperService.assignDriver(vehicleId, driverId);
+      if (res?.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res.message || 'Driver assigned successfully',
+        });
+        fetchVehicles();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to assign driver.',
+        });
+      }
+    } catch (error: any) {
+      console.error('Assign Driver Error:', error);
+      const errMsg =
+        error?.message ||
+        error?.response?.data?.message ||
+        error?.raw?.message ||
+        'Failed to assign driver.';
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errMsg,
+      });
+    } finally {
+      setSelectedVehicleForDriver(null);
+    }
   };
 
   const handleDeleteVehicle = (id: string, vehicleNum: string) => {
-    Alert.alert(
-      'Delete Vehicle',
-      `Are you sure you want to delete vehicle ${vehicleNum}?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const res = await shipperService.deleteVehicle(id);
-              if (res?.success) {
-                Alert.alert('Success', 'Vehicle deleted successfully.');
-                fetchVehicles();
-              }
-            } catch (error: any) {
-              Alert.alert(
-                'Error',
-                error?.response?.data?.message || 'Failed to delete vehicle.',
-              );
-            }
-          },
-        },
-      ],
-    );
+    setSelectedVehicle({ id, vehicleNum });
+    setDeleteModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedVehicle) return;
+    setDeleting(true);
+    try {
+      const res = await shipperService.deleteVehicle(selectedVehicle.id);
+      if (res?.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Vehicle deleted successfully.',
+        });
+        setDeleteModalVisible(false);
+        setSelectedVehicle(null);
+        fetchVehicles();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to delete vehicle.',
+        });
+      }
+    } catch (error: any) {
+      console.error('Delete Vehicle Error:', error);
+      const errMsg =
+        error?.message ||
+        error?.response?.data?.message ||
+        error?.raw?.message ||
+        'Failed to delete vehicle.';
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errMsg,
+      });
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleAddNewVehicle = () => {
@@ -158,6 +269,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
                 ? vehicle.images[0].url
                 : null;
             const status = vehicle.verificationStatus || 'PENDING';
+            const assignedDriverName = vehicle.driver?.name;
 
             return (
               <View key={vehicle._id || index} style={styles.vehicleCard}>
@@ -263,10 +375,21 @@ const MyVehiclesScreen = ({ navigation }: any) => {
                   <View style={styles.actionsRow}>
                     <TouchableOpacity
                       style={styles.actionPill}
-                      onPress={() => Alert.alert('Assign Driver', 'Select a driver from your carrier fleet.')}
+                      onPress={() => handleOpenAssignDriver(vehicle)}
                     >
-                      <UserPlus size={15} color={COLORS.textPrimary} />
-                      <AppText style={styles.actionPillText}>Assign Driver</AppText>
+                      {assignedDriverName ? (
+                        <UserCheck size={15} color={COLORS.goldPrimary} />
+                      ) : (
+                        <UserPlus size={15} color={COLORS.textPrimary} />
+                      )}
+                      <AppText
+                        style={[
+                          styles.actionPillText,
+                          assignedDriverName && { color: COLORS.goldPrimary, fontFamily: 'PlusJakartaSans-Bold' },
+                        ]}
+                      >
+                        {assignedDriverName ? `Driver: ${assignedDriverName}` : 'Assign Driver'}
+                      </AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -291,6 +414,36 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           })
         )}
       </ScrollView>
+
+      {/* Confirmation Modal for Vehicle Deletion */}
+      <ConfirmationModal
+        isVisible={deleteModalVisible}
+        onClose={() => {
+          if (!deleting) {
+            setDeleteModalVisible(false);
+            setSelectedVehicle(null);
+          }
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Vehicle"
+        description={`Are you sure you want to delete vehicle ${selectedVehicle?.vehicleNum || ''}?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={deleting}
+      />
+
+      {/* AppSelect BottomSheet Modal for Driver Assignment */}
+      <AppSelect
+        ref={driverSelectRef}
+        hideSelector
+        label="Select Driver to Assign"
+        placeholder="Select Driver"
+        value={selectedVehicleForDriver?.driver?.name || ''}
+        options={drivers.map(d => d.name || d.email || 'Unnamed Driver')}
+        onSelect={handleSelectDriver}
+        searchable
+      />
     </View>
   );
 };

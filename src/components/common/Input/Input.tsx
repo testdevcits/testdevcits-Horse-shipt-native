@@ -96,7 +96,7 @@ const Input = ({
 
         <TextInput
           {...props}
-          style={styles.input}
+          style={[styles.input, props.style]}
           secureTextEntry={isSecure}
           placeholderTextColor={COLORS.textLight}
           allowFontScaling={false}

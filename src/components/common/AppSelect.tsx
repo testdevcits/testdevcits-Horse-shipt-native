@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
+import React, { useState, useRef, useCallback, useMemo, memo, forwardRef, useImperativeHandle } from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import { ChevronDown, Search, X, Check } from 'lucide-react-native';
 import {
@@ -18,6 +18,11 @@ import {
 } from '../../constants';
 import AppText from './AppText';
 
+export interface AppSelectRef {
+  present: () => void;
+  dismiss: () => void;
+}
+
 interface AppSelectProps {
   label?: string;
   value: string;
@@ -27,167 +32,185 @@ interface AppSelectProps {
   onSelect: (item: string) => void;
   searchable?: boolean;
   customSelectorStyle?: ViewStyle;
+  hideSelector?: boolean;
 }
 
 const AppSelect = memo(
-  ({
-    label,
-    value,
-    options,
-    placeholder,
-    error,
-    onSelect,
-    searchable = false,
-    customSelectorStyle,
-  }: AppSelectProps) => {
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const snapPoints = useMemo(() => ['50%', '85%'], []);
-
-    const filteredOptions = useMemo(
-      () =>
-        options.filter(item =>
-          item.toLowerCase().includes(searchQuery.toLowerCase()),
-        ),
-      [options, searchQuery],
-    );
-
-    const handlePresentModalPress = useCallback(() => {
-      bottomSheetModalRef.current?.present();
-    }, []);
-
-    const handleDismissModal = useCallback(() => {
-      bottomSheetModalRef.current?.dismiss();
-      setSearchQuery('');
-    }, []);
-
-    const handleSelect = useCallback(
-      (item: string) => {
-        onSelect(item);
-        handleDismissModal();
+  forwardRef<AppSelectRef, AppSelectProps>(
+    (
+      {
+        label,
+        value,
+        options,
+        placeholder,
+        error,
+        onSelect,
+        searchable = false,
+        customSelectorStyle,
+        hideSelector = false,
       },
-      [onSelect, handleDismissModal],
-    );
+      ref,
+    ) => {
+      const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+      const [searchQuery, setSearchQuery] = useState('');
 
-    const renderBackdrop = useCallback(
-      (props: any) => (
-        <BottomSheetBackdrop
-          {...props}
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-          opacity={0.5}
-        />
-      ),
-      [],
-    );
+      const snapPoints = useMemo(() => ['50%', '85%'], []);
 
-    return (
-      <View style={styles.container}>
-        {label && <AppText style={styles.label}>{label}</AppText>}
+      const filteredOptions = useMemo(
+        () =>
+          options.filter(item =>
+            item.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+        [options, searchQuery],
+      );
 
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={handlePresentModalPress}
-          style={[
-            styles.selector,
-            customSelectorStyle,
-            error ? styles.errorBorder : null,
-          ]}
-        >
-          <AppText
-            style={[styles.valueText, !value && styles.placeholderText]}
-            numberOfLines={1}
-          >
-            {value || placeholder}
-          </AppText>
-          <ChevronDown size={ICON_SIZE.sm} color={COLORS.textSecondary} />
-        </TouchableOpacity>
+      const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+      }, []);
 
-        {error && <AppText style={styles.errorText}>{error}</AppText>}
+      const handleDismissModal = useCallback(() => {
+        bottomSheetModalRef.current?.dismiss();
+        setSearchQuery('');
+      }, []);
 
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          backdropComponent={renderBackdrop}
-          enablePanDownToClose
-          handleIndicatorStyle={styles.sheetIndicator}
-          backgroundStyle={styles.sheetBackground}
-        >
-          <BottomSheetView style={styles.modalContent}>
-            {/* Header */}
-            <View style={styles.modalHeader}>
-              <AppText style={styles.modalTitle}>
-                {label || 'Select Option'}
-              </AppText>
-              <TouchableOpacity
-                onPress={handleDismissModal}
-                style={styles.closeBtn}
+      useImperativeHandle(
+        ref,
+        () => ({
+          present: handlePresentModalPress,
+          dismiss: handleDismissModal,
+        }),
+        [handlePresentModalPress, handleDismissModal],
+      );
+
+      const handleSelect = useCallback(
+        (item: string) => {
+          onSelect(item);
+          handleDismissModal();
+        },
+        [onSelect, handleDismissModal],
+      );
+
+      const renderBackdrop = useCallback(
+        (props: any) => (
+          <BottomSheetBackdrop
+            {...props}
+            disappearsOnIndex={-1}
+            appearsOnIndex={0}
+            opacity={0.5}
+          />
+        ),
+        [],
+      );
+
+      return (
+        <View style={hideSelector ? undefined : styles.container}>
+          {!hideSelector && label && <AppText style={styles.label}>{label}</AppText>}
+
+          {!hideSelector && (
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={handlePresentModalPress}
+              style={[
+                styles.selector,
+                customSelectorStyle,
+                error ? styles.errorBorder : null,
+              ]}
+            >
+              <AppText
+                style={[styles.valueText, !value && styles.placeholderText]}
+                numberOfLines={1}
               >
-                <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
-              </TouchableOpacity>
-            </View>
+                {value || placeholder}
+              </AppText>
+              <ChevronDown size={ICON_SIZE.sm} color={COLORS.textSecondary} />
+            </TouchableOpacity>
+          )}
 
-            {/* Search Bar */}
-            {searchable && (
-              <View style={styles.searchContainer}>
-                <Search size={ICON_SIZE.xs} color={COLORS.textLight} />
-                <BottomSheetTextInput
-                  placeholder="Search..."
-                  placeholderTextColor={COLORS.textLight}
-                  style={styles.searchInput}
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  autoCorrect={false}
-                />
-                {searchQuery.length > 0 && (
-                  <TouchableOpacity onPress={() => setSearchQuery('')}>
-                    <X size={ICON_SIZE.xs} color={COLORS.textLight} />
-                  </TouchableOpacity>
-                )}
+          {!hideSelector && error && <AppText style={styles.errorText}>{error}</AppText>}
+
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={snapPoints}
+            backdropComponent={renderBackdrop}
+            enablePanDownToClose
+            handleIndicatorStyle={styles.sheetIndicator}
+            backgroundStyle={styles.sheetBackground}
+          >
+            <BottomSheetView style={styles.modalContent}>
+              {/* Header */}
+              <View style={styles.modalHeader}>
+                <AppText style={styles.modalTitle}>
+                  {label || 'Select Option'}
+                </AppText>
+                <TouchableOpacity
+                  onPress={handleDismissModal}
+                  style={styles.closeBtn}
+                >
+                  <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
+                </TouchableOpacity>
               </View>
-            )}
 
-            {/* List */}
-            <BottomSheetFlatList
-              data={filteredOptions}
-              keyExtractor={item => item}
-              contentContainerStyle={styles.listContent}
-              renderItem={({ item }) => {
-                const isSelected = value === item;
-                return (
-                  <TouchableOpacity
-                    style={[
-                      styles.optionItem,
-                      isSelected && styles.selectedOption,
-                    ]}
-                    onPress={() => handleSelect(item)}
-                  >
-                    <AppText
+              {/* Search Bar */}
+              {searchable && (
+                <View style={styles.searchContainer}>
+                  <Search size={ICON_SIZE.xs} color={COLORS.textLight} />
+                  <BottomSheetTextInput
+                    placeholder="Search..."
+                    placeholderTextColor={COLORS.textLight}
+                    style={styles.searchInput}
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    autoCorrect={false}
+                  />
+                  {searchQuery.length > 0 && (
+                    <TouchableOpacity onPress={() => setSearchQuery('')}>
+                      <X size={ICON_SIZE.xs} color={COLORS.textLight} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
+
+              {/* List */}
+              <BottomSheetFlatList
+                data={filteredOptions}
+                keyExtractor={item => item}
+                contentContainerStyle={styles.listContent}
+                renderItem={({ item }) => {
+                  const isSelected = value === item;
+                  return (
+                    <TouchableOpacity
                       style={[
-                        styles.optionText,
-                        isSelected && styles.selectedOptionText,
+                        styles.optionItem,
+                        isSelected && styles.selectedOption,
                       ]}
+                      onPress={() => handleSelect(item)}
                     >
-                      {item}
-                    </AppText>
-                    {isSelected && (
-                      <Check
-                        size={ICON_SIZE.xs}
-                        color={COLORS.goldPrimary}
-                        strokeWidth={3}
-                      />
-                    )}
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </BottomSheetView>
-        </BottomSheetModal>
-      </View>
-    );
-  },
+                      <AppText
+                        style={[
+                          styles.optionText,
+                          isSelected && styles.selectedOptionText,
+                        ]}
+                      >
+                        {item}
+                      </AppText>
+                      {isSelected && (
+                        <Check
+                          size={ICON_SIZE.xs}
+                          color={COLORS.goldPrimary}
+                          strokeWidth={3}
+                        />
+                      )}
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </BottomSheetView>
+          </BottomSheetModal>
+        </View>
+      );
+    },
+  ),
 );
 
 const styles = StyleSheet.create({

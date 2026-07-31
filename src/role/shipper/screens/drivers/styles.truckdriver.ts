@@ -61,7 +61,19 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
 
-  // Filter Row
+  // Search & Filter Row
+  searchFilterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: SPACING.sm,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 4,
+  },
   filtersRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -120,6 +132,11 @@ const styles = StyleSheet.create({
   loaderContainer: {
     paddingVertical: 50,
     alignItems: 'center',
+  },
+  emptyWrap: {
+    alignItems: 'center',
+    paddingVertical: SPACING.xl,
+    paddingHorizontal: SPACING.md,
   },
   emptyContainer: {
     alignItems: 'center',

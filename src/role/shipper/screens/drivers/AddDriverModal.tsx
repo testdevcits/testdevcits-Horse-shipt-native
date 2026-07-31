@@ -12,6 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import { X, Eye, EyeOff } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -63,23 +64,43 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
 
   const handleSubmit = async () => {
     if (!name.trim()) {
-      Alert.alert('Validation Error', 'Please enter driver name.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter driver name.',
+      });
       return;
     }
     if (!email.trim() || !validateEmail(email.trim())) {
-      Alert.alert('Validation Error', 'Please enter a valid email address.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter a valid email address.',
+      });
       return;
     }
     if (!phone.trim() || phone.trim().length < 8) {
-      Alert.alert('Validation Error', 'Please enter a valid phone number.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter a valid phone number.',
+      });
       return;
     }
     if (!licenseNumber.trim()) {
-      Alert.alert('Validation Error', 'Please enter license number.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter license number.',
+      });
       return;
     }
     if (!driverToEdit && (!password || password.length < 6)) {
-      Alert.alert('Validation Error', 'Password must be at least 6 characters.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Password must be at least 6 characters.',
+      });
       return;
     }
 
@@ -106,25 +127,32 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
       }
 
       if (res?.success || res?.data || res?.message === 'Data fetched successfully') {
-        Alert.alert(
-          'Success',
-          res?.message ||
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2:
+            res?.message ||
             (driverToEdit
               ? 'Driver updated successfully'
               : 'Driver added successfully'),
-        );
+        });
         resetForm();
         onSuccess();
         onClose();
       } else {
-        Alert.alert('Error', res?.message || 'Failed to save driver.');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to save driver.',
+        });
       }
     } catch (error: any) {
       console.error('Save Driver Error:', error);
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Failed to save driver details.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.message || 'Failed to save driver details.',
+      });
     } finally {
       setLoading(false);
     }
