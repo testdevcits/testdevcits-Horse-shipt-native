@@ -8,3 +8,6 @@ export const MAP_DELTA = {
 };
 
 export const DEBOUNCE_TIME = 400;
+
+export const horsePlaceholderImage =
+  'https://thumbs.dreamstime.com/b/simple-horse-logo-icon-vector-art-illustration-simple-horse-logo-icon-vector-art-illustration-features-clean-minimalist-design-351219938.jpg';

@@ -39,6 +39,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
     borderWidth: 1,
   },
+  statusBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.xs,
+  },
   badgeNotConnectedBg: {
     backgroundColor: COLORS.goldLightBg,
     borderColor: COLORS.goldBorder,
@@ -113,6 +117,16 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.md,
     paddingVertical: 2,
+    marginBottom: SPACING.xs,
+  },
+  inputContainerError: {
+    borderColor: '#EF4444',
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    marginTop: 4,
     marginBottom: SPACING.md,
   },
   linkIcon: {

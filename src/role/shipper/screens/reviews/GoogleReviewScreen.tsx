@@ -1,59 +1,89 @@
 import React, { useState } from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  ActivityIndicator,
   Linking,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { Link, Info, ExternalLink } from 'lucide-react-native';
-import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import Toast from 'react-native-toast-message';
+import { AppHeader, AppText, Input, Button } from '../../../../components';
+import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.googlereview';
 
 const GoogleReviewScreen = () => {
   const [googleReviewLink, setGoogleReviewLink] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const isConnected = Boolean(googleReviewLink && googleReviewLink.trim().length > 0);
 
+  const handleInputChange = (text: string) => {
+    setGoogleReviewLink(text);
+    if (error) {
+      setError('');
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!googleReviewLink.trim()) {
-      Alert.alert('Validation Error', 'Please enter a valid Google Review URL.');
+    const trimmed = googleReviewLink.trim();
+
+    if (!trimmed) {
+      setError('Please enter a valid Google Review URL.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter a valid Google Review URL.',
+      });
       return;
     }
 
+    const lower = trimmed.toLowerCase();
     if (
-      !googleReviewLink.toLowerCase().includes('google.com') &&
-      !googleReviewLink.toLowerCase().includes('goo.gl') &&
-      !googleReviewLink.toLowerCase().includes('maps')
+      !lower.includes('google.com') &&
+      !lower.includes('goo.gl') &&
+      !lower.includes('maps') &&
+      !lower.includes('g.page')
     ) {
-      Alert.alert(
-        'Warning',
-        'Please make sure this is a valid Google Maps or Google Business link.',
-      );
+      setError('Please make sure this is a valid Google Maps or Google Business link.');
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Link',
+        text2: 'Please make sure this is a valid Google Maps or Google Business link.',
+      });
+      return;
     }
 
+    setError('');
     setLoading(true);
     try {
-      const res = await shipperService.updateGoogleReviewLink(googleReviewLink.trim());
+      const res = await shipperService.updateGoogleReviewLink(trimmed);
       if (res?.success || res?.data) {
-        Alert.alert('Success', res?.message || 'Google Review link updated successfully.');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.message || 'Google Review link updated successfully.',
+        });
       } else {
-        Alert.alert('Error', res?.message || 'Failed to update Google Review link.');
+        const msg = res?.message || 'Failed to update Google Review link.';
+        setError(msg);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: msg,
+        });
       }
-    } catch (error: any) {
-      console.error('Update Google Review Link Error:', error);
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Failed to update Google Review link.',
-      );
+    } catch (err: any) {
+      console.error('Update Google Review Link Error:', err);
+      const msg = err?.response?.data?.message || 'Failed to update Google Review link.';
+      setError(msg);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: msg,
+      });
     } finally {
       setLoading(false);
     }
@@ -67,7 +97,7 @@ const GoogleReviewScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Google review" showNotificationBell />
+      <AppHeader title="Google review" />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -118,41 +148,30 @@ const GoogleReviewScreen = () => {
 
           {/* Form Input Section */}
           <View style={styles.formSection}>
-            <AppText style={styles.inputTitle}>Your Google Review Link</AppText>
-
-            <View style={styles.inputContainer}>
-              <Link size={20} color="#A06333" style={styles.linkIcon} />
-              <TextInput
-                style={styles.textInput}
-                placeholder="https://www.google.com/maps/place..."
-                placeholderTextColor={COLORS.textLight}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="url"
-                value={googleReviewLink}
-                onChangeText={setGoogleReviewLink}
-              />
-              {isConnected && (
-                <TouchableOpacity onPress={handleOpenLink} style={styles.openBtn}>
+            <Input
+              label="Your Google Review Link"
+              placeholder="https://www.google.com/maps/place..."
+              value={googleReviewLink}
+              onChangeText={handleInputChange}
+              error={error}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="url"
+              leftIcon={<Link size={20} color="#A06333" />}
+              rightIcon={
+                isConnected ? (
                   <ExternalLink size={18} color={COLORS.goldPrimary} />
-                </TouchableOpacity>
-              )}
-            </View>
+                ) : undefined
+              }
+              onRightIconPress={isConnected ? handleOpenLink : undefined}
+            />
 
-            <TouchableOpacity
-              style={styles.submitBtn}
+            <Button
+              title={isConnected ? 'Update Link' : 'Add Link'}
+              isLoading={loading}
               onPress={handleSubmit}
-              disabled={loading}
-              activeOpacity={0.8}
-            >
-              {loading ? (
-                <ActivityIndicator color={COLORS.white} />
-              ) : (
-                <AppText style={styles.submitBtnText}>
-                  {isConnected ? 'Update Link' : 'Add Link'}
-                </AppText>
-              )}
-            </TouchableOpacity>
+              buttonStyle={styles.submitBtn}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

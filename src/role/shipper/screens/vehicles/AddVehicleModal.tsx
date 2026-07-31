@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -13,7 +12,6 @@ import {
   Platform,
 } from 'react-native';
 import {
-  X,
   ChevronDown,
   ImagePlus,
   Compass,
@@ -21,23 +19,38 @@ import {
   Check,
 } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import { AppHeader, AppText } from '../../../../components';
+import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
+import imageIndex from '../../../../assets/images/imageIndex';
 
 interface Props {
-  visible: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
+  navigation?: any;
+  route?: any;
+  visible?: boolean;
+  onClose?: () => void;
+  onSuccess?: () => void;
   vehicleToEdit?: any;
 }
 
-const VEHICLE_TYPES = ['Truck', 'Trailer', 'Gooseneck', 'Bumper Pull'];
-const STALL_TYPES = ['Slant Load', 'Straight Load', 'Box Stall', 'Head to Head'];
-const STALL_SIZES = ['Single Stall', 'Double Stall', 'Box Stall', 'XL Stall'];
+const VEHICLE_TYPES = ['Truck', 'Trailer', 'Other'];
+const STALL_TYPES = ['Slant Load', 'Stock Trailer', 'Head to Head', 'Semi', 'Other'];
+const STALL_SIZES = ['Single Stall', 'Stall and a half', 'Box Stall', 'Other'];
 
-const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) => {
+const AddVehicleModal: React.FC<Props> = (props) => {
+  const { navigation, route } = props;
+  const vehicleToEdit = route?.params?.vehicleToEdit || props.vehicleToEdit;
+  const onSuccess = route?.params?.onSuccess || props.onSuccess;
+
+  const handleClose = () => {
+    if (navigation?.canGoBack?.()) {
+      navigation.goBack();
+    } else if (props.onClose) {
+      props.onClose();
+    }
+  };
+
   const [transportType, setTransportType] = useState('Trucking');
   const [vehicleType, setVehicleType] = useState('');
   const [vehicleNumber, setVehicleNumber] = useState('');
@@ -70,7 +83,7 @@ const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) 
     } else {
       resetForm();
     }
-  }, [vehicleToEdit, visible]);
+  }, [vehicleToEdit]);
 
   const resetForm = () => {
     setTransportType('Trucking');
@@ -163,13 +176,13 @@ const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) 
         Alert.alert(
           'Success',
           res?.message ||
-            (vehicleToEdit
-              ? 'Vehicle updated successfully'
-              : 'Vehicle added successfully'),
+          (vehicleToEdit
+            ? 'Vehicle updated successfully'
+            : 'Vehicle added successfully'),
         );
         resetForm();
-        onSuccess();
-        onClose();
+        if (onSuccess) onSuccess();
+        handleClose();
       } else {
         Alert.alert('Error', res?.message || 'Failed to save vehicle.');
       }
@@ -185,182 +198,171 @@ const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) 
   };
 
   return (
-    <>
-      <Modal visible={visible && !loading} transparent animationType="slide">
-        <View style={styles.overlay}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.container}
-          >
-            <View style={styles.modalContent}>
-              {/* Header Title */}
-              <View style={styles.header}>
-                <AppText style={styles.title}>
-                  {vehicleToEdit ? 'Edit Vehicle' : 'Add a New Vehicle'}
-                </AppText>
-                <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-                  <X size={20} color={COLORS.textPrimary} />
-                </TouchableOpacity>
-              </View>
+    <View style={styles.screenContainer}>
+      <AppHeader title={vehicleToEdit ? 'Edit Vehicle' : 'Add Vehicle'} />
 
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Vehicle Details Card Header */}
-                <View style={styles.vehicleDetailsHeader}>
-                  <View style={styles.steeringIconBox}>
-                    <Compass size={22} color="#A06333" />
-                  </View>
-                  <View style={styles.headerTextCol}>
-                    <AppText style={styles.vehicleDetailsTitle}>Vehicle details</AppText>
-                    <AppText style={styles.vehicleDetailsSub}>
-                      Tell us about your vehicle(s) so we can match you with the right shipments.
-                    </AppText>
-                  </View>
-                </View>
-
-                {/* Form Fields */}
-                <AppText style={styles.label}>
-                  Transport Type <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Trucking"
-                  placeholderTextColor={COLORS.textLight}
-                  value={transportType}
-                  onChangeText={setTransportType}
-                />
-
-                <AppText style={styles.label}>
-                  Vehicle Type <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TouchableOpacity
-                  style={styles.dropdownInput}
-                  onPress={() => setActivePicker('vehicleType')}
-                >
-                  <AppText
-                    style={
-                      vehicleType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-                    }
-                  >
-                    {vehicleType || 'Select vehicle type'}
-                  </AppText>
-                  <ChevronDown size={18} color={COLORS.textSecondary} />
-                </TouchableOpacity>
-
-                <AppText style={styles.label}>
-                  Vehicle Number <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Vehicle Number"
-                  placeholderTextColor={COLORS.textLight}
-                  value={vehicleNumber}
-                  onChangeText={setVehicleNumber}
-                />
-
-                <AppText style={styles.label}>
-                  VIN Number (Optional) <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter VIN Number"
-                  placeholderTextColor={COLORS.textLight}
-                  value={vinNumber}
-                  onChangeText={setVinNumber}
-                />
-
-                <AppText style={styles.label}>
-                  Number of stalls <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Number of stalls"
-                  placeholderTextColor={COLORS.textLight}
-                  keyboardType="numeric"
-                  value={numberOfStalls}
-                  onChangeText={setNumberOfStalls}
-                />
-
-                <AppText style={styles.label}>
-                  Stall Type <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TouchableOpacity
-                  style={styles.dropdownInput}
-                  onPress={() => setActivePicker('stallType')}
-                >
-                  <AppText
-                    style={
-                      stallType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-                    }
-                  >
-                    {stallType || 'Select Stall Type'}
-                  </AppText>
-                  <ChevronDown size={18} color={COLORS.textSecondary} />
-                </TouchableOpacity>
-
-                <AppText style={styles.label}>
-                  Stall Size <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TouchableOpacity
-                  style={styles.dropdownInput}
-                  onPress={() => setActivePicker('stallSize')}
-                >
-                  <AppText
-                    style={
-                      stallSize ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
-                    }
-                  >
-                    {stallSize || 'Select Stall Size'}
-                  </AppText>
-                  <ChevronDown size={18} color={COLORS.textSecondary} />
-                </TouchableOpacity>
-
-                <AppText style={styles.label}>
-                  Upload Vehicle Images <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TouchableOpacity
-                  style={styles.uploadDashedCard}
-                  onPress={handlePickImage}
-                  activeOpacity={0.8}
-                >
-                  {selectedImage ? (
-                    <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
-                  ) : (
-                    <View style={styles.uploadPlaceholder}>
-                      <ImagePlus size={36} color={COLORS.textSecondary} />
-                    </View>
-                  )}
-                </TouchableOpacity>
-
-                <AppText style={styles.label}>
-                  Notes (General Info) <AppText style={styles.required}>*</AppText>
-                </AppText>
-                <TextInput
-                  style={[styles.input, styles.textArea]}
-                  placeholder="Enter Notes about vehicle specs, condition, etc..."
-                  placeholderTextColor={COLORS.textLight}
-                  multiline
-                  numberOfLines={4}
-                  value={notes}
-                  onChangeText={setNotes}
-                />
-
-                {/* Bottom Action Buttons Row */}
-                <View style={styles.buttonRow}>
-                  <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
-                    <AppText style={styles.cancelBtnText}>Cancel</AppText>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.addVehicleBtn} onPress={handleSubmit}>
-                    <AppText style={styles.addVehicleBtnText}>
-                      {vehicleToEdit ? 'Save Vehicle' : 'Add Vehicle'}
-                    </AppText>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Vehicle Details Card Header */}
+          <View style={styles.vehicleDetailsHeader}>
+            <View style={styles.steeringIconBox}>
+              <Compass size={22} color="#A06333" />
             </View>
-          </KeyboardAvoidingView>
-        </View>
-      </Modal>
+            <View style={styles.headerTextCol}>
+              <AppText style={styles.vehicleDetailsTitle}>Vehicle details</AppText>
+              <AppText style={styles.vehicleDetailsSub}>
+                Tell us about your vehicle(s) so we can match you with the right shipments.
+              </AppText>
+            </View>
+          </View>
+
+          {/* Form Fields */}
+          <AppText style={styles.label}>
+            Transport Type <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TextInput
+            style={styles.input}
+            placeholder="Trucking"
+            placeholderTextColor={COLORS.textLight}
+            value={transportType}
+            onChangeText={setTransportType}
+          />
+
+          <AppText style={styles.label}>
+            Vehicle Type <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TouchableOpacity
+            style={styles.dropdownInput}
+            onPress={() => setActivePicker('vehicleType')}
+          >
+            <AppText
+              style={
+                vehicleType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+              }
+            >
+              {vehicleType || 'Select vehicle type'}
+            </AppText>
+            <ChevronDown size={18} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+
+          <AppText style={styles.label}>
+            Vehicle Number <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Vehicle Number"
+            placeholderTextColor={COLORS.textLight}
+            value={vehicleNumber}
+            onChangeText={setVehicleNumber}
+          />
+
+          <AppText style={styles.label}>
+            VIN Number (Optional) <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter VIN Number"
+            placeholderTextColor={COLORS.textLight}
+            value={vinNumber}
+            onChangeText={setVinNumber}
+          />
+
+          <AppText style={styles.label}>
+            Number of stalls <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Number of stalls"
+            placeholderTextColor={COLORS.textLight}
+            keyboardType="numeric"
+            value={numberOfStalls}
+            onChangeText={setNumberOfStalls}
+          />
+
+          <AppText style={styles.label}>
+            Stall Type <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TouchableOpacity
+            style={styles.dropdownInput}
+            onPress={() => setActivePicker('stallType')}
+          >
+            <AppText
+              style={
+                stallType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+              }
+            >
+              {stallType || 'Select Stall Type'}
+            </AppText>
+            <ChevronDown size={18} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+
+          <AppText style={styles.label}>
+            Stall Size <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TouchableOpacity
+            style={styles.dropdownInput}
+            onPress={() => setActivePicker('stallSize')}
+          >
+            <AppText
+              style={
+                stallSize ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+              }
+            >
+              {stallSize || 'Select Stall Size'}
+            </AppText>
+            <ChevronDown size={18} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+
+          <AppText style={styles.label}>
+            Upload Vehicle Images <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TouchableOpacity
+            style={styles.uploadDashedCard}
+            onPress={handlePickImage}
+            activeOpacity={0.8}
+          >
+            {selectedImage ? (
+              <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
+            ) : (
+              <View style={styles.uploadPlaceholder}>
+                <ImagePlus size={36} color={COLORS.textSecondary} />
+              </View>
+            )}
+          </TouchableOpacity>
+
+          <AppText style={styles.label}>
+            Notes (General Info) <AppText style={styles.required}>*</AppText>
+          </AppText>
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            placeholder="Enter Notes about vehicle specs, condition, etc..."
+            placeholderTextColor={COLORS.textLight}
+            multiline
+            numberOfLines={4}
+            value={notes}
+            onChangeText={setNotes}
+          />
+
+          {/* Bottom Action Buttons Row */}
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.cancelBtn} onPress={handleClose}>
+              <AppText style={styles.cancelBtnText}>Cancel</AppText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.addVehicleBtn} onPress={handleSubmit}>
+              <AppText style={styles.addVehicleBtnText}>
+                {vehicleToEdit ? 'Save Vehicle' : 'Add Vehicle'}
+              </AppText>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* Select Picker Bottom Sheet Modal */}
       <Modal
@@ -379,8 +381,8 @@ const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) 
               {activePicker === 'vehicleType'
                 ? 'Select Vehicle Type'
                 : activePicker === 'stallType'
-                ? 'Select Stall Type'
-                : 'Select Stall Size'}
+                  ? 'Select Stall Type'
+                  : 'Select Stall Size'}
             </AppText>
 
             {activePicker === 'vehicleType' &&
@@ -452,27 +454,29 @@ const AddVehicleModal = ({ visible, onClose, onSuccess, vehicleToEdit }: Props) 
         </TouchableOpacity>
       </Modal>
 
-      {/* Adding Vehicle Loading Modal Popover (Matching Image 2) */}
+      {/* Adding Vehicle Loading Modal */}
       <Modal visible={loading} transparent animationType="fade">
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingCard}>
             <View style={styles.truckIconContainer}>
-              <Truck size={44} color={COLORS.textPrimary} strokeWidth={1.8} />
-              <ActivityIndicator
-                size="large"
-                color="#A06333"
-                style={styles.truckSpinner}
+              <Image
+                source={imageIndex.runningtruck}
+                style={{
+                  width: 100,
+                  height: 100,
+                }}
+                resizeMode="contain"
               />
             </View>
 
-            <AppText style={styles.loadingTitle}>Adding Vehicle</AppText>
+            <AppText style={styles.loadingTitle}>Saving Vehicle</AppText>
             <AppText style={styles.loadingSubtitle}>
               Registering your vehicle... Please wait while we save the information.
             </AppText>
           </View>
         </View>
       </Modal>
-    </>
+    </View>
   );
 };
 

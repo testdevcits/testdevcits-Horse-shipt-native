@@ -1,0 +1,215 @@
+import { StyleSheet } from 'react-native';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../../constants';
+
+const styles = StyleSheet.create({
+  tabSection: {
+    gap: SPACING.md,
+  },
+  sectionHeaderTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary || '#1E293B',
+  },
+  sectionHeaderSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary || '#64748B',
+    marginTop: 2,
+    marginBottom: SPACING.sm,
+  },
+  subCardContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md || 12,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  subCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  goldSquareIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.xs || 8,
+    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subHeaderTextCol: {
+    flex: 1,
+  },
+  subHeaderTitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary || '#1E293B',
+  },
+  subHeaderSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary || '#64748B',
+    marginTop: 2,
+  },
+  redCrossCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FEE2E2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  redCrossText: {
+    fontSize: 12,
+    fontFamily: FONTS.bold,
+    color: '#EF4444',
+  },
+  cardDivider: {
+    height: 1,
+    backgroundColor: COLORS.divider || '#E2E8F0',
+    marginVertical: SPACING.md,
+  },
+  statusPillsRow: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    marginVertical: SPACING.sm,
+  },
+  greenOutlinePill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round || 20,
+    borderWidth: 1,
+    borderColor: '#059669',
+    backgroundColor: '#ECFDF5',
+  },
+  greenOutlinePillText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#059669',
+  },
+  blueOutlinePill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round || 20,
+    borderWidth: 1,
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+  blueOutlinePillText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#2563EB',
+  },
+  planDetailsBox: {
+    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderRadius: RADIUS.xs || 8,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    padding: SPACING.md,
+    marginVertical: SPACING.sm,
+    gap: SPACING.xs,
+  },
+  planLabel: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.goldPrimary || '#A06333',
+  },
+  planName: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary || '#1E293B',
+  },
+  planPrice: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary || '#64748B',
+  },
+  subActiveBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    backgroundColor: '#ECFDF5',
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+    borderRadius: RADIUS.xs || 8,
+    padding: SPACING.sm,
+    marginTop: SPACING.xs,
+  },
+  subActiveBannerText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#059669',
+  },
+  billingFilterRow: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    marginVertical: SPACING.md,
+  },
+  billingFilterPill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.round || 20,
+    backgroundColor: COLORS.grey100 || '#F1F5F9',
+    borderWidth: 1,
+    borderColor: COLORS.divider || '#CBD5E1',
+  },
+  billingFilterPillActive: {
+    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+  },
+  billingFilterText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary || '#64748B',
+  },
+  billingFilterTextActive: {
+    color: COLORS.goldPrimary || '#A06333',
+    fontFamily: FONTS.bold,
+  },
+  transactionsTableContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md || 12,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    padding: SPACING.md,
+    marginTop: SPACING.md,
+  },
+  tableHeaderRow: {
+    flexDirection: 'row',
+    paddingVertical: SPACING.xs,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider || '#CBD5E1',
+  },
+  tableColHeader: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary || '#64748B',
+  },
+  tableBodyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.grey100 || '#F1F5F9',
+  },
+  tableCellText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textPrimary || '#1E293B',
+  },
+  succeededPill: {
+    backgroundColor: '#DEF7EC',
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 2,
+    borderRadius: RADIUS.xs || 4,
+    alignSelf: 'flex-start',
+  },
+  succeededText: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: '#03543F',
+  },
+});
+
+export default styles;

@@ -98,7 +98,7 @@ const transformResponse = (response: any, selectedRole?: UserRole): { user: AppU
         name: d.name,
         email: d.email,
         role: 'driver', // Manually assigning because API doesn't provide it
-        profileImage: d.profileImage?.url,
+        profileImage: typeof d.profileImage === 'string' ? d.profileImage : d.profileImage?.url,
         phoneNumber: d.phone,
         metadata: {
           license: d.licenseNumber,
@@ -116,7 +116,7 @@ const transformResponse = (response: any, selectedRole?: UserRole): { user: AppU
       name: data.name,
       email: data.email,
       role: (data.role || selectedRole) as UserRole, // Fallback to selectedRole
-      profileImage: data.profileImage?.url,
+      profileImage: typeof data.profileImage === 'string' ? data.profileImage : data.profileImage?.url,
       phoneNumber: data.mobile || data.phone,
       metadata: {
         uniqueId: data.uniqueId,

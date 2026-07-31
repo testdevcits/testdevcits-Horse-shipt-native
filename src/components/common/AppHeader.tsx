@@ -23,7 +23,7 @@ const AppHeader = memo(
     const { user } = useAppSelector(state => state.auth);
     const { unreadCount } = useAppSelector(state => state.notification);
 
-    const userId = user?._id || user?.id;
+    const userId = (user as any)?._id || user?.id;
 
     useEffect(() => {
       if (userId) {
@@ -33,10 +33,20 @@ const AppHeader = memo(
 
     const getAvatarUri = (profileImg: any): string | null => {
       if (!profileImg) return null;
-      if (typeof profileImg === 'string' && profileImg.trim() !== '' && profileImg !== '/default-avatar.png') {
+      if (
+        typeof profileImg === 'string' &&
+        profileImg.trim() !== '' &&
+        profileImg !== '/default-avatar.png' &&
+        profileImg !== '/images/default_profile.png'
+      ) {
         return profileImg;
       }
-      if (typeof profileImg === 'object' && profileImg.url) {
+      if (
+        typeof profileImg === 'object' &&
+        profileImg.url &&
+        profileImg.url !== '/default-avatar.png' &&
+        profileImg.url !== '/images/default_profile.png'
+      ) {
         return profileImg.url;
       }
       return null;

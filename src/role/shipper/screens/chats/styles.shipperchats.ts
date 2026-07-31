@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
+    paddingBottom: 120,
   },
   messagesHeaderTitle: {
     fontSize: FONT_SIZE.heading,

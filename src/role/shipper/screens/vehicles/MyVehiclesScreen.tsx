@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   Image,
@@ -15,24 +14,20 @@ import {
   Box,
   Layers,
   UserCheck,
-  AlertTriangle,
   FileText,
   UserPlus,
   Edit,
   Trash2,
 } from 'lucide-react-native';
 import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
-import AddVehicleModal from './AddVehicleModal';
 import styles from './styles.myvehicles';
 
-const MyVehiclesScreen = () => {
+const MyVehiclesScreen = ({ navigation }: any) => {
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-  const [selectedVehicleToEdit, setSelectedVehicleToEdit] = useState<any>(null);
 
   const fetchVehicles = async () => {
     try {
@@ -49,8 +44,12 @@ const MyVehiclesScreen = () => {
   };
 
   useEffect(() => {
+    const unsubscribe = navigation?.addListener?.('focus', () => {
+      fetchVehicles();
+    });
     fetchVehicles();
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -85,14 +84,22 @@ const MyVehiclesScreen = () => {
     );
   };
 
+  const handleAddNewVehicle = () => {
+    navigation.navigate('AddVehicle', {
+      onSuccess: fetchVehicles,
+    });
+  };
+
   const handleEdit = (vehicle: any) => {
-    setSelectedVehicleToEdit(vehicle);
-    setIsAddModalVisible(true);
+    navigation.navigate('AddVehicle', {
+      vehicleToEdit: vehicle,
+      onSuccess: fetchVehicles,
+    });
   };
 
   return (
     <View style={styles.container}>
-      <AppHeader title="My Vehicles" showNotificationBell />
+      <AppHeader title="My Vehicles" />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -116,10 +123,7 @@ const MyVehiclesScreen = () => {
 
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => {
-              setSelectedVehicleToEdit(null);
-              setIsAddModalVisible(true);
-            }}
+            onPress={handleAddNewVehicle}
             activeOpacity={0.8}
           >
             <Plus size={18} color={COLORS.white} strokeWidth={2.5} />
@@ -141,10 +145,10 @@ const MyVehiclesScreen = () => {
             </AppText>
             <TouchableOpacity
               style={[styles.addBtn, { marginTop: SPACING.md }]}
-              onPress={() => setIsAddModalVisible(true)}
+              onPress={handleAddNewVehicle}
             >
               <Plus size={18} color={COLORS.white} />
-              <AppText style={styles.addBtnText}>Add Vehicle</AppText>
+              <AppText style={styles.addBtnText}>+ Add First Vehicle</AppText>
             </TouchableOpacity>
           </View>
         ) : (
@@ -173,8 +177,8 @@ const MyVehiclesScreen = () => {
                       status === 'APPROVED'
                         ? styles.statusApproved
                         : status === 'REJECTED'
-                        ? styles.statusRejected
-                        : styles.statusPending,
+                          ? styles.statusRejected
+                          : styles.statusPending,
                     ]}
                   >
                     <AppText
@@ -183,8 +187,8 @@ const MyVehiclesScreen = () => {
                         status === 'APPROVED'
                           ? styles.statusApprovedText
                           : status === 'REJECTED'
-                          ? styles.statusRejectedText
-                          : styles.statusPendingText,
+                            ? styles.statusRejectedText
+                            : styles.statusPendingText,
                       ]}
                     >
                       {status}
@@ -244,30 +248,7 @@ const MyVehiclesScreen = () => {
                     </View>
                   </View>
 
-                  {/* Assigned Driver Box */}
-                  {vehicle.driver ? (
-                    <View style={styles.assignedDriverBox}>
-                      <UserCheck size={20} color="#10B981" />
-                      <View style={styles.assignedDriverTextCol}>
-                        <AppText style={styles.assignedDriverTitle}>Assigned Driver</AppText>
-                        <AppText style={styles.assignedDriverName}>
-                          {vehicle.driver.name || 'Assigned'}
-                        </AppText>
-                      </View>
-                    </View>
-                  ) : (
-                    <View style={styles.driverWarningBox}>
-                      <AlertTriangle size={20} color="#D97706" />
-                      <View style={styles.assignedDriverTextCol}>
-                        <AppText style={styles.warningTitle}>Driver not available</AppText>
-                        <AppText style={styles.warningSub}>
-                          Please assign a driver before accepting shipments.
-                        </AppText>
-                      </View>
-                    </View>
-                  )}
-
-                  {/* Notes Box */}
+                  {/* Notes / Spec Description */}
                   {vehicle.notes ? (
                     <View style={styles.notesBox}>
                       <FileText size={18} color={COLORS.goldPrimary} />
@@ -310,14 +291,6 @@ const MyVehiclesScreen = () => {
           })
         )}
       </ScrollView>
-
-      {/* Add / Edit Vehicle Modal */}
-      <AddVehicleModal
-        visible={isAddModalVisible}
-        onClose={() => setIsAddModalVisible(false)}
-        onSuccess={fetchVehicles}
-        vehicleToEdit={selectedVehicleToEdit}
-      />
     </View>
   );
 };

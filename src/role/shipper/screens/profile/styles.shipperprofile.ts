@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
   scrollContent: {
     padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
+    paddingBottom: 120,
   },
 
   // BANNER SECTION
@@ -278,7 +278,40 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
 
-  // TAB 2: SHIPMENT STYLES
+  // TAB 2: SHIPMENT STYLES (SCREENSHOT MATCHING)
+  shipmentRowCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.xs,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: SPACING.md,
+    gap: SPACING.md,
+  },
+  shipmentRowIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.xs,
+    backgroundColor: '#FAF6EE',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shipmentRowContent: {
+    flex: 1,
+  },
+  shipmentRowTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  shipmentRowSub: {
+    fontSize: 11,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+
   featureCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
@@ -331,6 +364,13 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: SPACING.sm,
   },
+  subHeaderSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+
   payoutAccountCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -359,277 +399,170 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     marginTop: 2,
   },
-  cardDivider: {
-    height: 1,
-    backgroundColor: COLORS.divider,
-    marginVertical: SPACING.xs,
-  },
-  verifiedCard: {
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    padding: SPACING.md,
-    flexDirection: 'row',
-    gap: SPACING.sm,
-    alignItems: 'flex-start',
-  },
-  checkSquare: {
-    width: 24,
-    height: 24,
-    borderRadius: RADIUS.xs,
-    borderWidth: 1,
-    borderColor: COLORS.goldPrimary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-  },
-  verifiedTextCol: {
-    flex: 1,
-  },
-  verifiedTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-  },
-  verifiedSub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.goldPrimary,
-    marginTop: 2,
-    lineHeight: 16,
-  },
-  calloutBanner: {
-    backgroundColor: COLORS.goldLightBg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.xs,
-    marginTop: SPACING.md,
-  },
-  calloutText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
-    lineHeight: 18,
-  },
 
-  // TAB 4: SUBSCRIPTION STYLES
-  subCardContainer: {
+  // Payout options list
+  payoutOptionsList: {
+    gap: SPACING.sm,
+  },
+  payoutItemCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
     padding: SPACING.md,
-  },
-  subCardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-  },
-  goldSquareIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldLightBg,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  subHeaderTextCol: {
-    flex: 1,
-  },
-  subHeaderTitle: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  subHeaderSub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  redCrossCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: COLORS.error,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  redCrossText: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.error,
-    fontFamily: FONTS.bold,
-  },
-  statusPillsRow: {
-    flexDirection: 'row',
-    gap: SPACING.xs,
-    marginVertical: SPACING.sm,
-  },
-  greenOutlinePill: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.xs,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: COLORS.greenActive,
-    backgroundColor: COLORS.greenLightBg,
-  },
-  greenOutlinePillText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.greenActive,
-  },
-  blueOutlinePill: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.xs,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: COLORS.info,
-    backgroundColor: COLORS.grey100,
-  },
-  blueOutlinePillText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.info,
-  },
-  planDetailsBox: {
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.xs,
-    padding: SPACING.md,
-    marginVertical: SPACING.xs,
-  },
-  planLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-  },
-  planName: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-    marginTop: 4,
-  },
-  planPrice: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.goldPrimary,
-    marginTop: 2,
-  },
-  subActiveBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-    backgroundColor: COLORS.goldLightBg,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.goldPrimary,
-    padding: SPACING.sm,
-    borderRadius: RADIUS.xs,
-    marginTop: SPACING.xs,
-  },
-  subActiveBannerText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
-  },
-
-  // BILLING HISTORY
-  billingFilterRow: {
-    flexDirection: 'row',
-    gap: SPACING.xs,
-    marginBottom: SPACING.sm,
-  },
-  billingFilterPill: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.grey100,
-  },
-  billingFilterPillActive: {
-    backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-  },
-  billingFilterText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  billingFilterTextActive: {
-    color: COLORS.goldPrimary,
-    fontFamily: FONTS.bold,
-  },
-  transactionsTableContainer: {
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.xs,
-    overflow: 'hidden',
-  },
-  tableHeaderRow: {
-    flexDirection: 'row',
-    padding: SPACING.sm,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  tableColHeader: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textSecondary,
-  },
-  tableBodyRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: SPACING.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100,
-  },
-  tableCellText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textPrimary,
-  },
-  succeededPill: {
-    borderWidth: 1,
-    borderColor: COLORS.greenActive,
-    borderRadius: 10,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 2,
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.greenLightBg,
-  },
-  succeededText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.greenActive,
-  },
-
-  // TAB 5: NOTIFICATION STYLES
-  notificationsCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    padding: SPACING.md,
-  },
-  notifColHeadersRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 20,
-    paddingRight: 10,
-    marginBottom: SPACING.xs,
-  },
-  notifChannelText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  notifItemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+  },
+  payoutItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+    flex: 1,
+  },
+  payoutItemTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  payoutItemSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+
+  // TAB 4: SUBSCRIPTION STYLES
+  subCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+  },
+  subHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.xs,
+  },
+  subPlanTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  subBadgePill: {
+    backgroundColor: '#DEF7EC',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
+    borderRadius: RADIUS.round,
+  },
+  subBadgeText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#03543F',
+  },
+  subBillingText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.md,
+  },
+  subFeaturesList: {
+    gap: SPACING.xs,
+    marginBottom: SPACING.md,
+  },
+  subFeatureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
+  subFeatureText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textPrimary,
+  },
+  subBtnRow: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  subOutlineBtn: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    borderRadius: RADIUS.xs,
+    paddingVertical: SPACING.sm,
+    alignItems: 'center',
+  },
+  subOutlineBtnText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textPrimary,
+  },
+  subUpgradeBtn: {
+    flex: 1,
+    backgroundColor: COLORS.goldPrimary,
+    borderRadius: RADIUS.xs,
+    paddingVertical: SPACING.sm,
+    alignItems: 'center',
+  },
+  subUpgradeBtnText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+  },
+
+  // TAB 5: NOTIFICATION STYLES
+  notifSettingCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  notifTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  notifSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+  toggleSwitch: {
+    width: 44,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: COLORS.grey200,
+    padding: 2,
+    justifyContent: 'center',
+  },
+  toggleSwitchActive: {
+    backgroundColor: COLORS.goldPrimary,
+  },
+  toggleCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: COLORS.white,
+    alignSelf: 'flex-start',
+  },
+  toggleCircleActive: {
+    alignSelf: 'flex-end',
+  },
+
+  notifItemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100,
+    borderBottomColor: COLORS.divider,
   },
   notifTextCol: {
     flex: 1,
@@ -648,22 +581,300 @@ const styles = StyleSheet.create({
   },
   notifCheckboxesCol: {
     flexDirection: 'row',
-    gap: 24,
-    alignItems: 'center',
+    gap: SPACING.md,
   },
   notifCheckbox: {
-    width: 22,
-    height: 22,
-    borderRadius: RADIUS.xs,
-    borderWidth: 1.5,
-    borderColor: COLORS.goldPrimary,
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
   },
   notifCheckboxActive: {
+    backgroundColor: COLORS.goldPrimary,
+    borderColor: COLORS.goldPrimary,
+  },
+  calloutBanner: {
     backgroundColor: COLORS.goldLightBg,
+    borderRadius: RADIUS.xs,
+    padding: SPACING.sm,
+    marginTop: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+  },
+  calloutText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.goldPrimary,
+  },
+
+  notificationsCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+  },
+  subCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  goldSquareIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subHeaderTextCol: {
+    flex: 1,
+  },
+  subHeaderTitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  cardDivider: {
+    height: 1,
+    backgroundColor: COLORS.divider,
+    marginVertical: SPACING.md,
+  },
+  notifColHeadersRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: SPACING.md,
+    marginBottom: SPACING.xs,
+  },
+  notifChannelText: {
+    width: 40,
+    textAlign: 'center',
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+  },
+  tableHeaderRow: {
+    flexDirection: 'row',
+    paddingVertical: SPACING.xs,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+  },
+  tableHeaderCell: {
+    flex: 1,
+  },
+  tableHeaderCellText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.grey100,
+  },
+  tableCellText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textPrimary,
+  },
+  succeededPill: {
+    backgroundColor: '#DEF7EC',
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 2,
+    borderRadius: RADIUS.xs,
+    alignSelf: 'flex-start',
+  },
+  succeededText: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: '#03543F',
+  },
+
+  billingFilterRow: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    marginVertical: SPACING.md,
+  },
+  billingFilterPill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.grey100,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
+  billingFilterPillActive: {
+    backgroundColor: COLORS.goldLightBg,
+    borderColor: COLORS.goldBorder,
+  },
+  billingFilterText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
+  billingFilterTextActive: {
+    color: COLORS.goldPrimary,
+    fontFamily: FONTS.bold,
+  },
+  transactionsTableContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+    marginTop: SPACING.md,
+  },
+  tableColHeader: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+  },
+  tableBodyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.grey100,
+  },
+
+  // PAYMENTS & VERIFICATION CARDS
+  verifiedCard: {
+    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    padding: SPACING.md,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: SPACING.md,
+    marginVertical: SPACING.xs,
+  },
+  checkSquare: {
+    width: 32,
+    height: 32,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  verifiedTextCol: {
+    flex: 1,
+  },
+  verifiedTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginBottom: 4,
+  },
+  verifiedSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    lineHeight: 18,
+  },
+
+  // SUBSCRIPTION CARDS & PILLS
+  subCardContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  redCrossCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FEE2E2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  redCrossText: {
+    fontSize: 12,
+    fontFamily: FONTS.bold,
+    color: '#EF4444',
+  },
+  statusPillsRow: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    marginVertical: SPACING.sm,
+  },
+  greenOutlinePill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round,
+    borderWidth: 1,
+    borderColor: '#059669',
+    backgroundColor: '#ECFDF5',
+  },
+  greenOutlinePillText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#059669',
+  },
+  blueOutlinePill: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round,
+    borderWidth: 1,
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+  blueOutlinePillText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#2563EB',
+  },
+  planDetailsBox: {
+    backgroundColor: COLORS.goldLightBg,
+    borderRadius: RADIUS.xs,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    padding: SPACING.md,
+    marginVertical: SPACING.sm,
+    gap: SPACING.xs,
+  },
+  planLabel: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.goldPrimary,
+  },
+  planName: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  planPrice: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
+  subActiveBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    backgroundColor: '#ECFDF5',
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+    borderRadius: RADIUS.xs,
+    padding: SPACING.sm,
+    marginTop: SPACING.xs,
+  },
+  subActiveBannerText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#059669',
   },
 });
 
 export default styles;
+

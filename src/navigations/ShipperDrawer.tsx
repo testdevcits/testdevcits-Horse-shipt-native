@@ -10,6 +10,7 @@ import EarningsScreen from '../role/shipper/screens/earnings/EarningsScreen';
 import ShipperSettingsScreen from '../role/shipper/screens/settings/ShipperSettingsScreen';
 import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScreen';
 import PrivacyPolicyScreen from '../role/shipper/screens/privacy/PrivacyPolicyScreen';
+import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,8 +33,10 @@ const ShipperDrawer = () => {
       <Drawer.Screen name="GoogleReview" component={GoogleReviewScreen} />
       <Drawer.Screen name="Settings" component={ShipperSettingsScreen} />
       <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+      <Drawer.Screen name="PreferredAreas" component={PreferredAreasScreen} />
     </Drawer.Navigator>
   );
 };
+
 
 export default ShipperDrawer;

@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  Alert,
   ActivityIndicator,
   RefreshControl,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
@@ -24,7 +24,6 @@ import {
   ExternalLink,
   ChevronRight,
   ArrowRight,
-  Repeat,
   ArrowLeftRight,
 } from 'lucide-react-native';
 import moment from 'moment';
@@ -39,12 +38,17 @@ import {
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
+import AvailableShipmentCard from './AvailableShipmentCard';
+import MapShipmentSelectItem from './MapShipmentSelectItem';
 import styles from './styles.shipperhome';
 
 const { width } = Dimensions.get('window');
 
 const ShipperHomeScreen = ({ navigation }: any) => {
+  const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const { getCurrentPosition, requestPermission } = useCurrentLocation();
   const [shipments, setShipments] = useState<any[]>([]);
@@ -113,6 +117,14 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     fetchShipments();
+    shipperService
+      .getProfile()
+      .then(res => {
+        if (res?.data?.profileImage) {
+          dispatch(updateUser({ profileImage: res.data.profileImage }));
+        }
+      })
+      .catch(() => null);
   }, []);
 
   const onRefresh = () => {
@@ -185,308 +197,250 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     };
   };
 
-  return (
-    <View style={styles.container}>
-      <AppHeader title="" />
+  const handleNavigateToDetails = (item: any) => {
+    navigation.navigate('ShipperShipmentDetails', { shipment: item });
+  };
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+  const renderHeader = () => (
+    <View style={{ width: '100%' }}>
+      {/* Welcome Greeting Header */}
+      <View style={styles.welcomeHeader}>
+        <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
+        <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
+      </View>
+
+      {/* Stats Row Cards */}
+      <View style={styles.statsRow}>
+        <View style={styles.statCard}>
+          <View style={styles.statTextCol}>
+            <AppText style={styles.statTitle}>Upcoming Shipments</AppText>
+            <AppText style={styles.statCount}>03</AppText>
+          </View>
+          <View style={styles.statIconBox}>
+            <Truck size={24} color="#A06333" />
+          </View>
+        </View>
+
+        <View style={styles.statCard}>
+          <View style={styles.statTextCol}>
+            <AppText style={styles.statTitle}>Submitted Quotes</AppText>
+            <AppText style={styles.statCount}>03</AppText>
+          </View>
+          <View style={styles.statIconBox}>
+            <FileText size={24} color="#A06333" />
+          </View>
+        </View>
+      </View>
+
+      {/* New Opportunities Section */}
+      <View style={styles.opportunitiesCard}>
+        <View style={styles.sectionHeaderRow}>
+          <AppText style={styles.sectionTitle}>New Opportunities</AppText>
+          <TouchableOpacity
+            style={styles.viewAllBtn}
+            onPress={() => navigation.navigate('MyQuotes')}
+          >
+            <AppText style={styles.viewAllText}>View All</AppText>
+            <ChevronRight size={16} color="#A06333" />
+          </TouchableOpacity>
+        </View>
+        <AppText style={styles.sectionSub}>
+          Browse available horse shipments & bid now
+        </AppText>
+
+        {/* Search Input Bar */}
+        <View style={styles.searchBarContainer}>
+          <Search
+            size={18}
+            color={COLORS.textSecondary}
+            style={styles.searchIcon}
           />
-        }
-      >
-        {/* Welcome Greeting Header */}
-        <View style={styles.welcomeHeader}>
-          <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
-          <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search by pickup or delivery location..."
+            placeholderTextColor={COLORS.textLight}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
         </View>
 
-        {/* Stats Row Cards */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <View style={styles.statTextCol}>
-              <AppText style={styles.statTitle}>Upcoming Shipments</AppText>
-              <AppText style={styles.statCount}>03</AppText>
-            </View>
-            <View style={styles.statIconBox}>
-              <Truck size={24} color="#A06333" />
-            </View>
-          </View>
-
-          <View style={styles.statCard}>
-            <View style={styles.statTextCol}>
-              <AppText style={styles.statTitle}>Submitted Quotes</AppText>
-              <AppText style={styles.statCount}>03</AppText>
-            </View>
-            <View style={styles.statIconBox}>
-              <FileText size={24} color="#A06333" />
-            </View>
-          </View>
-        </View>
-
-        {/* New Opportunities Section */}
-        <View style={styles.opportunitiesCard}>
-          <View style={styles.sectionHeaderRow}>
-            <AppText style={styles.sectionTitle}>New Opportunities</AppText>
+        {/* Filter By Row */}
+        <View style={styles.filterRow}>
+          <AppText style={styles.filterLabel}>Filter By :</AppText>
+          <View style={styles.filterPillsGroup}>
             <TouchableOpacity
-              style={styles.viewAllBtn}
-              onPress={() => navigation.navigate('MyQuotes')}
+              style={[
+                styles.filterPill,
+                selectedFilter === 'pickup' && styles.filterPillActive,
+              ]}
+              onPress={() =>
+                setSelectedFilter(selectedFilter === 'pickup' ? '' : 'pickup')
+              }
             >
+              <AppText
+                style={[
+                  styles.filterPillText,
+                  selectedFilter === 'pickup' && styles.filterPillTextActive,
+                ]}
+              >
+                Pickup Distance
+              </AppText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.filterPill,
+                selectedFilter === 'dropoff' && styles.filterPillActive,
+              ]}
+              onPress={() =>
+                setSelectedFilter(
+                  selectedFilter === 'dropoff' ? '' : 'dropoff',
+                )
+              }
+            >
+              <AppText
+                style={[
+                  styles.filterPillText,
+                  selectedFilter === 'dropoff' && styles.filterPillTextActive,
+                ]}
+              >
+                Dropoff Distance
+              </AppText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.filterIconBtn}>
+              <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* View Toggle Row (List View vs View Map) */}
+        <View style={styles.viewToggleRow}>
+          <TouchableOpacity
+            style={[
+              styles.viewToggleBtn,
+              viewMode === 'list'
+                ? styles.viewToggleBtnActive
+                : styles.viewToggleBtnInactive,
+            ]}
+            onPress={() => setViewMode('list')}
+          >
+            <List
+              size={16}
+              color={viewMode === 'list' ? COLORS.white : '#A06333'}
+            />
+            <AppText
+              style={[
+                styles.viewToggleBtnText,
+                viewMode === 'list' && styles.viewToggleBtnTextActive,
+              ]}
+            >
+              List View
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.viewToggleBtn,
+              viewMode === 'map'
+                ? styles.viewToggleBtnActive
+                : styles.viewToggleBtnInactive,
+            ]}
+            onPress={() => {
+              setViewMode('map');
+              if (filteredShipments.length > 0 && !selectedMapShipment) {
+                setSelectedMapShipment(filteredShipments[0]);
+              }
+            }}
+          >
+            <MapIcon
+              size={16}
+              color={viewMode === 'map' ? COLORS.white : '#A06333'}
+            />
+            <AppText
+              style={[
+                styles.viewToggleBtnText,
+                viewMode === 'map' && styles.viewToggleBtnTextActive,
+              ]}
+            >
+              View Map
+            </AppText>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Current Shipments Section Title */}
+      {viewMode === 'list' && (
+        <View style={{ marginTop: SPACING.sm, marginBottom: SPACING.xs }}>
+          <View style={styles.sectionHeaderRow}>
+            <AppText style={styles.sectionTitle}>Current Shipments</AppText>
+            <TouchableOpacity style={styles.viewAllBtn}>
               <AppText style={styles.viewAllText}>View All</AppText>
               <ChevronRight size={16} color="#A06333" />
             </TouchableOpacity>
           </View>
-          <AppText style={styles.sectionSub}>
-            Browse available horse shipments & bid now
-          </AppText>
-
-          {/* Search Input Bar */}
-          <View style={styles.searchBarContainer}>
-            <Search
-              size={18}
-              color={COLORS.textSecondary}
-              style={styles.searchIcon}
-            />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search by pickup or delivery location..."
-              placeholderTextColor={COLORS.textLight}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-
-          {/* Filter By Row */}
-          <View style={styles.filterRow}>
-            <AppText style={styles.filterLabel}>Filter By :</AppText>
-            <View style={styles.filterPillsGroup}>
-              <TouchableOpacity
-                style={[
-                  styles.filterPill,
-                  selectedFilter === 'pickup' && styles.filterPillActive,
-                ]}
-                onPress={() =>
-                  setSelectedFilter(selectedFilter === 'pickup' ? '' : 'pickup')
-                }
-              >
-                <AppText
-                  style={[
-                    styles.filterPillText,
-                    selectedFilter === 'pickup' && styles.filterPillTextActive,
-                  ]}
-                >
-                  Pickup Distance
-                </AppText>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.filterPill,
-                  selectedFilter === 'dropoff' && styles.filterPillActive,
-                ]}
-                onPress={() =>
-                  setSelectedFilter(
-                    selectedFilter === 'dropoff' ? '' : 'dropoff',
-                  )
-                }
-              >
-                <AppText
-                  style={[
-                    styles.filterPillText,
-                    selectedFilter === 'dropoff' && styles.filterPillTextActive,
-                  ]}
-                >
-                  Dropoff Distance
-                </AppText>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.filterIconBtn}>
-                <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* View Toggle Row (List View vs View Map) */}
-          <View style={styles.viewToggleRow}>
-            <TouchableOpacity
-              style={[
-                styles.viewToggleBtn,
-                viewMode === 'list'
-                  ? styles.viewToggleBtnActive
-                  : styles.viewToggleBtnInactive,
-              ]}
-              onPress={() => setViewMode('list')}
-            >
-              <List
-                size={16}
-                color={viewMode === 'list' ? COLORS.white : '#A06333'}
-              />
-              <AppText
-                style={[
-                  styles.viewToggleBtnText,
-                  viewMode === 'list' && styles.viewToggleBtnTextActive,
-                ]}
-              >
-                List View
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.viewToggleBtn,
-                viewMode === 'map'
-                  ? styles.viewToggleBtnActive
-                  : styles.viewToggleBtnInactive,
-              ]}
-              onPress={() => {
-                setViewMode('map');
-                if (filteredShipments.length > 0 && !selectedMapShipment) {
-                  setSelectedMapShipment(filteredShipments[0]);
-                }
-              }}
-            >
-              <MapIcon
-                size={16}
-                color={viewMode === 'map' ? COLORS.white : '#A06333'}
-              />
-              <AppText
-                style={[
-                  styles.viewToggleBtnText,
-                  viewMode === 'map' && styles.viewToggleBtnTextActive,
-                ]}
-              >
-                View Map
-              </AppText>
-            </TouchableOpacity>
-          </View>
         </View>
+      )}
+    </View>
+  );
 
-        {/* MODE 1: LIST VIEW MODE */}
-        {viewMode === 'list' ? (
-          <View style={styles.currentShipmentsSection}>
-            <View style={styles.sectionHeaderRow}>
-              <AppText style={styles.sectionTitle}>Current Shipments</AppText>
-              <TouchableOpacity style={styles.viewAllBtn}>
-                <AppText style={styles.viewAllText}>View All</AppText>
-                <ChevronRight size={16} color="#A06333" />
-              </TouchableOpacity>
-            </View>
+  const renderEmpty = () => {
+    if (loading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.emptyContainer}>
+        <Truck size={44} color={COLORS.textLight} />
+        <AppText style={styles.emptyTitle}>No Active Shipments</AppText>
+        <AppText style={styles.emptySub}>
+          Available shipments for bidding will appear here.
+        </AppText>
+      </View>
+    );
+  };
 
-            {loading ? (
-              <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color={COLORS.goldPrimary} />
-              </View>
-            ) : filteredShipments.length === 0 ? (
-              <View style={styles.emptyContainer}>
-                <Truck size={44} color={COLORS.textLight} />
-                <AppText style={styles.emptyTitle}>No Active Shipments</AppText>
-                <AppText style={styles.emptySub}>
-                  Available shipments for bidding will appear here.
-                </AppText>
-              </View>
-            ) : (
-              filteredShipments.map((item, index) => {
-                const horsePhoto =
-                  item.horses && item.horses[0]?.photo?.url
-                    ? item.horses[0].photo.url
-                    : null;
-                const horseName =
-                  item.horses && item.horses[0]?.registeredName
-                    ? item.horses[0].registeredName
-                    : 'Thunder - Sky';
-                const horseSpecs =
-                  item.horses && item.horses[0]
-                    ? `${item.horses[0].breed || 'Belgian Warmblood'} | ${
-                        item.horses[0].age || '2'
-                      }yr | ${item.horses[0].colour || 'Blood bay'}`
-                    : 'Belgian Warmblood | 2yr | Blood bay';
+  return (
+    <View style={styles.container}>
+      <AppHeader title="" />
 
-                const locationText = item.pickupLocation
-                  ? item.pickupLocation.split(',')[0] +
-                    ', ' +
-                    (item.pickupLocation.split(',')[1] || '')
-                  : 'Ghbaleh, Lebanon';
+      {viewMode === 'list' ? (
+        <FlatList
+          data={loading ? [] : filteredShipments}
+          keyExtractor={(item, index) => item._id || item.id || String(index)}
+          renderItem={({ item }) => (
+            <AvailableShipmentCard item={item} onPress={handleNavigateToDetails} />
+          )}
+          ListHeaderComponent={renderHeader}
+          ListEmptyComponent={renderEmpty}
+          contentContainerStyle={{ padding: SPACING.md, paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={COLORS.goldPrimary}
+            />
+          }
+        />
+      ) : (
+        /* MODE 2: MAP VIEW MODE */
+        <ScrollView
+          contentContainerStyle={{ padding: SPACING.md, paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={COLORS.goldPrimary}
+            />
+          }
+        >
+          {renderHeader()}
 
-                return (
-                  <View key={item._id || index} style={styles.shipmentCard}>
-                    {/* Left Horse Image */}
-                    <View style={styles.cardImageContainer}>
-                      {horsePhoto ? (
-                        <Image
-                          source={{ uri: horsePhoto }}
-                          style={styles.cardImage}
-                        />
-                      ) : (
-                        <Image
-                          source={imageIndex.Banner}
-                          style={styles.cardImage}
-                        />
-                      )}
-                    </View>
-
-                    {/* Center Info Col */}
-                    <View style={styles.cardInfoCol}>
-                      <AppText style={styles.horseTitle}>{horseName}</AppText>
-                      <AppText style={styles.horseSpecs}>{horseSpecs}</AppText>
-                      <AppText style={styles.shipmentCode}>
-                        {item.shipmentCode || 'HS-SHIP-2026-3B7C23'}
-                      </AppText>
-
-                      <View style={styles.infoMetaRow}>
-                        <MapPin size={14} color={COLORS.textSecondary} />
-                        <AppText style={styles.infoMetaText} numberOfLines={1}>
-                          {locationText}
-                        </AppText>
-                      </View>
-
-                      <View style={styles.infoMetaRow}>
-                        <Calendar size={14} color={COLORS.textSecondary} />
-                        <AppText style={styles.infoMetaText}>
-                          {item.pickupDateRange?.start
-                            ? `Pickup ${moment(
-                                item.pickupDateRange.start,
-                              ).format('MMM DD')}`
-                            : 'Pickup Jul 23-31'}
-                        </AppText>
-                      </View>
-                    </View>
-
-                    {/* Right Action & Timeline Col */}
-                    <View style={styles.cardRightCol}>
-                      <TouchableOpacity
-                        style={styles.externalActionBtn}
-                        onPress={() =>
-                          Alert.alert(
-                            'Shipment Details',
-                            `Shipment Code: ${item.shipmentCode}`,
-                          )
-                        }
-                      >
-                        <ExternalLink size={14} color={COLORS.white} />
-                      </TouchableOpacity>
-
-                      <View style={styles.timelineCol}>
-                        <View style={styles.timelineDot} />
-                        <View style={styles.timelineDashedLine} />
-                        <View style={styles.timelineTruckNode}>
-                          <Truck size={12} color="#059669" />
-                        </View>
-                        <View style={styles.timelineDashedLine} />
-                        <View style={styles.timelineDot} />
-                      </View>
-                    </View>
-                  </View>
-                );
-              })
-            )}
-          </View>
-        ) : (
-          /* MODE 2: MAP VIEW MODE (MATCHING SCREENSHOT) */
           <View style={styles.mapModeContainer}>
             {/* Shipments List Selection Card */}
             <View style={styles.mapShipmentsListCard}>
@@ -510,75 +464,22 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                 Select a shipment to view route on map
               </AppText>
 
-              {/* Selection Items Table */}
+              {/* Selection Items Table using FlatList */}
               <View style={styles.mapSelectionTable}>
-                {filteredShipments.map((item, index) => {
-                  const isSelected = selectedMapShipment?._id === item._id;
-                  const isLast = index === filteredShipments.length - 1;
-
-                  const pickupTitle = item.pickupLocation
-                    ? item.pickupLocation.split(',')[0] +
-                      ', ' +
-                      (item.pickupLocation.split(',')[1] || '')
-                    : 'Ghbaleh, Lebanon';
-
-                  const deliveryTitle = item.deliveryLocation
-                    ? item.deliveryLocation.split(',')[0] +
-                      ', ' +
-                      (item.deliveryLocation.split(',')[1] || '')
-                    : 'Myanmar';
-
-                  return (
-                    <TouchableOpacity
-                      key={item._id || index}
-                      style={[
-                        styles.mapSelectItemRow,
-                        isSelected && styles.mapSelectItemRowActive,
-                        isLast && { borderBottomWidth: 0 },
-                      ]}
-                      onPress={() => handleSelectMapShipment(item)}
-                      activeOpacity={0.7}
-                    >
-                      {/* Left Map Pin Icon Circle */}
-                      <View style={styles.mapPinCircle}>
-                        <MapPin size={18} color="#A06333" />
-                      </View>
-
-                      {/* Center Info Col */}
-                      <View style={styles.mapSelectTextCol}>
-                        <AppText
-                          style={styles.mapSelectLocationTitle}
-                          numberOfLines={1}
-                        >
-                          {pickupTitle}
-                        </AppText>
-                        <AppText style={styles.mapSelectShipmentCode}>
-                          {item.shipmentCode || 'HS-SHIP-2026-CODE'}
-                        </AppText>
-                        <AppText
-                          style={styles.mapSelectDeliverySub}
-                          numberOfLines={1}
-                        >
-                          ➜ {deliveryTitle}
-                        </AppText>
-                      </View>
-
-                      {/* Right Action Swap / Arrow Circle Buttons */}
-                      <View style={styles.mapSelectActionsCol}>
-                        <TouchableOpacity
-                          style={styles.swapIconCircle}
-                          onPress={() => handleSelectMapShipment(item)}
-                        >
-                          <ArrowLeftRight size={14} color={COLORS.white} />
-                        </TouchableOpacity>
-
-                        <View style={styles.arrowIconCircle}>
-                          <ArrowRight size={14} color={COLORS.textPrimary} />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
+                <FlatList
+                  data={filteredShipments}
+                  keyExtractor={(item, index) => item._id || item.id || String(index)}
+                  scrollEnabled={false}
+                  renderItem={({ item, index }) => (
+                    <MapShipmentSelectItem
+                      item={item}
+                      isSelected={selectedMapShipment?._id === item._id}
+                      isLast={index === filteredShipments.length - 1}
+                      onSelect={handleSelectMapShipment}
+                      onNavigateDetails={handleNavigateToDetails}
+                    />
+                  )}
+                />
               </View>
             </View>
 
@@ -586,7 +487,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <View style={styles.routeMapCard}>
               <AppText style={styles.routeMapTitle}>Shipment Route Map</AppText>
               <AppText style={styles.routeMapShipmentCode}>
-                {selectedMapShipment?.shipmentCode || 'HS-SHIP-2026-3B7C23'}
+                {selectedMapShipment?.shipmentCode}
               </AppText>
 
               {/* Map Preview Container */}
@@ -680,10 +581,12 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
           </View>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 };
 
 export default ShipperHomeScreen;
+
+

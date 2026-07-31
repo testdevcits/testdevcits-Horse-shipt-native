@@ -147,6 +147,50 @@ const shipperService = {
     return axiosClient.get('/api/shipper/quotes/mq');
   },
 
+  // Submit a shipping offer / quote (POST /api/shipper/quotes/add)
+  addQuote: async (formData: FormData): Promise<{
+    success: boolean;
+    message?: string;
+    quote?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/quotes/add', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+
+  // Delete a shipper quote (/api/shipper/delete/:id)
+  deleteQuote: async (id: string): Promise<{
+    success: boolean;
+    message?: string;
+  }> => {
+    return axiosClient.delete(`/api/shipper/delete/${id}`);
+  },
+
+  // Ask a question about a shipment (POST /api/questions/ask)
+  askQuestion: async (data: {
+    shipmentId: string;
+    question: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+  }> => {
+    return axiosClient.post('/api/questions/ask', data);
+  },
+
+  // Fetch shipment questions (GET /api/questions/:shipmentId)
+  getShipmentQuestions: async (shipmentId: string): Promise<{
+    success: boolean;
+    data?: {
+      answered: any[];
+      pending: any[];
+    };
+  }> => {
+    return axiosClient.get(`/api/questions/${shipmentId}`);
+  },
+
   // Update Google review link (PUT /api/shipper/reviews/google-link)
   updateGoogleReviewLink: async (googleReviewLink: string): Promise<{
     success: boolean;
@@ -188,6 +232,15 @@ const shipperService = {
     shipments: any[];
   }> => {
     return axiosClient.get('/api/shipper/shipments/available', { params });
+  },
+
+  // Fetch shipper quote invitations (GET /api/shipper/invitations)
+  getInvitations: async (): Promise<{
+    success: boolean;
+    count?: number;
+    data: any[];
+  }> => {
+    return axiosClient.get('/api/shipper/invitations');
   },
 
   // Fetch chat customer conversations (/api/shipper/chat/customers)
@@ -325,6 +378,53 @@ const shipperService = {
     return axiosClient.get('/api/shipper/stripe/status');
   },
 
+  // Fetch Shipper Payment Card Status (/api/shipper/status)
+  getShipperStatus: async (): Promise<{
+    success: boolean;
+    hasCard?: boolean;
+    cardLast4?: string;
+    cardBrand?: string;
+    cardExpMonth?: number;
+    cardExpYear?: number;
+    message?: string;
+  }> => {
+    return axiosClient.get('/api/shipper/status');
+  },
+
+  // Create Stripe Customer for Shipper (/api/shipper/create-customer)
+  createCustomer: async (): Promise<{
+    success: boolean;
+    message?: string;
+    stripeCustomerId?: string;
+  }> => {
+    return axiosClient.post('/api/shipper/create-customer');
+  },
+
+  // Get Setup Intent for Shipper (/api/shipper/setup-intent)
+  getSetupIntent: async (): Promise<{
+    success: boolean;
+    clientSecret?: string;
+    message?: string;
+  }> => {
+    return axiosClient.post('/api/shipper/setup-intent');
+  },
+
+  // Save Payment Method for Shipper (/api/shipper/save-payment-method)
+  savePaymentMethod: async (payload: {
+    paymentMethodId: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    cardBrand?: string;
+    cardLast4?: string;
+    cardExpMonth?: number;
+    cardExpYear?: number;
+  }> => {
+    return axiosClient.post('/api/shipper/save-payment-method', payload);
+  },
+
+  // Update Banner Image (/api/shipper/update-banner-image)
+
   // Update Banner Image (/api/shipper/update-banner-image)
   updateBannerImage: async (formData: FormData): Promise<{
     success: boolean;
@@ -360,6 +460,75 @@ const shipperService = {
       transformRequest: [(data) => data],
     });
   },
+
+  // Update Profile Details (PUT /api/shipper/update-profile)
+  updateProfile: async (payload: {
+    mobile?: string;
+    description?: string;
+    locale?: {
+      address: string;
+      latitude: number;
+      longitude: number;
+    };
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data: any;
+  }> => {
+    return axiosClient.put('/api/shipper/update-profile', payload);
+  },
+
+  // Fetch Preferred Areas
+  getPreferredAreas: async (): Promise<{
+    success: boolean;
+    message?: string;
+    data: any[];
+  }> => {
+    return axiosClient.get('/api/shipper/preferred-areas');
+  },
+
+  // Add Preferred Area
+  addPreferredArea: async (payload: {
+    locationName: string;
+    latitude: number;
+    longitude: number;
+    radiusKm: number;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/preferred-areas', payload);
+  },
+
+  // Update Preferred Area
+  updatePreferredArea: async (
+    id: string,
+    payload: {
+      locationName: string;
+      latitude: number;
+      longitude: number;
+      radiusKm: number;
+    },
+  ): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+  }> => {
+    return axiosClient.put(`/api/shipper/preferred-areas/${id}`, payload);
+  },
+
+  // Delete Preferred Area
+  deletePreferredArea: async (
+    id: string,
+  ): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+  }> => {
+    return axiosClient.delete(`/api/shipper/preferred-areas/${id}`);
+  },
 };
 
 export default shipperService;
+

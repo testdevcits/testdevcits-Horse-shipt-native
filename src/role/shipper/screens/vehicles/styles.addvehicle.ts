@@ -2,6 +2,14 @@ import { StyleSheet } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  scrollContent: {
+    padding: SPACING.md,
+    paddingBottom: SPACING.xxl,
+  },
   overlay: {
     flex: 1,
     backgroundColor: COLORS.overlay,

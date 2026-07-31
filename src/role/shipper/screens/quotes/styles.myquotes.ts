@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
-    paddingBottom: SPACING.xxl,
+    paddingBottom: 120,
   },
 
   topCard: {
