@@ -26,8 +26,7 @@ import {
   ArrowRight,
   ArrowLeftRight,
 } from 'lucide-react-native';
-import moment from 'moment';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
 import {
   COLORS,
   FONTS,
@@ -385,31 +384,24 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   );
 
   const renderEmpty = () => {
-    if (loading) {
-      return (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.goldPrimary} />
-        </View>
-      );
-    }
+    if (loading) return null;
     return (
-      <View style={styles.emptyContainer}>
-        <Truck size={44} color={COLORS.textLight} />
-        <AppText style={styles.emptyTitle}>No Active Shipments</AppText>
-        <AppText style={styles.emptySub}>
-          Available shipments for bidding will appear here.
-        </AppText>
-      </View>
+      <EmptyState
+        icon={Truck}
+        title="No Active Shipments"
+        message="Available shipments for bidding will appear here."
+      />
     );
   };
 
   return (
     <View style={styles.container}>
       <AppHeader title="" />
+      <AppLoader visible={loading && !refreshing} />
 
       {viewMode === 'list' ? (
         <FlatList
-          data={loading ? [] : filteredShipments}
+          data={filteredShipments}
           keyExtractor={(item, index) => item._id || item.id || String(index)}
           renderItem={({ item }) => (
             <AvailableShipmentCard item={item} onPress={handleNavigateToDetails} />

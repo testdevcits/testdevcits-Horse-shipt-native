@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  StyleSheet,
-  ScrollView,
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
   Modal,
   TextInput,
+  FlatList,
 } from 'react-native';
 import {
   Wallet,
@@ -30,7 +29,7 @@ import {
 } from 'lucide-react-native';
 import moment from 'moment';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
@@ -277,11 +276,185 @@ const EarningsScreen = () => {
     return id;
   };
 
+  const renderHeader = () => (
+    <>
+      {/* Payments & Payouts Card */}
+      <View style={styles.card}>
+        <View style={styles.headerRow}>
+          <View style={styles.walletIconBox}>
+            <Wallet size={22} color="#A06333" />
+          </View>
+          <View style={styles.headerTextCol}>
+            <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
+            <AppText style={styles.cardSub}>
+              Manage payment methods and track earnings
+            </AppText>
+          </View>
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* Active Card Container */}
+        {statusLoading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="small" color={COLORS.goldPrimary} />
+          </View>
+        ) : cardStatus.hasCard ? (
+          <>
+            <View style={styles.activeCardContainer}>
+              <View style={styles.cardIconBox}>
+                <CreditCard size={18} color="#A06333" />
+              </View>
+              <View style={styles.activeCardTextCol}>
+                <AppText style={styles.activeCardLabel}>Active Card</AppText>
+                <AppText style={styles.activeCardNumber}>
+                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....{cardStatus.cardLast4 || '4242'}
+                </AppText>
+              </View>
+              <CheckCircle size={22} color="#10B981" />
+            </View>
+
+            <TouchableOpacity
+              style={styles.updateCardBtn}
+              onPress={handleOpenCardModal}
+              disabled={initializingCard}
+              activeOpacity={0.8}
+            >
+              {initializingCard ? (
+                <ActivityIndicator size="small" color={COLORS.goldPrimary} />
+              ) : (
+                <>
+                  <Edit size={16} color="#A06333" />
+                  <AppText style={styles.updateCardBtnText}>Update Card</AppText>
+                </>
+              )}
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View style={styles.noCardContainer}>
+            <AppText style={styles.noCardText}>No payment method currently attached.</AppText>
+            <TouchableOpacity
+              style={styles.addCardPrimaryBtn}
+              onPress={handleOpenCardModal}
+              disabled={initializingCard}
+              activeOpacity={0.8}
+            >
+              {initializingCard ? (
+                <ActivityIndicator size="small" color={COLORS.white} />
+              ) : (
+                <>
+                  <Plus size={16} color={COLORS.white} />
+                  <AppText style={styles.addCardPrimaryBtnText}>Add Payment Method</AppText>
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+
+      {/* Payout History Section */}
+      <View style={styles.payoutHistoryHeaderRow}>
+        <View style={styles.payoutIconBox}>
+          <ExternalLink size={20} color="#A06333" />
+        </View>
+        <View>
+          <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
+          <AppText style={styles.payoutSectionSub}>
+            {totalTransactionsCount} {totalTransactionsCount === 1 ? 'transaction' : 'transactions'}
+          </AppText>
+        </View>
+      </View>
+
+      <View style={styles.divider} />
+
+      {/* Table Column Headers */}
+      <View style={[styles.tableCard, { marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }]}>
+        <View style={styles.tableHeaderRow}>
+          <AppText style={[styles.columnHeader, { flex: 2.2 }]}>ID</AppText>
+          <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'center' }]}>
+            Amount
+          </AppText>
+          <AppText style={[styles.columnHeader, { flex: 1.8, textAlign: 'center' }]}>
+            Date
+          </AppText>
+          <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'right' }]}>
+            Status
+          </AppText>
+        </View>
+      </View>
+    </>
+  );
+
+  const renderEmpty = () => {
+    if (loading) return null;
+    return (
+      <View style={[styles.tableCard, { marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }]}>
+        <EmptyState
+          icon={FileText}
+          title="No Transactions"
+          message="Your payout transactions will appear here."
+        />
+      </View>
+    );
+  };
+
+  const renderTxItem = ({ item: tx, index }: { item: any; index: number }) => {
+    const isLast = index === transactions.length - 1;
+    const formattedDate = tx.createdAt
+      ? moment(tx.createdAt).format('MMM DD, YYYY')
+      : 'Jul 13, 2026';
+
+    return (
+      <View
+        style={[
+          styles.tableRow,
+          isLast && styles.tableRowLast,
+          { backgroundColor: COLORS.white, paddingHorizontal: SPACING.md },
+        ]}
+      >
+        {/* ID */}
+        <TouchableOpacity
+          style={styles.idCol}
+          onPress={() => setSelectedTx(tx)}
+        >
+          <AppText style={styles.idText} numberOfLines={1}>
+            {formatTxId(tx.id)}
+          </AppText>
+          <Eye size={13} color={COLORS.textSecondary} />
+        </TouchableOpacity>
+
+        {/* Amount */}
+        <AppText style={styles.amountText}>
+          ${tx.amount ? (tx.amount % 1 === 0 ? tx.amount.toFixed(2) : tx.amount) : '829.92'}
+        </AppText>
+
+        {/* Date */}
+        <AppText style={styles.dateText}>{formattedDate}</AppText>
+
+        {/* Status Badge */}
+        <View style={styles.statusCol}>
+          <View style={styles.paidBadge}>
+            <AppText style={styles.paidBadgeText}>
+              {(tx.status || 'Paid').charAt(0).toUpperCase() +
+                (tx.status || 'Paid').slice(1)}
+            </AppText>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <AppHeader title="Earnings & Payouts" />
+      <AppLoader visible={loading && !refreshing} />
 
-      <ScrollView
+      <FlatList
+        data={transactions}
+        keyExtractor={(item, index) => item.id || index.toString()}
+        renderItem={renderTxItem}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={renderEmpty}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -291,171 +464,7 @@ const EarningsScreen = () => {
             tintColor={COLORS.goldPrimary}
           />
         }
-      >
-        {/* Payments & Payouts Card */}
-        <View style={styles.card}>
-          <View style={styles.headerRow}>
-            <View style={styles.walletIconBox}>
-              <Wallet size={22} color="#A06333" />
-            </View>
-            <View style={styles.headerTextCol}>
-              <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
-              <AppText style={styles.cardSub}>
-                Manage payment methods and track earnings
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.divider} />
-
-          {/* Active Card Container */}
-          {statusLoading ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="small" color={COLORS.goldPrimary} />
-            </View>
-          ) : cardStatus.hasCard ? (
-            <>
-              <View style={styles.activeCardContainer}>
-                <View style={styles.cardIconBox}>
-                  <CreditCard size={18} color="#A06333" />
-                </View>
-                <View style={styles.activeCardTextCol}>
-                  <AppText style={styles.activeCardLabel}>Active Card</AppText>
-                  <AppText style={styles.activeCardNumber}>
-                    {(cardStatus.cardBrand || 'VISA').toUpperCase()}....{cardStatus.cardLast4 || '4242'}
-                  </AppText>
-                </View>
-                <CheckCircle size={22} color="#10B981" />
-              </View>
-
-              <TouchableOpacity
-                style={styles.updateCardBtn}
-                onPress={handleOpenCardModal}
-                disabled={initializingCard}
-                activeOpacity={0.8}
-              >
-                {initializingCard ? (
-                  <ActivityIndicator size="small" color={COLORS.goldPrimary} />
-                ) : (
-                  <>
-                    <Edit size={16} color="#A06333" />
-                    <AppText style={styles.updateCardBtnText}>Update Card</AppText>
-                  </>
-                )}
-              </TouchableOpacity>
-            </>
-          ) : (
-            <View style={styles.noCardContainer}>
-              <AppText style={styles.noCardText}>No payment method currently attached.</AppText>
-              <TouchableOpacity
-                style={styles.addCardPrimaryBtn}
-                onPress={handleOpenCardModal}
-                disabled={initializingCard}
-                activeOpacity={0.8}
-              >
-                {initializingCard ? (
-                  <ActivityIndicator size="small" color={COLORS.white} />
-                ) : (
-                  <>
-                    <Plus size={16} color={COLORS.white} />
-                    <AppText style={styles.addCardPrimaryBtnText}>Add Payment Method</AppText>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-
-        {/* Payout History Section */}
-        <View style={styles.payoutHistoryHeaderRow}>
-          <View style={styles.payoutIconBox}>
-            <ExternalLink size={20} color="#A06333" />
-          </View>
-          <View>
-            <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
-            <AppText style={styles.payoutSectionSub}>
-              {totalTransactionsCount} {totalTransactionsCount === 1 ? 'transaction' : 'transactions'}
-            </AppText>
-          </View>
-        </View>
-
-        <View style={styles.divider} />
-
-        {/* Table View */}
-        <View style={styles.tableCard}>
-          {/* Table Column Headers */}
-          <View style={styles.tableHeaderRow}>
-            <AppText style={[styles.columnHeader, { flex: 2.2 }]}>ID</AppText>
-            <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'center' }]}>
-              Amount
-            </AppText>
-            <AppText style={[styles.columnHeader, { flex: 1.8, textAlign: 'center' }]}>
-              Date
-            </AppText>
-            <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'right' }]}>
-              Status
-            </AppText>
-          </View>
-
-          {/* Table Content */}
-          {loading ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color={COLORS.goldPrimary} />
-            </View>
-          ) : transactions.length === 0 ? (
-            <View style={styles.emptyContainer}>
-              <FileText size={36} color={COLORS.textLight} />
-              <AppText style={styles.emptyTitle}>No Transactions</AppText>
-              <AppText style={styles.emptySub}>
-                Your payout transactions will appear here.
-              </AppText>
-            </View>
-          ) : (
-            transactions.map((tx, index) => {
-              const isLast = index === transactions.length - 1;
-              const formattedDate = tx.createdAt
-                ? moment(tx.createdAt).format('MMM DD, YYYY')
-                : 'Jul 13, 2026';
-
-              return (
-                <View
-                  key={tx.id || index}
-                  style={[styles.tableRow, isLast && styles.tableRowLast]}
-                >
-                  {/* ID */}
-                  <TouchableOpacity
-                    style={styles.idCol}
-                    onPress={() => setSelectedTx(tx)}
-                  >
-                    <AppText style={styles.idText} numberOfLines={1}>
-                      {formatTxId(tx.id)}
-                    </AppText>
-                    <Eye size={13} color={COLORS.textSecondary} />
-                  </TouchableOpacity>
-
-                  {/* Amount */}
-                  <AppText style={styles.amountText}>
-                    ${tx.amount ? (tx.amount % 1 === 0 ? tx.amount.toFixed(2) : tx.amount) : '829.92'}
-                  </AppText>
-
-                  {/* Date */}
-                  <AppText style={styles.dateText}>{formattedDate}</AppText>
-
-                  {/* Status Badge */}
-                  <View style={styles.statusCol}>
-                    <View style={styles.paidBadge}>
-                      <AppText style={styles.paidBadgeText}>
-                        {(tx.status || 'Paid').charAt(0).toUpperCase() +
-                          (tx.status || 'Paid').slice(1)}
-                      </AppText>
-                    </View>
-                  </View>
-                </View>
-              );
-            })
-          )}
-        </View>
-      </ScrollView>
+      />
 
       {/* Stripe Payment Method Card Modal */}
       <Modal

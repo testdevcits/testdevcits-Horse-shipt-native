@@ -3,15 +3,9 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  TextInput,
   RefreshControl,
 } from 'react-native';
-import {
-  Search,
-  Plus,
-  User,
-  SlidersHorizontal,
-} from 'lucide-react-native';
+import { Plus, User } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
@@ -20,6 +14,8 @@ import {
   EmptyState,
   TruckDriverCard,
   ConfirmationModal,
+  SearchBarCompt,
+  AppSelect,
 } from '../../../../components';
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -47,7 +43,7 @@ const TruckDriverScreen = () => {
     try {
       const res = await shipperService.getDrivers({
         page: 1,
-        limit: 20,
+        limit: 100,
         search: searchQuery,
         status: selectedStatus,
         sortBy: 'createdAt',
@@ -135,66 +131,37 @@ const TruckDriverScreen = () => {
         Manage driver profiles, contact details, and license verification.
       </AppText>
 
-      {/* Search Input Bar */}
-      <View style={styles.searchBarContainer}>
-        <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search by driver name or email..."
-          placeholderTextColor={COLORS.textLight}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-      </View>
+      {/* Search Bar Component */}
+      <SearchBarCompt
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Search by driver name or email..."
+        containerStyle={{ marginBottom: SPACING.md }}
+      />
 
       {/* Filters & Add Driver Row */}
       <View style={styles.filtersRow}>
-        <View style={styles.filterPillsGroup}>
-          <TouchableOpacity
-            style={[
-              styles.filterPill,
-              selectedStatus === 'active' && styles.filterPillActive,
-            ]}
-            onPress={() =>
-              setSelectedStatus(selectedStatus === 'active' ? '' : 'active')
+        <View style={{ flex: 1, marginRight: SPACING.xs }}>
+          <AppSelect
+            placeholder="Filter Status"
+            value={
+              selectedStatus === 'active'
+                ? 'Active'
+                : selectedStatus === 'inactive'
+                  ? 'Inactive'
+                  : 'All'
             }
-          >
-            <AppText
-              style={[
-                styles.filterPillText,
-                selectedStatus === 'active' && styles.filterPillTextActive,
-              ]}
-            >
-              Active
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.filterPill,
-              selectedStatus === 'inactive' && styles.filterPillActive,
-            ]}
-            onPress={() =>
-              setSelectedStatus(selectedStatus === 'inactive' ? '' : 'inactive')
-            }
-          >
-            <AppText
-              style={[
-                styles.filterPillText,
-                selectedStatus === 'inactive' && styles.filterPillTextActive,
-              ]}
-            >
-              Inactive
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.filterIconBtn}>
-            <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
-          </TouchableOpacity>
+            options={['All', 'Active', 'Inactive']}
+            onSelect={(item: string) => {
+              if (item === 'Active') setSelectedStatus('active');
+              else if (item === 'Inactive') setSelectedStatus('inactive');
+              else setSelectedStatus('');
+            }}
+          />
         </View>
 
         <TouchableOpacity
-          style={styles.addDriverBtn}
+          style={[styles.addDriverBtn, { height: 46, justifyContent: 'center' }]}
           onPress={() => {
             setSelectedDriverToEdit(null);
             setIsAddModalVisible(true);

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
-  TextInput,
-  ActivityIndicator,
   RefreshControl,
   FlatList,
   ScrollView,
 } from 'react-native';
-import { Search, FileText } from 'lucide-react-native';
+import { FileText } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
-import { COLORS } from '../../../../constants';
+import {
+  AppHeader,
+  AppText,
+  AppLoader,
+  EmptyState,
+  SearchBarCompt,
+  ConfirmationModal,
+} from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import ContractModal from './ContractModal';
 import ShipperQuoteCard from './ShipperQuoteCard';
@@ -149,17 +153,12 @@ const MyQuotesScreen = () => {
           Review shipment offers, contracts, vehicles, and payment status.
         </AppText>
 
-        {/* Search Input Bar */}
-        <View style={styles.searchBarContainer}>
-          <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search by pickup or delivery location..."
-            placeholderTextColor={COLORS.textLight}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+        {/* Search Input Bar Component */}
+        <SearchBarCompt
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search by pickup or delivery location..."
+        />
       </View>
 
       {/* Horizontal Filter Tabs */}
@@ -253,31 +252,23 @@ const MyQuotesScreen = () => {
   );
 
   const renderEmpty = () => {
-    if (loading) {
-      return (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.goldPrimary} />
-        </View>
-      );
-    }
-
+    if (loading) return null;
     return (
-      <View style={styles.emptyContainer}>
-        <FileText size={48} color={COLORS.textLight} />
-        <AppText style={styles.emptyTitle}>No Quotes Found</AppText>
-        <AppText style={styles.emptySub}>
-          You haven't submitted any quotes for this filter tab yet.
-        </AppText>
-      </View>
+      <EmptyState
+        icon={FileText}
+        title="No Quotes Found"
+        message="You haven't submitted any quotes for this filter tab yet."
+      />
     );
   };
 
   return (
     <View style={styles.container}>
       <AppHeader title="My Quotes" />
+      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
-        data={loading ? [] : filteredQuotes}
+        data={filteredQuotes}
         keyExtractor={(item, index) => item._id || item.id || String(index)}
         renderItem={({ item }) => (
           <ShipperQuoteCard
@@ -288,7 +279,11 @@ const MyQuotesScreen = () => {
         )}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          filteredQuotes.length === 0 && { flexGrow: 1 },
+        ]}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -313,6 +308,7 @@ const MyQuotesScreen = () => {
         confirmText="Delete"
         cancelText="Cancel"
         type="danger"
+        isLoading={isDeleting}
       />
     </View>
   );
