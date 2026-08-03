@@ -1,108 +1,115 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { Calendar, Clock, MapPin, Truck } from 'lucide-react-native';
+import { Calendar, Clock, MapPin, Truck, Navigation2, Compass, ShieldCheck } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, FONTS } from '../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
 
 const ActiveShipment = ({
   activeShipment,
   getShortLocation,
+  onLaunchMap,
 }: {
   activeShipment?: any;
   getShortLocation?: any;
+  onLaunchMap?: () => void;
 }) => {
+  const isTripInTransit = activeShipment?.tripStatus === 'inTransit' || activeShipment?.tripStatus === 'started';
+
   return (
     <View style={styles.card}>
+      {/* Header Bar */}
       <View style={styles.cardHeader}>
-        <AppText style={styles.cardHeaderTitle}>Current Shipment</AppText>
+        <View style={styles.headerLeftRow}>
+          <Compass size={18} color={COLORS.goldPrimary} />
+          <AppText style={styles.cardHeaderTitle}>Active Dispatch Manifest</AppText>
+        </View>
+        <View style={[styles.statusBadgePill, isTripInTransit ? styles.transitPill : styles.pendingPill]}>
+          <View style={[styles.statusDot, isTripInTransit ? styles.greenDot : styles.amberDot]} />
+          <AppText style={[styles.statusPillText, isTripInTransit ? styles.greenPillText : styles.amberPillText]}>
+            {isTripInTransit ? 'IN TRANSIT' : activeShipment?.tripStatus?.toUpperCase() || 'ASSIGNED'}
+          </AppText>
+        </View>
       </View>
 
       <View style={styles.cardBody}>
-        {/* Active Route Box */}
+        {/* Route Header Overview Box */}
         <View style={styles.routeHeaderBox}>
-          <AppText style={styles.routeLabel}>ACTIVE ROUTE</AppText>
-          <AppText style={styles.routePlaces}>
-            {getShortLocation(activeShipment?.shipment?.pickupLocation)} ➔{' '}
-            {getShortLocation(activeShipment?.shipment?.deliveryLocation)}
+          <AppText style={styles.routeLabel}>DIRECT DISPATCH ROUTE</AppText>
+          <AppText style={styles.routePlaces} numberOfLines={1}>
+            {getShortLocation ? getShortLocation(activeShipment?.shipment?.pickupLocation) : 'Origin'} ➔{' '}
+            {getShortLocation ? getShortLocation(activeShipment?.shipment?.deliveryLocation) : 'Destination'}
           </AppText>
 
-          <View style={styles.horseCountBadge}>
-            <Truck
-              size={14}
-              color={COLORS.goldPrimary}
-              style={styles.badgeIcon}
-            />
-            <AppText style={styles.horseCountText}>
-              {activeShipment?.shipment?.numberOfHorses} Horse Shipment
-            </AppText>
-          </View>
-        </View>
-
-        {/* Trip Status Row */}
-        <View style={styles.tripStatusRow}>
-          <AppText style={styles.tripStatusLabel}>Trip Status</AppText>
-          <View style={styles.statusIndicatorRow}>
-            <View style={styles.greenActiveDot} />
-            <AppText style={styles.greenActiveText}>
-              {activeShipment?.tripStatus === 'inTransit'
-                ? 'IN TRANSIT'
-                : activeShipment?.tripStatus?.toUpperCase()}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Pickup Block */}
-        <View style={styles.stopCard}>
-          <View style={styles.stopIconContainer}>
-            <MapPin size={18} color={COLORS.white} />
-          </View>
-          <View style={styles.stopDetails}>
-            <AppText style={styles.stopLabel}>PICKUP</AppText>
-            <AppText style={styles.stopLocation}>
-              {activeShipment?.shipment?.pickupLocation}
-            </AppText>
-            <View style={styles.stopMetaRow}>
-              <Calendar size={13} color={COLORS.textLight} />
-              <AppText style={styles.stopMetaText}>
-                {activeShipment?.shipment?.createdAt || 'N/A'}
+          {/* Quick Metrics Bar */}
+          <View style={styles.metricsRow}>
+            <View style={styles.metricChip}>
+              <Truck size={13} color={COLORS.goldPrimary} />
+              <AppText style={styles.metricChipText}>
+                {activeShipment?.shipment?.numberOfHorses || 1} Horse(s)
               </AppText>
-              <Clock
-                size={13}
-                color={COLORS.textLight}
-                style={styles.metaSpacing}
-              />
+            </View>
+            <View style={styles.metricChip}>
+              <ShieldCheck size={13} color={COLORS.greenActive} />
+              <AppText style={styles.metricChipText}>Insured Load</AppText>
             </View>
           </View>
         </View>
 
-        {/* Dashed Connecting Line */}
-        <View style={styles.connectorWrapper}>
-          <View style={styles.dashedLine} />
-          <View style={styles.dashedCenterDot} />
-          <View style={styles.dashedLine} />
-        </View>
-
-        {/* Delivery Block */}
-        <View style={styles.stopCard}>
-          <View style={styles.stopIconContainer}>
-            <MapPin size={18} color={COLORS.white} />
+        {/* Vertical Route Timeline */}
+        <View style={styles.timelineContainer}>
+          {/* Pickup Node */}
+          <View style={styles.stopCard}>
+            <View style={[styles.nodeIconCircle, { backgroundColor: '#10B981' }]}>
+              <MapPin size={16} color={COLORS.white} />
+            </View>
+            <View style={styles.stopDetails}>
+              <AppText style={styles.stopLabel}>PICKUP LOCATION</AppText>
+              <AppText style={styles.stopLocation}>
+                {activeShipment?.shipment?.pickupLocation || 'Pickup address N/A'}
+              </AppText>
+              <View style={styles.stopMetaRow}>
+                <Calendar size={12} color={COLORS.textLight} />
+                <AppText style={styles.stopMetaText}>
+                  Scheduled Load
+                </AppText>
+              </View>
+            </View>
           </View>
-          <View style={styles.stopDetails}>
-            <AppText style={styles.stopLabel}>DELIVERY</AppText>
-            <AppText style={styles.stopLocation}>
-              {activeShipment?.shipment?.deliveryLocation}
-            </AppText>
-            <View style={styles.stopMetaRow}>
-              <Calendar size={13} color={COLORS.textLight} />
-              <AppText style={styles.stopMetaText}>N/A</AppText>
-              <Clock
-                size={13}
-                color={COLORS.textLight}
-                style={styles.metaSpacing}
-              />
+
+          {/* Vertical Connecting Track */}
+          <View style={styles.connectorWrapper}>
+            <View style={styles.verticalTrackLine} />
+          </View>
+
+          {/* Delivery Node */}
+          <View style={styles.stopCard}>
+            <View style={[styles.nodeIconCircle, { backgroundColor: '#EF4444' }]}>
+              <MapPin size={16} color={COLORS.white} />
+            </View>
+            <View style={styles.stopDetails}>
+              <AppText style={styles.stopLabel}>DROP-OFF LOCATION</AppText>
+              <AppText style={styles.stopLocation}>
+                {activeShipment?.shipment?.deliveryLocation || 'Delivery address N/A'}
+              </AppText>
+              <View style={styles.stopMetaRow}>
+                <Clock size={12} color={COLORS.textLight} />
+                <AppText style={styles.stopMetaText}>Target Delivery</AppText>
+              </View>
             </View>
           </View>
         </View>
+
+        {/* GPS Map Nav Trigger Button */}
+        {onLaunchMap && (
+          <TouchableOpacity
+            style={styles.gpsNavBtn}
+            onPress={onLaunchMap}
+            activeOpacity={0.85}
+          >
+            <Navigation2 size={16} color={COLORS.white} />
+            <AppText style={styles.gpsNavBtnText}>Launch Live GPS Navigation</AppText>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -115,48 +122,75 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderWidth: 1.5,
     borderColor: COLORS.goldBorder,
-    borderRadius: 8,
+    borderRadius: RADIUS.md,
     marginBottom: 20,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
   },
   cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: COLORS.goldLightBg,
     borderBottomWidth: 1.5,
     borderColor: COLORS.goldBorder,
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
+  headerLeftRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   cardHeaderTitle: {
     fontFamily: FONTS.bold,
     fontSize: 15,
     color: COLORS.goldDarkText,
   },
-  cardBody: {
-    padding: 16,
-  },
-  horseCountBadge: {
+  statusBadgePill: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  transitPill: {
+    backgroundColor: '#DCFCE7',
     borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    backgroundColor: COLORS.white,
-    borderRadius: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    borderColor: '#86EFAC',
   },
-  badgeIcon: {
-    marginRight: 6,
+  pendingPill: {
+    backgroundColor: '#FEF3C7',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
   },
-  horseCountText: {
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  greenDot: { backgroundColor: '#16A34A' },
+  amberDot: { backgroundColor: '#D97706' },
+  statusPillText: {
     fontFamily: FONTS.bold,
-    fontSize: 12,
-    color: COLORS.goldDarkText,
+    fontSize: 10,
+    letterSpacing: 0.3,
+  },
+  greenPillText: { color: '#15803D' },
+  amberPillText: { color: '#B45309' },
+  cardBody: {
+    padding: 16,
   },
   routeHeaderBox: {
     backgroundColor: COLORS.goldLightBg,
     borderWidth: 1.2,
     borderColor: COLORS.goldBorder,
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
     padding: 16,
     alignItems: 'center',
     marginBottom: 16,
@@ -165,114 +199,105 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: 10,
     color: COLORS.goldPrimary,
-    letterSpacing: 1,
-    marginBottom: 6,
+    letterSpacing: 1.2,
+    marginBottom: 4,
   },
   routePlaces: {
     fontFamily: FONTS.bold,
     fontSize: 18,
     color: COLORS.textPrimary,
-    marginBottom: 12,
+    marginBottom: 10,
   },
-  tripStatusRow: {
+  metricsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  metricChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1.2,
+    gap: 4,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
     borderColor: COLORS.goldBorder,
-    borderRadius: 6,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginBottom: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: RADIUS.xs,
   },
-  tripStatusLabel: {
+  metricChipText: {
     fontFamily: FONTS.bold,
-    fontSize: 13,
-    color: COLORS.textLight,
+    fontSize: 11,
+    color: COLORS.goldDarkText,
   },
-  statusIndicatorRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  greenActiveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: COLORS.greenActive,
-    marginRight: 6,
-  },
-  greenActiveText: {
-    fontFamily: FONTS.bold,
-    fontSize: 12,
-    color: COLORS.greenActive,
+  timelineContainer: {
+    marginVertical: 4,
   },
   stopCard: {
     flexDirection: 'row',
-    backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1.2,
-    borderColor: COLORS.goldBorder,
-    borderRadius: 8,
-    padding: 16,
+    backgroundColor: COLORS.grey50,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    borderRadius: RADIUS.sm,
+    padding: 12,
     alignItems: 'center',
   },
-  stopIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 6,
-    backgroundColor: COLORS.goldPrimary,
+  nodeIconCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 14,
+    marginRight: 12,
   },
   stopDetails: {
     flex: 1,
   },
   stopLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
-    color: COLORS.goldPrimary,
-    letterSpacing: 0.5,
+    fontSize: 9,
+    color: COLORS.textSecondary,
+    letterSpacing: 0.6,
     marginBottom: 2,
   },
   stopLocation: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: 13,
     color: COLORS.textPrimary,
     marginBottom: 4,
   },
   stopMetaRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 4,
   },
   stopMetaText: {
     fontFamily: FONTS.regular,
     fontSize: 11,
     color: COLORS.textLight,
-    marginLeft: 4,
-  },
-  metaSpacing: {
-    marginLeft: 12,
   },
   connectorWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 32,
-    position: 'relative',
-  },
-  dashedLine: {
-    width: 1,
-    height: 10,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    borderStyle: 'dashed',
-  },
-  dashedCenterDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    borderWidth: 1.5,
-    borderColor: COLORS.goldPrimary,
-    backgroundColor: COLORS.goldLightBg,
+    height: 24,
     marginVertical: 2,
+  },
+  verticalTrackLine: {
+    width: 2,
+    height: '100%',
+    backgroundColor: COLORS.goldBorder,
+  },
+  gpsNavBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: COLORS.goldPrimary,
+    paddingVertical: 12,
+    borderRadius: RADIUS.sm,
+    marginTop: 14,
+  },
+  gpsNavBtnText: {
+    fontFamily: FONTS.bold,
+    fontSize: 13,
+    color: COLORS.white,
   },
 });

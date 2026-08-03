@@ -6,40 +6,43 @@ import {
     Platform,
     ViewStyle,
     StyleProp,
-
+    TouchableOpacity,
 } from 'react-native';
-import { COLORS, FONTS } from '../../constants'; // Adjust relative path as needed
+import { Star, ShieldCheck, Radio } from 'lucide-react-native';
+import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 
-// Header color palette mapped to match your beige/gold driver aesthetic
 const HEADER_COLORS = {
     goldPrimary: '#A37F3D',
     goldLightBg: '#FAF6EE',
     goldBorder: '#DCCEB2',
     goldDarkText: '#5C441E',
     greenIndicator: '#10B981',
-    background: '#FAF6EE', // Pale beige header background matching screenshot
+    background: '#FAF6EE',
 };
 
 interface DriverHeaderProps {
-    name: string;             // Driver's name (e.g., "Test Driver")
-    statusText?: string;      // Status text (e.g., "ON TRIP")
+    name: string;
+    statusText?: string;
     profileImageUrl?: string | null;
-    isOnline?: boolean;       // Toggles the green connection status dot
-    rightComponent?: React.ReactNode; // Optional slot for notifications/settings icon
+    isOnline?: boolean;
+    rating?: number;
+    rightComponent?: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
+    onStatusToggle?: () => void;
 }
 
 const DriverHeader: React.FC<DriverHeaderProps> = ({
     name,
-    statusText = 'ON TRIP',
+    statusText = 'ON DISPATCH',
     profileImageUrl,
     isOnline = true,
+    rating = 4.9,
     rightComponent,
     containerStyle,
+    onStatusToggle,
 }) => {
-    // Extract initial for monogram box
-    const firstLetter = name ? name.trim().charAt(0).toUpperCase() : 'D';
+    const firstLetter = name ? name.trim().charAt(0).toUpperCase() : 'C';
 
     const getAvatarUri = (img: any): string | null => {
         if (!img) return null;
@@ -57,7 +60,6 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
     return (
         <View style={[styles.safeArea, containerStyle]}>
             <View style={styles.headerRow}>
-
                 {/* Left Side: Avatar Box & Status Dot */}
                 <View style={styles.leftContainer}>
                     <View style={styles.avatarWrapper}>
@@ -67,32 +69,44 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                             <AppText style={styles.monogramText}>{firstLetter}</AppText>
                         )}
                     </View>
-
-                    {/* Active green indicator dot on bottom-right corner of avatar box */}
                     {isOnline && <View style={styles.indicatorDot} />}
                 </View>
 
-                {/* Center: Name & Status Badge */}
+                {/* Center: Captain Name, Rating & Status Pill */}
                 <View style={styles.middleContainer}>
-                    <AppText style={styles.driverName} numberOfLines={1}>
-                        {name || 'Driver'}
-                    </AppText>
-
-                    <View style={styles.statusBadge}>
-                        <View style={styles.statusBadgeDot} />
-                        <AppText style={styles.statusBadgeText}>
-                            {statusText.toUpperCase()}
+                    <View style={styles.nameRow}>
+                        <AppText style={styles.driverName} numberOfLines={1}>
+                            Captain {name || 'Driver'}
                         </AppText>
+                        <View style={styles.ratingBadge}>
+                            <Star size={12} color="#EAB308" fill="#EAB308" />
+                            <AppText style={styles.ratingText}>{rating.toFixed(1)}</AppText>
+                        </View>
                     </View>
+
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={onStatusToggle}
+                        style={styles.statusBadge}
+                    >
+                        <Radio size={12} color={isOnline ? '#10B981' : COLORS.textLight} />
+                        <AppText style={styles.statusBadgeText}>
+                            {isOnline ? statusText.toUpperCase() : 'OFFLINE'}
+                        </AppText>
+                    </TouchableOpacity>
                 </View>
 
-                {/* Right Side: Action Button Slot (Optional) */}
-                {rightComponent && (
+                {/* Right Side: Action Slot */}
+                {rightComponent ? (
                     <View style={styles.rightContainer}>
                         {rightComponent}
                     </View>
+                ) : (
+                    <View style={styles.captainShieldBox}>
+                        <ShieldCheck size={20} color={HEADER_COLORS.goldPrimary} />
+                        <AppText style={styles.verifiedCaptainTag}>VERIFIED</AppText>
+                    </View>
                 )}
-
             </View>
         </View>
     );
@@ -113,7 +127,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         ...Platform.select({
             android: {
-                paddingTop: 16, // Extra breathing space on Android
+                paddingTop: 14,
             },
         }),
     },
@@ -122,11 +136,11 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     avatarWrapper: {
-        width: 48,
-        height: 48,
-        borderWidth: 1.5,
+        width: 50,
+        height: 50,
+        borderWidth: 2,
         borderColor: HEADER_COLORS.goldPrimary,
-        borderRadius: 6,
+        borderRadius: RADIUS.md,
         backgroundColor: HEADER_COLORS.goldLightBg,
         alignItems: 'center',
         justifyContent: 'center',
@@ -138,15 +152,15 @@ const styles = StyleSheet.create({
     },
     monogramText: {
         fontFamily: FONTS.bold,
-        fontSize: 20,
+        fontSize: 22,
         color: HEADER_COLORS.goldPrimary,
     },
     indicatorDot: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
+        width: 12,
+        height: 12,
+        borderRadius: 6,
         backgroundColor: HEADER_COLORS.greenIndicator,
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: HEADER_COLORS.background,
         position: 'absolute',
         bottom: -2,
@@ -157,39 +171,70 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
     },
+    nameRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+    },
     driverName: {
         fontFamily: FONTS.bold,
         fontSize: 16,
         color: COLORS.textPrimary,
+        flexShrink: 1,
+    },
+    ratingBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
+        backgroundColor: '#FEF08A',
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        borderRadius: 10,
+    },
+    ratingText: {
+        fontFamily: FONTS.bold,
+        fontSize: 11,
+        color: '#854D0E',
     },
     statusBadge: {
         flexDirection: 'row',
         alignItems: 'center',
+        gap: 5,
         borderWidth: 1,
         borderColor: HEADER_COLORS.goldBorder,
         backgroundColor: HEADER_COLORS.goldLightBg,
         borderRadius: 12,
-        paddingVertical: 2,
-        paddingHorizontal: 8,
+        paddingVertical: 3,
+        paddingHorizontal: 10,
         marginTop: 4,
         alignSelf: 'flex-start',
     },
-    statusBadgeDot: {
-        width: 5,
-        height: 5,
-        borderRadius: 2.5,
-        backgroundColor: HEADER_COLORS.goldPrimary,
-        marginRight: 4,
-    },
     statusBadgeText: {
         fontFamily: FONTS.bold,
-        fontSize: 9,
+        fontSize: 10,
         color: HEADER_COLORS.goldDarkText,
-        letterSpacing: 0.3,
+        letterSpacing: 0.4,
     },
     rightContainer: {
         justifyContent: 'center',
         alignItems: 'flex-end',
         marginLeft: 8,
+    },
+    captainShieldBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        backgroundColor: COLORS.white,
+        borderRadius: RADIUS.sm,
+        borderWidth: 1,
+        borderColor: HEADER_COLORS.goldBorder,
+    },
+    verifiedCaptainTag: {
+        fontFamily: FONTS.bold,
+        fontSize: 8,
+        color: HEADER_COLORS.goldPrimary,
+        marginTop: 2,
+        letterSpacing: 0.5,
     },
 });

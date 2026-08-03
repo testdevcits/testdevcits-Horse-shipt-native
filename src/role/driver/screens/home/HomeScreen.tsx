@@ -127,6 +127,7 @@ const HomeScreen = ({ navigation }: any) => {
               <ActiveShipment
                 activeShipment={activeShipment}
                 getShortLocation={getShortLocation}
+                onLaunchMap={() => setIsMapModalVisible(true)}
               />
 
               {/* HORSES INFORMATION */}
