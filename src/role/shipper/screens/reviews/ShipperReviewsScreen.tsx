@@ -6,10 +6,10 @@ import {
   RefreshControl,
 } from 'react-native';
 import { Star, MessageSquare } from 'lucide-react-native';
-import moment from 'moment';
 import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
+import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperreviews';
 
 const ShipperReviewsScreen = ({ route }: any) => {
@@ -103,7 +103,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
     const customerName = item?.customerName || item?.customerId?.name || 'Customer';
     const avatarUri = item?.customerId?.profileImage?.url || item?.customerId?.profileImage;
     const dateFormatted = item?.createdAt
-      ? moment(item?.createdAt).format('MMM DD, YYYY')
+      ? formatDate(item?.createdAt, 'MMM DD, YYYY')
       : 'Recent';
 
     return (

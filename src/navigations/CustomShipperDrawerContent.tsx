@@ -28,7 +28,7 @@ import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
-import { AppText } from '../components';
+import { AppText, ConfirmationModal } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
@@ -71,6 +71,7 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
 const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
   const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
@@ -97,9 +98,9 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
     navigation.closeDrawer();
   };
 
-  const openGoogleReview = () => {
-    Linking.openURL('https://google.com');
-    navigation.closeDrawer();
+  const handleLogoutConfirm = () => {
+    setIsLogoutModalVisible(false);
+    dispatch(logoutUser());
   };
 
   return (
@@ -188,7 +189,7 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
       <View style={styles.footerContainer}>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => dispatch(logoutUser())}
+          onPress={() => setIsLogoutModalVisible(true)}
           activeOpacity={0.7}
         >
           <View style={styles.iconContainer}>
@@ -199,6 +200,18 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           </AppText>
         </TouchableOpacity>
       </View>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isVisible={isLogoutModalVisible}
+        onClose={() => setIsLogoutModalVisible(false)}
+        onConfirm={handleLogoutConfirm}
+        title="Logout"
+        description="Are you sure you want to log out of your shipper account?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        type="danger"
+      />
     </View>
   );
 };

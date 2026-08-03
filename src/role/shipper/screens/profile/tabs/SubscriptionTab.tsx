@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Crown, CheckCircle, Calendar } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../../utils/helpers';
 import { AppText } from '../../../../../components';
 import { SPACING } from '../../../../../constants';
 import styles from './styles.subscriptiontab';
@@ -154,9 +154,10 @@ const SubscriptionTab: React.FC<Props> = ({
               return list.map((item, idx) => {
                 const titleText =
                   item?.title || item?.description || 'Card payment receipt';
-                const dateText = moment(
+                const dateText = formatDate(
                   item?.createdAt || item?.paidAt || new Date(),
-                ).format('MMM DD, YYYY');
+                  'MMM DD, YYYY',
+                );
                 const amountText = `$${item?.amount || '0'} ${(
                   item?.currency || 'USD'
                 ).toUpperCase()}`;

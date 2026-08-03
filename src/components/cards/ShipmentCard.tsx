@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-nat
 import { MoveRight, Calendar, User, Info, ChevronRight, MapPin } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
-import moment from 'moment';
+import { formatDate } from '../../utils/helpers';
 
 const { width } = Dimensions.get('window');
 
@@ -21,7 +21,7 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
         <View>
           <AppText style={styles.shipmentCode}>{item?.shipmentCode}</AppText>
           <AppText style={styles.dateLabel}>
-            Requested {moment(item?.pickupDateRange?.start).format('MMM DD, YYYY')}
+            Requested {formatDate(item?.pickupDateRange?.start)}
           </AppText>
         </View>
         <View style={[styles.statusBadge, { backgroundColor: statusBg }]}>

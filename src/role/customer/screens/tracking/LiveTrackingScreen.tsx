@@ -24,7 +24,7 @@ import {
   CheckCircle2,
   Truck,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate, formatFromNow } from '../../../../utils/helpers';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
 import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
@@ -109,12 +109,12 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const driverObj = data?.driver as any;
   const driverName = driverObj?.name || 'Driver Not Assigned Yet';
   const driverUpdatedAt = driverObj?.updatedAt
-    ? `Updated ${moment(driverObj.updatedAt).fromNow()}`
+    ? `Updated ${formatFromNow(driverObj.updatedAt)}`
     : 'Waiting for driver update';
 
   // ETA & Distance formatting
   const etaFormatted = data?.delivery?.etaMinutes
-    ? moment().add(data.delivery.etaMinutes, 'minutes').format('hh:mm A')
+    ? formatDate(new Date(Date.now() + data.delivery.etaMinutes * 60000), 'hh:mm A')
     : '--:--';
   const distanceKmText = data?.delivery?.distanceKm
     ? `${data.delivery.distanceKm} km left`

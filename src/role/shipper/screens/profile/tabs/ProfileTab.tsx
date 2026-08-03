@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Pencil, Star } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../../utils/helpers';
 import { AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import imageIndex from '../../../../../assets/images/imageIndex';
@@ -128,7 +128,7 @@ const ProfileTab: React.FC<Props> = ({
                       {rev.customerName || 'Mark'}
                     </AppText>
                     <AppText style={styles.reviewDate}>
-                      {moment(rev.createdAt || new Date()).format('MM/DD/YYYY')}
+                      {formatDate(rev.createdAt || new Date(), 'MM/DD/YYYY')}
                     </AppText>
                   </View>
                 </View>

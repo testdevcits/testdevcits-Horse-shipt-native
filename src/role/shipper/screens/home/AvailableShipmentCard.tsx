@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { Truck, MapPin, Calendar, ExternalLink } from 'lucide-react-native';
-import moment from 'moment';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
+import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperhome';
 import { horsePlaceholderImage } from '../../../../config/constants';
 
@@ -70,7 +70,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <Calendar size={14} color={COLORS.textSecondary} />
           <AppText style={styles.infoMetaText}>
             {item?.pickupDateRange?.start
-              ? `Pickup ${moment(item?.pickupDateRange.start).format('MMM DD')}`
+              ? `Pickup ${formatDate(item?.pickupDateRange.start, 'MMM DD')}`
               : 'Pickup Jul 23-31'}
           </AppText>
         </View>

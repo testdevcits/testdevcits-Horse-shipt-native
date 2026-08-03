@@ -17,7 +17,7 @@ import {
   Share2,
   Flag,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/helpers';
 import Toast from 'react-native-toast-message';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { AppHeader, AppText } from '../../../../components';
@@ -85,13 +85,13 @@ const ShipperShipmentDetailsScreen = () => {
 
   // Dates
   const pickupDateFormatted = shipment.pickupDateRange?.start
-    ? moment(shipment.pickupDateRange.start).format('MMM DD').toUpperCase()
+    ? formatDate(shipment.pickupDateRange.start, 'MMM DD').toUpperCase()
     : 'JUL 28';
   const deliveryDateFormatted = shipment.deliveryDateRange?.start
-    ? moment(shipment.deliveryDateRange.start).format('MMM DD').toUpperCase()
+    ? formatDate(shipment.deliveryDateRange.start, 'MMM DD').toUpperCase()
     : 'JUL 29';
   const postedDateFormatted = shipment.publishedAt
-    ? moment(shipment.publishedAt).format('D MMM YYYY')
+    ? formatDate(shipment.publishedAt, 'D MMM YYYY')
     : '27 Jul 2026';
 
   // Distance & Specs
@@ -466,7 +466,7 @@ const ShipperShipmentDetailsScreen = () => {
                 <View style={styles.notesHeaderRow}>
                   <AppText style={styles.notesTitle}>Chronological Notes</AppText>
                   <AppText style={styles.notesDateText}>
-                    {moment(noteDate).format('D MMM YYYY, h:mm A')}
+                    {formatDate(noteDate, 'D MMM YYYY, h:mm A')}
                   </AppText>
                 </View>
                 <AppText style={styles.notesBodyText}>"{notesText}"</AppText>

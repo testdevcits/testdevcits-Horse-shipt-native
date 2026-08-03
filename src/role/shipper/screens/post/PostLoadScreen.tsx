@@ -16,7 +16,6 @@ import {
   Check,
   User,
 } from 'lucide-react-native';
-import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 import { AppHeader, AppText, Input } from '../../../../components';
 import { COLORS } from '../../../../constants';

@@ -26,7 +26,7 @@ import {
   Calendar,
   DollarSign,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/helpers';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
@@ -400,7 +400,7 @@ const EarningsScreen = () => {
   const renderTxItem = ({ item: tx, index }: { item: any; index: number }) => {
     const isLast = index === transactions.length - 1;
     const formattedDate = tx.createdAt
-      ? moment(tx.createdAt).format('MMM DD, YYYY')
+      ? formatDate(tx.createdAt, 'MMM DD, YYYY')
       : 'Jul 13, 2026';
 
     return (
@@ -617,7 +617,7 @@ const EarningsScreen = () => {
                   <Calendar size={16} color={COLORS.goldPrimary} />
                   <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Date:</AppText>
                   <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
-                    {selectedTx.createdAt ? moment(selectedTx.createdAt).format('MMMM DD, YYYY') : 'N/A'}
+                    {selectedTx.createdAt ? formatDate(selectedTx.createdAt, 'MMMM DD, YYYY') : 'N/A'}
                   </AppText>
                 </View>
 

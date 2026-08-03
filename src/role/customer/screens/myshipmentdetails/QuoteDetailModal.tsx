@@ -23,7 +23,7 @@ import {
   Calendar,
   DollarSign,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/helpers';
 import SignatureScreen from 'react-native-signature-canvas';
 import {
   COLORS,
@@ -231,9 +231,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                 <AppText style={styles.cancelText}>
                   Cancel Window:{' '}
                   <AppText style={{ fontFamily: FONTS.bold, color: '#92400E' }}>
-                    {moment(quote.cancellationLastDate).format(
-                      'MMM DD, YYYY · hh:mm A',
-                    )}
+                    {formatDate(quote.cancellationLastDate, 'MMM DD, YYYY · hh:mm A')}
                   </AppText>
                 </AppText>
               </View>

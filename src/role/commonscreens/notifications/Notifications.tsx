@@ -13,7 +13,7 @@ import {
   Trash2,
   BellOff,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../utils/helpers';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../constants';
 import useNotifications from './useNotifications';
 import { AppHeader, AppLoader, AppText, EmptyState, ErrorView } from '../../../components';
@@ -55,9 +55,7 @@ const Notifications = () => {
     const isSelected = selectedIds.includes(item?._id);
     const isUnread = !item?.read;
 
-    const formattedTime = item?.createdAt
-      ? moment(item?.createdAt).format('MMM DD, YYYY, h:mm A')
-      : moment().format('MMM DD, YYYY, h:mm A');
+    const formattedTime = formatDate(item?.createdAt || new Date(), 'MMM DD, YYYY, h:mm A');
 
     return (
       <TouchableOpacity

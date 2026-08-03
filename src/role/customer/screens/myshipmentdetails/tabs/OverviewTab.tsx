@@ -21,7 +21,7 @@ import {
   User,
   Clock,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../../utils/helpers';
 import { AppText, MapModal } from '../../../../../components';
 import {
   COLORS,
@@ -85,8 +85,8 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
   const formatDateRange = (start?: string, end?: string) => {
     if (!start && !end) return 'N/A';
-    const s = start ? moment(start).format('MMM DD, YYYY') : '';
-    const e = end ? moment(end).format('MMM DD, YYYY') : '';
+    const s = start ? formatDate(start, 'MMM DD, YYYY') : '';
+    const e = end ? formatDate(end, 'MMM DD, YYYY') : '';
     if (s && e) return `${s} - ${e}`;
     return s || e;
   };
@@ -304,7 +304,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                             <View style={styles.logUserRow}>
                               <Clock size={11} color={COLORS.textLight} />
                               <AppText style={styles.logTimeText}>
-                                {moment(log.createdAt).format('DD/MM/YYYY, HH:mm')}
+                                {formatDate(log.createdAt, 'DD/MM/YYYY, HH:mm')}
                               </AppText>
                             </View>
                           </View>
@@ -388,7 +388,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                       <View style={styles.logUserRow}>
                         <Clock size={11} color={COLORS.textLight} />
                         <AppText style={styles.logTimeText}>
-                          {moment(log.createdAt).format('DD/MM/YYYY, HH:mm')}
+                          {formatDate(log.createdAt, 'DD/MM/YYYY, HH:mm')}
                         </AppText>
                       </View>
                     </View>

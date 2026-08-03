@@ -10,19 +10,22 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
+import { ShieldCheck, LogOut } from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
-import { AppText } from '../components';
+import { AppText, ConfirmationModal } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
 interface DrawerMenuItemProps {
   label: string;
-  iconSource: ImageSourcePropType;
+  iconSource?: ImageSourcePropType;
+  IconComponent?: React.ComponentType<any>;
+  iconColor?: string;
   onPress: () => void;
   isActive?: boolean;
   isLast?: boolean;
@@ -31,6 +34,8 @@ interface DrawerMenuItemProps {
 const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
   label,
   iconSource,
+  IconComponent,
+  iconColor,
   onPress,
   isActive,
   isLast,
@@ -45,13 +50,27 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
     activeOpacity={0.7}
   >
     <View style={styles.iconContainer}>
-      <Image
-        source={iconSource}
-        style={[styles.menuIcon, isActive && styles.menuIconActive]}
-        resizeMode="contain"
-      />
+      {IconComponent ? (
+        <IconComponent
+          size={18}
+          color={iconColor || (isActive ? '#A06333' : COLORS.textPrimary)}
+          strokeWidth={1.8}
+        />
+      ) : iconSource ? (
+        <Image
+          source={iconSource}
+          style={[styles.menuIcon, isActive && styles.menuIconActive]}
+          resizeMode="contain"
+        />
+      ) : null}
     </View>
-    <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
+    <AppText
+      style={[
+        styles.menuLabel,
+        isActive && styles.menuLabelActive,
+        iconColor ? { color: iconColor } : null,
+      ]}
+    >
       {label}
     </AppText>
   </TouchableOpacity>
@@ -60,6 +79,7 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
 
   // Active drawer route name (e.g., 'MainTabs', 'Profile', 'HelpCenter', etc.)
   const currentDrawerRoute = state?.routes[state?.index]?.name;
@@ -87,6 +107,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const navigateToRoute = (routeName: string) => {
     navigation.navigate(routeName);
     navigation.closeDrawer();
+  };
+
+  const handleLogoutConfirm = () => {
+    setIsLogoutModalVisible(false);
+    dispatch(logoutUser());
   };
 
   return (
@@ -151,7 +176,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
           />
           <DrawerMenuItem
             label="Privacy Policy"
-            iconSource={imageIndex.Help}
+            IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
             isLast={true}
@@ -162,11 +187,24 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
       <View style={styles.footerContainer}>
         <DrawerMenuItem
           label="Logout"
-          iconSource={imageIndex.Help}
-          onPress={() => dispatch(logoutUser())}
+          IconComponent={LogOut}
+          iconColor="#EF4444"
+          onPress={() => setIsLogoutModalVisible(true)}
           isLast={true}
         />
       </View>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isVisible={isLogoutModalVisible}
+        onClose={() => setIsLogoutModalVisible(false)}
+        onConfirm={handleLogoutConfirm}
+        title="Logout"
+        description="Are you sure you want to log out of your account?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        type="danger"
+      />
     </View>
   );
 };

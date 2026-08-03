@@ -11,7 +11,7 @@ import {
   Animated,
 } from 'react-native';
 import { X, Send, MessageSquare, Clock } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/helpers';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 
@@ -186,7 +186,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.pendingDivider} />
 
                   <AppText style={styles.pendingAskedDateText}>
-                    Asked on {moment(pendingQuestion.createdAt).format('DD/MM/YYYY [at] HH:mm')}
+                    Asked on {formatDate(pendingQuestion.createdAt, 'DD/MM/YYYY [at] HH:mm')}
                   </AppText>
                 </View>
 

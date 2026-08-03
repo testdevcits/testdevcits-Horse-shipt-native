@@ -10,7 +10,7 @@ import {
   Trash2,
   FileCheck,
 } from 'lucide-react-native';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/helpers';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -150,7 +150,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         <View style={styles.cancelNoticeContainer}>
           <Calendar size={16} color="#EF4444" style={{ marginTop: 2 }} />
           <AppText style={styles.cancelNoticeText}>
-            Cancel before : {moment().add(1, 'days').format('M/DD/YYYY, h:mm:ss A')}
+            Cancel before : {formatDate(new Date(Date.now() + 86400000), 'M/DD/YYYY, h:mm:ss A')}
           </AppText>
         </View>
 
