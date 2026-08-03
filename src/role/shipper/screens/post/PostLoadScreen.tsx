@@ -90,33 +90,33 @@ const PostLoadScreen = () => {
   };
 
   const handleAskQuestion = (item: any) => {
-    const shipment = item.shipment || item;
+    const shipment = item?.shipment || item;
     setSelectedShipment(shipment);
     setIsAskModalVisible(true);
   };
 
   const handleSubmitOffer = (item: any) => {
-    const shipment = item.shipment || item;
+    const shipment = item?.shipment || item;
     setSelectedShipment(shipment);
     setIsOfferModalVisible(true);
   };
 
   const handleCardPress = (item: any) => {
-    const shipment = item.shipment ? { ...item.shipment, quote: item } : item;
+    const shipment = item?.shipment ? { ...item?.shipment, quote: item } : item;
     // Navigate using ShipperShipmentDetails or ShipmentDetails route
     navigation.navigate('ShipperShipmentDetails', { shipment, quote: item });
   };
 
   const handleTrackShipment = (item: any) => {
 
-    const shipmentId = item._id
+    const shipmentId = item?._id
     console.log("======", shipmentId)
     navigation.navigate('LiveTracking', { shipmentId });
   };
 
   const handleOpenContract = (item: any) => {
-    const url = item.contract?.url || item.shipperContract?.url || item.shipment?.contract?.url;
-    const code = item.shipment?.shipmentCode || item.shipmentCode || 'HS-SHIP-2026';
+    const url = item?.contract?.url || item?.shipperContract?.url || item?.shipment?.contract?.url;
+    const code = item?.shipment?.shipmentCode || item?.shipmentCode || 'HS-SHIP-2026';
     setSelectedContractData({ url, code, quote: item });
     setIsContractModalVisible(true);
   };
@@ -140,10 +140,10 @@ const PostLoadScreen = () => {
 
     const q = searchQuery.toLowerCase();
     return dataset.filter(item => {
-      const shipment = item.shipment || item;
-      const p = (item.pickupLocation || shipment.pickupLocation || '').toLowerCase();
-      const d = (item.deliveryLocation || shipment.deliveryLocation || '').toLowerCase();
-      const c = (item.shipmentCode || shipment.shipmentCode || '').toLowerCase();
+      const shipment = item?.shipment || item;
+      const p = (item?.pickupLocation || shipment.pickupLocation || '').toLowerCase();
+      const d = (item?.deliveryLocation || shipment.deliveryLocation || '').toLowerCase();
+      const c = (item?.shipmentCode || shipment.shipmentCode || '').toLowerCase();
       return p.includes(q) || d.includes(q) || c.includes(q);
     });
   };
@@ -255,19 +255,19 @@ const PostLoadScreen = () => {
   );
 
   const renderCard = ({ item }: { item: any }) => {
-    const shipment = item.shipment || item;
-    const code = item.shipmentCode || shipment.shipmentCode || 'HS-SHIP-2026';
-    const pickupLoc = item.pickupLocation || shipment.pickupLocation || 'Pickup location unavailable';
-    const deliveryLoc = item.deliveryLocation || shipment.deliveryLocation || 'Delivery location unavailable';
+    const shipment = item?.shipment || item;
+    const code = item?.shipmentCode || shipment.shipmentCode || 'HS-SHIP-2026';
+    const pickupLoc = item?.pickupLocation || shipment.pickupLocation || 'Pickup location unavailable';
+    const deliveryLoc = item?.deliveryLocation || shipment.deliveryLocation || 'Delivery location unavailable';
     const horsesCount = shipment.numberOfHorses || shipment.horses?.length || 1;
 
     /* 1. SPECIAL CARD FOR MY SHIPMENTS TAB */
     if (activeTab === 'my_shipments') {
-      const quoteStatusRaw = (item.status || 'pending').toLowerCase();
-      const paymentStatusRaw = (item.paymentStatus || 'pending').toLowerCase();
-      const priceText = item.totalPrice ? `$${item.totalPrice}` : '$0';
-      const paymentMethodText = item.paymentMethod || 'card';
-      const paymentDueText = item.paymentDue ? `due on ${item.paymentDue}` : 'due on delivery';
+      const quoteStatusRaw = (item?.status || 'pending').toLowerCase();
+      const paymentStatusRaw = (item?.paymentStatus || 'pending').toLowerCase();
+      const priceText = item?.totalPrice ? `$${item?.totalPrice}` : '$0';
+      const paymentMethodText = item?.paymentMethod || 'card';
+      const paymentDueText = item?.paymentDue ? `due on ${item?.paymentDue}` : 'due on delivery';
 
       const isAccepted = quoteStatusRaw === 'accepted' || quoteStatusRaw === 'assigned';
       const isPaid = paymentStatusRaw === 'paid';
@@ -416,7 +416,7 @@ const PostLoadScreen = () => {
 
       <FlatList
         data={loading ? [] : currentList}
-        keyExtractor={(item, index) => item._id || item.id || String(index)}
+        keyExtractor={(item, index) => item?._id || item?.id || String(index)}
         renderItem={renderCard}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}

@@ -58,9 +58,9 @@ const ChatDetails = () => {
 
   const renderMessage = ({ item }: any) => {
     const isMe =
-      item.senderRole === MY_ROLE ||
-      (user?._id && item.senderId === user._id);
-    const hasMedia = item.media && item.media.length > 0;
+      item?.senderRole === MY_ROLE ||
+      (user?._id && item?.senderId === user._id);
+    const hasMedia = item?.media && item?.media.length > 0;
 
     return (
       <View
@@ -74,7 +74,7 @@ const ChatDetails = () => {
             {isMe ? 'You' : partnerName}
           </AppText>
           <AppText style={styles.timestamp}>
-            {formatMessageTime(item.createdAt)}
+            {formatMessageTime(item?.createdAt)}
           </AppText>
         </View>
 
@@ -83,19 +83,19 @@ const ChatDetails = () => {
         >
           {hasMedia && (
             <Image
-              source={{ uri: item.media[0].url }}
+              source={{ uri: item?.media[0].url }}
               style={styles.mediaImage}
               resizeMode="cover"
             />
           )}
-          {item.message ? (
+          {item?.message ? (
             <AppText
               style={[
                 styles.messageText,
                 isMe ? styles.myText : styles.otherText,
               ]}
             >
-              {item.message}
+              {item?.message}
             </AppText>
           ) : null}
         </View>
@@ -175,7 +175,7 @@ const ChatDetails = () => {
 
       <FlatList
         data={messages}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         renderItem={renderMessage}
         inverted
         contentContainerStyle={styles.listContent}

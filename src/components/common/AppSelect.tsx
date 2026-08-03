@@ -59,7 +59,7 @@ const AppSelect = memo(
       const filteredOptions = useMemo(
         () =>
           options.filter(item =>
-            item.toLowerCase().includes(searchQuery.toLowerCase()),
+            item?.toLowerCase().includes(searchQuery.toLowerCase()),
           ),
         [options, searchQuery],
       );

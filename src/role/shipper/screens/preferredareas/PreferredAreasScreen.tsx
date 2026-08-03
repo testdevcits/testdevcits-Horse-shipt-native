@@ -332,7 +332,7 @@ const PreferredAreasScreen = () => {
 
       <FlatList
         data={areas}
-        keyExtractor={(item, index) => item._id || index.toString()}
+        keyExtractor={(item, index) => item?._id || index.toString()}
         renderItem={renderAreaItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}

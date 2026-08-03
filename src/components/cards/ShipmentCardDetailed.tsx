@@ -41,9 +41,9 @@ const getShortLocation = (address: string) => {
 
 const ShipmentHorizontalCard = memo(
   ({ item, onPress }: { item: any; onPress: () => void }) => {
-    const horse = item.horses?.[0];
-    const pickupDate = formatDate(item.pickupDateRange?.start);
-    const statusLabel = formatStatus(item.status);
+    const horse = item?.horses?.[0];
+    const pickupDate = formatDate(item?.pickupDateRange?.start);
+    const statusLabel = formatStatus(item?.status);
 
     return (
       <TouchableOpacity
@@ -66,10 +66,10 @@ const ShipmentHorizontalCard = memo(
         <View style={styles.content}>
           <View style={styles.titleRow}>
             <AppText style={styles.title} numberOfLines={2}>
-              {item.numberOfHorses}{' '}
-              {item.numberOfHorses > 1 ? 'Horses' : 'Horse'} from{' '}
-              {getShortLocation(item.pickupLocation)} to{' '}
-              {getShortLocation(item.deliveryLocation)}
+              {item?.numberOfHorses}{' '}
+              {item?.numberOfHorses > 1 ? 'Horses' : 'Horse'} from{' '}
+              {getShortLocation(item?.pickupLocation)} to{' '}
+              {getShortLocation(item?.deliveryLocation)}
             </AppText>
 
             {/* Shipment Code / External Action */}
@@ -86,7 +86,7 @@ const ShipmentHorizontalCard = memo(
                 styles.badge,
                 {
                   borderColor:
-                    item.status === 'open_for_offers'
+                    item?.status === 'open_for_offers'
                       ? COLORS.greenActive
                       : COLORS.primary,
                 },
@@ -97,7 +97,7 @@ const ShipmentHorizontalCard = memo(
                   styles.badgeText,
                   {
                     color:
-                      item.status === 'open_for_offers'
+                      item?.status === 'open_for_offers'
                         ? COLORS.greenActive
                         : COLORS.primary,
                   },
@@ -112,7 +112,7 @@ const ShipmentHorizontalCard = memo(
           <View style={styles.infoRow}>
             <MapPin size={ICON_SIZE.xs} color={COLORS.grey500} />
             <AppText style={styles.infoText} numberOfLines={1}>
-              {item.pickupLocation}
+              {item?.pickupLocation}
             </AppText>
           </View>
 
@@ -132,7 +132,7 @@ const ShipmentHorizontalCard = memo(
               styles.truckCircle,
               {
                 borderColor:
-                  item.status === 'delivered'
+                  item?.status === 'delivered'
                     ? COLORS.greenActive
                     : COLORS.grey300,
               },
@@ -141,12 +141,12 @@ const ShipmentHorizontalCard = memo(
             <Truck
               size={ICON_SIZE.xs}
               color={
-                item.status === 'open_for_offers'
+                item?.status === 'open_for_offers'
                   ? COLORS.grey400
                   : COLORS.greenPrimary
               }
               fill={
-                item.status === 'open_for_offers'
+                item?.status === 'open_for_offers'
                   ? 'transparent'
                   : COLORS.greenPrimary
               }

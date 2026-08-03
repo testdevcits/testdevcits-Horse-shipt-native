@@ -451,7 +451,7 @@ const EarningsScreen = () => {
 
       <FlatList
         data={transactions}
-        keyExtractor={(item, index) => item.id || index.toString()}
+        keyExtractor={(item, index) => item?.id || index.toString()}
         renderItem={renderTxItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}

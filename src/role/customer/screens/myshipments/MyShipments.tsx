@@ -83,7 +83,7 @@ const MyShipments = ({ navigation }) => {
 
       <FlatList
         data={filteredData}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (

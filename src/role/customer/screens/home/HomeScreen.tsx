@@ -64,7 +64,7 @@ const HomeScreen = ({ navigation }) => {
         </Pressable>
         <FlatList
           data={shipments.slice(0, 2)}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item?._id}
           ListHeaderComponent={
             <SectionHeader
               title="Current Shipments"
@@ -114,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
           <FlatList
             data={shippers}
             horizontal={true}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item?.id}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <ShipperCard

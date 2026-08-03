@@ -114,7 +114,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     }
   };
 
-  const email = profileData?.email || user?.email || 'rupeshshipper@yopmail.com';
+  const email = profileData?.email || user?.email || 'Not availble';
 
   return (
     <Modal

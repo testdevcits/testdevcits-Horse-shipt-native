@@ -7,7 +7,7 @@ import NotificationSettings from '../role/customer/screens/notificationsettings/
 import CustomDrawerContent from './CustomDrawerContent';
 import Profile from '../role/customer/screens/profile/Profile';
 import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
-import PrivacyPolicyScreen from '../role/shipper/screens/privacy/PrivacyPolicyScreen';
+import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
 
 const Drawer = createDrawerNavigator();
 

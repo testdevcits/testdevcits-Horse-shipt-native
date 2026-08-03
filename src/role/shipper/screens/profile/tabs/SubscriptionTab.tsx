@@ -153,18 +153,18 @@ const SubscriptionTab: React.FC<Props> = ({
 
               return list.map((item, idx) => {
                 const titleText =
-                  item.title || item.description || 'Card payment receipt';
+                  item?.title || item?.description || 'Card payment receipt';
                 const dateText = moment(
-                  item.createdAt || item.paidAt || new Date(),
+                  item?.createdAt || item?.paidAt || new Date(),
                 ).format('MMM DD, YYYY');
-                const amountText = `$${item.amount || '0'} ${(
-                  item.currency || 'USD'
+                const amountText = `$${item?.amount || '0'} ${(
+                  item?.currency || 'USD'
                 ).toUpperCase()}`;
-                const statusText = item.status || 'paid';
+                const statusText = item?.status || 'paid';
 
                 return (
                   <View
-                    key={item._id || item.id || idx}
+                    key={item?._id || item?.id || idx}
                     style={[
                       styles.tableBodyRow,
                       idx === list.length - 1 && { borderBottomWidth: 0 },

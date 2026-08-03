@@ -52,11 +52,11 @@ const Notifications = () => {
   };
 
   const renderNotificationItem = ({ item }: any) => {
-    const isSelected = selectedIds.includes(item._id);
-    const isUnread = !item.read;
+    const isSelected = selectedIds.includes(item?._id);
+    const isUnread = !item?.read;
 
-    const formattedTime = item.createdAt
-      ? moment(item.createdAt).format('MMM DD, YYYY, h:mm A')
+    const formattedTime = item?.createdAt
+      ? moment(item?.createdAt).format('MMM DD, YYYY, h:mm A')
       : moment().format('MMM DD, YYYY, h:mm A');
 
     return (
@@ -64,9 +64,9 @@ const Notifications = () => {
         style={[styles.notifCard, isSelected && styles.notifCardSelected]}
         onPress={() => {
           if (selectedIds.length > 0) {
-            toggleSelect(item._id);
+            toggleSelect(item?._id);
           } else if (isUnread) {
-            handleMarkSingleRead(item._id);
+            handleMarkSingleRead(item?._id);
           }
         }}
         activeOpacity={0.8}
@@ -74,7 +74,7 @@ const Notifications = () => {
         {/* Checkbox */}
         <TouchableOpacity
           style={[styles.checkbox, isSelected && styles.checkboxSelected]}
-          onPress={() => toggleSelect(item._id)}
+          onPress={() => toggleSelect(item?._id)}
         >
           {isSelected && <Check size={12} color="#A06333" />}
         </TouchableOpacity>
@@ -86,8 +86,8 @@ const Notifications = () => {
 
         {/* Info Column */}
         <View style={styles.notifTextCol}>
-          <AppText style={styles.notifTitle}>{item.title || 'Notification'}</AppText>
-          <AppText style={styles.notifMsg}>{item.message}</AppText>
+          <AppText style={styles.notifTitle}>{item?.title || 'Notification'}</AppText>
+          <AppText style={styles.notifMsg}>{item?.message}</AppText>
           <AppText style={styles.notifTime}>{formattedTime}</AppText>
         </View>
 
@@ -191,7 +191,7 @@ const Notifications = () => {
       {/* MAIN NOTIFICATIONS ACTIVITY LIST */}
       <FlatList
         data={filteredNotifications}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         renderItem={renderNotificationItem}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}

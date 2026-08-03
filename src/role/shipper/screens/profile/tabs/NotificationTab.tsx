@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Bell, Check } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import styles from './styles.notificationtab';
+import { COLORS } from '../../../../../constants';
 
 interface Props {
   notifications: any;
@@ -75,14 +76,14 @@ const NotificationTab: React.FC<Props> = ({
 
         {/* Checkbox Rows */}
         {notifItems.map(item => {
-          const isEmailChecked = notifications[item.key]?.email;
-          const isSmsChecked = notifications[item.key]?.sms;
+          const isEmailChecked = notifications[item?.key]?.email;
+          const isSmsChecked = notifications[item?.key]?.sms;
 
           return (
-            <View key={item.key} style={styles.notifItemRow}>
+            <View key={item?.key} style={styles.notifItemRow}>
               <View style={styles.notifTextCol}>
-                <AppText style={styles.notifItemTitle}>{item.title}</AppText>
-                <AppText style={styles.notifItemDesc}>{item.desc}</AppText>
+                <AppText style={styles.notifItemTitle}>{item?.title}</AppText>
+                <AppText style={styles.notifItemDesc}>{item?.desc}</AppText>
               </View>
 
               <View style={styles.notifCheckboxesCol}>
@@ -92,9 +93,9 @@ const NotificationTab: React.FC<Props> = ({
                     styles.notifCheckbox,
                     isEmailChecked && styles.notifCheckboxActive,
                   ]}
-                  onPress={() => handleToggleNotification(item.key, 'email')}
+                  onPress={() => handleToggleNotification(item?.key, 'email')}
                 >
-                  {isEmailChecked && <Check size={14} color="#A06333" />}
+                  {isEmailChecked && <Check size={14} color={COLORS.white} />}
                 </TouchableOpacity>
 
                 {/* SMS Checkbox */}
@@ -103,9 +104,9 @@ const NotificationTab: React.FC<Props> = ({
                     styles.notifCheckbox,
                     isSmsChecked && styles.notifCheckboxActive,
                   ]}
-                  onPress={() => handleToggleNotification(item.key, 'sms')}
+                  onPress={() => handleToggleNotification(item?.key, 'sms')}
                 >
-                  {isSmsChecked && <Check size={14} color="#A06333" />}
+                  {isSmsChecked && <Check size={14} color={COLORS.white} />}
                 </TouchableOpacity>
               </View>
             </View>

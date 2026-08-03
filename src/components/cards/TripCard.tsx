@@ -5,7 +5,7 @@ import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SPACING } from '../../cons
 import AppText from '../common/AppText';
 
 // Import your custom constants (verify relative paths for your folder structure)
- 
+
 
 interface TripCardProps {
   item: any;
@@ -13,7 +13,7 @@ interface TripCardProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-  const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerStyle }) => {
+const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerStyle }) => {
   const shipmentData = item?.shipment || {};
   const status = item?.tripStatus;
 
@@ -24,7 +24,7 @@ interface TripCardProps {
         <AppText style={styles.routeHeader}>ROUTE</AppText>
         {status && (
           <View style={[
-            styles.statusBadge, 
+            styles.statusBadge,
             status === 'inTransit' ? styles.statusBadgeActive : styles.statusBadgePending
           ]}>
             <AppText style={[
@@ -36,7 +36,7 @@ interface TripCardProps {
           </View>
         )}
       </View>
-      
+
       {/* Route Details Flow */}
       <View style={styles.routeRow}>
         <View style={styles.locationWrapper}>
@@ -45,9 +45,9 @@ interface TripCardProps {
             {shipmentData.pickupLocation || 'Unknown'}
           </AppText>
         </View>
-        
+
         <ArrowRight size={ICON_SIZE.xs} color={COLORS.textLight} style={styles.arrowIcon} />
-        
+
         <View style={styles.locationWrapper}>
           <MapPin size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
           <AppText style={styles.locationText} numberOfLines={2}>
@@ -55,14 +55,14 @@ interface TripCardProps {
           </AppText>
         </View>
       </View>
-      
+
       {/* Shipment Specs Grid */}
       <View style={styles.footerRow}>
         <View style={styles.infoBadge}>
           <Calendar size={ICON_SIZE.xs} color={COLORS.textSecondary} />
           <AppText style={styles.infoText}>N/A</AppText>
         </View>
-        
+
         <View style={styles.infoBadge}>
           <Compass size={ICON_SIZE.xs} color={COLORS.textSecondary} />
           <AppText style={styles.infoText}>
@@ -70,13 +70,13 @@ interface TripCardProps {
           </AppText>
         </View>
       </View>
-      
+
       {/* Primary Contextual Action Button */}
       {status === 'inTransit' && onCompletePress && (
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.actionButton}
           activeOpacity={0.8}
-          onPress={() => onCompletePress(item._id)}
+          onPress={() => onCompletePress(item?._id)}
         >
           <AppText style={styles.actionButtonText}>Complete Delivery</AppText>
         </TouchableOpacity>

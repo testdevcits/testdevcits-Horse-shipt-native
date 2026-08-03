@@ -167,18 +167,18 @@ const ShipperSettingsScreen = () => {
 
               {/* Notification Rows */}
               {NOTIFICATION_ITEMS.map((item, idx) => {
-                const isEmailChecked = notifications[item.key]?.email;
-                const isSmsChecked = notifications[item.key]?.sms;
+                const isEmailChecked = notifications[item?.key]?.email;
+                const isSmsChecked = notifications[item?.key]?.sms;
                 const isLast = idx === NOTIFICATION_ITEMS.length - 1;
 
                 return (
                   <View
-                    key={item.key}
+                    key={item?.key}
                     style={[styles.notifItemRow, isLast && { borderBottomWidth: 0 }]}
                   >
                     <View style={styles.notifTextCol}>
-                      <AppText style={styles.notifItemTitle}>{item.title}</AppText>
-                      <AppText style={styles.notifItemDesc}>{item.desc}</AppText>
+                      <AppText style={styles.notifItemTitle}>{item?.title}</AppText>
+                      <AppText style={styles.notifItemDesc}>{item?.desc}</AppText>
                     </View>
 
                     <View style={styles.notifCheckboxesCol}>
@@ -188,7 +188,7 @@ const ShipperSettingsScreen = () => {
                           styles.notifCheckbox,
                           isEmailChecked && styles.notifCheckboxActive,
                         ]}
-                        onPress={() => handleToggleNotification(item.key, 'email')}
+                        onPress={() => handleToggleNotification(item?.key, 'email')}
                         activeOpacity={0.8}
                       >
                         {isEmailChecked && <Check size={14} color="#A06333" />}
@@ -200,7 +200,7 @@ const ShipperSettingsScreen = () => {
                           styles.notifCheckbox,
                           isSmsChecked && styles.notifCheckboxActive,
                         ]}
-                        onPress={() => handleToggleNotification(item.key, 'sms')}
+                        onPress={() => handleToggleNotification(item?.key, 'sms')}
                         activeOpacity={0.8}
                       >
                         {isSmsChecked && <Check size={14} color="#A06333" />}

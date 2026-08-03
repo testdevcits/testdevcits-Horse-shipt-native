@@ -311,7 +311,7 @@ const LocationPickerCore: React.FC<{
   return (
     <View style={styles.modalContainer}>
       <StatusBar barStyle="dark-content" />
-      
+
       {/* MAP ENGINE */}
       <MapView
         ref={mapRef}
@@ -333,16 +333,16 @@ const LocationPickerCore: React.FC<{
       {!isSearchFocused && (
         <View style={styles.markerFixed} pointerEvents="none">
           <Animated.View style={{ transform: [{ translateY: markerAnim }], alignItems: 'center' }}>
-             <View style={styles.pinBubble}>
-                <Text style={styles.pinBubbleText}>Set Point</Text>
-             </View>
-             <MapPin size={42} color={COLORS.dark} fill={COLORS.primary} />
+            <View style={styles.pinBubble}>
+              <Text style={styles.pinBubbleText}>Set Point</Text>
+            </View>
+            <MapPin size={42} color={COLORS.dark} fill={COLORS.primary} />
           </Animated.View>
-          <Animated.View 
+          <Animated.View
             style={[
-              styles.markerShadow, 
+              styles.markerShadow,
               { transform: [{ scale: shadowScale }], opacity: shadowOpacity }
-            ]} 
+            ]}
           />
         </View>
       )}
@@ -350,7 +350,7 @@ const LocationPickerCore: React.FC<{
       {/* SEARCH HEADER */}
       <View style={styles.searchHeader}>
         <View style={[styles.searchBox, isSearchFocused && styles.searchBoxActive]}>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={isSearchFocused ? () => setIsSearchFocused(false) : onClose}
             style={styles.searchIconBtn}
           >
@@ -383,7 +383,7 @@ const LocationPickerCore: React.FC<{
           <View style={styles.resultsPanel}>
             <FlatList
               data={suggestions}
-              keyExtractor={item => item.place_id}
+              keyExtractor={item => item?.place_id}
               keyboardShouldPersistTaps="always"
               ListEmptyComponent={
                 !isSearchLoading && searchQuery.length > 2 ? (
@@ -393,13 +393,13 @@ const LocationPickerCore: React.FC<{
                 ) : null
               }
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.resultItem} onPress={() => getPlaceDetails(item.place_id)}>
+                <TouchableOpacity style={styles.resultItem} onPress={() => getPlaceDetails(item?.place_id)}>
                   <View style={styles.resultIcon}>
                     <MapIcon size={20} color={COLORS.secondary} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.resultMain} numberOfLines={1}>{item.structured_formatting.main_text}</Text>
-                    <Text style={styles.resultSub} numberOfLines={1}>{item.structured_formatting.secondary_text}</Text>
+                    <Text style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</Text>
+                    <Text style={styles.resultSub} numberOfLines={1}>{item?.structured_formatting.secondary_text}</Text>
                   </View>
                 </TouchableOpacity>
               )}
@@ -421,23 +421,23 @@ const LocationPickerCore: React.FC<{
                 <View style={styles.dotOuter}><View style={styles.dotInner} /></View>
                 <View style={styles.line} />
               </View>
-              
+
               <View style={{ flex: 1 }}>
                 <Text style={styles.label}>CONFIRM LOCATION</Text>
                 {isReverseLoading ? (
-                   <View style={styles.skeletonLine} />
+                  <View style={styles.skeletonLine} />
                 ) : (
                   <Text style={styles.addressText}>{displayAddress}</Text>
                 )}
               </View>
             </View>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.confirmButton}
-              onPress={() => onConfirm({ 
-                address: displayAddress, 
-                latitude: region.latitude, 
-                longitude: region.longitude 
+              onPress={() => onConfirm({
+                address: displayAddress,
+                latitude: region.latitude,
+                longitude: region.longitude
               })}
             >
               <Text style={styles.confirmButtonText}>Confirm and Continue</Text>
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
   },
   searchIconBtn: { marginRight: 10, padding: 4 },
   searchInput: { flex: 1, fontSize: 16, color: COLORS.dark, fontWeight: '500' },
-  
+
   resultsPanel: {
     backgroundColor: COLORS.white,
     height: height,

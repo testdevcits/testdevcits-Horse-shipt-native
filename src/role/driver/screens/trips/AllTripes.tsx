@@ -17,8 +17,8 @@ import styles from './styles.alltrips';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
 
-const AllTrips = ({navigation}) => {
-    const { loading, allShipments, driver,activeShipment } = useDriverMe();
+const AllTrips = ({ navigation }) => {
+    const { loading, allShipments, driver, activeShipment } = useDriverMe();
     const [selectedTab, setSelectedTab] = useState<TabType>('ALL');
 
     const shipments = allShipments || [];
@@ -50,16 +50,16 @@ const AllTrips = ({navigation}) => {
     const handleCompleteDelivery = (tripId: string) => {
         console.log("Complete delivery triggered for trip id: ", tripId);
 
-         navigation.navigate("DeliveryVerification",{shipment:activeShipment})
+        navigation.navigate("DeliveryVerification", { shipment: activeShipment })
 
-        
 
-     };
+
+    };
 
     // Render method for active status filters (Horizontal Chip Layout)
     const renderFilterTab = (label: TabType, count: number) => {
         const isActive = selectedTab === label;
-        
+
         // Formats "PENDING" to "Pending" for professional display
         const formattedLabel = label.charAt(0) + label.slice(1).toLowerCase();
 
@@ -98,7 +98,7 @@ const AllTrips = ({navigation}) => {
             ) : (
                 <FlatList
                     data={filteredShipments}
-                    keyExtractor={(item) => item._id}
+                    keyExtractor={(item) => item?._id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={
@@ -134,4 +134,3 @@ const AllTrips = ({navigation}) => {
 
 export default AllTrips;
 
- 

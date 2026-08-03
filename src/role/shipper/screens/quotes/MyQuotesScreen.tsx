@@ -269,7 +269,7 @@ const MyQuotesScreen = () => {
 
       <FlatList
         data={filteredQuotes}
-        keyExtractor={(item, index) => item._id || item.id || String(index)}
+        keyExtractor={(item, index) => item?._id || item?.id || String(index)}
         renderItem={({ item }) => (
           <ShipperQuoteCard
             quote={item}

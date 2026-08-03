@@ -39,7 +39,7 @@ const ShipperList = ({ navigation }) => {
       ) : (
         <FlatList
           data={shippers}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item?._id}
           ListHeaderComponent={
             <View style={styles.header}>
               <AppText style={styles.screenTitle}>Messages</AppText>

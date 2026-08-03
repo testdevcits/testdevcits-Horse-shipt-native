@@ -20,16 +20,16 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
   onSelect,
   onNavigateDetails,
 }) => {
-  const pickupTitle = item.pickupLocation
-    ? item.pickupLocation.split(',')[0] +
-      ', ' +
-      (item.pickupLocation.split(',')[1] || '')
+  const pickupTitle = item?.pickupLocation
+    ? item?.pickupLocation.split(',')[0] +
+    ', ' +
+    (item?.pickupLocation.split(',')[1] || '')
     : 'Ghbaleh, Lebanon';
 
-  const deliveryTitle = item.deliveryLocation
-    ? item.deliveryLocation.split(',')[0] +
-      ', ' +
-      (item.deliveryLocation.split(',')[1] || '')
+  const deliveryTitle = item?.deliveryLocation
+    ? item?.deliveryLocation.split(',')[0] +
+    ', ' +
+    (item?.deliveryLocation.split(',')[1] || '')
     : 'Myanmar';
 
   return (
@@ -53,7 +53,7 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
           {pickupTitle}
         </AppText>
         <AppText style={styles.mapSelectShipmentCode}>
-          {item.shipmentCode || 'HS-SHIP-2026-CODE'}
+          {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
         </AppText>
         <AppText style={styles.mapSelectDeliverySub} numberOfLines={1}>
           ➜ {deliveryTitle}

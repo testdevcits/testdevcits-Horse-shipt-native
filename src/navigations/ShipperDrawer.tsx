@@ -9,7 +9,7 @@ import TruckDriverScreen from '../role/shipper/screens/drivers/TruckDriverScreen
 import EarningsScreen from '../role/shipper/screens/earnings/EarningsScreen';
 import ShipperSettingsScreen from '../role/shipper/screens/settings/ShipperSettingsScreen';
 import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScreen';
-import PrivacyPolicyScreen from '../role/shipper/screens/privacy/PrivacyPolicyScreen';
+import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
 
 const Drawer = createDrawerNavigator();

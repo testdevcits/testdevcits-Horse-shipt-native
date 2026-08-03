@@ -5,7 +5,7 @@ import { getLiveTracking, TrackingResponse } from '../../../../api/services/trac
 export const useTracking = (shipmentId: string) => {
   const [data, setData] = useState<TrackingResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const pollInterval = useRef<NodeJS.Timeout | null>(null);
+  const pollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchData = async () => {
     try {

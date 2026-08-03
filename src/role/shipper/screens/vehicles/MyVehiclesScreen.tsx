@@ -406,7 +406,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
 
       <FlatList
         data={vehicles}
-        keyExtractor={(item, index) => item._id || index.toString()}
+        keyExtractor={(item, index) => item?._id || index.toString()}
         renderItem={renderVehicleItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}

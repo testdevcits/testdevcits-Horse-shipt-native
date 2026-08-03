@@ -69,11 +69,11 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
 
       <View style={styles.cardContainer}>
         {allQuestions.map((item, index) => {
-          const isAnswered = item.status === 'answered';
+          const isAnswered = item?.status === 'answered';
 
           return (
             <View
-              key={item._id}
+              key={item?._id}
               style={[
                 styles.questionItem,
                 index === 0 && { borderTopWidth: 0 },
@@ -81,18 +81,18 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
             >
               {/* Shipper Name */}
               <AppText style={styles.shipperName}>
-                {item.shipperId?.name || 'Shipper name'}
+                {item?.shipperId?.name || 'Shipper name'}
               </AppText>
 
               {/* Question Text */}
-              <AppText style={styles.questionText}>{item.question}</AppText>
+              <AppText style={styles.questionText}>{item?.question}</AppText>
 
               {isAnswered ? (
                 /* Answered View */
                 <View style={styles.answerDisplay}>
                   <AppText style={styles.answerText}>
                     <AppText style={styles.boldText}>You: </AppText>
-                    {item.answer}
+                    {item?.answer}
                   </AppText>
                 </View>
               ) : (
@@ -103,20 +103,20 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                     placeholder="Answer question"
                     placeholderTextColor={COLORS.textLight}
                     multiline
-                    value={answers[item._id] || ''}
-                    onChangeText={text => handleInputChange(item._id, text)}
+                    value={answers[item?._id] || ''}
+                    onChangeText={text => handleInputChange(item?._id, text)}
                   />
                   <TouchableOpacity
                     style={[
                       styles.sendBtn,
-                      !answers[item._id]?.trim() && styles.disabledBtn,
+                      !answers[item?._id]?.trim() && styles.disabledBtn,
                     ]}
-                    onPress={() => handleSubmit(item._id)}
+                    onPress={() => handleSubmit(item?._id)}
                     disabled={
-                      submitting === item._id || !answers[item._id]?.trim()
+                      submitting === item?._id || !answers[item?._id]?.trim()
                     }
                   >
-                    {submitting === item._id ? (
+                    {submitting === item?._id ? (
                       <ActivityIndicator size="small" color={COLORS.white} />
                     ) : (
                       <Send size={ICON_SIZE.xs} color={COLORS.white} />

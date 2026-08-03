@@ -84,7 +84,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <DetailItem label="Sex" value={item?.sex} />
           <DetailItem
             label="Age"
-            value={item?.age ? `${item.age} Years` : undefined}
+            value={item?.age ? `${item?.age} Years` : undefined}
           />
         </View>
 
@@ -103,7 +103,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
       {item?.notes ? (
         <View style={styles.notesContainer}>
           <AppText style={styles.notesLabel}>NOTES :</AppText>
-          <AppText style={styles.notesText}>{item.notes}</AppText>
+          <AppText style={styles.notesText}>{item?.notes}</AppText>
         </View>
       ) : null}
     </View>

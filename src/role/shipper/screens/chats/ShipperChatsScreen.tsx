@@ -53,20 +53,20 @@ const ShipperChatsScreen = ({ navigation }: any) => {
 
   const handleOpenChat = (item: any) => {
     navigation.navigate('ChatDetails', {
-      shipmentId: item.shipmentId,
-      name: item.name || 'Customer',
+      shipmentId: item?.shipmentId,
+      name: item?.name || 'Customer',
     });
   };
 
   // Filter customer chats by search query and unread filter
   const filteredCustomers = chatCustomers.filter(item => {
-    if (selectedFilter === 'Unread' && !item.hasUnread) return false;
+    if (selectedFilter === 'Unread' && !item?.hasUnread) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      const name = (item.name || '').toLowerCase();
-      const code = (item.shipmentCode || '').toLowerCase();
-      const pickup = (item.pickupLocation || '').toLowerCase();
-      const delivery = (item.deliveryLocation || '').toLowerCase();
+      const name = (item?.name || '').toLowerCase();
+      const code = (item?.shipmentCode || '').toLowerCase();
+      const pickup = (item?.pickupLocation || '').toLowerCase();
+      const delivery = (item?.deliveryLocation || '').toLowerCase();
       if (
         !name.includes(q) &&
         !code.includes(q) &&
@@ -81,24 +81,24 @@ const ShipperChatsScreen = ({ navigation }: any) => {
 
   const renderChatItem = ({ item, index }: { item: any; index: number }) => {
     const isLast = index === filteredCustomers.length - 1;
-    const pickupShort = item.pickupLocation
-      ? item.pickupLocation.split(',')[0]
+    const pickupShort = item?.pickupLocation
+      ? item?.pickupLocation.split(',')[0]
       : 'Pickup Location';
-    const deliveryShort = item.deliveryLocation
-      ? item.deliveryLocation.split(',')[0]
+    const deliveryShort = item?.deliveryLocation
+      ? item?.deliveryLocation.split(',')[0]
       : 'Delivery Location';
 
     return (
       <TouchableOpacity
-        key={item.shipmentId || item._id || index}
+        key={item?.shipmentId || item?._id || index}
         style={[styles.chatCardItem, isLast && styles.chatCardItemLast]}
         onPress={() => handleOpenChat(item)}
         activeOpacity={0.7}
       >
         {/* Avatar with Online Dot */}
         <View style={styles.avatarWrapper}>
-          {item.avatar ? (
-            <Image source={{ uri: item.avatar }} style={styles.avatarImg} />
+          {item?.avatar ? (
+            <Image source={{ uri: item?.avatar }} style={styles.avatarImg} />
           ) : (
             <View style={styles.avatarPlaceholder}>
               <User size={22} color={COLORS.goldPrimary} />
@@ -112,13 +112,13 @@ const ShipperChatsScreen = ({ navigation }: any) => {
         <View style={styles.chatContentCol}>
           {/* Customer Name & Time Row */}
           <View style={styles.topNameRow}>
-            <AppText style={styles.customerName}>{item.name || 'Customer'}</AppText>
+            <AppText style={styles.customerName}>{item?.name || 'Customer'}</AppText>
             <AppText style={styles.timeAgoText}>5min ago</AppText>
           </View>
 
           {/* Shipment Code Subtitle */}
           <AppText style={styles.shipmentCodeSub}>
-            Shipment ID {item.shipmentCode || 'HS-SHIP-2026-CODE'}
+            Shipment ID {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
           </AppText>
 
           {/* Location Route / Last Message Preview */}
@@ -177,7 +177,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
 
       <FlatList
         data={loading ? [] : filteredCustomers}
-        keyExtractor={(item, index) => item.shipmentId || item._id || index.toString()}
+        keyExtractor={(item, index) => item?.shipmentId || item?._id || index.toString()}
         renderItem={renderChatItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmptyComponent}

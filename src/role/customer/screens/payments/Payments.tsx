@@ -5,8 +5,8 @@ import { CreditCard, WalletCards } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
 import { AppLoader, AppText, EmptyState, ErrorView, PaymentCard } from '../../../../components';
 import { usePayments } from './usePayments';
- 
- 
+
+
 const Payments = () => {
   const { payments, loading, refreshing, error, fetchPayments } = usePayments();
   const navigation = useNavigation<any>();
@@ -23,11 +23,11 @@ const Payments = () => {
 
       <FlatList
         data={payments}
-        keyExtractor={(item) => item.transactionId}
+        keyExtractor={(item) => item?.transactionId}
         renderItem={({ item }) => (
           <PaymentCard
-            item={item} 
-            onPress={(p) => navigation.navigate('PaymentDetails', { payment: p })} 
+            item={item}
+            onPress={(p) => navigation.navigate('PaymentDetails', { payment: p })}
           />
         )}
         contentContainerStyle={styles.list}
@@ -36,9 +36,9 @@ const Payments = () => {
         }
         ListEmptyComponent={
           <EmptyState
-            icon={WalletCards} 
-            title="No Payments Found" 
-            message="Your payment history will appear here once you book a shipment." 
+            icon={WalletCards}
+            title="No Payments Found"
+            message="Your payment history will appear here once you book a shipment."
           />
         }
       />

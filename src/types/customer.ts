@@ -84,26 +84,7 @@ export interface TopRatedShippersResponse {
 }
 
 
-export interface CustomerProfileResponse {
-  success: boolean;
-  message: string;
-  data: {
-    uniqueId: string;
-    name: string;
-    email: string;
-    role: 'customer';
-    firstName: string;
-    lastName: string;
-    locale: string;
-    emailVerified: boolean;
-    phone: string;
-    phoneVerified: boolean;
-    currentLocation: null;
-    isLogin: boolean;
-    profileImage: string;
-    bannerImage: string;
-  };
-}
+
 export interface ProfileImage {
   url: string;
   public_id: string;

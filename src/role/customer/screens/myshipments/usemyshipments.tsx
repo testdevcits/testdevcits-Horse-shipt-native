@@ -38,21 +38,21 @@ const useMyShipments = () => {
       case 'Upcoming':
         return shipments.filter(
           item =>
-            item.status === 'open_for_offers' ||
-            (item.status === 'assigned' && !item.isInProgress),
+            item?.status === 'open_for_offers' ||
+            (item?.status === 'assigned' && !item?.isInProgress),
         );
 
       case 'Draft':
-        return shipments.filter(item => !item.publish);
+        return shipments.filter(item => !item?.publish);
 
       case 'In Progress':
-        return shipments.filter(item => item.isInProgress);
+        return shipments.filter(item => item?.isInProgress);
 
       case 'Completed':
-        return shipments.filter(item => item.isCompleted);
+        return shipments.filter(item => item?.isCompleted);
 
       case 'Cancelled':
-        return shipments.filter(item => item.status === 'cancelled');
+        return shipments.filter(item => item?.status === 'cancelled');
 
       default:
         return shipments;
@@ -63,17 +63,17 @@ const useMyShipments = () => {
     () => ({
       Upcoming: shipments.filter(
         item =>
-          item.status === 'open_for_offers' ||
-          (item.status === 'assigned' && !item.isInProgress),
+          item?.status === 'open_for_offers' ||
+          (item?.status === 'assigned' && !item?.isInProgress),
       ).length,
 
-      Draft: shipments.filter(item => !item.publish).length,
+      Draft: shipments.filter(item => !item?.publish).length,
 
-      InProgress: shipments.filter(item => item.isInProgress).length,
+      InProgress: shipments.filter(item => item?.isInProgress).length,
 
-      Completed: shipments.filter(item => item.isCompleted).length,
+      Completed: shipments.filter(item => item?.isCompleted).length,
 
-      Cancelled: shipments.filter(item => item.status === 'cancelled').length,
+      Cancelled: shipments.filter(item => item?.status === 'cancelled').length,
     }),
     [shipments],
   );

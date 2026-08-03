@@ -15,25 +15,25 @@ interface AvailableShipmentCardProps {
 
 const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onPress }) => {
   const horsePhoto =
-    item.horses && item.horses[0]?.photo?.url
-      ? item.horses[0].photo.url
+    item?.horses && item?.horses[0]?.photo?.url
+      ? item?.horses[0].photo.url
       : null;
 
   const horseName =
-    item.horses && item.horses[0]?.registeredName
-      ? item.horses[0].registeredName
+    item?.horses && item?.horses[0]?.registeredName
+      ? item?.horses[0].registeredName
       : 'Thunder - Sky';
 
   const horseSpecs =
-    item.horses && item.horses[0]
-      ? `${item.horses[0].breed || 'Belgian Warmblood'} | ${item.horses[0].age || '2'
-      }yr | ${item.horses[0].colour || 'Blood bay'}`
+    item?.horses && item?.horses[0]
+      ? `${item?.horses[0].breed || 'Belgian Warmblood'} | ${item?.horses[0].age || '2'
+      }yr | ${item?.horses[0].colour || 'Blood bay'}`
       : 'Belgian Warmblood | 2yr | Blood bay';
 
-  const locationText = item.pickupLocation
-    ? item.pickupLocation.split(',')[0] +
+  const locationText = item?.pickupLocation
+    ? item?.pickupLocation.split(',')[0] +
     ', ' +
-    (item.pickupLocation.split(',')[1] || '')
+    (item?.pickupLocation.split(',')[1] || '')
     : 'Ghbaleh, Lebanon';
 
   return (
@@ -56,7 +56,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
         <AppText style={styles.horseTitle}>{horseName}</AppText>
         <AppText style={styles.horseSpecs}>{horseSpecs}</AppText>
         <AppText style={styles.shipmentCode}>
-          {item.shipmentCode || 'HS-SHIP-2026-3B7C23'}
+          {item?.shipmentCode || 'HS-SHIP-2026-3B7C23'}
         </AppText>
 
         <View style={styles.infoMetaRow}>
@@ -69,8 +69,8 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
         <View style={styles.infoMetaRow}>
           <Calendar size={14} color={COLORS.textSecondary} />
           <AppText style={styles.infoMetaText}>
-            {item.pickupDateRange?.start
-              ? `Pickup ${moment(item.pickupDateRange.start).format('MMM DD')}`
+            {item?.pickupDateRange?.start
+              ? `Pickup ${moment(item?.pickupDateRange.start).format('MMM DD')}`
               : 'Pickup Jul 23-31'}
           </AppText>
         </View>

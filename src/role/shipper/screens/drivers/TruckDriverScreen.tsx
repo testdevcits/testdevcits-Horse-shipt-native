@@ -205,7 +205,7 @@ const TruckDriverScreen = () => {
 
       <FlatList
         data={drivers}
-        keyExtractor={(item, index) => item._id || index.toString()}
+        keyExtractor={(item, index) => item?._id || index.toString()}
         renderItem={({ item }) => (
           <TruckDriverCard
             driver={item}

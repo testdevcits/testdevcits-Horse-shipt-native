@@ -13,19 +13,19 @@ const PaymentCard = memo(({ item, onPress }: { item: any; onPress: (item: any) =
             <CreditCard size={18} color={COLORS.goldPrimary} />
           </View>
           <View>
-            <AppText style={styles.brandText}>{item.cardBrand.toUpperCase()} •••• {item.last4}</AppText>
-            <AppText style={styles.dateText}>{item.paymentDateTime}</AppText>
+            <AppText style={styles.brandText}>{item?.cardBrand.toUpperCase()} •••• {item?.last4}</AppText>
+            <AppText style={styles.dateText}>{item?.paymentDateTime}</AppText>
           </View>
         </View>
-        <AppText style={styles.amount}>${item.amount.toFixed(2)}</AppText>
+        <AppText style={styles.amount}>${item?.amount.toFixed(2)}</AppText>
       </View>
 
       <View style={styles.divider} />
 
       <View style={styles.routeContainer}>
-        <AppText style={styles.location} numberOfLines={1}>{item.pickupLocation}</AppText>
+        <AppText style={styles.location} numberOfLines={1}>{item?.pickupLocation}</AppText>
         <ArrowRight size={12} color={COLORS.grey400} style={styles.arrow} />
-        <AppText style={styles.location} numberOfLines={1}>{item.deliveryLocation}</AppText>
+        <AppText style={styles.location} numberOfLines={1}>{item?.deliveryLocation}</AppText>
       </View>
 
       <View style={styles.footer}>

@@ -137,27 +137,27 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const filteredShipments = shipments.filter(item => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
-    const pickup = (item.pickupLocation || '').toLowerCase();
-    const delivery = (item.deliveryLocation || '').toLowerCase();
-    const code = (item.shipmentCode || '').toLowerCase();
+    const pickup = (item?.pickupLocation || '').toLowerCase();
+    const delivery = (item?.deliveryLocation || '').toLowerCase();
+    const code = (item?.shipmentCode || '').toLowerCase();
     return pickup.includes(q) || delivery.includes(q) || code.includes(q);
   });
 
   const handleSelectMapShipment = (item: any) => {
     setSelectedMapShipment(item);
-    if (item.pickupCoords && item.deliveryCoords && mapRef.current) {
+    if (item?.pickupCoords && item?.deliveryCoords && mapRef.current) {
       const coords = [
         {
           latitude:
-            item.pickupCoords.lat || item.pickupCoords.latitude || 22.96,
+            item?.pickupCoords.lat || item?.pickupCoords.latitude || 22.96,
           longitude:
-            item.pickupCoords.lng || item.pickupCoords.longitude || 76.05,
+            item?.pickupCoords.lng || item?.pickupCoords.longitude || 76.05,
         },
         {
           latitude:
-            item.deliveryCoords.lat || item.deliveryCoords.latitude || 23.83,
+            item?.deliveryCoords.lat || item?.deliveryCoords.latitude || 23.83,
           longitude:
-            item.deliveryCoords.lng || item.deliveryCoords.longitude || 78.73,
+            item?.deliveryCoords.lng || item?.deliveryCoords.longitude || 78.73,
         },
       ];
       mapRef.current.fitToCoordinates(coords, {
@@ -176,12 +176,12 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         longitudeDelta: 1.5,
       };
     }
-    const pLat = item.pickupCoords.lat || item.pickupCoords.latitude || 22.745;
-    const pLng = item.pickupCoords.lng || item.pickupCoords.longitude || 75.892;
+    const pLat = item?.pickupCoords.lat || item?.pickupCoords.latitude || 22.745;
+    const pLng = item?.pickupCoords.lng || item?.pickupCoords.longitude || 75.892;
     const dLat =
-      item.deliveryCoords?.lat || item.deliveryCoords?.latitude || pLat + 0.5;
+      item?.deliveryCoords?.lat || item?.deliveryCoords?.latitude || pLat + 0.5;
     const dLng =
-      item.deliveryCoords?.lng || item.deliveryCoords?.longitude || pLng + 0.5;
+      item?.deliveryCoords?.lng || item?.deliveryCoords?.longitude || pLng + 0.5;
 
     const midLat = (pLat + dLat) / 2;
     const midLng = (pLng + dLng) / 2;
@@ -402,7 +402,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       {viewMode === 'list' ? (
         <FlatList
           data={filteredShipments}
-          keyExtractor={(item, index) => item._id || item.id || String(index)}
+          keyExtractor={(item, index) => item?._id || item?.id || String(index)}
           renderItem={({ item }) => (
             <AvailableShipmentCard item={item} onPress={handleNavigateToDetails} />
           )}
@@ -460,12 +460,12 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               <View style={styles.mapSelectionTable}>
                 <FlatList
                   data={filteredShipments}
-                  keyExtractor={(item, index) => item._id || item.id || String(index)}
+                  keyExtractor={(item, index) => item?._id || item?.id || String(index)}
                   scrollEnabled={false}
                   renderItem={({ item, index }) => (
                     <MapShipmentSelectItem
                       item={item}
-                      isSelected={selectedMapShipment?._id === item._id}
+                      isSelected={selectedMapShipment?._id === item?._id}
                       isLast={index === filteredShipments.length - 1}
                       onSelect={handleSelectMapShipment}
                       onNavigateDetails={handleNavigateToDetails}

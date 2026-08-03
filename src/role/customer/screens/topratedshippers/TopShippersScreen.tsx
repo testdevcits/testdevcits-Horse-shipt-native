@@ -159,7 +159,7 @@ const TopShippersScreen = () => {
       <AppHeader showBack={true} title="Top Shippers" />
       <FlatList
         data={shippers}
-        keyExtractor={(item, index) => item._id ?? index.toString()} // ListHeaderComponent={renderHeader}
+        keyExtractor={(item, index) => item?._id ?? index.toString()} // ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <ShipperCard
             item={item}

@@ -44,7 +44,7 @@ const ReviewsScreen = () => {
 
       <FlatList
         data={reviews}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         ListHeaderComponent={renderSummary}
         renderItem={({ item }) => <ReviewCard item={item} />}
         contentContainerStyle={styles.list}

@@ -36,7 +36,7 @@ const MyHorses = ({ navigation }: any) => {
 
       <FlatList
         data={horses}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
@@ -58,7 +58,7 @@ const MyHorses = ({ navigation }: any) => {
         renderItem={({ item }) => (
           <HorseCard
             item={item}
-            onDelete={() => handleDelete(item._id)}
+            onDelete={() => handleDelete(item?._id)}
             onEdit={() => handleEdit(item)}
           />
         )}

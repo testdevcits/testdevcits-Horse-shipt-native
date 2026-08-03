@@ -42,7 +42,7 @@ const MyShipmentDetails = ({ route, }: any) => {
     loading,
     refreshing,
     onRefresh,
-  } = useShipmentDetails(item._id);
+  } = useShipmentDetails(item?._id);
 
   const data = shipment || item;
 

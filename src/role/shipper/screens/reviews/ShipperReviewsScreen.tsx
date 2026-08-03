@@ -100,14 +100,14 @@ const ShipperReviewsScreen = ({ route }: any) => {
   };
 
   const renderReviewItem = ({ item, index }: { item: any; index: number }) => {
-    const customerName = item.customerName || item.customerId?.name || 'Customer';
-    const avatarUri = item.customerId?.profileImage?.url || item.customerId?.profileImage;
-    const dateFormatted = item.createdAt
-      ? moment(item.createdAt).format('MMM DD, YYYY')
+    const customerName = item?.customerName || item?.customerId?.name || 'Customer';
+    const avatarUri = item?.customerId?.profileImage?.url || item?.customerId?.profileImage;
+    const dateFormatted = item?.createdAt
+      ? moment(item?.createdAt).format('MMM DD, YYYY')
       : 'Recent';
 
     return (
-      <View key={item._id || index} style={styles.reviewCard}>
+      <View key={item?._id || index} style={styles.reviewCard}>
         <View style={styles.reviewerHeader}>
           <View style={styles.reviewerRow}>
             <Image
@@ -130,19 +130,19 @@ const ShipperReviewsScreen = ({ route }: any) => {
                 key={s}
                 size={14}
                 color="#F59E0B"
-                fill={s <= (item.rating || 5) ? '#F59E0B' : 'transparent'}
+                fill={s <= (item?.rating || 5) ? '#F59E0B' : 'transparent'}
               />
             ))}
           </View>
         </View>
 
         <AppText style={styles.reviewText}>
-          {item.reviewText || 'Great experience working together!'}
+          {item?.reviewText || 'Great experience working together!'}
         </AppText>
 
-        {item.source && (
+        {item?.source && (
           <View style={styles.sourceBadge}>
-            <AppText style={styles.sourceBadgeText}>{item.source}</AppText>
+            <AppText style={styles.sourceBadgeText}>{item?.source}</AppText>
           </View>
         )}
       </View>
@@ -156,7 +156,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
 
       <FlatList
         data={reviews}
-        keyExtractor={(item, index) => item._id || index.toString()}
+        keyExtractor={(item, index) => item?._id || index.toString()}
         renderItem={renderReviewItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
