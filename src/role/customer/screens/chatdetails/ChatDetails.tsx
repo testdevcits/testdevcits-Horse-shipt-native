@@ -165,7 +165,7 @@ const ChatDetails = () => {
         <View style={styles.headerInfo}>
           <AppText style={styles.headerTitle}>{partnerName}</AppText>
           <AppText style={styles.headerSubtitle}>
-            Shipment ID {shipment?.shipmentCode || 'HS-SHIP-0000'}
+            Shipment ID {shipment?.shipmentCode || 'Not Available'}
           </AppText>
         </View>
         <TouchableOpacity>

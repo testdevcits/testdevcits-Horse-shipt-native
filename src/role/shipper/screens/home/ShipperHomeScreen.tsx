@@ -42,6 +42,7 @@ import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
 import AvailableShipmentCard from './AvailableShipmentCard';
 import MapShipmentSelectItem from './MapShipmentSelectItem';
+import ConnectBankModal from './ConnectBankModal';
 import styles from './styles.shipperhome';
 
 const { width } = Dimensions.get('window');
@@ -56,6 +57,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<string>(''); // 'pickup' | 'dropoff'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
   // Map view selection state
   const [selectedMapShipment, setSelectedMapShipment] = useState<any>(null);
@@ -575,6 +577,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           </View>
         </ScrollView>
       )}
+
+      <ConnectBankModal
+        isVisible={isBankModalVisible}
+        onClose={() => setIsBankModalVisible(false)}
+      />
     </View>
   );
 };
