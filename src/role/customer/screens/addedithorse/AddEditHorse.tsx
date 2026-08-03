@@ -154,7 +154,9 @@ const AddEditHorse = () => {
                   placeholder="Enter Registered name ( min 3 characters )"
                   value={values.registeredName}
                   onChangeText={handleChange('registeredName')}
-                  error={touched.registeredName ? errors.registeredName : ''}
+                  error={
+                    touched.registeredName ? (errors.registeredName as string) : ''
+                  }
                 />
 
                 <Input
@@ -162,7 +164,7 @@ const AddEditHorse = () => {
                   placeholder="Enter Barn name ( min 3 characters )"
                   value={values.barnName}
                   onChangeText={handleChange('barnName')}
-                  error={touched.barnName ? errors.barnName : ''}
+                  error={touched.barnName ? (errors.barnName as string) : ''}
                 />
 
                 <AppSelect
@@ -187,7 +189,7 @@ const AddEditHorse = () => {
                   keyboardType="numeric"
                   value={values.age}
                   onChangeText={handleChange('age')}
-                  error={touched.age ? errors.age : ''}
+                  error={touched.age ? (errors.age as string) : ''}
                 />
 
                 <Suspense fallback={<ActivityIndicator size={'small'} />}>
@@ -235,7 +237,7 @@ const AddEditHorse = () => {
                   numberOfLines={4}
                   value={values.notes}
                   onChangeText={handleChange('notes')}
-                  error={touched.notes ? errors.notes : ''}
+                  error={touched.notes ? (errors.notes as string) : ''}
                 />
 
                 {/* Footer Buttons */}

@@ -84,7 +84,7 @@ const useChatDetails = (shipmentId: string) => {
           res = await customerService.sendMessage(roomId, formData);
         }
       } else {
-        const payload = { message: text?.trim() };
+        const payload = { message: text?.trim() || '' };
         if (isShipper) {
           res = await shipperService.sendChatMessage(roomId, payload);
         } else {

@@ -17,7 +17,7 @@ import styles from './styles.alltrips';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
 
-const AllTrips = ({ navigation }) => {
+const AllTrips = ({ navigation }: { navigation?: any }) => {
     const { loading, allShipments, driver, activeShipment } = useDriverMe();
     const [selectedTab, setSelectedTab] = useState<TabType>('ALL');
 

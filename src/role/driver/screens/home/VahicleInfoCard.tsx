@@ -8,6 +8,10 @@ const VahicleInfoCard = ({
   vehicle,
   isVehicleCollapsed,
   setIsVehicleCollapsed,
+}: {
+  vehicle?: any;
+  isVehicleCollapsed?: any;
+  setIsVehicleCollapsed?: any;
 }) => {
   return (
     <View style={styles.card}>

@@ -4,7 +4,13 @@ import { Calendar, Clock, MapPin, Truck } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
 
-const ActiveShipment = ({ activeShipment, getShortLocation }) => {
+const ActiveShipment = ({
+  activeShipment,
+  getShortLocation,
+}: {
+  activeShipment?: any;
+  getShortLocation?: any;
+}) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>

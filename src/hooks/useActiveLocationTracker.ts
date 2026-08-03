@@ -8,7 +8,7 @@ import driverService from '../api/services/driverService';
 export const useActiveLocationTracker = () => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Request runtime location permissions
   const requestLocationPermission = async (): Promise<boolean> => {

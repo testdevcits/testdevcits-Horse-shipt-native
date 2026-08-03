@@ -17,7 +17,7 @@ import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
 interface DrawerMenuItemProps {
@@ -59,7 +59,7 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // Active drawer route name (e.g., 'MainTabs', 'Profile', 'HelpCenter', etc.)
   const currentDrawerRoute = state?.routes[state?.index]?.name;

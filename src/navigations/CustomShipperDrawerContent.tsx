@@ -29,7 +29,7 @@ import { SPACING, FONT_SIZE } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
 interface DrawerItemProps {
@@ -70,7 +70,7 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
 
 const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
   const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');

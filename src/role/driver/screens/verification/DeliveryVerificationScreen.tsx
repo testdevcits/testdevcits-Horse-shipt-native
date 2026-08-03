@@ -283,7 +283,9 @@ const DeliveryVerificationScreen = () => {
                                 {Array(6).fill('').map((_, index) => (
                                     <TextInput
                                         key={index}
-                                        ref={(ref) => (otpInputsRef.current[index] = ref)}
+                                        ref={(ref) => {
+                                            otpInputsRef.current[index] = ref;
+                                        }}
                                         style={styles.otpInputBox}
                                         keyboardType="number-pad"
                                         maxLength={1}

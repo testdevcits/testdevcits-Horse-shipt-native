@@ -15,7 +15,7 @@ import {
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 
-const ShipperList = ({ navigation }) => {
+const ShipperList = ({ navigation }: { navigation?: any }) => {
   const {
     shippers,
     loading,

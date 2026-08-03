@@ -187,7 +187,7 @@ axiosClient.interceptors.response.use(
   async (error: AxiosError) => {
     const status = error.response?.status;
     const url = error.config?.url;
-    const errorBody = error.response?.data;
+    const errorBody: any = error.response?.data;
 
     // --- LOGGING ERROR ---
     console.log(' ');
@@ -197,10 +197,10 @@ axiosClient.interceptors.response.use(
     console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
     const errorMessage: string = String(
       errorBody?.errors?.[0] ||
-      errorBody?.message ||
-      errorBody?.error ||
-      error.message ||
-      'An error occurred',
+        errorBody?.message ||
+        errorBody?.error ||
+        error.message ||
+        'An error occurred',
     );
 
     Toast.show({

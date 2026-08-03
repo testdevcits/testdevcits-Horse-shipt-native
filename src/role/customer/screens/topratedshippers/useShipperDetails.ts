@@ -23,7 +23,7 @@ export const useShipperDetails = (shipperId: string) => {
           setShipper(res.data);
         } else {
           // Handle cases where API returns success: false
-          setError(res.message || 'Failed to load shipper profile');
+          setError((res as any).message || 'Failed to load shipper profile');
         }
       } catch (e: any) {
         console.error('Error fetching shipper details:', e);

@@ -31,7 +31,7 @@ import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useShippers } from '../topratedshippers/useShippers';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const { shipments, loading, refreshing, refresh } = useShipments();
   const {
     shippers,

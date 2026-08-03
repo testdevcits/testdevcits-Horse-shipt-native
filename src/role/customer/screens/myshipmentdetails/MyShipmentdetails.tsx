@@ -47,7 +47,7 @@ const MyShipmentDetails = ({ route, }: any) => {
   const data = shipment || item;
 
   const handleEditShipment = () => {
-    navigation.navigate('NewShipment', {
+    (navigation as any).navigate('NewShipment', {
       isEdit: true,
       shipmentData: data,
     });

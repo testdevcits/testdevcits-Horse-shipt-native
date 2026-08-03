@@ -36,7 +36,11 @@ const useShipmentDetails = (shipmentId: string) => {
       }
 
       if (questionsResponse.success) {
-        setQuestions(questionsResponse.data ?? []);
+        setQuestions(
+          Array.isArray(questionsResponse.data)
+            ? questionsResponse.data
+            : (questionsResponse as any).questions ?? [],
+        );
       }
 
       if (matchingShippersResponse.success) {

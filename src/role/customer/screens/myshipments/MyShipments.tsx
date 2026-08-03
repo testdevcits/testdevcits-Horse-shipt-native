@@ -20,7 +20,7 @@ import {
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 import styles from './styles.myshipments';
 
-const MyShipments = ({ navigation }) => {
+const MyShipments = ({ navigation }: { navigation?: any }) => {
   const {
     filteredData,
     loading,

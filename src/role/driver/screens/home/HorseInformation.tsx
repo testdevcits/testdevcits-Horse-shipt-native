@@ -4,7 +4,13 @@ import { AppText } from '../../../../components';
 import { Map } from 'lucide-react-native';
 import { COLORS, FONTS } from '../../../../constants';
 
-const HorseInformation = ({ activeShipment, setIsMapModalVisible }) => {
+const HorseInformation = ({
+  activeShipment,
+  setIsMapModalVisible,
+}: {
+  activeShipment?: any;
+  setIsMapModalVisible?: any;
+}) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -13,7 +19,7 @@ const HorseInformation = ({ activeShipment, setIsMapModalVisible }) => {
         </AppText>
       </View>
       <View style={styles.cardBody}>
-        {activeShipment?.shipment?.horses.map((horse, idx) => (
+        {activeShipment?.shipment?.horses?.map((horse: any, idx: number) => (
           <View key={idx} style={styles.horseDetailsWrapper}>
             {/* Horse Image */}
             {horse?.photo?.url ? (
