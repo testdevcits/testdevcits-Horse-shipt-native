@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 import customerService from '../../../../api/services/customerService';
 import { Horse } from '../../../../types/customer';
 
- import {
+import {
   setHorses,
   setLoading,
   setError,
@@ -17,15 +17,12 @@ const useMyHorses = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
 
-  const horses = useSelector(
-    (state: RootState) => state.horse.horses,
-  );
-
-  const loading = useSelector(
-    (state: RootState) => state.horse.loading,
-  );
+  const horses = useSelector((state: RootState) => state.horse.horses);
+  const loading = useSelector((state: RootState) => state.horse.loading);
 
   const [refreshing, setRefreshing] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [selectedHorseId, setSelectedHorseId] = useState<string | null>(null);
 
   const fetchHorses = useCallback(async () => {
     try {
@@ -41,9 +38,7 @@ const useMyHorses = () => {
     } catch (error: any) {
       console.log(error);
 
-      dispatch(
-        setError(error?.message || 'Something went wrong'),
-      );
+      dispatch(setError(error?.message || 'Something went wrong'));
     } finally {
       dispatch(setLoading(false));
       setRefreshing(false);
@@ -55,33 +50,41 @@ const useMyHorses = () => {
   }, [fetchHorses]);
 
   const handleDelete = (id: string) => {
-    Alert.alert(
-      'Delete Horse',
-      'Are you sure you want to remove this horse?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              dispatch(setLoading(true));
+    setSelectedHorseId(id);
+    setIsDeleteModalVisible(true);
+  };
 
-              await customerService.deleteHorse(id);
+  const handleConfirmDelete = async () => {
+    if (!selectedHorseId) return;
+    try {
+      dispatch(setLoading(true));
 
-              fetchHorses();
-            } catch (error) {
-              console.log(error);
-            } finally {
-              dispatch(setLoading(false));
-            }
-          },
-        },
-      ],
-    );
+      await customerService.deleteHorse(selectedHorseId);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Horse removed successfully',
+      });
+
+      fetchHorses();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to delete horse',
+      });
+    } finally {
+      dispatch(setLoading(false));
+      setIsDeleteModalVisible(false);
+      setSelectedHorseId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalVisible(false);
+    setSelectedHorseId(null);
   };
 
   const handleEdit = (horse: Horse) => {
@@ -94,6 +97,9 @@ const useMyHorses = () => {
     refreshing,
     fetchHorses,
     handleDelete,
+    handleConfirmDelete,
+    handleCancelDelete,
+    isDeleteModalVisible,
     handleEdit,
     setRefreshing,
   };

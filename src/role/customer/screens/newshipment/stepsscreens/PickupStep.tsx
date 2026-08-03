@@ -75,22 +75,25 @@ const PickupStep: React.FC<PickupStepProps> = ({
         }
 
         if (effectiveEndDate) {
+          const minDeliveryDate = new Date(effectiveEndDate);
+          minDeliveryDate.setDate(minDeliveryDate.getDate() + 1);
+
           const currentDelStart = form.deliveryStartDate
             ? new Date(form.deliveryStartDate)
             : null;
           if (
-            currentDelStart &&
-            currentDelStart.getTime() < effectiveEndDate.getTime()
+            !currentDelStart ||
+            currentDelStart.getTime() < minDeliveryDate.getTime()
           ) {
-            updates.deliveryStartDate = effectiveEndDate;
+            updates.deliveryStartDate = minDeliveryDate;
             const currentDelEnd = form.deliveryEndDate
               ? new Date(form.deliveryEndDate)
               : null;
             if (
-              currentDelEnd &&
-              currentDelEnd.getTime() < effectiveEndDate.getTime()
+              !currentDelEnd ||
+              currentDelEnd.getTime() < minDeliveryDate.getTime()
             ) {
-              updates.deliveryEndDate = effectiveEndDate;
+              updates.deliveryEndDate = minDeliveryDate;
             }
           }
         }
@@ -98,23 +101,25 @@ const PickupStep: React.FC<PickupStepProps> = ({
         updateForm(updates);
       } else {
         const updates: Partial<NewShipmentForm> = { pickupEndDate: date };
+        const minDeliveryDate = new Date(date);
+        minDeliveryDate.setDate(minDeliveryDate.getDate() + 1);
 
         const currentDelStart = form.deliveryStartDate
           ? new Date(form.deliveryStartDate)
           : null;
         if (
-          currentDelStart &&
-          currentDelStart.getTime() < date.getTime()
+          !currentDelStart ||
+          currentDelStart.getTime() < minDeliveryDate.getTime()
         ) {
-          updates.deliveryStartDate = date;
+          updates.deliveryStartDate = minDeliveryDate;
           const currentDelEnd = form.deliveryEndDate
             ? new Date(form.deliveryEndDate)
             : null;
           if (
-            currentDelEnd &&
-            currentDelEnd.getTime() < date.getTime()
+            !currentDelEnd ||
+            currentDelEnd.getTime() < minDeliveryDate.getTime()
           ) {
-            updates.deliveryEndDate = date;
+            updates.deliveryEndDate = minDeliveryDate;
           }
         }
 

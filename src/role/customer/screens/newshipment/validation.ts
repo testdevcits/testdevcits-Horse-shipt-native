@@ -46,17 +46,18 @@ export const StepSchemas = [
     deliveryStartDate: Yup.date()
       .required('Delivery start date is required')
       .test(
-        'is-on-or-after-pickup',
-        'Delivery start date must be on or after pickup date',
+        'is-after-pickup',
+        'Delivery start date must be at least 1 day after pickup date',
         function (value) {
           const { pickupEndDate, pickupStartDate } = this.parent;
           const refDate = pickupEndDate || pickupStartDate;
           if (!value || !refDate) return true;
-          const pickup = new Date(refDate);
-          pickup.setHours(0, 0, 0, 0);
+          const minDelivery = new Date(refDate);
+          minDelivery.setHours(0, 0, 0, 0);
+          minDelivery.setDate(minDelivery.getDate() + 1);
           const delStart = new Date(value);
           delStart.setHours(0, 0, 0, 0);
-          return delStart.getTime() >= pickup.getTime();
+          return delStart.getTime() >= minDelivery.getTime();
         },
       ),
     deliveryEndDate: Yup.date()

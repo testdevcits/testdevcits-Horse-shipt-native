@@ -10,11 +10,11 @@ import {
   RefreshControl,
   Modal,
   TextInput,
-  Alert,
   StyleSheet,
   Text,
   ActivityIndicator,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { MessageCircle, PencilLine, Star, User, X } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import { useProfile } from './useProfile';
@@ -62,9 +62,17 @@ const Profile = ({ navigation }: any) => {
     const res = await updateProfile(formData);
     if (res.success) {
       setIsEditModalVisible(false);
-      Alert.alert('Success', 'Profile updated successfully');
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Profile updated successfully',
+      });
     } else {
-      Alert.alert('Error', res.message || 'Update failed');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: res.message || 'Update failed',
+      });
     }
   };
 
@@ -140,7 +148,7 @@ const Profile = ({ navigation }: any) => {
           </View>
 
           {/* Stats */}
-          <View style={styles.statsCard}>
+          {/* <View style={styles.statsCard}>
             <View style={styles.statBox}>
               <Text style={styles.statNumber}>10</Text>
               <Text style={styles.statLabel}>Shipment</Text>
@@ -153,7 +161,7 @@ const Profile = ({ navigation }: any) => {
               </View>
               <Text style={styles.statLabel}>Rating</Text>
             </View>
-          </View>
+          </View> */}
 
           {/* Basic Info */}
           <View style={styles.infoCard}>

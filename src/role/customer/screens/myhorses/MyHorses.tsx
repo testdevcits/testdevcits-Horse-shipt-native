@@ -14,6 +14,7 @@ import {
   AppHeader,
   AppLoader,
   AppText,
+  ConfirmationModal,
   EmptyState,
   HorseCard,
 } from '../../../../components';
@@ -25,6 +26,9 @@ const MyHorses = ({ navigation }: any) => {
     refreshing,
     fetchHorses,
     handleDelete,
+    handleConfirmDelete,
+    handleCancelDelete,
+    isDeleteModalVisible,
     handleEdit,
     setRefreshing,
   } = useMyHorses();
@@ -81,6 +85,18 @@ const MyHorses = ({ navigation }: any) => {
             />
           ) : null
         }
+      />
+
+      <ConfirmationModal
+        isVisible={isDeleteModalVisible}
+        type="danger"
+        title="Delete Horse"
+        description="Are you sure you want to remove this horse? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        isLoading={loading}
       />
     </View>
   );

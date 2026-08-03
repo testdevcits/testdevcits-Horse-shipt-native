@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Linking, StyleSheet, Share } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking, StyleSheet, Share, Platform } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import {
   ChevronLeft, Copy, ExternalLink,
@@ -8,6 +8,8 @@ import {
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import Toast from 'react-native-toast-message';
 
 const PaymentDetails = () => {
   const route = useRoute<any>();
@@ -15,6 +17,96 @@ const PaymentDetails = () => {
   const { payment } = route.params;
 
   const onCopy = () => Share.share({ message: payment?.transactionId });
+
+  const handleDownloadReceipt = async () => {
+    const url = payment?.receiptUrl;
+    if (!url) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Receipt Available',
+        text2: 'Receipt link is not available for this transaction.',
+      });
+      return;
+    }
+
+    try {
+      Toast.show({
+        type: 'info',
+        text1: 'Downloading Receipt',
+        text2: 'Starting file download...',
+      });
+
+      const { dirs } = ReactNativeBlobUtil.fs;
+      const cleanTxId = (payment?.transactionId || 'receipt').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = `Receipt_${cleanTxId}.pdf`;
+      const path = `${Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir}/${filename}`;
+
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: path,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          title: filename,
+          description: 'Receipt downloaded successfully',
+          mime: 'application/pdf',
+          mediaScannable: true,
+        },
+      }).fetch('GET', url);
+
+      if (Platform.OS === 'ios') {
+        ReactNativeBlobUtil.ios.openDocument(res.data);
+      } else {
+        Toast.show({
+          type: 'success',
+          text1: 'Download Complete',
+          text2: 'Saved receipt to Downloads folder',
+        });
+      }
+    } catch (error) {
+      console.error('Download Receipt Error:', error);
+      // Fallback: Open URL directly in browser if file download fails
+      try {
+        await Linking.openURL(url);
+      } catch (linkErr) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to download or open receipt.',
+        });
+      }
+    }
+  };
+
+  const handleOpenReceipt = async () => {
+    if (!payment?.receiptUrl) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Receipt Available',
+        text2: 'Receipt link is not available for this transaction.',
+      });
+      return;
+    }
+
+    try {
+      const supported = await Linking.canOpenURL(payment.receiptUrl);
+      if (supported) {
+        await Linking.openURL(payment.receiptUrl);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Cannot open receipt URL.',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to open receipt link.',
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +116,7 @@ const PaymentDetails = () => {
           <ChevronLeft color={COLORS.textPrimary} />
         </TouchableOpacity>
         <AppText style={styles.headerTitle}>Receipt Details</AppText>
-        <TouchableOpacity onPress={() => Linking.openURL(payment?.receiptUrl)}>
+        <TouchableOpacity onPress={handleDownloadReceipt}>
           <Download size={20} color={COLORS.goldPrimary} />
         </TouchableOpacity>
       </View>
@@ -87,7 +179,7 @@ const PaymentDetails = () => {
         {/* External Link */}
         <TouchableOpacity
           style={styles.receiptBtn}
-          onPress={() => Linking.openURL(payment?.receiptUrl)}
+          onPress={handleOpenReceipt}
         >
           <AppText style={styles.receiptBtnText}>View Official Stripe Receipt</AppText>
           <ExternalLink size={16} color={COLORS.goldPrimary} />

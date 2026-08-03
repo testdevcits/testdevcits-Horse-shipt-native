@@ -4,6 +4,7 @@ import { CustomerProfileData } from '../../../../types/customer';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
+import Toast from 'react-native-toast-message';
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<CustomerProfileData | null>(null);
@@ -86,11 +87,21 @@ export const useProfile = () => {
             profileImage: response.profileImage as any,
           }),
         );
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Profile image updated successfully',
+        });
         return { success: true };
       }
     } catch (error: any) {
       if (error.message !== 'User cancelled image selection') {
         console.error('Upload Error:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Upload Error',
+          text2: error.message || 'Failed to upload profile image',
+        });
       }
       return { success: false };
     } finally {

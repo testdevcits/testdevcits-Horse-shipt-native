@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Pressable,
 } from 'react-native';
 import { PlusCircle } from 'lucide-react-native';
 import { useRoute } from '@react-navigation/native';
@@ -14,6 +15,7 @@ import useMyHorses from '../../myhorses/usemyhorses';
 import { Horse } from '../../../../../types/customer';
 import { breedsList, sexes, stallTypes } from '../../addedithorse/constants';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
+import { useNavigation } from '@react-navigation/native';
 
 interface HorseDetailsStepProps {
   form: NewShipmentForm;
@@ -30,6 +32,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   onPrevious,
 }) => {
   const route = useRoute<any>();
+  const navigation = useNavigation<any>();
   const isEdit = route.params?.isEdit;
   const { horses: savedHorses, loading } = useMyHorses();
 
@@ -107,12 +110,15 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         </View>
 
         {!loading && savedHorses.length === 0 && (
-          <View style={styles.noHorsesAlert}>
+          <Pressable
+            onPress={() => navigation.navigate('AddEditHorse')}
+            style={styles.noHorsesAlert}
+          >
             <PlusCircle size={20} color={COLORS.primary} />
             <AppText style={styles.noHorsesText}>
-              You don't have any saved horses. Enter details manually below.
+              You don't have any saved horses. Tap here to add one, or enter details manually below.
             </AppText>
-          </View>
+          </Pressable>
         )}
 
         <Input
@@ -268,9 +274,9 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
               isFormValid
                 ? onNext()
                 : Alert.alert(
-                    'Missing Info',
-                    'Please fill in registered name, breed, sex, and stall size for all horses.',
-                  )
+                  'Missing Info',
+                  'Please fill in registered name, breed, sex, and stall size for all horses.',
+                )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>

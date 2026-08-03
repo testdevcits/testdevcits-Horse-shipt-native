@@ -48,11 +48,13 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
   const getMinDeliveryStartStr = () => {
     const refDate = form.pickupEndDate || form.pickupStartDate;
     if (refDate) {
-      return getSafeDateStr(refDate);
+      const minDate = new Date(refDate);
+      minDate.setDate(minDate.getDate() + 1);
+      return getSafeDateStr(minDate);
     }
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
+    const minDefault = new Date();
+    minDefault.setDate(minDefault.getDate() + 2);
+    return minDefault.toISOString().split('T')[0];
   };
 
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
