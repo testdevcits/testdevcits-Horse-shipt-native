@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, FlatList, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, RefreshControl, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Wind } from 'lucide-react-native';
 import {
   COLORS,
@@ -33,6 +33,16 @@ const MyHorses = ({ navigation }: any) => {
     setRefreshing,
   } = useMyHorses();
 
+  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+
+  const renderItem = useCallback(({ item }: { item: any }) => (
+    <HorseCard
+      item={item}
+      onDelete={() => handleDelete(item?._id)}
+      onEdit={() => handleEdit(item)}
+    />
+  ), [handleDelete, handleEdit]);
+
   return (
     <View style={styles.container}>
       <AppHeader />
@@ -40,9 +50,13 @@ const MyHorses = ({ navigation }: any) => {
 
       <FlatList
         data={horses}
-        keyExtractor={item => item?._id}
+        keyExtractor={keyExtractor}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         ListHeaderComponent={() => (
           <View style={styles.headerWrap}>
             <AppText style={styles.headerTitle}>My Horses</AppText>
@@ -59,13 +73,7 @@ const MyHorses = ({ navigation }: any) => {
             </TouchableOpacity>
           </View>
         )}
-        renderItem={({ item }) => (
-          <HorseCard
-            item={item}
-            onDelete={() => handleDelete(item?._id)}
-            onEdit={() => handleEdit(item)}
-          />
-        )}
+        renderItem={renderItem}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

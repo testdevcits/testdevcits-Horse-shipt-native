@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { MapPin, Calendar, ArrowRight, Truck, ShieldCheck, ChevronRight } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
@@ -89,7 +89,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
   );
 };
 
-export default TripCard;
+export default memo(TripCard);
 
 const styles = StyleSheet.create({
   card: {

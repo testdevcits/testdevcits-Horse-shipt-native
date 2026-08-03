@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import { Plus, User } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
@@ -198,6 +199,17 @@ const TruckDriverScreen = () => {
     );
   };
 
+  const keyExtractor = useCallback((item: any, index: number) => item?._id || index.toString(), []);
+
+  const renderDriverItem = useCallback(({ item }: { item: any }) => (
+    <TruckDriverCard
+      driver={item}
+      onToggleStatus={handleToggleStatus}
+      onEdit={handleEditDriver}
+      onDelete={handleDeleteDriverPrompt}
+    />
+  ), [handleToggleStatus, handleEditDriver, handleDeleteDriverPrompt]);
+
   return (
     <View style={styles.container}>
       <AppHeader title="Truck Driver Management" />
@@ -205,15 +217,8 @@ const TruckDriverScreen = () => {
 
       <FlatList
         data={drivers}
-        keyExtractor={(item, index) => item?._id || index.toString()}
-        renderItem={({ item }) => (
-          <TruckDriverCard
-            driver={item}
-            onToggleStatus={handleToggleStatus}
-            onEdit={handleEditDriver}
-            onDelete={handleDeleteDriverPrompt}
-          />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderDriverItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={[
@@ -221,6 +226,10 @@ const TruckDriverScreen = () => {
           drivers.length === 0 && { flexGrow: 1 },
         ]}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

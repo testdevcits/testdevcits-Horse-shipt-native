@@ -51,6 +51,19 @@ const shipperService = {
     return axiosClient.delete(`/api/shipper/vehicles/${id}`);
   },
 
+  // Assign vehicle to quote (POST /api/shipper/assign-vehicle)
+  assignVehicleToQuote: async (payload: {
+    quoteId: string;
+    vehicleId: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+    quote?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/assign-vehicle', payload);
+  },
+
   // Fetch drivers list for shipper
   getDrivers: async (params?: {
     page?: number;

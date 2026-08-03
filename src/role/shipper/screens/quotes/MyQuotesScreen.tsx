@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { FileText } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 import {
   AppHeader,
   AppText,
@@ -15,6 +16,8 @@ import {
   EmptyState,
   SearchBarCompt,
   ConfirmationModal,
+  AppSelect,
+  AppSelectRef,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import ContractModal from './ContractModal';
@@ -22,7 +25,9 @@ import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
 
 const MyQuotesScreen = () => {
+  const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,6 +42,21 @@ const MyQuotesScreen = () => {
   // Quote Delete State
   const [quoteToDelete, setQuoteToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Vehicle Assignment State
+  const vehicleSelectRef = useRef<AppSelectRef>(null);
+  const [selectedQuoteForVehicle, setSelectedQuoteForVehicle] = useState<any>(null);
+
+  const fetchVehicles = async () => {
+    try {
+      const res = await shipperService.getVehicles();
+      if (res?.success || res?.vehicles) {
+        setVehicles(res.vehicles || []);
+      }
+    } catch (error) {
+      console.error('Fetch Vehicles Error:', error);
+    }
+  };
 
   const fetchQuotes = async () => {
     try {
@@ -54,18 +74,111 @@ const MyQuotesScreen = () => {
 
   useEffect(() => {
     fetchQuotes();
+    fetchVehicles();
   }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
     fetchQuotes();
+    fetchVehicles();
+  };
+
+  const handleOpenVehicleSelect = (quote: any) => {
+    setSelectedQuoteForVehicle(quote);
+    if (vehicles.length === 0) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Vehicles Found',
+        text2: 'Please add a vehicle in My Vehicles first.',
+      });
+    }
+    vehicleSelectRef.current?.present();
+  };
+
+  const handleSelectVehicle = async (selectedLabel: string) => {
+    if (!selectedQuoteForVehicle) return;
+
+    const foundVehicle = vehicles.find(v => {
+      const label = `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim();
+      return label === selectedLabel || v.vehicleNumber === selectedLabel || v._id === selectedLabel;
+    }) || vehicles[0];
+
+    if (!foundVehicle) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Selected vehicle not found.',
+      });
+      return;
+    }
+
+    const quoteId = selectedQuoteForVehicle._id || selectedQuoteForVehicle.id;
+    const vehicleId = foundVehicle._id || foundVehicle.id;
+
+    try {
+      const res = await shipperService.assignVehicleToQuote({ quoteId, vehicleId });
+      if (res?.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.message || 'Vehicle assigned successfully!',
+        });
+        fetchQuotes();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to assign vehicle.',
+        });
+      }
+    } catch (error: any) {
+      console.error('Assign Vehicle Error:', error);
+      const errMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Failed to assign vehicle.';
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errMsg,
+      });
+    } finally {
+      setSelectedQuoteForVehicle(null);
+    }
   };
 
   const openContractModal = (quote: any) => {
-    const url = quote?.contract?.url || quote?.shipperContract?.url;
-    const code = quote?.shipment?.shipmentCode || 'HS-SHIP-2026-CE9DC1';
-    setSelectedContractData({ url, code, quote });
-    setIsContractModalVisible(true);
+    const url =
+      quote?.contract?.url ||
+      quote?.shipperContract?.url ||
+      (typeof quote?.contract === 'string' ? quote?.contract : null) ||
+      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+    const code = quote?.shipment?.shipmentCode || '';
+
+    if (!url) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Contract',
+        text2: 'No contract file available for this quote.',
+      });
+      return;
+    }
+
+    const cleanUrl = url.toLowerCase().split('?')[0];
+    const isPdf =
+      cleanUrl.endsWith('.pdf') ||
+      cleanUrl.includes('.pdf') ||
+      cleanUrl.includes('/raw/upload/');
+
+    if (isPdf) {
+      navigation.navigate('PdfViewer', {
+        url: url,
+        title: code ? `Contract (${code})` : 'Shipper Contract',
+      });
+    } else {
+      setSelectedContractData({ url, code, quote });
+      setIsContractModalVisible(true);
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -275,6 +388,7 @@ const MyQuotesScreen = () => {
             quote={item}
             onViewContract={openContractModal}
             onDelete={quoteId => setQuoteToDelete(quoteId)}
+            onAssignVehicle={handleOpenVehicleSelect}
           />
         )}
         ListHeaderComponent={renderHeader}
@@ -309,6 +423,20 @@ const MyQuotesScreen = () => {
         cancelText="Cancel"
         type="danger"
         isLoading={isDeleting}
+      />
+
+      {/* Vehicle Selection AppSelect Sheet */}
+      <AppSelect
+        ref={vehicleSelectRef}
+        hideSelector
+        label="Select Vehicle to Assign"
+        placeholder="Select Vehicle"
+        value=""
+        options={vehicles.map(v =>
+          `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim(),
+        )}
+        onSelect={handleSelectVehicle}
+        searchable
       />
     </View>
   );

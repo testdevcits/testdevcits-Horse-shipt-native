@@ -68,7 +68,7 @@ const MyShipmentDetails = ({ route, }: any) => {
       case 'Quotes':
         return <QuotesTab quotes={quotes} onSelectQuote={setSelectedQuote} />;
       case 'Questions':
-        return <QuestionsTab questions={questions} />;
+        return <QuestionsTab questions={questions} onRefresh={onRefresh} />;
       case 'Find Shipper':
         return (
           <FindShipperTab
@@ -136,7 +136,11 @@ const MyShipmentDetails = ({ route, }: any) => {
                 const isActive = activeTab === tab;
                 let badgeCount = 0;
                 if (tab === 'Quotes') badgeCount = quotes.length || 0; // Placeholder 3 to match image
-                if (tab === 'Questions') badgeCount = questions.length || 0; // Placeholder 2 to match image
+                if (tab === 'Questions') {
+                  badgeCount = Array.isArray(questions)
+                    ? questions.length
+                    : ((questions as any)?.pending?.length || 0) + ((questions as any)?.answered?.length || 0);
+                }
 
                 return (
                   <TouchableOpacity

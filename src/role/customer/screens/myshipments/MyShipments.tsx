@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import { Truck } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS } from '../../../../constants';
@@ -38,6 +39,22 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     'Completed',
     'Cancelled',
   ];
+
+  const handleShipmentPress = useCallback((item: any) => {
+    navigation?.navigate('MyShipmentDetails', {
+      item: item,
+      quoteId: item?.quoteId,
+    });
+  }, [navigation]);
+
+  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+
+  const renderItem = useCallback(({ item }: { item: any }) => (
+    <ShipmentHorizontalCard
+      item={item}
+      onPress={() => handleShipmentPress(item)}
+    />
+  ), [handleShipmentPress]);
 
   const renderTab = (tab: ShipmentTab) => {
     const isActive = activeTab === tab;
@@ -83,20 +100,14 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
 
       <FlatList
         data={filteredData}
-        keyExtractor={item => item?._id}
+        keyExtractor={keyExtractor}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <ShipmentHorizontalCard
-            item={item}
-            onPress={() => {
-              navigation.navigate('MyShipmentDetails', {
-                item: item,
-                quoteId: item?.quoteId,
-              });
-            }}
-          />
-        )}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
+        renderItem={renderItem}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={fetchShipments} />
         }

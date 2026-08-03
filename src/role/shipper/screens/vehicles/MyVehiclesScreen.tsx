@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   Image,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import {
   Plus,
@@ -415,6 +416,10 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           vehicles.length === 0 && { flexGrow: 1 },
         ]}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

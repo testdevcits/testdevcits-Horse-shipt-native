@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
     StyleSheet,
     View,
@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ScrollView, // Imported ScrollView for the horizontal chip layout
+    Platform,
 } from 'react-native';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader';
@@ -46,14 +47,20 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
         }
     }, [selectedTab, shipments]);
 
-    const handleCompleteDelivery = (tripId: string) => {
+    const handleCompleteDelivery = useCallback((tripId: string) => {
         console.log("Complete delivery triggered for trip id: ", tripId);
+        navigation?.navigate("DeliveryVerification", { shipment: activeShipment });
+    }, [navigation, activeShipment]);
 
-        navigation.navigate("DeliveryVerification", { shipment: activeShipment })
+    const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
 
-
-
-    };
+    const renderItem = useCallback(({ item }: { item: any }) => (
+        <TripCard
+            item={item}
+            onCompletePress={handleCompleteDelivery}
+            containerStyle={styles.cardSpacing}
+        />
+    ), [handleCompleteDelivery]);
 
     // Render method for active status filters (Horizontal Chip Layout)
     const renderFilterTab = (label: TabType, count: number) => {
@@ -64,6 +71,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
 
         return (
             <TouchableOpacity
+                key={label}
                 style={[styles.chip, isActive && styles.chipActive]}
                 activeOpacity={0.8}
                 onPress={() => setSelectedTab(label)}
@@ -97,9 +105,13 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
             ) : (
                 <FlatList
                     data={filteredShipments}
-                    keyExtractor={(item) => item?._id}
+                    keyExtractor={keyExtractor}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
+                    initialNumToRender={5}
+                    maxToRenderPerBatch={5}
+                    windowSize={5}
+                    removeClippedSubviews={Platform.OS === 'android'}
                     ListHeaderComponent={
                         <ScrollView
                             horizontal
@@ -112,13 +124,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
                             {renderFilterTab('DELIVERED', counts.DELIVERED)}
                         </ScrollView>
                     }
-                    renderItem={({ item }) => (
-                        <TripCard
-                            item={item}
-                            onCompletePress={handleCompleteDelivery}
-                            containerStyle={styles.cardSpacing}
-                        />
-                    )}
+                    renderItem={renderItem}
                     ListEmptyComponent={
                         <View style={styles.emptyContainer}>
                             <AlertCircle size={ICON_SIZE.xl} color={COLORS.textLight} />

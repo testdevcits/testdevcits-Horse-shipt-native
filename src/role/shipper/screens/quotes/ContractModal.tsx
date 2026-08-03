@@ -29,7 +29,7 @@ const ContractModal: React.FC<ContractModalProps> = ({
   visible,
   onClose,
   contractUrl,
-  shipmentCode = 'HS-SHIP-2026-CE9DC1',
+  shipmentCode = 'Not Available',
 }) => {
   const isImage = (url?: string) => {
     if (!url) return false;

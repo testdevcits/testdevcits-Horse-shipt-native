@@ -119,8 +119,7 @@ import { store } from '../app/store';
 import { logoutUser } from '../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import NetInfo from '@react-native-community/netinfo';
-
-const BASE_URL = 'https://horse-shipt.vercel.app';
+import { BASE_URL } from '../config/constants';
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   FlatList,
@@ -6,6 +6,7 @@ import {
   RefreshControl,
   StyleSheet,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   Bell,
@@ -189,10 +190,14 @@ const Notifications = () => {
       {/* MAIN NOTIFICATIONS ACTIVITY LIST */}
       <FlatList
         data={filteredNotifications}
-        keyExtractor={item => item?._id}
+        keyExtractor={item => item?._id || String(Math.random())}
         renderItem={renderNotificationItem}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={8}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

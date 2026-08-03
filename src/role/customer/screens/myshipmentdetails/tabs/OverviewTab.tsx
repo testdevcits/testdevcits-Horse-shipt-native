@@ -37,7 +37,6 @@ import customerService from '../../../../../api/services/customerService';
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
 
-  console.log("======data=====v=====", data)
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
   const [isMapVisible, setIsMapVisible] = useState(false);

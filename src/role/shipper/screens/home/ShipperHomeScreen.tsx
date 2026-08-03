@@ -53,6 +53,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const { user } = useSelector((state: any) => state.auth || {});
   const { getCurrentPosition, requestPermission } = useCurrentLocation();
   const [shipments, setShipments] = useState<any[]>([]);
+  const [quotes, setQuotes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -63,6 +64,17 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   // Map view selection state
   const [selectedMapShipment, setSelectedMapShipment] = useState<any>(null);
   const mapRef = useRef<MapView | null>(null);
+
+  const fetchQuotes = async () => {
+    try {
+      const res = await shipperService.getMyQuotes();
+      if (res?.success || res?.quotes) {
+        setQuotes(res.quotes || []);
+      }
+    } catch (error: any) {
+      console.error('Fetch Quotes Error:', error);
+    }
+  };
 
   const fetchShipments = async () => {
     try {
@@ -117,6 +129,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     }
   };
 
+  const fetchAllData = async () => {
+    await Promise.all([fetchShipments(), fetchQuotes()]);
+  };
+
   const checkStripeStatus = async () => {
     try {
       const res = await shipperService.getStripeStatus();
@@ -135,7 +151,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   };
 
   useEffect(() => {
-    fetchShipments();
+    fetchAllData();
     checkStripeStatus();
     shipperService
       .getProfile()
@@ -149,10 +165,31 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetchShipments();
+    fetchAllData();
   };
 
   const userName = user?.name || user?.firstName || 'Marcus';
+
+  // Dynamic stats calculation
+  const submittedQuotesCount = quotes.length;
+  const upcomingShipmentsCount = quotes.filter(q => {
+    const s = (q.shipment?.status || q.status || '').toLowerCase();
+    return (
+      s === 'accepted' ||
+      s === 'assigned' ||
+      s === 'in_transit' ||
+      s === 'on_the_way' ||
+      s === 'open' ||
+      s === 'published' ||
+      s === 'upcoming' ||
+      s === 'pending' ||
+      s === 'open_for_offers'
+    );
+  }).length;
+
+  const formatCount = (count: number) => {
+    return String(count).padStart(2, '0');
+  };
 
   // Filter shipments
   const filteredShipments = shipments.filter(item => {
@@ -231,25 +268,37 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
       {/* Stats Row Cards */}
       <View style={styles.statsRow}>
-        <View style={styles.statCard}>
+        <TouchableOpacity
+          style={styles.statCard}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('MyQuotes')}
+        >
           <View style={styles.statTextCol}>
             <AppText style={styles.statTitle}>Upcoming Shipments</AppText>
-            <AppText style={styles.statCount}>03</AppText>
+            <AppText style={styles.statCount}>
+              {formatCount(upcomingShipmentsCount)}
+            </AppText>
           </View>
           <View style={styles.statIconBox}>
             <Truck size={24} color="#A06333" />
           </View>
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.statCard}>
+        <TouchableOpacity
+          style={styles.statCard}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('MyQuotes')}
+        >
           <View style={styles.statTextCol}>
             <AppText style={styles.statTitle}>Submitted Quotes</AppText>
-            <AppText style={styles.statCount}>03</AppText>
+            <AppText style={styles.statCount}>
+              {formatCount(submittedQuotesCount)}
+            </AppText>
           </View>
           <View style={styles.statIconBox}>
             <FileText size={24} color="#A06333" />
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* New Opportunities Section */}

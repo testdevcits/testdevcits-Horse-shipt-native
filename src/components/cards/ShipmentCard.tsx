@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { MoveRight, Calendar, User, Info, ChevronRight, MapPin } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
@@ -214,4 +214,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ShipmentCard;
+export default memo(ShipmentCard);

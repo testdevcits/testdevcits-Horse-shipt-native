@@ -21,12 +21,14 @@ interface ShipperQuoteCardProps {
   quote: any;
   onViewContract: (quote: any) => void;
   onDelete: (quoteId: string) => void;
+  onAssignVehicle?: (quote: any) => void;
 }
 
 const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   quote,
   onViewContract,
   onDelete,
+  onAssignVehicle,
 }) => {
   const shipment = quote?.shipment || {};
   const horsePhoto =
@@ -57,6 +59,16 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   const quoteId = quote?._id || quote?.id;
 
   const isAssignedOrAccepted = rawStatus === 'assigned' || rawStatus === 'accepted';
+
+  const vehicleObj = quote?.vehicle || quote?.assignedVehicle;
+  const vehicleName =
+    typeof vehicleObj === 'object' && vehicleObj !== null
+      ? `${vehicleObj?.make || ''} ${vehicleObj?.model || ''} (${vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || vehicleObj?.type || 'Vehicle'})`.trim()
+      : typeof quote?.vehicle === 'string'
+      ? quote?.vehicle
+      : typeof quote?.assignedVehicle === 'string'
+      ? quote?.assignedVehicle
+      : null;
 
   return (
     <View style={styles.quoteCard}>
@@ -135,6 +147,17 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
         </View>
 
+        {/* Assigned Vehicle Display */}
+        {vehicleName ? (
+          <View style={styles.assignedVehicleContainer}>
+            <Truck size={16} color={COLORS.goldPrimary} style={{ marginTop: 2 }} />
+            <AppText style={styles.assignedVehicleText}>
+              <AppText style={{ fontFamily: FONTS.bold }}>Assigned Vehicle : </AppText>
+              {vehicleName}
+            </AppText>
+          </View>
+        ) : null}
+
         {/* Notes Container */}
         {quote?.notes ? (
           <View style={styles.notesContainer}>
@@ -156,13 +179,26 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
+          {onAssignVehicle && (
+            <TouchableOpacity
+              style={styles.assignVehicleBtn}
+              onPress={() => onAssignVehicle(quote)}
+              activeOpacity={0.8}
+            >
+              <Truck size={16} color={COLORS.goldPrimary} />
+              <AppText style={styles.assignVehicleBtnText}>
+                {vehicleName ? 'Change Vehicle' : 'Assign Vehicle'}
+              </AppText>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
-            style={[styles.viewContractBtn, isAssignedOrAccepted && { flex: 1 }]}
+            style={[styles.viewContractBtn]}
             onPress={() => onViewContract(quote)}
             activeOpacity={0.8}
           >
             <FileCheck size={16} color={COLORS.white} />
-            <AppText style={styles.viewContractBtnText}>View Contract</AppText>
+            <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
           {!isAssignedOrAccepted && (

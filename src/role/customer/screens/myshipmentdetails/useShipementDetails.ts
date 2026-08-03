@@ -4,7 +4,7 @@ import customerService from '../../../../api/services/customerService';
 const useShipmentDetails = (shipmentId: string) => {
   const [shipment, setShipment] = useState<any>(null);
   const [quotes, setQuotes] = useState<any[]>([]);
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<any>({ pending: [], answered: [] });
   const [matchingShippers, setMatchingShippers] = useState<string[]>([]);
   const [invitedShippers, setInvitedShippers] = useState<string[]>([]);
 
@@ -37,9 +37,7 @@ const useShipmentDetails = (shipmentId: string) => {
 
       if (questionsResponse.success) {
         setQuestions(
-          Array.isArray(questionsResponse.data)
-            ? questionsResponse.data
-            : (questionsResponse as any).questions ?? [],
+          questionsResponse.data ?? (questionsResponse as any).questions ?? { pending: [], answered: [] },
         );
       }
 

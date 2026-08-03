@@ -324,6 +324,43 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
   },
+
+  // Vehicle Assignment Styles
+  assignedVehicleContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.goldLightBg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    borderRadius: RADIUS.xs,
+    padding: SPACING.sm,
+    gap: SPACING.xs,
+    marginBottom: SPACING.xs,
+  },
+  assignedVehicleText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.goldDarkText,
+    flex: 1,
+    lineHeight: 18,
+  },
+  assignVehicleBtn: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.goldPrimary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    borderRadius: RADIUS.xs,
+    gap: 6,
+  },
+  assignVehicleBtnText: {
+    color: COLORS.goldPrimary,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+  },
 });
 
 export default styles;

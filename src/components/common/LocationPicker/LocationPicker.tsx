@@ -7,7 +7,6 @@ import {
   FlatList,
   ActivityIndicator,
   Animated,
-  Dimensions,
   Modal,
   SafeAreaView,
   Keyboard,
@@ -29,13 +28,17 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
-import { COLORS } from '../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../constants';
 import AppText from '../AppText';
-
-/**
- * CONFIGURATION & THEME
- */
-const { width, height } = Dimensions.get('window');
 
 /**
  * TYPES
@@ -79,7 +82,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         activeOpacity={0.7}
       >
         <View style={styles.iconCircle}>
-          <MapPin size={18} color={COLORS.primary} />
+          <MapPin size={ICON_SIZE.sm} color={COLORS.primary} />
         </View>
         <View style={{ flex: 1 }}>
           <AppText
@@ -344,7 +347,7 @@ const LocationPickerCore: React.FC<{
             onPress={isSearchFocused ? () => setIsSearchFocused(false) : onClose}
             style={styles.searchIconBtn}
           >
-            {isSearchFocused ? <ArrowLeft size={22} color={COLORS.textPrimary} /> : <X size={22} color={COLORS.textPrimary} />}
+            {isSearchFocused ? <ArrowLeft size={ICON_SIZE.md} color={COLORS.textPrimary} /> : <X size={ICON_SIZE.md} color={COLORS.textPrimary} />}
           </TouchableOpacity>
 
           <TextInput
@@ -360,12 +363,12 @@ const LocationPickerCore: React.FC<{
           />
 
           {isSearchLoading ? (
-            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginRight: 10 }} />
+            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginRight: SPACING.sm + 2 }} />
           ) : searchQuery.length > 0 ? (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <X size={18} color={COLORS.textSecondary} />
+              <X size={ICON_SIZE.sm} color={COLORS.textSecondary} />
             </TouchableOpacity>
-          ) : <Search size={18} color={COLORS.textSecondary} />}
+          ) : <Search size={ICON_SIZE.sm} color={COLORS.textSecondary} />}
         </View>
 
         {/* RESULTS OVERLAY */}
@@ -440,13 +443,13 @@ const LocationPickerCore: React.FC<{
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%', marginVertical: 8 },
+  container: { width: '100%', marginVertical: SPACING.sm },
   trigger: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    padding: 16,
-    borderRadius: 16,
+    padding: SPACING.lg,
+    borderRadius: RADIUS.lg,
     borderWidth: 1.5,
     borderColor: COLORS.border,
     height: 60,
@@ -454,14 +457,14 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 34,
     height: 34,
-    borderRadius: 17,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: SPACING.md,
   },
-  triggerText: { fontSize: 16, color: COLORS.textPrimary, fontWeight: '600' },
-  placeholder: { color: COLORS.textSecondary, fontWeight: '400' },
+  triggerText: { fontSize: FONT_SIZE.lg, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
+  placeholder: { color: COLORS.textSecondary, fontFamily: FONTS.regular },
 
   // Modal Content
   modalContainer: { flex: 1, backgroundColor: COLORS.grey50 },
@@ -471,17 +474,17 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.lg,
     zIndex: 100,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     height: 56,
-    paddingHorizontal: 12,
-    marginTop: Platform.OS === 'android' ? 40 : 10,
+    paddingHorizontal: SPACING.md,
+    marginTop: Platform.OS === 'android' ? 40 : SPACING.xs + 6,
     elevation: 6,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
@@ -491,22 +494,22 @@ const styles = StyleSheet.create({
   searchBoxActive: {
     borderRadius: 0,
     marginTop: 0,
-    marginHorizontal: -16,
+    marginHorizontal: -SPACING.lg,
     elevation: 0,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
   },
-  searchIconBtn: { marginRight: 10, padding: 4 },
-  searchInput: { flex: 1, fontSize: 16, color: COLORS.textPrimary, fontWeight: '500' },
+  searchIconBtn: { marginRight: 10, padding: SPACING.xs },
+  searchInput: { flex: 1, fontSize: FONT_SIZE.lg, color: COLORS.textPrimary, fontFamily: FONTS.medium },
 
   resultsPanel: {
     backgroundColor: COLORS.white,
-    height: height,
-    marginHorizontal: -16,
+    height: SCREEN_HEIGHT,
+    marginHorizontal: -SPACING.lg,
   },
   resultItem: {
     flexDirection: 'row',
-    padding: 16,
+    padding: SPACING.lg,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
     alignItems: 'center',
@@ -514,16 +517,16 @@ const styles = StyleSheet.create({
   resultIcon: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: RADIUS.xl,
     backgroundColor: COLORS.grey50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: SPACING.md,
   },
-  resultMain: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
-  resultSub: { fontSize: 13, color: COLORS.textSecondary, marginTop: 2 },
+  resultMain: { fontSize: 15, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  resultSub: { fontSize: 13, fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2 },
   emptyState: { padding: 40, alignItems: 'center' },
-  emptyText: { color: COLORS.textSecondary, fontSize: 15 },
+  emptyText: { color: COLORS.textSecondary, fontSize: 15, fontFamily: FONTS.regular },
 
   // Marker
   markerFixed: {
@@ -540,15 +543,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textPrimary,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     marginBottom: 2,
   },
-  pinBubbleText: { color: COLORS.white, fontSize: 10, fontWeight: '800', textTransform: 'uppercase' },
+  pinBubbleText: { color: COLORS.white, fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, textTransform: 'uppercase' },
   markerShadow: {
     width: 12,
     height: 6,
     backgroundColor: COLORS.black,
-    borderRadius: 10,
+    borderRadius: RADIUS.sm,
     marginTop: -4,
   },
 
@@ -556,11 +559,11 @@ const styles = StyleSheet.create({
   fabLocation: {
     position: 'absolute',
     bottom: 220,
-    right: 20,
+    right: SPACING.xl,
     backgroundColor: COLORS.white,
     width: 52,
     height: 52,
-    borderRadius: 26,
+    borderRadius: RADIUS.round,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
@@ -574,23 +577,23 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: COLORS.white,
-    padding: 24,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    padding: SPACING.xxl,
+    borderTopLeftRadius: RADIUS.xl + 4,
+    borderTopRightRadius: RADIUS.xl + 4,
     elevation: 25,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
   },
-  addressContainer: { flexDirection: 'row', marginBottom: 24 },
-  addressIndicator: { marginRight: 16, alignItems: 'center', paddingTop: 6 },
-  dotOuter: { width: 14, height: 14, borderRadius: 7, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
-  dotInner: { width: 6, height: 6, borderRadius: 3, backgroundColor: COLORS.primary },
-  line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: 4 },
-  label: { fontSize: 11, fontWeight: '900', color: COLORS.textSecondary, letterSpacing: 1.5 },
-  addressText: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
-  skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: 4, marginTop: 10 },
+  addressContainer: { flexDirection: 'row', marginBottom: SPACING.xxl },
+  addressIndicator: { marginRight: SPACING.lg, alignItems: 'center', paddingTop: 6 },
+  dotOuter: { width: 14, height: 14, borderRadius: RADIUS.round, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
+  dotInner: { width: 6, height: 6, borderRadius: RADIUS.round, backgroundColor: COLORS.primary },
+  line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: SPACING.xs },
+  label: { fontSize: 11, fontFamily: FONTS.bold, color: COLORS.textSecondary, letterSpacing: 1.5 },
+  addressText: { fontSize: FONT_SIZE.lg, fontFamily: FONTS.bold, color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
+  skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: RADIUS.xs, marginTop: 10 },
   confirmButton: {
     backgroundColor: COLORS.primary,
     height: 58,
@@ -598,7 +601,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  confirmButtonText: { color: COLORS.white, fontSize: 17, fontWeight: '800' },
+  confirmButtonText: { color: COLORS.white, fontSize: 17, fontFamily: FONTS.bold },
 });
 
 export default LocationPicker;

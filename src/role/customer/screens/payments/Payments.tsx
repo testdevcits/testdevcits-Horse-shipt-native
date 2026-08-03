@@ -1,15 +1,27 @@
-import React from 'react';
-import { View, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, RefreshControl, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CreditCard, WalletCards } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
 import { AppLoader, AppText, EmptyState, ErrorView, PaymentCard } from '../../../../components';
 import { usePayments } from './usePayments';
 
-
 const Payments = () => {
   const { payments, loading, refreshing, error, fetchPayments } = usePayments();
   const navigation = useNavigation<any>();
+
+  const handlePaymentPress = useCallback((p: any) => {
+    navigation.navigate('PaymentDetails', { payment: p });
+  }, [navigation]);
+
+  const keyExtractor = useCallback((item: any) => item?.transactionId || String(Math.random()), []);
+
+  const renderItem = useCallback(({ item }: { item: any }) => (
+    <PaymentCard
+      item={item}
+      onPress={handlePaymentPress}
+    />
+  ), [handlePaymentPress]);
 
   if (loading && !refreshing) return <AppLoader visible={true} />;
   if (error) return <ErrorView message={error} onRetry={() => fetchPayments()} />;
@@ -23,14 +35,14 @@ const Payments = () => {
 
       <FlatList
         data={payments}
-        keyExtractor={(item) => item?.transactionId}
-        renderItem={({ item }) => (
-          <PaymentCard
-            item={item}
-            onPress={(p) => navigation.navigate('PaymentDetails', { payment: p })}
-          />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={() => fetchPayments(true)} tintColor={COLORS.goldPrimary} />
         }

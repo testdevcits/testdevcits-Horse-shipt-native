@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Text,
   TextProps,
@@ -6,8 +6,6 @@ import {
   StyleProp,
 } from 'react-native';
 import { COLORS, FONTS } from '../../constants';
- 
- 
 
 interface AppTextProps extends TextProps {
   children: React.ReactNode;
@@ -35,4 +33,4 @@ const AppText: React.FC<AppTextProps> = ({
   );
 };
 
-export default AppText;
+export default memo(AppText);

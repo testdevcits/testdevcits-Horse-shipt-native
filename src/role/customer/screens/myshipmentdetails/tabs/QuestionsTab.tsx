@@ -20,14 +20,19 @@ import {
 import customerService from '../../../../../api/services/customerService';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
+
+  console.log("=======questions", questions)
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [submitting, setSubmitting] = useState<string | null>(null);
 
-  const allQuestions = [
-    ...(questions?.pending || []),
-    ...(questions?.answered || []),
-  ];
+  const allQuestions = Array.isArray(questions)
+    ? questions
+    : [
+      ...(questions?.pending || []),
+      ...(questions?.answered || []),
+    ];
   const totalCount = allQuestions.length;
+
 
   const handleInputChange = (id: string, text: string) => {
     setAnswers(prev => ({ ...prev, [id]: text }));
