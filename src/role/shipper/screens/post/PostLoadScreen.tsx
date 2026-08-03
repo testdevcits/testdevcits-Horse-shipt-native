@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   RefreshControl,
   FlatList,
@@ -19,7 +18,7 @@ import {
 } from 'lucide-react-native';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader, AppText, Input } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import AvailableShipmentCard from '../home/AvailableShipmentCard';
@@ -165,16 +164,13 @@ const PostLoadScreen = () => {
         </AppText>
 
         {/* Search Bar */}
-        <View style={styles.searchBarContainer}>
-          <Search size={18} color={COLORS.textSecondary} style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search pickup, delivery, or code..."
-            placeholderTextColor={COLORS.textLight}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+        <Input
+          placeholder="Search pickup, delivery, or code..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          leftIcon={<Search size={18} color={COLORS.textSecondary} />}
+          containerStyle={{ marginBottom: 0, marginTop: 12 }}
+        />
       </View>
 
       {/* 3 Horizontal Filter Tabs */}

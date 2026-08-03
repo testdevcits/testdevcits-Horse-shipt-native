@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { MessageCircle, Send } from 'lucide-react-native';
-import { AppText } from '../../../../../components';
+import { AppText, Input } from '../../../../../components';
 import {
   COLORS,
   FONTS,
@@ -97,32 +97,31 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                 </View>
               ) : (
                 /* Pending Answer Input */
-                <View style={styles.inputWrapper}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="Answer question"
-                    placeholderTextColor={COLORS.textLight}
-                    multiline
-                    value={answers[item?._id] || ''}
-                    onChangeText={text => handleInputChange(item?._id, text)}
-                  />
-                  <TouchableOpacity
-                    style={[
-                      styles.sendBtn,
-                      !answers[item?._id]?.trim() && styles.disabledBtn,
-                    ]}
-                    onPress={() => handleSubmit(item?._id)}
-                    disabled={
-                      submitting === item?._id || !answers[item?._id]?.trim()
-                    }
-                  >
-                    {submitting === item?._id ? (
-                      <ActivityIndicator size="small" color={COLORS.white} />
-                    ) : (
-                      <Send size={ICON_SIZE.xs} color={COLORS.white} />
-                    )}
-                  </TouchableOpacity>
-                </View>
+                <Input
+                  placeholder="Answer question"
+                  multiline
+                  value={answers[item?._id] || ''}
+                  onChangeText={text => handleInputChange(item?._id, text)}
+                  containerStyle={{ marginBottom: 0 }}
+                  rightIcon={
+                    <TouchableOpacity
+                      style={[
+                        styles.sendBtn,
+                        !answers[item?._id]?.trim() && styles.disabledBtn,
+                      ]}
+                      onPress={() => handleSubmit(item?._id)}
+                      disabled={
+                        submitting === item?._id || !answers[item?._id]?.trim()
+                      }
+                    >
+                      {submitting === item?._id ? (
+                        <ActivityIndicator size="small" color={COLORS.white} />
+                      ) : (
+                        <Send size={ICON_SIZE.xs} color={COLORS.white} />
+                      )}
+                    </TouchableOpacity>
+                  }
+                />
               )}
             </View>
           );

@@ -10,6 +10,8 @@ import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 import { Eye, EyeOff } from 'lucide-react-native';
 
+import { StyleProp, ViewStyle } from 'react-native';
+
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
@@ -18,6 +20,8 @@ interface InputProps extends TextInputProps {
   rightIcon?: React.ReactNode;
   onRightIconPress?: () => void;
   disabled?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
+  inputContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const Input = ({
@@ -29,6 +33,8 @@ const Input = ({
   onRightIconPress,
   disabled,
   secureTextEntry,
+  containerStyle,
+  inputContainerStyle,
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -80,12 +86,13 @@ const Input = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {label ? <AppText style={styles.label}>{label}</AppText> : null}
 
       <View
         style={[
           styles.inputContainer,
+          inputContainerStyle,
           focused && styles.focusedBorder,
           error && styles.errorBorder,
           disabled && styles.disabledBorder,

@@ -3,7 +3,6 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   StyleSheet,
   ScrollView,
@@ -13,7 +12,7 @@ import {
 } from 'react-native';
 import { X, Send, MessageSquare, Clock } from 'lucide-react-native';
 import moment from 'moment';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 
 interface AskQuestionModalProps {
@@ -235,29 +234,20 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <AppText style={styles.asterisk}>*</AppText>
                 </View>
 
-                {/* Textarea Input Container */}
-                <View
-                  style={[
-                    styles.textAreaContainer,
-                    Boolean(error) && styles.textAreaContainerError,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.textAreaInput}
-                    placeholder="Type your question here.."
-                    placeholderTextColor="#94A3B8"
-                    multiline
-                    maxLength={500}
-                    value={question}
-                    onChangeText={text => {
-                      setQuestion(text);
-                      if (error) setError('');
-                    }}
-                  />
-                  <AppText style={styles.counterText}>{charCount}/500</AppText>
-                </View>
-
-                {Boolean(error) && <AppText style={styles.errorText}>{error}</AppText>}
+                <Input
+                  placeholder="Type your question here.."
+                  multiline
+                  maxLength={500}
+                  value={question}
+                  onChangeText={text => {
+                    setQuestion(text);
+                    if (error) setError('');
+                  }}
+                  error={error}
+                  rightIcon={
+                    <AppText style={styles.counterText}>{charCount}/500</AppText>
+                  }
+                />
 
                 {/* Progress Bar & Hint */}
                 <View style={styles.progressTrack}>

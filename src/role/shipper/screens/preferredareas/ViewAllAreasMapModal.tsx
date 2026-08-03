@@ -26,7 +26,7 @@ import {
   Square,
 } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 
 const { width, height } = Dimensions.get('window');
@@ -320,20 +320,19 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
           </View>
 
           {areas.length > 4 && (
-            <View style={styles.searchBarWrapper}>
-              <Search size={15} color={COLORS.textSecondary} />
-              <TextInput
-                style={styles.searchInput}
+            <View style={{ marginBottom: SPACING.sm }}>
+              <Input
                 placeholder="Search preferred locations..."
-                placeholderTextColor={COLORS.textSecondary}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
+                leftIcon={<Search size={16} color={COLORS.textSecondary} />}
+                rightIcon={
+                  searchQuery.length > 0 ? (
+                    <X size={16} color={COLORS.textSecondary} />
+                  ) : undefined
+                }
+                onRightIconPress={() => setSearchQuery('')}
               />
-              {searchQuery.length > 0 && (
-                <TouchableOpacity onPress={() => setSearchQuery('')}>
-                  <X size={15} color={COLORS.textSecondary} />
-                </TouchableOpacity>
-              )}
             </View>
           )}
 

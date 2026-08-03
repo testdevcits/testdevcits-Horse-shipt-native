@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { X, Eye, EyeOff } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.adddriver';
@@ -183,37 +183,25 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
               {/* Section 1: Contact Information */}
               <AppText style={styles.sectionHeader}>Contact Information</AppText>
 
-              <AppText style={styles.label}>
-                Driver name <AppText style={styles.required}>*</AppText>
-              </AppText>
-              <TextInput
-                style={styles.input}
+              <Input
+                label="Driver name *"
                 placeholder="Enter Driver Name"
-                placeholderTextColor={COLORS.textLight}
                 value={name}
                 onChangeText={setName}
               />
 
-              <AppText style={styles.label}>
-                Email address <AppText style={styles.required}>*</AppText>
-              </AppText>
-              <TextInput
-                style={styles.input}
+              <Input
+                label="Email address *"
                 placeholder="Enter Email address"
-                placeholderTextColor={COLORS.textLight}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
               />
 
-              <AppText style={styles.label}>
-                Phone Number <AppText style={styles.required}>*</AppText>
-              </AppText>
-              <TextInput
-                style={styles.input}
+              <Input
+                label="Phone Number *"
                 placeholder="Enter Phone Number"
-                placeholderTextColor={COLORS.textLight}
                 keyboardType="phone-pad"
                 value={phone}
                 onChangeText={setPhone}
@@ -224,56 +212,29 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 License & Access
               </AppText>
 
-              <AppText style={styles.label}>
-                License number <AppText style={styles.required}>*</AppText>
-              </AppText>
-              <TextInput
-                style={styles.input}
+              <Input
+                label="License number *"
                 placeholder="Enter License Number"
-                placeholderTextColor={COLORS.textLight}
                 value={licenseNumber}
                 onChangeText={setLicenseNumber}
               />
 
               {!driverToEdit && (
-                <>
-                  <AppText style={styles.label}>
-                    Password <AppText style={styles.required}>*</AppText>
-                  </AppText>
-                  <View style={styles.passwordContainer}>
-                    <TextInput
-                      style={styles.passwordInput}
-                      placeholder="Enter Password"
-                      placeholderTextColor={COLORS.textLight}
-                      secureTextEntry={!showPassword}
-                      value={password}
-                      onChangeText={setPassword}
-                    />
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                      style={styles.eyeBtn}
-                    >
-                      {showPassword ? (
-                        <EyeOff size={18} color={COLORS.textSecondary} />
-                      ) : (
-                        <Eye size={18} color={COLORS.textSecondary} />
-                      )}
-                    </TouchableOpacity>
-                  </View>
-                </>
+                <Input
+                  label="Password *"
+                  placeholder="Enter Password"
+                  isPassword
+                  value={password}
+                  onChangeText={setPassword}
+                />
               )}
 
-              <AppText style={styles.label}>
-                Notes (General Info) <AppText style={styles.required}>*</AppText>
-              </AppText>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                placeholder="Enter Notes about driver experience, background, etc..."
-                placeholderTextColor={COLORS.textLight}
-                multiline
-                numberOfLines={3}
+              <Input
+                label="Notes (General Info) *"
+                placeholder="e.g. Authorized for long distance routes"
                 value={notes}
                 onChangeText={setNotes}
+                multiline
               />
 
               {/* Action Buttons Row */}

@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Image,
   ActivityIndicator,
   RefreshControl,
@@ -26,7 +25,7 @@ import {
   ArrowRight,
   ArrowLeftRight,
 } from 'lucide-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
+import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
 import {
   COLORS,
   FONTS,
@@ -116,8 +115,26 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     }
   };
 
+  const checkStripeStatus = async () => {
+    try {
+      const res = await shipperService.getStripeStatus();
+      if (res && res.success) {
+        const needsModal =
+          res.needsVerification === true ||
+          res.onboardingCompleted === false ||
+          res.chargesEnabled === false ||
+          res.payoutsEnabled === false ||
+          res.verified === false;
+        setIsBankModalVisible(needsModal);
+      }
+    } catch (err) {
+      console.log('Stripe status check error:', err);
+    }
+  };
+
   useEffect(() => {
     fetchShipments();
+    checkStripeStatus();
     shipperService
       .getProfile()
       .then(res => {
@@ -250,20 +267,13 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         </AppText>
 
         {/* Search Input Bar */}
-        <View style={styles.searchBarContainer}>
-          <Search
-            size={18}
-            color={COLORS.textSecondary}
-            style={styles.searchIcon}
-          />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search by pickup or delivery location..."
-            placeholderTextColor={COLORS.textLight}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+        <Input
+          placeholder="Search by pickup or delivery location..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          leftIcon={<Search size={18} color={COLORS.textSecondary} />}
+          containerStyle={{ marginBottom: SPACING.md }}
+        />
 
         {/* Filter By Row */}
         <View style={styles.filterRow}>

@@ -4,7 +4,6 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
@@ -14,7 +13,7 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { X, MapPin, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
 import shipperService from '../../../../api/services/shipperService';
@@ -177,59 +176,57 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 </View>
 
                 {/* PHONE NUMBER */}
-                <View style={styles.fieldContainer}>
-                  <AppText style={styles.fieldLabel}>PHONE NUMBER</AppText>
-                  <View style={styles.phoneRow}>
-                    <View style={styles.countryPicker}>
-                      <AppText style={styles.countryFlag}>🇺🇸</AppText>
-                      <AppText style={styles.countryText}>USA (+1)</AppText>
-                    </View>
-                    <TextInput
-                      style={styles.phoneInput}
-                      value={mobile}
-                      onChangeText={setMobile}
-                      placeholder="Phone number"
-                      placeholderTextColor={COLORS.textSecondary}
-                      keyboardType="phone-pad"
-                    />
-                  </View>
+                <View style={{ marginBottom: 16 }}>
+                  <Input
+                    label="PHONE NUMBER"
+                    value={mobile}
+                    onChangeText={setMobile}
+                    placeholder="Phone number"
+                    keyboardType="phone-pad"
+                    leftIcon={
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <AppText>🇺🇸</AppText>
+                        <AppText style={{ fontSize: 12, color: COLORS.textSecondary }}>+1</AppText>
+                      </View>
+                    }
+                  />
                 </View>
 
                 {/* EMAIL & ACCOUNT TYPE ROW */}
                 <View style={styles.row}>
                   <View style={styles.col}>
-                    <AppText style={styles.fieldLabel}>EMAIL</AppText>
-                    <TextInput
-                      style={[styles.input, styles.disabledInput]}
+                    <Input
+                      label="EMAIL"
                       value={email}
+                      disabled
                       editable={false}
                     />
                   </View>
                   <View style={styles.col}>
-                    <AppText style={styles.fieldLabel}>ACCOUNT TYPE</AppText>
-                    <TextInput
-                      style={[styles.input, styles.disabledInput]}
+                    <Input
+                      label="ACCOUNT TYPE"
                       value="SHIPPER"
+                      disabled
                       editable={false}
                     />
                   </View>
                 </View>
 
                 {/* DESCRIPTION */}
-                <View style={styles.fieldContainer}>
-                  <AppText style={styles.fieldLabel}>DESCRIPTION</AppText>
-                  <TextInput
-                    style={[styles.input, styles.multilineInput]}
+                <View style={{ marginBottom: 16 }}>
+                  <Input
+                    label="DESCRIPTION"
                     value={description}
                     onChangeText={setDescription}
                     placeholder="Enter description..."
-                    placeholderTextColor={COLORS.textSecondary}
                     multiline
                     maxLength={500}
+                    rightIcon={
+                      <AppText style={styles.charCounter}>
+                        {description.length}/500
+                      </AppText>
+                    }
                   />
-                  <AppText style={styles.charCounter}>
-                    {description.length}/500
-                  </AppText>
                 </View>
               </ScrollView>
 

@@ -317,7 +317,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
   View,
-  Text,
   Animated,
   Easing,
   ActivityIndicator,

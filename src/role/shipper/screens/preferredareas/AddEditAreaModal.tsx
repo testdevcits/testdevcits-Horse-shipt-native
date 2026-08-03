@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { X, MapPin, Compass, Navigation } from 'lucide-react-native';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
@@ -158,70 +158,57 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
             </View>
 
             {/* Location Address Text Field */}
-            <View style={styles.inputGroup}>
-              <AppText style={styles.inputLabel}>Location Address</AppText>
-              <View style={styles.textInputWrapper}>
-                <MapPin size={18} color={COLORS.goldPrimary} style={{ marginRight: 8 }} />
-                <TextInput
-                  style={styles.textInput}
-                  value={locationName}
-                  onChangeText={setLocationName}
-                  placeholder="e.g. Indore, Madhya Pradesh, India"
-                  placeholderTextColor={COLORS.textSecondary}
-                  multiline
-                />
-              </View>
+            <View style={{ marginBottom: SPACING.md }}>
+              <Input
+                label="Location Address"
+                value={locationName}
+                onChangeText={setLocationName}
+                placeholder="e.g. Indore, Madhya Pradesh, India"
+                leftIcon={<MapPin size={18} color={COLORS.goldPrimary} />}
+                multiline
+              />
             </View>
 
             {/* Latitude & Longitude Inputs */}
             <View style={styles.rowTwoCols}>
-              <View style={[styles.inputGroup, { flex: 1 }]}>
-                <AppText style={styles.inputLabel}>Latitude</AppText>
-                <View style={styles.textInputWrapper}>
-                  <Compass size={16} color={COLORS.textSecondary} style={{ marginRight: 6 }} />
-                  <TextInput
-                    style={styles.textInput}
-                    value={latitude}
-                    onChangeText={setLatitude}
-                    placeholder="22.777927"
-                    placeholderTextColor={COLORS.textSecondary}
-                    keyboardType="numeric"
-                  />
-                </View>
+              <View style={{ flex: 1, marginBottom: SPACING.md }}>
+                <Input
+                  label="Latitude"
+                  value={latitude}
+                  onChangeText={setLatitude}
+                  placeholder="22.777927"
+                  keyboardType="numeric"
+                  leftIcon={<Compass size={16} color={COLORS.textSecondary} />}
+                />
               </View>
 
-              <View style={[styles.inputGroup, { flex: 1 }]}>
-                <AppText style={styles.inputLabel}>Longitude</AppText>
-                <View style={styles.textInputWrapper}>
-                  <Navigation size={16} color={COLORS.textSecondary} style={{ marginRight: 6 }} />
-                  <TextInput
-                    style={styles.textInput}
-                    value={longitude}
-                    onChangeText={setLongitude}
-                    placeholder="75.892304"
-                    placeholderTextColor={COLORS.textSecondary}
-                    keyboardType="numeric"
-                  />
-                </View>
+              <View style={{ flex: 1, marginBottom: SPACING.md }}>
+                <Input
+                  label="Longitude"
+                  value={longitude}
+                  onChangeText={setLongitude}
+                  placeholder="75.892304"
+                  keyboardType="numeric"
+                  leftIcon={<Navigation size={16} color={COLORS.textSecondary} />}
+                />
               </View>
             </View>
 
             {/* Radius Input & Presets */}
-            <View style={styles.inputGroup}>
-              <AppText style={styles.inputLabel}>Radius (in kilometers)</AppText>
-              <View style={styles.textInputWrapper}>
-                <TextInput
-                  style={styles.textInput}
-                  value={radiusKm}
-                  onChangeText={setRadiusKm}
-                  placeholder="50"
-                  placeholderTextColor={COLORS.textSecondary}
-                  keyboardType="numeric"
-                />
-                <AppText style={{ fontSize: 13, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
-                  km
-                </AppText>
-              </View>
+            <View style={{ marginBottom: SPACING.md }}>
+              <Input
+                label="Radius (in kilometers)"
+                value={radiusKm}
+                onChangeText={setRadiusKm}
+                placeholder="50"
+                keyboardType="numeric"
+                rightIcon={
+                  <AppText style={{ fontSize: 13, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
+                    km
+                  </AppText>
+                }
+              />
+            </View>
 
               {/* Radius Quick Presets */}
               <View style={styles.presetRow}>
@@ -248,7 +235,6 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
                   );
                 })}
               </View>
-            </View>
           </ScrollView>
 
           {/* Modal Footer Actions */}

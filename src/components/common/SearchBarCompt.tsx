@@ -1,21 +1,8 @@
 import React, { memo } from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ViewStyle,
-  StyleProp,
-} from 'react-native';
+import { ViewStyle, StyleProp } from 'react-native';
 import { Search, XCircle } from 'lucide-react-native';
-import {
-  COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-} from '../../constants';
+import { COLORS, RADIUS, SPACING, ICON_SIZE } from '../../constants';
+import Input from './Input/Input';
 
 interface SearchBarProps {
   value: string;
@@ -42,56 +29,35 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      <Search size={ICON_SIZE.sm} color={COLORS.grey400} strokeWidth={2} />
-
-      <TextInput
-        allowFontScaling={false}
-        style={styles.input}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor={COLORS.grey400}
-        selectionColor={COLORS.goldPrimary}
-        autoCapitalize="none"
-        autoCorrect={false}
-        underlineColorAndroid="transparent"
-        editable={editable}
-        pointerEvents={pointerEvents}
-      />
-
-      {value.length > 0 && (
-        <TouchableOpacity
-          onPress={handleClear}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
+    <Input
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      placeholderTextColor={COLORS.grey400}
+      selectionColor={COLORS.goldPrimary}
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={editable}
+      pointerEvents={pointerEvents}
+      leftIcon={
+        <Search size={ICON_SIZE.sm} color={COLORS.grey400} strokeWidth={2} />
+      }
+      rightIcon={
+        value.length > 0 ? (
           <XCircle size={ICON_SIZE.sm} color={COLORS.grey300} fill={COLORS.grey100} />
-        </TouchableOpacity>
-      )}
-    </View>
+        ) : undefined
+      }
+      onRightIconPress={handleClear}
+      containerStyle={[{ marginBottom: 0 }, containerStyle]}
+      inputContainerStyle={{
+        height: 42,
+        backgroundColor: COLORS.grey50,
+        borderColor: COLORS.divider,
+        borderRadius: RADIUS.sm,
+        paddingHorizontal: SPACING.md,
+      }}
+    />
   );
 };
 
 export default memo(SearchBarCompt);
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.sm,
-    paddingHorizontal: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    height: 42,
-  },
-  input: {
-    flex: 1,
-    height: '100%',
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-    paddingVertical: 0,
-  },
-});

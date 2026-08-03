@@ -107,7 +107,7 @@ const Login = () => {
         typeof err === 'string'
           ? err
           : err?.message || err?.errors?.[0] || 'Invalid credentials';
-      Alert.alert('Authentication Error', errorMsg);
+      // Alert.alert('Authentication Error', errorMsg);
     } finally {
       setIsLoading(false);
     }

@@ -18,7 +18,7 @@ import {
   RADIUS,
   SPACING,
 } from '../../../../constants';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import customerService from '../../../../api/services/customerService';
 
 interface Props {
@@ -124,17 +124,13 @@ const RatingModal = ({
             </View>
 
             {/* Input */}
-            <AppText style={styles.inputLabel}>
-              Write a review about your shipper
-            </AppText>
-            <TextInput
-              style={styles.textInput}
+            <Input
+              label="Write a review about your shipper"
               placeholder="Amazing shipper! Prompt communication..."
-              placeholderTextColor={COLORS.textLight}
               multiline
-              numberOfLines={4}
               value={review}
               onChangeText={setReview}
+              containerStyle={{ marginBottom: SPACING.xl }}
             />
 
             <TouchableOpacity

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   FlatList,
@@ -30,6 +29,7 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
+import AppText from '../AppText';
 
 /**
  * CONFIGURATION & THEME
@@ -92,12 +92,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           <MapPin size={18} color={COLORS.primary} />
         </View>
         <View style={{ flex: 1 }}>
-          <Text
+          <AppText
             style={[styles.triggerText, !value && styles.placeholder]}
             numberOfLines={1}
           >
             {value || placeholder || 'Select Location'}
-          </Text>
+          </AppText>
         </View>
       </TouchableOpacity>
 
@@ -334,7 +334,7 @@ const LocationPickerCore: React.FC<{
         <View style={styles.markerFixed} pointerEvents="none">
           <Animated.View style={{ transform: [{ translateY: markerAnim }], alignItems: 'center' }}>
             <View style={styles.pinBubble}>
-              <Text style={styles.pinBubbleText}>Set Point</Text>
+              <AppText style={styles.pinBubbleText}>Set Point</AppText>
             </View>
             <MapPin size={42} color={COLORS.dark} fill={COLORS.primary} />
           </Animated.View>
@@ -388,7 +388,7 @@ const LocationPickerCore: React.FC<{
               ListEmptyComponent={
                 !isSearchLoading && searchQuery.length > 2 ? (
                   <View style={styles.emptyState}>
-                    <Text style={styles.emptyText}>No locations found</Text>
+                    <AppText style={styles.emptyText}>No locations found</AppText>
                   </View>
                 ) : null
               }
@@ -398,8 +398,8 @@ const LocationPickerCore: React.FC<{
                     <MapIcon size={20} color={COLORS.secondary} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</Text>
-                    <Text style={styles.resultSub} numberOfLines={1}>{item?.structured_formatting.secondary_text}</Text>
+                    <AppText style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</AppText>
+                    <AppText style={styles.resultSub} numberOfLines={1}>{item?.structured_formatting.secondary_text}</AppText>
                   </View>
                 </TouchableOpacity>
               )}
@@ -423,11 +423,11 @@ const LocationPickerCore: React.FC<{
               </View>
 
               <View style={{ flex: 1 }}>
-                <Text style={styles.label}>CONFIRM LOCATION</Text>
+                <AppText style={styles.label}>CONFIRM LOCATION</AppText>
                 {isReverseLoading ? (
                   <View style={styles.skeletonLine} />
                 ) : (
-                  <Text style={styles.addressText}>{displayAddress}</Text>
+                  <AppText style={styles.addressText}>{displayAddress}</AppText>
                 )}
               </View>
             </View>
@@ -440,7 +440,7 @@ const LocationPickerCore: React.FC<{
                 longitude: region.longitude
               })}
             >
-              <Text style={styles.confirmButtonText}>Confirm and Continue</Text>
+              <AppText style={styles.confirmButtonText}>Confirm and Continue</AppText>
             </TouchableOpacity>
           </View>
         </>

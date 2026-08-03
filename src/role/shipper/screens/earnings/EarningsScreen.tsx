@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   RefreshControl,
   Modal,
-  TextInput,
   FlatList,
 } from 'react-native';
 import {
@@ -29,7 +28,7 @@ import {
 } from 'lucide-react-native';
 import moment from 'moment';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
+import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
@@ -502,20 +501,14 @@ const EarningsScreen = () => {
             )}
 
             {/* Cardholder Name */}
-            <View style={styles.inputGroup}>
-              <AppText style={styles.inputLabel}>Cardholder Name (Optional)</AppText>
-              <View style={styles.inputWrapper}>
-                <User size={16} color={COLORS.textSecondary} style={{ marginRight: 8 }} />
-                <TextInput
-                  style={styles.input}
-                  placeholder="e.g. John Doe"
-                  placeholderTextColor={COLORS.textLight}
-                  value={cardholderName}
-                  onChangeText={setCardholderName}
-                  editable={!submittingCard}
-                />
-              </View>
-            </View>
+            <Input
+              label="Cardholder Name (Optional)"
+              placeholder="e.g. John Doe"
+              value={cardholderName}
+              onChangeText={setCardholderName}
+              editable={!submittingCard}
+              leftIcon={<User size={16} color={COLORS.textSecondary} />}
+            />
 
             {/* Stripe Card Field Component */}
             <View style={styles.inputGroup}>

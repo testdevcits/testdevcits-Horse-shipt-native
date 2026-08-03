@@ -24,7 +24,7 @@ import {
 import SignatureScreen from 'react-native-signature-canvas';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 
@@ -236,31 +236,17 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 <AppText style={styles.sectionTitle}>Pricing</AppText>
               </View>
 
-              <View style={styles.labelRow}>
-                <AppText style={styles.inputLabel}>Total Price </AppText>
-                <AppText style={styles.asterisk}>*</AppText>
-              </View>
-
-              <View
-                style={[
-                  styles.priceInputContainer,
-                  Boolean(priceError) && styles.inputError,
-                ]}
-              >
-                <AppText style={styles.currencyPrefix}>$</AppText>
-                <TextInput
-                  style={styles.priceTextInput}
-                  keyboardType="numeric"
-                  value={totalPrice}
-                  onChangeText={text => {
-                    setTotalPrice(text);
-                    if (priceError) setPriceError('');
-                  }}
-                />
-              </View>
-              {Boolean(priceError) && (
-                <AppText style={styles.errorText}>{priceError}</AppText>
-              )}
+              <Input
+                label="Total Price *"
+                keyboardType="numeric"
+                value={totalPrice}
+                onChangeText={text => {
+                  setTotalPrice(text);
+                  if (priceError) setPriceError('');
+                }}
+                error={priceError}
+                leftIcon={<AppText style={styles.currencyPrefix}>$</AppText>}
+              />
             </View>
 
             {/* 2. Cancellation Policy Section */}
@@ -270,35 +256,19 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 <AppText style={styles.sectionTitle}>Cancellation Policy</AppText>
               </View>
 
-              <View style={styles.labelRow}>
-                <AppText style={styles.inputLabel}>
-                  Cancellation Window (Days){' '}
-                </AppText>
-                <AppText style={styles.asterisk}>*</AppText>
-              </View>
-
-              <View
-                style={[
-                  styles.standardInputContainer,
-                  Boolean(daysError) && styles.inputError,
-                ]}
-              >
-                <TextInput
-                  style={styles.standardTextInput}
-                  keyboardType="numeric"
-                  value={cancellationDays}
-                  onChangeText={text => {
-                    setCancellationDays(text);
-                    if (daysError) setDaysError('');
-                  }}
-                />
-              </View>
+              <Input
+                label="Cancellation Window (Days) *"
+                keyboardType="numeric"
+                value={cancellationDays}
+                onChangeText={text => {
+                  setCancellationDays(text);
+                  if (daysError) setDaysError('');
+                }}
+                error={daysError}
+              />
               <AppText style={styles.captionText}>
                 Number of days customer can cancel this shipment
               </AppText>
-              {Boolean(daysError) && (
-                <AppText style={styles.errorText}>{daysError}</AppText>
-              )}
             </View>
 
             {/* 3. Additional Notes Section */}
@@ -308,16 +278,12 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 <AppText style={styles.sectionTitle}>Additional Notes</AppText>
               </View>
 
-              <View style={styles.textAreaContainer}>
-                <TextInput
-                  style={styles.textAreaInput}
-                  placeholder="Type any additional details for the customer..."
-                  placeholderTextColor="#94A3B8"
-                  multiline
-                  value={notes}
-                  onChangeText={setNotes}
-                />
-              </View>
+              <Input
+                placeholder="Type any additional details for the customer..."
+                multiline
+                value={notes}
+                onChangeText={setNotes}
+              />
             </View>
 
             {/* 4. Shipper Contract Section (Optional File Upload) */}

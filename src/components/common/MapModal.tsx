@@ -466,6 +466,8 @@ import {
   Layers,
   LocateFixed,
   MapPin,
+  Package,
+  Flag,
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
@@ -584,39 +586,40 @@ const MapModal = ({
             }}
           />
 
-          <Marker coordinate={pickup}>
-            <Animated.View
-              style={[
-                styles.markerContainer,
-                { transform: [{ scale: pulseAnim }] },
-              ]}
-            >
-              <View
-                style={[
-                  styles.markerDot,
-                  { backgroundColor: COLORS.goldPrimary },
-                ]}
-              />
-              <View
-                style={[styles.markerHalo, { borderColor: COLORS.goldPrimary }]}
-              />
-            </Animated.View>
+          {/* Pickup Custom Marker */}
+          <Marker
+            coordinate={pickup}
+            title="Pickup Location"
+            description={shipmentData?.pickupLocation || 'Pickup Location'}
+          >
+            <View style={styles.markerWrapper}>
+              <View style={[styles.markerBadge, { backgroundColor: COLORS.goldPrimary }]}>
+                <Package size={12} color={COLORS.white} />
+                <AppText style={styles.markerBadgeText}>Pickup</AppText>
+              </View>
+              <View style={[styles.markerPin, { backgroundColor: COLORS.goldPrimary }]}>
+                <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
+              </View>
+              <View style={[styles.markerPointer, { borderTopColor: COLORS.goldPrimary }]} />
+            </View>
           </Marker>
 
-          <Marker coordinate={delivery}>
-            <Animated.View
-              style={[
-                styles.markerContainer,
-                { transform: [{ scale: pulseAnim }] },
-              ]}
-            >
-              <View
-                style={[styles.markerDot, { backgroundColor: COLORS.error }]}
-              />
-              <View
-                style={[styles.markerHalo, { borderColor: COLORS.error }]}
-              />
-            </Animated.View>
+          {/* Delivery Custom Marker */}
+          <Marker
+            coordinate={delivery}
+            title="Delivery Location"
+            description={shipmentData?.deliveryLocation || 'Delivery Location'}
+          >
+            <View style={styles.markerWrapper}>
+              <View style={[styles.markerBadge, { backgroundColor: COLORS.error }]}>
+                <Flag size={12} color={COLORS.white} />
+                <AppText style={styles.markerBadgeText}>Delivery</AppText>
+              </View>
+              <View style={[styles.markerPin, { backgroundColor: COLORS.error }]}>
+                <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
+              </View>
+              <View style={[styles.markerPointer, { borderTopColor: COLORS.error }]} />
+            </View>
           </Marker>
         </MapView>
 
@@ -690,7 +693,7 @@ const MapModal = ({
                 </View>
                 <View style={styles.addressTextCol}>
                   <AppText numberOfLines={1} style={styles.addressText}>
-                    {shipmentData?.pickupLocation || 'Pickup'}
+                    {shipmentData?.pickupLocation || 'Not Available'}
                   </AppText>
                 </View>
               </View>
@@ -701,14 +704,14 @@ const MapModal = ({
                 </View>
                 <View style={styles.addressTextCol}>
                   <AppText numberOfLines={1} style={styles.addressText}>
-                    {shipmentData?.deliveryLocation || 'Delivery'}
+                    {shipmentData?.deliveryLocation || 'Not Available'}
                   </AppText>
                 </View>
               </View>
             </View>
 
-            <TouchableOpacity style={styles.trackBtn} activeOpacity={0.9}>
-              <AppText style={styles.trackBtnText}>Confirm Route</AppText>
+            <TouchableOpacity onPress={onClose} style={styles.trackBtn} activeOpacity={0.9}>
+              <AppText style={styles.trackBtnText}>Close</AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -720,20 +723,54 @@ const MapModal = ({
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   map: { ...StyleSheet.absoluteFillObject },
-  markerContainer: {
+  markerWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 40,
-    height: 40,
   },
-  markerDot: { width: 12, height: 12, borderRadius: 6, zIndex: 2 },
-  markerHalo: {
-    position: 'absolute',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+  markerBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    marginBottom: 2,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  markerBadgeText: {
+    color: COLORS.white,
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+  },
+  markerPin: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
     borderWidth: 2,
-    opacity: 0.5,
+    borderColor: COLORS.white,
+  },
+  markerPointer: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderTopWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    marginTop: -1,
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,

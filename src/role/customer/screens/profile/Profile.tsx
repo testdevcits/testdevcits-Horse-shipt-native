@@ -9,9 +9,7 @@ import {
   FlatList,
   RefreshControl,
   Modal,
-  TextInput,
   StyleSheet,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -21,7 +19,9 @@ import { useProfile } from './useProfile';
 import {
   AppHeader,
   AppLoader,
+  AppText,
   EmptyState,
+  Input,
   ReviewCard,
 } from '../../../../components';
 import styles from './style.profile';
@@ -89,14 +89,14 @@ const Profile = ({ navigation }: any) => {
             onPress={() => setActiveTab(tab)}
             style={[styles.tab, activeTab === tab && styles.activeTab]}
           >
-            <Text
+            <AppText
               style={[
                 styles.tabText,
                 activeTab === tab && styles.activeTabText,
               ]}
             >
               {tab}
-            </Text>
+            </AppText>
           </TouchableOpacity>
         ))}
       </View>
@@ -137,36 +137,20 @@ const Profile = ({ navigation }: any) => {
               activeOpacity={0.8}
             >
               {uploading ? (
-                <Text style={styles.editPictureText}>Processing...</Text>
+                <AppText style={styles.editPictureText}>Processing...</AppText>
               ) : (
                 <>
                   <PencilLine size={16} color={COLORS.textPrimary} />
-                  <Text style={styles.editPictureText}>Edit picture</Text>
+                  <AppText style={styles.editPictureText}>Edit picture</AppText>
                 </>
               )}
             </TouchableOpacity>
           </View>
 
-          {/* Stats */}
-          {/* <View style={styles.statsCard}>
-            <View style={styles.statBox}>
-              <Text style={styles.statNumber}>10</Text>
-              <Text style={styles.statLabel}>Shipment</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statBox}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.statNumber}>5.0 </Text>
-                <Star size={18} color="#EAB308" fill="#EAB308" />
-              </View>
-              <Text style={styles.statLabel}>Rating</Text>
-            </View>
-          </View> */}
-
           {/* Basic Info */}
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>Basic Info</Text>
+              <AppText style={styles.cardTitle}>Basic Info</AppText>
               <TouchableOpacity
                 style={styles.editIconBtn}
                 onPress={() => setIsEditModalVisible(true)}
@@ -194,30 +178,27 @@ const Profile = ({ navigation }: any) => {
         <View style={localStyles.modalOverlay}>
           <View style={localStyles.modalContent}>
             <View style={localStyles.modalHeader}>
-              <Text style={localStyles.modalTitle}>Edit Profile</Text>
+              <AppText style={localStyles.modalTitle}>Edit Profile</AppText>
               <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
                 <X size={24} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
-            <View style={localStyles.inputGroup}>
-              <Text style={localStyles.inputLabel}>First Name</Text>
-              <TextInput
-                style={localStyles.input}
+            <View style={{ marginBottom: SPACING.md }}>
+              <Input
+                label="First Name"
                 value={formData.firstName}
                 onChangeText={t => setFormData({ ...formData, firstName: t })}
               />
 
-              <Text style={localStyles.inputLabel}>Last Name</Text>
-              <TextInput
-                style={localStyles.input}
+              <Input
+                label="Last Name"
                 value={formData.lastName}
                 onChangeText={t => setFormData({ ...formData, lastName: t })}
               />
 
-              <Text style={localStyles.inputLabel}>Phone</Text>
-              <TextInput
-                style={localStyles.input}
+              <Input
+                label="Phone"
                 value={formData.phone}
                 keyboardType="phone-pad"
                 onChangeText={t => setFormData({ ...formData, phone: t })}
@@ -225,7 +206,7 @@ const Profile = ({ navigation }: any) => {
             </View>
 
             <TouchableOpacity style={localStyles.saveBtn} onPress={handleSave}>
-              <Text style={localStyles.saveBtnText}>Update Profile</Text>
+              <AppText style={localStyles.saveBtnText}>Update Profile</AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -236,8 +217,8 @@ const Profile = ({ navigation }: any) => {
 
 const InfoRow = ({ label, value, isLast }: any) => (
   <View style={[styles.infoRow, isLast && { borderBottomWidth: 0 }]}>
-    <Text style={styles.infoLabel}>{label}</Text>
-    <Text style={styles.infoValue}>{value}</Text>
+    <AppText style={styles.infoLabel}>{label}</AppText>
+    <AppText style={styles.infoValue}>{value}</AppText>
   </View>
 );
 

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     FlatList,
     TouchableOpacity,
@@ -12,7 +11,7 @@ import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader';
 import { AlertCircle } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SPACING } from '../../../../constants';
-import { TripCard } from '../../../../components';
+import { AppText, TripCard } from '../../../../components';
 import styles from './styles.alltrips';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
@@ -69,13 +68,13 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
                 activeOpacity={0.8}
                 onPress={() => setSelectedTab(label)}
             >
-                <Text style={[styles.chipText, isActive && styles.chipTextActive]}>
+                <AppText style={[styles.chipText, isActive && styles.chipTextActive]}>
                     {formattedLabel}
-                </Text>
+                </AppText>
                 <View style={[styles.badge, isActive && styles.badgeActive]}>
-                    <Text style={[styles.badgeText, isActive && styles.badgeTextActive]}>
+                    <AppText style={[styles.badgeText, isActive && styles.badgeTextActive]}>
                         {count}
-                    </Text>
+                    </AppText>
                 </View>
             </TouchableOpacity>
         );
@@ -123,7 +122,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
                     ListEmptyComponent={
                         <View style={styles.emptyContainer}>
                             <AlertCircle size={ICON_SIZE.xl} color={COLORS.textLight} />
-                            <Text style={styles.emptyText}>No shipments found for this status.</Text>
+                            <AppText style={styles.emptyText}>No shipments found for this status.</AppText>
                         </View>
                     }
                 />

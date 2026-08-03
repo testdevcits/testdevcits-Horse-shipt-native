@@ -7,7 +7,6 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  TextInput,
 } from 'react-native';
 import {
   X,
@@ -34,7 +33,7 @@ import {
   FONT_SIZE,
   ICON_SIZE,
 } from '../../../../constants';
-import { AppText } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
@@ -572,13 +571,12 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
             <AppText style={styles.promptSub}>
               Please state the reason for cancelling this shipment quote:
             </AppText>
-            <TextInput
-              style={styles.reasonInput}
+            <Input
               placeholder="Enter reason here..."
-              placeholderTextColor={COLORS.textSecondary}
               multiline
               value={cancelReason}
               onChangeText={setCancelReason}
+              containerStyle={{ marginBottom: SPACING.md }}
             />
             <View style={styles.promptFooter}>
               <TouchableOpacity

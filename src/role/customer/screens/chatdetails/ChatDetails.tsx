@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, PhotoSourceSheet } from '../../../../components';
+import { AppText, Input, PhotoSourceSheet } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -202,14 +202,13 @@ const ChatDetails = () => {
 
       {/* Input Bar */}
       <View style={styles.footer}>
-        <View style={styles.inputBox}>
-          <TextInput
+        <View style={{ flex: 1 }}>
+          <Input
             placeholder="Type a message..."
-            style={styles.textInput}
             value={inputText}
             onChangeText={setInputText}
-            placeholderTextColor={COLORS.textLight}
             multiline
+            containerStyle={{ marginBottom: 0 }}
           />
         </View>
 

@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { Star, Smile, Meh, Frown, ThumbsUp, Camera } from 'lucide-react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Star, Smile, Meh, Frown, Camera } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
+import Input from '../common/Input/Input';
 
 const FEEDBACK_CHIPS = ["On Time", "Safe Handling", "Professional", "Good Vehicle", "Great Chat"];
 
-const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress }: any) => {
+const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, comment, setComment }: any) => {
   const getEmoji = () => {
     if (rating >= 4) return <Smile size={48} color={COLORS.goldPrimary} />;
     if (rating >= 3) return <Meh size={48} color={COLORS.warning} />;
@@ -38,12 +39,15 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress }:
         ))}
       </View>
 
-      <TextInput 
-        style={styles.input} 
-        placeholder="Tell us more about the shipment..." 
-        multiline 
-        placeholderTextColor={COLORS.grey400}
-      />
+      <View style={{ width: '100%' }}>
+        <Input 
+          placeholder="Tell us more about the shipment..." 
+          multiline 
+          value={comment}
+          onChangeText={setComment}
+          containerStyle={{ marginBottom: SPACING.md }}
+        />
+      </View>
 
       <TouchableOpacity style={styles.photoBtn}>
         <Camera size={20} color={COLORS.goldPrimary} />
