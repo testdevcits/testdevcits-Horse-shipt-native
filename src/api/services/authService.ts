@@ -10,10 +10,10 @@
 //   const data = response.data || response;
 
 //   // Logic for Driver (Based on your previous setup)
-//   if (data.driver || response.driver) {
-//     const d = data.driver || response.driver;
+//   if (data?.driver || response.driver) {
+//     const d = data?.driver || response.driver;
 //     return {
-//       token: data.token || response.token,
+//       token: data?.token || response.token,
 //       user: {
 //         id: d._id,
 //         name: d.name,
@@ -33,17 +33,17 @@
 //   // Logic for Customer and Shipper
 //   // Note: verify-otp response puts user data directly in 'data'
 //   return {
-//     token: data.token,
+//     token: data?.token,
 //     user: {
-//       id: data._id,
-//       name: data.name,
-//       email: data.email,
-//       role: data.role as UserRole,
-//       profileImage: data.profileImage?.url,
-//       phoneNumber: data.mobile || data.phone,
+//       id: data?._id,
+//       name: data?.name,
+//       email: data?.email,
+//       role: data?.role as UserRole,
+//       profileImage: data?.profileImage?.url,
+//       phoneNumber: data?.mobile || data?.phone,
 //       metadata: {
-//         uniqueId: data.uniqueId,
-//         stripeVerified: data.stripeVerified
+//         uniqueId: data?.uniqueId,
+//         stripeVerified: data?.stripeVerified
 //       }
 //     }
 //   };
@@ -89,10 +89,10 @@ const transformResponse = (response: any, selectedRole?: UserRole): { user: AppU
   const data = response.data || response;
 
   // 1. Logic for Driver (If backend returns 'driver' object instead of 'role')
-  if (data.driver || response.driver) {
-    const d = data.driver || response.driver;
+  if (data?.driver || response.driver) {
+    const d = data?.driver || response.driver;
     return {
-      token: data.token || response.token,
+      token: data?.token || response.token,
       user: {
         id: d._id,
         name: d.name,
@@ -110,17 +110,17 @@ const transformResponse = (response: any, selectedRole?: UserRole): { user: AppU
 
   // 2. Logic for Customer and Shipper (Standard Role handling)
   return {
-    token: data.token,
+    token: data?.token,
     user: {
-      id: data._id,
-      name: data.name,
-      email: data.email,
-      role: (data.role || selectedRole) as UserRole, // Fallback to selectedRole
-      profileImage: typeof data.profileImage === 'string' ? data.profileImage : data.profileImage?.url,
-      phoneNumber: data.mobile || data.phone,
+      id: data?._id,
+      name: data?.name,
+      email: data?.email,
+      role: (data?.role || selectedRole) as UserRole, // Fallback to selectedRole
+      profileImage: typeof data?.profileImage === 'string' ? data?.profileImage : data?.profileImage?.url,
+      phoneNumber: data?.mobile || data?.phone,
       metadata: {
-        uniqueId: data.uniqueId,
-        stripeVerified: data.stripeVerified
+        uniqueId: data?.uniqueId,
+        stripeVerified: data?.stripeVerified
       }
     }
   };
@@ -138,7 +138,7 @@ const authService = {
   },
 
 
-    signup: async (payload: any): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
+  signup: async (payload: any): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
     // payload: { name, email, password, role }
     return axiosClient.post('/api/auth/signup', payload);
   },

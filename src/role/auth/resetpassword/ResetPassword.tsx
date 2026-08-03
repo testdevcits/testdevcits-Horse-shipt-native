@@ -124,7 +124,7 @@ const ResetPassword = ({ navigation, route }: any) => {
             <View style={styles.textHeader}>
               <AppText style={styles.title}>New Password</AppText>
               <AppText style={styles.subtitle}>
-                Set a strong password to protect your HorseShipt account and shipment data.
+                Set a strong password to protect your HorseShipt account and shipment data?.
               </AppText>
             </View>
 

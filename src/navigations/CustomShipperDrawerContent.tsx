@@ -55,7 +55,7 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
     <View style={styles.iconContainer}>
       <IconComponent
         size={20}
-        color={isActive ? '#A06333' : '#374151'}
+        color={isActive ? COLORS.brandBrown : COLORS.grey700}
         strokeWidth={1.8}
       />
     </View>
@@ -63,7 +63,7 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
       {label}
     </AppText>
     {hasChevron && (
-      <ChevronRight size={18} color="#9CA3AF" style={styles.chevron} />
+      <ChevronRight size={18} color={COLORS.textLight} style={styles.chevron} />
     )}
   </TouchableOpacity>
 );
@@ -193,9 +193,9 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           activeOpacity={0.7}
         >
           <View style={styles.iconContainer}>
-            <LogOut size={20} color="#EF4444" strokeWidth={1.8} />
+            <LogOut size={20} color={COLORS.error} strokeWidth={1.8} />
           </View>
-          <AppText style={[styles.menuLabel, { color: '#EF4444' }]}>
+          <AppText style={[styles.menuLabel, { color: COLORS.error }]}>
             Logout
           </AppText>
         </TouchableOpacity>
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
     paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: COLORS.grey100,
   },
   logoIcon: {
     width: 32,
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 22,
     fontFamily: FONTS.bold,
-    color: '#1F2937',
+    color: COLORS.grey800,
     letterSpacing: -0.5,
   },
   drawerScroll: {
@@ -253,10 +253,10 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#F9FAFB',
+    borderBottomColor: COLORS.grey50,
   },
   menuItemActive: {
-    backgroundColor: '#FBF5EB',
+    backgroundColor: COLORS.goldLightBg,
   },
   iconContainer: {
     width: 26,
@@ -268,11 +268,11 @@ const styles = StyleSheet.create({
   menuLabel: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
-    color: '#374151',
+    color: COLORS.grey700,
     flex: 1,
   },
   menuLabelActive: {
-    color: '#A06333',
+    color: COLORS.brandBrown,
     fontFamily: FONTS.bold,
   },
   chevron: {
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     paddingVertical: SPACING.xs,
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: COLORS.grey100,
   },
 });
 

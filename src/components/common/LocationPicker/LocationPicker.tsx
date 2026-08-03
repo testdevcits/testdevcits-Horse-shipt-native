@@ -29,23 +29,13 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
+import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 
 /**
  * CONFIGURATION & THEME
  */
 const { width, height } = Dimensions.get('window');
-
-const COLORS = {
-  primary: '#B69556', // Gold/Professional
-  dark: '#111827',
-  secondary: '#6B7280',
-  border: '#E5E7EB',
-  white: '#FFFFFF',
-  bg: '#F9FAFB',
-  success: '#059669',
-  error: '#EF4444',
-};
 
 /**
  * TYPES
@@ -165,8 +155,8 @@ const LocationPickerCore: React.FC<{
       const resp = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_APIKEY}`,
       );
-      if (resp.data.results.length > 0) {
-        setDisplayAddress(resp.data.results[0].formatted_address);
+      if (resp.data?.results.length > 0) {
+        setDisplayAddress(resp.data?.results[0].formatted_address);
       } else {
         setDisplayAddress('Unnamed Road');
       }
@@ -206,7 +196,7 @@ const LocationPickerCore: React.FC<{
           signal: searchAbortController.current.signal,
         },
       );
-      setSuggestions(resp.data.predictions);
+      setSuggestions(resp.data?.predictions);
     } catch (e: any) {
       if (e.name !== 'CanceledError') console.error('Search error', e);
     } finally {
@@ -232,8 +222,8 @@ const LocationPickerCore: React.FC<{
           },
         },
       );
-      const { lat, lng } = resp.data.result.geometry.location;
-      const addr = resp.data.result.formatted_address;
+      const { lat, lng } = resp.data?.result.geometry.location;
+      const addr = resp.data?.result.formatted_address;
 
       const newRegion = {
         latitude: lat,
@@ -336,7 +326,7 @@ const LocationPickerCore: React.FC<{
             <View style={styles.pinBubble}>
               <AppText style={styles.pinBubbleText}>Set Point</AppText>
             </View>
-            <MapPin size={42} color={COLORS.dark} fill={COLORS.primary} />
+            <MapPin size={42} color={COLORS.textPrimary} fill={COLORS.primary} />
           </Animated.View>
           <Animated.View
             style={[
@@ -354,7 +344,7 @@ const LocationPickerCore: React.FC<{
             onPress={isSearchFocused ? () => setIsSearchFocused(false) : onClose}
             style={styles.searchIconBtn}
           >
-            {isSearchFocused ? <ArrowLeft size={22} color={COLORS.dark} /> : <X size={22} color={COLORS.dark} />}
+            {isSearchFocused ? <ArrowLeft size={22} color={COLORS.textPrimary} /> : <X size={22} color={COLORS.textPrimary} />}
           </TouchableOpacity>
 
           <TextInput
@@ -366,16 +356,16 @@ const LocationPickerCore: React.FC<{
               searchPlaces(text);
             }}
             onFocus={() => setIsSearchFocused(true)}
-            placeholderTextColor={COLORS.secondary}
+            placeholderTextColor={COLORS.textSecondary}
           />
 
           {isSearchLoading ? (
             <ActivityIndicator size="small" color={COLORS.primary} style={{ marginRight: 10 }} />
           ) : searchQuery.length > 0 ? (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <X size={18} color={COLORS.secondary} />
+              <X size={18} color={COLORS.textSecondary} />
             </TouchableOpacity>
-          ) : <Search size={18} color={COLORS.secondary} />}
+          ) : <Search size={18} color={COLORS.textSecondary} />}
         </View>
 
         {/* RESULTS OVERLAY */}
@@ -395,7 +385,7 @@ const LocationPickerCore: React.FC<{
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.resultItem} onPress={() => getPlaceDetails(item?.place_id)}>
                   <View style={styles.resultIcon}>
-                    <MapIcon size={20} color={COLORS.secondary} />
+                    <MapIcon size={20} color={COLORS.textSecondary} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <AppText style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</AppText>
@@ -412,7 +402,7 @@ const LocationPickerCore: React.FC<{
       {!isSearchFocused && (
         <>
           <TouchableOpacity style={styles.fabLocation} onPress={handleGetCurrentLocation}>
-            <Navigation2 size={24} color={COLORS.dark} />
+            <Navigation2 size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
           <View style={styles.bottomSheet}>
@@ -465,16 +455,16 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  triggerText: { fontSize: 16, color: COLORS.dark, fontWeight: '600' },
-  placeholder: { color: COLORS.secondary, fontWeight: '400' },
+  triggerText: { fontSize: 16, color: COLORS.textPrimary, fontWeight: '600' },
+  placeholder: { color: COLORS.textSecondary, fontWeight: '400' },
 
   // Modal Content
-  modalContainer: { flex: 1, backgroundColor: COLORS.bg },
+  modalContainer: { flex: 1, backgroundColor: COLORS.grey50 },
   fullMap: { flex: 1 },
   searchHeader: {
     position: 'absolute',
@@ -493,7 +483,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginTop: Platform.OS === 'android' ? 40 : 10,
     elevation: 6,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 10,
@@ -507,7 +497,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
   searchIconBtn: { marginRight: 10, padding: 4 },
-  searchInput: { flex: 1, fontSize: 16, color: COLORS.dark, fontWeight: '500' },
+  searchInput: { flex: 1, fontSize: 16, color: COLORS.textPrimary, fontWeight: '500' },
 
   resultsPanel: {
     backgroundColor: COLORS.white,
@@ -525,15 +515,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.bg,
+    backgroundColor: COLORS.grey50,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  resultMain: { fontSize: 15, fontWeight: '700', color: COLORS.dark },
-  resultSub: { fontSize: 13, color: COLORS.secondary, marginTop: 2 },
+  resultMain: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
+  resultSub: { fontSize: 13, color: COLORS.textSecondary, marginTop: 2 },
   emptyState: { padding: 40, alignItems: 'center' },
-  emptyText: { color: COLORS.secondary, fontSize: 15 },
+  emptyText: { color: COLORS.textSecondary, fontSize: 15 },
 
   // Marker
   markerFixed: {
@@ -547,7 +537,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   pinBubble: {
-    backgroundColor: COLORS.dark,
+    backgroundColor: COLORS.textPrimary,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 12,
@@ -557,7 +547,7 @@ const styles = StyleSheet.create({
   markerShadow: {
     width: 12,
     height: 6,
-    backgroundColor: '#000',
+    backgroundColor: COLORS.black,
     borderRadius: 10,
     marginTop: -4,
   },
@@ -574,7 +564,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.2,
     shadowRadius: 10,
   },
@@ -588,19 +578,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     elevation: 25,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
   },
   addressContainer: { flexDirection: 'row', marginBottom: 24 },
   addressIndicator: { marginRight: 16, alignItems: 'center', paddingTop: 6 },
-  dotOuter: { width: 14, height: 14, borderRadius: 7, backgroundColor: '#FAF6EE', justifyContent: 'center', alignItems: 'center' },
+  dotOuter: { width: 14, height: 14, borderRadius: 7, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
   dotInner: { width: 6, height: 6, borderRadius: 3, backgroundColor: COLORS.primary },
   line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: 4 },
-  label: { fontSize: 11, fontWeight: '900', color: COLORS.secondary, letterSpacing: 1.5 },
-  addressText: { fontSize: 16, fontWeight: '700', color: COLORS.dark, marginTop: 6, lineHeight: 22 },
-  skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.bg, borderRadius: 4, marginTop: 10 },
+  label: { fontSize: 11, fontWeight: '900', color: COLORS.textSecondary, letterSpacing: 1.5 },
+  addressText: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
+  skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: 4, marginTop: 10 },
   confirmButton: {
     backgroundColor: COLORS.primary,
     height: 58,

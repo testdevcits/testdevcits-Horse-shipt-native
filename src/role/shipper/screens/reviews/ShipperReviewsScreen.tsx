@@ -26,8 +26,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
       const res = await shipperService.getProfile();
       if (res?.data) {
         setProfileData(res.data);
-        if (res.data.reviews) {
-          setReviews(res.data.reviews);
+        if (res.data?.reviews) {
+          setReviews(res.data?.reviews);
         }
       }
     } catch (error) {

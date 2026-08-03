@@ -21,8 +21,8 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
       <View style={styles.cardHeader}>
         <View style={styles.headerTitleRow}>
           <AppText style={styles.routeHeader}>DISPATCH MANIFEST</AppText>
-          {shipmentData.shipmentCode && (
-            <AppText style={styles.shipmentCodeTag}>#{shipmentData.shipmentCode}</AppText>
+          {shipmentData?.shipmentCode && (
+            <AppText style={styles.shipmentCodeTag}>#{shipmentData?.shipmentCode}</AppText>
           )}
         </View>
 
@@ -45,7 +45,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotGreen} />
           <AppText style={styles.locationText} numberOfLines={2}>
-            {shipmentData.pickupLocation || 'Unknown Pickup'}
+            {shipmentData?.pickupLocation || 'Unknown Pickup'}
           </AppText>
         </View>
 
@@ -54,7 +54,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />
           <AppText style={styles.locationText} numberOfLines={2}>
-            {shipmentData.deliveryLocation || 'Unknown Dropoff'}
+            {shipmentData?.deliveryLocation || 'Unknown Dropoff'}
           </AppText>
         </View>
       </View>
@@ -64,7 +64,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.infoBadge}>
           <Truck size={14} color={COLORS.goldPrimary} />
           <AppText style={styles.infoText}>
-            {shipmentData.numberOfHorses || 1} {shipmentData.numberOfHorses === 1 ? 'Horse' : 'Horses'}
+            {shipmentData?.numberOfHorses || 1} {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
           </AppText>
         </View>
 

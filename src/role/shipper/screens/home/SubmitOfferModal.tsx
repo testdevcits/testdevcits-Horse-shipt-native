@@ -118,16 +118,16 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
 
     try {
       const formData = new FormData();
-      formData.append('shipment', shipmentId);
-      formData.append('totalPrice', totalPrice.trim());
-      formData.append('paymentMethod', 'card');
-      formData.append('paymentDue', 'delivery');
-      formData.append('cancellationWindowDays', cancellationDays.trim());
-      formData.append('notes', notes.trim());
-      formData.append('shipperSignature', signature);
+      formData?.append('shipment', shipmentId);
+      formData?.append('totalPrice', totalPrice.trim());
+      formData?.append('paymentMethod', 'card');
+      formData?.append('paymentDue', 'delivery');
+      formData?.append('cancellationWindowDays', cancellationDays.trim());
+      formData?.append('notes', notes.trim());
+      formData?.append('shipperSignature', signature);
 
       if (contractFile) {
-        formData.append('contractFile', {
+        formData?.append('contractFile', {
           uri: contractFile.uri,
           type: contractFile.type || 'image/jpeg',
           name: contractFile.fileName || 'shipper_contract.jpg',
@@ -148,7 +148,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         Toast.show({
           type: 'error',
           text1: 'Submission Failed',
-          text2: res?.message || 'Failed to submit quote.',
+          text2: res?.message || 'Failed to submit quote?.',
         });
       }
     } catch (error: any) {
@@ -156,7 +156,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
       Toast.show({
         type: 'error',
         text1: 'Submission Failed',
-        text2: error?.response?.data?.message || 'Failed to submit quote.',
+        text2: error?.response?.data?.message || 'Failed to submit quote?.',
       });
     } finally {
       setIsLoading(false);
@@ -299,7 +299,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                     {contractFile?.fileName || 'No file chosen'}
                   </AppText>
                   <AppText style={styles.fileCaptionText}>
-                    Optional PDF or image. Customers can review it before accepting the quote.
+                    Optional PDF or image. Customers can review it before accepting the quote?.
                   </AppText>
                 </View>
 

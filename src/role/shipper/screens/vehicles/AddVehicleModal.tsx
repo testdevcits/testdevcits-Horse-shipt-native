@@ -152,17 +152,17 @@ const AddVehicleModal: React.FC<Props> = (props) => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('transportType', transportType);
-      formData.append('vehicleType', vehicleType);
-      formData.append('vehicleNumber', vehicleNumber.trim());
-      formData.append('vinNumber', vinNumber.trim());
-      formData.append('trailerType', stallType);
-      formData.append('numberOfStalls', numberOfStalls.trim());
-      formData.append('stallSize', stallSize);
-      formData.append('notes', notes.trim());
+      formData?.append('transportType', transportType);
+      formData?.append('vehicleType', vehicleType);
+      formData?.append('vehicleNumber', vehicleNumber.trim());
+      formData?.append('vinNumber', vinNumber.trim());
+      formData?.append('trailerType', stallType);
+      formData?.append('numberOfStalls', numberOfStalls.trim());
+      formData?.append('stallSize', stallSize);
+      formData?.append('notes', notes.trim());
 
       if (selectedImage && selectedImage.uri && !selectedImage.uri.startsWith('http')) {
-        formData.append('images', {
+        formData?.append('images', {
           uri: selectedImage.uri,
           type: selectedImage.type || 'image/jpeg',
           name: selectedImage.name || 'vehicle.jpg',

@@ -28,13 +28,13 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   onViewContract,
   onDelete,
 }) => {
-  const shipment = quote.shipment || {};
+  const shipment = quote?.shipment || {};
   const horsePhoto =
     shipment.horses && shipment.horses[0]?.photo?.url
       ? shipment.horses[0].photo.url
       : null;
 
-  const rawStatus = (shipment.status || quote.status || 'open').toLowerCase();
+  const rawStatus = (shipment.status || quote?.status || 'open').toLowerCase();
 
   let statusLabel = 'In Transit';
   let statusBadgeStyle: any = styles.badgeInTransit;
@@ -54,7 +54,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
     statusTextStyle = styles.badgeCancelledText;
   }
 
-  const quoteId = quote._id || quote.id;
+  const quoteId = quote?._id || quote?.id;
 
   const isAssignedOrAccepted = rawStatus === 'assigned' || rawStatus === 'accepted';
 
@@ -88,7 +88,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         <View style={styles.priceRow}>
           <AppText style={styles.priceLabel}>Pricing : </AppText>
           <AppText style={styles.priceValue}>
-            ${quote.totalPrice || 200}
+            ${quote?.totalPrice || 200}
           </AppText>
         </View>
 
@@ -99,7 +99,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Transport</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
-                {quote.transportType || 'Trucking'}
+                {quote?.transportType || 'Trucking'}
               </AppText>
             </View>
           </View>
@@ -109,7 +109,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Payment</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
-                {(quote.paymentMethod || 'Card').toUpperCase()}
+                {(quote?.paymentMethod || 'Card').toUpperCase()}
               </AppText>
             </View>
           </View>
@@ -119,7 +119,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Stall</AppText>
               <AppText style={styles.specValue}>
-                {quote.stallsRequired ? String(quote.stallsRequired).padStart(2, '0') : '01'}
+                {quote?.stallsRequired ? String(quote?.stallsRequired).padStart(2, '0') : '01'}
               </AppText>
             </View>
           </View>
@@ -129,19 +129,19 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Refund</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
-                {(quote.payoutStatus || quote.paymentStatus || 'Pending').toUpperCase()}
+                {(quote?.payoutStatus || quote?.paymentStatus || 'Pending').toUpperCase()}
               </AppText>
             </View>
           </View>
         </View>
 
         {/* Notes Container */}
-        {quote.notes ? (
+        {quote?.notes ? (
           <View style={styles.notesContainer}>
             <FileText size={16} color={COLORS.goldPrimary} style={{ marginTop: 2 }} />
             <AppText style={styles.notesText}>
               <AppText style={{ fontFamily: FONTS.bold }}>Notes : </AppText>
-              {quote.notes.trim()}
+              {quote?.notes.trim()}
             </AppText>
           </View>
         ) : null}

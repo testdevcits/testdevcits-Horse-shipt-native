@@ -12,15 +12,6 @@ import { Star, ShieldCheck, Radio } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 
-const HEADER_COLORS = {
-    goldPrimary: '#A37F3D',
-    goldLightBg: '#FAF6EE',
-    goldBorder: '#DCCEB2',
-    goldDarkText: '#5C441E',
-    greenIndicator: '#10B981',
-    background: '#FAF6EE',
-};
-
 interface DriverHeaderProps {
     name: string;
     statusText?: string;
@@ -79,7 +70,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                             Captain {name || 'Driver'}
                         </AppText>
                         <View style={styles.ratingBadge}>
-                            <Star size={12} color="#EAB308" fill="#EAB308" />
+                            <Star size={12} color={COLORS.warning} fill={COLORS.warning} />
                             <AppText style={styles.ratingText}>{rating.toFixed(1)}</AppText>
                         </View>
                     </View>
@@ -89,7 +80,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                         onPress={onStatusToggle}
                         style={styles.statusBadge}
                     >
-                        <Radio size={12} color={isOnline ? '#10B981' : COLORS.textLight} />
+                        <Radio size={12} color={isOnline ? COLORS.greenActive : COLORS.textLight} />
                         <AppText style={styles.statusBadgeText}>
                             {isOnline ? statusText.toUpperCase() : 'OFFLINE'}
                         </AppText>
@@ -103,7 +94,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                     </View>
                 ) : (
                     <View style={styles.captainShieldBox}>
-                        <ShieldCheck size={20} color={HEADER_COLORS.goldPrimary} />
+                        <ShieldCheck size={20} color={COLORS.goldPrimary} />
                         <AppText style={styles.verifiedCaptainTag}>VERIFIED</AppText>
                     </View>
                 )}
@@ -116,9 +107,9 @@ export default DriverHeader;
 
 const styles = StyleSheet.create({
     safeArea: {
-        backgroundColor: HEADER_COLORS.background,
+        backgroundColor: COLORS.goldLightBg,
         borderBottomWidth: 1,
-        borderBottomColor: HEADER_COLORS.goldBorder,
+        borderBottomColor: COLORS.goldBorder,
     },
     headerRow: {
         flexDirection: 'row',
@@ -139,9 +130,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderWidth: 2,
-        borderColor: HEADER_COLORS.goldPrimary,
+        borderColor: COLORS.goldPrimary,
         borderRadius: RADIUS.md,
-        backgroundColor: HEADER_COLORS.goldLightBg,
+        backgroundColor: COLORS.goldLightBg,
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
@@ -153,15 +144,15 @@ const styles = StyleSheet.create({
     monogramText: {
         fontFamily: FONTS.bold,
         fontSize: 22,
-        color: HEADER_COLORS.goldPrimary,
+        color: COLORS.goldPrimary,
     },
     indicatorDot: {
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: HEADER_COLORS.greenIndicator,
+        backgroundColor: COLORS.greenActive,
         borderWidth: 2,
-        borderColor: HEADER_COLORS.background,
+        borderColor: COLORS.goldLightBg,
         position: 'absolute',
         bottom: -2,
         right: -2,
@@ -186,7 +177,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 3,
-        backgroundColor: '#FEF08A',
+        backgroundColor: COLORS.amberLightBg,
         paddingHorizontal: 6,
         paddingVertical: 2,
         borderRadius: 10,
@@ -194,15 +185,15 @@ const styles = StyleSheet.create({
     ratingText: {
         fontFamily: FONTS.bold,
         fontSize: 11,
-        color: '#854D0E',
+        color: COLORS.amberWarning,
     },
     statusBadge: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
         borderWidth: 1,
-        borderColor: HEADER_COLORS.goldBorder,
-        backgroundColor: HEADER_COLORS.goldLightBg,
+        borderColor: COLORS.goldBorder,
+        backgroundColor: COLORS.goldLightBg,
         borderRadius: 12,
         paddingVertical: 3,
         paddingHorizontal: 10,
@@ -212,7 +203,7 @@ const styles = StyleSheet.create({
     statusBadgeText: {
         fontFamily: FONTS.bold,
         fontSize: 10,
-        color: HEADER_COLORS.goldDarkText,
+        color: COLORS.goldDarkText,
         letterSpacing: 0.4,
     },
     rightContainer: {
@@ -228,12 +219,12 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: RADIUS.sm,
         borderWidth: 1,
-        borderColor: HEADER_COLORS.goldBorder,
+        borderColor: COLORS.goldBorder,
     },
     verifiedCaptainTag: {
         fontFamily: FONTS.bold,
         fontSize: 8,
-        color: HEADER_COLORS.goldPrimary,
+        color: COLORS.goldPrimary,
         marginTop: 2,
         letterSpacing: 0.5,
     },

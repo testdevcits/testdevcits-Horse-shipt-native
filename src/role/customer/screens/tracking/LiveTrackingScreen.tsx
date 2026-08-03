@@ -114,10 +114,10 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
 
   // ETA & Distance formatting
   const etaFormatted = data?.delivery?.etaMinutes
-    ? formatDate(new Date(Date.now() + data.delivery.etaMinutes * 60000), 'hh:mm A')
+    ? formatDate(new Date(Date.now() + data?.delivery.etaMinutes * 60000), 'hh:mm A')
     : '--:--';
   const distanceKmText = data?.delivery?.distanceKm
-    ? `${data.delivery.distanceKm} km left`
+    ? `${data?.delivery.distanceKm} km left`
     : 'Route calculated';
 
   return (

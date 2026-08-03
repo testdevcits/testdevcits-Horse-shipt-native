@@ -31,7 +31,7 @@ const ChatListCard = ({
             {item?.name}
           </AppText>
           <AppText style={styles.time}>
-            {item?.lastMessageTime || '5min ago'}
+            {item?.lastMessageTime || ''}
           </AppText>
         </View>
 
@@ -41,7 +41,7 @@ const ChatListCard = ({
 
         <AppText style={styles.snippet} numberOfLines={1}>
           {item?.lastMessage ||
-            'Lorem ipsum dolor sit amet consectetur. Nulla...'}
+            'No messages yet. Start the conversation!'}
         </AppText>
       </View>
     </TouchableOpacity>

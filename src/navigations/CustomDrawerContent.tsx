@@ -53,7 +53,7 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
       {IconComponent ? (
         <IconComponent
           size={18}
-          color={iconColor || (isActive ? '#A06333' : COLORS.textPrimary)}
+          color={iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)}
           strokeWidth={1.8}
         />
       ) : iconSource ? (
@@ -188,7 +188,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
         <DrawerMenuItem
           label="Logout"
           IconComponent={LogOut}
-          iconColor="#EF4444"
+          iconColor={COLORS.error}
           onPress={() => setIsLogoutModalVisible(true)}
           isLast={true}
         />
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
   },
   menuItemActive: {
-    backgroundColor: '#F5EBE1',
+    backgroundColor: COLORS.brandBrownLightBg,
   },
   iconContainer: {
     width: 28,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     height: ICON_SIZE.sm,
   },
   menuIconActive: {
-    tintColor: '#A06333',
+    tintColor: COLORS.brandBrown,
   },
   menuLabel: {
     fontSize: FONT_SIZE.sm,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.xs,
   },
   menuLabelActive: {
-    color: '#A06333',
+    color: COLORS.brandBrown,
     fontFamily: FONTS.bold,
   },
   footerContainer: {

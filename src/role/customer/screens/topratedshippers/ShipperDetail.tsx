@@ -110,8 +110,8 @@ const ShipperDetail = () => {
             source={
               shipper?.bannerImage
                 ? {
-                    uri: shipper?.bannerImage,
-                  }
+                  uri: shipper?.bannerImage,
+                }
                 : imageIndex.HorseBg
             }
             style={styles.bannerImage}
@@ -190,9 +190,9 @@ const ShipperDetail = () => {
                   renderReviewCard(rev, idx),
                 )}
               </ScrollView>
-              <TouchableOpacity style={styles.showMoreBtn}>
+              {/* <TouchableOpacity style={styles.showMoreBtn}>
                 <AppText style={styles.showMoreText}>Show more reviews</AppText>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </>
           ) : (
             <View style={styles.emptyContainer}>

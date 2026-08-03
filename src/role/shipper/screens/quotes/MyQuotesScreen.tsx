@@ -62,8 +62,8 @@ const MyQuotesScreen = () => {
   };
 
   const openContractModal = (quote: any) => {
-    const url = quote.contract?.url || quote.shipperContract?.url;
-    const code = quote.shipment?.shipmentCode || 'HS-SHIP-2026-CE9DC1';
+    const url = quote?.contract?.url || quote?.shipperContract?.url;
+    const code = quote?.shipment?.shipmentCode || 'HS-SHIP-2026-CE9DC1';
     setSelectedContractData({ url, code, quote });
     setIsContractModalVisible(true);
   };
@@ -293,9 +293,9 @@ const MyQuotesScreen = () => {
       <ContractModal
         visible={isContractModalVisible}
         onClose={() => setIsContractModalVisible(false)}
-        contractUrl={selectedContractData.url}
-        shipmentCode={selectedContractData.code}
-        quoteData={selectedContractData.quote}
+        contractUrl={selectedContractdata?.url}
+        shipmentCode={selectedContractdata?.code}
+        quoteData={selectedContractdata?.quote}
       />
 
       {/* Quote Delete Confirmation Modal */}

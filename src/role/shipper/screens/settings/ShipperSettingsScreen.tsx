@@ -17,7 +17,7 @@ const NOTIFICATION_ITEMS = [
   {
     key: 'quote',
     title: 'Quote won',
-    desc: 'Get notified when you win a quote.',
+    desc: 'Get notified when you win a quote?.',
   },
   {
     key: 'opportunity',
@@ -64,7 +64,7 @@ const ShipperSettingsScreen = () => {
       setLoading(true);
       const res = await shipperService.getSettings();
       if (res?.data?.notifications) {
-        setNotifications(res.data.notifications);
+        setNotifications(res.data?.notifications);
       }
     } catch (error: any) {
       console.error('Fetch Shipper Settings Error:', error);

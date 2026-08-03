@@ -66,10 +66,10 @@ const useChatDetails = (shipmentId: string) => {
         const formData = new FormData();
 
         if (text?.trim()) {
-          formData.append('message', text.trim());
+          formData?.append('message', text.trim());
         }
 
-        formData.append('image', {
+        formData?.append('image', {
           uri:
             Platform.OS === 'android'
               ? imageFile.path

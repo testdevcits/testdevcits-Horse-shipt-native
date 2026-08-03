@@ -74,23 +74,23 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
   }));
 
   return {
-    pickupLocation: data.pickupLocation || '',
-    pickupLat: data.pickupLat || 0,
-    pickupLng: data.pickupLng || 0,
-    pickupTimeOption: data.pickupTimeOption || 'between',
-    pickupStartDate: data.pickupDateRange?.start ? new Date(data.pickupDateRange.start) : getTomorrow(),
-    pickupEndDate: data.pickupDateRange?.end ? new Date(data.pickupDateRange.end) : getTomorrow(),
-    deliveryLocation: data.deliveryLocation || '',
-    deliveryLat: data.deliveryLat || 0,
-    deliveryLng: data.deliveryLng || 0,
-    deliveryTimeOption: data.deliveryTimeOption || 'between',
-    deliveryStartDate: data.deliveryDateRange?.start ? new Date(data.deliveryDateRange.start) : getDayAfterTomorrow(),
-    deliveryEndDate: data.deliveryDateRange?.end ? new Date(data.deliveryDateRange.end) : getDayAfterTomorrow(),
-    numberOfHorses: horses.length || data.numberOfHorses || 1,
-    additionalInfo: data.additionalInfo || data.notes || '',
-    recipientEmail: data.recipientEmail || '',
-    hasSpecialRequirement: !!data.hasSpecialRequirement,
-    specialRequirementDetails: data.specialRequirementDetails || '',
+    pickupLocation: data?.pickupLocation || '',
+    pickupLat: data?.pickupLat || 0,
+    pickupLng: data?.pickupLng || 0,
+    pickupTimeOption: data?.pickupTimeOption || 'between',
+    pickupStartDate: data?.pickupDateRange?.start ? new Date(data?.pickupDateRange.start) : getTomorrow(),
+    pickupEndDate: data?.pickupDateRange?.end ? new Date(data?.pickupDateRange.end) : getTomorrow(),
+    deliveryLocation: data?.deliveryLocation || '',
+    deliveryLat: data?.deliveryLat || 0,
+    deliveryLng: data?.deliveryLng || 0,
+    deliveryTimeOption: data?.deliveryTimeOption || 'between',
+    deliveryStartDate: data?.deliveryDateRange?.start ? new Date(data?.deliveryDateRange.start) : getDayAfterTomorrow(),
+    deliveryEndDate: data?.deliveryDateRange?.end ? new Date(data?.deliveryDateRange.end) : getDayAfterTomorrow(),
+    numberOfHorses: horses.length || data?.numberOfHorses || 1,
+    additionalInfo: data?.additionalInfo || data?.notes || '',
+    recipientEmail: data?.recipientEmail || '',
+    hasSpecialRequirement: !!data?.hasSpecialRequirement,
+    specialRequirementDetails: data?.specialRequirementDetails || '',
     horses: horses.length > 0 ? horses : [{ ...defaultHorse }],
   };
 };
@@ -120,7 +120,7 @@ const useNewShipment = () => {
   useEffect(() => {
     if (isEdit && shipmentData) {
       setForm(parseShipmentDataToForm(shipmentData));
-      setCreatedShipmentId(shipmentData._id);
+      setCreatedShipmentId(shipmentdata?._id);
       setCurrentStep(3);
     }
   }, [isEdit, shipmentData]);
@@ -229,41 +229,41 @@ const useNewShipment = () => {
   const buildFormData = () => {
     const formData = new FormData();
 
-    formData.append('pickupLocation', form.pickupLocation);
-    formData.append('pickupLat', form.pickupLat.toString());
-    formData.append('pickupLng', form.pickupLng.toString());
-    formData.append('pickupTimeOption', form.pickupTimeOption);
-    formData.append(
+    formdata?.append('pickupLocation', form.pickupLocation);
+    formdata?.append('pickupLat', form.pickupLat.toString());
+    formdata?.append('pickupLng', form.pickupLng.toString());
+    formdata?.append('pickupTimeOption', form.pickupTimeOption);
+    formdata?.append(
       'pickupStartDate',
       form.pickupStartDate instanceof Date
         ? form.pickupStartDate.toISOString()
         : new Date(form.pickupStartDate).toISOString(),
     );
-    formData.append(
+    formdata?.append(
       'pickupEndDate',
       form.pickupEndDate instanceof Date
         ? form.pickupEndDate.toISOString()
         : new Date(form.pickupEndDate).toISOString(),
     );
 
-    formData.append('deliveryLocation', form.deliveryLocation);
-    formData.append('deliveryLat', form.deliveryLat.toString());
-    formData.append('deliveryLng', form.deliveryLng.toString());
-    formData.append('deliveryTimeOption', form.deliveryTimeOption);
-    formData.append(
+    formdata?.append('deliveryLocation', form.deliveryLocation);
+    formdata?.append('deliveryLat', form.deliveryLat.toString());
+    formdata?.append('deliveryLng', form.deliveryLng.toString());
+    formdata?.append('deliveryTimeOption', form.deliveryTimeOption);
+    formdata?.append(
       'deliveryStartDate',
       form.deliveryStartDate instanceof Date
         ? form.deliveryStartDate.toISOString()
         : new Date(form.deliveryStartDate).toISOString(),
     );
-    formData.append(
+    formdata?.append(
       'deliveryEndDate',
       form.deliveryEndDate instanceof Date
         ? form.deliveryEndDate.toISOString()
         : new Date(form.deliveryEndDate).toISOString(),
     );
 
-    formData.append('numberOfHorses', form.numberOfHorses.toString());
+    formdata?.append('numberOfHorses', form.numberOfHorses.toString());
 
     let combinedNotes = form.additionalInfo || '';
     if (form.hasSpecialRequirement && form.specialRequirementDetails) {
@@ -271,45 +271,45 @@ const useNewShipment = () => {
         (combinedNotes ? '\n' : '') +
         `Special Requirements: ${form.specialRequirementDetails}`;
     }
-    formData.append('additionalInfo', combinedNotes);
-    formData.append('recipientEmail', form.recipientEmail || '');
+    formdata?.append('additionalInfo', combinedNotes);
+    formdata?.append('recipientEmail', form.recipientEmail || '');
 
     form.horses.forEach((horse, index) => {
-      formData.append(
+      formdata?.append(
         `horses[${index}][registeredName]`,
         horse.registeredName || '',
       );
-      formData.append(`horses[${index}][barnName]`, horse.barnName || '');
-      formData.append(`horses[${index}][breed]`, horse.breed || '');
-      formData.append(`horses[${index}][colour]`, horse.colour || '');
-      formData.append(
+      formdata?.append(`horses[${index}][barnName]`, horse.barnName || '');
+      formdata?.append(`horses[${index}][breed]`, horse.breed || '');
+      formdata?.append(`horses[${index}][colour]`, horse.colour || '');
+      formdata?.append(
         `horses[${index}][age]`,
         horse.age ? horse.age.toString() : '',
       );
-      formData.append(`horses[${index}][sex]`, horse.sex || '');
-      formData.append(
+      formdata?.append(`horses[${index}][sex]`, horse.sex || '');
+      formdata?.append(
         `horses[${index}][requestedStallSize]`,
         horse.requestedStallSize || 'Box',
       );
-      formData.append(`horses[${index}][generalInfo]`, horse.generalInfo || '');
-      formData.append(`horses[${index}][notes]`, horse.generalInfo || '');
+      formdata?.append(`horses[${index}][generalInfo]`, horse.generalInfo || '');
+      formdata?.append(`horses[${index}][notes]`, horse.generalInfo || '');
 
       if (horse.photo) {
-        formData.append(`horse_photo_${index}`, {
+        formdata?.append(`horse_photo_${index}`, {
           uri: horse.photo.uri,
           name: horse.photo.name,
           type: horse.photo.type,
         } as any);
       }
       if (horse.coggins) {
-        formData.append(`horse_coggins_${index}`, {
+        formdata?.append(`horse_coggins_${index}`, {
           uri: horse.coggins.uri,
           name: horse.coggins.name,
           type: horse.coggins.type,
         } as any);
       }
       if (horse.healthCert) {
-        formData.append(`horse_health_${index}`, {
+        formdata?.append(`horse_health_${index}`, {
           uri: horse.healthCert.uri,
           name: horse.healthCert.name,
           type: horse.healthCert.type,
@@ -324,16 +324,16 @@ const useNewShipment = () => {
     const formData = new FormData();
 
     if (form.additionalInfo) {
-      formData.append('additionalInfo', form.additionalInfo);
+      formdata?.append('additionalInfo', form.additionalInfo);
     }
 
     form.horses.forEach((horse, index) => {
       const notesVal = horse.generalInfo || '';
-      formData.append(`horses[${index}][generalInfo]`, notesVal);
-      formData.append(`horses[${index}][notes]`, notesVal);
+      formdata?.append(`horses[${index}][generalInfo]`, notesVal);
+      formdata?.append(`horses[${index}][notes]`, notesVal);
 
       if (horse.coggins && horse.coggins.uri) {
-        formData.append(`horses[${index}][cogins]`, {
+        formdata?.append(`horses[${index}][cogins]`, {
           uri: horse.coggins.uri,
           name: horse.coggins.name || `coggins_${index + 1}.jpg`,
           type: horse.coggins.type || 'image/jpeg',
@@ -341,7 +341,7 @@ const useNewShipment = () => {
       }
 
       if (horse.healthCert && horse.healthCert.uri) {
-        formData.append(`horses[${index}][healthCertificate]`, {
+        formdata?.append(`horses[${index}][healthCertificate]`, {
           uri: horse.healthCert.uri,
           name: horse.healthCert.name || `health_${index + 1}.jpg`,
           type: horse.healthCert.type || 'image/jpeg',
@@ -349,7 +349,7 @@ const useNewShipment = () => {
       }
 
       if (horse.photo && horse.photo.uri) {
-        formData.append(`horses[${index}][otherDocuments]`, {
+        formdata?.append(`horses[${index}][otherDocuments]`, {
           uri: horse.photo.uri,
           name: horse.photo.name || `other_${index + 1}.jpg`,
           type: horse.photo.type || 'image/jpeg',

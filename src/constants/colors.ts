@@ -77,8 +77,14 @@ export const COLORS = {
   greenActive: '#10B981',
   greenSuccess: '#0F7643',
 
-
-
+  // Brand Highlights & Status Badges
+  brandBrown: '#A06333',
+  brandBrownLightBg: '#F5EBE1',
+  amberWarning: '#B45309',
+  amberLightBg: '#FEF3C7',
+  greenBadgeBg: '#DCFCE7',
+  greenBadgeBorder: '#86EFAC',
+  greenBadgeText: '#15803D',
 } as const;
 
 export default COLORS;// colors.ts

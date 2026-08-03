@@ -66,10 +66,13 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   if (!quote) return null;
 
   // Derived Conditions
-  const isPending = quote.status === 'pending';
-  const isAccepted = quote.status === 'accepted';
-  const isCancelled = quote.isCancelled || quote.status === 'cancelled';
-  const isRejected = quote.status === 'rejected';
+  const isPending = quote?.status === 'pending';
+  const isAccepted = quote?.status === 'accepted';
+  const isCancelled = quote?.isCancelled || quote?.status === 'cancelled';
+  const isRejected = quote?.status === 'rejected';
+  const isCancellationWindowActive = quote?.cancellationLastDate
+    ? new Date().getTime() <= new Date(quote?.cancellationLastDate).getTime()
+    : true;
 
   const getStatusBadgeStyle = () => {
     if (isAccepted) {
@@ -112,7 +115,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
     setLoading(true);
     try {
       // 1. Get Secret from Pay API
-      const payResponse = await customerService.payQuote(quote._id);
+      const payResponse = await customerService.payQuote(quote?._id);
       if (!payResponse.success || !payResponse.clientSecret)
         throw new Error('Payment initialization failed.');
 
@@ -132,7 +135,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
         paymentIntent?.status === 'Succeeded' ||
         paymentIntent?.status === 'RequiresCapture'
       ) {
-        const acceptRes = await customerService.acceptQuote(quote._id, {
+        const acceptRes = await customerService.acceptQuote(quote?._id, {
           customerSignature: signature,
         });
         if (acceptRes) {
@@ -158,7 +161,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
       return Alert.alert('Required', 'Please enter a reason for cancellation.');
     setLoading(true);
     try {
-      const res = await customerService.cancelQuote(quote._id, {
+      const res = await customerService.cancelQuote(quote?._id, {
         reason: cancelReason.trim(),
       });
       if (res.success) {
@@ -225,13 +228,13 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
             scrollEnabled={scrollEnabled}
           >
             {/* CANCELLATION TIMEFRAME BANNER */}
-            {!isCancelled && !isRejected && quote.cancellationLastDate && (
+            {!isCancelled && !isRejected && quote?.cancellationLastDate && (
               <View style={styles.cancelBanner}>
                 <Clock size={ICON_SIZE.sm} color="#B45309" style={{ marginRight: SPACING.xs }} />
                 <AppText style={styles.cancelText}>
                   Cancel Window:{' '}
                   <AppText style={{ fontFamily: FONTS.bold, color: '#92400E' }}>
-                    {formatDate(quote.cancellationLastDate, 'MMM DD, YYYY · hh:mm A')}
+                    {formatDate(quote?.cancellationLastDate, 'MMM DD, YYYY · hh:mm A')}
                   </AppText>
                 </AppText>
               </View>
@@ -242,7 +245,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
               <View style={styles.heroLeft}>
                 <AppText style={styles.heroLabel}>TOTAL PRICE</AppText>
                 <AppText style={styles.heroPrice}>
-                  ${Number(quote.totalPrice || 0).toLocaleString()}
+                  ${Number(quote?.totalPrice || 0).toLocaleString()}
                 </AppText>
               </View>
               <View style={styles.heroRight}>
@@ -258,7 +261,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                   <AppText
                     style={[styles.statusBadgeText, { color: statusStyle.text }]}
                   >
-                    {quote.status?.toUpperCase() || 'PENDING'}
+                    {quote?.status?.toUpperCase() || 'PENDING'}
                   </AppText>
                 </View>
               </View>
@@ -271,121 +274,121 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                 <SummaryBox
                   icon={User}
                   label="SHIPPER"
-                  value={quote.shipper?.name}
+                  value={quote?.shipper?.name}
                 />
                 <SummaryBox
                   icon={CreditCard}
                   label="METHOD"
-                  value={quote.paymentMethod}
+                  value={quote?.paymentMethod}
                 />
                 <SummaryBox
                   icon={Calendar}
                   label="DUE"
-                  value={quote.paymentDue}
+                  value={quote?.paymentDue}
                 />
                 <SummaryBox
                   icon={DollarSign}
                   label="STATUS"
-                  value={quote.paymentStatus}
+                  value={quote?.paymentStatus}
                 />
               </View>
             </View>
 
             {/* CONTRACTS / DOCUMENTS SECTION */}
-            {(quote.contract?.url ||
-              quote.contract ||
-              quote.shipperContract?.url ||
-              quote.shipperContract) && (
-              <View style={styles.cardContainer}>
-                <AppText style={styles.cardTitle}>Contracts & Documents</AppText>
+            {(quote?.contract?.url ||
+              quote?.contract ||
+              quote?.shipperContract?.url ||
+              quote?.shipperContract) && (
+                <View style={styles.cardContainer}>
+                  <AppText style={styles.cardTitle}>Contracts & Documents</AppText>
 
-                {(quote.contract?.url || typeof quote.contract === 'string') && (
-                  <TouchableOpacity
-                    style={styles.docItem}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const contractUrl =
-                        typeof quote.contract === 'string'
-                          ? quote.contract
-                          : quote.contract.url;
-                      if (contractUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: contractUrl,
-                          title: 'Shipment Contract',
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                  {(quote?.contract?.url || typeof quote?.contract === 'string') && (
+                    <TouchableOpacity
+                      style={styles.docItem}
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        const contractUrl =
+                          typeof quote?.contract === 'string'
+                            ? quote?.contract
+                            : quote?.contract.url;
+                        if (contractUrl) {
+                          onClose();
+                          navigation.navigate('PdfViewer', {
+                            url: contractUrl,
+                            title: 'Shipment Contract',
+                          });
+                        }
+                      }}
+                    >
+                      <View style={styles.docLeftRow}>
+                        <View style={styles.docIconBox}>
+                          <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                        </View>
+                        <View style={styles.docInfo}>
+                          <AppText style={styles.docName}>
+                            Shipment Contract
+                          </AppText>
+                          <AppText style={styles.docSub}>
+                            Official shipment agreement
+                          </AppText>
+                        </View>
                       </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName}>
-                          Shipment Contract
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Official shipment agreement
-                        </AppText>
+                      <View style={styles.docActionWrap}>
+                        <AppText style={styles.docActionText}>View</AppText>
+                        <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
                       </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
-                    </View>
-                  </TouchableOpacity>
-                )}
+                    </TouchableOpacity>
+                  )}
 
-                {(quote.shipperContract?.url ||
-                  typeof quote.shipperContract === 'string') && (
-                  <TouchableOpacity
-                    style={[
-                      styles.docItem,
-                      (quote.contract?.url ||
-                        typeof quote.contract === 'string') && {
-                        marginTop: SPACING.sm,
-                      },
-                    ]}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const shipperUrl =
-                        typeof quote.shipperContract === 'string'
-                          ? quote.shipperContract
-                          : quote.shipperContract.url;
-                      const docTitle =
-                        quote.shipperContract?.originalName || 'Shipper Contract';
-                      if (shipperUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: shipperUrl,
-                          title: docTitle,
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
-                      </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName} numberOfLines={1}>
-                          {quote.shipperContract?.originalName ||
-                            'Shipper Contract'}
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Uploaded contract terms
-                        </AppText>
-                      </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+                  {(quote?.shipperContract?.url ||
+                    typeof quote?.shipperContract === 'string') && (
+                      <TouchableOpacity
+                        style={[
+                          styles.docItem,
+                          (quote?.contract?.url ||
+                            typeof quote?.contract === 'string') && {
+                            marginTop: SPACING.sm,
+                          },
+                        ]}
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          const shipperUrl =
+                            typeof quote?.shipperContract === 'string'
+                              ? quote?.shipperContract
+                              : quote?.shipperContract.url;
+                          const docTitle =
+                            quote?.shipperContract?.originalName || 'Shipper Contract';
+                          if (shipperUrl) {
+                            onClose();
+                            navigation.navigate('PdfViewer', {
+                              url: shipperUrl,
+                              title: docTitle,
+                            });
+                          }
+                        }}
+                      >
+                        <View style={styles.docLeftRow}>
+                          <View style={styles.docIconBox}>
+                            <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                          </View>
+                          <View style={styles.docInfo}>
+                            <AppText style={styles.docName} numberOfLines={1}>
+                              {quote?.shipperContract?.originalName ||
+                                'Shipper Contract'}
+                            </AppText>
+                            <AppText style={styles.docSub}>
+                              Uploaded contract terms
+                            </AppText>
+                          </View>
+                        </View>
+                        <View style={styles.docActionWrap}>
+                          <AppText style={styles.docActionText}>View</AppText>
+                          <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                </View>
+              )}
 
             {/* FORM: ONLY SHOWN IF PENDING */}
             {isPending && (
@@ -397,7 +400,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                   </AppText>
                 </View>
                 <AppText style={styles.highlightSub}>
-                  Enter your card details and sign below to accept this quote.
+                  Enter your card details and sign below to accept this quote?.
                 </AppText>
 
                 {/* 1. STRIPE CARD FIELD */}
@@ -482,17 +485,17 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
             )}
 
             {/* NOTES */}
-            {quote.notes && (
+            {quote?.notes && (
               <View style={styles.cardContainer}>
                 <AppText style={styles.cardTitle}>Notes & Remarks</AppText>
-                <AppText style={styles.notesText}>{quote.notes}</AppText>
+                <AppText style={styles.notesText}>{quote?.notes}</AppText>
               </View>
             )}
           </ScrollView>
 
           {/* FOOTER ACTIONS */}
           <View style={styles.footerActionContainer}>
-            {isAccepted && !quote.isCancelled && (
+            {isAccepted && !quote?.isCancelled && (
               <View style={styles.acceptedContainer}>
                 <View style={styles.successMessageCard}>
                   <CheckCircle2 size={ICON_SIZE.md} color={COLORS.greenPrimary} />
@@ -505,16 +508,18 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                     </AppText>
                   </View>
                 </View>
-                <TouchableOpacity
-                  style={styles.cancelBookingBtn}
-                  activeOpacity={0.8}
-                  onPress={() => setIsCancelModalVisible(true)}
-                >
-                  <AlertCircle size={ICON_SIZE.sm} color={COLORS.error} />
-                  <AppText style={styles.cancelBookingText}>
-                    Cancel Shipment
-                  </AppText>
-                </TouchableOpacity>
+                {isCancellationWindowActive && (
+                  <TouchableOpacity
+                    style={styles.cancelBookingBtn}
+                    activeOpacity={0.8}
+                    onPress={() => setIsCancelModalVisible(true)}
+                  >
+                    <AlertCircle size={ICON_SIZE.sm} color={COLORS.error} />
+                    <AppText style={styles.cancelBookingText}>
+                      Cancel Shipment
+                    </AppText>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
 
@@ -526,7 +531,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                     !signature ||
                     !cardDetails?.complete ||
                     loading) &&
-                    styles.disabledBtn,
+                  styles.disabledBtn,
                 ]}
                 disabled={
                   !isAcceptedTerms ||

@@ -13,7 +13,7 @@ const PrivacyPolicyScreen = () => {
   const fetchPrivacyPolicy = async () => {
     try {
       const res = await shipperService.getPrivacyPolicy();
-      if (res?.success && res.data && res.data.length > 0) {
+      if (res?.success && res.data && res.data?.length > 0) {
         setPolicyData(res.data[0]);
       }
     } catch (error) {
@@ -43,18 +43,18 @@ const PrivacyPolicyScreen = () => {
           body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             padding: 16px;
-            color: #1F2937;
+            color: ${COLORS.textPrimary};
             line-height: 1.6;
-            background-color: #FFFFFF;
+            background-color: ${COLORS.white};
           }
           h1 {
-            color: #A06333;
+            color: ${COLORS.brandBrown};
             font-size: 22px;
             margin-bottom: 12px;
             font-weight: 700;
           }
           h2 {
-            color: #1F2937;
+            color: ${COLORS.textPrimary};
             font-size: 18px;
             margin-top: 20px;
             margin-bottom: 10px;

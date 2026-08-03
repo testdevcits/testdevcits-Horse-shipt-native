@@ -83,7 +83,7 @@ const ProfileTab: React.FC<Props> = ({
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <AppText style={styles.infoLabel}>Description</AppText>
             <AppText style={styles.infoVal}>
-              {profileData.description}
+              {profileData?.description}
             </AppText>
           </View>
         ) : null}

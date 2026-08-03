@@ -18,7 +18,7 @@ const NotificationTab: React.FC<Props> = ({
     {
       key: 'quote',
       title: 'Quote won',
-      desc: 'Get notified when you win a quote.',
+      desc: 'Get notified when you win a quote?.',
     },
     {
       key: 'opportunity',

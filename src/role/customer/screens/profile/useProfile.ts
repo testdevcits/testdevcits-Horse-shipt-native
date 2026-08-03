@@ -22,10 +22,10 @@ export const useProfile = () => {
         setProfile(response.data);
         dispatch(
           updateUser({
-            name: `${response.data.firstName || ''} ${response.data.lastName || ''}`.trim() || response.data.name,
-            email: response.data.email,
-            profileImage: response.data.profileImage as any,
-            phoneNumber: response.data.phone,
+            name: `${response.data?.firstName || ''} ${response.data?.lastName || ''}`.trim() || response.data?.name,
+            email: response.data?.email,
+            profileImage: response.data?.profileImage as any,
+            phoneNumber: response.data?.phone,
             metadata: response.data,
           }),
         );
@@ -69,7 +69,7 @@ export const useProfile = () => {
       setUploading(true);
 
       const formData = new FormData();
-      formData.append('image', {
+      formdata?.append('image', {
         uri: image.path,
         type: image.mime,
         name: image.filename || 'profile.jpg',

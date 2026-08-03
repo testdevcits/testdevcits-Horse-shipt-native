@@ -33,6 +33,8 @@ import {
   RADIUS,
   FONT_SIZE,
 } from '../../../../constants';
+import MapViewDirections from 'react-native-maps-directions';
+import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useSelector } from 'react-redux';
@@ -139,7 +141,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       .getProfile()
       .then(res => {
         if (res?.data?.profileImage) {
-          dispatch(updateUser({ profileImage: res.data.profileImage }));
+          dispatch(updateUser({ profileImage: res.data?.profileImage }));
         }
       })
       .catch(() => null);
@@ -168,15 +170,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       const coords = [
         {
           latitude:
-            item?.pickupCoords.lat || item?.pickupCoords.latitude || 22.96,
+            item?.pickupCoords?.lat || item?.pickupCoords?.latitude || 22.96,
           longitude:
-            item?.pickupCoords.lng || item?.pickupCoords.longitude || 76.05,
+            item?.pickupCoords?.lng || item?.pickupCoords?.longitude || 76.05,
         },
         {
           latitude:
-            item?.deliveryCoords.lat || item?.deliveryCoords.latitude || 23.83,
+            item?.deliveryCoords?.lat || item?.deliveryCoords?.latitude || 23.83,
           longitude:
-            item?.deliveryCoords.lng || item?.deliveryCoords.longitude || 78.73,
+            item?.deliveryCoords?.lng || item?.deliveryCoords?.longitude || 78.73,
         },
       ];
       mapRef.current.fitToCoordinates(coords, {
@@ -195,8 +197,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         longitudeDelta: 1.5,
       };
     }
-    const pLat = item?.pickupCoords.lat || item?.pickupCoords.latitude || 22.745;
-    const pLng = item?.pickupCoords.lng || item?.pickupCoords.longitude || 75.892;
+    const pLat = item?.pickupCoords?.lat || item?.pickupCoords?.latitude || 22.745;
+    const pLng = item?.pickupCoords?.lng || item?.pickupCoords?.longitude || 75.892;
     const dLat =
       item?.deliveryCoords?.lat || item?.deliveryCoords?.latitude || pLat + 0.5;
     const dLng =
@@ -506,16 +508,16 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                     <Marker
                       coordinate={{
                         latitude:
-                          selectedMapShipment.pickupCoords.lat ||
-                          selectedMapShipment.pickupCoords.latitude ||
+                          selectedMapShipment?.pickupCoords?.lat ||
+                          selectedMapShipment?.pickupCoords?.latitude ||
                           22.745,
                         longitude:
-                          selectedMapShipment.pickupCoords.lng ||
-                          selectedMapShipment.pickupCoords.longitude ||
+                          selectedMapShipment?.pickupCoords?.lng ||
+                          selectedMapShipment?.pickupCoords?.longitude ||
                           75.892,
                       }}
                       title="Pickup"
-                      description={selectedMapShipment.pickupLocation}
+                      description={selectedMapShipment?.pickupLocation}
                     >
                       <View style={styles.markerCircleGreen}>
                         <MapPin size={14} color={COLORS.white} />
@@ -527,16 +529,16 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                     <Marker
                       coordinate={{
                         latitude:
-                          selectedMapShipment.deliveryCoords.lat ||
-                          selectedMapShipment.deliveryCoords.latitude ||
+                          selectedMapShipment?.deliveryCoords?.lat ||
+                          selectedMapShipment?.deliveryCoords?.latitude ||
                           23.838,
                         longitude:
-                          selectedMapShipment.deliveryCoords.lng ||
-                          selectedMapShipment.deliveryCoords.longitude ||
+                          selectedMapShipment?.deliveryCoords?.lng ||
+                          selectedMapShipment?.deliveryCoords?.longitude ||
                           78.737,
                       }}
                       title="Delivery"
-                      description={selectedMapShipment.deliveryLocation}
+                      description={selectedMapShipment?.deliveryLocation}
                     >
                       <View style={styles.markerCircleRed}>
                         <MapPin size={14} color={COLORS.white} />
@@ -546,32 +548,62 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
                   {selectedMapShipment?.pickupCoords &&
                     selectedMapShipment?.deliveryCoords && (
-                      <Polyline
-                        coordinates={[
-                          {
+                      <>
+                        <MapViewDirections
+                          origin={{
                             latitude:
-                              selectedMapShipment.pickupCoords.lat ||
-                              selectedMapShipment.pickupCoords.latitude ||
+                              selectedMapShipment?.pickupCoords?.lat ||
+                              selectedMapShipment?.pickupCoords?.latitude ||
                               22.745,
                             longitude:
-                              selectedMapShipment.pickupCoords.lng ||
-                              selectedMapShipment.pickupCoords.longitude ||
+                              selectedMapShipment?.pickupCoords?.lng ||
+                              selectedMapShipment?.pickupCoords?.longitude ||
                               75.892,
-                          },
-                          {
+                          }}
+                          destination={{
                             latitude:
-                              selectedMapShipment.deliveryCoords.lat ||
-                              selectedMapShipment.deliveryCoords.latitude ||
+                              selectedMapShipment?.deliveryCoords?.lat ||
+                              selectedMapShipment?.deliveryCoords?.latitude ||
                               23.838,
                             longitude:
-                              selectedMapShipment.deliveryCoords.lng ||
-                              selectedMapShipment.deliveryCoords.longitude ||
+                              selectedMapShipment?.deliveryCoords?.lng ||
+                              selectedMapShipment?.deliveryCoords?.longitude ||
                               78.737,
-                          },
-                        ]}
-                        strokeColor="#2563EB"
-                        strokeWidth={4}
-                      />
+                          }}
+                          apikey={GOOGLE_MAPS_APIKEY}
+                          strokeWidth={4}
+                          strokeColor={COLORS.brandBrown || COLORS.goldPrimary || '#A06333'}
+                          lineDashPattern={[0]}
+                          onError={err => console.log('MapViewDirections Error:', err)}
+                        />
+                        <Polyline
+                          coordinates={[
+                            {
+                              latitude:
+                                selectedMapShipment?.pickupCoords?.lat ||
+                                selectedMapShipment?.pickupCoords?.latitude ||
+                                22.745,
+                              longitude:
+                                selectedMapShipment?.pickupCoords?.lng ||
+                                selectedMapShipment?.pickupCoords?.longitude ||
+                                75.892,
+                            },
+                            {
+                              latitude:
+                                selectedMapShipment?.deliveryCoords?.lat ||
+                                selectedMapShipment?.deliveryCoords?.latitude ||
+                                23.838,
+                              longitude:
+                                selectedMapShipment?.deliveryCoords?.lng ||
+                                selectedMapShipment?.deliveryCoords?.longitude ||
+                                78.737,
+                            },
+                          ]}
+                          strokeColor={COLORS.goldPrimary || '#A37F3D'}
+                          strokeWidth={3}
+                          lineDashPattern={[6, 6]}
+                        />
+                      </>
                     )}
                 </MapView>
               </View>

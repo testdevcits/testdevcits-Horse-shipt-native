@@ -35,14 +35,14 @@ export const fetchNotificationsThunk = createAsyncThunk(
 
       if (res?.success || res?.data) {
         const rawData = res.data || [];
-        const notifications: NotificationActivity[] = rawData.map((n: any) => ({
+        const notifications: NotificationActivity[] = rawdata?.map((n: any) => ({
           ...n,
           read:
             typeof n.read === 'boolean'
               ? n.read
               : typeof n.isRead === 'boolean'
-              ? n.isRead
-              : !!n.readAt,
+                ? n.isRead
+                : !!n.readAt,
         }));
         const unreadCount =
           typeof res.unreadCount === 'number'

@@ -97,7 +97,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       setBannerUploading(true);
 
       const formData = new FormData();
-      formData.append('image', {
+      formdata?.append('image', {
         uri: imagePath,
         type: imageMime,
         name: imageName,
@@ -165,7 +165,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       setProfileUploading(true);
 
       const formData = new FormData();
-      formData.append('image', {
+      formdata?.append('image', {
         uri: imagePath,
         type: imageMime,
         name: imageName,
@@ -214,24 +214,24 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
       if (profRes?.data) {
         setProfileData(profRes.data);
-        if (profRes.data.bannerImage) {
+        if (profRes.data?.bannerImage) {
           const bUrl =
-            typeof profRes.data.bannerImage === 'string'
-              ? profRes.data.bannerImage
-              : profRes.data.bannerImage?.url;
+            typeof profRes.data?.bannerImage === 'string'
+              ? profRes.data?.bannerImage
+              : profRes.data?.bannerImage?.url;
           if (bUrl) {
             setBannerUrl(bUrl);
           }
         }
-        if (profRes.data.profileImage) {
+        if (profRes.data?.profileImage) {
           const imgUrl =
-            typeof profRes.data.profileImage === 'string'
-              ? profRes.data.profileImage
-              : profRes.data.profileImage?.url;
+            typeof profRes.data?.profileImage === 'string'
+              ? profRes.data?.profileImage
+              : profRes.data?.profileImage?.url;
           if (imgUrl) {
             setAvatarUrl(imgUrl);
           }
-          dispatch(updateUser({ profileImage: profRes.data.profileImage }));
+          dispatch(updateUser({ profileImage: profRes.data?.profileImage }));
         }
       }
       if (subRes?.data) {
@@ -242,7 +242,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       }
       if (setRes?.data?.notifications) {
         setSettingsData(setRes.data);
-        setNotifications(setRes.data.notifications);
+        setNotifications(setRes.data?.notifications);
       }
       if (stripeRes) {
         setStripeStatus(stripeRes);
@@ -363,7 +363,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   const displayAvatar =
                     avatarUrl ||
                     (typeof profileData?.profileImage === 'string'
-                      ? profileData.profileImage
+                      ? profiledata?.profileImage
                       : profileData?.profileImage?.url) ||
                     (typeof user?.profileImage === 'string'
                       ? user.profileImage

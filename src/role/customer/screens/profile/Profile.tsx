@@ -187,19 +187,19 @@ const Profile = ({ navigation }: any) => {
             <View style={{ marginBottom: SPACING.md }}>
               <Input
                 label="First Name"
-                value={formData.firstName}
+                value={formData?.firstName}
                 onChangeText={t => setFormData({ ...formData, firstName: t })}
               />
 
               <Input
                 label="Last Name"
-                value={formData.lastName}
+                value={formData?.lastName}
                 onChangeText={t => setFormData({ ...formData, lastName: t })}
               />
 
               <Input
                 label="Phone"
-                value={formData.phone}
+                value={formData?.phone}
                 keyboardType="phone-pad"
                 onChangeText={t => setFormData({ ...formData, phone: t })}
               />

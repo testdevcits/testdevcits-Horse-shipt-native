@@ -7,6 +7,8 @@ import {
   Share,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
+import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import {
   MapPin,
   Calendar,
@@ -48,13 +50,13 @@ const ShipperShipmentDetailsScreen = () => {
   const [isSubmitOfferModalVisible, setIsSubmitOfferModalVisible] = useState(false);
 
   const fetchQuestions = async () => {
-    if (!shipment._id) return;
+    if (!shipment?._id) return;
     setLoadingQuestions(true);
     try {
-      const res = await shipperService.getShipmentQuestions(shipment._id);
+      const res = await shipperService.getShipmentQuestions(shipment?._id);
       if (res?.success && res?.data?.pending) {
-        if (res.data.pending.length > 0) {
-          setPendingQuestion(res.data.pending[0]);
+        if (res.data?.pending.length > 0) {
+          setPendingQuestion(res.data?.pending[0]);
         } else {
           setPendingQuestion(null);
         }
@@ -68,10 +70,10 @@ const ShipperShipmentDetailsScreen = () => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [shipment._id]);
+  }, [shipment?._id]);
 
   // Horse & Specs
-  const firstHorse = shipment.horses && shipment.horses[0] ? shipment.horses[0] : {};
+  const firstHorse = shipment?.horses && shipment?.horses[0] ? shipment?.horses[0] : {};
   const horsePhoto = firstHorse.photo?.url;
   const registeredName = firstHorse.registeredName || 'HOrse no 1';
   const barnName = firstHorse.barnName || 'Test Barn';
@@ -81,32 +83,32 @@ const ShipperShipmentDetailsScreen = () => {
   const age = firstHorse.age || 3;
   const stallSize = firstHorse.requestedStallSize || 'Box';
   const notesText = firstHorse.notes || firstHorse.notesLog?.[0]?.note || 'This is first horse for test';
-  const noteDate = firstHorse.notesLog?.[0]?.createdAt || shipment.publishedAt;
+  const noteDate = firstHorse.notesLog?.[0]?.createdAt || shipment?.publishedAt;
 
   // Dates
-  const pickupDateFormatted = shipment.pickupDateRange?.start
-    ? formatDate(shipment.pickupDateRange.start, 'MMM DD').toUpperCase()
+  const pickupDateFormatted = shipment?.pickupDateRange?.start
+    ? formatDate(shipment?.pickupDateRange.start, 'MMM DD').toUpperCase()
     : 'JUL 28';
-  const deliveryDateFormatted = shipment.deliveryDateRange?.start
-    ? formatDate(shipment.deliveryDateRange.start, 'MMM DD').toUpperCase()
+  const deliveryDateFormatted = shipment?.deliveryDateRange?.start
+    ? formatDate(shipment?.deliveryDateRange.start, 'MMM DD').toUpperCase()
     : 'JUL 29';
-  const postedDateFormatted = shipment.publishedAt
-    ? formatDate(shipment.publishedAt, 'D MMM YYYY')
+  const postedDateFormatted = shipment?.publishedAt
+    ? formatDate(shipment?.publishedAt, 'D MMM YYYY')
     : '27 Jul 2026';
 
   // Distance & Specs
-  const distanceMiles = shipment.estimatedDistance?.miles
-    ? Number(shipment.estimatedDistance.miles).toFixed(2)
+  const distanceMiles = shipment?.estimatedDistance?.miles
+    ? Number(shipment?.estimatedDistance.miles).toFixed(2)
     : '2664.22';
-  const distanceKm = shipment.estimatedDistance?.km
-    ? Number(shipment.estimatedDistance.km).toFixed(2)
+  const distanceKm = shipment?.estimatedDistance?.km
+    ? Number(shipment?.estimatedDistance.km).toFixed(2)
     : '4287.65';
 
   // Coords & Region
-  const pLat = shipment.pickupCoords?.latitude || shipment.pickupCoords?.lat || 25.2479758;
-  const pLng = shipment.pickupCoords?.longitude || shipment.pickupCoords?.lng || 55.3525527;
-  const dLat = shipment.deliveryCoords?.latitude || shipment.deliveryCoords?.lat || 56.879635;
-  const dLng = shipment.deliveryCoords?.longitude || shipment.deliveryCoords?.lng || 24.603189;
+  const pLat = shipment?.pickupCoords?.latitude || shipment?.pickupCoords?.lat || 25.2479758;
+  const pLng = shipment?.pickupCoords?.longitude || shipment?.pickupCoords?.lng || 55.3525527;
+  const dLat = shipment?.deliveryCoords?.latitude || shipment?.deliveryCoords?.lat || 56.879635;
+  const dLng = shipment?.deliveryCoords?.longitude || shipment?.deliveryCoords?.lng || 24.603189;
 
   const mapRegion = {
     latitude: (pLat + dLat) / 2,
@@ -118,7 +120,7 @@ const ShipperShipmentDetailsScreen = () => {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `Shipment Details ${shipment.shipmentCode}: Pickup ${shipment.pickupLocation} to ${shipment.deliveryLocation}`,
+        message: `Shipment Details ${shipment?.shipmentCode}: Pickup ${shipment?.pickupLocation} to ${shipment?.deliveryLocation}`,
       });
     } catch (e) {
       // ignore share error
@@ -133,7 +135,7 @@ const ShipperShipmentDetailsScreen = () => {
   const handleSubmitQuestion = async (question: string) => {
     try {
       const payload = {
-        shipmentId: shipment._id,
+        shipmentId: shipment?._id,
         question,
       };
       const res = await shipperService.askQuestion(payload);
@@ -186,7 +188,7 @@ const ShipperShipmentDetailsScreen = () => {
         <View style={styles.headerSubRow}>
           <View style={styles.statusBadgePill}>
             <AppText style={styles.statusBadgeText}>
-              {(shipment.status || 'OPEN FOR OFFERS').replace(/_/g, ' ')}
+              {(shipment?.status || 'OPEN FOR OFFERS').replace(/_/g, ' ')}
             </AppText>
           </View>
           <AppText style={styles.postedDateText}>Posted on {postedDateFormatted}</AppText>
@@ -216,11 +218,11 @@ const ShipperShipmentDetailsScreen = () => {
             <AppText style={styles.heroSubtitle}>
               {breed} • {age} yrs • {sex} • {colour}
             </AppText>
-            <AppText style={styles.shipmentCodeText}>{shipment.shipmentCode}</AppText>
+            <AppText style={styles.shipmentCodeText}>{shipment?.shipmentCode}</AppText>
 
             <View style={styles.customerRow}>
               <AppText style={styles.customerNameText}>
-                Customer: {shipment.customer?.name || 'Test Dev'}
+                Customer: {shipment?.customer?.name || 'Test Dev'}
               </AppText>
               <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
                 <Share2 size={14} color={COLORS.textPrimary} />
@@ -246,7 +248,7 @@ const ShipperShipmentDetailsScreen = () => {
         {isMapVisible && (
           <View style={styles.routeMapCard}>
             <AppText style={styles.cardHeaderTitle}>Shipment Route Map</AppText>
-            <AppText style={styles.cardHeaderSub}>{shipment.shipmentCode}</AppText>
+            <AppText style={styles.cardHeaderSub}>{shipment?.shipmentCode}</AppText>
 
             <View style={styles.mapWrapper}>
               <MapView
@@ -257,7 +259,7 @@ const ShipperShipmentDetailsScreen = () => {
                 <Marker
                   coordinate={{ latitude: pLat, longitude: pLng }}
                   title="Pickup Location"
-                  description={shipment.pickupLocation}
+                  description={shipment?.pickupLocation}
                 >
                   <View style={styles.markerCircleGreen}>
                     <MapPin size={14} color={COLORS.white} />
@@ -267,20 +269,31 @@ const ShipperShipmentDetailsScreen = () => {
                 <Marker
                   coordinate={{ latitude: dLat, longitude: dLng }}
                   title="Delivery Location"
-                  description={shipment.deliveryLocation}
+                  description={shipment?.deliveryLocation}
                 >
                   <View style={styles.markerCircleRed}>
                     <MapPin size={14} color={COLORS.white} />
                   </View>
                 </Marker>
 
+                <MapViewDirections
+                  origin={{ latitude: pLat, longitude: pLng }}
+                  destination={{ latitude: dLat, longitude: dLng }}
+                  apikey={GOOGLE_MAPS_APIKEY}
+                  strokeWidth={4}
+                  strokeColor={COLORS.brandBrown || COLORS.goldPrimary || '#A06333'}
+                  lineDashPattern={[0]}
+                  onError={err => console.log('MapViewDirections Error:', err)}
+                />
+
                 <Polyline
                   coordinates={[
                     { latitude: pLat, longitude: pLng },
                     { latitude: dLat, longitude: dLng },
                   ]}
-                  strokeColor="#2563EB"
-                  strokeWidth={4}
+                  strokeColor={COLORS.goldPrimary || '#A37F3D'}
+                  strokeWidth={3}
+                  lineDashPattern={[6, 6]}
                 />
               </MapView>
             </View>
@@ -312,7 +325,7 @@ const ShipperShipmentDetailsScreen = () => {
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>HORSES</AppText>
-              <AppText style={styles.specStatValue}>{shipment.numberOfHorses || 1}</AppText>
+              <AppText style={styles.specStatValue}>{shipment?.numberOfHorses || 1}</AppText>
             </View>
           </View>
 
@@ -354,7 +367,7 @@ const ShipperShipmentDetailsScreen = () => {
               <View style={styles.timelineTextCol}>
                 <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
                 <AppText style={styles.timelineAddress}>
-                  {shipment.pickupLocation || 'Dubai, UAE'}
+                  {shipment?.pickupLocation || 'Dubai, UAE'}
                 </AppText>
               </View>
             </View>
@@ -371,7 +384,7 @@ const ShipperShipmentDetailsScreen = () => {
               <View style={styles.timelineTextCol}>
                 <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
                 <AppText style={styles.timelineAddress}>
-                  {shipment.deliveryLocation || 'Latvia'}
+                  {shipment?.deliveryLocation || 'Latvia'}
                 </AppText>
               </View>
             </View>
@@ -485,7 +498,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.summaryCodeBox}>
             <AppText style={styles.summaryCodeLabel}>QUESTION SUMMARY</AppText>
-            <AppText style={styles.summaryCodeValue}>{shipment.shipmentCode}</AppText>
+            <AppText style={styles.summaryCodeValue}>{shipment?.shipmentCode}</AppText>
           </View>
 
           <TouchableOpacity
@@ -513,7 +526,7 @@ const ShipperShipmentDetailsScreen = () => {
         isVisible={isAskModalVisible}
         onClose={() => setIsAskModalVisible(false)}
         onSubmit={handleSubmitQuestion}
-        shipmentCode={shipment.shipmentCode}
+        shipmentCode={shipment?.shipmentCode}
         pendingQuestion={pendingQuestion}
         loadingQuestions={loadingQuestions}
       />
@@ -522,8 +535,8 @@ const ShipperShipmentDetailsScreen = () => {
       <SubmitOfferModal
         isVisible={isSubmitOfferModalVisible}
         onClose={() => setIsSubmitOfferModalVisible(false)}
-        shipmentId={shipment._id}
-        shipmentCode={shipment.shipmentCode}
+        shipmentId={shipment?._id}
+        shipmentCode={shipment?.shipmentCode}
       />
     </View>
   );

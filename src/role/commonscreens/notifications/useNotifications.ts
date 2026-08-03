@@ -37,10 +37,10 @@ const useNotifications = () => {
   };
 
   const selectAll = () => {
-    if (selectedIds.length === filteredData.length) {
+    if (selectedIds.length === filteredData?.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(filteredData.map(n => n._id));
+      setSelectedIds(filteredData?.map(n => n._id));
     }
   };
 

@@ -251,10 +251,10 @@ const PostLoadScreen = () => {
 
   const renderCard = ({ item }: { item: any }) => {
     const shipment = item?.shipment || item;
-    const code = item?.shipmentCode || shipment.shipmentCode || 'HS-SHIP-2026';
+    const code = item?.shipmentCode || shipment.shipmentCode || 'Not available';
     const pickupLoc = item?.pickupLocation || shipment.pickupLocation || 'Pickup location unavailable';
     const deliveryLoc = item?.deliveryLocation || shipment.deliveryLocation || 'Delivery location unavailable';
-    const horsesCount = shipment.numberOfHorses || shipment.horses?.length || 1;
+    const horsesCount = shipment.numberOfHorses || shipment.horses?.length || 0;
 
     /* 1. SPECIAL CARD FOR MY SHIPMENTS TAB */
     if (activeTab === 'my_shipments') {
@@ -458,9 +458,9 @@ const PostLoadScreen = () => {
       <ContractModal
         visible={isContractModalVisible}
         onClose={() => setIsContractModalVisible(false)}
-        contractUrl={selectedContractData.url}
-        shipmentCode={selectedContractData.code}
-        quoteData={selectedContractData.quote}
+        contractUrl={selectedContractdata?.url}
+        shipmentCode={selectedContractdata?.code}
+        quoteData={selectedContractdata?.quote}
       />
     </View>
   );
