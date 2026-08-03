@@ -69,7 +69,7 @@ export const useProfile = () => {
       setUploading(true);
 
       const formData = new FormData();
-      formdata?.append('image', {
+      formData?.append('image', {
         uri: image.path,
         type: image.mime,
         name: image.filename || 'profile.jpg',

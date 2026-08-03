@@ -35,7 +35,7 @@ export const fetchNotificationsThunk = createAsyncThunk(
 
       if (res?.success || res?.data) {
         const rawData = res.data || [];
-        const notifications: NotificationActivity[] = rawdata?.map((n: any) => ({
+        const notifications: NotificationActivity[] = rawData?.map((n: any) => ({
           ...n,
           read:
             typeof n.read === 'boolean'

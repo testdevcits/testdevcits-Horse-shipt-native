@@ -13,6 +13,7 @@ import { toastConfig } from './src/components/common/ToastConfig';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
+import OfflineBanner from './src/components/common/OfflineBanner';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
               translucent={false}
             />
             <SafeAreaView style={{ flex: 1 }}>
+              <OfflineBanner />
               {/*
               Note: We removed SafeAreaView from here.
               Professional apps usually handle SafeArea inside screens
@@ -59,35 +61,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
-// import React from 'react';
-// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-// import { StyleSheet, View } from 'react-native'; // remove PROVIDER_GOOGLE import if not using Google Maps
-
-// const styles = StyleSheet.create({
-//   container: {
-//     ...StyleSheet.absoluteFillObject,
-//     height: 400,
-//     width: 400,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//   },
-//   map: {
-//     ...StyleSheet.absoluteFillObject,
-//   },
-// });
-
-// export default () => (
-//   <View style={styles.container}>
-//     <MapView
-//       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-//       style={styles.map}
-//       initialRegion={{
-//         latitude: 37.78825,
-//         longitude: -122.4324,
-//         latitudeDelta: 0.015,
-//         longitudeDelta: 0.0121,
-//       }}
-//     />
-//   </View>
-// );

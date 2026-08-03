@@ -48,8 +48,9 @@ const WelcomeScreen = ({ navigation }: any) => {
         <View style={styles.textSection}>
           <AppText style={styles.title}>Welcome</AppText>
           <AppText style={styles.description}>
-            Join thousands of customers worldwide and explore top brands,
-            exclusive deals, and everything you need in one trusted marketplace.
+            Connecting horse owners with reliable transporters. Post your route,
+            compare competitive bids, and book a safe journey for your equine
+            companions in just a few taps.
           </AppText>
         </View>
 
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
     textAlign: 'left',
-    lineHeight: 24,
+    lineHeight: 20,
   },
   buttonContainer: {
     width: '100%',

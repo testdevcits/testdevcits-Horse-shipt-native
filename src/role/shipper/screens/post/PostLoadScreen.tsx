@@ -458,9 +458,9 @@ const PostLoadScreen = () => {
       <ContractModal
         visible={isContractModalVisible}
         onClose={() => setIsContractModalVisible(false)}
-        contractUrl={selectedContractdata?.url}
-        shipmentCode={selectedContractdata?.code}
-        quoteData={selectedContractdata?.quote}
+        contractUrl={selectedContractData?.url}
+        shipmentCode={selectedContractData?.code}
+        quoteData={selectedContractData?.quote}
       />
     </View>
   );

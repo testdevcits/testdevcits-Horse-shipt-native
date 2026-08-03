@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
 
   notesSection: { marginTop: SPACING.md },
   textArea: {
-    height: 100,
+    // height: 100,
     paddingTop: SPACING.md,
     backgroundColor: COLORS.white,
   },

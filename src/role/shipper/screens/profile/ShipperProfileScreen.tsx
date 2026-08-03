@@ -97,7 +97,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       setBannerUploading(true);
 
       const formData = new FormData();
-      formdata?.append('image', {
+      formData.append('image', {
         uri: imagePath,
         type: imageMime,
         name: imageName,
@@ -165,7 +165,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       setProfileUploading(true);
 
       const formData = new FormData();
-      formdata?.append('image', {
+      formData.append('image', {
         uri: imagePath,
         type: imageMime,
         name: imageName,
@@ -363,7 +363,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   const displayAvatar =
                     avatarUrl ||
                     (typeof profileData?.profileImage === 'string'
-                      ? profiledata?.profileImage
+                      ? profileData?.profileImage
                       : profileData?.profileImage?.url) ||
                     (typeof user?.profileImage === 'string'
                       ? user.profileImage
