@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -13,8 +13,6 @@ import { AppHeader, AppText, AppLoader } from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
 // Modals & Tabs
-import RatingModal from './RatingModal';
-import QuoteDetailModal from './QuoteDetailModal';
 import styles from './style.myshipments';
 import OverviewTab from './tabs/OverviewTab';
 import QuotesTab from './tabs/QuotesTab';
@@ -25,6 +23,15 @@ import { getFormattedDate } from '../../../../utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
+
+const QuoteDetailModal = lazy(
+  () => import('./QuoteDetailModal'),
+);
+
+const RatingModal = lazy(
+  () => import('./RatingModal'),
+);
+
 
 const MyShipmentDetails = ({ route, }: any) => {
   const { item, quoteId } = route.params;
@@ -187,19 +194,23 @@ const MyShipmentDetails = ({ route, }: any) => {
           </ScrollView>
 
           {/* MODALS */}
-          <RatingModal
-            visible={isRatingVisible}
-            onClose={() => setIsRatingVisible(false)}
-            shipperName={data?.shipper?.name || 'Shipper'}
-            shipmentTitle={data?.shipmentCode}
-            shipperId={data?.shipper?._id || data?.shipper}
-            shipmentId={data?._id}
-          />
-          <QuoteDetailModal
-            visible={!!selectedQuote}
-            quote={selectedQuote}
-            onClose={() => setSelectedQuote(null)}
-          />
+          <Suspense fallback={null}>
+            <RatingModal
+              visible={isRatingVisible}
+              onClose={() => setIsRatingVisible(false)}
+              shipperName={data?.shipper?.name || 'Shipper'}
+              shipmentTitle={data?.shipmentCode}
+              shipperId={data?.shipper?._id || data?.shipper}
+              shipmentId={data?._id}
+            />
+          </Suspense>
+          <Suspense fallback={null}>
+            <QuoteDetailModal
+              visible={!!selectedQuote}
+              quote={selectedQuote}
+              onClose={() => setSelectedQuote(null)}
+            />
+          </Suspense>
         </View>
       </ScrollView>
     </View>

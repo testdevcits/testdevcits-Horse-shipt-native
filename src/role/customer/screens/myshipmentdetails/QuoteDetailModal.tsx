@@ -567,41 +567,45 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
       </View>
 
       {/* CANCEL MODAL */}
-      <Modal visible={isCancelModalVisible} transparent animationType="fade">
-        <View style={styles.promptOverlay}>
-          <View style={styles.promptContent}>
-            <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
-            <AppText style={styles.promptSub}>
-              Please state the reason for cancelling this shipment quote:
-            </AppText>
-            <Input
-              placeholder="Enter reason here..."
-              multiline
-              value={cancelReason}
-              onChangeText={setCancelReason}
-              containerStyle={{ marginBottom: SPACING.md }}
-            />
-            <View style={styles.promptFooter}>
-              <TouchableOpacity
-                style={styles.promptBtnSecondary}
-                onPress={() => setIsCancelModalVisible(false)}
-              >
-                <AppText style={styles.promptBtnTextSecondary}>
-                  Keep Booking
-                </AppText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.promptBtnPrimary}
-                onPress={handleCancelShipment}
-              >
-                <AppText style={styles.promptBtnTextPrimary}>
-                  Confirm Cancel
-                </AppText>
-              </TouchableOpacity>
+      {
+        isCancelModalVisible &&
+        <Modal visible={isCancelModalVisible} transparent animationType="fade">
+          <View style={styles.promptOverlay}>
+            <View style={styles.promptContent}>
+              <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
+              <AppText style={styles.promptSub}>
+                Please state the reason for cancelling this shipment quote:
+              </AppText>
+              <Input
+                placeholder="Enter reason here..."
+                multiline
+                value={cancelReason}
+                onChangeText={setCancelReason}
+                containerStyle={{ marginBottom: SPACING.md }}
+              />
+              <View style={styles.promptFooter}>
+                <TouchableOpacity
+                  style={styles.promptBtnSecondary}
+                  onPress={() => setIsCancelModalVisible(false)}
+                >
+                  <AppText style={styles.promptBtnTextSecondary}>
+                    Keep Booking
+                  </AppText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.promptBtnPrimary}
+                  onPress={handleCancelShipment}
+                >
+                  <AppText style={styles.promptBtnTextPrimary}>
+                    Confirm Cancel
+                  </AppText>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      }
+
     </Modal>
   );
 };
