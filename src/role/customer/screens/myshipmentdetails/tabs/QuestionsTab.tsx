@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { MessageCircle, Send } from 'lucide-react-native';
+import { MessageSquare, Send, HelpCircle, Bell } from 'lucide-react-native';
 import { AppText, Input } from '../../../../../components';
 import {
   COLORS,
@@ -20,19 +19,16 @@ import {
 import customerService from '../../../../../api/services/customerService';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
-
-  console.log("=======questions", questions)
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [submitting, setSubmitting] = useState<string | null>(null);
 
   const allQuestions = Array.isArray(questions)
     ? questions
     : [
-      ...(questions?.pending || []),
-      ...(questions?.answered || []),
-    ];
+        ...(questions?.pending || []),
+        ...(questions?.answered || []),
+      ];
   const totalCount = allQuestions.length;
-
 
   const handleInputChange = (id: string, text: string) => {
     setAnswers(prev => ({ ...prev, [id]: text }));
@@ -54,15 +50,6 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
     }
   };
 
-  if (totalCount === 0) {
-    return (
-      <View style={styles.emptyWrap}>
-        <MessageCircle size={ICON_SIZE.xl} color={COLORS.grey200} />
-        <AppText style={styles.emptyText}>No questions asked yet.</AppText>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       {/* Total Header Bar */}
@@ -72,66 +59,107 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
         </AppText>
       </View>
 
-      <View style={styles.cardContainer}>
-        {allQuestions.map((item, index) => {
-          const isAnswered = item?.status === 'answered';
+      {totalCount === 0 ? (
+        /* Empty Condition UI */
+        <View style={styles.emptyCardContainer}>
+          <View style={styles.emptyIconCircle}>
+            <MessageSquare size={32} color={COLORS.primary} />
+          </View>
 
-          return (
-            <View
-              key={item?._id}
-              style={[
-                styles.questionItem,
-                index === 0 && { borderTopWidth: 0 },
-              ]}
-            >
-              {/* Shipper Name */}
-              <AppText style={styles.shipperName}>
-                {item?.shipperId?.name || 'Shipper name'}
-              </AppText>
+          <AppText style={styles.emptyTitle}>No Questions Asked Yet</AppText>
 
-              {/* Question Text */}
-              <AppText style={styles.questionText}>{item?.question}</AppText>
+          <AppText style={styles.emptySubtitle}>
+            Service providers haven't submitted any questions regarding this shipment. Any inquiries about route or horse care will appear here.
+          </AppText>
 
-              {isAnswered ? (
-                /* Answered View */
-                <View style={styles.answerDisplay}>
-                  <AppText style={styles.answerText}>
-                    <AppText style={styles.boldText}>You: </AppText>
-                    {item?.answer}
-                  </AppText>
-                </View>
-              ) : (
-                /* Pending Answer Input */
-                <Input
-                  placeholder="Answer question"
-                  multiline
-                  value={answers[item?._id] || ''}
-                  onChangeText={text => handleInputChange(item?._id, text)}
-                  containerStyle={{ marginBottom: 0 }}
-                  rightIcon={
-                    <TouchableOpacity
-                      style={[
-                        styles.sendBtn,
-                        !answers[item?._id]?.trim() && styles.disabledBtn,
-                      ]}
-                      onPress={() => handleSubmit(item?._id)}
-                      disabled={
-                        submitting === item?._id || !answers[item?._id]?.trim()
-                      }
-                    >
-                      {submitting === item?._id ? (
-                        <ActivityIndicator size="small" color={COLORS.white} />
-                      ) : (
-                        <Send size={ICON_SIZE.xs} color={COLORS.white} />
-                      )}
-                    </TouchableOpacity>
-                  }
-                />
-              )}
+          <View style={styles.infoCardsContainer}>
+            <View style={styles.infoCard}>
+              <View style={styles.infoIconBox}>
+                <HelpCircle size={16} color={COLORS.primary} />
+              </View>
+              <View style={styles.infoTextWrapper}>
+                <AppText style={styles.infoCardTitle}>Pre-Quote Inquiries</AppText>
+                <AppText style={styles.infoCardText}>
+                  Shippers may ask questions to clarify details before bidding.
+                </AppText>
+              </View>
             </View>
-          );
-        })}
-      </View>
+
+            <View style={styles.infoCard}>
+              <View style={styles.infoIconBox}>
+                <Bell size={16} color={COLORS.primary} />
+              </View>
+              <View style={styles.infoTextWrapper}>
+                <AppText style={styles.infoCardTitle}>Instant Notifications</AppText>
+                <AppText style={styles.infoCardText}>
+                  You'll be notified immediately when a question is posted.
+                </AppText>
+              </View>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.cardContainer}>
+          {allQuestions.map((item, index) => {
+            const isAnswered = item?.status === 'answered';
+
+            return (
+              <View
+                key={item?._id || index}
+                style={[
+                  styles.questionItem,
+                  index === 0 && { borderTopWidth: 0 },
+                ]}
+              >
+                {/* Shipper Name */}
+                <AppText style={styles.shipperName}>
+                  {item?.shipperId?.name || 'Shipper name'}
+                </AppText>
+
+                {/* Question Text */}
+                <AppText style={styles.questionText}>{item?.question}</AppText>
+
+                {isAnswered ? (
+                  /* Answered View */
+                  <View style={styles.answerDisplay}>
+                    <AppText style={styles.answerText}>
+                      <AppText style={styles.boldText}>You: </AppText>
+                      {item?.answer}
+                    </AppText>
+                  </View>
+                ) : (
+                  /* Pending Answer Input */
+                  <Input
+                    placeholder="Answer question"
+                    multiline
+                    value={answers[item?._id] || ''}
+                    onChangeText={text => handleInputChange(item?._id, text)}
+                    containerStyle={{ marginBottom: 0 }}
+                    rightIcon={
+                      <TouchableOpacity
+                        style={[
+                          styles.sendBtn,
+                          !answers[item?._id]?.trim() && styles.disabledBtn,
+                        ]}
+                        onPress={() => handleSubmit(item?._id)}
+                        disabled={
+                          submitting === item?._id || !answers[item?._id]?.trim()
+                        }
+                      >
+                        {submitting === item?._id ? (
+                          <ActivityIndicator size="small" color={COLORS.white} />
+                        ) : (
+                          <Send size={ICON_SIZE.xs} color={COLORS.white} />
+                        )}
+                      </TouchableOpacity>
+                    }
+                  />
+                )}
+              </View>
+            );
+          })}
+        </View>
+      )}
     </View>
   );
 };
@@ -148,6 +176,8 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.md,
     marginTop: SPACING.sm,
     borderRadius: RADIUS.xs,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
   },
   subHeaderText: {
     fontSize: FONT_SIZE.sm,
@@ -224,16 +254,86 @@ const styles = StyleSheet.create({
   disabledBtn: {
     backgroundColor: COLORS.grey200,
   },
-  // Empty State
-  emptyWrap: {
+
+  /* Empty State Styles */
+  emptyCardContainer: {
+    backgroundColor: COLORS.white,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    padding: SPACING.xl,
     alignItems: 'center',
-    padding: SPACING.xxxl,
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+  emptyIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+  },
+  emptyTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+    marginBottom: SPACING.xs,
+  },
+  emptySubtitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    paddingHorizontal: SPACING.xs,
+    marginBottom: SPACING.lg,
+  },
+  infoCardsContainer: {
+    width: '100%',
     gap: SPACING.sm,
   },
-  emptyText: {
-    color: COLORS.textLight,
-    textAlign: 'center',
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.sm,
+  infoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.grey50,
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
+  },
+  infoIconBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.md,
+  },
+  infoTextWrapper: {
+    flex: 1,
+  },
+  infoCardTitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginBottom: 2,
+  },
+  infoCardText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    lineHeight: 16,
   },
 });
+

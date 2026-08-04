@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
@@ -9,23 +9,59 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { ChevronLeft, Send, Upload, MoreVertical, X } from 'lucide-react-native';
+import {
+  ChevronLeft,
+  Send,
+  Upload,
+  MoreVertical,
+  X,
+  Lock,
+  Image as ImageIcon,
+} from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, Input, PhotoSourceSheet } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
 import imageIndex from '../../../../assets/images/imageIndex';
 
+const PhotoSourceSheet = lazy(
+  () => import('../../../../components/common/PhotoSourceSheet'),
+);
+
+const ChatMessageImage = ({ uri }: { uri?: string }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!uri || hasError) {
+    return (
+      <View style={styles.mediaImageFallback}>
+        <ImageIcon size={22} color={COLORS.grey400} />
+        <AppText style={styles.mediaImageErrorText}>
+          {!uri ? 'No image' : 'Image unavailable'}
+        </AppText>
+      </View>
+    );
+  }
+
+  return (
+    <Image
+      source={{ uri }}
+      style={styles.mediaImage}
+      resizeMode="cover"
+      onError={() => setHasError(true)}
+    />
+  );
+};
+
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { shipmentId, name }: any = route.params || {};
+  const { shipmentId, name, isChatLocked }: any = route.params || {};
   const [inputText, setInputText] = useState('');
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
@@ -37,8 +73,10 @@ const ChatDetails = () => {
     useChatDetails(shipmentId);
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
+  const isLocked = Boolean(isChatLocked || shipment?.isChatLocked || shipment?.status === 'completed');
 
   const handleSend = async () => {
+    if (isLocked) return;
     const success = await sendMessage(inputText, selectedImage);
     if (success) {
       setInputText('');
@@ -81,13 +119,7 @@ const ChatDetails = () => {
         <View
           style={[styles.bubble, isMe ? styles.myBubble : styles.otherBubble]}
         >
-          {hasMedia && (
-            <Image
-              source={{ uri: item?.media[0].url }}
-              style={styles.mediaImage}
-              resizeMode="cover"
-            />
-          )}
+          {hasMedia && <ChatMessageImage uri={item?.media?.[0]?.url} />}
           {item?.message ? (
             <AppText
               style={[
@@ -104,6 +136,7 @@ const ChatDetails = () => {
   };
 
   const pickPhotoFromGallery = async () => {
+    if (isLocked) return;
     const hasPermission = await permissionService.request('gallery');
     if (!hasPermission) return;
 
@@ -122,6 +155,7 @@ const ChatDetails = () => {
   };
 
   const takeProfilePhoto = async () => {
+    if (isLocked) return;
     const hasPermission = await permissionService.request('camera');
     if (!hasPermission) return;
 
@@ -183,7 +217,7 @@ const ChatDetails = () => {
       />
 
       {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
-      {selectedImage && (
+      {selectedImage && !isLocked && (
         <View style={styles.draftPreviewContainer}>
           <View style={styles.draftImageWrapper}>
             <Image
@@ -200,53 +234,68 @@ const ChatDetails = () => {
         </View>
       )}
 
-      {/* Input Bar */}
-      <View style={styles.footer}>
-        <View style={{ flex: 1 }}>
-          <Input
-            placeholder="Type a message..."
-            value={inputText}
-            onChangeText={setInputText}
-            multiline
-            containerStyle={{ marginBottom: 0 }}
-          />
+      {/* Bottom Area: Input Bar or Locked Notice */}
+      {isLocked ? (
+        <View style={styles.lockedContainer}>
+          <Lock size={18} color={COLORS.grey500} style={{ marginRight: 8 }} />
+          <AppText style={styles.lockedText}>
+            Chat is locked because this shipment is completed.
+          </AppText>
         </View>
+      ) : (
+        <View style={styles.footer}>
+          <View style={{ flex: 1 }}>
+            <Input
+              placeholder="Type a message..."
+              value={inputText}
+              onChangeText={setInputText}
+              multiline
+              containerStyle={{ marginBottom: 0 }}
+            />
+          </View>
 
-        <TouchableOpacity
-          onPress={() => setShowPhotoSheet(!showPhotoSheet)}
-          style={styles.squareActionBtn}
-          activeOpacity={0.7}
-        >
-          <Upload size={ICON_SIZE.sm} color={COLORS.textSecondary} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowPhotoSheet(!showPhotoSheet)}
+            style={styles.squareActionBtn}
+            activeOpacity={0.7}
+          >
+            <Upload size={ICON_SIZE.sm} color={COLORS.textSecondary} />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.squareActionBtn,
-            styles.sendBtn,
-            (!canSend || sending) && styles.disabledSendBtn,
-          ]}
-          onPress={handleSend}
-          disabled={sending || !canSend}
-          activeOpacity={0.8}
-        >
-          {sending ? (
-            <ActivityIndicator color={COLORS.white} size="small" />
-          ) : (
-            <Send size={ICON_SIZE.sm} color={COLORS.white} />
-          )}
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[
+              styles.squareActionBtn,
+              styles.sendBtn,
+              (!canSend || sending) && styles.disabledSendBtn,
+            ]}
+            onPress={handleSend}
+            disabled={sending || !canSend}
+            activeOpacity={0.8}
+          >
+            {sending ? (
+              <ActivityIndicator color={COLORS.white} size="small" />
+            ) : (
+              <Send size={ICON_SIZE.sm} color={COLORS.white} />
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
 
-      <PhotoSourceSheet
-        visible={showPhotoSheet}
-        onClose={() => setShowPhotoSheet(!showPhotoSheet)}
-        onCamera={takeProfilePhoto}
-        onGallery={pickPhotoFromGallery}
-        hasImage={true}
-      />
+      {showPhotoSheet && !isLocked && (
+        <Suspense fallback={null}>
+          <PhotoSourceSheet
+            visible={showPhotoSheet}
+            onClose={() => setShowPhotoSheet(false)}
+            onCamera={takeProfilePhoto}
+            onGallery={pickPhotoFromGallery}
+            hasImage={true}
+          />
+        </Suspense>
+      )}
     </KeyboardAvoidingView>
   );
 };
 
 export default ChatDetails;
+
+

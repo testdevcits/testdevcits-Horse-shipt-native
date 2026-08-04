@@ -69,6 +69,8 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
               onPress={() =>
                 navigation.navigate('ChatDetails', {
                   shipmentId: item?.shipmentId,
+                  isChatLocked: item?.isChatLocked,
+
                 })
               }
             />

@@ -35,8 +35,6 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
-
-
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -119,7 +117,10 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               <View style={styles.dateChip}>
                 <Calendar size={12} color={COLORS.goldDarkText} />
                 <AppText style={styles.dateChipText}>
-                  {formatDateRange(data?.pickupDateRange?.start, data?.pickupDateRange?.end)}
+                  {formatDateRange(
+                    data?.pickupDateRange?.start,
+                    data?.pickupDateRange?.end,
+                  )}
                 </AppText>
               </View>
             </View>
@@ -140,7 +141,10 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               <View style={styles.dateChip}>
                 <Calendar size={12} color={COLORS.goldDarkText} />
                 <AppText style={styles.dateChipText}>
-                  {formatDateRange(data?.deliveryDateRange?.start, data?.deliveryDateRange?.end)}
+                  {formatDateRange(
+                    data?.deliveryDateRange?.start,
+                    data?.deliveryDateRange?.end,
+                  )}
                 </AppText>
               </View>
             </View>
@@ -149,54 +153,54 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
         {/* Action Buttons */}
         <View style={styles.actionRow}>
-          {
-            data?.status !== "delivered" &&
-            data?.status !== "assigned" &&
+          {data?.status !== 'delivered' && data?.status !== 'assigned' && (
             <TouchableOpacity
               style={styles.primaryActionBtn}
               onPress={handleEditDocumentsNotes}
               activeOpacity={0.8}
             >
               <Edit3 size={15} color={COLORS.white} />
-              <AppText style={styles.primaryActionBtnText}>Edit Documents & Notes</AppText>
+              <AppText style={styles.primaryActionBtnText}>
+                Edit Documents & Notes
+              </AppText>
             </TouchableOpacity>
-          }
-
-
-          {(data?.shipper?._id || data?.shipper) && (
-            data?.status !== "delivered" &&
-            <TouchableOpacity
-              style={styles.chatActionBtn}
-              onPress={handleChatWithShipper}
-              activeOpacity={0.8}
-            >
-              <MessageSquare size={15} color={COLORS.goldPrimary} />
-              <AppText style={styles.chatActionBtnText}>Chat with Shipper</AppText>
-            </TouchableOpacity>
-
-
           )}
-          {
-            data?.status === "delivered" &&
+
+          {(data?.shipper?._id || data?.shipper) &&
+            data?.status !== 'delivered' && (
+              <TouchableOpacity
+                style={styles.chatActionBtn}
+                onPress={handleChatWithShipper}
+                activeOpacity={0.8}
+              >
+                <MessageSquare size={15} color={COLORS.goldPrimary} />
+                <AppText style={styles.chatActionBtnText}>
+                  Chat with Shipper
+                </AppText>
+              </TouchableOpacity>
+            )}
+          {data?.status === 'delivered' && (
             <TouchableOpacity
               style={styles.chatActionBtn}
               onPress={onReview}
               activeOpacity={0.8}
             >
               <MessageSquare size={15} color={COLORS.goldPrimary} />
-              <AppText style={styles.chatActionBtnText}>Review Shipment</AppText>
+              <AppText style={styles.chatActionBtnText}>
+                Review Shipment
+              </AppText>
             </TouchableOpacity>
-
-          }
-
-          <TouchableOpacity
-            style={styles.secondaryActionBtn}
-            onPress={() => setIsMapVisible(true)}
-            activeOpacity={0.8}
-          >
-            <MapIcon size={15} color={COLORS.textPrimary} />
-            <AppText style={styles.secondaryActionBtnText}>View Map</AppText>
-          </TouchableOpacity>
+          )}
+          {data?.status !== 'open_for_offers' && (
+            <TouchableOpacity
+              style={styles.secondaryActionBtn}
+              onPress={() => setIsMapVisible(true)}
+              activeOpacity={0.8}
+            >
+              <MapIcon size={15} color={COLORS.textPrimary} />
+              <AppText style={styles.secondaryActionBtnText}>View Map</AppText>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -222,18 +226,26 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               <AppText style={styles.summaryBoxHeader}>GENERAL SUMMARY</AppText>
               <View style={styles.summaryRow}>
                 <AppText style={styles.summaryLabel}>Total Horses:</AppText>
-                <AppText style={styles.summaryValue}>{data?.numberOfHorses || 1}</AppText>
+                <AppText style={styles.summaryValue}>
+                  {data?.numberOfHorses || 1}
+                </AppText>
               </View>
               <View style={styles.summaryRow}>
                 <AppText style={styles.summaryLabel}>Pickup Window:</AppText>
                 <AppText style={styles.summaryValue}>
-                  {formatDateRange(data?.pickupDateRange?.start, data?.pickupDateRange?.end)}
+                  {formatDateRange(
+                    data?.pickupDateRange?.start,
+                    data?.pickupDateRange?.end,
+                  )}
                 </AppText>
               </View>
               <View style={styles.summaryRow}>
                 <AppText style={styles.summaryLabel}>Delivery Window:</AppText>
                 <AppText style={styles.summaryValue}>
-                  {formatDateRange(data?.deliveryDateRange?.start, data?.deliveryDateRange?.end)}
+                  {formatDateRange(
+                    data?.deliveryDateRange?.start,
+                    data?.deliveryDateRange?.end,
+                  )}
                 </AppText>
               </View>
             </View>
@@ -242,46 +254,64 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             {data?.horses?.map((horse: any, index: number) => (
               <View key={index} style={styles.horseCard}>
                 <View style={styles.horseCardBadgeHeader}>
-                  <AppText style={styles.horseCardBadgeText}>HORSE {index + 1}</AppText>
+                  <AppText style={styles.horseCardBadgeText}>
+                    HORSE {index + 1}
+                  </AppText>
                 </View>
 
                 <View style={styles.horseCardBody}>
                   {/* Horse Profile Grid */}
                   <View style={styles.horseSpecGrid}>
                     <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Registered Name</AppText>
-                      <AppText style={styles.specValue}>{horse.registeredName || 'N/A'}</AppText>
+                      <AppText style={styles.specLabel}>
+                        Registered Name
+                      </AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.registeredName || 'N/A'}
+                      </AppText>
                     </View>
 
                     <View style={styles.specItem}>
                       <AppText style={styles.specLabel}>Barn Name</AppText>
-                      <AppText style={styles.specValue}>{horse.barnName || 'N/A'}</AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.barnName || 'N/A'}
+                      </AppText>
                     </View>
 
                     <View style={styles.specItem}>
                       <AppText style={styles.specLabel}>Breed</AppText>
-                      <AppText style={styles.specValue}>{horse.breed || 'N/A'}</AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.breed || 'N/A'}
+                      </AppText>
                     </View>
 
                     <View style={styles.specItem}>
                       <AppText style={styles.specLabel}>Colour</AppText>
-                      <AppText style={styles.specValue}>{horse.colour || 'N/A'}</AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.colour || 'N/A'}
+                      </AppText>
                     </View>
 
                     <View style={styles.specItem}>
                       <AppText style={styles.specLabel}>Age</AppText>
-                      <AppText style={styles.specValue}>{horse.age || 'N/A'}</AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.age || 'N/A'}
+                      </AppText>
                     </View>
 
                     <View style={styles.specItem}>
                       <AppText style={styles.specLabel}>Sex</AppText>
-                      <AppText style={styles.specValue}>{horse.sex || 'N/A'}</AppText>
+                      <AppText style={styles.specValue}>
+                        {horse.sex || 'N/A'}
+                      </AppText>
                     </View>
                   </View>
 
                   {/* General Info Box */}
                   <View style={styles.infoQuoteBox}>
-                    <AppText style={styles.infoQuoteTitle}>General Info / Care Notes</AppText>
+                    <AppText style={styles.infoQuoteTitle}>
+                      General Info / Care Notes
+                    </AppText>
                     <AppText style={styles.infoQuoteText}>
                       {horse.generalInfo || horse.notes || 'No notes provided.'}
                     </AppText>
@@ -290,14 +320,17 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   {/* Chronological Notes Log */}
                   {horse.notesLog && horse.notesLog.length > 0 && (
                     <View style={styles.logSection}>
-                      <AppText style={styles.logSectionHeader}>CHRONOLOGICAL NOTES</AppText>
+                      <AppText style={styles.logSectionHeader}>
+                        CHRONOLOGICAL NOTES
+                      </AppText>
                       {horse.notesLog.map((log: any, lIdx: number) => (
                         <View key={lIdx} style={styles.logCardItem}>
                           <View style={styles.logCardItemHeader}>
                             <View style={styles.logUserRow}>
                               <User size={12} color={COLORS.goldPrimary} />
                               <AppText style={styles.logUserNameText}>
-                                {log.userName || 'User'} ({log.userRole || 'Customer'})
+                                {log.userName || 'User'} (
+                                {log.userRole || 'Customer'})
                               </AppText>
                             </View>
                             <View style={styles.logUserRow}>
@@ -307,7 +340,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                               </AppText>
                             </View>
                           </View>
-                          <AppText style={styles.logBodyText}>{log.note}</AppText>
+                          <AppText style={styles.logBodyText}>
+                            {log.note}
+                          </AppText>
                         </View>
                       ))}
                     </View>
@@ -315,7 +350,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
                   {/* Uploaded Documents */}
                   <View style={styles.documentsContainer}>
-                    <AppText style={styles.documentsHeaderTitle}>Uploaded Documents</AppText>
+                    <AppText style={styles.documentsHeaderTitle}>
+                      Uploaded Documents
+                    </AppText>
                     <View style={styles.docListGrid}>
                       {horse.documents?.coggins?.url && (
                         <TouchableOpacity
@@ -325,25 +362,37 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                         >
                           <FileText size={16} color={COLORS.goldPrimary} />
                           <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>Coggins Test</AppText>
+                            <AppText style={styles.docTitle}>
+                              Coggins Test
+                            </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink size={13} color={COLORS.textSecondary} />
+                          <ExternalLink
+                            size={13}
+                            color={COLORS.textSecondary}
+                          />
                         </TouchableOpacity>
                       )}
 
                       {horse.documents?.healthCertificate?.url && (
                         <TouchableOpacity
                           style={styles.docCardPill}
-                          onPress={() => openUrl(horse.documents.healthCertificate.url)}
+                          onPress={() =>
+                            openUrl(horse.documents.healthCertificate.url)
+                          }
                           activeOpacity={0.8}
                         >
                           <FileText size={16} color={COLORS.goldPrimary} />
                           <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>Health Certificate</AppText>
+                            <AppText style={styles.docTitle}>
+                              Health Certificate
+                            </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink size={13} color={COLORS.textSecondary} />
+                          <ExternalLink
+                            size={13}
+                            color={COLORS.textSecondary}
+                          />
                         </TouchableOpacity>
                       )}
 
@@ -355,17 +404,24 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                         >
                           <FileText size={16} color={COLORS.goldPrimary} />
                           <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>Other Document</AppText>
+                            <AppText style={styles.docTitle}>
+                              Other Document
+                            </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink size={13} color={COLORS.textSecondary} />
+                          <ExternalLink
+                            size={13}
+                            color={COLORS.textSecondary}
+                          />
                         </TouchableOpacity>
                       )}
 
                       {!horse.documents?.coggins?.url &&
                         !horse.documents?.healthCertificate?.url &&
                         !horse.documents?.other?.url && (
-                          <AppText style={styles.emptyDocsText}>No documents uploaded for this horse.</AppText>
+                          <AppText style={styles.emptyDocsText}>
+                            No documents uploaded for this horse.
+                          </AppText>
                         )}
                     </View>
                   </View>
@@ -376,13 +432,17 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             {/* Additional Info History Log */}
             {data?.additionalInfoLog && data?.additionalInfoLog.length > 0 && (
               <View style={styles.logSection}>
-                <AppText style={styles.logSectionHeader}>ADDITIONAL INFO HISTORY</AppText>
+                <AppText style={styles.logSectionHeader}>
+                  ADDITIONAL INFO HISTORY
+                </AppText>
                 {data?.additionalInfoLog.map((log: any, idx: number) => (
                   <View key={idx} style={styles.logCardItem}>
                     <View style={styles.logCardItemHeader}>
                       <View style={styles.logUserRow}>
                         <User size={12} color={COLORS.goldPrimary} />
-                        <AppText style={styles.logUserNameText}>{log.userName || 'Customer'}</AppText>
+                        <AppText style={styles.logUserNameText}>
+                          {log.userName || 'Customer'}
+                        </AppText>
                       </View>
                       <View style={styles.logUserRow}>
                         <Clock size={11} color={COLORS.textLight} />
@@ -408,7 +468,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   {loading ? (
                     <ActivityIndicator color={COLORS.white} />
                   ) : (
-                    <AppText style={styles.publishButtonText}>Publish Shipment</AppText>
+                    <AppText style={styles.publishButtonText}>
+                      Publish Shipment
+                    </AppText>
                   )}
                 </TouchableOpacity>
               )}

@@ -9,32 +9,25 @@ import {
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  Home,
-  Package,
-  MessageCircle,
-  Plus,
-  Smartphone,
-} from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 
-// Import your actual screens
+// Import screens and components
 import HomeScreen from '../role/customer/screens/home/HomeScreen';
 import MyShipments from '../role/customer/screens/myshipments/MyShipments';
 import NewShipment from '../role/customer/screens/newshipment/NewShipment';
 import MyHorses from '../role/customer/screens/myhorses/MyHorses';
 import ShipperList from '../role/customer/screens/chats/Shipperlist';
-import { COLORS } from '../constants';
+import { AppText } from '../components';
+import { COLORS, FONTS } from '../constants';
 import imageIndex from '../assets/images/imageIndex';
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
 
 const CustomTabBar = ({ state, descriptors, navigation }: any) => {
-  // 3. Create a state to track keyboard visibility
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    // Android triggers 'Did' events, iOS can use 'Will' for smoother transitions
     const showEvent =
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
     const hideEvent =
@@ -53,19 +46,19 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
     };
   }, []);
 
-  // 4. If keyboard is visible, return null to hide the entire tab bar
   if (isKeyboardVisible) return null;
+
   return (
     <View style={styles.mainContainer}>
-      {/* This View creates the white background with the "Hump" shadow */}
+      {/* Background card with hump */}
       <View style={styles.tabBarBackground}>
-        {/* The Hump behind the center button */}
         <View style={styles.hump} />
 
         <View style={styles.tabBarButtonsContainer}>
           {state.routes.map((route: any, index: number) => {
-            const { options } = descriptors[route.key];
             const isFocused = state.index === index;
+            const activeColor = COLORS.brandBrown || '#A06333';
+            const inactiveColor = COLORS.grey500 || '#6B7280';
 
             const onPress = () => {
               const event = navigation.emit({
@@ -77,44 +70,40 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
               }
             };
 
-            // Custom Icons Logic
             const renderIcon = (color: string) => {
-              const size = 26;
               switch (route.name) {
                 case 'Home':
                   return (
                     <Image
                       source={imageIndex.Home}
-                      style={{ width: 26, height: 26, tintColor: color }}
-                      resizeMode="center"
+                      style={{ width: 24, height: 24, tintColor: color }}
+                      resizeMode="contain"
                     />
                   );
                 case 'Shipments':
                   return (
                     <Image
                       source={imageIndex.Shipments}
-                      style={{ width: 26, height: 26, tintColor: color }}
-                      resizeMode="center"
+                      style={{ width: 24, height: 24, tintColor: color }}
+                      resizeMode="contain"
                     />
                   );
                 case 'New':
-                  return null; // We handle center button separately
+                  return null;
                 case 'Horses':
-                  // To match your image exactly, use a Horse Icon/Image
-                  // If Lucide doesn't have it, we use a placeholder icon
                   return (
                     <Image
                       source={imageIndex.Horse}
-                      style={{ width: 26, height: 26, tintColor: color }}
-                      resizeMode="center"
+                      style={{ width: 24, height: 24, tintColor: color }}
+                      resizeMode="contain"
                     />
                   );
                 case 'Chats':
                   return (
                     <Image
                       source={imageIndex.Chat}
-                      style={{ width: 26, height: 26, tintColor: color }}
-                      resizeMode="center"
+                      style={{ width: 24, height: 24, tintColor: color }}
+                      resizeMode="contain"
                     />
                   );
                 default:
@@ -122,16 +111,30 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
               }
             };
 
-            // If it's the center 'New' button, we render the Brown Floating Action Button
+            const getTabLabel = () => {
+              switch (route.name) {
+                case 'Home':
+                  return 'Home';
+                case 'Shipments':
+                  return 'Shipments';
+                case 'Horses':
+                  return 'Horses';
+                case 'Chats':
+                  return 'Chats';
+                default:
+                  return '';
+              }
+            };
+
             if (route.name === 'New') {
               return (
                 <TouchableOpacity
                   key={index}
                   onPress={onPress}
-                  activeOpacity={0.8}
+                  activeOpacity={0.85}
                   style={styles.centerButton}
                 >
-                  <Plus size={24} color="#FFF" strokeWidth={3} />
+                  <Plus size={26} color={COLORS.white} strokeWidth={2.5} />
                 </TouchableOpacity>
               );
             }
@@ -140,9 +143,13 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
               <TouchableOpacity
                 key={index}
                 onPress={onPress}
+                activeOpacity={0.7}
                 style={styles.tabItem}
               >
-                {renderIcon(isFocused ? '#A06333' : '#666')}
+                {renderIcon(isFocused ? activeColor : inactiveColor)}
+                {isFocused && (
+                  <AppText style={styles.tabLabelFocused}>{getTabLabel()}</AppText>
+                )}
               </TouchableOpacity>
             );
           })}
@@ -178,12 +185,11 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   tabBarBackground: {
-    backgroundColor: '#FFF',
-    height: Platform.OS === 'ios' ? 88 : 70,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    // Shadow for the whole bar
-    shadowColor: '#000',
+    backgroundColor: COLORS.white,
+    height: Platform.OS === 'ios' ? 88 : 72,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
@@ -191,15 +197,14 @@ const styles = StyleSheet.create({
   },
   hump: {
     position: 'absolute',
-    top: -30, // Pushes the hump up
+    top: -30,
     left: width / 2 - 45,
     width: 90,
     height: 60,
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    // Matches the bar shadow
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
@@ -209,28 +214,35 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
+    paddingBottom: Platform.OS === 'ios' ? 18 : 0,
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 4,
+  },
+  tabLabelFocused: {
+    fontSize: 11,
+    fontFamily: FONTS.bold,
+    color: COLORS.brandBrown || '#A06333',
+    marginTop: 3,
   },
   centerButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#A06333', // Brown color from your image
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    backgroundColor: COLORS.brandBrown || '#A06333',
     justifyContent: 'center',
     alignItems: 'center',
-    top: -30, // Floats the button upwards into the hump
-    // Stronger shadow for the button itself
-    shadowColor: '#A06333',
+    top: -28,
+    shadowColor: COLORS.brandBrown || '#A06333',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.35,
     shadowRadius: 6,
     elevation: 10,
   },
 });
 
 export default CustomerTabs;
+

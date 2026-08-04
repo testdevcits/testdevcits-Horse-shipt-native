@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   FlatList,
@@ -38,6 +38,23 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     loading: shipperloading,
     refresh: shipperRefresh,
   } = useShippers();
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        refresh(true),
+        shipperRefresh ? shipperRefresh() : Promise.resolve(),
+      ]);
+    } catch (error) {
+      console.error('Error refreshing home screen:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
   };
@@ -49,6 +66,14 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing || refreshing}
+            onRefresh={handleRefresh}
+            tintColor={COLORS.primary}
+            colors={[COLORS.primary]}
+          />
+        }
       >
         <Pressable onPress={() => navigation.navigate('New')}>
           <Image
@@ -65,6 +90,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         <FlatList
           data={shipments.slice(0, 2)}
           keyExtractor={item => item?._id}
+          scrollEnabled={false}
           ListHeaderComponent={
             <SectionHeader
               title="Current Shipments"
@@ -84,13 +110,6 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           )}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => refresh(true)}
-              tintColor={COLORS.primary}
-            />
-          }
           ListEmptyComponent={
             !loading ? (
               <EmptyState
@@ -123,14 +142,6 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
               />
             )}
             contentContainerStyle={styles.list}
-            stickyHeaderIndices={[0]}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={refresh}
-                tintColor={COLORS.goldPrimary}
-              />
-            }
             ListEmptyComponent={
               !loading ? (
                 <EmptyState
@@ -170,3 +181,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+

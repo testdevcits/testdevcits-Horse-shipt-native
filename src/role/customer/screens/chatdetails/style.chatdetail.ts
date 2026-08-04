@@ -64,6 +64,23 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
     marginBottom: SPACING.xs,
   },
+  mediaImageFallback: {
+    width: 200,
+    height: 140,
+    borderRadius: RADIUS.sm,
+    marginBottom: SPACING.xs,
+    backgroundColor: COLORS.grey100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    gap: 6,
+  },
+  mediaImageErrorText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+  },
 
   // Footer / Input Area
   footer: {
@@ -143,6 +160,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: COLORS.white,
+  },
+
+  // Locked Chat Container
+  lockedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: SPACING.md,
+    backgroundColor: COLORS.grey100,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
+    paddingBottom: Platform.OS === 'ios' ? 28 : SPACING.md,
+  },
+  lockedText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey600,
+    textAlign: 'center',
   },
 });
 

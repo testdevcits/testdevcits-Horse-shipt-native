@@ -42,7 +42,6 @@ const getShortLocation = (address: string) => {
 const ShipmentHorizontalCard = memo(
   ({ item, onPress }: { item: any; onPress: () => void }) => {
 
-console.log('Rendering ShipmentHorizontalCard for shipment ID:', item);
 
     const horse = item?.horses?.[0];
     const pickupDate = formatDate(item?.pickupDateRange?.start);

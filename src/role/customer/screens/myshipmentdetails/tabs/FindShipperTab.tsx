@@ -6,7 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { MapPin, Mail, Star, Check } from 'lucide-react-native';
+import { MapPin, Mail, Star, Check, Users, Truck, Calendar } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import {
   COLORS,
@@ -187,10 +187,42 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
       ))}
 
       {profiles.length === 0 && (
-        <View style={styles.emptyState}>
-          <AppText style={styles.emptyText}>
-            No shippers found matching this shipment.
+        <View style={styles.emptyCardContainer}>
+          <View style={styles.emptyIconCircle}>
+            <Users size={32} color={COLORS.primary} />
+          </View>
+
+          <AppText style={styles.emptyTitle}>No Matching Shippers Found</AppText>
+
+          <AppText style={styles.emptySubtitle}>
+            There are currently no verified shippers matching your specific route or schedule criteria.
           </AppText>
+
+          <View style={styles.infoCardsContainer}>
+            <View style={styles.infoCard}>
+              <View style={styles.infoIconBox}>
+                <Truck size={16} color={COLORS.primary} />
+              </View>
+              <View style={styles.infoTextWrapper}>
+                <AppText style={styles.infoCardTitle}>Public Marketplace Visibility</AppText>
+                <AppText style={styles.infoCardText}>
+                  Your shipment is broadcast live to all drivers in the network.
+                </AppText>
+              </View>
+            </View>
+
+            <View style={styles.infoCard}>
+              <View style={styles.infoIconBox}>
+                <Calendar size={16} color={COLORS.primary} />
+              </View>
+              <View style={styles.infoTextWrapper}>
+                <AppText style={styles.infoCardTitle}>Flexible Dates</AppText>
+                <AppText style={styles.infoCardText}>
+                  Expanding your pickup or delivery window helps match more drivers.
+                </AppText>
+              </View>
+            </View>
+          </View>
         </View>
       )}
     </View>
@@ -208,11 +240,20 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: FONT_SIZE.sm,
   },
-  subHeaderBar: { paddingHorizontal: SPACING.md, marginVertical: SPACING.sm },
+  subHeaderBar: {
+    backgroundColor: COLORS.goldLightBg,
+    padding: SPACING.sm,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
+    marginBottom: SPACING.sm,
+    borderRadius: RADIUS.xs,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+  },
   subHeaderText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
+    color: COLORS.goldDarkText,
   },
   card: {
     backgroundColor: COLORS.white,
@@ -316,10 +357,86 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
   },
-  emptyState: { alignItems: 'center', marginTop: 40 },
-  emptyText: {
-    color: COLORS.textLight,
-    fontFamily: FONTS.medium,
+
+  /* Empty State Styles */
+  emptyCardContainer: {
+    backgroundColor: COLORS.white,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+    padding: SPACING.xl,
+    alignItems: 'center',
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+  emptyIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+  },
+  emptyTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+    marginBottom: SPACING.xs,
+  },
+  emptySubtitle: {
     fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    paddingHorizontal: SPACING.xs,
+    marginBottom: SPACING.lg,
+  },
+  infoCardsContainer: {
+    width: '100%',
+    gap: SPACING.sm,
+  },
+  infoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.grey50,
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
+  },
+  infoIconBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.md,
+  },
+  infoTextWrapper: {
+    flex: 1,
+  },
+  infoCardTitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginBottom: 2,
+  },
+  infoCardText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    lineHeight: 16,
   },
 });
+
