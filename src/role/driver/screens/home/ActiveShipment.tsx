@@ -1,8 +1,8 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Calendar, Clock, MapPin, Truck, Navigation2, Compass, ShieldCheck } from 'lucide-react-native';
-import { AppText } from '../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { Calendar, Clock, MapPin, Truck, Compass, ShieldCheck } from 'lucide-react-native';
+import { AppText, Button } from '../../../../components';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 
 const ActiveShipment = ({
   activeShipment,
@@ -15,12 +15,18 @@ const ActiveShipment = ({
 }) => {
   const isTripInTransit = activeShipment?.tripStatus === 'inTransit' || activeShipment?.tripStatus === 'started';
 
+  const pickupLoc = activeShipment?.shipment?.pickupLocation || 'Pickup address N/A';
+  const deliveryLoc = activeShipment?.shipment?.deliveryLocation || 'Delivery address N/A';
+
+  const originShort = getShortLocation ? getShortLocation(pickupLoc) : 'Origin';
+  const destShort = getShortLocation ? getShortLocation(deliveryLoc) : 'Destination';
+
   return (
     <View style={styles.card}>
       {/* Header Bar */}
       <View style={styles.cardHeader}>
         <View style={styles.headerLeftRow}>
-          <Compass size={18} color={COLORS.goldPrimary} />
+          <Compass size={20} color={COLORS.goldPrimary} />
           <AppText style={styles.cardHeaderTitle}>Active Dispatch Manifest</AppText>
         </View>
         <View style={[styles.statusBadgePill, isTripInTransit ? styles.transitPill : styles.pendingPill]}>
@@ -36,20 +42,19 @@ const ActiveShipment = ({
         <View style={styles.routeHeaderBox}>
           <AppText style={styles.routeLabel}>DIRECT DISPATCH ROUTE</AppText>
           <AppText style={styles.routePlaces} numberOfLines={1}>
-            {getShortLocation ? getShortLocation(activeShipment?.shipment?.pickupLocation) : 'Origin'} ➔{' '}
-            {getShortLocation ? getShortLocation(activeShipment?.shipment?.deliveryLocation) : 'Destination'}
+            {originShort} ➔ {destShort}
           </AppText>
 
           {/* Quick Metrics Bar */}
           <View style={styles.metricsRow}>
             <View style={styles.metricChip}>
-              <Truck size={13} color={COLORS.goldPrimary} />
+              <Truck size={14} color={COLORS.goldPrimary} />
               <AppText style={styles.metricChipText}>
                 {activeShipment?.shipment?.numberOfHorses || 1} Horse(s)
               </AppText>
             </View>
             <View style={styles.metricChip}>
-              <ShieldCheck size={13} color={COLORS.greenActive} />
+              <ShieldCheck size={14} color={COLORS.greenActive} />
               <AppText style={styles.metricChipText}>Insured Load</AppText>
             </View>
           </View>
@@ -64,14 +69,10 @@ const ActiveShipment = ({
             </View>
             <View style={styles.stopDetails}>
               <AppText style={styles.stopLabel}>PICKUP LOCATION</AppText>
-              <AppText style={styles.stopLocation}>
-                {activeShipment?.shipment?.pickupLocation || 'Pickup address N/A'}
-              </AppText>
+              <AppText style={styles.stopLocation}>{pickupLoc}</AppText>
               <View style={styles.stopMetaRow}>
-                <Calendar size={12} color={COLORS.textLight} />
-                <AppText style={styles.stopMetaText}>
-                  Scheduled Load
-                </AppText>
+                <Calendar size={13} color={COLORS.textSecondary} />
+                <AppText style={styles.stopMetaText}>Scheduled Load</AppText>
               </View>
             </View>
           </View>
@@ -88,11 +89,9 @@ const ActiveShipment = ({
             </View>
             <View style={styles.stopDetails}>
               <AppText style={styles.stopLabel}>DROP-OFF LOCATION</AppText>
-              <AppText style={styles.stopLocation}>
-                {activeShipment?.shipment?.deliveryLocation || 'Delivery address N/A'}
-              </AppText>
+              <AppText style={styles.stopLocation}>{deliveryLoc}</AppText>
               <View style={styles.stopMetaRow}>
-                <Clock size={12} color={COLORS.textLight} />
+                <Clock size={13} color={COLORS.textSecondary} />
                 <AppText style={styles.stopMetaText}>Target Delivery</AppText>
               </View>
             </View>
@@ -101,14 +100,9 @@ const ActiveShipment = ({
 
         {/* GPS Map Nav Trigger Button */}
         {onLaunchMap && (
-          <TouchableOpacity
-            style={styles.gpsNavBtn}
-            onPress={onLaunchMap}
-            activeOpacity={0.85}
-          >
-            <Navigation2 size={16} color={COLORS.white} />
-            <AppText style={styles.gpsNavBtnText}>Launch Live GPS Navigation</AppText>
-          </TouchableOpacity>
+          <View style={{ marginTop: SPACING.md }}>
+            <Button title="Launch Live GPS Navigation" onPress={onLaunchMap} />
+          </View>
         )}
       </View>
     </View>
@@ -120,12 +114,12 @@ export default ActiveShipment;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.md,
-    marginBottom: 20,
+    marginBottom: SPACING.md,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
@@ -136,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: COLORS.goldLightBg,
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 1,
     borderColor: COLORS.goldBorder,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -148,16 +142,16 @@ const styles = StyleSheet.create({
   },
   cardHeaderTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.md,
     color: COLORS.goldDarkText,
   },
   statusBadgePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 12,
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round,
   },
   transitPill: {
     backgroundColor: '#DCFCE7',
@@ -179,7 +173,7 @@ const styles = StyleSheet.create({
   statusPillText: {
     fontFamily: FONTS.bold,
     fontSize: 10,
-    letterSpacing: 0.3,
+    letterSpacing: 0.5,
   },
   greenPillText: { color: '#15803D' },
   amberPillText: { color: '#B45309' },
@@ -188,7 +182,7 @@ const styles = StyleSheet.create({
   },
   routeHeaderBox: {
     backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1.2,
+    borderWidth: 1,
     borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.sm,
     padding: 16,
@@ -204,7 +198,7 @@ const styles = StyleSheet.create({
   },
   routePlaces: {
     fontFamily: FONTS.bold,
-    fontSize: 18,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textPrimary,
     marginBottom: 10,
   },
@@ -215,7 +209,7 @@ const styles = StyleSheet.create({
   metricChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
@@ -225,7 +219,7 @@ const styles = StyleSheet.create({
   },
   metricChipText: {
     fontFamily: FONTS.bold,
-    fontSize: 11,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.goldDarkText,
   },
   timelineContainer: {
@@ -241,9 +235,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nodeIconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -260,9 +254,10 @@ const styles = StyleSheet.create({
   },
   stopLocation: {
     fontFamily: FONTS.bold,
-    fontSize: 13,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textPrimary,
     marginBottom: 4,
+    lineHeight: 18,
   },
   stopMetaRow: {
     flexDirection: 'row',
@@ -270,14 +265,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   stopMetaText: {
-    fontFamily: FONTS.regular,
-    fontSize: 11,
-    color: COLORS.textLight,
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
   },
   connectorWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 24,
+    height: 20,
     marginVertical: 2,
   },
   verticalTrackLine: {
@@ -285,19 +280,6 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: COLORS.goldBorder,
   },
-  gpsNavBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: COLORS.goldPrimary,
-    paddingVertical: 12,
-    borderRadius: RADIUS.sm,
-    marginTop: 14,
-  },
-  gpsNavBtnText: {
-    fontFamily: FONTS.bold,
-    fontSize: 13,
-    color: COLORS.white,
-  },
 });
+
+

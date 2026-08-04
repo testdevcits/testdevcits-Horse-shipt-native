@@ -120,7 +120,7 @@ const AppHeader = memo(
                         width: 32,
                         height: 32,
                         borderRadius: 16,
-                        backgroundColor: COLORS.grey200,
+                        // backgroundColor: COLORS.grey200,
                       }}
 
                     /> :

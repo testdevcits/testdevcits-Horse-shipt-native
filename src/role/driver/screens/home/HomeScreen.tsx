@@ -103,7 +103,7 @@ const HomeScreen = ({ navigation }: any) => {
         {/* 1. Shared Global Driver Header */}
         <DriverHeader
           name={driver?.name || 'Test Driver'}
-          statusText={driver?.driverStatus || 'ON TRIP'}
+          statusText={driver?.driverStatus || ''}
           profileImageUrl={driver?.profileImage?.url}
           isOnline={driver?.isActive !== false}
         />
@@ -169,7 +169,7 @@ const HomeScreen = ({ navigation }: any) => {
             isLoading={startTripLoading}
             buttonStyle={{ margin: SPACING.md }}
           />
-        ) : activeShipment?.tripStatus === 'inTransit'  || activeShipment?.tripStatus === 'started' ? (
+        ) : activeShipment?.tripStatus === 'inTransit' || activeShipment?.tripStatus === 'started' ? (
           <Button
             title="Complete Shipment"
             onPress={() =>

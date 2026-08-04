@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     },
     driverName: {
         fontFamily: FONTS.bold,
-        fontSize: 16,
+        fontSize: 12,
         color: COLORS.textPrimary,
         flexShrink: 1,
     },
