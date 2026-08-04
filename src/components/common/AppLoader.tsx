@@ -6,7 +6,7 @@ export const AppLoader = ({ visible }: { visible: boolean }) => {
     if (!visible) return null;
     return (
         <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255,255,255,0.7)', justifyContent: 'center', alignItems: 'center', zIndex: 999 }]}>
-            <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+            <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
     );
 };

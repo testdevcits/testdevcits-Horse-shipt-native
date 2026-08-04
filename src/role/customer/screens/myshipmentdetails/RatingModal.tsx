@@ -105,7 +105,7 @@ const RatingModal = ({
 
             <View style={styles.shipperRow}>
               <View style={styles.avatar}>
-                <User size={18} color={COLORS.goldPrimary} />
+                <User size={18} color={COLORS.primary} />
               </View>
               <AppText style={styles.shipperName}>{shipperName}</AppText>
             </View>
@@ -116,8 +116,8 @@ const RatingModal = ({
                 <TouchableOpacity key={s} onPress={() => setRating(s)}>
                   <Star
                     size={32}
-                    color={COLORS.goldPrimary}
-                    fill={s <= rating ? COLORS.goldPrimary : 'transparent'}
+                    color={COLORS.primary}
+                    fill={s <= rating ? COLORS.primary : 'transparent'}
                   />
                 </TouchableOpacity>
               ))}
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   confirmBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     padding: 14,
     borderRadius: RADIUS.md,
     alignItems: 'center',

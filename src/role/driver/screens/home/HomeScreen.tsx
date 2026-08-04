@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation }: any) => {
   if (loading && !driver) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
@@ -117,7 +117,7 @@ const HomeScreen = ({ navigation }: any) => {
             <RefreshControl
               refreshing={loading}
               onRefresh={refresh}
-              tintColor={COLORS.goldPrimary}
+              tintColor={COLORS.primary}
             />
           }
         >

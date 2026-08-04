@@ -160,7 +160,7 @@ const GoogleReviewScreen = () => {
               leftIcon={<Link size={20} color="#A06333" />}
               rightIcon={
                 isConnected ? (
-                  <ExternalLink size={18} color={COLORS.goldPrimary} />
+                  <ExternalLink size={18} color={COLORS.primary} />
                 ) : undefined
               }
               onRightIconPress={isConnected ? handleOpenLink : undefined}

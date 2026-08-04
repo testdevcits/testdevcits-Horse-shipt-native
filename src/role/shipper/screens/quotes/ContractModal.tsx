@@ -97,7 +97,7 @@ const ContractModal: React.FC<ContractModalProps> = ({
                   startInLoadingState
                   renderLoading={() => (
                     <View style={styles.loader}>
-                      <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+                      <ActivityIndicator size="large" color={COLORS.primary} />
                     </View>
                   )}
                 />

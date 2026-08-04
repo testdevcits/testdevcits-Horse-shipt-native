@@ -122,7 +122,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* 2x2 Specs Grid */}
         <View style={styles.specsGrid}>
           <View style={styles.specBox}>
-            <Truck size={18} color={COLORS.goldPrimary} />
+            <Truck size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Transport</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -132,7 +132,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <CreditCard size={18} color={COLORS.goldPrimary} />
+            <CreditCard size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Payment</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -142,7 +142,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <Box size={18} color={COLORS.goldPrimary} />
+            <Box size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Stall</AppText>
               <AppText style={styles.specValue}>
@@ -152,7 +152,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <RefreshCw size={18} color={COLORS.goldPrimary} />
+            <RefreshCw size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Refund</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -166,7 +166,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {vehicleObj ? (
           <View style={styles.assignedVehicleCard}>
             <View style={styles.vehicleHeaderRow}>
-              <Truck size={16} color={COLORS.goldPrimary} />
+              <Truck size={16} color={COLORS.primary} />
               <AppText style={styles.vehicleTitleText}>
                 Assigned Vehicle & Driver Details
               </AppText>
@@ -208,7 +208,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
         ) : vehicleName ? (
           <View style={styles.assignedVehicleContainer}>
-            <Truck size={16} color={COLORS.goldPrimary} style={{ marginTop: 2 }} />
+            <Truck size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
             <AppText style={styles.assignedVehicleText}>
               <AppText style={{ fontFamily: FONTS.bold }}>Assigned Vehicle : </AppText>
               {vehicleName}
@@ -219,7 +219,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* Notes Container */}
         {quote?.notes ? (
           <View style={styles.notesContainer}>
-            <FileText size={16} color={COLORS.goldPrimary} style={{ marginTop: 2 }} />
+            <FileText size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
             <AppText style={styles.notesText}>
               <AppText style={{ fontFamily: FONTS.bold }}>Notes : </AppText>
               {quote?.notes.trim()}
@@ -243,7 +243,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               onPress={() => onAssignVehicle(quote)}
               activeOpacity={0.8}
             >
-              <Truck size={16} color={COLORS.goldPrimary} />
+              <Truck size={16} color={COLORS.primary} />
               <AppText style={styles.assignVehicleBtnText}>Assign Vehicle</AppText>
             </TouchableOpacity>
           )}

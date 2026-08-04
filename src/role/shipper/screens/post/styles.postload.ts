@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   tabBtnActive: {
-    borderBottomColor: COLORS.goldPrimary,
+    borderBottomColor: COLORS.primary,
   },
   tabBtnText: {
     fontSize: FONT_SIZE.xs,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   tabBtnTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
   badgePill: {
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   badgePillText: {
     fontSize: 10,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   // Standard Shipment Card Item
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   horseTagText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   // Locations Timeline

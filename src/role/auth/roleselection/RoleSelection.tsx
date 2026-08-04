@@ -84,7 +84,7 @@ const RoleSelection = ({ navigation }: any) => {
                 <View style={[styles.iconBox, isSelected && styles.iconBoxActive]}>
                     <Icon
                         size={20}
-                        color={isSelected ? COLORS.white : COLORS.goldPrimary}
+                        color={isSelected ? COLORS.white : COLORS.primary}
                         strokeWidth={2}
                     />
                 </View>
@@ -200,10 +200,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
     },
     roleCardActive: {
-        backgroundColor: COLORS.goldPrimary,
-        borderColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
+        borderColor: COLORS.primary,
         // Premium Shadow for active card
-        shadowColor: COLORS.goldPrimary,
+        shadowColor: COLORS.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 8,
@@ -232,16 +232,16 @@ const styles = StyleSheet.create({
     textLightGold: { color: COLORS.goldLightBg },
 
     continueBtn: {
-        backgroundColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
         height: 48,
         borderRadius: RADIUS.md,
-        shadowColor: COLORS.goldPrimary,
+        shadowColor: COLORS.primary,
         shadowOpacity: 0.25, shadowRadius: 8, elevation: 4
     },
 
     footer: { marginTop: SPACING.lg, alignItems: 'center' },
     footerText: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, fontFamily: FONTS.medium },
-    contactLink: { color: COLORS.goldPrimary, fontFamily: FONTS.bold },
+    contactLink: { color: COLORS.primary, fontFamily: FONTS.bold },
 });
 
 export default RoleSelection;

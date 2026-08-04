@@ -127,7 +127,7 @@ const ShipperSettingsScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       >
@@ -138,7 +138,7 @@ const ShipperSettingsScreen = () => {
 
         {loading ? (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+            <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         ) : (
           <>

@@ -26,7 +26,7 @@ const ActiveShipment = ({
       {/* Header Bar */}
       <View style={styles.cardHeader}>
         <View style={styles.headerLeftRow}>
-          <Compass size={20} color={COLORS.goldPrimary} />
+          <Compass size={20} color={COLORS.primary} />
           <AppText style={styles.cardHeaderTitle}>Active Dispatch Manifest</AppText>
         </View>
         <View style={[styles.statusBadgePill, isTripInTransit ? styles.transitPill : styles.pendingPill]}>
@@ -48,7 +48,7 @@ const ActiveShipment = ({
           {/* Quick Metrics Bar */}
           <View style={styles.metricsRow}>
             <View style={styles.metricChip}>
-              <Truck size={14} color={COLORS.goldPrimary} />
+              <Truck size={14} color={COLORS.primary} />
               <AppText style={styles.metricChipText}>
                 {activeShipment?.shipment?.numberOfHorses || 1} Horse(s)
               </AppText>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   routeLabel: {
     fontFamily: FONTS.bold,
     fontSize: 10,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 1.2,
     marginBottom: 4,
   },

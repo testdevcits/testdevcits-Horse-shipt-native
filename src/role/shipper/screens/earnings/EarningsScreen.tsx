@@ -296,7 +296,7 @@ const EarningsScreen = () => {
         {/* Active Card Container */}
         {statusLoading ? (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator size="small" color={COLORS.goldPrimary} />
+            <ActivityIndicator size="small" color={COLORS.primary} />
           </View>
         ) : cardStatus.hasCard ? (
           <>
@@ -320,7 +320,7 @@ const EarningsScreen = () => {
               activeOpacity={0.8}
             >
               {initializingCard ? (
-                <ActivityIndicator size="small" color={COLORS.goldPrimary} />
+                <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
                   <Edit size={16} color="#A06333" />
@@ -460,7 +460,7 @@ const EarningsScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       />
@@ -590,7 +590,7 @@ const EarningsScreen = () => {
             {selectedTx && (
               <View style={{ gap: SPACING.sm }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Hash size={16} color={COLORS.goldPrimary} />
+                  <Hash size={16} color={COLORS.primary} />
                   <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Payout ID:</AppText>
                   <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary, flex: 1 }} numberOfLines={1}>
                     {selectedTx.id}
@@ -598,7 +598,7 @@ const EarningsScreen = () => {
                 </View>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <DollarSign size={16} color={COLORS.goldPrimary} />
+                  <DollarSign size={16} color={COLORS.primary} />
                   <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Amount:</AppText>
                   <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
                     ${selectedTx.amount} {selectedTx.currency || 'USD'}
@@ -606,7 +606,7 @@ const EarningsScreen = () => {
                 </View>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <FileText size={16} color={COLORS.goldPrimary} />
+                  <FileText size={16} color={COLORS.primary} />
                   <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Shipment Code:</AppText>
                   <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
                     {selectedTx.shipmentCode || 'N/A'}
@@ -614,7 +614,7 @@ const EarningsScreen = () => {
                 </View>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Calendar size={16} color={COLORS.goldPrimary} />
+                  <Calendar size={16} color={COLORS.primary} />
                   <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Date:</AppText>
                   <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
                     {selectedTx.createdAt ? formatDate(selectedTx.createdAt, 'MMMM DD, YYYY') : 'N/A'}

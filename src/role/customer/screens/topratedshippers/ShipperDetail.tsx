@@ -65,8 +65,8 @@ const ShipperDetail = () => {
           <Star
             key={s}
             size={ICON_SIZE.xs}
-            color={COLORS.goldPrimary}
-            fill={s <= (item?.rating || 5) ? COLORS.goldPrimary : 'transparent'}
+            color={COLORS.primary}
+            fill={s <= (item?.rating || 5) ? COLORS.primary : 'transparent'}
           />
         ))}
       </View>
@@ -100,7 +100,7 @@ const ShipperDetail = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={refresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       >
@@ -146,8 +146,8 @@ const ShipperDetail = () => {
               </AppText>
               <Star
                 size={ICON_SIZE.xs}
-                color={COLORS.goldPrimary}
-                fill={COLORS.goldPrimary}
+                color={COLORS.primary}
+                fill={COLORS.primary}
               />
             </View>
             <AppText style={styles.statLabel}>Rating</AppText>
@@ -164,7 +164,7 @@ const ShipperDetail = () => {
         {/* Location & Description */}
         <View style={styles.contentPadding}>
           <View style={styles.locationContainer}>
-            <MapPin size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+            <MapPin size={ICON_SIZE.sm} color={COLORS.primary} />
             <AppText style={styles.locationLabel}>{shipper?.region}</AppText>
           </View>
 

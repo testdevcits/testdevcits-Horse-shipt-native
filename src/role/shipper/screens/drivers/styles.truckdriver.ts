@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   filterPillActive: {
     backgroundColor: COLORS.goldLightBg,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
   },
   filterPillText: {
     fontSize: FONT_SIZE.xs,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.goldBorder,
   },
   addDriverBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 14,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   specLabelTitle: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   specLabelVal: {
     fontSize: FONT_SIZE.xs,

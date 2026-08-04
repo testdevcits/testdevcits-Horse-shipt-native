@@ -127,11 +127,11 @@ const Login = () => {
         onPress={() => navigation.navigate('RoleSelection')}
         activeOpacity={0.8}
       >
-        <UserCog size={16} color={COLORS.goldPrimary} />
+        <UserCog size={16} color={COLORS.primary} />
         <AppText style={styles.changeRoleText}>
           {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
         </AppText>
-        <RefreshCw size={12} color={COLORS.goldPrimary} />
+        <RefreshCw size={12} color={COLORS.primary} />
       </TouchableOpacity>
 
       {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}

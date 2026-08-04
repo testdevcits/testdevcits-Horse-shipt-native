@@ -52,7 +52,7 @@ const ReviewsScreen = () => {
           <RefreshControl
             refreshing={loading}
             onRefresh={fetchReviews}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
         ListEmptyComponent={
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   summaryCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
     marginBottom: SPACING.xl,

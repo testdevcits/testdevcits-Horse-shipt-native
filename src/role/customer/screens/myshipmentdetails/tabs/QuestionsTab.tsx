@@ -25,9 +25,9 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
   const allQuestions = Array.isArray(questions)
     ? questions
     : [
-        ...(questions?.pending || []),
-        ...(questions?.answered || []),
-      ];
+      ...(questions?.pending || []),
+      ...(questions?.answered || []),
+    ];
   const totalCount = allQuestions.length;
 
   const handleInputChange = (id: string, text: string) => {
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   sendBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     width: 36,
     height: 36,
     borderRadius: 18,

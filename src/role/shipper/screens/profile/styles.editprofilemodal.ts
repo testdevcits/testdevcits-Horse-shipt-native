@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xl,
     paddingVertical: SPACING.sm,
     borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     gap: 6,
     minHeight: 42,
   },

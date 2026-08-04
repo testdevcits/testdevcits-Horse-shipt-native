@@ -44,7 +44,7 @@ const Payments = () => {
         windowSize={5}
         removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => fetchPayments(true)} tintColor={COLORS.goldPrimary} />
+          <RefreshControl refreshing={refreshing} onRefresh={() => fetchPayments(true)} tintColor={COLORS.primary} />
         }
         ListEmptyComponent={
           <EmptyState

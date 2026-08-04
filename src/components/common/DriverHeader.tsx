@@ -94,7 +94,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                     </View>
                 ) : (
                     <View style={styles.captainShieldBox}>
-                        <ShieldCheck size={20} color={COLORS.goldPrimary} />
+                        <ShieldCheck size={20} color={COLORS.primary} />
                         <AppText style={styles.verifiedCaptainTag}>VERIFIED</AppText>
                     </View>
                 )}
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderWidth: 2,
-        borderColor: COLORS.goldPrimary,
+        borderColor: COLORS.primary,
         borderRadius: RADIUS.md,
         backgroundColor: COLORS.goldLightBg,
         alignItems: 'center',
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     monogramText: {
         fontFamily: FONTS.bold,
         fontSize: 22,
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     indicatorDot: {
         width: 12,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     verifiedCaptainTag: {
         fontFamily: FONTS.bold,
         fontSize: 8,
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
         marginTop: 2,
         letterSpacing: 0.5,
     },

@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
   },
   loginLink: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold, // Bold makes it look more clickable
   },
 });

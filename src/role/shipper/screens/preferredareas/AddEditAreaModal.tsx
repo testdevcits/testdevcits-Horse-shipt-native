@@ -164,7 +164,7 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
                 value={locationName}
                 onChangeText={setLocationName}
                 placeholder="e.g. Indore, Madhya Pradesh, India"
-                leftIcon={<MapPin size={18} color={COLORS.goldPrimary} />}
+                leftIcon={<MapPin size={18} color={COLORS.primary} />}
                 multiline
               />
             </View>
@@ -210,31 +210,31 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               />
             </View>
 
-              {/* Radius Quick Presets */}
-              <View style={styles.presetRow}>
-                {RADIUS_PRESETS.map(preset => {
-                  const isActive = String(preset) === radiusKm;
-                  return (
-                    <TouchableOpacity
-                      key={preset}
+            {/* Radius Quick Presets */}
+            <View style={styles.presetRow}>
+              {RADIUS_PRESETS.map(preset => {
+                const isActive = String(preset) === radiusKm;
+                return (
+                  <TouchableOpacity
+                    key={preset}
+                    style={[
+                      styles.presetChip,
+                      isActive && styles.presetChipActive,
+                    ]}
+                    onPress={() => setRadiusKm(String(preset))}
+                  >
+                    <AppText
                       style={[
-                        styles.presetChip,
-                        isActive && styles.presetChipActive,
+                        styles.presetChipText,
+                        isActive && styles.presetChipTextActive,
                       ]}
-                      onPress={() => setRadiusKm(String(preset))}
                     >
-                      <AppText
-                        style={[
-                          styles.presetChipText,
-                          isActive && styles.presetChipTextActive,
-                        ]}
-                      >
-                        {preset} km
-                      </AppText>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
+                      {preset} km
+                    </AppText>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </ScrollView>
 
           {/* Modal Footer Actions */}

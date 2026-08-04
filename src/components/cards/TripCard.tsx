@@ -49,7 +49,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
           </AppText>
         </View>
 
-        <ArrowRight size={14} color={COLORS.goldPrimary} style={styles.arrowIcon} />
+        <ArrowRight size={14} color={COLORS.primary} style={styles.arrowIcon} />
 
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />
@@ -62,7 +62,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
       {/* Shipment Specs Grid */}
       <View style={styles.footerRow}>
         <View style={styles.infoBadge}>
-          <Truck size={14} color={COLORS.goldPrimary} />
+          <Truck size={14} color={COLORS.primary} />
           <AppText style={styles.infoText}>
             {shipmentData?.numberOfHorses || 1} {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
           </AppText>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   routeHeader: {
     fontFamily: FONTS.bold,
     fontSize: 10,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 1,
   },
   shipmentCodeTag: {
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingVertical: 10,
     borderRadius: RADIUS.xs,
     marginTop: SPACING.md,

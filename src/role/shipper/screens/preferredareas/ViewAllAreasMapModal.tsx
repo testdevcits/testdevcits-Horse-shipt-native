@@ -271,7 +271,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               {selectedIds.length === areas.length ? (
                 <EyeOff size={15} color={COLORS.textPrimary} />
               ) : (
-                <Eye size={15} color={COLORS.goldPrimary} />
+                <Eye size={15} color={COLORS.primary} />
               )}
               <AppText style={styles.floatingBtnText}>
                 {selectedIds.length === areas.length ? 'Hide All' : 'Show All'}
@@ -283,7 +283,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               onPress={handleFitSelected}
               activeOpacity={0.85}
             >
-              <Maximize2 size={15} color={COLORS.goldPrimary} />
+              <Maximize2 size={15} color={COLORS.primary} />
               <AppText style={styles.floatingBtnText}>Fit Bounds</AppText>
             </TouchableOpacity>
 
@@ -294,7 +294,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
             >
               <Layers
                 size={16}
-                color={mapType === 'hybrid' ? COLORS.goldPrimary : COLORS.textPrimary}
+                color={mapType === 'hybrid' ? COLORS.primary : COLORS.textPrimary}
               />
             </TouchableOpacity>
           </View>
@@ -401,7 +401,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
 
                       <View style={styles.metaRow}>
                         <View style={styles.radiusPill}>
-                          <MapPin size={11} color={COLORS.goldPrimary} />
+                          <MapPin size={11} color={COLORS.primary} />
                           <AppText style={styles.radiusPillText}>
                             {area.radiusKm || 50} km radius
                           </AppText>
@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
   countPillText: {
     fontSize: 11,
     fontFamily: FONTS.semiBold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   modalSubTitle: {
     fontSize: 11,
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
   selectAllToggleText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   // SEARCH BAR
@@ -645,7 +645,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   areaCardFocused: {
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     backgroundColor: COLORS.goldLightBg,
   },
   checkboxTouch: {
@@ -663,8 +663,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxSquareChecked: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   indexBadge: {
     width: 24,
@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   indexBadgeFocused: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
   },
   indexBadgeText: {
     fontSize: 11,
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
   radiusPillText: {
     fontSize: 11,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   coordsText: {
     fontSize: 10,

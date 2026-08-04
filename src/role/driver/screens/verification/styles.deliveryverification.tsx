@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
         marginBottom: 6,
     },
     stepCircleActive: {
-        borderColor: COLORS.goldPrimary,
+        borderColor: COLORS.primary,
     },
     stepCircleCompleted: {
-        borderColor: COLORS.goldPrimary,
-        backgroundColor: COLORS.goldPrimary,
+        borderColor: COLORS.primary,
+        backgroundColor: COLORS.primary,
     },
     stepNumber: {
         fontFamily: FONTS.bold,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         color: COLORS.textLight,
     },
     stepNumberActive: {
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     stepLabel: {
         fontFamily: FONTS.medium,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     stepLabelActive: {
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
         fontFamily: FONTS.bold,
     },
     stepLine: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
     stepLineCompleted: {
-        backgroundColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
     },
     shipmentCard: {
         backgroundColor: COLORS.white,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     badgeText: {
         fontFamily: FONTS.bold,
         fontSize: 11,
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     stopBox: {
         backgroundColor: COLORS.goldLightBg,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     resendTextLink: {
         fontFamily: FONTS.bold,
         fontSize: 14,
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     footerContainer: {
         backgroundColor: COLORS.white,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     },
     goldActionButton: {
         flexDirection: 'row',
-        backgroundColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
         height: 52,
         borderRadius: 26, // Rounded pill design
         alignItems: 'center',

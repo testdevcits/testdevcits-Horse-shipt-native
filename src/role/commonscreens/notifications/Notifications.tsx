@@ -202,7 +202,7 @@ const Notifications = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => fetchNotifications(true)}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
         ListEmptyComponent={
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
   },
   notifCardSelected: {
     backgroundColor: '#FFFBEB',
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
   },
   checkbox: {
     width: 20,

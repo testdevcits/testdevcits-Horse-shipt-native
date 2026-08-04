@@ -89,7 +89,7 @@ const PrivacyPolicyScreen = () => {
 
       {loading ? (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+          <ActivityIndicator size="large" color={COLORS.primary} />
           <AppText style={styles.loadingText}>Loading Privacy Policy...</AppText>
         </View>
       ) : (

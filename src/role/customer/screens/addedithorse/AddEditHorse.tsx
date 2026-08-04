@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   },
   addBtn: {
     flex: 1,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.sm,
     height: 46,
   },

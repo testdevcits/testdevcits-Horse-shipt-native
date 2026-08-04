@@ -90,7 +90,7 @@ const Profile = () => {
   if (loading && !driver) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={PROFILE_COLORS.goldPrimary} />
+        <ActivityIndicator size="large" color={PROFILE_COLORS.primary} />
       </View>
     );
   }
@@ -171,7 +171,7 @@ const Profile = () => {
           <View style={styles.detailsBody}>
             {/* Email field */}
             <View style={styles.detailRow}>
-              <Mail size={18} color={PROFILE_COLORS.goldPrimary} style={styles.detailIcon} />
+              <Mail size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
               <View>
                 <AppText style={styles.detailLabel}>EMAIL</AppText>
                 <AppText style={styles.detailValue}>{driver?.email || 'testdevcits@gmail.com'}</AppText>
@@ -180,7 +180,7 @@ const Profile = () => {
 
             {/* Phone field */}
             <View style={styles.detailRow}>
-              <Phone size={18} color={PROFILE_COLORS.goldPrimary} style={styles.detailIcon} />
+              <Phone size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
               <View>
                 <AppText style={styles.detailLabel}>PHONE</AppText>
                 <AppText style={styles.detailValue}>{driver?.phone || 'N/A'}</AppText>
@@ -189,7 +189,7 @@ const Profile = () => {
 
             {/* License field */}
             <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-              <FileText size={18} color={PROFILE_COLORS.goldPrimary} style={styles.detailIcon} />
+              <FileText size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
               <View>
                 <AppText style={styles.detailLabel}>LICENSE</AppText>
                 <AppText style={styles.detailValue}>{driver?.licenseNumber || 'N/A'}</AppText>
@@ -212,14 +212,14 @@ const Profile = () => {
             {completedCount === 0 ? (
               <View style={styles.emptyContainer}>
                 <View style={styles.emptyIconBox}>
-                  <Box size={24} color={PROFILE_COLORS.goldPrimary} />
+                  <Box size={24} color={PROFILE_COLORS.primary} />
                 </View>
                 <AppText style={styles.emptyText}>No completed shipments yet</AppText>
               </View>
             ) : (
               completedShipments.map((shipment, index) => (
                 <View key={shipment._id} style={styles.completedShipmentRow}>
-                  <Box size={18} color={PROFILE_COLORS.goldPrimary} />
+                  <Box size={18} color={PROFILE_COLORS.primary} />
                   <AppText style={styles.completedShipmentText}>
                     {shipment.shipment.pickupLocation} ➔ {shipment.shipment.deliveryLocation}
                   </AppText>

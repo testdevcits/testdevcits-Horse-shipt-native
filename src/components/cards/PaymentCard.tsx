@@ -10,7 +10,7 @@ const PaymentCard = memo(({ item, onPress }: { item: any; onPress: (item: any) =
       <View style={styles.header}>
         <View style={styles.brandRow}>
           <View style={styles.iconBg}>
-            <CreditCard size={18} color={COLORS.goldPrimary} />
+            <CreditCard size={18} color={COLORS.primary} />
           </View>
           <View>
             <AppText style={styles.brandText}>{item?.cardBrand.toUpperCase()} •••• {item?.last4}</AppText>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   iconBg: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.goldLightBg, alignItems: 'center', justifyContent: 'center' },
   brandText: { fontFamily: FONTS.bold, fontSize: 14, color: COLORS.textPrimary },
   dateText: { fontSize: 11, color: COLORS.textSecondary, marginTop: 2 },
-  amount: { fontFamily: FONTS.bold, fontSize: 16, color: COLORS.goldPrimary },
+  amount: { fontFamily: FONTS.bold, fontSize: 16, color: COLORS.primary },
   divider: { height: 1, backgroundColor: COLORS.divider, marginVertical: SPACING.md },
   routeContainer: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: SPACING.sm },
   location: { flex: 1, fontSize: 12, color: COLORS.textSecondary, fontFamily: FONTS.medium },

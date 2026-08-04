@@ -1,5 +1,5 @@
 // src/screens/location/LocationScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -16,11 +16,18 @@ import DriverHeader from '../../../../components/common/DriverHeader';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 
-// Import our new helper methods
+// Import permission helper and auto location service
 import {
   requestLocationPermission,
+  requestBackgroundLocationPermission,
   openDeviceSettings,
 } from '../../../../utils/permissionHelper';
+import {
+  startAutoTracking,
+  stopAutoTracking,
+  isAutoTrackingActive,
+  getStoredAutoTrackingState,
+} from '../../../../services/autoLocationService';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
 import { RouteMapModal } from './RouteMapModal';
@@ -35,6 +42,18 @@ const LocationScreen = () => {
     lng: number;
   } | null>(null);
 
+  // Sync auto tracking state on mount
+  useEffect(() => {
+    const checkState = async () => {
+      const isRunning = isAutoTrackingActive();
+      const isStored = await getStoredAutoTrackingState();
+      if (isRunning || isStored) {
+        setIsAutoTracking(true);
+      }
+    };
+    checkState();
+  }, []);
+
   // Modal Configuration State
   const [modalConfig, setModalConfig] = useState({
     isVisible: false,
@@ -43,7 +62,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const fallbackLat =
@@ -150,8 +169,8 @@ const LocationScreen = () => {
     const nextState = !isAutoTracking;
 
     if (nextState) {
-      // Run quick check when initiating auto tracking
-      const hasPermission = await requestLocationPermission(
+      // Mandate background location permission before starting auto-tracking
+      const hasPermission = await requestBackgroundLocationPermission(
         (title, message) => {
           setModalConfig({
             isVisible: true,
@@ -167,32 +186,61 @@ const LocationScreen = () => {
           });
         },
       );
-      if (!hasPermission) return;
+
+      if (!hasPermission) {
+        return;
+      }
+
+      const started = await startAutoTracking();
+      if (!started) {
+        setModalConfig({
+          isVisible: true,
+          title: 'Auto-Track Error',
+          description: 'Could not start background tracking service.',
+          type: 'danger',
+          confirmText: 'OK',
+          cancelText: 'Close',
+          onConfirm: closeModal,
+        });
+        return;
+      }
+
+      setIsAutoTracking(true);
+
+      setModalConfig({
+        isVisible: true,
+        title: 'Auto-Track Active',
+        description:
+          'Background location tracking is now active. Coordinates are updated every 5 seconds while app is open and every 10 seconds when backgrounded or closed.',
+        type: 'success',
+        confirmText: 'Got It',
+        cancelText: 'Close',
+        onConfirm: closeModal,
+      });
+    } else {
+      await stopAutoTracking();
+      setIsAutoTracking(false);
+
+      setModalConfig({
+        isVisible: true,
+        title: 'Auto-Track Paused',
+        description: 'Background location tracking has been safely stopped.',
+        type: 'warning',
+        confirmText: 'Got It',
+        cancelText: 'Close',
+        onConfirm: closeModal,
+      });
     }
-
-    setIsAutoTracking(nextState);
-
-    setModalConfig({
-      isVisible: true,
-      title: nextState ? 'Auto-Track Active' : 'Auto-Track Paused',
-      description: nextState
-        ? 'Your background GPS stream is now active. Dispatchers will receive automatic position updates every 60 seconds.'
-        : 'Background coordinates stream has been safely paused.',
-      type: nextState ? 'success' : 'warning',
-      confirmText: 'Got It',
-      cancelText: 'Close',
-      onConfirm: closeModal,
-    });
   };
 
   const [mapVisible, setMapVisible] = useState(false);
 
-   
+
 
   if (loading && !driver) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }

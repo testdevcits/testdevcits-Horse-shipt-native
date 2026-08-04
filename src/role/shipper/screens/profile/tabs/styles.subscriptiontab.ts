@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   planLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
   },
   planName: {
     fontSize: FONT_SIZE.md,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary || '#64748B',
   },
   billingFilterTextActive: {
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
     fontFamily: FONTS.bold,
   },
   transactionsTableContainer: {

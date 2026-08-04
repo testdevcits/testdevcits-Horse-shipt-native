@@ -106,8 +106,8 @@ const MyShipmentDetails = ({ route, }: any) => {
                     padding: 4,
                   }}
                 >
-                  <Pencil size={16} color={COLORS.goldPrimary} />
-                  <AppText style={{ color: COLORS.goldPrimary, fontSize: 13 }}>
+                  <Pencil size={16} color={COLORS.primary} />
+                  <AppText style={{ color: COLORS.primary, fontSize: 13 }}>
                     Edit
                   </AppText>
                 </TouchableOpacity>
@@ -120,7 +120,7 @@ const MyShipmentDetails = ({ route, }: any) => {
                 {data?.shipmentCode || ''}
               </AppText>
               <View style={styles.statusBadge}>
-                <AppText style={styles.statusText}>Open offer</AppText>
+                <AppText style={styles.statusText}>{data?.status}</AppText>
               </View>
             </View>
 
@@ -179,7 +179,7 @@ const MyShipmentDetails = ({ route, }: any) => {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefresh}
-                tintColor={COLORS.goldPrimary}
+                tintColor={COLORS.primary}
               />
             }
           >

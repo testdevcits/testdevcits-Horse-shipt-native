@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
   // Banner Header
   contractBannerHeader: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
   },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   logoBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   bannerTextCol: {
     alignItems: 'flex-end',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.grey100,
   },
   downloadBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

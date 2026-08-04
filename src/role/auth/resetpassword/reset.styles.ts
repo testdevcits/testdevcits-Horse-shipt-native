@@ -28,7 +28,7 @@ export default StyleSheet.create({
     width: 72, height: 72, borderRadius: 36,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1.5, borderColor: COLORS.goldPrimary,
+    borderWidth: 1.5, borderColor: COLORS.primary,
   },
   logoIcon: { width: 40, height: 40, tintColor: COLORS.goldDarkText },
   scrollContent: { paddingTop: SPACING.xl, paddingBottom: 40, flexGrow: 1 },
@@ -36,12 +36,12 @@ export default StyleSheet.create({
   title: { fontSize: 28, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
   subtitle: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: 8, lineHeight: 20, paddingHorizontal: 10 },
   form: { gap: SPACING.sm },
-  submitBtn: { 
-    backgroundColor: COLORS.goldPrimary, 
-    height: 56, 
-    borderRadius: RADIUS.md, 
+  submitBtn: {
+    backgroundColor: COLORS.primary,
+    height: 56,
+    borderRadius: RADIUS.md,
     marginTop: SPACING.lg,
-    shadowColor: COLORS.goldPrimary,
+    shadowColor: COLORS.primary,
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5

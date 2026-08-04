@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   notifCheckboxActive: {
-    backgroundColor: COLORS.goldPrimary || '#A06333',
-    borderColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
+    borderColor: COLORS.primary || '#A06333',
   },
   calloutBanner: {
     backgroundColor: COLORS.goldLightBg || '#FAF6EE',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   calloutText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
   },
 });
 

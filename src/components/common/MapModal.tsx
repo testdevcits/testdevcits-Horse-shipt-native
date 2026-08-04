@@ -138,11 +138,11 @@
 //               <View
 //                 style={[
 //                   styles.markerDot,
-//                   { backgroundColor: COLORS.goldPrimary },
+//                   { backgroundColor: COLORS.primary },
 //                 ]}
 //               />
 //               <View
-//                 style={[styles.markerHalo, { borderColor: COLORS.goldPrimary }]}
+//                 style={[styles.markerHalo, { borderColor: COLORS.primary }]}
 //               />
 //             </Animated.View>
 //           </Marker>
@@ -167,7 +167,7 @@
 //           {/* Route Line */}
 //           <Polyline
 //             coordinates={[pickup, delivery]}
-//             strokeColor={COLORS.goldPrimary}
+//             strokeColor={COLORS.primary}
 //             strokeWidth={4}
 //             lineDashPattern={[1]}
 //             geodesic={true}
@@ -177,7 +177,7 @@
 //         {/* LOADING OVERLAY */}
 //         {loading && (
 //           <View style={styles.loadingOverlay}>
-//             <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+//             <ActivityIndicator size="large" color={COLORS.primary} />
 //             <AppText style={styles.loadingText}>
 //               Loading Shipment Route...
 //             </AppText>
@@ -214,7 +214,7 @@
 //           <View style={styles.infoCard}>
 //             <View style={styles.cardHeader}>
 //               <View style={styles.statBox}>
-//                 <Navigation size={18} color={COLORS.goldPrimary} />
+//                 <Navigation size={18} color={COLORS.primary} />
 //                 <View>
 //                   <AppText style={styles.statLabel}>Distance</AppText>
 //                   <AppText style={styles.statValue}>{distance}</AppText>
@@ -222,7 +222,7 @@
 //               </View>
 //               <View style={styles.statDivider} />
 //               <View style={styles.statBox}>
-//                 <Clock size={18} color={COLORS.goldPrimary} />
+//                 <Clock size={18} color={COLORS.primary} />
 //                 <View>
 //                   <AppText style={styles.statLabel}>Est. Time</AppText>
 //                   <AppText style={styles.statValue}>
@@ -238,7 +238,7 @@
 //                   <View
 //                     style={[
 //                       styles.tinyDot,
-//                       { backgroundColor: COLORS.goldPrimary },
+//                       { backgroundColor: COLORS.primary },
 //                     ]}
 //                   />
 //                   <View style={styles.verticalLine} />
@@ -434,7 +434,7 @@
 //   },
 
 //   trackBtn: {
-//     backgroundColor: COLORS.goldPrimary,
+//     backgroundColor: COLORS.primary,
 //     height: 54,
 //     borderRadius: RADIUS.md,
 //     justifyContent: 'center',
@@ -593,14 +593,14 @@ const MapModal = ({
             description={shipmentData?.pickupLocation || 'Pickup Location'}
           >
             <View style={styles.markerWrapper}>
-              <View style={[styles.markerBadge, { backgroundColor: COLORS.goldPrimary }]}>
+              <View style={[styles.markerBadge, { backgroundColor: COLORS.primary }]}>
                 <Package size={12} color={COLORS.white} />
                 <AppText style={styles.markerBadgeText}>Pickup</AppText>
               </View>
-              <View style={[styles.markerPin, { backgroundColor: COLORS.goldPrimary }]}>
+              <View style={[styles.markerPin, { backgroundColor: COLORS.primary }]}>
                 <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
-              <View style={[styles.markerPointer, { borderTopColor: COLORS.goldPrimary }]} />
+              <View style={[styles.markerPointer, { borderTopColor: COLORS.primary }]} />
             </View>
           </Marker>
 
@@ -625,7 +625,7 @@ const MapModal = ({
 
         {loading && (
           <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+            <ActivityIndicator size="large" color={COLORS.primary} />
             <AppText style={styles.loadingText}>
               Fetching best road route...
             </AppText>
@@ -660,7 +660,7 @@ const MapModal = ({
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
               <View style={styles.statBox}>
-                <Navigation size={18} color={COLORS.goldPrimary} />
+                <Navigation size={18} color={COLORS.primary} />
                 <View>
                   <AppText style={styles.statLabel}>Road Distance</AppText>
                   <AppText style={styles.statValue}>
@@ -670,7 +670,7 @@ const MapModal = ({
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statBox}>
-                <Clock size={18} color={COLORS.goldPrimary} />
+                <Clock size={18} color={COLORS.primary} />
                 <View>
                   <AppText style={styles.statLabel}>Est. Travel</AppText>
                   <AppText style={styles.statValue}>
@@ -686,7 +686,7 @@ const MapModal = ({
                   <View
                     style={[
                       styles.tinyDot,
-                      { backgroundColor: COLORS.goldPrimary },
+                      { backgroundColor: COLORS.primary },
                     ]}
                   />
                   <View style={styles.verticalLine} />
@@ -885,7 +885,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
   },
   trackBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 54,
     borderRadius: RADIUS.md,
     justifyContent: 'center',

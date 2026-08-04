@@ -289,7 +289,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
           {loading && (
             <View style={styles.loader}>
-              <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+              <ActivityIndicator size="large" color={COLORS.primary} />
               <AppText style={styles.loadingText}>Syncing Leg data?...</AppText>
             </View>
           )}

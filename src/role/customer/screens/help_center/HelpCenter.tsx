@@ -32,7 +32,7 @@ const HelpCenter = ({ navigation }: any) => {
           <View style={styles.cardHeader}>
             <View style={styles.headerLeft}>
               <View style={styles.questionIconBox}>
-                <HelpCircle size={20} color={COLORS.goldPrimary} />
+                <HelpCircle size={20} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.cardTitle}>Customer Help</AppText>
@@ -59,7 +59,7 @@ const HelpCenter = ({ navigation }: any) => {
               onPress={handleEmailPress}
             >
               <View style={styles.mailIconBox}>
-                <Mail size={18} color={COLORS.goldPrimary} />
+                <Mail size={18} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.emailLabel}>HELP EMAIL</AppText>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   emailLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 1,
   },
   emailValue: {

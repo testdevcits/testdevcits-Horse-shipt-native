@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   reviewBtn: {
     flex: 1,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 50,
     borderRadius: RADIUS.xs, // Square-ish corners like in the image
     justifyContent: 'center',

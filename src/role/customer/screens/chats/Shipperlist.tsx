@@ -80,7 +80,7 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
             <RefreshControl
               refreshing={loading && shippers.length > 0}
               onRefresh={refresh}
-              tintColor={COLORS.goldPrimary}
+              tintColor={COLORS.primary}
             />
           }
           ListEmptyComponent={

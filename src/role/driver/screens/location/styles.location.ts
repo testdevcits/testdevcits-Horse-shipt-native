@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:  COLORS.background,
+    backgroundColor: COLORS.background,
   },
   trackingCard: {
     backgroundColor: COLORS.white,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 8,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   goldButton: {
     flexDirection: 'row',
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 48,
     borderRadius: 8,
     alignItems: 'center',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   tipLabel: {
     fontFamily: FONTS.bold,
     fontSize: 12,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 0.5,
     marginBottom: 6,
   },

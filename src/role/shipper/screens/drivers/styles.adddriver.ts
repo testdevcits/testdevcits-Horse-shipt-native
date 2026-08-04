@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: SPACING.sm + 2,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
   },
   submitBtnText: {

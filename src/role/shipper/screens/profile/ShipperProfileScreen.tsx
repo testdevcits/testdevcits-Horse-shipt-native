@@ -321,7 +321,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       >
@@ -387,7 +387,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                 disabled={profileUploading}
               >
                 {profileUploading ? (
-                  <ActivityIndicator size="small" color={COLORS.goldPrimary} />
+                  <ActivityIndicator size="small" color={COLORS.primary} />
                 ) : (
                   <>
                     <Pencil size={16} color={COLORS.textPrimary} />

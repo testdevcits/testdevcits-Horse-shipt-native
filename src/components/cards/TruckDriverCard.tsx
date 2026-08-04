@@ -46,7 +46,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             {profileUrl ? (
               <Image source={{ uri: profileUrl }} style={styles.avatarImg} />
             ) : (
-              <User size={24} color={COLORS.goldPrimary} />
+              <User size={24} color={COLORS.primary} />
             )}
           </View>
 
@@ -109,7 +109,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Name Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <User size={18} color={COLORS.goldPrimary} />
+              <User size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Name</AppText>
@@ -122,7 +122,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* License Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Award size={18} color={COLORS.goldPrimary} />
+              <Award size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>License</AppText>
@@ -135,7 +135,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Email Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Mail size={18} color={COLORS.goldPrimary} />
+              <Mail size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Email</AppText>
@@ -148,7 +148,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Phone Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Phone size={18} color={COLORS.goldPrimary} />
+              <Phone size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Phone</AppText>
@@ -162,7 +162,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {driver.notes ? (
             <View style={styles.specDetailCard}>
               <View style={styles.specIconBox}>
-                <FileText size={18} color={COLORS.goldPrimary} />
+                <FileText size={18} color={COLORS.primary} />
               </View>
               <View style={styles.specTextCol}>
                 <AppText style={styles.specLabelTitle}>Notes</AppText>
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   specLabelTitle: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   specLabelVal: {
     fontSize: FONT_SIZE.xs,

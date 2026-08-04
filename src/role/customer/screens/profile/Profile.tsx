@@ -268,7 +268,7 @@ const localStyles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   saveBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingVertical: SPACING.md,
     borderRadius: RADIUS.md,
     alignItems: 'center',

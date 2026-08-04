@@ -283,7 +283,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
             />
           ) : (
             <View style={styles.fallbackImage}>
-              <Truck size={44} color={COLORS.goldPrimary} />
+              <Truck size={44} color={COLORS.primary} />
             </View>
           )}
           {/* Status Badge */}
@@ -324,7 +324,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           {/* 2x2 Specs Grid */}
           <View style={styles.specsGrid}>
             <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.goldPrimary} />
+              <Truck size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>VIN</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -334,7 +334,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.specBox}>
-              <Box size={18} color={COLORS.goldPrimary} />
+              <Box size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Size</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -344,7 +344,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.specBox}>
-              <Layers size={18} color={COLORS.goldPrimary} />
+              <Layers size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Stalls</AppText>
                 <AppText style={styles.specValue}>
@@ -354,7 +354,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.goldPrimary} />
+              <Truck size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Stall Type</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -367,7 +367,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           {/* Notes / Spec Description */}
           {vehicle.notes ? (
             <View style={styles.notesBox}>
-              <FileText size={18} color={COLORS.goldPrimary} />
+              <FileText size={18} color={COLORS.primary} />
               <View style={styles.notesTextCol}>
                 <AppText style={styles.notesTitle}>Notes</AppText>
                 <AppText style={styles.notesText}>{vehicle.notes}</AppText>
@@ -382,14 +382,14 @@ const MyVehiclesScreen = ({ navigation }: any) => {
               onPress={() => handleOpenAssignDriver(vehicle)}
             >
               {assignedDriverName ? (
-                <UserCheck size={15} color={COLORS.goldPrimary} />
+                <UserCheck size={15} color={COLORS.primary} />
               ) : (
                 <UserPlus size={15} color={COLORS.textPrimary} />
               )}
               <AppText
                 style={[
                   styles.actionPillText,
-                  assignedDriverName && { color: COLORS.goldPrimary, fontFamily: 'PlusJakartaSans-Bold' },
+                  assignedDriverName && { color: COLORS.primary, fontFamily: 'PlusJakartaSans-Bold' },
                 ]}
               >
                 {assignedDriverName ? `Driver: ${assignedDriverName}` : 'Assign Driver'}
@@ -454,7 +454,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       />

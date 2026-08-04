@@ -37,7 +37,7 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
         <View style={styles.routeContainer}>
           {/* Visual Route Line */}
           <View style={styles.routeLineContainer}>
-            <View style={[styles.routeDot, { borderColor: COLORS.goldPrimary }]} />
+            <View style={[styles.routeDot, { borderColor: COLORS.primary }]} />
             <View style={styles.line} />
             <MapPin size={14} color={COLORS.error} />
           </View>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.divider,
   },
   chevronCircle: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     width: 32,
     height: 32,
     borderRadius: 16,

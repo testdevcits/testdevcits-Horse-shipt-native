@@ -84,7 +84,7 @@ const Signup = ({ navigation }: any) => {
                     <Ionicons
                       name="bus-outline"
                       size={24}
-                      color={values.role === 'shipper' ? COLORS.goldPrimary : COLORS.grey400}
+                      color={values.role === 'shipper' ? COLORS.primary : COLORS.grey400}
                     />
                     <AppText style={[styles.roleText, values.role === 'shipper' && styles.activeRoleText]}>
                       Shipper
@@ -101,7 +101,7 @@ const Signup = ({ navigation }: any) => {
                     <Ionicons
                       name="person-outline"
                       size={24}
-                      color={values.role === 'customer' ? COLORS.goldPrimary : COLORS.grey400}
+                      color={values.role === 'customer' ? COLORS.primary : COLORS.grey400}
                     />
                     <AppText style={[styles.roleText, values.role === 'customer' && styles.activeRoleText]}>
                       Customer
@@ -153,7 +153,7 @@ const Signup = ({ navigation }: any) => {
                   error={touched.confirmPassword ? errors.confirmPassword : ''}
                   rightIcon={<Ionicons name="eye-outline" size={20} color={COLORS.grey400} />}
                 />
- 
+
 
                 <AppButton
                   title="Signup"
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   loginLink: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   form: {
     marginTop: SPACING.md,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   activeRoleCard: {
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     backgroundColor: COLORS.goldLightBg,
     borderWidth: 1.5,
   },
@@ -257,11 +257,11 @@ const styles = StyleSheet.create({
     color: COLORS.grey500,
   },
   activeRoleText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
   signupButton: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 56,
     borderRadius: RADIUS.md,
     marginTop: SPACING.sm,

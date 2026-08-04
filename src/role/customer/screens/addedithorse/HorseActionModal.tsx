@@ -47,7 +47,7 @@ const HorseActionModal = ({
 
           {/* 4. Optional: Loading Indicator for better UX */}
           <ActivityIndicator
-            color={COLORS.goldPrimary}
+            color={COLORS.primary}
             style={{ marginTop: SPACING.lg }}
           />
         </View>

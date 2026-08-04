@@ -23,7 +23,7 @@ const HorseInformation = ({
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <Award size={20} color={COLORS.goldPrimary} />
+        <Award size={20} color={COLORS.primary} />
         <AppText style={styles.cardHeaderTitle}>
           Horses ({horses.length})
         </AppText>
@@ -88,7 +88,7 @@ const HorseInformation = ({
         {activeShipment?.notes ? (
           <View style={styles.notesBox}>
             <View style={styles.notesHeaderRow}>
-              <FileText size={16} color={COLORS.goldPrimary} />
+              <FileText size={16} color={COLORS.primary} />
               <AppText style={styles.notesBoxLabel}>SHIPMENT NOTES</AppText>
             </View>
             <AppText style={styles.notesBoxText}>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   notesBoxLabel: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 0.5,
   },
   notesBoxText: {

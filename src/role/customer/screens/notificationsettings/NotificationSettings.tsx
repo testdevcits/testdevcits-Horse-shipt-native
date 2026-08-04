@@ -14,9 +14,9 @@ const NotificationSettings = () => {
       <Switch
         value={settings[key as keyof typeof settings]}
         onValueChange={() => toggleSetting(key)}
-        trackColor={{ 
-          false: COLORS.grey200, 
-          true: COLORS.goldPrimary // Using your A37F3D color
+        trackColor={{
+          false: COLORS.grey200,
+          true: COLORS.primary // Using your A37F3D color
         }}
         thumbColor={COLORS.white}
         ios_backgroundColor={COLORS.grey200}
@@ -27,7 +27,7 @@ const NotificationSettings = () => {
   if (loading)
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator color={COLORS.goldPrimary} size="large" />
+        <ActivityIndicator color={COLORS.primary} size="large" />
       </View>
     );
 
@@ -36,7 +36,7 @@ const NotificationSettings = () => {
       <View style={styles.header}>
         <AppText style={styles.title}>Notifications</AppText>
         <AppText style={styles.subtitle}>
-          Notifications are customizable alerts that keep you updated about specific 
+          Notifications are customizable alerts that keep you updated about specific
           activities in HorseShipt, they ensure you never miss anything while you're away.
         </AppText>
       </View>

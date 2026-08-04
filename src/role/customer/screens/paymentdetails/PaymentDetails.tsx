@@ -117,7 +117,7 @@ const PaymentDetails = () => {
         </TouchableOpacity>
         <AppText style={styles.headerTitle}>Receipt Details</AppText>
         <TouchableOpacity onPress={handleDownloadReceipt}>
-          <Download size={20} color={COLORS.goldPrimary} />
+          <Download size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
 
@@ -140,7 +140,7 @@ const PaymentDetails = () => {
               <AppText style={styles.idText}>{payment?.transactionId}</AppText>
             </View>
             <TouchableOpacity onPress={onCopy} style={styles.copyBtn}>
-              <Copy size={16} color={COLORS.goldPrimary} />
+              <Copy size={16} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +166,7 @@ const PaymentDetails = () => {
         <AppText style={styles.sectionTitle}>Shipment Route</AppText>
         <View style={styles.infoCard}>
           <View style={styles.routeRow}>
-            <MapPin size={18} color={COLORS.goldPrimary} />
+            <MapPin size={18} color={COLORS.primary} />
             <AppText style={styles.routeText}>{payment?.pickupLocation}</AppText>
           </View>
           <View style={styles.routeLine} />
@@ -182,7 +182,7 @@ const PaymentDetails = () => {
           onPress={handleOpenReceipt}
         >
           <AppText style={styles.receiptBtnText}>View Official Stripe Receipt</AppText>
-          <ExternalLink size={16} color={COLORS.goldPrimary} />
+          <ExternalLink size={16} color={COLORS.primary} />
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -210,12 +210,12 @@ const styles = StyleSheet.create({
   avatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: COLORS.grey100, alignItems: 'center', justifyContent: 'center' },
   shipperName: { fontFamily: FONTS.bold, fontSize: FONT_SIZE.sm, color: COLORS.textPrimary },
   shipperEmail: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary },
-  phoneBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.goldPrimary, alignItems: 'center', justifyContent: 'center' },
+  phoneBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center' },
   routeRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
   routeText: { flex: 1, fontSize: FONT_SIZE.sm, fontFamily: FONTS.medium, color: COLORS.textPrimary },
   routeLine: { width: 2, height: 16, backgroundColor: COLORS.goldBorder, marginLeft: 8, marginVertical: 2 },
-  receiptBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: SPACING.md, backgroundColor: COLORS.goldLightBg, borderRadius: RADIUS.md, borderStyle: 'dashed', borderWidth: 1, borderColor: COLORS.goldPrimary },
-  receiptBtnText: { fontFamily: FONTS.bold, color: COLORS.goldPrimary, fontSize: FONT_SIZE.sm }
+  receiptBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: SPACING.md, backgroundColor: COLORS.goldLightBg, borderRadius: RADIUS.md, borderStyle: 'dashed', borderWidth: 1, borderColor: COLORS.primary },
+  receiptBtnText: { fontFamily: FONTS.bold, color: COLORS.primary, fontSize: FONT_SIZE.sm }
 });
 
 export default PaymentDetails;

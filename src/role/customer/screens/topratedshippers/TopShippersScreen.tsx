@@ -113,7 +113,7 @@ const TopShippersScreen = () => {
           >
             <SlidersHorizontal
               size={20}
-              color={filtersActive ? COLORS.white : COLORS.goldPrimary}
+              color={filtersActive ? COLORS.white : COLORS.primary}
             />
           </TouchableOpacity>
         </View>
@@ -173,7 +173,7 @@ const TopShippersScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={refresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
         ListEmptyComponent={
@@ -289,8 +289,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
   },
   filterCircleActive: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   searchBar: { marginHorizontal: SPACING.lg, marginBottom: SPACING.md },
   filterScroll: {
@@ -307,8 +307,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
   },
   activeChip: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   chipText: { fontSize: 13, fontFamily: FONTS.bold, color: COLORS.grey600 },
   activeChipText: { color: COLORS.white },
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   resetText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
     fontSize: 14,
   },
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     marginLeft: 8,
   },
   chipGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
@@ -378,8 +378,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeModalChip: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   modalChipText: {
     fontSize: 14,
@@ -399,13 +399,13 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.lg,
   },
   applyBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 56,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
-    shadowColor: COLORS.goldPrimary,
+    shadowColor: COLORS.primary,
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },

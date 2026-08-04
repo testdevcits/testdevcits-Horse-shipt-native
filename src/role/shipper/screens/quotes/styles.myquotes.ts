@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   tabBtnActive: {
-    borderBottomColor: COLORS.goldPrimary,
+    borderBottomColor: COLORS.primary,
   },
   tabBtnText: {
     fontSize: FONT_SIZE.xs,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   tabBtnTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
   badgePill: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   badgePillText: {
     fontSize: 10,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   loaderContainer: {
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   shipmentCode: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   cardSubText: {
     fontSize: FONT_SIZE.xs,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   priceValue: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   // Specs 2x2 Grid
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   specLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   specValue: {
     fontSize: FONT_SIZE.xs,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   viewContractBtn: {
     flex: 1,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   assignVehicleBtnText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
   },

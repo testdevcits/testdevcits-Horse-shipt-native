@@ -100,7 +100,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
 
             {loading ? (
                 <View style={styles.centered}>
-                    <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+                    <ActivityIndicator size="large" color={COLORS.primary} />
                 </View>
             ) : (
                 <FlatList

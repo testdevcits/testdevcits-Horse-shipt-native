@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   addBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   vehicleNum: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   vehicleType: {
     fontSize: FONT_SIZE.sm,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   specLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   specValue: {
     fontSize: FONT_SIZE.xs,

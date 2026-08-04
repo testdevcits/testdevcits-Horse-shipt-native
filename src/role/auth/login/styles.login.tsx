@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.18)', 
+    backgroundColor: 'rgba(0,0,0,0.18)',
   },
   keyboardView: {
     flex: 1,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   roleBadgeValue: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 0.5,
   },
   subtitle: {
@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxActive: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   checkboxRow: {
     flexDirection: 'row',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
   },
   footerLink: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold, // Bold for better CTA visibility
     fontSize: FONT_SIZE.sm, // 12
   },

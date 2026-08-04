@@ -91,7 +91,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
     }
     return {
       bg: COLORS.goldLightBg || '#FFFBEB',
-      text: COLORS.goldPrimary || '#D97706',
+      text: COLORS.primary || '#D97706',
       border: '#FDE68A',
     };
   };
@@ -188,7 +188,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   }) => (
     <View style={styles.summaryItem}>
       <View style={styles.summaryItemHeader}>
-        <Icon size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+        <Icon size={ICON_SIZE.xs} color={COLORS.primary} />
         <AppText style={styles.summaryLabel}>{label}</AppText>
       </View>
       <AppText style={styles.summaryValue} numberOfLines={1}>
@@ -322,7 +322,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                     >
                       <View style={styles.docLeftRow}>
                         <View style={styles.docIconBox}>
-                          <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                          <FileText size={ICON_SIZE.sm} color={COLORS.primary} />
                         </View>
                         <View style={styles.docInfo}>
                           <AppText style={styles.docName}>
@@ -335,7 +335,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                       </View>
                       <View style={styles.docActionWrap}>
                         <AppText style={styles.docActionText}>View</AppText>
-                        <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+                        <ChevronRight size={ICON_SIZE.xs} color={COLORS.primary} />
                       </View>
                     </TouchableOpacity>
                   )}
@@ -369,7 +369,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                       >
                         <View style={styles.docLeftRow}>
                           <View style={styles.docIconBox}>
-                            <FileText size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                            <FileText size={ICON_SIZE.sm} color={COLORS.primary} />
                           </View>
                           <View style={styles.docInfo}>
                             <AppText style={styles.docName} numberOfLines={1}>
@@ -383,7 +383,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                         </View>
                         <View style={styles.docActionWrap}>
                           <AppText style={styles.docActionText}>View</AppText>
-                          <ChevronRight size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+                          <ChevronRight size={ICON_SIZE.xs} color={COLORS.primary} />
                         </View>
                       </TouchableOpacity>
                     )}
@@ -394,7 +394,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
             {isPending && (
               <View style={[styles.cardContainer, styles.highlightCard]}>
                 <View style={styles.highlightHeader}>
-                  <ShieldCheck size={ICON_SIZE.sm} color={COLORS.goldPrimary} />
+                  <ShieldCheck size={ICON_SIZE.sm} color={COLORS.primary} />
                   <AppText style={styles.highlightTitle}>
                     Acceptance & Payment
                   </AppText>
@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
   headerTitleWrap: { flex: 1 },
   reviewLabel: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
     letterSpacing: 0.8,
     textTransform: 'uppercase',
@@ -712,7 +712,7 @@ const styles = StyleSheet.create({
   heroPrice: {
     fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   heroRight: { alignItems: 'flex-end' },
   statusBadge: {
@@ -817,12 +817,12 @@ const styles = StyleSheet.create({
   },
   docActionText: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
 
   highlightCard: {
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     backgroundColor: '#FFFDF7',
     borderWidth: 1.5,
   },
@@ -932,12 +932,12 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: RADIUS.xs,
     borderWidth: 1.5,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 2,
   },
-  checkboxActive: { backgroundColor: COLORS.goldPrimary },
+  checkboxActive: { backgroundColor: COLORS.primary },
   termsLabel: {
     flex: 1,
     fontSize: FONT_SIZE.xs,
@@ -1011,12 +1011,12 @@ const styles = StyleSheet.create({
   },
 
   acceptBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 48,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: COLORS.goldPrimary,
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 4,

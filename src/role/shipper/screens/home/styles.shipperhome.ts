@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   statCount: {
     fontSize: 26,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     marginTop: 4,
   },
   statIconBox: {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   sectionSub: {
     fontSize: FONT_SIZE.xs,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   filterPillActive: {
     backgroundColor: COLORS.goldLightBg,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
   },
   filterPillText: {
     fontSize: FONT_SIZE.xs,
@@ -199,17 +199,17 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   viewToggleBtnActive: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
   },
   viewToggleBtnInactive: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
   },
   viewToggleBtnText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   viewToggleBtnTextActive: {
     color: COLORS.white,
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   shipmentCode: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     marginVertical: 3,
   },
   infoMetaRow: {
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   mapSectionTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   mapSectionSub: {
     fontSize: FONT_SIZE.xs,
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   mapSelectShipmentCode: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     marginTop: 1,
   },
   mapSelectDeliverySub: {
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
   routeMapShipmentCode: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     marginTop: 2,
     marginBottom: SPACING.md,
   },

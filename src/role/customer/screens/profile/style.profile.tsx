@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
   tab: { flex: 1, paddingVertical: SPACING.sm, alignItems: 'center' },
-  activeTab: { borderBottomWidth: 2, borderBottomColor: COLORS.goldPrimary },
+  activeTab: { borderBottomWidth: 2, borderBottomColor: COLORS.primary },
   tabText: {
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
     fontSize: FONT_SIZE.sm,
   },
-  activeTabText: { color: COLORS.goldPrimary, fontFamily: FONTS.semiBold },
+  activeTabText: { color: COLORS.primary, fontFamily: FONTS.semiBold },
   scrollContent: { paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md, paddingBottom: 40 },
   avatarSection: { alignItems: 'center', marginVertical: SPACING.md },
   imageWrapper: {

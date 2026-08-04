@@ -79,72 +79,72 @@ const ShipperChatsScreen = ({ navigation }: any) => {
     return true;
   });
 
-const ChatItemCard = ({
-  item,
-  index,
-  isLast,
-  handleOpenChat,
-}: {
-  item: any;
-  index: number;
-  isLast: boolean;
-  handleOpenChat: (item: any) => void;
-}) => {
-  const [avatarError, setAvatarError] = useState(false);
-  const pickupShort = item?.pickupLocation
-    ? item?.pickupLocation.split(',')[0]
-    : 'Pickup Location';
-  const deliveryShort = item?.deliveryLocation
-    ? item?.deliveryLocation.split(',')[0]
-    : 'Delivery Location';
+  const ChatItemCard = ({
+    item,
+    index,
+    isLast,
+    handleOpenChat,
+  }: {
+    item: any;
+    index: number;
+    isLast: boolean;
+    handleOpenChat: (item: any) => void;
+  }) => {
+    const [avatarError, setAvatarError] = useState(false);
+    const pickupShort = item?.pickupLocation
+      ? item?.pickupLocation.split(',')[0]
+      : 'Pickup Location';
+    const deliveryShort = item?.deliveryLocation
+      ? item?.deliveryLocation.split(',')[0]
+      : 'Delivery Location';
 
-  return (
-    <TouchableOpacity
-      key={item?.shipmentId || item?._id || index}
-      style={[styles.chatCardItem, isLast && styles.chatCardItemLast]}
-      onPress={() => handleOpenChat(item)}
-      activeOpacity={0.7}
-    >
-      {/* Avatar with Online Dot */}
-      <View style={styles.avatarWrapper}>
-        {item?.avatar && !avatarError ? (
-          <Image
-            source={{ uri: item?.avatar }}
-            style={styles.avatarImg}
-            onError={() => setAvatarError(true)}
-          />
-        ) : (
-          <View style={styles.avatarPlaceholder}>
-            <User size={22} color={COLORS.goldPrimary} />
+    return (
+      <TouchableOpacity
+        key={item?.shipmentId || item?._id || index}
+        style={[styles.chatCardItem, isLast && styles.chatCardItemLast]}
+        onPress={() => handleOpenChat(item)}
+        activeOpacity={0.7}
+      >
+        {/* Avatar with Online Dot */}
+        <View style={styles.avatarWrapper}>
+          {item?.avatar && !avatarError ? (
+            <Image
+              source={{ uri: item?.avatar }}
+              style={styles.avatarImg}
+              onError={() => setAvatarError(true)}
+            />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <User size={22} color={COLORS.primary} />
+            </View>
+          )}
+          {/* Green Online Dot */}
+          <View style={styles.onlineDot} />
+        </View>
+
+        {/* Right Chat Column Info */}
+        <View style={styles.chatContentCol}>
+          {/* Customer Name & Time Row */}
+          <View style={styles.topNameRow}>
+            <AppText style={styles.customerName}>{item?.name || 'Customer'}</AppText>
+            <AppText style={styles.timeAgoText}>5min ago</AppText>
           </View>
-        )}
-        {/* Green Online Dot */}
-        <View style={styles.onlineDot} />
-      </View>
 
-      {/* Right Chat Column Info */}
-      <View style={styles.chatContentCol}>
-        {/* Customer Name & Time Row */}
-        <View style={styles.topNameRow}>
-          <AppText style={styles.customerName}>{item?.name || 'Customer'}</AppText>
-          <AppText style={styles.timeAgoText}>5min ago</AppText>
-        </View>
-
-        {/* Shipment Code Subtitle */}
-        <AppText style={styles.shipmentCodeSub}>
-          Shipment ID {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
-        </AppText>
-
-        {/* Location Route / Last Message Preview */}
-        <View style={styles.routePreviewRow}>
-          <AppText style={styles.routePreviewText} numberOfLines={1}>
-            {pickupShort} ➜ {deliveryShort}
+          {/* Shipment Code Subtitle */}
+          <AppText style={styles.shipmentCodeSub}>
+            Shipment ID {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
           </AppText>
+
+          {/* Location Route / Last Message Preview */}
+          <View style={styles.routePreviewRow}>
+            <AppText style={styles.routePreviewText} numberOfLines={1}>
+              {pickupShort} ➜ {deliveryShort}
+            </AppText>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
+      </TouchableOpacity>
+    );
+  };
 
   const renderChatItem = ({ item, index }: { item: any; index: number }) => {
     return (
@@ -181,7 +181,7 @@ const ChatItemCard = ({
     if (loading) {
       return (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+          <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       );
     }
@@ -213,7 +213,7 @@ const ChatItemCard = ({
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
           />
         }
       />

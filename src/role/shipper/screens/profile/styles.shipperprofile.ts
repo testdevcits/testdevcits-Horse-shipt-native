@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   tabTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
   activeTabIndicator: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 3,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: 2,
   },
 
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 
   // TAB 1: PROFILE STYLES
   goldFilledBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.xs,
     paddingVertical: SPACING.md,
     alignItems: 'center',
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
   },
   subUpgradeBtn: {
     flex: 1,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.xs,
     paddingVertical: SPACING.sm,
     alignItems: 'center',
@@ -543,7 +543,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   toggleSwitchActive: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
   },
   toggleCircle: {
     width: 20,
@@ -594,8 +594,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   notifCheckboxActive: {
-    backgroundColor: COLORS.goldPrimary,
-    borderColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   calloutBanner: {
     backgroundColor: COLORS.goldLightBg,
@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
   calloutText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
 
   notificationsCard: {
@@ -719,7 +719,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   billingFilterTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
   transactionsTableContainer: {
@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
   planLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   planName: {
     fontSize: FONT_SIZE.md,

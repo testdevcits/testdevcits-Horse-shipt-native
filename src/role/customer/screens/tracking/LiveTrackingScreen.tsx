@@ -88,7 +88,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   if (loading || !data) {
     return (
       <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <AppText style={{ marginTop: 10 }}>Initializing Live Map...</AppText>
       </View>
     );
@@ -141,7 +141,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             destination={routeDestination}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={4}
-            strokeColor={COLORS.goldPrimary}
+            strokeColor={COLORS.primary}
             optimizeWaypoints={true}
           />
         )}
@@ -233,13 +233,13 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
         </View>
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.iconAction} activeOpacity={0.7}>
-            <Phone size={20} color={COLORS.goldPrimary} />
+            <Phone size={20} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconAction} activeOpacity={0.7}>
-            <MessageCircle size={20} color={COLORS.goldPrimary} />
+            <MessageCircle size={20} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconAction} activeOpacity={0.7}>
-            <Share2 size={20} color={COLORS.goldPrimary} />
+            <Share2 size={20} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -262,7 +262,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
         <View style={styles.timeline}>
           <View style={styles.timelineItem}>
             <View style={styles.timelinePointActive}>
-              <CheckCircle2 size={16} color={COLORS.goldPrimary} />
+              <CheckCircle2 size={16} color={COLORS.primary} />
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.locationTitle}>Pickup Point</AppText>
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
   distanceBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
     borderRadius: RADIUS.round,

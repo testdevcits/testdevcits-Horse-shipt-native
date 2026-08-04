@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 20,
   },
-  activeTab: { backgroundColor: COLORS.goldPrimary },
+  activeTab: { backgroundColor: COLORS.primary },
   tabText: {
     fontSize: 13,
     fontFamily: FONTS.medium,

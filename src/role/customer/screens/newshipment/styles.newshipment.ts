@@ -5,18 +5,18 @@ const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  
-  
+
+
   // Stepper
-  stepperContainer: { 
-    flexDirection: 'row', 
-    paddingHorizontal: SPACING.lg, 
+  stepperContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.md,
     paddingBottom: SPACING.xs,
     backgroundColor: COLORS.white,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
-    gap: 6 
+    gap: 6
   },
   stepItem: {
     flex: 1,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
 
   content: { flex: 1, padding: SPACING.lg },
-  
+
   // Form Card
   card: {
     backgroundColor: COLORS.white,
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
     marginBottom: SPACING.xl
   },
-  label: { 
-    fontFamily: FONTS.bold, 
-    fontSize: 14, 
-    color: COLORS.goldDarkText, 
-    marginBottom: SPACING.sm 
+  label: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    color: COLORS.goldDarkText,
+    marginBottom: SPACING.sm
   },
   input: {
     borderWidth: 1,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden'
   },
-  
+
   footer: {
     flexDirection: 'row',
     padding: SPACING.lg,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   btnPrev: { backgroundColor: COLORS.grey100 },
-  btnNext: { backgroundColor: COLORS.goldPrimary },
+  btnNext: { backgroundColor: COLORS.primary },
   btnText: { fontFamily: FONTS.bold, color: COLORS.white },
   btnTextPrev: { color: COLORS.textSecondary },
 

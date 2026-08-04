@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: SPACING.sm + 2,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
   },
   addVehicleBtnText: {
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   pickerItemTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
 

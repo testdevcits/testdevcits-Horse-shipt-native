@@ -281,7 +281,7 @@ const ShipperShipmentDetailsScreen = () => {
                   destination={{ latitude: dLat, longitude: dLng }}
                   apikey={GOOGLE_MAPS_APIKEY}
                   strokeWidth={4}
-                  strokeColor={COLORS.brandBrown || COLORS.goldPrimary || '#A06333'}
+                  strokeColor={COLORS.brandBrown || COLORS.primary || '#A06333'}
                   lineDashPattern={[0]}
                   onError={err => console.log('MapViewDirections Error:', err)}
                 />
@@ -291,7 +291,7 @@ const ShipperShipmentDetailsScreen = () => {
                     { latitude: pLat, longitude: pLng },
                     { latitude: dLat, longitude: dLng },
                   ]}
-                  strokeColor={COLORS.goldPrimary || '#A37F3D'}
+                  strokeColor={COLORS.primary || '#A37F3D'}
                   strokeWidth={3}
                   lineDashPattern={[6, 6]}
                 />

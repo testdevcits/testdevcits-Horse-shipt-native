@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   primaryBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 52,
     borderRadius: RADIUS.md,
     justifyContent: 'center',

@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   calloutText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
   },
 });
 

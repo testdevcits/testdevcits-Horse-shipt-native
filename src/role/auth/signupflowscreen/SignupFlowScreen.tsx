@@ -164,7 +164,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
             styles.stepLine,
             {
               width: 40,
-              backgroundColor: item <= current ? COLORS.goldPrimary : COLORS.grey200
+              backgroundColor: item <= current ? COLORS.primary : COLORS.grey200
             }
           ]}
         />

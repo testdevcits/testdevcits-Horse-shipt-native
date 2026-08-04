@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   goldFilledBtn: {
-    backgroundColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
     borderRadius: RADIUS.xs || 8,
     paddingVertical: SPACING.md,
     alignItems: 'center',

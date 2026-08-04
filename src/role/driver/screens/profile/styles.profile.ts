@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     width: 76,
     height: 76,
     borderWidth: 2,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     borderRadius: RADIUS.sm,
     backgroundColor: COLORS.goldLightBg,
     alignItems: 'center',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   monogramText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.heading,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   driverName: {
     fontFamily: FONTS.bold,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     marginRight: 6,
   },
   statusText: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   statLabel: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 0.5,
     marginBottom: 2,
   },
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   completedBadgeCount: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderRadius: 10,
     width: 20,
     height: 20,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     flexDirection: 'row',
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 44,
     borderRadius: RADIUS.sm,
     alignItems: 'center',

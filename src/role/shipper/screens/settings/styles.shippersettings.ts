@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   notifCheckboxActive: {
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     backgroundColor: COLORS.goldLightBg,
   },
   calloutBanner: {

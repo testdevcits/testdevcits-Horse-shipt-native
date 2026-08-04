@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { COLORS,  } from '../../constants';
+import { COLORS, } from '../../constants';
 
 export const FloatingButton = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={onPress}>
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,

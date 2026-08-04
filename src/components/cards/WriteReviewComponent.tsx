@@ -9,7 +9,7 @@ const FEEDBACK_CHIPS = ["On Time", "Safe Handling", "Professional", "Good Vehicl
 
 const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, comment, setComment }: any) => {
   const getEmoji = () => {
-    if (rating >= 4) return <Smile size={48} color={COLORS.goldPrimary} />;
+    if (rating >= 4) return <Smile size={48} color={COLORS.primary} />;
     if (rating >= 3) return <Meh size={48} color={COLORS.warning} />;
     return <Frown size={48} color={COLORS.error} />;
   };
@@ -18,19 +18,19 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
     <View style={styles.container}>
       <View style={styles.emojiContainer}>{getEmoji()}</View>
       <AppText style={styles.question}>How was your experience?</AppText>
-      
+
       <View style={styles.starRow}>
         {[1, 2, 3, 4, 5].map((s) => (
           <TouchableOpacity key={s} onPress={() => setRating(s)} activeOpacity={0.7}>
-            <Star size={40} color={s <= rating ? COLORS.goldPrimary : COLORS.grey200} fill={s <= rating ? COLORS.goldPrimary : 'transparent'} />
+            <Star size={40} color={s <= rating ? COLORS.primary : COLORS.grey200} fill={s <= rating ? COLORS.primary : 'transparent'} />
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.chipGrid}>
         {FEEDBACK_CHIPS.map(chip => (
-          <TouchableOpacity 
-            key={chip} 
+          <TouchableOpacity
+            key={chip}
             onPress={() => onChipPress(chip)}
             style={[styles.chip, selectedChips.includes(chip) && styles.activeChip]}
           >
@@ -40,9 +40,9 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
       </View>
 
       <View style={{ width: '100%' }}>
-        <Input 
-          placeholder="Tell us more about the shipment..." 
-          multiline 
+        <Input
+          placeholder="Tell us more about the shipment..."
+          multiline
           value={comment}
           onChangeText={setComment}
           containerStyle={{ marginBottom: SPACING.md }}
@@ -50,7 +50,7 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
       </View>
 
       <TouchableOpacity style={styles.photoBtn}>
-        <Camera size={20} color={COLORS.goldPrimary} />
+        <Camera size={20} color={COLORS.primary} />
         <AppText style={styles.photoBtnText}>Add Photos</AppText>
       </TouchableOpacity>
     </View>
@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
   starRow: { flexDirection: 'row', gap: SPACING.md, marginBottom: SPACING.xl },
   chipGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 10, marginBottom: SPACING.xl },
   chip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: RADIUS.round, borderWidth: 1, borderColor: COLORS.divider },
-  activeChip: { backgroundColor: COLORS.goldPrimary, borderColor: COLORS.goldPrimary },
+  activeChip: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
   chipText: { fontSize: 13, fontFamily: FONTS.medium, color: COLORS.textSecondary },
   activeChipText: { color: COLORS.white },
   input: { width: '100%', minHeight: 100, backgroundColor: COLORS.grey50, borderRadius: RADIUS.lg, padding: SPACING.md, fontFamily: FONTS.regular, color: COLORS.textPrimary, textAlignVertical: 'top', marginBottom: SPACING.md },
-  photoBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: SPACING.md, borderWidth: 1, borderStyle: 'dashed', borderColor: COLORS.goldPrimary, borderRadius: RADIUS.lg, width: '100%', justifyContent: 'center' },
-  photoBtnText: { color: COLORS.goldPrimary, fontFamily: FONTS.bold }
+  photoBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: SPACING.md, borderWidth: 1, borderStyle: 'dashed', borderColor: COLORS.primary, borderRadius: RADIUS.lg, width: '100%', justifyContent: 'center' },
+  photoBtnText: { color: COLORS.primary, fontFamily: FONTS.bold }
 });
 
 export default WriteReviewComponent;

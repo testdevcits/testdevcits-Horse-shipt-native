@@ -176,7 +176,7 @@ const ChatDetails = () => {
   if (loading)
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator color={COLORS.goldPrimary} size="large" />
+        <ActivityIndicator color={COLORS.primary} size="large" />
       </View>
     );
 

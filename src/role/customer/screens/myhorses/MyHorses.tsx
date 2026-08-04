@@ -77,7 +77,7 @@ const MyHorses = ({ navigation }: any) => {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            tintColor={COLORS.goldPrimary}
+            tintColor={COLORS.primary}
             onRefresh={() => {
               setRefreshing(true);
               fetchHorses();
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   addBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingVertical: SPACING.xs + 2,
     paddingHorizontal: SPACING.lg,
     alignSelf: 'flex-start',

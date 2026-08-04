@@ -472,7 +472,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={COLORS.goldPrimary}
+              tintColor={COLORS.primary}
             />
           }
         />
@@ -485,7 +485,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={COLORS.goldPrimary}
+              tintColor={COLORS.primary}
             />
           }
         >
@@ -616,7 +616,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                           }}
                           apikey={GOOGLE_MAPS_APIKEY}
                           strokeWidth={4}
-                          strokeColor={COLORS.brandBrown || COLORS.goldPrimary || '#A06333'}
+                          strokeColor={COLORS.brandBrown || COLORS.primary || '#A06333'}
                           lineDashPattern={[0]}
                           onError={err => console.log('MapViewDirections Error:', err)}
                         />
@@ -643,7 +643,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                                 78.737,
                             },
                           ]}
-                          strokeColor={COLORS.goldPrimary || '#A37F3D'}
+                          strokeColor={COLORS.primary || '#A37F3D'}
                           strokeWidth={3}
                           lineDashPattern={[6, 6]}
                         />

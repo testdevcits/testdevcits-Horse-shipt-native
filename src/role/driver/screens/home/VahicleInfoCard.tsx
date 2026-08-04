@@ -25,7 +25,7 @@ const VahicleInfoCard = ({
         onPress={() => setIsVehicleCollapsed(!isVehicleCollapsed)}
       >
         <View style={styles.headerLeftRow}>
-          <Truck size={20} color={COLORS.goldPrimary} />
+          <Truck size={20} color={COLORS.primary} />
           <AppText style={styles.cardHeaderTitle}>Assigned Vehicle</AppText>
         </View>
         {isVehicleCollapsed ? (
@@ -48,7 +48,7 @@ const VahicleInfoCard = ({
               />
             ) : (
               <View style={styles.vehicleImageFallback}>
-                <Truck size={44} color={COLORS.goldPrimary} />
+                <Truck size={44} color={COLORS.primary} />
               </View>
             )}
             <View style={styles.tagBadge}>
@@ -69,7 +69,7 @@ const VahicleInfoCard = ({
               </AppText>
             </View>
             <View style={styles.readyBadge}>
-              <CheckCircle2 size={13} color={COLORS.goldPrimary} />
+              <CheckCircle2 size={13} color={COLORS.primary} />
               <AppText style={styles.readyBadgeText}>READY</AppText>
             </View>
           </View>
@@ -106,7 +106,7 @@ const VahicleInfoCard = ({
           {vehicle?.notes ? (
             <View style={styles.notesBox}>
               <View style={styles.notesHeaderRow}>
-                <FileText size={16} color={COLORS.goldPrimary} />
+                <FileText size={16} color={COLORS.primary} />
                 <AppText style={styles.notesBoxLabel}>VEHICLE NOTES</AppText>
               </View>
               <AppText style={styles.notesBoxText}>
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   readyBadgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   vehicleGrid: {
     flexDirection: 'row',
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   notesBoxLabel: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     letterSpacing: 0.5,
   },
   notesBoxText: {

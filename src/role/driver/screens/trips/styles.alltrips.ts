@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
         gap: SPACING.xs, // Space between chip label and count badge
     },
     chipActive: {
-        backgroundColor: COLORS.goldPrimary,
-        borderColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
+        borderColor: COLORS.primary,
     },
     chipText: {
         fontFamily: FONTS.medium,
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     badgeText: {
         fontFamily: FONTS.bold,
         fontSize: FONT_SIZE.xs,
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     badgeTextActive: {
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
     },
     cardSpacing: {
         marginHorizontal: SPACING.lg,

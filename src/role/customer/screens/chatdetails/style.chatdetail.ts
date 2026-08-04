@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     maxWidth: '82%',
   },
   myBubble: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     borderBottomRightRadius: RADIUS.xs,
   },
   otherBubble: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sendBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
   },
   disabledSendBtn: {
     opacity: 0.5,

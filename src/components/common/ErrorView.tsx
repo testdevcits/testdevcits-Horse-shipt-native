@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     retryBtn: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
         paddingHorizontal: 24,
         paddingVertical: 12,
         borderRadius: RADIUS.round,

@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: COLORS.goldPrimary,
+        borderColor: COLORS.primary,
     },
     logoIcon: {
         width: 100,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         gap: SPACING.md,
     },
     primaryBtn: {
-        backgroundColor: COLORS.goldPrimary,
+        backgroundColor: COLORS.primary,
         height: 54,
         borderRadius: RADIUS.md,
     },
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.regular,
     },
     loginLink: {
-        color: COLORS.goldPrimary,
+        color: COLORS.primary,
         fontFamily: FONTS.semiBold,
     },
 });

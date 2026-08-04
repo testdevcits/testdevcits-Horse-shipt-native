@@ -197,7 +197,7 @@ const AppSelect = memo(
                       {isSelected && (
                         <Check
                           size={ICON_SIZE.xs}
-                          color={COLORS.goldPrimary}
+                          color={COLORS.primary}
                           strokeWidth={3}
                         />
                       )}
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
   },
   selectedOptionText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
 });

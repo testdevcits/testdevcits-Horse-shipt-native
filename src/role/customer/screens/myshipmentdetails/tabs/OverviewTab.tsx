@@ -173,7 +173,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                 onPress={handleChatWithShipper}
                 activeOpacity={0.8}
               >
-                <MessageSquare size={15} color={COLORS.goldPrimary} />
+                <MessageSquare size={15} color={COLORS.primary} />
                 <AppText style={styles.chatActionBtnText}>
                   Chat with Shipper
                 </AppText>
@@ -185,7 +185,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               onPress={onReview}
               activeOpacity={0.8}
             >
-              <MessageSquare size={15} color={COLORS.goldPrimary} />
+              <MessageSquare size={15} color={COLORS.primary} />
               <AppText style={styles.chatActionBtnText}>
                 Review Shipment
               </AppText>
@@ -327,7 +327,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                         <View key={lIdx} style={styles.logCardItem}>
                           <View style={styles.logCardItemHeader}>
                             <View style={styles.logUserRow}>
-                              <User size={12} color={COLORS.goldPrimary} />
+                              <User size={12} color={COLORS.primary} />
                               <AppText style={styles.logUserNameText}>
                                 {log.userName || 'User'} (
                                 {log.userRole || 'Customer'})
@@ -360,7 +360,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           onPress={() => openUrl(horse.documents.coggins.url)}
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.goldPrimary} />
+                          <FileText size={16} color={COLORS.primary} />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Coggins Test
@@ -382,7 +382,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           }
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.goldPrimary} />
+                          <FileText size={16} color={COLORS.primary} />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Health Certificate
@@ -402,7 +402,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           onPress={() => openUrl(horse.documents.other.url)}
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.goldPrimary} />
+                          <FileText size={16} color={COLORS.primary} />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Other Document
@@ -439,7 +439,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   <View key={idx} style={styles.logCardItem}>
                     <View style={styles.logCardItemHeader}>
                       <View style={styles.logUserRow}>
-                        <User size={12} color={COLORS.goldPrimary} />
+                        <User size={12} color={COLORS.primary} />
                         <AppText style={styles.logUserNameText}>
                           {log.userName || 'Customer'}
                         </AppText>
@@ -642,7 +642,7 @@ const styles = StyleSheet.create({
   chatActionBtn: {
     backgroundColor: COLORS.white,
     borderWidth: 1.5,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   chatActionBtnText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
   },
@@ -783,7 +783,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     borderRadius: RADIUS.xs,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.goldPrimary,
+    borderLeftColor: COLORS.primary,
     marginBottom: SPACING.md,
   },
   infoQuoteTitle: {
@@ -897,7 +897,7 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   publishButton: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingVertical: SPACING.md,
     borderRadius: RADIUS.sm,
     alignItems: 'center',

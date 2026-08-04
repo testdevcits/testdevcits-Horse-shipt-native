@@ -57,7 +57,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           >
             <Pencil
               size={ICON_SIZE.xs}
-              color={COLORS.goldPrimary}
+              color={COLORS.primary}
               strokeWidth={2}
             />
           </TouchableOpacity>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.semiBold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
   },
   value: {
     fontSize: FONT_SIZE.sm,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   notesLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     marginBottom: 2,
   },
   notesText: {

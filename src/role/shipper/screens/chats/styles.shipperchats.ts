@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   dropdownItemTextActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
 

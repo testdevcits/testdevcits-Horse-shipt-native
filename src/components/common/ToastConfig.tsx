@@ -4,23 +4,23 @@ import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
- 
+
 const { width } = Dimensions.get('window');
 
 /**
  * Base Component for all Toast Types
  * Ensures consistent layout, shadows, and spacing
  */
-const CustomToastBase = ({ 
-  text1, 
-  text2, 
-  icon: Icon, 
-  color 
-}: { 
-  text1?: string; 
-  text2?: string; 
-  icon: any; 
-  color: string 
+const CustomToastBase = ({
+  text1,
+  text2,
+  icon: Icon,
+  color
+}: {
+  text1?: string;
+  text2?: string;
+  icon: any;
+  color: string
 }) => (
   <View style={[styles.container, { borderLeftColor: color }]}>
     {/* Icon Section with subtle background tint */}
@@ -49,27 +49,27 @@ const CustomToastBase = ({
 
 export const toastConfig: ToastConfig = {
   success: (props: BaseToastProps) => (
-    <CustomToastBase 
-      text1={props.text1} 
-      text2={props.text2} 
-      icon={CheckCircle2} 
-      color={COLORS.success} 
+    <CustomToastBase
+      text1={props.text1}
+      text2={props.text2}
+      icon={CheckCircle2}
+      color={COLORS.success}
     />
   ),
   error: (props: BaseToastProps) => (
-    <CustomToastBase 
-      text1={props.text1} 
-      text2={props.text2} 
-      icon={AlertCircle} 
-      color={COLORS.error} 
+    <CustomToastBase
+      text1={props.text1}
+      text2={props.text2}
+      icon={AlertCircle}
+      color={COLORS.error}
     />
   ),
   info: (props: BaseToastProps) => (
-    <CustomToastBase 
-      text1={props.text1} 
-      text2={props.text2} 
-      icon={Info} 
-      color={COLORS.goldPrimary} 
+    <CustomToastBase
+      text1={props.text1}
+      text2={props.text2}
+      icon={Info}
+      color={COLORS.primary}
     />
   ),
 };
@@ -86,14 +86,14 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.md,
     borderLeftWidth: 5,
-    
+
     // Premium Shadow (Stripe Style)
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.12,
     shadowRadius: 15,
     elevation: 10,
-    
+
     // Safety margin for Top positioning
     marginTop: Platform.OS === 'ios' ? 0 : 10,
   },

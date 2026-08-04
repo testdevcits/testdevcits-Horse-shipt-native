@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     minWidth: 62,
   },
   slotBadgeFilled: {
-    backgroundColor: COLORS.goldPrimary || '#A06333',
-    borderColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
+    borderColor: COLORS.primary || '#A06333',
   },
   slotBadgeNum: {
     fontSize: FONT_SIZE.xs || 12,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
     borderRadius: 3,
   },
   areaCountText: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   addAreaBtn: {
-    backgroundColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm + 2,
     borderRadius: RADIUS.xs || 8,
     elevation: 2,
-    shadowColor: COLORS.goldPrimary || '#A06333',
+    shadowColor: COLORS.primary || '#A06333',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   indexBadgeText: {
     fontSize: FONT_SIZE.xs || 12,
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
   },
   locationTitle: {
     flex: 1,
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   },
   presetChipActive: {
     backgroundColor: COLORS.goldLightBg || '#FAF6EE',
-    borderColor: COLORS.goldPrimary || '#A06333',
+    borderColor: COLORS.primary || '#A06333',
   },
   presetChipText: {
     fontSize: FONT_SIZE.xs || 12,
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary || '#64748B',
   },
   presetChipTextActive: {
-    color: COLORS.goldPrimary || '#A06333',
+    color: COLORS.primary || '#A06333',
     fontFamily: FONTS.bold,
   },
 
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
   },
   submitBtn: {
     flex: 1,
-    backgroundColor: COLORS.goldPrimary || '#A06333',
+    backgroundColor: COLORS.primary || '#A06333',
     borderRadius: RADIUS.xs || 8,
     paddingVertical: SPACING.sm + 2,
     alignItems: 'center',

@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   activePill: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     elevation: 2,
-    shadowColor: COLORS.goldPrimary,
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   selectionCount: {
     fontFamily: FONTS.bold,
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontSize: FONT_SIZE.sm,
   },
   ribbonActions: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.goldLightBg,
   },
   selectedCard: {
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
     backgroundColor: '#FAF6EE',
   },
   checkContainer: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
   },
   cardMsg: {
     fontSize: FONT_SIZE.xs,

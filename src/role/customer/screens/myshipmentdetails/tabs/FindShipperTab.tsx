@@ -59,8 +59,8 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
             <View style={styles.ratingBadge}>
               <Star
                 size={ICON_SIZE.xs}
-                color={COLORS.goldPrimary}
-                fill={COLORS.goldPrimary}
+                color={COLORS.primary}
+                fill={COLORS.primary}
               />
               <AppText style={styles.ratingText}>{profile?.rating || 0}</AppText>
             </View>
@@ -71,13 +71,13 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
 
       <View style={styles.detailsSection}>
         <View style={styles.infoLine}>
-          <MapPin size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+          <MapPin size={ICON_SIZE.xs} color={COLORS.primary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.region || 'N/A'}
           </AppText>
         </View>
         <View style={styles.infoLine}>
-          <Mail size={ICON_SIZE.xs} color={COLORS.goldPrimary} />
+          <Mail size={ICON_SIZE.xs} color={COLORS.primary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.email || 'N/A'}
           </AppText>
@@ -163,7 +163,7 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
   if (loading) {
     return (
       <View style={styles.centerLoader}>
-        <ActivityIndicator size="large" color={COLORS.goldPrimary} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <AppText style={styles.loaderText}>Finding matched shippers...</AppText>
       </View>
     );
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   inviteBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     height: 44,
     borderRadius: RADIUS.sm,
     justifyContent: 'center',

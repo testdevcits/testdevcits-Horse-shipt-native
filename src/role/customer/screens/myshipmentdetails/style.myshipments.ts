@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: RADIUS.round,
     borderWidth: 1,
-    borderColor: COLORS.goldPrimary,
+    borderColor: COLORS.primary,
   },
   statusText: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
   },
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   tabButtonActive: {
-    borderBottomColor: COLORS.goldPrimary,
+    borderBottomColor: COLORS.primary,
   },
   tabLabel: {
     fontSize: FONT_SIZE.sm,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     color: COLORS.grey600,
   },
   tabLabelActive: {
-    color: COLORS.goldPrimary,
+    color: COLORS.primary,
     fontFamily: FONTS.semiBold,
   },
   tabBadge: {

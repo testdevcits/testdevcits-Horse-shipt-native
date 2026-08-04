@@ -250,7 +250,7 @@ const DeliveryVerificationScreen = () => {
                     {step === 1 && (
                         <View style={styles.centerSection}>
                             <View style={styles.middleIconBox}>
-                                <Milestone size={32} color={COLORS.goldPrimary} />
+                                <Milestone size={32} color={COLORS.primary} />
                             </View>
                             <AppText style={styles.mainActionHeading}>Ready to Deliver?</AppText>
                             <AppText style={styles.mainActionDescription}>
@@ -263,7 +263,7 @@ const DeliveryVerificationScreen = () => {
                     {step === 2 && (
                         <View style={styles.centerSection}>
                             <View style={styles.middleIconBox}>
-                                <Smartphone size={32} color={COLORS.goldPrimary} />
+                                <Smartphone size={32} color={COLORS.primary} />
                             </View>
                             <AppText style={styles.mainActionHeading}>Enter OTP</AppText>
                             <AppText style={styles.mainActionDescription}>

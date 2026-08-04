@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   submitBtn: {
-    backgroundColor: COLORS.goldPrimary,
+    backgroundColor: COLORS.primary,
     paddingVertical: 14,
     borderRadius: RADIUS.xs,
     alignItems: 'center',
