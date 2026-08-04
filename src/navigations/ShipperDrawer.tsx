@@ -11,6 +11,7 @@ import ShipperSettingsScreen from '../role/shipper/screens/settings/ShipperSetti
 import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScreen';
 import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
+import AddVehicleModal from '../role/shipper/screens/vehicles/AddVehicleModal';
 
 const Drawer = createDrawerNavigator();
 

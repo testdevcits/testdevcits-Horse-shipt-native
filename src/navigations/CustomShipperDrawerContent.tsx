@@ -34,7 +34,8 @@ import { logoutUser } from '../redux/slices/authSlice';
 
 interface DrawerItemProps {
   label: string;
-  IconComponent: React.ElementType;
+  IconComponent?: React.ElementType;
+  imageSource?: any;
   onPress: () => void;
   isActive?: boolean;
   hasChevron?: boolean;
@@ -43,6 +44,7 @@ interface DrawerItemProps {
 const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
   label,
   IconComponent,
+  imageSource,
   onPress,
   isActive,
   hasChevron,
@@ -53,11 +55,19 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
     activeOpacity={0.7}
   >
     <View style={styles.iconContainer}>
-      <IconComponent
-        size={20}
-        color={isActive ? COLORS.brandBrown : COLORS.grey700}
-        strokeWidth={1.8}
-      />
+      {imageSource ? (
+        <Image
+          source={imageSource}
+          style={styles.menuImage}
+          resizeMode="contain"
+        />
+      ) : IconComponent ? (
+        <IconComponent
+          size={20}
+          color={isActive ? COLORS.brandBrown : COLORS.grey700}
+          strokeWidth={1.8}
+        />
+      ) : null}
     </View>
     <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
       {label}
@@ -142,7 +152,7 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           />
           <ShipperDrawerMenuItem
             label="My Vehicles"
-            IconComponent={Disc}
+            imageSource={imageIndex.vehicles}
             isActive={isDrawerRouteActive('MyVehicles')}
             onPress={() => navigateToRoute('MyVehicles')}
           />
@@ -160,13 +170,13 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           />
           <ShipperDrawerMenuItem
             label="Earnings"
-            IconComponent={DollarSign}
+            imageSource={imageIndex.earnings}
             isActive={isDrawerRouteActive('Earnings')}
             onPress={() => navigateToRoute('Earnings')}
           />
           <ShipperDrawerMenuItem
             label="Google review"
-            IconComponent={Star}
+            imageSource={imageIndex.googlereview}
             isActive={isDrawerRouteActive('GoogleReview')}
             onPress={() => navigateToRoute('GoogleReview')}
           />
@@ -264,6 +274,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: SPACING.xs,
+  },
+  menuImage: {
+    width: 20,
+    height: 20,
   },
   menuLabel: {
     fontSize: FONT_SIZE.sm,

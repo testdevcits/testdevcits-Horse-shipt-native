@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
-    paddingBottom: 120,
+    paddingBottom: 170,
   },
 
   topCard: {
@@ -360,6 +360,38 @@ const styles = StyleSheet.create({
     color: COLORS.goldPrimary,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
+  },
+  assignedVehicleCard: {
+    backgroundColor: COLORS.goldLightBg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    borderRadius: RADIUS.xs,
+    padding: SPACING.sm,
+    marginBottom: SPACING.xs,
+  },
+  vehicleHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: 6,
+  },
+  vehicleTitleText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.goldDarkText,
+  },
+  vehicleInfoGrid: {
+    gap: 4,
+  },
+  vehicleDetailText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.goldDarkText,
+    lineHeight: 16,
+  },
+  boldLabel: {
+    fontFamily: FONTS.bold,
+    color: COLORS.goldDarkText,
   },
 });
 

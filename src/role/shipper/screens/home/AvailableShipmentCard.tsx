@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { Truck, MapPin, Calendar, ExternalLink } from 'lucide-react-native';
 import { AppText } from '../../../../components';
@@ -14,6 +14,8 @@ interface AvailableShipmentCardProps {
 }
 
 const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onPress }) => {
+  const [imageError, setImageError] = useState(false);
+
   const horsePhoto =
     item?.horses && item?.horses[0]?.photo?.url
       ? item?.horses[0].photo.url
@@ -44,10 +46,17 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
     >
       {/* Left Horse Image */}
       <View style={styles.cardImageContainer}>
-        {horsePhoto ? (
-          <Image source={{ uri: horsePhoto }} style={styles.cardImage} />
+        {horsePhoto && !imageError ? (
+          <Image
+            source={{ uri: horsePhoto }}
+            style={styles.cardImage}
+            onError={() => setImageError(true)}
+          />
         ) : (
-          <Image source={{ uri: horsePlaceholderImage }} style={[styles.cardImage, { opacity: 0.7 }]} />
+          <Image
+            source={{ uri: horsePlaceholderImage }}
+            style={[styles.cardImage, { opacity: 0.7 }]}
+          />
         )}
       </View>
 

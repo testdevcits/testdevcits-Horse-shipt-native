@@ -250,7 +250,20 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     );
   };
 
-  const renderVehicleItem = ({ item: vehicle, index }: { item: any; index: number }) => {
+  const VehicleItemCard = ({
+    vehicle,
+    index,
+    handleOpenAssignDriver,
+    handleEdit,
+    handleDeleteVehicle,
+  }: {
+    vehicle: any;
+    index: number;
+    handleOpenAssignDriver: (v: any) => void;
+    handleEdit: (v: any) => void;
+    handleDeleteVehicle: (id: string, num: string) => void;
+  }) => {
+    const [imageError, setImageError] = useState(false);
     const vehicleImg =
       vehicle.images && vehicle.images[0]?.url
         ? vehicle.images[0].url
@@ -262,8 +275,12 @@ const MyVehiclesScreen = ({ navigation }: any) => {
       <View key={vehicle._id || index} style={styles.vehicleCard}>
         {/* Vehicle Banner Image */}
         <View style={styles.imageContainer}>
-          {vehicleImg ? (
-            <Image source={{ uri: vehicleImg }} style={styles.vehicleImage} />
+          {vehicleImg && !imageError ? (
+            <Image
+              source={{ uri: vehicleImg }}
+              style={styles.vehicleImage}
+              onError={() => setImageError(true)}
+            />
           ) : (
             <View style={styles.fallbackImage}>
               <Truck size={44} color={COLORS.goldPrimary} />
@@ -397,6 +414,19 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           </View>
         </View>
       </View>
+    );
+  };
+
+  const renderVehicleItem = ({ item: vehicle, index }: { item: any; index: number }) => {
+    return (
+      <VehicleItemCard
+        key={vehicle._id || index}
+        vehicle={vehicle}
+        index={index}
+        handleOpenAssignDriver={handleOpenAssignDriver}
+        handleEdit={handleEdit}
+        handleDeleteVehicle={handleDeleteVehicle}
+      />
     );
   };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { AppText } from '../../../../components';
 import { Map } from 'lucide-react-native';
 import { COLORS, FONTS } from '../../../../constants';
+import { horsePlaceholderImage } from '../../../../config/constants';
 
 const HorseInformation = ({
   activeShipment,
@@ -34,7 +35,7 @@ const HorseInformation = ({
               <Image
                 resizeMode="stretch"
                 source={{
-                  uri: 'https://thumbs.dreamstime.com/b/simple-horse-logo-icon-vector-art-illustration-simple-horse-logo-icon-vector-art-illustration-features-clean-minimalist-design-351219938.jpg',
+                  uri: horsePlaceholderImage,
                 }}
                 style={styles.horseImage}
               />

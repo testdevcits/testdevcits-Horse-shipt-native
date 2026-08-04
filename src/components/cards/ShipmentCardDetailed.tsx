@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { MapPin, Calendar, ExternalLink, Truck } from 'lucide-react-native';
 import {
@@ -10,6 +10,7 @@ import {
   ICON_SIZE,
 } from '../../constants';
 import AppText from '../common/AppText';
+import { horsePlaceholderImage } from '../../config/constants';
 
 // Helper to format date (e.g., "2026-07-27..." -> "July 27, 2026")
 const formatDate = (dateString: string) => {
@@ -41,7 +42,7 @@ const getShortLocation = (address: string) => {
 
 const ShipmentHorizontalCard = memo(
   ({ item, onPress }: { item: any; onPress: () => void }) => {
-
+    const [imageError, setImageError] = useState(false);
 
     const horse = item?.horses?.[0];
     const pickupDate = formatDate(item?.pickupDateRange?.start);
@@ -54,15 +55,26 @@ const ShipmentHorizontalCard = memo(
         onPress={onPress}
       >
         {/* 1. Left Section: Horse Image */}
-        <Image
-          source={{
-            uri:
-              horse?.photo?.url ||
-              'https://thumbs.dreamstime.com/b/simple-horse-logo-icon-vector-art-illustration-simple-horse-logo-icon-vector-art-illustration-features-clean-minimalist-design-351219938.jpg',
-          }}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        {
+          imageError ?
+            <Image
+              source={{
+                uri: horsePlaceholderImage
+              }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+            :
+            <Image
+              source={{
+                uri:
+                  horse?.photo?.url || horsePlaceholderImage
+              }}
+              style={styles.image}
+              resizeMode="cover"
+              onError={() => setImageError(true)}
+            />
+        }
 
         {/* 2. Middle Section: Details */}
         <View style={styles.content}>

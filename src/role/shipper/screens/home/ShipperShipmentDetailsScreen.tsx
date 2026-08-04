@@ -75,14 +75,14 @@ const ShipperShipmentDetailsScreen = () => {
   // Horse & Specs
   const firstHorse = shipment?.horses && shipment?.horses[0] ? shipment?.horses[0] : {};
   const horsePhoto = firstHorse.photo?.url;
-  const registeredName = firstHorse.registeredName || 'HOrse no 1';
-  const barnName = firstHorse.barnName || 'Test Barn';
-  const breed = firstHorse.breed || 'Brandenburger';
-  const sex = firstHorse.sex || 'Mare';
-  const colour = firstHorse.colour || 'Bay';
-  const age = firstHorse.age || 3;
-  const stallSize = firstHorse.requestedStallSize || 'Box';
-  const notesText = firstHorse.notes || firstHorse.notesLog?.[0]?.note || 'This is first horse for test';
+  const registeredName = firstHorse.registeredName || 'Not Available';
+  const barnName = firstHorse.barnName || 'Not Available';
+  const breed = firstHorse.breed || 'Not Available';
+  const sex = firstHorse.sex || 'Not Available';
+  const colour = firstHorse.colour || 'Not Available';
+  const age = firstHorse.age || 'Not Available';
+  const stallSize = firstHorse.requestedStallSize || 'Not Available';
+  const notesText = firstHorse.notes || firstHorse.notesLog?.[0]?.note || 'Not Available';
   const noteDate = firstHorse.notesLog?.[0]?.createdAt || shipment?.publishedAt;
 
   // Dates
@@ -188,7 +188,7 @@ const ShipperShipmentDetailsScreen = () => {
         <View style={styles.headerSubRow}>
           <View style={styles.statusBadgePill}>
             <AppText style={styles.statusBadgeText}>
-              {(shipment?.status || 'OPEN FOR OFFERS').replace(/_/g, ' ')}
+              {(shipment?.status || 'Not Available').replace(/_/g, ' ')}
             </AppText>
           </View>
           <AppText style={styles.postedDateText}>Posted on {postedDateFormatted}</AppText>
@@ -203,13 +203,13 @@ const ShipperShipmentDetailsScreen = () => {
               <Image source={imageIndex.Banner} style={styles.heroBannerImage} />
             )}
             <View style={styles.heroBannerBadge}>
-              <AppText style={styles.heroBannerBadgeText}>OPEN FOR OFFERS</AppText>
+              <AppText style={styles.heroBannerBadgeText}>{(shipment?.status || 'Not Available').replace(/_/g, ' ')}</AppText>
             </View>
           </View>
 
           <View style={styles.heroBody}>
             <View style={styles.horseCountTag}>
-              <AppText style={styles.horseCountTagText}>Horse 1/1</AppText>
+              <AppText style={styles.horseCountTagText}>Horse {shipment?.horses?.length || "0"}</AppText>
             </View>
 
             <AppText style={styles.heroTitle}>
@@ -222,7 +222,7 @@ const ShipperShipmentDetailsScreen = () => {
 
             <View style={styles.customerRow}>
               <AppText style={styles.customerNameText}>
-                Customer: {shipment?.customer?.name || 'Test Dev'}
+                Customer: {shipment?.customer?.name || 'Not Available'}
               </AppText>
               <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
                 <Share2 size={14} color={COLORS.textPrimary} />

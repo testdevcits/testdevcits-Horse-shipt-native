@@ -190,11 +190,10 @@ const AddVehicleModal: React.FC<Props> = (props) => {
         if (onSuccess) onSuccess();
         handleClose();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to save vehicle.',
-        });
+        setErrors(prev => ({
+          ...prev,
+          submit: res?.message || 'Failed to save vehicle.',
+        }));
       }
     } catch (error: any) {
       console.error('Save Vehicle Error:', error);
@@ -203,11 +202,7 @@ const AddVehicleModal: React.FC<Props> = (props) => {
         error?.response?.data?.message ||
         error?.raw?.message ||
         'Failed to save vehicle details.';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: errMsg,
-      });
+      setErrors(prev => ({ ...prev, submit: errMsg }));
     } finally {
       setLoading(false);
     }
@@ -215,7 +210,7 @@ const AddVehicleModal: React.FC<Props> = (props) => {
 
   return (
     <View style={styles.screenContainer}>
-      <AppHeader title={vehicleToEdit ? 'Edit Vehicle' : 'Add Vehicle'} />
+      <AppHeader title={vehicleToEdit ? 'Edit Vehicle' : 'Add Vehicle'} showBack />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -389,6 +384,12 @@ const AddVehicleModal: React.FC<Props> = (props) => {
             style={styles.textArea}
             onChangeText={setNotes}
           />
+
+          {!!errors.submit && (
+            <AppText style={[styles.errorText, { marginTop: 8, textAlign: 'center' }]}>
+              {errors.submit}
+            </AppText>
+          )}
 
           {/* Bottom Action Buttons Row */}
           <View style={styles.buttonRow}>

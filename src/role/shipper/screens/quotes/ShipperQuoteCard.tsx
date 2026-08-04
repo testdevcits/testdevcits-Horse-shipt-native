@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import {
   Truck,
@@ -30,6 +30,8 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   onDelete,
   onAssignVehicle,
 }) => {
+  const [imageError, setImageError] = useState(false);
+
   const shipment = quote?.shipment || {};
   const horsePhoto =
     shipment.horses && shipment.horses[0]?.photo?.url
@@ -60,22 +62,35 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
   const isAssignedOrAccepted = rawStatus === 'assigned' || rawStatus === 'accepted';
 
-  const vehicleObj = quote?.vehicle || quote?.assignedVehicle;
-  const vehicleName =
-    typeof vehicleObj === 'object' && vehicleObj !== null
-      ? `${vehicleObj?.make || ''} ${vehicleObj?.model || ''} (${vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || vehicleObj?.type || 'Vehicle'})`.trim()
-      : typeof quote?.vehicle === 'string'
+  const vehicleObj =
+    typeof quote?.vehicle === 'object' && quote?.vehicle !== null
       ? quote?.vehicle
-      : typeof quote?.assignedVehicle === 'string'
-      ? quote?.assignedVehicle
-      : null;
+      : typeof quote?.assignedVehicle === 'object' && quote?.assignedVehicle !== null
+        ? quote?.assignedVehicle
+        : null;
+
+  const driverObj = vehicleObj?.driver;
+
+  const vehicleName =
+    vehicleObj
+      ? `${vehicleObj?.vehicleType || vehicleObj?.make || 'Vehicle'} (${vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || ''})`.trim()
+      : typeof quote?.vehicle === 'string'
+        ? quote?.vehicle
+        : typeof quote?.assignedVehicle === 'string'
+          ? quote?.assignedVehicle
+          : null;
 
   return (
     <View style={styles.quoteCard}>
       {/* Banner Image */}
       <View style={styles.imageContainer}>
-        {horsePhoto ? (
-          <Image source={{ uri: horsePhoto }} style={styles.horseBanner} />
+        {horsePhoto && !imageError ? (
+          <Image
+            source={{ uri: horsePhoto }}
+            style={styles.horseBanner}
+            onError={() => setImageError(true)}
+            resizeMode="cover"
+          />
         ) : (
           <Image source={{ uri: horsePlaceholderImage }} style={styles.horseBanner} />
         )}
@@ -148,7 +163,50 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         </View>
 
         {/* Assigned Vehicle Display */}
-        {vehicleName ? (
+        {vehicleObj ? (
+          <View style={styles.assignedVehicleCard}>
+            <View style={styles.vehicleHeaderRow}>
+              <Truck size={16} color={COLORS.goldPrimary} />
+              <AppText style={styles.vehicleTitleText}>
+                Assigned Vehicle & Driver Details
+              </AppText>
+            </View>
+            <View style={styles.vehicleInfoGrid}>
+              <AppText style={styles.vehicleDetailText}>
+                <AppText style={styles.boldLabel}>Vehicle Type: </AppText>
+                {vehicleObj?.vehicleType || 'N/A'}
+              </AppText>
+              <AppText style={styles.vehicleDetailText}>
+                <AppText style={styles.boldLabel}>Vehicle Number: </AppText>
+                {vehicleObj?.vehicleNumber || 'N/A'}
+              </AppText>
+              {vehicleObj?.numberOfStalls !== undefined && vehicleObj?.numberOfStalls !== null && (
+                <AppText style={styles.vehicleDetailText}>
+                  <AppText style={styles.boldLabel}>Stalls: </AppText>
+                  {vehicleObj?.numberOfStalls}
+                </AppText>
+              )}
+              {driverObj?.name ? (
+                <AppText style={styles.vehicleDetailText}>
+                  <AppText style={styles.boldLabel}>Driver: </AppText>
+                  {driverObj?.name}
+                </AppText>
+              ) : null}
+              {driverObj?.email ? (
+                <AppText style={styles.vehicleDetailText}>
+                  <AppText style={styles.boldLabel}>Email: </AppText>
+                  {driverObj?.email}
+                </AppText>
+              ) : null}
+              {driverObj?.phone ? (
+                <AppText style={styles.vehicleDetailText}>
+                  <AppText style={styles.boldLabel}>Phone: </AppText>
+                  {driverObj?.phone}
+                </AppText>
+              ) : null}
+            </View>
+          </View>
+        ) : vehicleName ? (
           <View style={styles.assignedVehicleContainer}>
             <Truck size={16} color={COLORS.goldPrimary} style={{ marginTop: 2 }} />
             <AppText style={styles.assignedVehicleText}>
@@ -173,22 +231,20 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         <View style={styles.cancelNoticeContainer}>
           <Calendar size={16} color="#EF4444" style={{ marginTop: 2 }} />
           <AppText style={styles.cancelNoticeText}>
-            Cancel before : {formatDate(new Date(Date.now() + 86400000), 'M/DD/YYYY, h:mm:ss A')}
+            Cancel before : {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
           </AppText>
         </View>
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
-          {onAssignVehicle && (
+          {onAssignVehicle && !vehicleObj && (
             <TouchableOpacity
               style={styles.assignVehicleBtn}
               onPress={() => onAssignVehicle(quote)}
               activeOpacity={0.8}
             >
               <Truck size={16} color={COLORS.goldPrimary} />
-              <AppText style={styles.assignVehicleBtnText}>
-                {vehicleName ? 'Change Vehicle' : 'Assign Vehicle'}
-              </AppText>
+              <AppText style={styles.assignVehicleBtnText}>Assign Vehicle</AppText>
             </TouchableOpacity>
           )}
 
@@ -208,7 +264,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               activeOpacity={0.8}
             >
               <Trash2 size={16} color={COLORS.textPrimary} />
-              <AppText style={styles.deleteBtnText}>Delete</AppText>
+              <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
             </TouchableOpacity>
           )}
         </View>

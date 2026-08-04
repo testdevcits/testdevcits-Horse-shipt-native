@@ -242,16 +242,16 @@ const MyQuotesScreen = () => {
     const s = (q.status || q.shipment?.status || '').toLowerCase();
 
     if (activeTab === 'pending') {
-      return s === 'pending' || s === 'open_for_offers';
+      return s === 'open_for_offers';
     }
     if (activeTab === 'in_transit') {
-      return s === 'in_transit' || s === 'on_the_way' || s === 'assigned';
+      return s === 'in_transit';
     }
     if (activeTab === 'upcoming') {
-      return s === 'open' || s === 'accepted' || s === 'published';
+      return s === 'accepted';
     }
     if (activeTab === 'cancelled') {
-      return s === 'rejected' || s === 'cancelled' || s === 'delivered';
+      return s === 'rejected' || s === 'cancelled';
     }
 
     return true;

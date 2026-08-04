@@ -25,7 +25,7 @@ import {
   ArrowRight,
   ArrowLeftRight,
 } from 'lucide-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
+import { AppHeader, AppText, AppLoader, EmptyState, Input, SectionHeader } from '../../../../components';
 import {
   COLORS,
   FONTS,
@@ -168,7 +168,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     fetchAllData();
   };
 
-  const userName = user?.name || user?.firstName || 'Marcus';
+  const userName = user?.name || user?.firstName || 'Not available';
 
   // Dynamic stats calculation
   const submittedQuotesCount = quotes.length;
@@ -434,13 +434,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       {/* Current Shipments Section Title */}
       {viewMode === 'list' && (
         <View style={{ marginTop: SPACING.sm, marginBottom: SPACING.xs }}>
-          <View style={styles.sectionHeaderRow}>
-            <AppText style={styles.sectionTitle}>Current Shipments</AppText>
-            <TouchableOpacity style={styles.viewAllBtn}>
-              <AppText style={styles.viewAllText}>View All</AppText>
-              <ChevronRight size={16} color="#A06333" />
-            </TouchableOpacity>
-          </View>
+
+          <SectionHeader title='Current Shipment' showAction={true} onPress={() => navigation.navigate("Post")} containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }} />
         </View>
       )}
     </View>
@@ -469,8 +464,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           renderItem={({ item }) => (
             <AvailableShipmentCard item={item} onPress={handleNavigateToDetails} />
           )}
-          ListHeaderComponent={renderHeader}
-          ListEmptyComponent={renderEmpty}
+          ListHeaderComponent={renderHeader()}
+          ListEmptyComponent={renderEmpty()}
           contentContainerStyle={{ padding: SPACING.md, paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
           refreshControl={

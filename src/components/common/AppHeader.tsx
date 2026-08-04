@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'; // 1. Import memo & useEffect
+import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../constants';
@@ -22,6 +22,7 @@ const AppHeader = memo(
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
     const { unreadCount } = useAppSelector(state => state.notification);
+    const [imageError, setImageError] = useState(false)
 
     const userId = (user as any)?._id || user?.id;
 
@@ -109,19 +110,34 @@ const AppHeader = memo(
                 onPress={() => navigation.navigate('Profile')}
                 style={styles.profileBtn}
               >
-                <Image
-                  source={
-                    avatarUri
-                      ? { uri: avatarUri }
-                      : imageIndex.AccountIcon
-                  }
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
-                    backgroundColor: COLORS.grey200,
-                  }}
-                />
+                {
+                  imageError ?
+                    <Image
+                      source={
+                        imageIndex.AccountIcon
+                      }
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                        backgroundColor: COLORS.grey200,
+                      }}
+
+                    /> :
+                    <Image
+                      source={
+                        avatarUri
+                          ? { uri: avatarUri }
+                          : imageIndex.AccountIcon
+                      }
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                        backgroundColor: COLORS.grey200,
+                      }}
+                      onError={() => setImageError(true)}
+                    />}
               </TouchableOpacity>
             </>
           )}

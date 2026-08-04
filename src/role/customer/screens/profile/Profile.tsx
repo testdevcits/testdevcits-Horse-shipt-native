@@ -159,12 +159,16 @@ const Profile = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
             <View style={styles.infoList}>
-              <InfoRow
-                label="Name"
-                value={`${profile?.firstName} ${profile?.lastName}`}
-              />
-              <InfoRow label="Email" value={profile?.email || ''} />
-              <InfoRow label="Phone" value={profile?.phone || ''} isLast />
+              {
+                profile?.firstName && profile?.lastName && <InfoRow
+                  label="Name"
+                  value={`${profile?.firstName} ${profile?.lastName}`}
+                />
+              }
+              <InfoRow label="Email" value={profile?.email || 'Not Available'} />
+              {
+                profile?.phone && <InfoRow label="Phone" value={profile?.phone} isLast />
+              }
             </View>
           </View>
         </ScrollView>

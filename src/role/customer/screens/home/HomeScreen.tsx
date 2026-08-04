@@ -17,6 +17,7 @@ import {
   RADIUS,
   SCREEN_WIDTH,
   SCREEN_HEIGHT,
+  FONT_SIZE,
 } from '../../../../constants';
 import {
   AppHeader,
@@ -30,6 +31,7 @@ import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetai
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useShippers } from '../topratedshippers/useShippers';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const { shipments, loading, refreshing, refresh } = useShipments();
@@ -59,6 +61,10 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     navigation.navigate('ShipperDetail', { item });
   };
 
+  const { user } = useSelector((state: any) => state.auth || {});
+  const userName = user?.name || user?.firstName || 'Not available';
+
+
   return (
     <View style={styles.container}>
       <AppHeader />
@@ -75,6 +81,10 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           />
         }
       >
+        <View style={styles.welcomeHeader}>
+          <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
+          <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
+        </View>
         <Pressable onPress={() => navigation.navigate('New')}>
           <Image
             source={imageIndex.Banner}
@@ -177,6 +187,23 @@ const styles = StyleSheet.create({
 
   list: {
     paddingBottom: SPACING.sm, // Extra space for FAB
+  },
+  // Welcome Header
+  welcomeHeader: {
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+
+  },
+  welcomeTitle: {
+    fontSize: FONT_SIZE.xl,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  welcomeSub: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 2,
   },
 });
 
