@@ -1,9 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import styles from './styles.newshipment';
-import { AppHeader, ConfirmationModal } from '../../../../components';
+import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
 import useNewShipment, { STEPS } from './useNewShipment';
 import PickupStep from './stepsscreens/PickupStep';
 import DeliveryStep from './stepsscreens/DeliveryStep';
@@ -39,12 +39,31 @@ const NewShipment = () => {
 
   const renderStepper = () => (
     <View style={styles.stepperContainer}>
-      {STEPS.map((_, index) => (
-        <View
-          key={index}
-          style={[styles.stepBar, index <= currentStep && styles.stepBarActive]}
-        />
-      ))}
+      {STEPS.map((stepLabel, index) => {
+        const isActive = index <= currentStep;
+        const isCurrent = index === currentStep;
+        return (
+          <View key={index} style={styles.stepItem}>
+            <View
+              style={[
+                styles.stepBar,
+                isActive && styles.stepBarActive,
+                isCurrent && styles.stepBarCurrent,
+              ]}
+            />
+            <AppText
+              style={[
+                styles.stepLabelText,
+                isActive && styles.stepLabelTextActive,
+                isCurrent && styles.stepLabelTextCurrent,
+              ]}
+              numberOfLines={1}
+            >
+              {stepLabel}
+            </AppText>
+          </View>
+        );
+      })}
     </View>
   );
 
@@ -52,54 +71,58 @@ const NewShipment = () => {
     <View style={styles.container}>
       <AppHeader showBack={true} title={isEdit ? "Edit Shipment" : "New Shipment"} />
       {renderStepper()}
-      <View style={{ flex: 1 }}>
-        {currentStep === 0 && (
-          <PickupStep
-            form={form}
-            updateForm={updateForm}
-            errors={errors}
-            onNext={nextStep}
-            onPrevious={() => navigation.goBack()}
-          />
-        )}
-        {currentStep === 1 && (
-          <DeliveryStep
-            form={form}
-            updateForm={updateForm}
-            errors={errors}
-            onNext={nextStep}
-            onPrevious={prevStep}
-          />
-        )}
-        {currentStep === 2 && (
-          <HorseDetailsStep
-            form={form}
-            updateForm={updateForm}
-            errors={errors}
-            onNext={nextStep}
-            onPrevious={prevStep}
-          />
-        )}
-        {currentStep === 3 && (
-          <ShipmentInfoStep
-            form={form}
-            updateForm={updateForm}
-            pickImage={pickImage}
-            pickDocument={pickDocument}
-            onNext={nextStep}
-            onPrevious={prevStep}
-            removeFile={removeFile}
-          />
-        )}
-        {currentStep === 4 && (
-          <ReviewStep
-            form={form}
-            onPublish={() => setIsPublishModalVisible(true)}
-            onSaveDraft={handleSaveDraft}
-            onEditSection={stepIndex => setCurrentStep(stepIndex)}
-          />
-        )}
-      </View>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
+
+
+        <View style={{ flex: 1 }}>
+          {currentStep === 0 && (
+            <PickupStep
+              form={form}
+              updateForm={updateForm}
+              errors={errors}
+              onNext={nextStep}
+              onPrevious={() => navigation.goBack()}
+            />
+          )}
+          {currentStep === 1 && (
+            <DeliveryStep
+              form={form}
+              updateForm={updateForm}
+              errors={errors}
+              onNext={nextStep}
+              onPrevious={prevStep}
+            />
+          )}
+          {currentStep === 2 && (
+            <HorseDetailsStep
+              form={form}
+              updateForm={updateForm}
+              errors={errors}
+              onNext={nextStep}
+              onPrevious={prevStep}
+            />
+          )}
+          {currentStep === 3 && (
+            <ShipmentInfoStep
+              form={form}
+              updateForm={updateForm}
+              pickImage={pickImage}
+              pickDocument={pickDocument}
+              onNext={nextStep}
+              onPrevious={prevStep}
+              removeFile={removeFile}
+            />
+          )}
+          {currentStep === 4 && (
+            <ReviewStep
+              form={form}
+              onPublish={() => setIsPublishModalVisible(true)}
+              onSaveDraft={handleSaveDraft}
+              onEditSection={stepIndex => setCurrentStep(stepIndex)}
+            />
+          )}
+        </View>
+      </ScrollView>
 
       <ConfirmationModal
         isVisible={isPublishModalVisible}

@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
 
   uploadBox: {
-    height: 160,
+    height: 220,
     borderWidth: 1.5,
     borderColor: COLORS.grey300,
     borderStyle: 'dashed',
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   imagePreviewContainer: { flex: 1, width: '100%' },
-  uploadedImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  uploadedImage: { width: '100%', height: '100%', resizeMode: 'contain' },
   closeImageBtn: {
     position: 'absolute',
     top: 10,

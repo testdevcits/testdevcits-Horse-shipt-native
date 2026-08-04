@@ -11,11 +11,40 @@ const styles = StyleSheet.create({
   stepperContainer: { 
     flexDirection: 'row', 
     paddingHorizontal: SPACING.lg, 
-    paddingVertical: SPACING.md,
-    gap: 8 
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.xs,
+    backgroundColor: COLORS.white,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
+    gap: 6 
   },
-  stepBar: { flex: 1, height: 4, borderRadius: 2, backgroundColor: COLORS.grey200 },
-  stepBarActive: { backgroundColor: COLORS.goldPrimary },
+  stepItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  stepBar: {
+    width: '100%',
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: COLORS.grey200,
+    marginBottom: 6,
+  },
+  stepBarActive: { backgroundColor: COLORS.primary },
+  stepBarCurrent: { backgroundColor: COLORS.primary, height: 4 },
+  stepLabelText: {
+    fontSize: 10,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey400,
+    textAlign: 'center',
+  },
+  stepLabelTextActive: {
+    color: COLORS.grey700,
+    fontFamily: FONTS.semiBold,
+  },
+  stepLabelTextCurrent: {
+    color: COLORS.primary,
+    fontFamily: FONTS.bold,
+  },
 
   content: { flex: 1, padding: SPACING.lg },
   

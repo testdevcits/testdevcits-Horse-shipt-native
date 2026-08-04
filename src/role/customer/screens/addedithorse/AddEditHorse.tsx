@@ -189,6 +189,7 @@ const AddEditHorse = () => {
                   keyboardType="numeric"
                   value={values.age}
                   onChangeText={handleChange('age')}
+                  maxLength={2}
                   error={touched.age ? (errors.age as string) : ''}
                 />
 
