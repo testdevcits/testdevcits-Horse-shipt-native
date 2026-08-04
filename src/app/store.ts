@@ -6,6 +6,7 @@ import authReducer from '../redux/slices/authSlice';
 import horseReducer from '../redux/slices/horseSlice';
 import notificationReducer from '../redux/slices/notificationSlice';
 import networkReducer from '../redux/slices/networkSlice';
+import customerShipmentReducer from '../redux/slices/customerShipmentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     horse: horseReducer,
     notification: notificationReducer,
     network: networkReducer,
+    customerShipments: customerShipmentReducer,
   },
 });
 

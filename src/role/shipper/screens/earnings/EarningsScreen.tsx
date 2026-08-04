@@ -445,7 +445,7 @@ const EarningsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Earnings & Payouts" />
+      <AppHeader title="Earnings & Payouts" showProfileImage={false} />
       <AppLoader visible={loading && !refreshing} />
 
       <FlatList

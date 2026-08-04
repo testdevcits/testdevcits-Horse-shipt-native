@@ -21,6 +21,7 @@ const defaultHorse: NewShipmentHorse = {
   photo: null,
   coggins: null,
   healthCert: null,
+  otherDocuments: null,
 };
 
 const getTomorrow = () => {
@@ -77,6 +78,16 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
     healthCert: h.healthCert?.url
       ? { uri: h.healthCert.url, type: 'application/pdf', name: 'health.pdf' }
       : null,
+    otherDocuments: h.otherDocuments?.url || h.other?.url || h.documents?.other?.url
+      ? {
+        uri:
+          h.otherDocuments?.url ||
+          h.other?.url ||
+          h.documents?.other?.url,
+        type: 'application/pdf',
+        name: 'other_document.pdf',
+      }
+      : null,
   }));
 
   return {
@@ -114,8 +125,10 @@ const useNewShipment = () => {
   const isEdit = route.params?.isEdit;
   const shipmentData = route.params?.shipmentData;
 
-  const [currentStep, setCurrentStep] = useState(() => (isEdit ? 3 : 0));
-  const [loading, setLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [draftLoading, setDraftLoading] = useState(false);
+  const [publishLoading, setPublishLoading] = useState(false);
+  const loading = draftLoading || publishLoading;
   const [errors, setErrors] = useState<any>({});
   const [isPublishModalVisible, setIsPublishModalVisible] = useState(false);
   const [isDraftModalVisible, setIsDraftModalVisible] = useState(false);
@@ -135,7 +148,6 @@ const useNewShipment = () => {
     if (isEdit && shipmentData) {
       setForm(parseShipmentDataToForm(shipmentData));
       setCreatedShipmentId(shipmentData?._id);
-      setCurrentStep(3);
     }
   }, [isEdit, shipmentData]);
 
@@ -207,7 +219,7 @@ const useNewShipment = () => {
 
   const pickDocument = async (
     index: number,
-    type: 'coggins' | 'healthCert',
+    type: 'coggins' | 'healthCert' | 'otherDocuments',
   ) => {
     try {
       const [result] = await pick({ type: ['image/*', 'application/pdf'] });
@@ -231,7 +243,7 @@ const useNewShipment = () => {
 
   const removeFile = (
     index: number,
-    type: 'photo' | 'coggins' | 'healthCert',
+    type: 'photo' | 'coggins' | 'healthCert' | 'otherDocuments',
   ) => {
     setForm(prev => {
       const newHorses = [...prev.horses];
@@ -332,6 +344,18 @@ const useNewShipment = () => {
           type: horse?.healthCert?.type,
         } as any);
       }
+      if (horse?.otherDocuments) {
+        formData?.append(`horses[${index}][otherDocuments]`, {
+          uri: horse?.otherDocuments?.uri,
+          name: horse?.otherDocuments?.name,
+          type: horse?.otherDocuments?.type,
+        } as any);
+        formData?.append(`horses[${index}][other]`, {
+          uri: horse?.otherDocuments?.uri,
+          name: horse?.otherDocuments?.name,
+          type: horse?.otherDocuments?.type,
+        } as any);
+      }
     });
 
     return formData;
@@ -365,11 +389,11 @@ const useNewShipment = () => {
         } as any);
       }
 
-      if (horse?.photo && horse?.photo.uri) {
+      if (horse?.otherDocuments && horse?.otherDocuments.uri) {
         formData?.append(`horses[${index}][otherDocuments]`, {
-          uri: horse?.photo.uri,
-          name: horse?.photo.name || `other_${index + 1}.jpg`,
-          type: horse?.photo.type || 'image/jpeg',
+          uri: horse?.otherDocuments.uri,
+          name: horse?.otherDocuments.name || `other_${index + 1}.jpg`,
+          type: horse?.otherDocuments.type || 'image/jpeg',
         } as any);
       }
     });
@@ -378,22 +402,30 @@ const useNewShipment = () => {
   };
 
   const handleSaveDraft = async () => {
-    setLoading(true);
+    setDraftLoading(true);
     try {
+      const targetId = shipmentData?._id || createdShipmentId;
       const formData = buildFormData();
-      const response: any = await customerService.createShipment(formData);
-      const success = response?.success || response?.data?.success;
-      const shipment = response?.shipment || response?.data?.shipment;
-      if (success && shipment?._id) {
-        setCreatedShipmentId(shipment._id);
+
+      if (targetId) {
+        await customerService.updateShipment(targetId, formData);
         setIsDraftModalVisible(true);
         return true;
       } else {
-        Alert.alert(
-          'Error',
-          response?.message || 'Failed to save draft shipment.',
-        );
-        return false;
+        const response: any = await customerService.createShipment(formData);
+        const success = response?.success || response?.data?.success;
+        const shipment = response?.shipment || response?.data?.shipment;
+        if (success && shipment?._id) {
+          setCreatedShipmentId(shipment._id);
+          setIsDraftModalVisible(true);
+          return true;
+        } else {
+          Alert.alert(
+            'Error',
+            response?.message || 'Failed to save draft shipment.',
+          );
+          return false;
+        }
       }
     } catch (error: any) {
       console.error('Draft Error:', error);
@@ -403,18 +435,18 @@ const useNewShipment = () => {
       );
       return false;
     } finally {
-      setLoading(false);
+      setDraftLoading(false);
     }
   };
 
   const handlePublish = async () => {
-    setLoading(true);
+    setPublishLoading(true);
     try {
       const targetId = shipmentData?._id || createdShipmentId;
 
       if (isEdit && targetId) {
-        const formData = buildUpdateFormData();
-        await customerService.updateShipmentMetadata(targetId, formData);
+        const formData = buildFormData();
+        await customerService.updateShipment(targetId, formData);
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
         Alert.alert('Success', 'Shipment updated successfully!', [
@@ -443,7 +475,7 @@ const useNewShipment = () => {
             'Error',
             response?.message || 'Failed to create shipment.',
           );
-          setLoading(false);
+          setPublishLoading(false);
           setIsPublishModalVisible(false);
           navigation.goBack();
           return false;
@@ -470,12 +502,12 @@ const useNewShipment = () => {
       Alert.alert(
         'Error',
         error?.response?.data?.message ||
-          'Failed to update or publish shipment',
+        'Failed to update or publish shipment',
       );
       navigation?.goBack();
       return false;
     } finally {
-      setLoading(false);
+      setPublishLoading(false);
       setIsPublishModalVisible(false);
     }
   };
@@ -505,14 +537,10 @@ const useNewShipment = () => {
   };
 
   const prevStep = () => {
-    if (isEdit) {
-      if (currentStep > 3) {
-        setCurrentStep(prev => prev - 1);
-      } else {
-        navigation.goBack();
-      }
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
     } else {
-      if (currentStep > 0) setCurrentStep(prev => prev - 1);
+      navigation.goBack();
     }
   };
 
@@ -529,6 +557,8 @@ const useNewShipment = () => {
     handleSaveDraft,
     handlePublish,
     loading,
+    draftLoading,
+    publishLoading,
     isPublishModalVisible,
     setIsPublishModalVisible,
     isDraftModalVisible,

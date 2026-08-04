@@ -35,7 +35,8 @@ export interface CreateHorsePayload {
 export interface Shipment {
   _id: string;
   shipmentCode: string;
-  status: 'pending' | 'assigned' | 'in-transit' | 'delivered' | 'cancelled';
+  quoteId?: string;
+  status: 'pending' | 'assigned' | 'in_transit' | 'delivered' | 'cancelled' | 'open_for_offers' | string;
   pickupLocation: string;
   deliveryLocation: string;
   pickupDateRange: {
@@ -229,7 +230,7 @@ export interface Quote {
 
 export interface GetQuestionsResponse {
   success: boolean;
-  data:  {};
+  data: {};
 }
 
 export interface Question {

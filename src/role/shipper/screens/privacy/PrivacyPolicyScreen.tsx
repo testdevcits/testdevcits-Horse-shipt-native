@@ -83,7 +83,7 @@ const PrivacyPolicyScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Privacy Policy" />
+      <AppHeader showBack={true} title="Privacy Policy" showProfileImage={false} />
 
       {loading ? (
         <View style={styles.loaderContainer}>

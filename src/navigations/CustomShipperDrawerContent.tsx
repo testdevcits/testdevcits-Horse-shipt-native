@@ -72,8 +72,12 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
     <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
       {label}
     </AppText>
-    {hasChevron && (
-      <ChevronRight size={18} color={COLORS.textLight} style={styles.chevron} />
+    {(isActive || hasChevron) && (
+      <ChevronRight
+        size={18}
+        color={isActive ? COLORS.brandBrown : COLORS.textLight}
+        style={styles.chevron}
+      />
     )}
   </TouchableOpacity>
 );
@@ -140,7 +144,6 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           <ShipperDrawerMenuItem
             label="Shipment"
             IconComponent={Package}
-            hasChevron={true}
             isActive={isTabActive('Post')}
             onPress={() => navigateToTab('Post')}
           />

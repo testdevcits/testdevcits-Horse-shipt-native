@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -27,6 +27,10 @@ import styles from './styles.myquotes';
 const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
+
+  console.log("===============quotes", quotes.map((i) => i.status));
+
+
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -192,7 +196,7 @@ const MyQuotesScreen = () => {
           text1: 'Success',
           text2: res.message || 'Quote deleted successfully',
         });
-        setQuotes(prev => prev.filter(q => q._id !== quoteToDelete && q.id !== quoteToDelete));
+        setQuotes(prev => prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete));
       } else {
         Toast.show({
           type: 'error',
@@ -213,49 +217,94 @@ const MyQuotesScreen = () => {
     }
   };
 
-  // Count pending quotes
-  const pendingCount = quotes.filter(q => {
-    const s = (q.status || q.shipment?.status || '').toLowerCase();
-    return s === 'pending' || s === 'open_for_offers';
-  }).length;
+  const getQuoteCategory = useCallback((q: any) => {
+    const quoteStatus = (q?.status || '').toLowerCase();
+    const shipmentStatus = (q?.shipment?.status || '').toLowerCase();
 
-  // Count active in-transit quotes
-  const inTransitCount = quotes.filter(q => {
-    const s = (q.shipment?.status || q.status || '').toLowerCase();
-    return s === 'in_transit' || s === 'on_the_way' || s === 'assigned';
-  }).length;
+    if (
+      quoteStatus === 'rejected' ||
+      quoteStatus === 'cancelled' ||
+      shipmentStatus === 'cancelled' ||
+      q?.isCancelled === true
+    ) {
+      return 'cancelled';
+    }
+
+    if (shipmentStatus === 'delivered' || shipmentStatus === 'completed') {
+      return 'delivered';
+    }
+
+    if (
+      shipmentStatus === 'in_transit' ||
+      shipmentStatus === 'in-transit' ||
+      shipmentStatus === 'on_the_way' ||
+      q?.tripStatus === 'in_transit'
+    ) {
+      return 'in_transit';
+    }
+
+    if (
+      quoteStatus === 'accepted' ||
+      shipmentStatus === 'assigned' ||
+      shipmentStatus === 'accepted' ||
+      shipmentStatus === 'upcoming'
+    ) {
+      return 'upcoming';
+    }
+
+    if (
+      quoteStatus === 'pending' ||
+      quoteStatus === 'open_for_offers' ||
+      shipmentStatus === 'open_for_offers' ||
+      shipmentStatus === 'pending'
+    ) {
+      return 'pending';
+    }
+
+    return 'pending';
+  }, []);
+
+  // Compute badge counts for each tab
+  const counts = useMemo(() => {
+    const res = {
+      all: quotes.length,
+      in_transit: 0,
+      upcoming: 0,
+      cancelled: 0,
+      pending: 0,
+    };
+
+    quotes.forEach(q => {
+      const cat = getQuoteCategory(q);
+      if (cat in res) {
+        (res as any)[cat]++;
+      }
+    });
+
+    return res;
+  }, [quotes, getQuoteCategory]);
 
   // Filter quotes based on search query and active tab
-  const filteredQuotes = quotes.filter(q => {
-    const pickup = q.shipment?.pickupLocation || '';
-    const delivery = q.shipment?.deliveryLocation || '';
-    const code = q.shipment?.shipmentCode || '';
+  const filteredQuotes = useMemo(() => {
+    return quotes.filter(q => {
+      const pickup = q?.shipment?.pickupLocation || '';
+      const delivery = q?.shipment?.deliveryLocation || '';
+      const code = q?.shipment?.shipmentCode || '';
 
-    const matchesSearch =
-      !searchQuery.trim() ||
-      pickup.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      delivery.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      code.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        !searchQuery.trim() ||
+        pickup.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        delivery.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        code.toLowerCase().includes(searchQuery.toLowerCase());
 
-    if (!matchesSearch) return false;
+      if (!matchesSearch) return false;
 
-    const s = (q.status || q.shipment?.status || '').toLowerCase();
+      if (activeTab === 'all') return true;
 
-    if (activeTab === 'pending') {
-      return s === 'open_for_offers';
-    }
-    if (activeTab === 'in_transit') {
-      return s === 'in_transit';
-    }
-    if (activeTab === 'upcoming') {
-      return s === 'accepted';
-    }
-    if (activeTab === 'cancelled') {
-      return s === 'rejected' || s === 'cancelled';
-    }
-
-    return true;
-  });
+      const cat = getQuoteCategory(q);
+      return cat === activeTab;
+    });
+  }, [quotes, searchQuery, activeTab, getQuoteCategory]);
 
   const renderHeader = () => (
     <>
@@ -289,27 +338,11 @@ const MyQuotesScreen = () => {
           >
             All Quotes
           </AppText>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'pending' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('pending')}
-        >
-          <AppText
-            style={[
-              styles.tabBtnText,
-              activeTab === 'pending' && styles.tabBtnTextActive,
-            ]}
-          >
-            Pending
-          </AppText>
-          {pendingCount > 0 && (
-            <View style={styles.badgePill}>
-              <AppText style={styles.badgePillText}>
-                {String(pendingCount).padStart(2, '0')}
-              </AppText>
-            </View>
-          )}
+          <View style={styles.badgePill}>
+            <AppText style={styles.badgePillText}>
+              {counts.all}
+            </AppText>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -324,13 +357,11 @@ const MyQuotesScreen = () => {
           >
             In Transit
           </AppText>
-          {inTransitCount > 0 && (
-            <View style={styles.badgePill}>
-              <AppText style={styles.badgePillText}>
-                {String(inTransitCount).padStart(2, '0')}
-              </AppText>
-            </View>
-          )}
+          <View style={styles.badgePill}>
+            <AppText style={styles.badgePillText}>
+              {counts.in_transit}
+            </AppText>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -345,6 +376,11 @@ const MyQuotesScreen = () => {
           >
             Upcoming
           </AppText>
+          <View style={styles.badgePill}>
+            <AppText style={styles.badgePillText}>
+              {counts.upcoming}
+            </AppText>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -359,6 +395,30 @@ const MyQuotesScreen = () => {
           >
             Cancelled
           </AppText>
+          <View style={styles.badgePill}>
+            <AppText style={styles.badgePillText}>
+              {counts.cancelled}
+            </AppText>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tabBtn, activeTab === 'pending' && styles.tabBtnActive]}
+          onPress={() => setActiveTab('pending')}
+        >
+          <AppText
+            style={[
+              styles.tabBtnText,
+              activeTab === 'pending' && styles.tabBtnTextActive,
+            ]}
+          >
+            Pending
+          </AppText>
+          <View style={styles.badgePill}>
+            <AppText style={styles.badgePillText}>
+              {counts.pending}
+            </AppText>
+          </View>
         </TouchableOpacity>
       </ScrollView>
     </>

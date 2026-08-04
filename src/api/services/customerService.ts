@@ -102,11 +102,17 @@ const customerService = {
     return axiosClient.patch(`/api/customer/shipments/${shipmentId}/publish`);
   },
 
-  updateShipmentMetadata: async (shipmentId: string, payload: any) => {
+  updateShipment: async (shipmentId: string, payload: any) => {
     const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
+    return axiosClient.put(`/api/customer/shipments/${shipmentId}`, payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
+  },
+
+  deleteShipment: async (
+    shipmentId: string,
+  ): Promise<{ success: boolean; message?: string }> => {
+    return axiosClient.delete(`/api/customer/shipments/${shipmentId}`);
   },
 
   // ... NOtification System

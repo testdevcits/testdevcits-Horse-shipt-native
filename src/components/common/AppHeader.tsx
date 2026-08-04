@@ -13,11 +13,12 @@ interface HeaderProps {
   showBack?: boolean;
   onBack?: () => void;
   rightElement?: React.ReactNode;
+  showProfileImage?: boolean
 }
 
 // 2. Wrap the component in memo
 const AppHeader = memo(
-  ({ title, showBack, onBack, rightElement }: HeaderProps) => {
+  ({ title, showBack, onBack, rightElement, showProfileImage = true }: HeaderProps) => {
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
@@ -105,40 +106,45 @@ const AppHeader = memo(
                   )}
                 </View>
               </TouchableOpacity>
+              {
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Profile')}
-                style={styles.profileBtn}
-              >
-                {
-                  imageError ?
-                    <Image
-                      source={
-                        imageIndex.AccountIcon
-                      }
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
-                        // backgroundColor: COLORS.grey200,
-                      }}
+                showProfileImage &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Profile')}
+                  style={styles.profileBtn}
+                >
+                  {
+                    imageError ?
+                      <Image
+                        source={
+                          imageIndex.AccountIcon
+                        }
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 16,
+                          // backgroundColor: COLORS.grey200,
+                        }}
 
-                    /> :
-                    <Image
-                      source={
-                        avatarUri
-                          ? { uri: avatarUri }
-                          : imageIndex.AccountIcon
-                      }
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
-                        backgroundColor: COLORS.grey200,
-                      }}
-                      onError={() => setImageError(true)}
-                    />}
-              </TouchableOpacity>
+                      /> :
+                      <Image
+                        source={
+                          avatarUri
+                            ? { uri: avatarUri }
+                            : imageIndex.AccountIcon
+                        }
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 16,
+                          backgroundColor: COLORS.grey200,
+                        }}
+                        onError={() => setImageError(true)}
+                      />}
+                </TouchableOpacity>
+              }
+
+
             </>
           )}
         </View>

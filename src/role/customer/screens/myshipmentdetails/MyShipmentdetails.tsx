@@ -8,8 +8,9 @@ import {
   RefreshControl,
 } from 'react-native';
 
+import Toast from 'react-native-toast-message';
 import { COLORS } from '../../../../constants';
-import { AppHeader, AppText, AppLoader } from '../../../../components';
+import { AppHeader, AppText, AppLoader, ConfirmationModal } from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
 // Modals & Tabs
@@ -18,9 +19,11 @@ import OverviewTab from './tabs/OverviewTab';
 import QuotesTab from './tabs/QuotesTab';
 import QuestionsTab from './tabs/QuestionsTab';
 import FindShipperTab from './tabs/FindShipperTab';
-import { Dot, Pencil } from 'lucide-react-native';
+import { Dot, Pencil, Trash2 } from 'lucide-react-native';
 import { getFormattedDate } from '../../../../utils/helpers';
 import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
@@ -34,11 +37,14 @@ const RatingModal = lazy(
 
 
 const MyShipmentDetails = ({ route, }: any) => {
+  const dispatch = useAppDispatch();
   const { item, quoteId } = route.params;
   const [activeTab, setActiveTab] = useState('Overview');
   const [isRatingVisible, setIsRatingVisible] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
-  const navigation = useNavigation()
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const navigation = useNavigation();
 
   const {
     shipment,
@@ -52,12 +58,35 @@ const MyShipmentDetails = ({ route, }: any) => {
   } = useShipmentDetails(item?._id);
 
   const data = shipment || item;
+  const isDraft = (data?.status || '').toLowerCase() === 'draft';
 
   const handleEditShipment = () => {
     (navigation as any).navigate('NewShipment', {
       isEdit: true,
       shipmentData: data,
     });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!data?._id) return;
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteCustomerShipment(data._id)).unwrap();
+      Toast.show({
+        type: 'success',
+        text1: 'Draft Deleted',
+        text2: 'Draft shipment deleted successfully.',
+      });
+      navigation.goBack();
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Delete Failed',
+        text2: err || 'Failed to delete draft shipment',
+      });
+      setIsDeleting(false);
+      setIsDeleteModalVisible(false);
+    }
   };
 
   if (loading && !refreshing) return <AppLoader visible={true} />;
@@ -102,24 +131,40 @@ const MyShipmentDetails = ({ route, }: any) => {
             <View style={styles.titleRow}>
               <AppText style={styles.shipmentTitle}>Shipment Title</AppText>
 
-              {
-                data?.status !== "delivered" &&
-                <TouchableOpacity
-                  onPress={handleEditShipment}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 4,
-                    padding: 4,
-                  }}
-                >
-                  <Pencil size={16} color={COLORS.primary} />
-                  <AppText style={{ color: COLORS.primary, fontSize: 13 }}>
-                    Edit
-                  </AppText>
-                </TouchableOpacity>
-              }
-
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                {isDraft && (
+                  <TouchableOpacity
+                    onPress={() => setIsDeleteModalVisible(true)}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 4,
+                      padding: 4,
+                    }}
+                  >
+                    <Trash2 size={16} color={COLORS.error} />
+                    <AppText style={{ color: COLORS.error, fontSize: 13 }}>
+                      Delete
+                    </AppText>
+                  </TouchableOpacity>
+                )}
+                {data?.status !== 'delivered' && (
+                  <TouchableOpacity
+                    onPress={handleEditShipment}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 4,
+                      padding: 4,
+                    }}
+                  >
+                    <Pencil size={16} color={COLORS.primary} />
+                    <AppText style={{ color: COLORS.primary, fontSize: 13 }}>
+                      Edit
+                    </AppText>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
 
             <View style={styles.idRow}>
@@ -211,6 +256,23 @@ const MyShipmentDetails = ({ route, }: any) => {
               onClose={() => setSelectedQuote(null)}
             />
           </Suspense>
+
+          {/* DELETE CONFIRMATION MODAL */}
+          <ConfirmationModal
+            isVisible={isDeleteModalVisible}
+            type="danger"
+            title="Delete Draft Shipment?"
+            description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            isLoading={isDeleting}
+            onClose={() => {
+              if (!isDeleting) {
+                setIsDeleteModalVisible(false);
+              }
+            }}
+            onConfirm={handleConfirmDelete}
+          />
         </View>
       </ScrollView>
     </View>

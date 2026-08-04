@@ -52,6 +52,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   const [loading, setLoading] = useState(false);
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
+  const [cancelReasonError, setCancelReasonError] = useState('');
 
   // Reset states when modal opens
   useEffect(() => {
@@ -59,6 +60,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
       setIsAcceptedTerms(false);
       setSignature(null);
       setCancelReason('');
+      setCancelReasonError('');
       setCardDetails(null);
     }
   }, [visible]);
@@ -157,8 +159,11 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
   };
 
   const handleCancelShipment = async () => {
-    if (!cancelReason.trim())
-      return Alert.alert('Required', 'Please enter a reason for cancellation.');
+    if (!cancelReason.trim()) {
+      setCancelReasonError('Please enter a reason for cancellation.');
+      return;
+    }
+    setCancelReasonError('');
     setLoading(true);
     try {
       const res = await customerService.cancelQuote(quote?._id, {
@@ -580,8 +585,12 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                 placeholder="Enter reason here..."
                 multiline
                 value={cancelReason}
-                onChangeText={setCancelReason}
+                onChangeText={text => {
+                  setCancelReason(text);
+                  if (cancelReasonError) setCancelReasonError('');
+                }}
                 containerStyle={{ marginBottom: SPACING.md }}
+                error={cancelReasonError}
               />
               <View style={styles.promptFooter}>
                 <TouchableOpacity

@@ -212,7 +212,7 @@ const TruckDriverScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Truck Driver Management" />
+      <AppHeader title="Truck Driver Management" showProfileImage={false} />
       <AppLoader visible={loading && !refreshing} />
 
       <FlatList

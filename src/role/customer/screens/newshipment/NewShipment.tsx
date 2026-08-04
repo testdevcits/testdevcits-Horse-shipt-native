@@ -1,9 +1,14 @@
-import React from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, View, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { Trash2 } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 
 import styles from './styles.newshipment';
+import { COLORS } from '../../../../constants';
 import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import useNewShipment, { STEPS } from './useNewShipment';
 import PickupStep from './stepsscreens/PickupStep';
 import DeliveryStep from './stepsscreens/DeliveryStep';
@@ -13,9 +18,14 @@ import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
 import DraftSuccessModal from './DraftSuccessModal';
 
 const NewShipment = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const route = useRoute<any>();
   const isEdit = route.params?.isEdit;
+  const shipmentData = route.params?.shipmentData;
+
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     currentStep,
@@ -30,12 +40,37 @@ const NewShipment = () => {
     handleSaveDraft,
     handlePublish,
     loading,
+    draftLoading,
+    publishLoading,
     isPublishModalVisible,
     setIsPublishModalVisible,
     isDraftModalVisible,
     setIsDraftModalVisible,
     setCurrentStep,
   } = useNewShipment();
+
+  const handleConfirmDelete = async () => {
+    const targetId = shipmentData?._id;
+    if (!targetId) return;
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteCustomerShipment(targetId)).unwrap();
+      Toast.show({
+        type: 'success',
+        text1: 'Draft Deleted',
+        text2: 'Draft shipment deleted successfully.',
+      });
+      navigation.goBack();
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Delete Failed',
+        text2: err || 'Failed to delete draft shipment',
+      });
+      setIsDeleting(false);
+      setIsDeleteModalVisible(false);
+    }
+  };
 
   const renderStepper = () => (
     <View style={styles.stepperContainer}>
@@ -69,7 +104,20 @@ const NewShipment = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title={isEdit ? "Edit Shipment" : "New Shipment"} />
+      <AppHeader
+        showBack={true}
+        title={isEdit ? 'Edit Shipment' : 'New Shipment'}
+        rightElement={
+          isEdit && shipmentData?._id ? (
+            <TouchableOpacity
+              onPress={() => setIsDeleteModalVisible(true)}
+              style={{ padding: 6 }}
+            >
+              <Trash2 size={20} color={COLORS.error} />
+            </TouchableOpacity>
+          ) : undefined
+        }
+      />
       {renderStepper()}
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
 
@@ -119,6 +167,9 @@ const NewShipment = () => {
               onPublish={() => setIsPublishModalVisible(true)}
               onSaveDraft={handleSaveDraft}
               onEditSection={stepIndex => setCurrentStep(stepIndex)}
+              loading={loading}
+              draftLoading={draftLoading}
+              publishLoading={publishLoading}
             />
           )}
         </View>
@@ -132,6 +183,23 @@ const NewShipment = () => {
         description="Are you sure you want to save and publish this shipment? Pickup and Horse details cannot be edited later."
         confirmText="Save & Publish"
         isLoading={loading}
+      />
+
+      {/* DRAFT DELETE CONFIRMATION MODAL */}
+      <ConfirmationModal
+        isVisible={isDeleteModalVisible}
+        type="danger"
+        title="Delete Draft Shipment?"
+        description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={isDeleting}
+        onClose={() => {
+          if (!isDeleting) {
+            setIsDeleteModalVisible(false);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
       />
 
       <DraftSuccessModal

@@ -38,29 +38,60 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
       ? shipment.horses[0].photo.url
       : null;
 
-  const rawStatus = (shipment.status || quote?.status || 'open').toLowerCase();
+  const quoteStatus = (quote?.status || '').toLowerCase();
+  const shipmentStatus = (shipment?.status || '').toLowerCase();
 
-  let statusLabel = 'In Transit';
-  let statusBadgeStyle: any = styles.badgeInTransit;
-  let statusTextStyle: any = styles.badgeInTransitText;
+  let cat = 'pending';
+  if (
+    quoteStatus === 'rejected' ||
+    quoteStatus === 'cancelled' ||
+    shipmentStatus === 'cancelled' ||
+    quote?.isCancelled === true
+  ) {
+    cat = 'cancelled';
+  } else if (shipmentStatus === 'delivered' || shipmentStatus === 'completed') {
+    cat = 'delivered';
+  } else if (
+    shipmentStatus === 'in_transit' ||
+    shipmentStatus === 'in-transit' ||
+    shipmentStatus === 'on_the_way' ||
+    quote?.tripStatus === 'in_transit'
+  ) {
+    cat = 'in_transit';
+  } else if (
+    quoteStatus === 'accepted' ||
+    shipmentStatus === 'assigned' ||
+    shipmentStatus === 'accepted' ||
+    shipmentStatus === 'upcoming'
+  ) {
+    cat = 'upcoming';
+  }
 
-  if (rawStatus === 'delivered' || rawStatus === 'completed') {
-    statusLabel = 'Delivered';
-    statusBadgeStyle = styles.badgeDelivered;
-    statusTextStyle = styles.badgeDeliveredText;
-  } else if (rawStatus === 'assigned' || rawStatus === 'accepted') {
-    statusLabel = 'Assigned';
-    statusBadgeStyle = styles.badgeAssigned;
-    statusTextStyle = styles.badgeAssignedText;
-  } else if (rawStatus === 'rejected' || rawStatus === 'cancelled') {
+  let statusLabel = 'Pending';
+  let statusBadgeStyle: any = styles.badgeAssigned;
+  let statusTextStyle: any = styles.badgeAssignedText;
+
+  if (cat === 'cancelled') {
     statusLabel = 'Cancelled';
     statusBadgeStyle = styles.badgeCancelled;
     statusTextStyle = styles.badgeCancelledText;
+  } else if (cat === 'delivered') {
+    statusLabel = 'Delivered';
+    statusBadgeStyle = styles.badgeDelivered;
+    statusTextStyle = styles.badgeDeliveredText;
+  } else if (cat === 'in_transit') {
+    statusLabel = 'In Transit';
+    statusBadgeStyle = styles.badgeInTransit;
+    statusTextStyle = styles.badgeInTransitText;
+  } else if (cat === 'upcoming') {
+    statusLabel = 'Assigned';
+    statusBadgeStyle = styles.badgeAssigned;
+    statusTextStyle = styles.badgeAssignedText;
   }
 
   const quoteId = quote?._id || quote?.id;
 
-  const isAssignedOrAccepted = rawStatus === 'assigned' || rawStatus === 'accepted';
+  const isAssignedOrAccepted = cat === 'upcoming' || cat === 'in_transit';
 
   const vehicleObj =
     typeof quote?.vehicle === 'object' && quote?.vehicle !== null
@@ -243,7 +274,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               onPress={() => onAssignVehicle(quote)}
               activeOpacity={0.8}
             >
-              <Truck size={16} color={COLORS.primary} />
+              {/* <Truck size={16} color={COLORS.primary} /> */}
               <AppText style={styles.assignVehicleBtnText}>Assign Vehicle</AppText>
             </TouchableOpacity>
           )}
@@ -253,7 +284,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             onPress={() => onViewContract(quote)}
             activeOpacity={0.8}
           >
-            <FileCheck size={16} color={COLORS.white} />
+            {/* <FileCheck size={16} color={COLORS.white} /> */}
             <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
@@ -263,7 +294,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               onPress={() => onDelete(quoteId)}
               activeOpacity={0.8}
             >
-              <Trash2 size={16} color={COLORS.textPrimary} />
+              {/* <Trash2 size={16} color={COLORS.textPrimary} /> */}
               <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
             </TouchableOpacity>
           )}

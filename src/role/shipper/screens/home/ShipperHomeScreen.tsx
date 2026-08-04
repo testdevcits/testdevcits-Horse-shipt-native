@@ -25,7 +25,14 @@ import {
   ArrowRight,
   ArrowLeftRight,
 } from 'lucide-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState, Input, SectionHeader } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  AppLoader,
+  EmptyState,
+  Input,
+  SectionHeader,
+} from '../../../../components';
 import {
   COLORS,
   FONTS,
@@ -213,9 +220,13 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         },
         {
           latitude:
-            item?.deliveryCoords?.lat || item?.deliveryCoords?.latitude || 23.83,
+            item?.deliveryCoords?.lat ||
+            item?.deliveryCoords?.latitude ||
+            23.83,
           longitude:
-            item?.deliveryCoords?.lng || item?.deliveryCoords?.longitude || 78.73,
+            item?.deliveryCoords?.lng ||
+            item?.deliveryCoords?.longitude ||
+            78.73,
         },
       ];
       mapRef.current.fitToCoordinates(coords, {
@@ -234,12 +245,16 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         longitudeDelta: 1.5,
       };
     }
-    const pLat = item?.pickupCoords?.lat || item?.pickupCoords?.latitude || 22.745;
-    const pLng = item?.pickupCoords?.lng || item?.pickupCoords?.longitude || 75.892;
+    const pLat =
+      item?.pickupCoords?.lat || item?.pickupCoords?.latitude || 22.745;
+    const pLng =
+      item?.pickupCoords?.lng || item?.pickupCoords?.longitude || 75.892;
     const dLat =
       item?.deliveryCoords?.lat || item?.deliveryCoords?.latitude || pLat + 0.5;
     const dLng =
-      item?.deliveryCoords?.lng || item?.deliveryCoords?.longitude || pLng + 0.5;
+      item?.deliveryCoords?.lng ||
+      item?.deliveryCoords?.longitude ||
+      pLng + 0.5;
 
     const midLat = (pLat + dLat) / 2;
     const midLng = (pLng + dLng) / 2;
@@ -355,9 +370,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                 selectedFilter === 'dropoff' && styles.filterPillActive,
               ]}
               onPress={() =>
-                setSelectedFilter(
-                  selectedFilter === 'dropoff' ? '' : 'dropoff',
-                )
+                setSelectedFilter(selectedFilter === 'dropoff' ? '' : 'dropoff')
               }
             >
               <AppText
@@ -370,9 +383,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               </AppText>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.filterIconBtn}>
+            {/* <TouchableOpacity style={styles.filterIconBtn}>
               <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -434,8 +447,12 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       {/* Current Shipments Section Title */}
       {viewMode === 'list' && (
         <View style={{ marginTop: SPACING.sm, marginBottom: SPACING.xs }}>
-
-          <SectionHeader title='Current Shipment' showAction={true} onPress={() => navigation.navigate("Post")} containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }} />
+          <SectionHeader
+            title="Current Shipment"
+            showAction={true}
+            onPress={() => navigation.navigate('Post')}
+            containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }}
+          />
         </View>
       )}
     </View>
@@ -462,7 +479,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           data={filteredShipments}
           keyExtractor={(item, index) => item?._id || item?.id || String(index)}
           renderItem={({ item }) => (
-            <AvailableShipmentCard item={item} onPress={handleNavigateToDetails} />
+            <AvailableShipmentCard
+              item={item}
+              onPress={handleNavigateToDetails}
+            />
           )}
           ListHeaderComponent={renderHeader()}
           ListEmptyComponent={renderEmpty()}
@@ -518,7 +538,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               <View style={styles.mapSelectionTable}>
                 <FlatList
                   data={filteredShipments}
-                  keyExtractor={(item, index) => item?._id || item?.id || String(index)}
+                  keyExtractor={(item, index) =>
+                    item?._id || item?.id || String(index)
+                  }
                   scrollEnabled={false}
                   renderItem={({ item, index }) => (
                     <MapShipmentSelectItem
@@ -534,95 +556,71 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </View>
 
             {/* Shipment Route Map Card */}
-            <View style={styles.routeMapCard}>
-              <AppText style={styles.routeMapTitle}>Shipment Route Map</AppText>
-              <AppText style={styles.routeMapShipmentCode}>
-                {selectedMapShipment?.shipmentCode}
-              </AppText>
 
-              {/* Map Preview Container */}
-              <View style={styles.mapWrapper}>
-                <MapView
-                  ref={mapRef}
-                  provider={PROVIDER_GOOGLE}
-                  style={styles.mapView}
-                  initialRegion={getRegionForShipment(selectedMapShipment)}
-                >
-                  {selectedMapShipment?.pickupCoords && (
-                    <Marker
-                      coordinate={{
-                        latitude:
-                          selectedMapShipment?.pickupCoords?.lat ||
-                          selectedMapShipment?.pickupCoords?.latitude ||
-                          22.745,
-                        longitude:
-                          selectedMapShipment?.pickupCoords?.lng ||
-                          selectedMapShipment?.pickupCoords?.longitude ||
-                          75.892,
-                      }}
-                      title="Pickup"
-                      description={selectedMapShipment?.pickupLocation}
-                    >
-                      <View style={styles.markerCircleGreen}>
-                        <MapPin size={14} color={COLORS.white} />
-                      </View>
-                    </Marker>
-                  )}
+            {filteredShipments.length > 0 && (
+              <View style={styles.routeMapCard}>
+                <AppText style={styles.routeMapTitle}>
+                  Shipment Route Map
+                </AppText>
+                <AppText style={styles.routeMapShipmentCode}>
+                  {selectedMapShipment?.shipmentCode}
+                </AppText>
 
-                  {selectedMapShipment?.deliveryCoords && (
-                    <Marker
-                      coordinate={{
-                        latitude:
-                          selectedMapShipment?.deliveryCoords?.lat ||
-                          selectedMapShipment?.deliveryCoords?.latitude ||
-                          23.838,
-                        longitude:
-                          selectedMapShipment?.deliveryCoords?.lng ||
-                          selectedMapShipment?.deliveryCoords?.longitude ||
-                          78.737,
-                      }}
-                      title="Delivery"
-                      description={selectedMapShipment?.deliveryLocation}
-                    >
-                      <View style={styles.markerCircleRed}>
-                        <MapPin size={14} color={COLORS.white} />
-                      </View>
-                    </Marker>
-                  )}
+                {/* Map Preview Container */}
+                <View style={styles.mapWrapper}>
+                  <MapView
+                    ref={mapRef}
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.mapView}
+                    initialRegion={getRegionForShipment(selectedMapShipment)}
+                  >
+                    {selectedMapShipment?.pickupCoords && (
+                      <Marker
+                        coordinate={{
+                          latitude:
+                            selectedMapShipment?.pickupCoords?.lat ||
+                            selectedMapShipment?.pickupCoords?.latitude ||
+                            22.745,
+                          longitude:
+                            selectedMapShipment?.pickupCoords?.lng ||
+                            selectedMapShipment?.pickupCoords?.longitude ||
+                            75.892,
+                        }}
+                        title="Pickup"
+                        description={selectedMapShipment?.pickupLocation}
+                      >
+                        <View style={styles.markerCircleGreen}>
+                          <MapPin size={14} color={COLORS.white} />
+                        </View>
+                      </Marker>
+                    )}
 
-                  {selectedMapShipment?.pickupCoords &&
-                    selectedMapShipment?.deliveryCoords && (
-                      <>
-                        <MapViewDirections
-                          origin={{
-                            latitude:
-                              selectedMapShipment?.pickupCoords?.lat ||
-                              selectedMapShipment?.pickupCoords?.latitude ||
-                              22.745,
-                            longitude:
-                              selectedMapShipment?.pickupCoords?.lng ||
-                              selectedMapShipment?.pickupCoords?.longitude ||
-                              75.892,
-                          }}
-                          destination={{
-                            latitude:
-                              selectedMapShipment?.deliveryCoords?.lat ||
-                              selectedMapShipment?.deliveryCoords?.latitude ||
-                              23.838,
-                            longitude:
-                              selectedMapShipment?.deliveryCoords?.lng ||
-                              selectedMapShipment?.deliveryCoords?.longitude ||
-                              78.737,
-                          }}
-                          apikey={GOOGLE_MAPS_APIKEY}
-                          strokeWidth={4}
-                          strokeColor={COLORS.brandBrown || COLORS.primary || '#A06333'}
-                          lineDashPattern={[0]}
-                          onError={err => console.log('MapViewDirections Error:', err)}
-                        />
-                        <Polyline
-                          coordinates={[
-                            {
+                    {selectedMapShipment?.deliveryCoords && (
+                      <Marker
+                        coordinate={{
+                          latitude:
+                            selectedMapShipment?.deliveryCoords?.lat ||
+                            selectedMapShipment?.deliveryCoords?.latitude ||
+                            23.838,
+                          longitude:
+                            selectedMapShipment?.deliveryCoords?.lng ||
+                            selectedMapShipment?.deliveryCoords?.longitude ||
+                            78.737,
+                        }}
+                        title="Delivery"
+                        description={selectedMapShipment?.deliveryLocation}
+                      >
+                        <View style={styles.markerCircleRed}>
+                          <MapPin size={14} color={COLORS.white} />
+                        </View>
+                      </Marker>
+                    )}
+
+                    {selectedMapShipment?.pickupCoords &&
+                      selectedMapShipment?.deliveryCoords && (
+                        <>
+                          <MapViewDirections
+                            origin={{
                               latitude:
                                 selectedMapShipment?.pickupCoords?.lat ||
                                 selectedMapShipment?.pickupCoords?.latitude ||
@@ -631,35 +629,72 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                                 selectedMapShipment?.pickupCoords?.lng ||
                                 selectedMapShipment?.pickupCoords?.longitude ||
                                 75.892,
-                            },
-                            {
+                            }}
+                            destination={{
                               latitude:
                                 selectedMapShipment?.deliveryCoords?.lat ||
                                 selectedMapShipment?.deliveryCoords?.latitude ||
                                 23.838,
                               longitude:
                                 selectedMapShipment?.deliveryCoords?.lng ||
-                                selectedMapShipment?.deliveryCoords?.longitude ||
+                                selectedMapShipment?.deliveryCoords
+                                  ?.longitude ||
                                 78.737,
-                            },
-                          ]}
-                          strokeColor={COLORS.primary || '#A37F3D'}
-                          strokeWidth={3}
-                          lineDashPattern={[6, 6]}
-                        />
-                      </>
-                    )}
-                </MapView>
-              </View>
+                            }}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={4}
+                            strokeColor={
+                              COLORS.brandBrown || COLORS.primary || '#A06333'
+                            }
+                            lineDashPattern={[0]}
+                            onError={err =>
+                              console.log('MapViewDirections Error:', err)
+                            }
+                          />
+                          <Polyline
+                            coordinates={[
+                              {
+                                latitude:
+                                  selectedMapShipment?.pickupCoords?.lat ||
+                                  selectedMapShipment?.pickupCoords?.latitude ||
+                                  22.745,
+                                longitude:
+                                  selectedMapShipment?.pickupCoords?.lng ||
+                                  selectedMapShipment?.pickupCoords
+                                    ?.longitude ||
+                                  75.892,
+                              },
+                              {
+                                latitude:
+                                  selectedMapShipment?.deliveryCoords?.lat ||
+                                  selectedMapShipment?.deliveryCoords
+                                    ?.latitude ||
+                                  23.838,
+                                longitude:
+                                  selectedMapShipment?.deliveryCoords?.lng ||
+                                  selectedMapShipment?.deliveryCoords
+                                    ?.longitude ||
+                                  78.737,
+                              },
+                            ]}
+                            strokeColor={COLORS.primary || '#A37F3D'}
+                            strokeWidth={3}
+                            lineDashPattern={[6, 6]}
+                          />
+                        </>
+                      )}
+                  </MapView>
+                </View>
 
-              {/* Close Button */}
-              <TouchableOpacity
-                style={styles.closeMapBtn}
-                onPress={() => setViewMode('list')}
-              >
-                <AppText style={styles.closeMapBtnText}>Close</AppText>
-              </TouchableOpacity>
-            </View>
+                {/* Close Button */}
+                <TouchableOpacity
+                  style={styles.closeMapBtn}
+                  onPress={() => setViewMode('list')}
+                >
+                  <AppText style={styles.closeMapBtnText}>Close</AppText>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </ScrollView>
       )}
@@ -673,5 +708,3 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 };
 
 export default ShipperHomeScreen;
-
-

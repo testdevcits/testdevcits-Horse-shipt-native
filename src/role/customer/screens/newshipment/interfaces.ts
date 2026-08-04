@@ -160,6 +160,7 @@ export interface NewShipmentHorse {
   photo: FilePayload | null;
   coggins: FilePayload | null;
   healthCert: FilePayload | null;
+  otherDocuments: FilePayload | null;
 }
 
 export interface NewShipmentForm {

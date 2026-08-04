@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,19 +9,23 @@ import {
   Platform,
 } from 'react-native';
 import { Truck } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 import { COLORS, SPACING, FONTS } from '../../../../constants';
 import useMyShipments, { ShipmentTab } from './usemyshipments';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import {
   AppHeader,
   AppLoader,
   AppText,
   EmptyState,
-  ShipmentCard,
+  ConfirmationModal,
 } from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 import styles from './styles.myshipments';
 
 const MyShipments = ({ navigation }: { navigation?: any }) => {
+  const dispatch = useAppDispatch();
   const {
     filteredData,
     loading,
@@ -31,6 +35,10 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     counts,
     fetchShipments,
   } = useMyShipments();
+
+  const [shipmentToDelete, setShipmentToDelete] = useState<any>(null);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const tabs: ShipmentTab[] = [
     'Upcoming',
@@ -47,14 +55,43 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     });
   }, [navigation]);
 
+  const handleInitiateDelete = useCallback((item: any) => {
+    setShipmentToDelete(item);
+    setIsDeleteModalVisible(true);
+  }, []);
+
+  const handleConfirmDelete = async () => {
+    if (!shipmentToDelete?._id) return;
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteCustomerShipment(shipmentToDelete._id)).unwrap();
+      Toast.show({
+        type: 'success',
+        text1: 'Draft Deleted',
+        text2: 'Draft shipment deleted successfully.',
+      });
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Delete Failed',
+        text2: err || 'Failed to delete draft shipment',
+      });
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalVisible(false);
+      setShipmentToDelete(null);
+    }
+  };
+
   const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
 
   const renderItem = useCallback(({ item }: { item: any }) => (
     <ShipmentHorizontalCard
       item={item}
       onPress={() => handleShipmentPress(item)}
+      onDelete={handleInitiateDelete}
     />
-  ), [handleShipmentPress]);
+  ), [handleShipmentPress, handleInitiateDelete]);
 
   const renderTab = (tab: ShipmentTab) => {
     const isActive = activeTab === tab;
@@ -120,6 +157,24 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
             />
           ) : null
         }
+      />
+
+      {/* DELETE CONFIRMATION MODAL */}
+      <ConfirmationModal
+        isVisible={isDeleteModalVisible}
+        type="danger"
+        title="Delete Draft Shipment?"
+        description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={isDeleting}
+        onClose={() => {
+          if (!isDeleting) {
+            setIsDeleteModalVisible(false);
+            setShipmentToDelete(null);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
       />
     </View>
   );

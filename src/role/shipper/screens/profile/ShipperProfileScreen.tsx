@@ -281,7 +281,13 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     }
   };
 
-  const ratingVal = profileData?.rating || 5.0;
+  const ratingVal = Number(profileData?.rating ?? profileData?.averageRating ?? 0.0);
+  const shipmentCount =
+    profileData?.completedShipments ??
+    profileData?.totalShipments ??
+    profileData?.shipmentsCount ??
+    profileData?.shipmentCount ??
+    (Array.isArray(profileData?.shipments) ? profileData.shipments.length : 0);
 
   return (
     <View style={styles.container}>
@@ -397,9 +403,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               </TouchableOpacity>
 
               {/* COMMON STATS CARD CONTAINER */}
-              <View style={styles.statsCard}>
+              {/* <View style={styles.statsCard}>
                 <View style={styles.statCol}>
-                  <AppText style={styles.statVal}>10</AppText>
+                  <AppText style={styles.statVal}>{shipmentCount}</AppText>
                   <AppText style={styles.statSub}>Shipment</AppText>
                 </View>
                 <View style={styles.statDivider} />
@@ -410,7 +416,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   </View>
                   <AppText style={styles.statSub}>Rating</AppText>
                 </View>
-              </View>
+              </View> */}
             </View>
 
             {/* PROFILE TAB CONTENT */}

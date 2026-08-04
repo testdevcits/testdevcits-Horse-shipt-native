@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { MapPin, Calendar, ExternalLink, Truck } from 'lucide-react-native';
+import { MapPin, Calendar, ExternalLink, Truck, Trash2 } from 'lucide-react-native';
 import {
   COLORS,
   FONTS,
@@ -41,12 +41,21 @@ const getShortLocation = (address: string) => {
 };
 
 const ShipmentHorizontalCard = memo(
-  ({ item, onPress }: { item: any; onPress: () => void }) => {
+  ({
+    item,
+    onPress,
+    onDelete,
+  }: {
+    item: any;
+    onPress: () => void;
+    onDelete?: (item: any) => void;
+  }) => {
     const [imageError, setImageError] = useState(false);
 
     const horse = item?.horses?.[0];
     const pickupDate = formatDate(item?.pickupDateRange?.start);
     const statusLabel = formatStatus(item?.status);
+    const isDraft = item?.publish === false;
 
     return (
       <TouchableOpacity
@@ -86,10 +95,24 @@ const ShipmentHorizontalCard = memo(
               {getShortLocation(item?.deliveryLocation)}
             </AppText>
 
-            {/* Shipment Code / External Action */}
-            <TouchableOpacity style={styles.exportBtn}>
-              <ExternalLink size={ICON_SIZE.xs} color={COLORS.white} />
-            </TouchableOpacity>
+            {/* Shipment Code / External Action / Delete Action */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              {isDraft && onDelete && (
+                <TouchableOpacity
+                  style={styles.deleteIconBtn}
+                  onPress={(e: any) => {
+                    e?.stopPropagation?.();
+                    onDelete(item);
+                  }}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Trash2 size={ICON_SIZE.xs || 16} color={COLORS.error} />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity style={styles.exportBtn}>
+                <ExternalLink size={ICON_SIZE.xs} color={COLORS.white} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Status Badge */}
@@ -286,6 +309,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
+  },
+  deleteIconBtn: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#FEF2F2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
   },
 });
 

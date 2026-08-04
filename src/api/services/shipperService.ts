@@ -358,6 +358,29 @@ const shipperService = {
     return axiosClient.get('/api/shipper/notification-activity');
   },
 
+  // Mark Shipper Notifications as Read (/api/shipper/notification-activity/read)
+  markNotificationsRead: async (
+    ids: string[],
+  ): Promise<{ success: boolean; message?: string }> => {
+    return axiosClient.patch('/api/shipper/notification-activity/read', {
+      notificationIds: ids,
+      ids: ids,
+    });
+  },
+
+  // Delete Shipper Notifications (/api/shipper/notification-activity)
+  deleteNotifications: async (
+    ids: string[],
+  ): Promise<{
+    success: boolean;
+    message?: string;
+    data?: { deletedCount: number };
+  }> => {
+    return axiosClient.delete('/api/shipper/notification-activity', {
+      data: { ids },
+    });
+  },
+
   // Fetch Subscription Billing History (/api/shipper/stripe/subscription/billing/history)
   getBillingHistory: async (): Promise<{
     success: boolean;

@@ -59,26 +59,38 @@ export const fetchNotificationsThunk = createAsyncThunk(
 
 export const markNotificationsReadThunk = createAsyncThunk(
   'notification/markAsRead',
-  async (ids: string[], { rejectWithValue }) => {
+  async (ids: string[], { getState, rejectWithValue }) => {
     try {
-      await customerService.markAsRead(ids);
+      const state: any = getState();
+      const isShipper = state?.auth?.user?.role === 'shipper';
+      if (isShipper) {
+        await shipperService.markNotificationsRead(ids);
+      } else {
+        await customerService.markAsRead(ids);
+      }
       return ids;
     } catch (err: any) {
       return rejectWithValue(err.message || 'Failed to mark as read');
     }
-  }
+  },
 );
 
 export const deleteNotificationsThunk = createAsyncThunk(
   'notification/deleteNotifications',
-  async (ids: string[], { rejectWithValue }) => {
+  async (ids: string[], { getState, rejectWithValue }) => {
     try {
-      await customerService.deleteNotifications(ids);
+      const state: any = getState();
+      const isShipper = state?.auth?.user?.role === 'shipper';
+      if (isShipper) {
+        await shipperService.deleteNotifications(ids);
+      } else {
+        await customerService.deleteNotifications(ids);
+      }
       return ids;
     } catch (err: any) {
       return rejectWithValue(err.message || 'Failed to delete notifications');
     }
-  }
+  },
 );
 
 const notificationSlice = createSlice({

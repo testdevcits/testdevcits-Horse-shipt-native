@@ -85,27 +85,30 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
           <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
         </View>
-        <Pressable onPress={() => navigation.navigate('New')}>
-          <Image
-            source={imageIndex.Banner}
-            style={{
-              width: SCREEN_WIDTH - 16,
-              height: 216,
-              alignSelf: 'center',
-              borderRadius: 20,
-            }}
-            resizeMode="stretch"
-          />
-        </Pressable>
+
         <FlatList
           data={shipments.slice(0, 2)}
           keyExtractor={item => item?._id}
           scrollEnabled={false}
           ListHeaderComponent={
-            <SectionHeader
-              title="Current Shipments"
-              onPress={() => navigation.navigate('Shipments')}
-            />
+            <>
+              <Pressable onPress={() => navigation.navigate('New')}>
+                <Image
+                  source={imageIndex.Banner}
+                  style={{
+                    width: SCREEN_WIDTH - 16,
+                    height: 216,
+                    alignSelf: 'center',
+                    borderRadius: 20,
+                  }}
+                  resizeMode="stretch"
+                />
+              </Pressable>
+              <SectionHeader
+                title="Current Shipments"
+                onPress={() => navigation.navigate('Shipments')}
+              />
+            </>
           }
           renderItem={({ item }) => (
             <ShipmentCardDetailed

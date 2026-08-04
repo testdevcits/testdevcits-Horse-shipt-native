@@ -391,8 +391,9 @@ const MyVehiclesScreen = ({ navigation }: any) => {
                   styles.actionPillText,
                   assignedDriverName && { color: COLORS.primary, fontFamily: 'PlusJakartaSans-Bold' },
                 ]}
+                numberOfLines={1}
               >
-                {assignedDriverName ? `Driver: ${assignedDriverName}` : 'Assign Driver'}
+                {assignedDriverName ? `${assignedDriverName}` : 'Assign Driver'}
               </AppText>
             </TouchableOpacity>
 
@@ -432,7 +433,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="My Vehicles" />
+      <AppHeader title="My Vehicles" showProfileImage={false} />
       <AppLoader visible={loading && !refreshing} />
 
       <FlatList

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {
   MapPin,
@@ -33,6 +34,9 @@ interface ReviewStepProps {
   onPublish: () => void;
   onSaveDraft: () => void;
   onEditSection: (stepIndex: number) => void;
+  loading?: boolean;
+  draftLoading?: boolean;
+  publishLoading?: boolean;
 }
 
 const ReviewStep: React.FC<ReviewStepProps> = ({
@@ -40,6 +44,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   onPublish,
   onSaveDraft,
   onEditSection,
+  loading = false,
+  draftLoading = false,
+  publishLoading = false,
 }) => {
   const navigation = useNavigation();
   const [isHorseExpanded, setIsHorseExpanded] = useState(true);
@@ -401,6 +408,38 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                         </TouchableOpacity>
                       )}
                     </View>
+
+                    {/* OTHER DOCUMENTS ROW */}
+                    <View style={styles.docRow}>
+                      <View style={[styles.docIconBox, horse.otherDocuments ? styles.docIconBoxSuccess : styles.docIconBoxMuted]}>
+                        {horse.otherDocuments ? (
+                          <FileCheck size={18} color={COLORS.greenSuccess} />
+                        ) : (
+                          <FileText size={18} color={COLORS.grey400} />
+                        )}
+                      </View>
+
+                      <View style={styles.docTextGroup}>
+                        <AppText style={styles.docTitleText}>Other Documents</AppText>
+                        <AppText style={styles.docFileName} numberOfLines={1}>
+                          {getDocName(horse.otherDocuments, 'Other_Document.pdf') || 'Not uploaded yet'}
+                        </AppText>
+                      </View>
+
+                      {horse.otherDocuments ? (
+                        <View style={styles.uploadedBadge}>
+                          <CheckCircle2 size={12} color={COLORS.greenSuccess} />
+                          <AppText style={styles.uploadedBadgeText}>Attached</AppText>
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          style={styles.uploadQuickBtn}
+                          onPress={() => onEditSection(3)}
+                        >
+                          <AppText style={styles.uploadQuickText}>+ Upload</AppText>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
                 );
               })}
@@ -409,7 +448,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
         </View>
 
         {/* SECTION 4: NOTES & SPECIAL REQUIREMENTS CARD */}
-        {(Boolean(form.additionalInfo) || Boolean(form.hasSpecialRequirement)) && (
+        {(Boolean(form.additionalInfo) || Boolean(form.hasSpecialRequirement) || Boolean(form.recipientEmail)) && (
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <View style={styles.cardHeaderLeft}>
@@ -435,19 +474,48 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <AppText style={styles.notesValue}>{form.additionalInfo}</AppText>
               </View>
             )}
+
+            {Boolean(form.recipientEmail) && (
+              <View style={styles.notesBlock}>
+                <AppText style={styles.notesLabel}>Share Tracking Recipient Email:</AppText>
+                <AppText style={styles.notesValue}>{form.recipientEmail}</AppText>
+              </View>
+            )}
           </View>
         )}
 
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.draftBtn} onPress={onSaveDraft} activeOpacity={0.85}>
-            <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
-            <AppText style={styles.draftBtnText}>Save Draft</AppText>
+          <TouchableOpacity
+            disabled={loading}
+            style={styles.draftBtn}
+            onPress={onSaveDraft}
+            activeOpacity={0.85}
+          >
+            {draftLoading ? (
+              <ActivityIndicator size="small" color={COLORS.primary} />
+            ) : (
+              <>
+                <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
+                <AppText style={styles.draftBtnText}>Save Draft</AppText>
+              </>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.publishBtn} onPress={onPublish} activeOpacity={0.85}>
-            <AppText style={styles.publishBtnText}>Save & Publish</AppText>
-            <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+          <TouchableOpacity
+            disabled={loading}
+            style={styles.publishBtn}
+            onPress={onPublish}
+            activeOpacity={0.85}
+          >
+            {publishLoading ? (
+              <ActivityIndicator size="small" color={COLORS.white} />
+            ) : (
+              <>
+                <AppText style={styles.publishBtnText}>Save & Publish</AppText>
+                <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </ScrollView>

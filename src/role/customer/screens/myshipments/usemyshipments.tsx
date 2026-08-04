@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import customerService from '../../../../api/services/customerService';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { fetchCustomerShipments } from '../../../../redux/slices/customerShipmentSlice';
 
 export type ShipmentTab =
   | 'Upcoming'
@@ -9,29 +10,24 @@ export type ShipmentTab =
   | 'Cancelled';
 
 const useMyShipments = () => {
-  const [shipments, setShipments] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const dispatch = useAppDispatch();
+  const { shipments, loading, refreshing, lastFetched } = useAppSelector(
+    state => state.customerShipments,
+  );
   const [activeTab, setActiveTab] = useState<ShipmentTab>('In Progress');
 
-  const fetchShipments = useCallback(async () => {
-    try {
-      const response = await customerService.getMyShipments();
-
-      if (response.success) {
-        setShipments(response.shipments ?? []);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
+  const fetchShipments = useCallback(
+    async (isRefresh = false) => {
+      dispatch(fetchCustomerShipments(isRefresh));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
-    fetchShipments();
-  }, [fetchShipments]);
+    if (lastFetched === null || shipments.length === 0) {
+      fetchShipments(false);
+    }
+  }, [fetchShipments, lastFetched, shipments.length]);
 
   const filteredData = useMemo(() => {
     switch (activeTab) {

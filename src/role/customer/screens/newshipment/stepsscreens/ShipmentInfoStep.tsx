@@ -23,11 +23,11 @@ interface ShipmentInfoStepProps {
   updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
-  pickDocument: (index: number, type: 'coggins' | 'healthCert') => void;
+  pickDocument: (index: number, type: 'coggins' | 'healthCert' | 'otherDocuments') => void;
   pickImage: (index: number) => void;
   removeFile: (
     index: number,
-    type: 'photo' | 'coggins' | 'healthCert',
+    type: 'photo' | 'coggins' | 'healthCert' | 'otherDocuments',
   ) => void;
 }
 
@@ -42,7 +42,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 }) => {
   const renderDocumentRow = (
     horseIndex: number,
-    type: 'coggins' | 'healthCert',
+    type: 'coggins' | 'healthCert' | 'otherDocuments',
     label: string,
   ) => {
     const file = form.horses[horseIndex]?.[type];
@@ -159,6 +159,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
               </AppText>
               {renderDocumentRow(index, 'coggins', 'Coggins Test')}
               {renderDocumentRow(index, 'healthCert', 'Health Certificate')}
+              {renderDocumentRow(index, 'otherDocuments', 'Other Documents')}
             </View>
           </View>
         ))}
@@ -177,6 +178,25 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             style={styles.textArea}
             textAlignVertical="top"
           />
+        </View>
+
+        {/* SHARE TRACKING (OPTIONAL) */}
+        <View style={styles.shareTrackingCard}>
+          <AppText style={styles.shareTrackingTitle}>
+            Share Tracking (Optional)
+          </AppText>
+          <Input
+            label="Recipient Email Address"
+            placeholder="abc@gmail.com"
+            value={form.recipientEmail}
+            onChangeText={v => updateForm({ recipientEmail: v })}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            containerStyle={{ marginTop: SPACING.xs }}
+          />
+          <AppText style={styles.shareTrackingSubtext}>
+            If provided, the recipient will receive tracking information via email once the shipment is published.
+          </AppText>
         </View>
 
         {/* FOOTER */}
@@ -353,6 +373,30 @@ const styles = StyleSheet.create({
     // height: 100,
     paddingTop: SPACING.md,
     backgroundColor: COLORS.white,
+  },
+
+  shareTrackingCard: {
+    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.md,
+    marginTop: SPACING.lg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E8DFD1',
+  },
+  shareTrackingTitle: {
+    fontSize: 16,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.xs,
+  },
+  shareTrackingSubtext: {
+    fontSize: 12,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: 6,
+    lineHeight: 16,
   },
 
   footer: {

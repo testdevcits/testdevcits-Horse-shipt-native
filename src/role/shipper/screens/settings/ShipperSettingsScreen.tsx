@@ -118,7 +118,7 @@ const ShipperSettingsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Settings" />
+      <AppHeader title="Settings" showProfileImage={false} />
 
       <ScrollView
         contentContainerStyle={styles.content}

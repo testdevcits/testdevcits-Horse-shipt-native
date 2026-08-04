@@ -124,6 +124,41 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary || '#1E293B',
   },
+  emptyReviewsCard: {
+    width: '100%',
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md || 12,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#E6D7BD',
+    padding: SPACING.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FAF6EE',
+    borderWidth: 1,
+    borderColor: '#EEDCBD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: SPACING.sm,
+  },
+  emptyReviewsTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary || '#1E293B',
+    marginBottom: 4,
+  },
+  emptyReviewsSubtitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary || '#64748B',
+    textAlign: 'center',
+    lineHeight: 18,
+    paddingHorizontal: SPACING.sm,
+  },
 });
 
 export default styles;

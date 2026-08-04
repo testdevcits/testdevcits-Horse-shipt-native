@@ -97,7 +97,7 @@ const GoogleReviewScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Google review" />
+      <AppHeader title="Google review" showProfileImage={false} />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

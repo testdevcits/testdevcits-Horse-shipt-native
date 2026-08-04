@@ -25,6 +25,7 @@ import { logoutUser } from '../../../../redux/slices/authSlice';
 
 // Profile Theme Colors mapped to match the gold/beige screenshot details
 const PROFILE_COLORS = {
+  primary: COLORS.primary,
   goldPrimary: '#A37F3D',
   goldLightBg: '#FAF6EE',
   goldBorder: '#DCCEB2',

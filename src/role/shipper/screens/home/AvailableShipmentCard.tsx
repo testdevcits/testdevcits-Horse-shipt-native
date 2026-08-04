@@ -65,7 +65,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
         <AppText style={styles.horseTitle}>{horseName}</AppText>
         <AppText style={styles.horseSpecs}>{horseSpecs}</AppText>
         <AppText style={styles.shipmentCode}>
-          {item?.shipmentCode || 'HS-SHIP-2026-3B7C23'}
+          {item?.shipmentCode || ''}
         </AppText>
 
         <View style={styles.infoMetaRow}>

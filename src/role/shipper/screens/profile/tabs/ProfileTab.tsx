@@ -22,6 +22,7 @@ const ProfileTab: React.FC<Props> = ({
 }) => {
   const reviewsList = profileData?.reviews || [];
 
+
   return (
     <View style={styles.tabSection}>
       {/* Update Locations Button */}
@@ -49,21 +50,21 @@ const ProfileTab: React.FC<Props> = ({
         <View style={styles.infoRow}>
           <AppText style={styles.infoLabel}>Name</AppText>
           <AppText style={styles.infoVal}>
-            {profileData?.name || user?.name || 'Marcus Linner'}
+            {profileData?.name || user?.name || 'Not Available'}
           </AppText>
         </View>
 
         <View style={styles.infoRow}>
           <AppText style={styles.infoLabel}>Email</AppText>
           <AppText style={styles.infoVal}>
-            {profileData?.email || user?.email || 'email@email.com'}
+            {profileData?.email || user?.email || 'Not Available'}
           </AppText>
         </View>
 
         <View style={styles.infoRow}>
           <AppText style={styles.infoLabel}>Location</AppText>
           <AppText style={styles.infoVal}>
-            {profileData?.locale?.address || 'Knoxville, TN, USA'}
+            {profileData?.locale?.address || 'Not Available'}
           </AppText>
         </View>
 
@@ -75,7 +76,7 @@ const ProfileTab: React.FC<Props> = ({
         <View style={styles.infoRow}>
           <AppText style={styles.infoLabel}>Phone</AppText>
           <AppText style={styles.infoVal}>
-            {profileData?.mobile || '902 999 9999'}
+            {profileData?.mobile || 'Not Available'}
           </AppText>
         </View>
 
@@ -93,80 +94,74 @@ const ProfileTab: React.FC<Props> = ({
       <View style={styles.reviewsSection}>
         <AppText style={styles.reviewsSectionTitle}>Reviews received</AppText>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.reviewsScroll}
-        >
-          {reviewsList.length > 0 ? (
-            reviewsList.map((rev: any, idx: number) => (
-              <View key={rev._id || idx} style={styles.reviewCard}>
-                <View style={styles.starsRow}>
-                  {[1, 2, 3, 4, 5].map(s => (
-                    <Star
-                      key={s}
-                      size={16}
-                      color="#F59E0B"
-                      fill={s <= (rev.rating || 5) ? '#F59E0B' : 'transparent'}
+        {reviewsList.length > 0 ? (
+          <>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.reviewsScroll}
+            >
+              {reviewsList.map((rev: any, idx: number) => (
+                <View key={rev._id || idx} style={styles.reviewCard}>
+                  <View style={styles.starsRow}>
+                    {[1, 2, 3, 4, 5].map(s => (
+                      <Star
+                        key={s}
+                        size={16}
+                        color="#F59E0B"
+                        fill={s <= (rev.rating || 5) ? '#F59E0B' : 'transparent'}
+                      />
+                    ))}
+                  </View>
+                  <AppText style={styles.reviewText}>
+                    {rev.reviewText || ''}
+                  </AppText>
+                  <View style={styles.reviewerRow}>
+                    <Image
+                      source={
+                        rev.customerId?.profileImage?.url
+                          ? { uri: rev.customerId.profileImage.url }
+                          : imageIndex.AccountIcon
+                      }
+                      style={styles.reviewerAvatar}
                     />
-                  ))}
-                </View>
-                <AppText style={styles.reviewText}>
-                  {rev.reviewText || 'Always good to work with Mark, a great customer.'}
-                </AppText>
-                <View style={styles.reviewerRow}>
-                  <Image
-                    source={
-                      rev.customerId?.profileImage?.url
-                        ? { uri: rev.customerId.profileImage.url }
-                        : imageIndex.AccountIcon
-                    }
-                    style={styles.reviewerAvatar}
-                  />
-                  <View>
-                    <AppText style={styles.reviewerName}>
-                      {rev.customerName || 'Mark'}
-                    </AppText>
-                    <AppText style={styles.reviewDate}>
-                      {formatDate(rev.createdAt || new Date(), 'MM/DD/YYYY')}
-                    </AppText>
+                    <View>
+                      <AppText style={styles.reviewerName}>
+                        {rev.customerName || rev.customerId?.name || 'Customer'}
+                      </AppText>
+                      <AppText style={styles.reviewDate}>
+                        {formatDate(rev.createdAt || new Date(), 'MM/DD/YYYY')}
+                      </AppText>
+                    </View>
                   </View>
                 </View>
-              </View>
-            ))
-          ) : (
-            <View style={styles.reviewCard}>
-              <View style={styles.starsRow}>
-                {[1, 2, 3, 4, 5].map(s => (
-                  <Star key={s} size={16} color="#F59E0B" fill="#F59E0B" />
-                ))}
-              </View>
-              <AppText style={styles.reviewText}>
-                Always good to work with Mark, a great customer.
-              </AppText>
-              <View style={styles.reviewerRow}>
-                <Image source={imageIndex.AccountIcon} style={styles.reviewerAvatar} />
-                <View>
-                  <AppText style={styles.reviewerName}>Mark</AppText>
-                  <AppText style={styles.reviewDate}>11/28/2023</AppText>
-                </View>
-              </View>
-            </View>
-          )}
-        </ScrollView>
+              ))}
+            </ScrollView>
 
-        <TouchableOpacity
-          style={styles.showMoreBtn}
-          onPress={() =>
-            navigation?.navigate('ShipperReviews', {
-              reviews: reviewsList,
-              profileData,
-            })
-          }
-          activeOpacity={0.8}
-        >
-          <AppText style={styles.showMoreBtnText}>Show more reviews</AppText>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.showMoreBtn}
+              onPress={() =>
+                navigation?.navigate('ShipperReviews', {
+                  reviews: reviewsList,
+                  profileData,
+                })
+              }
+              activeOpacity={0.8}
+            >
+              <AppText style={styles.showMoreBtnText}>Show more reviews</AppText>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View style={styles.emptyReviewsCard}>
+            <View style={styles.emptyIconCircle}>
+              <Star size={22} color={COLORS.primary || '#A06333'} />
+            </View>
+            <AppText style={styles.emptyReviewsTitle}>No Reviews Yet</AppText>
+            <AppText style={styles.emptyReviewsSubtitle}>
+              Customer ratings and reviews from completed shipments will appear here.
+            </AppText>
+          </View>
+        )}
       </View>
     </View>
   );
