@@ -43,6 +43,7 @@ interface MapModalProps {
   distance?: string;
   pickupCoords?: { latitude: number; longitude: number };
   deliveryCoords?: { latitude: number; longitude: number };
+  currentLocation?: { latitude: number; longitude: number };
 }
 
 const MapModal = ({
@@ -52,6 +53,7 @@ const MapModal = ({
   distance: initialDistance = 'Calculating...',
   pickupCoords,
   deliveryCoords,
+  currentLocation,
 }: MapModalProps) => {
   const mapRef = useRef<MapView>(null);
   const [mapType, setMapType] = useState<'standard' | 'satellite' | 'hybrid'>(
@@ -175,6 +177,25 @@ const MapModal = ({
               <View style={[styles.markerPointer, { borderTopColor: COLORS.error }]} />
             </View>
           </Marker>
+
+          {currentLocation && (
+            <Marker
+              coordinate={currentLocation}
+              title="Current Location"
+              description={'Current Location'}
+            >
+              <View style={styles.markerWrapper}>
+                <View style={[styles.markerBadge, { backgroundColor: COLORS.error }]}>
+                  <Flag size={12} color={COLORS.white} />
+                  <AppText style={styles.markerBadgeText}>Current</AppText>
+                </View>
+                <View style={[styles.markerPin, { backgroundColor: COLORS.error }]}>
+                  <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
+                </View>
+                <View style={[styles.markerPointer, { borderTopColor: COLORS.error }]} />
+              </View>
+            </Marker>
+          )}
         </MapView>
 
         {loading && (

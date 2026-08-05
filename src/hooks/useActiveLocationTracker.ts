@@ -34,11 +34,14 @@ export const useActiveLocationTracker = () => {
   // Perform GPS query and transmit live data to backend
   const syncLocationWithBackend = async () => {
     try {
+      const storedRole = await AsyncStorage.getItem('@user_role');
+      if (!storedRole || storedRole.toLowerCase() !== 'driver') return;
+
       const hasPermission = await requestLocationPermission();
       if (!hasPermission) return;
 
       // Guard: Don't ping API if the user is logged out (no token)
-      const token = await AsyncStorage.getItem('userToken');
+      const token = await AsyncStorage.getItem('@user_token');
       if (!token) return;
 
       Geolocation.getCurrentPosition(

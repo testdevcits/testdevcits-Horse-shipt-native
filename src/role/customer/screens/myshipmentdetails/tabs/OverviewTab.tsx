@@ -35,6 +35,8 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
+  console.log("=====================data=======", data)
+
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -513,6 +515,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           deliveryLocation: data?.deliveryLocation,
           status: data?.status,
         }}
+        currentLocation={data?.currentLocation}
       />
     </View>
   );

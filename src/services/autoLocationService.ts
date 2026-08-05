@@ -20,6 +20,13 @@ const autoLocationTask = async (taskDataArguments?: any) => {
   console.log('[AutoLocationService] Background tracking task initiated');
 
   while (BackgroundService.isRunning()) {
+    const storedRole = await AsyncStorage.getItem('@user_role');
+    if (!storedRole || storedRole.toLowerCase() !== 'driver') {
+      console.log('[AutoLocationService] Role is not driver, stopping auto tracking service');
+      await BackgroundService.stop();
+      break;
+    }
+
     const isForeground = AppState.currentState === 'active';
     const intervalMs = isForeground ? 5000 : 10000;
 
