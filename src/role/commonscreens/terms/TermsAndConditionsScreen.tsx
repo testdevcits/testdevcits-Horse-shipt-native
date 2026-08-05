@@ -1,35 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../constants';
-import shipperService from '../../../../api/services/shipperService';
-import styles from './styles.privacypolicy';
+import { AppHeader, AppText } from '../../../components';
+import { COLORS } from '../../../constants';
+import customerService from '../../../api/services/customerService';
+import styles from './styles.termsandconditions';
 
-const PrivacyPolicyScreen = () => {
+const TermsAndConditionsScreen = () => {
   const [loading, setLoading] = useState(true);
-  const [policyData, setPolicyData] = useState<any>(null);
+  const [termsData, setTermsData] = useState<any>(null);
 
-  const fetchPrivacyPolicy = async () => {
+  const fetchTermsAndConditions = async () => {
     try {
-      const res = await shipperService.getPrivacyPolicy();
+      const res = await customerService.getTermsAndConditions();
       if (res?.success && res.data && res.data?.length > 0) {
-        setPolicyData(res.data[0]);
+        setTermsData(res.data[0]);
       }
     } catch (error) {
-      console.error('Fetch Privacy Policy Error:', error);
+      console.error('Fetch Terms & Conditions Error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPrivacyPolicy();
+    fetchTermsAndConditions();
   }, []);
 
-  const htmlContent = policyData?.content || `
-    <h1>PRIVACY POLICY</h1>
-    <p>This Privacy Policy applies to our website and the Horseshipt platform...</p>
+  const htmlContent =
+    termsData?.content ||
+    `
+    <h1>TERMS & CONDITIONS</h1>
+    <p>This Terms & Conditions applies to our website and the HorseShipt platform...</p>
   `;
 
   const webViewHtml = `
@@ -41,19 +43,18 @@ const PrivacyPolicyScreen = () => {
           body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             padding: 16px;
-            color: #1F2937;
+            color: ${COLORS.textPrimary};
             line-height: 1.6;
-            background-color: #FFFFFF;
-          -webkit-text-size-adjust: 100%;
+            background-color: ${COLORS.white};
           }
           h1 {
-            color: #A06333;
+            color: ${COLORS.brandBrown || '#A06333'};
             font-size: 22px;
             margin-bottom: 12px;
             font-weight: 700;
           }
           h2 {
-            color: #1F2937;
+            color: ${COLORS.textPrimary};
             font-size: 18px;
             margin-top: 20px;
             margin-bottom: 10px;
@@ -84,26 +85,23 @@ const PrivacyPolicyScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Privacy Policy" showProfileImage={false} />
+      <AppHeader showBack={true} title="Terms & Conditions" showProfileImage={false} />
 
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <AppText style={styles.loadingText}>Loading Privacy Policy...</AppText>
+          <AppText style={styles.loadingText}>Loading Terms & Conditions...</AppText>
         </View>
       ) : (
         <WebView
           originWhitelist={['*']}
-          source={{ html: webViewHtml, baseUrl: '' }}
+          source={{ html: webViewHtml }}
           style={styles.webView}
           showsVerticalScrollIndicator={false}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          decelerationRate="normal"
         />
       )}
     </View>
   );
 };
 
-export default PrivacyPolicyScreen;
+export default TermsAndConditionsScreen;

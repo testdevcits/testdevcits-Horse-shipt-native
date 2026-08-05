@@ -10,7 +10,7 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { ShieldCheck, LogOut } from 'lucide-react-native';
+import { ShieldCheck, LogOut, FileText } from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
@@ -179,6 +179,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
+          />
+          <DrawerMenuItem
+            label="Terms & Conditions"
+            IconComponent={FileText}
+            isActive={isDrawerRouteActive('TermsAndConditions')}
+            onPress={() => navigateToRoute('TermsAndConditions')}
             isLast={true}
           />
         </View>

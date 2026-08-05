@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { X, MapPin, Compass, Navigation } from 'lucide-react-native';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
@@ -24,7 +24,7 @@ interface Props {
   areaToEdit?: any;
 }
 
-const RADIUS_PRESETS = [25, 50, 75, 100, 150];
+const RADIUS_PRESETS = [25, 50, 75, 100];
 
 const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) => {
   const [locationName, setLocationName] = useState('');
@@ -65,7 +65,11 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
 
   const handleSubmit = async () => {
     if (!locationName.trim()) {
-      Alert.alert('Validation Error', 'Please enter or select a location name.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter or select a location name.',
+      });
       return;
     }
     const latNum = parseFloat(latitude);
@@ -73,11 +77,19 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
     const radNum = parseFloat(radiusKm);
 
     if (isNaN(latNum) || isNaN(lngNum)) {
-      Alert.alert('Validation Error', 'Please enter valid latitude and longitude coordinates.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter valid latitude and longitude coordinates.',
+      });
       return;
     }
     if (isNaN(radNum) || radNum <= 0) {
-      Alert.alert('Validation Error', 'Please enter a valid radius in kilometers.');
+      Toast.show({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter a valid radius in kilometers.',
+      });
       return;
     }
 
@@ -98,27 +110,34 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       }
 
       if (res?.success) {
-        Alert.alert(
-          'Success',
-          areaToEdit
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: areaToEdit
             ? 'Preferred area updated successfully.'
             : 'Preferred area added successfully.',
-        );
+        });
         onSuccess();
         onClose();
       } else {
-        Alert.alert('Error', res?.message || 'Failed to save preferred area.');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.message || 'Failed to save preferred area.',
+        });
       }
     } catch (error: any) {
       console.error('Save Preferred Area Error:', error);
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Failed to save preferred area.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.message || 'Failed to save preferred area.',
+      });
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <Modal
@@ -166,6 +185,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
                 placeholder="e.g. Indore, Madhya Pradesh, India"
                 leftIcon={<MapPin size={18} color={COLORS.primary} />}
                 multiline
+                inputContainerStyle={{ height: 100 }}
+
               />
             </View>
 

@@ -404,6 +404,16 @@ const shipperService = {
     return axiosClient.get('/api/admin/privacy-policy/active');
   },
 
+  // Fetch Active Terms & Conditions (/api/admin/terms-condition/active)
+  getTermsAndConditions: async (): Promise<{
+    success: boolean;
+    message?: string;
+    count?: number;
+    data: any[];
+  }> => {
+    return axiosClient.get('/api/admin/terms-condition/active');
+  },
+
   // Fetch Stripe Status (/api/shipper/stripe/status)
   getStripeStatus: async (): Promise<{
     success: boolean;

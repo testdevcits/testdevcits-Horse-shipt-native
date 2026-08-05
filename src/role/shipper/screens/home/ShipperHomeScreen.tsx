@@ -180,7 +180,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   // Dynamic stats calculation
   const submittedQuotesCount = quotes.length;
   const upcomingShipmentsCount = quotes.filter(q => {
-    const s = (q.shipment?.status || q.status || '').toLowerCase();
+    const s = (q.shipment?.status || '').toLowerCase();
     return (
       s === 'accepted' ||
       s === 'assigned' ||

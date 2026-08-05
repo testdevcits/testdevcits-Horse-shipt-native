@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
@@ -24,13 +24,15 @@ import {
   AppText,
   AppLoader,
   EmptyState,
-  ConfirmationModal,
+
   AppSelect,
   AppSelectRef,
 } from '../../../../components';
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
+
+const ConfirmationModal = lazy(() => import("../../../../components/common/ConfirmationModal"))
 
 const MyVehiclesScreen = ({ navigation }: any) => {
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -404,14 +406,21 @@ const MyVehiclesScreen = ({ navigation }: any) => {
               <Edit size={15} color={COLORS.textPrimary} />
               <AppText style={styles.actionPillText}>Edit</AppText>
             </TouchableOpacity>
+            {
+              vehicle?.currentShipment === null ?
+                <TouchableOpacity
+                  style={styles.actionPill}
+                  onPress={() => handleDeleteVehicle(vehicle._id, vehicle.vehicleNumber)}
+                >
+                  <Trash2 size={15} color="#EF4444" />
+                  <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>Delete</AppText>
+                </TouchableOpacity> :
+                <View style={[styles.actionPill, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
+                  <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>In-Use</AppText>
+                </View>
+            }
 
-            <TouchableOpacity
-              style={styles.actionPill}
-              onPress={() => handleDeleteVehicle(vehicle._id, vehicle.vehicleNumber)}
-            >
-              <Trash2 size={15} color="#EF4444" />
-              <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>Delete</AppText>
-            </TouchableOpacity>
+
           </View>
         </View>
       </View>
@@ -461,22 +470,24 @@ const MyVehiclesScreen = ({ navigation }: any) => {
       />
 
       {/* Confirmation Modal for Vehicle Deletion */}
-      <ConfirmationModal
-        isVisible={deleteModalVisible}
-        onClose={() => {
-          if (!deleting) {
-            setDeleteModalVisible(false);
-            setSelectedVehicle(null);
-          }
-        }}
-        onConfirm={confirmDelete}
-        title="Delete Vehicle"
-        description={`Are you sure you want to delete vehicle ${selectedVehicle?.vehicleNum || ''}?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={deleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={deleteModalVisible}
+          onClose={() => {
+            if (!deleting) {
+              setDeleteModalVisible(false);
+              setSelectedVehicle(null);
+            }
+          }}
+          onConfirm={confirmDelete}
+          title="Delete Vehicle"
+          description={`Are you sure you want to delete vehicle ${selectedVehicle?.vehicleNum || ''}?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={deleting}
+        />
+      </Suspense>
 
       {/* AppSelect BottomSheet Modal for Driver Assignment */}
       <AppSelect

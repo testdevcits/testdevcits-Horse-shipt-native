@@ -48,5 +48,15 @@ export const breedsList = [
   "Other Breed",
 ];
 
+export const defaultColors = [
+  'Amber Champagne',
+  'Bay',
+  'Black',
+  'Chestnut',
+  'Grey',
+  'Palomino',
+  'Other',
+];
+
 export const sexes = ["Stallion", "Gelding", "Mare", "Colt", "Filly"];
 export const stallTypes = ["Box", "1/2 Box", "Single Stall"];

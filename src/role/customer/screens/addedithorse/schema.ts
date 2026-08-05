@@ -6,10 +6,12 @@ export const HorseSchema = Yup.object().shape({
   colour: Yup.string().required('Required'),
   age: Yup.string().required('Required'),
   breed: Yup.string().required('Required'),
+  otherBreed: Yup.string().optional(),
   sex: Yup.string().required('Required'),
   defaultStallSize: Yup.string().required('Required'),
-  notes: Yup.string().min(10, 'Minimum 10 characters required').required('Required'),
+  notes: Yup.string().optional(),
 });
+
 
 
  

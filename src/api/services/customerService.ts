@@ -45,6 +45,17 @@ const customerService = {
     });
   },
   /**
+   * Fetch active horse colors
+   */
+  getColors: async (): Promise<{
+    success: boolean;
+    count?: number;
+    data: Array<{ _id: string; name: string; isActive?: boolean; isOther?: boolean }>;
+  }> => {
+    return axiosClient.get('/api/admin/colors/all');
+  },
+
+  /**
    * Fetch all horses belonging to the logged-in customer
    */
   getHorses: async (): Promise<GetHorsesResponse> => {
@@ -55,9 +66,12 @@ const customerService = {
    * Add a new horse to the customer's profile
    */
   addHorse: async (
-    payload: CreateHorsePayload,
+    payload: CreateHorsePayload | FormData,
   ): Promise<{ success: boolean; horse: Horse }> => {
-    return axiosClient.post('/api/customer/horses', payload);
+    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    return axiosClient.post('/api/customer/horses', payload, {
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+    });
   },
 
   /**
@@ -65,9 +79,12 @@ const customerService = {
    */
   updateHorse: async (
     horseId: string,
-    payload: Partial<CreateHorsePayload>,
+    payload: Partial<CreateHorsePayload> | FormData,
   ): Promise<{ success: boolean; horse: Horse }> => {
-    return axiosClient.put(`/api/customer/horses/${horseId}`, payload);
+    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    return axiosClient.put(`/api/customer/horses/${horseId}`, payload, {
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+    });
   },
 
   /**
@@ -78,6 +95,7 @@ const customerService = {
   ): Promise<{ success: boolean; message: string }> => {
     return axiosClient.delete(`/api/customer/horses/${horseId}`);
   },
+
 
   getMyShipments: async (): Promise<GetShipmentsResponse> => {
     // Based on the JSON you provided, the endpoint is:

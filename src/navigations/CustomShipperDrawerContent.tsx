@@ -23,6 +23,8 @@ import {
   ShieldCheck,
   LogOut,
   ChevronRight,
+  Locate,
+  FileText,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE } from '../constants/dimensions';
@@ -189,11 +191,24 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
             isActive={isDrawerRouteActive('Settings')}
             onPress={() => navigateToRoute('Settings')}
           />
+
+          <ShipperDrawerMenuItem
+            label="Preferred Areas"
+            IconComponent={Locate}
+            isActive={isDrawerRouteActive('PreferredAreas')}
+            onPress={() => navigateToRoute('PreferredAreas')}
+          />
           <ShipperDrawerMenuItem
             label="Privacy policy"
             IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
+          />
+          <ShipperDrawerMenuItem
+            label="Terms & Conditions"
+            IconComponent={FileText}
+            isActive={isDrawerRouteActive('TermsAndConditions')}
+            onPress={() => navigateToRoute('TermsAndConditions')}
           />
         </View>
       </DrawerContentScrollView>

@@ -1,18 +1,47 @@
+export interface HorsePhoto {
+  url?: string;
+  uri?: string;
+  name?: string;
+  type?: string;
+  public_id?: string;
+  width?: number;
+  height?: number;
+  bytes?: number;
+  format?: string;
+}
+
+export interface HorseDocumentItem {
+  url?: string;
+  uri?: string;
+  name?: string;
+  type?: string;
+  public_id?: string;
+  originalName?: string;
+}
+
+
+export interface HorseDocuments {
+  coggins?: HorseDocumentItem;
+  healthCertificate?: HorseDocumentItem;
+}
+
 export interface Horse {
   _id: string;
-  owner: string;
+  owner?: string;
   registeredName: string;
   barnName: string;
   breed: string;
-  otherBreed: string;
+  otherBreed?: string;
   colour: string;
   age: string;
   sex: string;
   defaultStallSize: string;
-  notes: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  notes?: string;
+  photo?: HorsePhoto;
+  documents?: HorseDocuments;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 export interface GetHorsesResponse {
@@ -24,11 +53,15 @@ export interface CreateHorsePayload {
   registeredName: string;
   barnName: string;
   breed: string;
+  otherBreed?: string;
   colour: string;
   age: string;
   sex: string;
   defaultStallSize: string;
   notes?: string;
+  photo?: any;
+  coggins?: any;
+  healthCertificate?: any;
 }
 
 

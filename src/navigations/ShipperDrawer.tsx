@@ -10,6 +10,7 @@ import EarningsScreen from '../role/shipper/screens/earnings/EarningsScreen';
 import ShipperSettingsScreen from '../role/shipper/screens/settings/ShipperSettingsScreen';
 import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScreen';
 import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
+import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
 import AddVehicleModal from '../role/shipper/screens/vehicles/AddVehicleModal';
 
@@ -34,6 +35,7 @@ const ShipperDrawer = () => {
       <Drawer.Screen name="GoogleReview" component={GoogleReviewScreen} />
       <Drawer.Screen name="Settings" component={ShipperSettingsScreen} />
       <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+      <Drawer.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
       <Drawer.Screen name="PreferredAreas" component={PreferredAreasScreen} />
     </Drawer.Navigator>
   );

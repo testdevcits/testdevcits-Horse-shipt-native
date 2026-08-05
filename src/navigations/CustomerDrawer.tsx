@@ -8,6 +8,7 @@ import CustomDrawerContent from './CustomDrawerContent';
 import Profile from '../role/customer/screens/profile/Profile';
 import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
 import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
+import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,6 +32,7 @@ const CustomerDrawer = () => {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="HelpCenter" component={HelpCenter} />
       <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+      <Drawer.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
     </Drawer.Navigator>
   );
 };

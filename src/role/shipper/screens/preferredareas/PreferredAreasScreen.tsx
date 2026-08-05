@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, Suspense, lazy } from 'react';
 import {
   View,
   FlatList,
@@ -24,9 +24,8 @@ import {
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
-import AddEditAreaModal from './AddEditAreaModal';
-import ViewAllAreasMapModal from './ViewAllAreasMapModal';
 import styles from './styles.preferredareas';
+
 
 const MAX_AREAS = 4;
 
@@ -37,6 +36,10 @@ const PreferredAreasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isViewAllModalVisible, setIsViewAllModalVisible] = useState(false);
   const [selectedAreaToEdit, setSelectedAreaToEdit] = useState<any>(null);
+  const AddEditAreaModal = lazy(() => import("./AddEditAreaModal"))
+  const ViewAllAreasMapModal = lazy(() => import("./ViewAllAreasMapModal"))
+
+
 
   // Delete Confirmation Modal State
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -183,15 +186,19 @@ const PreferredAreasScreen = () => {
           <Plus size={18} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add New Area</AppText>
         </TouchableOpacity>
+        {
+          areas.length > 0 && (
 
-        <TouchableOpacity
-          style={styles.seeAllBtn}
-          onPress={() => setIsViewAllModalVisible(true)}
-          activeOpacity={0.8}
-        >
-          <MapIcon size={16} color={COLORS.textPrimary} />
-          <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.seeAllBtn}
+              onPress={() => setIsViewAllModalVisible(true)}
+              activeOpacity={0.8}
+            >
+              <MapIcon size={16} color={COLORS.textPrimary} />
+              <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
+            </TouchableOpacity>
+          )
+        }
       </View>
     </View>
   );
@@ -351,19 +358,23 @@ const PreferredAreasScreen = () => {
       />
 
       {/* ADD / EDIT MODAL */}
-      <AddEditAreaModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onSuccess={fetchPreferredAreas}
-        areaToEdit={selectedAreaToEdit}
-      />
+      <Suspense fallback={null}>
+        <AddEditAreaModal
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          onSuccess={fetchPreferredAreas}
+          areaToEdit={selectedAreaToEdit}
+        />
+      </Suspense>
 
       {/* VIEW ALL AREAS IN ONE MAP MODAL */}
-      <ViewAllAreasMapModal
-        visible={isViewAllModalVisible}
-        onClose={() => setIsViewAllModalVisible(false)}
-        areas={areas}
-      />
+      <Suspense fallback={null}>
+        <ViewAllAreasMapModal
+          visible={isViewAllModalVisible}
+          onClose={() => setIsViewAllModalVisible(false)}
+          areas={areas}
+        />
+      </Suspense>
 
       {/* DELETE CONFIRMATION MODAL */}
       <ConfirmationModal
