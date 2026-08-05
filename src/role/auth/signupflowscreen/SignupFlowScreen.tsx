@@ -22,6 +22,7 @@ import authService from '../../../api/services/authService';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -77,11 +78,12 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
     try {
       setIsLoading(true);
+      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
       const res = await authService.signup({
         name: name.trim(),
         email: email.toLowerCase().trim(),
         password: password,
-        role: 'customer'
+        role: savedRole,
       });
 
       if (res.success) {
@@ -106,10 +108,11 @@ const SignupFlowScreen = ({ navigation }: any) => {
       // 1. Clear previous OTP errors
       setErrors(p => ({ ...p, otp: '' }));
 
+      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
       const result = await authService.verifySignupOtp({
         email: email.toLowerCase().trim(),
-        role: 'customer',
-        otp: code
+        role: savedRole,
+        otp: code,
       });
 
       // 2. Log result for debugging
@@ -144,7 +147,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     try {
-      await authService.forgotPassword(email, 'customer');
+      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
+      await authService.forgotPassword(email, savedRole);
       setResendTimer(60);
       Toast.show({ type: 'success', text1: 'OTP Resent' });
     } catch (e) {

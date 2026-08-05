@@ -24,10 +24,10 @@ const useMyShipments = () => {
   );
 
   useEffect(() => {
-    if (lastFetched === null || shipments.length === 0) {
+    if (lastFetched === null) {
       fetchShipments(false);
     }
-  }, [fetchShipments, lastFetched, shipments.length]);
+  }, [fetchShipments, lastFetched]);
 
   const filteredData = useMemo(() => {
     switch (activeTab) {

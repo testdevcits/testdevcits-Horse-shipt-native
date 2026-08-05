@@ -39,6 +39,7 @@ import {
   ICON_SIZE,
 } from '../../../constants';
 import AppText from '../AppText';
+import { Button } from '../..';
 
 /**
  * TYPES
@@ -351,6 +352,7 @@ const LocationPickerCore: React.FC<{
           </TouchableOpacity>
 
           <TextInput
+            allowFontScaling={false}
             style={styles.searchInput}
             placeholder="Search address, city or landmark..."
             value={searchQuery}
@@ -425,7 +427,7 @@ const LocationPickerCore: React.FC<{
               </View>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.confirmButton}
               onPress={() => onConfirm({
                 address: displayAddress,
@@ -434,7 +436,12 @@ const LocationPickerCore: React.FC<{
               })}
             >
               <AppText style={styles.confirmButtonText}>Confirm and Continue</AppText>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <Button title={"Confirm and Continue"} onPress={() => onConfirm({
+              address: displayAddress,
+              latitude: region.latitude,
+              longitude: region.longitude
+            })} />
           </View>
         </>
       )}
@@ -463,7 +470,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  triggerText: { fontSize: FONT_SIZE.lg, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
+  triggerText: { fontSize: FONT_SIZE.md, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
   placeholder: { color: COLORS.textSecondary, fontFamily: FONTS.regular },
 
   // Modal Content
@@ -500,7 +507,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
   searchIconBtn: { marginRight: 10, padding: SPACING.xs },
-  searchInput: { flex: 1, fontSize: FONT_SIZE.lg, color: COLORS.textPrimary, fontFamily: FONTS.medium },
+  searchInput: { flex: 1, fontSize: FONT_SIZE.md, color: COLORS.textPrimary, fontFamily: FONTS.medium },
 
   resultsPanel: {
     backgroundColor: COLORS.white,
@@ -592,7 +599,7 @@ const styles = StyleSheet.create({
   dotInner: { width: 6, height: 6, borderRadius: RADIUS.round, backgroundColor: COLORS.primary },
   line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: SPACING.xs },
   label: { fontSize: 11, fontFamily: FONTS.bold, color: COLORS.textSecondary, letterSpacing: 1.5 },
-  addressText: { fontSize: FONT_SIZE.lg, fontFamily: FONTS.bold, color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
+  addressText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
   skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: RADIUS.xs, marginTop: 10 },
   confirmButton: {
     backgroundColor: COLORS.primary,
@@ -601,7 +608,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  confirmButtonText: { color: COLORS.white, fontSize: 17, fontFamily: FONTS.bold },
+  confirmButtonText: { color: COLORS.white, fontSize: 12, fontFamily: FONTS.bold },
 });
 
 export default LocationPicker;

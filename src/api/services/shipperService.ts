@@ -394,6 +394,61 @@ const shipperService = {
     return axiosClient.get('/api/shipper/stripe/subscription/billing/history');
   },
 
+  // Fetch Subscription Status (GET /api/shipper/stripe/subscription/status)
+  getSubscriptionStatus: async (): Promise<{
+    success: boolean;
+    hasSubscription?: boolean;
+    status?: string;
+    planType?: string;
+    hasAccess?: boolean;
+    trialActive?: boolean;
+    remainingTrialDays?: number;
+    trialEnd?: string;
+    currentPeriodStart?: string;
+    currentPeriodEnd?: string;
+    cancelAtPeriodEnd?: boolean;
+    canceledAt?: string;
+    isTrialing?: boolean;
+    isActive?: boolean;
+    isPastDue?: boolean;
+    isCanceled?: boolean;
+    needsRenewal?: boolean;
+    needsSubscription?: boolean;
+  }> => {
+    return axiosClient.get('/api/shipper/stripe/subscription/status');
+  },
+
+  // Create Subscription (POST /api/shipper/stripe/subscription/create)
+  createSubscription: async (payload: {
+    priceId?: string;
+    planType?: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    subscriptionId?: string;
+    clientSecret?: string;
+    status?: string;
+    data?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/stripe/subscription/create', payload);
+  },
+
+  // Cancel Subscription (POST /api/shipper/stripe/subscription/cancel)
+  cancelSubscription: async (payload: {
+    reason: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data?: {
+      plan?: string;
+      status?: string;
+      cancelAtPeriodEnd?: boolean;
+      accessValidTill?: string;
+    };
+  }> => {
+    return axiosClient.post('/api/shipper/stripe/subscription/cancel', payload);
+  },
+
   // Fetch Active Privacy Policy (/api/admin/privacy-policy/active)
   getPrivacyPolicy: async (): Promise<{
     success: boolean;
@@ -425,6 +480,29 @@ const shipperService = {
     requirements?: any;
   }> => {
     return axiosClient.get('/api/shipper/stripe/status');
+  },
+
+  // Create Stripe Payout Account for Shipper (POST /api/shipper/stripe/create-account)
+  createStripeAccount: async (): Promise<{
+    success: boolean;
+    message?: string;
+    stripeAccountId?: string;
+    accountLinkUrl?: string;
+    url?: string;
+  }> => {
+    return axiosClient.post('/api/shipper/stripe/create-account');
+  },
+
+  // Get Stripe Onboarding Link for Shipper (POST /api/shipper/stripe/onboarding)
+  getStripeOnboarding: async (): Promise<{
+    success: boolean;
+    message?: string;
+    onboardingUrl?: string;
+    onBoardingUrl?: string;
+    url?: string;
+    data?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/stripe/onboarding');
   },
 
   // Fetch Shipper Payment Card Status (/api/shipper/status)

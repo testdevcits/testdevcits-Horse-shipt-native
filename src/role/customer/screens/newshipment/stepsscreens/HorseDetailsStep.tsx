@@ -16,6 +16,7 @@ import { Horse } from '../../../../../types/customer';
 import { breedsList, sexes, stallTypes } from '../../addedithorse/constants';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import { useNavigation } from '@react-navigation/native';
+import styles from './HorseDetailsStepstyles';
 
 interface HorseDetailsStepProps {
   form: NewShipmentForm;
@@ -35,6 +36,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   const navigation = useNavigation<any>();
   const isEdit = route.params?.isEdit;
   const { horses: savedHorses, loading } = useMyHorses();
+
+  console.log("===savedHorses======", savedHorses)
 
   const handleNumberOfHorsesChange = (val: string) => {
     if (isEdit) return;
@@ -287,115 +290,6 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
-  scrollView: { flex: 1 },
-  scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.xl,
-  },
-  mainTitle: {
-    fontSize: 22,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  cancelText: { color: COLORS.primary, fontFamily: FONTS.medium },
-  noHorsesAlert: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.goldLightBg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-    gap: 10,
-  },
-  noHorsesText: {
-    flex: 1,
-    fontSize: 13,
-    color: COLORS.primary,
-    fontFamily: FONTS.medium,
-  },
-  horseSection: {
-    marginBottom: SPACING.xl,
-    backgroundColor: '#FBFAf8',
-    padding: SPACING.md,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-  },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  line: { flex: 1, height: 1, backgroundColor: COLORS.grey300 },
-  sectionLabel: {
-    fontSize: 14,
-    fontFamily: FONTS.bold,
-    color: COLORS.grey500,
-    marginHorizontal: 10,
-  },
-  row: { flexDirection: 'row', justifyContent: 'space-between' },
-  radioLabel: {
-    fontSize: 15,
-    fontFamily: FONTS.semiBold,
-    color: COLORS.grey700,
-    marginTop: SPACING.md,
-    marginBottom: SPACING.sm,
-  },
-  radioGroup: { flexDirection: 'row', gap: 30, marginBottom: SPACING.md },
-  radioButton: { flexDirection: 'row', alignItems: 'center' },
-  radioOuter: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: COLORS.grey300,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  radioOuterActive: { borderColor: COLORS.primary },
-  radioInner: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    backgroundColor: COLORS.primary,
-  },
-  radioText: {
-    fontSize: 15,
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.medium,
-  },
-  footer: {
-    flexDirection: 'row',
-    paddingVertical: SPACING.lg,
-    gap: SPACING.md,
-    marginTop: SPACING.xl,
-  },
-  prevButton: {
-    flex: 1,
-    height: 52,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  prevButtonText: { fontFamily: FONTS.bold, color: COLORS.grey600 },
-  nextButton: {
-    flex: 1,
-    height: 52,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  disabledButton: { backgroundColor: COLORS.grey300 },
-  nextButtonText: { fontFamily: FONTS.bold, color: COLORS.white },
-});
+
 
 export default HorseDetailsStep;

@@ -16,11 +16,11 @@ export const useShipments = () => {
   );
 
   useEffect(() => {
-    // If not fetched yet or empty, trigger fetch
-    if (lastFetched === null || shipments.length === 0) {
+    // Only fetch if not fetched yet (lastFetched is null)
+    if (lastFetched === null) {
       fetchShipments(false);
     }
-  }, [fetchShipments, lastFetched, shipments.length]);
+  }, [fetchShipments, lastFetched]);
 
   return {
     shipments,

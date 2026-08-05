@@ -120,9 +120,16 @@ const customerService = {
     return axiosClient.patch(`/api/customer/shipments/${shipmentId}/publish`);
   },
 
+  updateShipmentMetadata: async (shipmentId: string, payload: any) => {
+    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+    });
+  },
+
   updateShipment: async (shipmentId: string, payload: any) => {
     const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-    return axiosClient.put(`/api/customer/shipments/${shipmentId}`, payload, {
+    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
   },

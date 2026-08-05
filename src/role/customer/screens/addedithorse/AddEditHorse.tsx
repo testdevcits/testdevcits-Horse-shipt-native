@@ -49,6 +49,8 @@ const AddEditHorse = () => {
 
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isPicking, setIsPicking] = useState(false);
+
   const [colorOptions, setColorOptions] = useState<string[]>(defaultColors);
 
   const horse = (route.params as any)?.horse as Horse | undefined;
@@ -95,6 +97,10 @@ const AddEditHorse = () => {
   };
 
   const handlePickPhoto = async (setFieldValue: (field: string, val: any) => void) => {
+    if (isPicking) return;
+
+    setIsPicking(true);
+
     try {
       const image = await ImagePicker.openPicker({
         width: 1000,
@@ -117,12 +123,19 @@ const AddEditHorse = () => {
         console.log('Image picker error:', e);
       }
     }
+    finally {
+      setIsPicking(false);
+    }
   };
 
   const handlePickDocument = async (
     field: 'coggins' | 'healthCertificate',
     setFieldValue: (field: string, val: any) => void,
   ) => {
+    if (isPicking) return;
+
+    setIsPicking(true);
+
     try {
       const [result] = await pick({ type: [types.pdf] });
       if (!result) return;
@@ -137,6 +150,9 @@ const AddEditHorse = () => {
       if (error?.code !== 'DOCUMENT_PICKER_CANCELED') {
         console.log('Document picker error:', error);
       }
+    }
+    finally {
+      setIsPicking(false);
     }
   };
 
@@ -300,6 +316,8 @@ const AddEditHorse = () => {
                         style={styles.uploadBox}
                         onPress={() => handlePickPhoto(setFieldValue)}
                         activeOpacity={0.7}
+                        disabled={isPicking}
+
                       >
                         <Camera size={26} color={COLORS.primary} />
                         <AppText style={styles.uploadBoxText}>Upload Photo</AppText>
@@ -425,6 +443,8 @@ const AddEditHorse = () => {
                     </View>
                     {values.coggins ? (
                       <TouchableOpacity
+                        disabled={isPicking}
+
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('coggins', null)}
                       >
@@ -432,6 +452,8 @@ const AddEditHorse = () => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
+                        disabled={isPicking}
+
                         style={styles.docUploadBtn}
                         onPress={() => handlePickDocument('coggins', setFieldValue)}
                       >
@@ -456,6 +478,8 @@ const AddEditHorse = () => {
                     </View>
                     {values.healthCertificate ? (
                       <TouchableOpacity
+                        disabled={isPicking}
+
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('healthCertificate', null)}
                       >
@@ -463,6 +487,8 @@ const AddEditHorse = () => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
+                        disabled={isPicking}
+
                         style={styles.docUploadBtn}
                         onPress={() =>
                           handlePickDocument('healthCertificate', setFieldValue)

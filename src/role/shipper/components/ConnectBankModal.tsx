@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {
   ShieldCheck,
   X,
@@ -18,12 +20,16 @@ import {
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
 import { AppText } from '../../../components';
 
+import Toast from 'react-native-toast-message';
+import shipperService from '../../../api/services/shipperService';
+
 interface ConnectBankModalProps {
   isVisible: boolean;
   onClose: () => void;
   onConnectBank?: () => void;
   onMaybeLater?: () => void;
   isLoading?: boolean;
+  navigation?: any;
 }
 
 const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
@@ -31,13 +37,73 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
   onClose,
   onConnectBank,
   onMaybeLater,
-  isLoading = false,
+  isLoading: propLoading = false,
+  navigation: propNavigation,
 }) => {
-  const handleConnect = () => {
+  const navigation = propNavigation || useNavigation<any>();
+  const [internalLoading, setInternalLoading] = React.useState(false);
+  const isLoading = propLoading || internalLoading;
+
+  const handleConnect = async () => {
     if (onConnectBank) {
       onConnectBank();
-    } else {
-      onClose();
+      return;
+    }
+
+    setInternalLoading(true);
+    try {
+      const createRes = await shipperService.createStripeAccount();
+      if (createRes?.success) {
+        const onboardRes = await shipperService.getStripeOnboarding().catch(() => null);
+
+        const onboardingUrl =
+          onboardRes?.onboardingUrl ||
+          onboardRes?.onBoardingUrl ||
+          onboardRes?.url ||
+          onboardRes?.data?.onBoardingUrl ||
+          onboardRes?.data?.onboardingUrl ||
+          onboardRes?.data?.url ||
+          createRes?.accountLinkUrl ||
+          createRes?.url;
+
+        if (onboardingUrl) {
+          onClose();
+          setTimeout(() => {
+            if (navigation?.navigate) {
+              navigation.navigate('AccountSetup', {
+                url: onboardingUrl,
+                title: 'Account Setup',
+              });
+            } else {
+              Linking.openURL(onboardingUrl).catch(err => {
+                console.error('Failed to open onboarding URL in browser:', err);
+              });
+            }
+          }, 150);
+        } else {
+          Toast.show({
+            type: 'success',
+            text1: 'Stripe Payout Account',
+            text2: createRes.message || onboardRes?.message || 'Stripe account processed.',
+          });
+          onClose();
+        }
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Setup Failed',
+          text2: createRes?.message || 'Failed to create Stripe payout account.',
+        });
+      }
+    } catch (err: any) {
+      console.error('Create Stripe Account Error:', err);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.response?.data?.message || 'Something went wrong setting up payout account.',
+      });
+    } finally {
+      setInternalLoading(false);
     }
   };
 

@@ -7,6 +7,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {
   ChevronDown,
@@ -35,16 +36,21 @@ const VEHICLE_TYPES = ['Truck', 'Trailer', 'Other'];
 const STALL_TYPES = ['Slant Load', 'Stock Trailer', 'Head to Head', 'Semi', 'Other'];
 const STALL_SIZES = ['Single Stall', 'Stall and a half', 'Box Stall', 'Other'];
 
-const AddVehicleModal: React.FC<Props> = (props) => {
-  const { navigation, route } = props;
-  const vehicleToEdit = route?.params?.vehicleToEdit || props.vehicleToEdit;
-  const onSuccess = route?.params?.onSuccess || props.onSuccess;
+const AddVehicleModal: React.FC<Props> = ({
+  navigation,
+  route,
+  visible,
+  onClose,
+  onSuccess,
+  vehicleToEdit: propVehicleToEdit,
+}) => {
+  const vehicleToEdit = route?.params?.vehicleToEdit || propVehicleToEdit;
 
   const handleClose = () => {
     if (navigation?.canGoBack?.()) {
       navigation.goBack();
-    } else if (props.onClose) {
-      props.onClose();
+    } else if (onClose) {
+      onClose();
     }
   };
 
@@ -59,6 +65,8 @@ const AddVehicleModal: React.FC<Props> = (props) => {
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isPicking, setIsPicking] = useState(false);
+
 
   // Dropdown Picker States
   const [activePicker, setActivePicker] = useState<'vehicleType' | 'stallType' | 'stallSize' | null>(null);
@@ -66,15 +74,15 @@ const AddVehicleModal: React.FC<Props> = (props) => {
   useEffect(() => {
     if (vehicleToEdit) {
       setTransportType(vehicleToEdit.transportType || 'Trucking');
-      setVehicleType(vehicleToEdit.vehicleType || 'Truck');
+      setVehicleType(vehicleToEdit.vehicleType || '');
       setVehicleNumber(vehicleToEdit.vehicleNumber || '');
       setVinNumber(vehicleToEdit.vinNumber || '');
-      setNumberOfStalls(vehicleToEdit.numberOfStalls ? String(vehicleToEdit.numberOfStalls) : '10');
-      setStallType(vehicleToEdit.trailerType || 'Slant Load');
-      setStallSize(vehicleToEdit.stallSize || 'Single Stall');
+      setNumberOfStalls(vehicleToEdit.numberOfStalls ? String(vehicleToEdit.numberOfStalls) : '');
+      setStallType(vehicleToEdit.stallType || '');
+      setStallSize(vehicleToEdit.stallSize || '');
       setNotes(vehicleToEdit.notes || '');
-      if (vehicleToEdit.images && vehicleToEdit.images[0]?.url) {
-        setSelectedImage({ uri: vehicleToEdit.images[0].url });
+      if (vehicleToEdit.image?.url) {
+        setSelectedImage({ uri: vehicleToEdit.image.url });
       } else {
         setSelectedImage(null);
       }
@@ -94,9 +102,13 @@ const AddVehicleModal: React.FC<Props> = (props) => {
     setNotes('');
     setSelectedImage(null);
     setErrors({});
+    setIsPicking(false);
   };
 
   const handlePickImage = async () => {
+    if (isPicking) return;
+
+    setIsPicking(true);
     try {
       const image = await ImagePicker.openPicker({
         width: 1200,
@@ -119,6 +131,10 @@ const AddVehicleModal: React.FC<Props> = (props) => {
         console.error('ImagePicker Error:', error);
       }
     }
+    finally {
+      setIsPicking(false);
+    }
+
   };
 
   const handleSubmit = async () => {
@@ -358,11 +374,17 @@ const AddVehicleModal: React.FC<Props> = (props) => {
               style={[
                 styles.uploadDashedCard,
                 !!errors.selectedImage && { borderColor: COLORS.error },
+                isPicking && { opacity: 0.7 },
               ]}
               onPress={handlePickImage}
               activeOpacity={0.8}
+              disabled={isPicking}
             >
-              {selectedImage ? (
+              {isPicking ? (
+                <View style={styles.uploadPlaceholder}>
+                  <ActivityIndicator size="small" color={COLORS.primary || '#A37F3D'} />
+                </View>
+              ) : selectedImage ? (
                 <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
               ) : (
                 <View style={styles.uploadPlaceholder}>

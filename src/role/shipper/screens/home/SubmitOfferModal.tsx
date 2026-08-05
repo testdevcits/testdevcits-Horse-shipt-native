@@ -20,6 +20,7 @@ import {
   Edit3,
   RotateCcw,
   CheckCircle2,
+  AlertCircle,
 } from 'lucide-react-native';
 import SignatureScreen from 'react-native-signature-canvas';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -44,9 +45,10 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   onSuccess,
 }) => {
   const sigRef = useRef<any>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
-  const [totalPrice, setTotalPrice] = useState('1000');
-  const [cancellationDays, setCancellationDays] = useState('2');
+  const [totalPrice, setTotalPrice] = useState('');
+  const [cancellationDays, setCancellationDays] = useState('');
   const [notes, setNotes] = useState('');
   const [contractFile, setContractFile] = useState<any>(null);
   const [signature, setSignature] = useState<string | null>(null);
@@ -58,38 +60,59 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   const [priceError, setPriceError] = useState('');
   const [daysError, setDaysError] = useState('');
   const [sigError, setSigError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [isPicking, setIsPicking] = useState(false);
+
+
 
   useEffect(() => {
     if (isVisible) {
-      setTotalPrice('1000');
-      setCancellationDays('2');
+      setTotalPrice('');
+      setCancellationDays('');
       setNotes('');
       setContractFile(null);
       setSignature(null);
       setPriceError('');
       setDaysError('');
       setSigError('');
+      setSubmitError('');
       setIsLoading(false);
+      setIsPicking(false);
       setScrollEnabled(true);
     }
   }, [isVisible]);
 
   const handleChooseFile = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 0.8 }, response => {
-      if (response.assets && response.assets.length > 0) {
-        setContractFile(response.assets[0]);
-      }
-    });
+    if (isPicking) return;
+    setIsPicking(true);
+    try {
+      launchImageLibrary({ mediaType: 'photo', quality: 0.8 }, response => {
+        setIsPicking(false);
+        if (response.didCancel) return;
+        if (response.errorMessage) {
+          console.error('ImagePicker Error:', response.errorMessage);
+          return;
+        }
+        if (response.assets && response.assets.length > 0) {
+          setContractFile(response.assets[0]);
+        }
+      });
+    } catch (error) {
+      console.error('File pick error:', error);
+      setIsPicking(false);
+    }
   };
 
   const handleClearSignature = () => {
     sigRef.current?.clearSignature();
     setSignature(null);
     setSigError('');
+    setSubmitError('');
   };
 
   const handleSubmit = async () => {
     let isValid = true;
+    setSubmitError('');
 
     if (!totalPrice.trim() || isNaN(Number(totalPrice)) || Number(totalPrice) <= 0) {
       setPriceError('Please enter a valid price');
@@ -112,7 +135,14 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
       setSigError('');
     }
 
-    if (!isValid) return;
+    if (!isValid) {
+      if (!signature) {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      } else {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+      }
+      return;
+    }
 
     setIsLoading(true);
 
@@ -145,18 +175,27 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         onClose();
         if (onSuccess) onSuccess();
       } else {
+        const errorMsg = res?.message || 'Failed to submit quote.';
+        setSubmitError(errorMsg);
+        scrollViewRef.current?.scrollToEnd({ animated: true });
         Toast.show({
           type: 'error',
           text1: 'Submission Failed',
-          text2: res?.message || 'Failed to submit quote?.',
+          text2: errorMsg,
         });
       }
     } catch (error: any) {
       console.error('Submit Offer Error:', error);
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Failed to submit quote.';
+      setSubmitError(errorMsg);
+      scrollViewRef.current?.scrollToEnd({ animated: true });
       Toast.show({
         type: 'error',
         text1: 'Submission Failed',
-        text2: error?.response?.data?.message || 'Failed to submit quote?.',
+        text2: errorMsg,
       });
     } finally {
       setIsLoading(false);
@@ -224,6 +263,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
 
           {/* Form Content */}
           <ScrollView
+            ref={scrollViewRef}
             scrollEnabled={scrollEnabled}
             contentContainerStyle={styles.scrollContent}
             keyboardShouldPersistTaps="handled"
@@ -304,11 +344,16 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 </View>
 
                 <TouchableOpacity
-                  style={styles.chooseFileBtn}
+                  style={[styles.chooseFileBtn, isPicking && { opacity: 0.7 }]}
                   onPress={handleChooseFile}
                   activeOpacity={0.8}
+                  disabled={isPicking}
                 >
-                  <AppText style={styles.chooseFileBtnText}>Choose File</AppText>
+                  {isPicking ? (
+                    <ActivityIndicator size="small" color={COLORS.white} />
+                  ) : (
+                    <AppText style={styles.chooseFileBtnText}>Choose File</AppText>
+                  )}
                 </TouchableOpacity>
               </View>
 
@@ -338,7 +383,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
               <View
                 style={[
                   styles.signatureWrapper,
-                  Boolean(sigError) && styles.inputError,
+                  Boolean(sigError || submitError) && styles.inputError,
                 ]}
               >
                 <SignatureScreen
@@ -346,6 +391,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   onOK={data => {
                     setSignature(data);
                     if (sigError) setSigError('');
+                    if (submitError) setSubmitError('');
                   }}
                   onEmpty={() => setSignature(null)}
                   onBegin={() => setScrollEnabled(false)}
@@ -381,7 +427,16 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 ) : null}
               </View>
               {Boolean(sigError) && (
-                <AppText style={styles.errorText}>{sigError}</AppText>
+                <View style={styles.focusedErrorBox}>
+                  <AlertCircle size={15} color={COLORS.error} />
+                  <AppText style={styles.focusedErrorText}>{sigError}</AppText>
+                </View>
+              )}
+              {Boolean(submitError) && (
+                <View style={styles.focusedErrorBox}>
+                  <AlertCircle size={15} color={COLORS.error} />
+                  <AppText style={styles.focusedErrorText}>{submitError}</AppText>
+                </View>
               )}
             </View>
 
@@ -603,6 +658,24 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: COLORS.error,
     marginTop: 4,
+  },
+  focusedErrorBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
+    borderRadius: RADIUS.xs,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs + 2,
+    marginTop: SPACING.xs,
+  },
+  focusedErrorText: {
+    flex: 1,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.error,
   },
   inputError: {
     borderColor: COLORS.error,

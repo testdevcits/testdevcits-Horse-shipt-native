@@ -142,18 +142,7 @@ const styles = StyleSheet.create({
   openBtn: {
     padding: 6,
   },
-  submitBtn: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 14,
-    borderRadius: RADIUS.xs,
-    alignItems: 'center',
-    width: 140,
-  },
-  submitBtnText: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-  },
+
 });
 
 export default styles;

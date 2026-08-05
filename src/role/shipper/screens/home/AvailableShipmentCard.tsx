@@ -80,7 +80,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <AppText style={styles.infoMetaText}>
             {item?.pickupDateRange?.start
               ? `Pickup ${formatDate(item?.pickupDateRange.start, 'MMM DD')}`
-              : 'Pickup Jul 23-31'}
+              : 'Not Available'}
           </AppText>
         </View>
       </View>

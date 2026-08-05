@@ -170,7 +170,6 @@ const GoogleReviewScreen = () => {
               title={isConnected ? 'Update Link' : 'Add Link'}
               isLoading={loading}
               onPress={handleSubmit}
-              buttonStyle={styles.submitBtn}
             />
           </View>
         </ScrollView>

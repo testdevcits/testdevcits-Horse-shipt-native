@@ -331,7 +331,7 @@ const useNewShipment = () => {
         } as any);
       }
       if (horse?.coggins) {
-        formData?.append(`horses[${index}][coggins]`, {
+        formData?.append(`horses[${index}][cogins]`, {
           uri: horse?.coggins?.uri,
           name: horse?.coggins?.name,
           type: horse?.coggins?.type,

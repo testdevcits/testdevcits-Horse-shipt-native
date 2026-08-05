@@ -1,0 +1,525 @@
+import { StyleSheet } from "react-native";
+import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+
+const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: COLORS.background },
+    scrollView: { flex: 1 },
+    scrollContent: { padding: SPACING.lg, paddingBottom: 40 },
+
+    /* STEP HEADER CARD */
+    headerCard: {
+        backgroundColor: COLORS.white,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginBottom: SPACING.lg,
+        borderWidth: 1,
+        borderColor: COLORS.divider,
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.04,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    headerBadgeRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: SPACING.md,
+    },
+    stepChip: {
+        backgroundColor: COLORS.goldLightBg,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: COLORS.goldBorder,
+    },
+    stepChipText: {
+        fontSize: 11,
+        fontFamily: FONTS.bold,
+        color: COLORS.goldDarkText,
+        letterSpacing: 0.5,
+    },
+    statusBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.greenLightBg,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: RADIUS.sm,
+        gap: 4,
+    },
+    statusBadgeText: {
+        fontSize: 11,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.greenSuccess,
+    },
+    headerTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    headerIconBox: {
+        width: 44,
+        height: 44,
+        borderRadius: RADIUS.md,
+        backgroundColor: COLORS.goldLightBg,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: SPACING.md,
+    },
+    headerTextGroup: { flex: 1 },
+    headerTitle: {
+        fontSize: 19,
+        fontFamily: FONTS.bold,
+        color: COLORS.textPrimary,
+    },
+    headerSubtitle: {
+        fontSize: 13,
+        fontFamily: FONTS.regular,
+        color: COLORS.textSecondary,
+        marginTop: 2,
+        lineHeight: 18,
+    },
+
+    /* SUMMARY BANNER */
+    summaryBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: COLORS.goldLightBg,
+        borderRadius: RADIUS.md,
+        padding: SPACING.md,
+        borderWidth: 1,
+        borderColor: COLORS.goldBorder,
+        marginBottom: SPACING.lg,
+    },
+    bannerLeft: { flex: 1 },
+    bannerTitle: {
+        fontSize: 14,
+        fontFamily: FONTS.bold,
+        color: COLORS.goldDarkText,
+    },
+    bannerSub: {
+        fontSize: 12,
+        fontFamily: FONTS.medium,
+        color: COLORS.textSecondary,
+        marginTop: 2,
+    },
+    bannerBadge: {
+        backgroundColor: COLORS.white,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: RADIUS.sm,
+        borderWidth: 1,
+        borderColor: COLORS.goldBorder,
+    },
+    bannerBadgeText: {
+        fontSize: 11,
+        fontFamily: FONTS.bold,
+        color: COLORS.primary,
+    },
+
+    /* CARDS GENERAL */
+    card: {
+        backgroundColor: COLORS.white,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginBottom: SPACING.lg,
+        borderWidth: 1,
+        borderColor: COLORS.divider,
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.03,
+        shadowRadius: 6,
+        elevation: 1,
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: SPACING.md,
+    },
+    cardHeaderToggle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    cardHeaderLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.sm,
+    },
+    iconCircle: {
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: COLORS.goldLightBg,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cardTitle: {
+        fontSize: 13,
+        fontFamily: FONTS.bold,
+        color: COLORS.textPrimary,
+        letterSpacing: 0.6,
+    },
+    miniEditBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: RADIUS.sm,
+        backgroundColor: COLORS.goldLightBg,
+    },
+    miniEditText: {
+        fontSize: 11,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.primary,
+    },
+
+    /* ROUTE TIMELINE */
+    routeTimeline: {
+        marginTop: SPACING.xs,
+    },
+    routeNode: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    pickupDotContainer: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: COLORS.goldLightBg,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: SPACING.md,
+        marginTop: 2,
+    },
+    pickupDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: COLORS.primary,
+    },
+    deliveryDotContainer: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: COLORS.greenLightBg,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: SPACING.md,
+        marginTop: 2,
+    },
+    deliveryDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: COLORS.greenActive,
+    },
+    routeLineContainer: {
+        width: 24,
+        height: 24,
+        alignItems: 'center',
+    },
+    routeLine: {
+        width: 2,
+        height: '100%',
+        backgroundColor: COLORS.grey200,
+    },
+    routeTextContent: {
+        flex: 1,
+        paddingBottom: SPACING.sm,
+    },
+    routeNodeLabel: {
+        fontSize: 10,
+        fontFamily: FONTS.bold,
+        color: COLORS.grey500,
+        letterSpacing: 0.5,
+    },
+    routeAddressText: {
+        fontSize: 14,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.textPrimary,
+        marginTop: 2,
+    },
+    routeDateBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginTop: 4,
+    },
+    routeDateText: {
+        fontSize: 12,
+        fontFamily: FONTS.medium,
+        color: COLORS.textSecondary,
+    },
+
+    /* ACCORDION & HORSE CONTENT */
+    accordionContent: {
+        marginTop: SPACING.md,
+        paddingTop: SPACING.sm,
+        borderTopWidth: 1,
+        borderTopColor: COLORS.divider,
+    },
+    horseSectionBox: {
+        marginBottom: SPACING.md,
+        paddingBottom: SPACING.md,
+    },
+    horseBoxBorder: {
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.divider,
+    },
+    horseHeaderRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.sm,
+        marginBottom: SPACING.sm,
+    },
+    horseTag: {
+        backgroundColor: COLORS.grey100,
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: RADIUS.sm,
+    },
+    horseTagText: {
+        fontSize: 10,
+        fontFamily: FONTS.bold,
+        color: COLORS.grey700,
+    },
+    horseNameTitle: {
+        fontSize: 15,
+        fontFamily: FONTS.bold,
+        color: COLORS.textPrimary,
+    },
+
+    /* INFO GRID */
+    infoGrid: {
+        gap: 4,
+        marginBottom: SPACING.sm,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 3,
+    },
+    infoLabel: {
+        fontSize: 13,
+        fontFamily: FONTS.medium,
+        color: COLORS.textSecondary,
+    },
+    infoValue: {
+        fontSize: 13,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.textPrimary,
+    },
+    subFieldLabel: {
+        fontSize: 12,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.grey700,
+        marginBottom: 6,
+        marginTop: 4,
+    },
+
+    /* PHOTO PREVIEW */
+    photoContainer: {
+        marginTop: SPACING.xs,
+    },
+    photoPreviewCard: {
+        height: 220,
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        position: 'relative',
+        backgroundColor: COLORS.grey100,
+    },
+    horseImagePreview: {
+        width: '100%',
+        height: '100%',
+    },
+    photoOverlayBadge: {
+        position: 'absolute',
+        bottom: 8,
+        right: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        backgroundColor: 'rgba(0,0,0,0.65)',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: RADIUS.sm,
+    },
+    photoOverlayText: {
+        fontSize: 11,
+        fontFamily: FONTS.medium,
+        color: COLORS.white,
+    },
+    noPhotoBox: {
+        height: 60,
+        borderRadius: RADIUS.md,
+        backgroundColor: COLORS.grey50,
+        borderWidth: 1,
+        borderColor: COLORS.grey200,
+        borderStyle: 'dashed',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+    },
+    noPhotoText: {
+        fontSize: 12,
+        fontFamily: FONTS.regular,
+        color: COLORS.grey500,
+    },
+
+    /* DOCUMENTS SECTION */
+    docsSectionSub: {
+        fontSize: 12,
+        fontFamily: FONTS.regular,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.md,
+    },
+    horseDocsCard: {
+        backgroundColor: COLORS.grey50,
+        borderRadius: RADIUS.md,
+        padding: SPACING.md,
+        borderWidth: 1,
+        borderColor: COLORS.grey200,
+        marginBottom: SPACING.md,
+    },
+    horseDocHeader: {
+        marginBottom: SPACING.sm,
+    },
+    horseDocHeaderText: {
+        fontSize: 13,
+        fontFamily: FONTS.bold,
+        color: COLORS.textPrimary,
+    },
+    docRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.white,
+        padding: SPACING.sm,
+        borderRadius: RADIUS.sm,
+        borderWidth: 1,
+        borderColor: COLORS.divider,
+        marginBottom: SPACING.xs,
+        gap: SPACING.sm,
+    },
+    docIconBox: {
+        width: 32,
+        height: 32,
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    docIconBoxSuccess: {
+        backgroundColor: COLORS.greenLightBg,
+    },
+    docIconBoxMuted: {
+        backgroundColor: COLORS.grey100,
+    },
+    docTextGroup: {
+        flex: 1,
+    },
+    docTitleText: {
+        fontSize: 13,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.textPrimary,
+    },
+    docFileName: {
+        fontSize: 11,
+        fontFamily: FONTS.regular,
+        color: COLORS.textSecondary,
+        marginTop: 1,
+    },
+    uploadedBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        backgroundColor: COLORS.greenLightBg,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: RADIUS.sm,
+    },
+    uploadedBadgeText: {
+        fontSize: 11,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.greenSuccess,
+    },
+    uploadQuickBtn: {
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: RADIUS.sm,
+        backgroundColor: COLORS.goldLightBg,
+        borderWidth: 1,
+        borderColor: COLORS.goldBorder,
+    },
+    uploadQuickText: {
+        fontSize: 11,
+        fontFamily: FONTS.bold,
+        color: COLORS.primary,
+    },
+
+    /* NOTES SECTION */
+    notesBlock: {
+        marginBottom: SPACING.sm,
+    },
+    notesLabel: {
+        fontSize: 12,
+        fontFamily: FONTS.bold,
+        color: COLORS.grey700,
+        marginBottom: 2,
+    },
+    notesValue: {
+        fontSize: 13,
+        fontFamily: FONTS.regular,
+        color: COLORS.textSecondary,
+        lineHeight: 18,
+    },
+
+    /* FOOTER */
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.md,
+        marginTop: SPACING.md,
+    },
+    draftBtn: {
+        flex: 1,
+        height: 52,
+        borderRadius: RADIUS.md,
+        borderWidth: 1,
+        borderColor: COLORS.grey300,
+        backgroundColor: COLORS.white,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    draftBtnText: {
+        fontSize: 15,
+        fontFamily: FONTS.semiBold,
+        color: COLORS.grey700,
+    },
+    publishBtn: {
+        flex: 1.5,
+        height: 52,
+        borderRadius: RADIUS.md,
+        backgroundColor: COLORS.primary,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: COLORS.primary,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    publishBtnText: {
+        fontSize: 15,
+        fontFamily: FONTS.bold,
+        color: COLORS.white,
+    },
+});
+export default styles

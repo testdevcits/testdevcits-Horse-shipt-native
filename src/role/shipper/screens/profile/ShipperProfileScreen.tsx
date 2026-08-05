@@ -27,6 +27,9 @@ import PaymentsTab from './tabs/PaymentsTab';
 import SubscriptionTab from './tabs/SubscriptionTab';
 import NotificationTab from './tabs/NotificationTab';
 import EditProfileModal from './EditProfileModal';
+import ConnectBankModal from '../home/ConnectBankModal';
+import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
+import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 
 type TabType = 'Profile' | 'Shipment' | 'Payments' | 'Subscription' | 'Notification';
 
@@ -39,9 +42,25 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [profileData, setProfileData] = useState<any>(null);
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
+  const [subscriptionStatusData, setSubscriptionStatusData] = useState<any>(null);
+
+
+
+  console.log("======billingHistoryData========+++", billingHistoryData)
   const [settingsData, setSettingsData] = useState<any>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+
+  const {
+    shipperStatus,
+    subscriptionStatus,
+    plansData,
+    isModalVisible: isSubModalVisible,
+    openModal: openSubModal,
+    closeModal: closeSubModal,
+    refreshStatus: refreshSubStatus,
+  } = useShipperSubscription();
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -204,12 +223,13 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   const fetchAllProfileData = async () => {
     try {
-      const [profRes, subRes, billRes, setRes, stripeRes] = await Promise.all([
+      const [profRes, subRes, billRes, setRes, stripeRes, subStatusRes] = await Promise.all([
         shipperService.getProfile().catch(() => null),
         shipperService.getSubscriptionPlan().catch(() => null),
         shipperService.getBillingHistory().catch(() => null),
         shipperService.getSettings().catch(() => null),
         shipperService.getStripeStatus().catch(() => null),
+        shipperService.getSubscriptionStatus().catch(() => null),
       ]);
 
       if (profRes?.data) {
@@ -237,8 +257,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       if (subRes?.data) {
         setSubscriptionData(subRes.data);
       }
-      if (billRes?.data) {
-        setBillingHistoryData(billRes.data);
+      if (billRes) {
+        setBillingHistoryData(billRes.data || billRes);
       }
       if (setRes?.data?.notifications) {
         setSettingsData(setRes.data);
@@ -246,6 +266,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       }
       if (stripeRes) {
         setStripeStatus(stripeRes);
+      }
+      if (subStatusRes) {
+        setSubscriptionStatusData(subStatusRes);
       }
     } catch (error) {
       console.error('Fetch Profile Data Error:', error);
@@ -435,15 +458,21 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         )}
 
         {activeTab === 'Payments' && (
-          <PaymentsTab stripeStatus={stripeStatus} />
+          <PaymentsTab
+            stripeStatus={stripeStatus}
+            navigation={navigation}
+            onRefreshStripeStatus={fetchAllProfileData}
+          />
         )}
 
         {activeTab === 'Subscription' && (
           <SubscriptionTab
             subscriptionData={subscriptionData}
             billingHistoryData={billingHistoryData}
+            subscriptionStatusData={subscriptionStatusData}
             billingFilter={billingFilter}
             setBillingFilter={setBillingFilter}
+            onOpenSubscriptionModal={openSubModal}
           />
         )}
 
@@ -467,6 +496,21 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             ...updatedData,
           }));
         }}
+      />
+
+      <ConnectBankModal
+        isVisible={isBankModalVisible}
+        onClose={() => setIsBankModalVisible(false)}
+        navigation={navigation}
+      />
+
+      <SubscriptionRequiredModal
+        visible={isSubModalVisible}
+        onClose={closeSubModal}
+        shipperStatus={shipperStatus}
+        subscriptionStatus={subscriptionStatus}
+        plansData={plansData}
+        onSubscriptionSuccess={refreshSubStatus}
       />
     </View>
   );

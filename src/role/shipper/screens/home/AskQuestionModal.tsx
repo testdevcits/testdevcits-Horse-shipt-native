@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import {
   Modal,
   View,
@@ -10,7 +10,7 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import { X, Send, MessageSquare, Clock } from 'lucide-react-native';
+import { X, Send, MessageSquare, Clock, CheckCheck, Check } from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
@@ -22,6 +22,7 @@ interface AskQuestionModalProps {
   shipmentCode?: string;
   pendingQuestion?: any;
   loadingQuestions?: boolean;
+  answeredQuestion?: any;
 }
 
 const TypingDots: React.FC = () => {
@@ -86,7 +87,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
   shipmentCode,
   pendingQuestion,
   loadingQuestions = false,
+  answeredQuestion
 }) => {
+
+  console.log("=====answeredQuestion=============", answeredQuestion)
+
   const [question, setQuestion] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -166,6 +171,63 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
             {loadingQuestions ? (
               <View style={styles.loaderBox}>
                 <ActivityIndicator size="large" color="#A06333" />
+              </View>
+            ) : answeredQuestion ? (
+              /* ANSWERED QUESTION STATE (MATCHING SCREENSHOT) */
+              <View style={{ width: '100%' }}>
+                {/* 1. Your Question Card */}
+                <View style={styles.pendingQuestionCard}>
+                  <View style={styles.pendingHeaderRow}>
+                    <View style={styles.pendingIconSquare}>
+                      <MessageSquare size={16} color="#A06333" />
+                    </View>
+                    <AppText style={styles.pendingHeaderLabel}>YOUR QUESTION</AppText>
+                  </View>
+
+                  <AppText style={styles.pendingQuestionText}>
+                    "{answeredQuestion.question}"
+                  </AppText>
+
+                  <View style={styles.pendingDivider} />
+
+                  <AppText style={styles.pendingAskedDateText}>
+                    Asked on {formatDate(answeredQuestion.createdAt, 'DD/MM/YYYY [at] HH:mm')}
+                  </AppText>
+                </View>
+
+                {/* 2. Customer Response Card */}
+                <View style={styles.responseCard}>
+                  <View style={styles.responseHeaderRow}>
+                    <View style={styles.responseLeftHeader}>
+                      <View style={styles.responseIconSquare}>
+                        <CheckCheck size={16} color="#059669" />
+                      </View>
+                      <AppText style={styles.responseHeaderLabel}>CUSTOMER RESPONSE</AppText>
+                    </View>
+
+                    <View style={styles.answeredBadge}>
+                      <Check size={12} color="#047857" />
+                      <AppText style={styles.answeredBadgeText}>Answered</AppText>
+                    </View>
+                  </View>
+
+                  <AppText style={styles.responseText}>
+                    "{answeredQuestion.answer}"
+                  </AppText>
+
+                  <View style={styles.responseDivider} />
+
+                  <AppText style={styles.responseDateText}>
+                    Answered on {formatDate(answeredQuestion.answeredAt, 'DD/MM/YYYY [at] HH:mm')}
+                  </AppText>
+                </View>
+
+                {/* 3. Footer Action */}
+                <View style={styles.pendingFooter}>
+                  <TouchableOpacity style={styles.pendingCloseBtn} onPress={onClose}>
+                    <AppText style={styles.pendingCloseBtnText}>Close</AppText>
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : pendingQuestion ? (
               /* PENDING QUESTION STATE (MATCHING SCREENSHOT) */
@@ -616,6 +678,73 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
+  // Customer Response Card Styles
+  responseCard: {
+    backgroundColor: '#ECFDF5',
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: '#6EE7B7',
+    padding: SPACING.md,
+    marginBottom: SPACING.lg,
+  },
+  responseHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.xs,
+  },
+  responseLeftHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
+  responseIconSquare: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    backgroundColor: '#D1FAE5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  responseHeaderLabel: {
+    fontSize: 11,
+    fontFamily: FONTS.bold,
+    color: '#065F46',
+    letterSpacing: 0.5,
+  },
+  answeredBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#D1FAE5',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    gap: 4,
+  },
+  answeredBadgeText: {
+    fontSize: 11,
+    fontFamily: FONTS.bold,
+    color: '#047857',
+  },
+  responseText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginVertical: SPACING.xs,
+    lineHeight: 20,
+  },
+  responseDivider: {
+    height: 1,
+    backgroundColor: '#A7F3D0',
+    marginVertical: SPACING.xs,
+  },
+  responseDateText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: '#047857',
+    marginTop: 2,
+  },
+
   // Pending Footer Close Action
   pendingFooter: {
     borderTopWidth: 1,
@@ -636,4 +765,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AskQuestionModal;
+export default memo(AskQuestionModal);

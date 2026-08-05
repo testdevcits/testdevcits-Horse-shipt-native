@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -26,10 +26,11 @@ import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
 import shipperService from '../../../../api/services/shipperService';
-import AskQuestionModal from './AskQuestionModal';
-import SubmitOfferModal from './SubmitOfferModal';
 import styles from './styles.shippershipmentdetails';
 
+
+const AskQuestionModal = lazy(() => import("./AskQuestionModal"))
+const SubmitOfferModal = lazy(() => import("./SubmitOfferModal"))
 
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();
@@ -44,6 +45,7 @@ const ShipperShipmentDetailsScreen = () => {
   // Questions State
   const [isAskModalVisible, setIsAskModalVisible] = useState(false);
   const [pendingQuestion, setPendingQuestion] = useState<any>(null);
+  const [answeredQuestion, setAnsweredQuestion] = useState<any>(null);
   const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   // Submit Offer Modal State
@@ -59,6 +61,11 @@ const ShipperShipmentDetailsScreen = () => {
           setPendingQuestion(res.data?.pending[0]);
         } else {
           setPendingQuestion(null);
+        }
+        if (res.data?.answered.length > 0) {
+          setAnsweredQuestion(res.data?.answered[0]);
+        } else {
+          setAnsweredQuestion(null);
         }
       }
     } catch (error) {
@@ -522,22 +529,27 @@ const ShipperShipmentDetailsScreen = () => {
       </ScrollView>
 
       {/* Ask Question Custom Modal */}
-      <AskQuestionModal
-        isVisible={isAskModalVisible}
-        onClose={() => setIsAskModalVisible(false)}
-        onSubmit={handleSubmitQuestion}
-        shipmentCode={shipment?.shipmentCode}
-        pendingQuestion={pendingQuestion}
-        loadingQuestions={loadingQuestions}
-      />
+      <Suspense fallback={null}>
+        <AskQuestionModal
+          isVisible={isAskModalVisible}
+          onClose={() => setIsAskModalVisible(false)}
+          onSubmit={handleSubmitQuestion}
+          shipmentCode={shipment?.shipmentCode}
+          pendingQuestion={pendingQuestion}
+          loadingQuestions={loadingQuestions}
+          answeredQuestion={answeredQuestion}
+        />
+      </Suspense>
 
       {/* Submit Shipping Offer Custom Modal */}
-      <SubmitOfferModal
-        isVisible={isSubmitOfferModalVisible}
-        onClose={() => setIsSubmitOfferModalVisible(false)}
-        shipmentId={shipment?._id}
-        shipmentCode={shipment?.shipmentCode}
-      />
+      <Suspense fallback={null}>
+        <SubmitOfferModal
+          isVisible={isSubmitOfferModalVisible}
+          onClose={() => setIsSubmitOfferModalVisible(false)}
+          shipmentId={shipment?._id}
+          shipmentCode={shipment?.shipmentCode}
+        />
+      </Suspense>
     </View>
   );
 };

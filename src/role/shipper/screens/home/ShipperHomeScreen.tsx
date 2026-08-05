@@ -52,6 +52,11 @@ import AvailableShipmentCard from './AvailableShipmentCard';
 import MapShipmentSelectItem from './MapShipmentSelectItem';
 import ConnectBankModal from './ConnectBankModal';
 import styles from './styles.shipperhome';
+import Toast from 'react-native-toast-message';
+import { useStripe } from '@stripe/stripe-react-native';
+import useShipperSubscription from '../../../../hooks/useShipperSubscription';
+import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
+import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 
 const { width } = Dimensions.get('window');
 
@@ -67,6 +72,87 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const [selectedFilter, setSelectedFilter] = useState<string>(''); // 'pickup' | 'dropoff'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+
+  const { confirmSetupIntent, createPaymentMethod } = useStripe();
+
+  const {
+    shipperStatus,
+    subscriptionStatus,
+    plansData,
+    isModalVisible: isSubModalVisible,
+    openModal: openSubModal,
+    closeModal: closeSubModal,
+    checkAccessAndRun,
+    refreshStatus: refreshSubStatus,
+  } = useShipperSubscription();
+
+  // Payment Card Modal state
+  const [isCardModalVisible, setIsCardModalVisible] = useState(false);
+  const [submittingCard, setSubmittingCard] = useState(false);
+  const [cardFormError, setCardFormError] = useState('');
+  const [cardholderName, setCardholderName] = useState('');
+  const [cardDetails, setCardDetails] = useState<any>(null);
+
+  const handleSavePaymentMethod = async () => {
+    if (!cardDetails?.complete) {
+      setCardFormError('Please enter valid and complete card details.');
+      return;
+    }
+    setCardFormError('');
+    try {
+      setSubmittingCard(true);
+      let paymentMethodId = '';
+      const setupIntentRes = await shipperService.getSetupIntent().catch(() => null);
+      const clientSecret = setupIntentRes?.clientSecret;
+
+      if (clientSecret && clientSecret.includes('_secret_')) {
+        const { setupIntent, error: stripeError } = await confirmSetupIntent(clientSecret, {
+          paymentMethodType: 'Card',
+          paymentMethodData: {
+            billingDetails: { name: cardholderName.trim() || undefined },
+          },
+        });
+        if (stripeError) {
+          setSubmittingCard(false);
+          setCardFormError(stripeError.message || 'Failed to confirm card setup.');
+          return;
+        }
+        paymentMethodId =
+          typeof setupIntent?.paymentMethod === 'string'
+            ? setupIntent.paymentMethod
+            : (setupIntent?.paymentMethod as any)?.id || setupIntent?.id || '';
+      }
+
+      if (!paymentMethodId) {
+        const { paymentMethod, error: stripeError } = await createPaymentMethod({
+          paymentMethodType: 'Card',
+          paymentMethodData: {
+            billingDetails: { name: cardholderName.trim() || undefined },
+          },
+        });
+        if (stripeError) {
+          setSubmittingCard(false);
+          setCardFormError(stripeError.message || 'Failed to process card details.');
+          return;
+        }
+        paymentMethodId = paymentMethod?.id || '';
+      }
+
+      if (paymentMethodId) {
+        const saveRes = await shipperService.savePaymentMethod({ paymentMethodId });
+        if (saveRes?.success) {
+          setIsCardModalVisible(false);
+          Toast.show({ type: 'success', text1: 'Card Saved', text2: 'Payment method saved successfully.' });
+          refreshSubStatus();
+        }
+      }
+    } catch (e: any) {
+      console.error('Save Card Error:', e);
+      setCardFormError(e?.response?.data?.message || 'Failed to save payment method.');
+    } finally {
+      setSubmittingCard(false);
+    }
+  };
 
   // Map view selection state
   const [selectedMapShipment, setSelectedMapShipment] = useState<any>(null);
@@ -702,6 +788,30 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       <ConnectBankModal
         isVisible={isBankModalVisible}
         onClose={() => setIsBankModalVisible(false)}
+        navigation={navigation}
+      />
+
+      <SubscriptionRequiredModal
+        visible={isSubModalVisible}
+        onClose={closeSubModal}
+        shipperStatus={shipperStatus}
+        subscriptionStatus={subscriptionStatus}
+        plansData={plansData}
+        onOpenAddCardModal={() => setIsCardModalVisible(true)}
+        onSubscriptionSuccess={refreshSubStatus}
+      />
+
+      <StripePaymentMethodCardModal
+        isCardModalVisible={isCardModalVisible}
+        setIsCardModalVisible={setIsCardModalVisible}
+        cardStatus={{ hasCard: shipperStatus.hasCard }}
+        submittingCard={submittingCard}
+        formError={cardFormError}
+        cardholderName={cardholderName}
+        setCardholderName={setCardholderName}
+        cardDetails={cardDetails}
+        setCardDetails={setCardDetails}
+        handleSavePaymentMethod={handleSavePaymentMethod}
       />
     </View>
   );

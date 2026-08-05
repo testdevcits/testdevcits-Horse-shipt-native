@@ -145,13 +145,14 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         {shippers && !shipperloading && !loading && (
           <FlatList
             data={shippers}
-            horizontal={true}
+
             keyExtractor={item => item?.id}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <ShipperCard
                 item={item}
                 onPress={() => handleShipperPress(item)}
+                customstyle={{ width: SCREEN_WIDTH - 20 }}
               />
             )}
             contentContainerStyle={styles.list}

@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
   },
   heroBannerContainer: {
     width: '100%',
-    height: 200,
+    height: 220,
     position: 'relative',
   },
   heroBannerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
+    resizeMode: "stretch",
   },
   heroBannerBadge: {
     position: 'absolute',

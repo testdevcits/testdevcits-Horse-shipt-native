@@ -306,125 +306,7 @@ const MyQuotesScreen = () => {
     });
   }, [quotes, searchQuery, activeTab, getQuoteCategory]);
 
-  const renderHeader = () => (
-    <>
-      {/* Top Header Card */}
-      <View style={styles.topCard}>
-        <AppText style={styles.topTitle}>My Quotes</AppText>
-        <AppText style={styles.topSub}>
-          Review shipment offers, contracts, vehicles, and payment status.
-        </AppText>
-
-        {/* Search Input Bar Component */}
-        <SearchBarCompt
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Search by pickup or delivery location..."
-        />
-      </View>
-
-      {/* Horizontal Filter Tabs */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabContainer}
-      >
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'all' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('all')}
-        >
-          <AppText
-            style={[styles.tabBtnText, activeTab === 'all' && styles.tabBtnTextActive]}
-          >
-            All Quotes
-          </AppText>
-          <View style={styles.badgePill}>
-            <AppText style={styles.badgePillText}>
-              {counts.all}
-            </AppText>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'in_transit' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('in_transit')}
-        >
-          <AppText
-            style={[
-              styles.tabBtnText,
-              activeTab === 'in_transit' && styles.tabBtnTextActive,
-            ]}
-          >
-            In Transit
-          </AppText>
-          <View style={styles.badgePill}>
-            <AppText style={styles.badgePillText}>
-              {counts.in_transit}
-            </AppText>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'upcoming' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('upcoming')}
-        >
-          <AppText
-            style={[
-              styles.tabBtnText,
-              activeTab === 'upcoming' && styles.tabBtnTextActive,
-            ]}
-          >
-            Upcoming
-          </AppText>
-          <View style={styles.badgePill}>
-            <AppText style={styles.badgePillText}>
-              {counts.upcoming}
-            </AppText>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'cancelled' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('cancelled')}
-        >
-          <AppText
-            style={[
-              styles.tabBtnText,
-              activeTab === 'cancelled' && styles.tabBtnTextActive,
-            ]}
-          >
-            Cancelled
-          </AppText>
-          <View style={styles.badgePill}>
-            <AppText style={styles.badgePillText}>
-              {counts.cancelled}
-            </AppText>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === 'pending' && styles.tabBtnActive]}
-          onPress={() => setActiveTab('pending')}
-        >
-          <AppText
-            style={[
-              styles.tabBtnText,
-              activeTab === 'pending' && styles.tabBtnTextActive,
-            ]}
-          >
-            Pending
-          </AppText>
-          <View style={styles.badgePill}>
-            <AppText style={styles.badgePillText}>
-              {counts.pending}
-            </AppText>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </>
-  );
-
-  const renderEmpty = () => {
+  const renderEmpty = useCallback(() => {
     if (loading) return null;
     return (
       <EmptyState
@@ -433,7 +315,7 @@ const MyQuotesScreen = () => {
         message="You haven't submitted any quotes for this filter tab yet."
       />
     );
-  };
+  }, [loading]);
 
   return (
     <View style={styles.container}>
@@ -451,7 +333,139 @@ const MyQuotesScreen = () => {
             onAssignVehicle={handleOpenVehicleSelect}
           />
         )}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={
+          <>
+            {/* Top Header Card */}
+            <View style={styles.topCard}>
+              <AppText style={styles.topTitle}>My Quotes</AppText>
+              <AppText style={styles.topSub}>
+                Review shipment offers, contracts, vehicles, and payment status.
+              </AppText>
+
+              {/* Search Input Bar Component */}
+              <SearchBarCompt
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Search by pickup or delivery location..."
+              />
+            </View>
+
+            {/* Horizontal Filter Tabs */}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.tabContainer}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'all' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('all')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'all' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  All Quotes
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>{counts.all}</AppText>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'in_transit' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('in_transit')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'in_transit' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  In Transit
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>
+                    {counts.in_transit}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'upcoming' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('upcoming')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'upcoming' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  Upcoming
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>
+                    {counts.upcoming}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'cancelled' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('cancelled')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'cancelled' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  Cancelled
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>
+                    {counts.cancelled}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'pending' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('pending')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'pending' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  Pending
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>
+                    {counts.pending}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </>
+        }
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={[
           styles.scrollContent,
@@ -492,7 +506,7 @@ const MyQuotesScreen = () => {
         label="Select Vehicle to Assign"
         placeholder="Select Vehicle"
         value=""
-        options={vehicles.map(v =>
+        options={vehicles?.map(v =>
           `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim(),
         )}
         onSelect={handleSelectVehicle}

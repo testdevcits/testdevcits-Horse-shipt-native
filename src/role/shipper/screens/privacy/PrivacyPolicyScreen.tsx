@@ -44,7 +44,7 @@ const PrivacyPolicyScreen = () => {
             color: #1F2937;
             line-height: 1.6;
             background-color: #FFFFFF;
-          -webkit-text-size-adjust: 100%;
+          
           }
           h1 {
             color: #A06333;
@@ -97,9 +97,7 @@ const PrivacyPolicyScreen = () => {
           source={{ html: webViewHtml, baseUrl: '' }}
           style={styles.webView}
           showsVerticalScrollIndicator={false}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          decelerationRate="normal"
+
         />
       )}
     </View>

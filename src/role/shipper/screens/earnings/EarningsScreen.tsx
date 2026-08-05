@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -27,11 +27,17 @@ import {
   DollarSign,
 } from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
-import { CardField, useStripe } from '@stripe/stripe-react-native';
+import { useStripe } from '@stripe/stripe-react-native';
 import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
+
+
+
+
+const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'))
+const StripePaymentMethodCardModal = lazy(() => import('./StripePaymentMethodCardModal'))
 
 interface CardStatusState {
   hasCard: boolean;
@@ -466,180 +472,25 @@ const EarningsScreen = () => {
       />
 
       {/* Stripe Payment Method Card Modal */}
-      <Modal
-        visible={isCardModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setIsCardModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            {/* Header */}
-            <View style={styles.modalHeaderRow}>
-              <AppText style={styles.modalTitle}>
-                {cardStatus.hasCard ? 'Update Payment Method' : 'Add Payment Method'}
-              </AppText>
-              <TouchableOpacity
-                style={styles.closeBtn}
-                onPress={() => setIsCardModalVisible(false)}
-                disabled={submittingCard}
-              >
-                <X size={20} color={COLORS.textSecondary} />
-              </TouchableOpacity>
-            </View>
-
-            <AppText style={styles.modalSub}>
-              Enter your credit or debit card details securely below.
-            </AppText>
-
-            {/* Error Banner */}
-            {!!formError && (
-              <View style={styles.errorBanner}>
-                <AlertCircle size={16} color="#DC2626" />
-                <AppText style={styles.errorBannerText}>{formError}</AppText>
-              </View>
-            )}
-
-            {/* Cardholder Name */}
-            <Input
-              label="Cardholder Name (Optional)"
-              placeholder="e.g. John Doe"
-              value={cardholderName}
-              onChangeText={setCardholderName}
-              editable={!submittingCard}
-              leftIcon={<User size={16} color={COLORS.textSecondary} />}
-            />
-
-            {/* Stripe Card Field Component */}
-            <View style={styles.inputGroup}>
-              <AppText style={styles.inputLabel}>Card Details *</AppText>
-              <View style={styles.stripeCardContainer}>
-                <CardField
-                  postalCodeEnabled={true}
-                  style={styles.stripeCardField}
-                  cardStyle={{
-                    backgroundColor: '#FFFFFF',
-                    textColor: COLORS.textPrimary,
-                    fontSize: FONT_SIZE.md,
-                    placeholderColor: COLORS.textLight,
-                  }}
-                  onCardChange={(details) => setCardDetails(details)}
-                />
-              </View>
-            </View>
-
-            {/* Security Row */}
-            <View style={styles.securityRow}>
-              <ShieldCheck size={14} color={COLORS.greenSuccess} />
-              <AppText style={styles.securityText}>
-                Secured & encrypted via Stripe 256-bit SSL
-              </AppText>
-            </View>
-
-            {/* Modal Actions */}
-            <View style={styles.modalActionsRow}>
-              <TouchableOpacity
-                style={styles.cancelModalBtn}
-                onPress={() => setIsCardModalVisible(false)}
-                disabled={submittingCard}
-              >
-                <AppText style={styles.cancelModalBtnText}>Cancel</AppText>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.submitModalBtn,
-                  (!cardDetails?.complete || submittingCard) && { opacity: 0.7 },
-                ]}
-                onPress={handleSavePaymentMethod}
-                disabled={submittingCard}
-                activeOpacity={0.85}
-              >
-                {submittingCard ? (
-                  <ActivityIndicator size="small" color={COLORS.white} />
-                ) : (
-                  <AppText style={styles.submitModalBtnText}>Save Card</AppText>
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <Suspense fallback={null}>
+        <StripePaymentMethodCardModal
+          isCardModalVisible={isCardModalVisible}
+          setIsCardModalVisible={setIsCardModalVisible}
+          cardStatus={cardStatus}
+          submittingCard={submittingCard}
+          formError={formError}
+          cardholderName={cardholderName}
+          setCardholderName={setCardholderName}
+          cardDetails={cardDetails}
+          setCardDetails={setCardDetails}
+          handleSavePaymentMethod={handleSavePaymentMethod}
+        />
+      </Suspense>
 
       {/* Transaction Details Modal */}
-      <Modal
-        visible={!!selectedTx}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setSelectedTx(null)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeaderRow}>
-              <AppText style={styles.modalTitle}>Transaction Details</AppText>
-              <TouchableOpacity
-                style={styles.closeBtn}
-                onPress={() => setSelectedTx(null)}
-              >
-                <X size={20} color={COLORS.textSecondary} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.divider} />
-
-            {selectedTx && (
-              <View style={{ gap: SPACING.sm }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Hash size={16} color={COLORS.primary} />
-                  <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Payout ID:</AppText>
-                  <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary, flex: 1 }} numberOfLines={1}>
-                    {selectedTx.id}
-                  </AppText>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <DollarSign size={16} color={COLORS.primary} />
-                  <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Amount:</AppText>
-                  <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
-                    ${selectedTx.amount} {selectedTx.currency || 'USD'}
-                  </AppText>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <FileText size={16} color={COLORS.primary} />
-                  <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Shipment Code:</AppText>
-                  <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
-                    {selectedTx.shipmentCode || 'N/A'}
-                  </AppText>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Calendar size={16} color={COLORS.primary} />
-                  <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Date:</AppText>
-                  <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
-                    {selectedTx.createdAt ? formatDate(selectedTx.createdAt, 'MMMM DD, YYYY') : 'N/A'}
-                  </AppText>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <CheckCircle size={16} color={COLORS.greenSuccess} />
-                  <AppText style={{ fontSize: FONT_SIZE.xs, color: COLORS.textSecondary }}>Status:</AppText>
-                  <AppText style={{ fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.greenSuccess }}>
-                    {(selectedTx.status || 'Paid').toUpperCase()}
-                  </AppText>
-                </View>
-              </View>
-            )}
-
-            <TouchableOpacity
-              style={[styles.feedbackBtn, { marginTop: SPACING.lg }]}
-              onPress={() => setSelectedTx(null)}
-            >
-              <AppText style={styles.feedbackBtnText}>Close</AppText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <Suspense fallback={null}>
+        <TransactionDetailsModal selectedTx={selectedTx} setSelectedTx={setSelectedTx} />
+      </Suspense>
 
       {/* Professional Feedback Modal (Replaces Native Alert) */}
       <Modal

@@ -158,6 +158,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: COLORS.white,
   },
+  offlineDot: {
+    backgroundColor: '#94A3B8',
+  },
 
   // Chat Content
   chatContentCol: {
