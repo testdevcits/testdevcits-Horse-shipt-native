@@ -26,7 +26,6 @@ import ShipmentTab from './tabs/ShipmentTab';
 import PaymentsTab from './tabs/PaymentsTab';
 import SubscriptionTab from './tabs/SubscriptionTab';
 import NotificationTab from './tabs/NotificationTab';
-import EditProfileModal from './EditProfileModal';
 import ConnectBankModal from '../home/ConnectBankModal';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
@@ -115,7 +114,16 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           height: 400,
           cropping: true,
           mediaType: 'photo',
+          compressImageQuality: 0.8,
         });
+        if (image?.size && image.size > 1 * 1024 * 1024) {
+          Toast.show({
+            type: 'error',
+            text1: 'File Too Large',
+            text2: 'Selected banner image must be 1 MB or less.',
+          });
+          return;
+        }
         imagePath = image.path;
         imageMime = image.mime || 'image/jpeg';
         imageName = image.filename || 'banner.jpg';
@@ -126,6 +134,14 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         });
         if (res.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
+        if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
+          Toast.show({
+            type: 'error',
+            text1: 'File Too Large',
+            text2: 'Selected banner image must be 1 MB or less.',
+          });
+          return;
+        }
         imagePath = asset.uri || '';
         imageMime = asset.type || 'image/jpeg';
         imageName = asset.fileName || 'banner.jpg';
@@ -183,7 +199,16 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           height: 400,
           cropping: true,
           mediaType: 'photo',
+          compressImageQuality: 0.8,
         });
+        if (image?.size && image.size > 1 * 1024 * 1024) {
+          Toast.show({
+            type: 'error',
+            text1: 'File Too Large',
+            text2: 'Selected profile image must be 1 MB or less.',
+          });
+          return;
+        }
         imagePath = image.path;
         imageMime = image.mime || 'image/jpeg';
         imageName = image.filename || 'profile.jpg';
@@ -194,6 +219,14 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         });
         if (res.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
+        if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
+          Toast.show({
+            type: 'error',
+            text1: 'File Too Large',
+            text2: 'Selected profile image must be 1 MB or less.',
+          });
+          return;
+        }
         imagePath = asset.uri || '';
         imageMime = asset.type || 'image/jpeg';
         imageName = asset.fileName || 'profile.jpg';
@@ -333,7 +366,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Profile" />
+      <AppHeader title="Profile" showProfileImage={false} />
 
       {/* TOP HORIZONTAL SCROLLABLE TAB BAR */}
       <View style={styles.tabBarWrapper}>
@@ -466,7 +499,18 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               profileData={profileData}
               user={user}
               navigation={navigation}
-              onEditProfile={() => setIsEditModalOpen(true)}
+              onEditProfile={() =>
+                navigation.navigate('EditProfile', {
+                  profileData,
+                  user,
+                  onSuccess: (updatedData: any) => {
+                    setProfileData((prev: any) => ({
+                      ...prev,
+                      ...updatedData,
+                    }));
+                  },
+                })
+              }
               onLogout={handleLogout}
             />
           </>
@@ -503,20 +547,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           />
         )}
       </ScrollView>
-
-      {/* EDIT PROFILE MODAL */}
-      <EditProfileModal
-        visible={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        profileData={profileData}
-        user={user}
-        onSuccess={(updatedData: any) => {
-          setProfileData((prev: any) => ({
-            ...prev,
-            ...updatedData,
-          }));
-        }}
-      />
 
       <ConnectBankModal
         isVisible={isBankModalVisible}

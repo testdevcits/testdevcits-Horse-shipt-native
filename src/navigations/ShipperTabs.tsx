@@ -5,18 +5,14 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  Image,
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  Home,
-  ClipboardList,
-  Plus,
-  User,
-  MessageSquare,
-} from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { AppText } from '../components';
-import { FONTS } from '../constants';
+import { COLORS, FONTS } from '../constants';
+import imageIndex from '../assets/images/imageIndex';
 
 // Screens
 import ShipperHomeScreen from '../role/shipper/screens/home/ShipperHomeScreen';
@@ -61,8 +57,8 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
         <View style={styles.tabBarButtonsContainer}>
           {state.routes.map((route: any, index: number) => {
             const isFocused = state.index === index;
-            const activeColor = '#A06333';
-            const inactiveColor = '#4B5563';
+            const activeColor = COLORS.brandBrown || '#A06333';
+            const inactiveColor = COLORS.grey500 || '#4B5563';
 
             const onPress = () => {
               const event = navigation.emit({
@@ -92,16 +88,36 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
               const iconColor = isFocused ? activeColor : inactiveColor;
               switch (route.name) {
                 case 'Home':
-                  return <Home size={24} color={iconColor} strokeWidth={1.8} />;
+                  return (
+                    <Image
+                      source={imageIndex.Home}
+                      style={{ width: 24, height: 24, tintColor: iconColor }}
+                      resizeMode="contain"
+                    />
+                  );
                 case 'MyQuotes':
                   return (
-                    <ClipboardList size={24} color={iconColor} strokeWidth={1.8} />
+                    <Image
+                      source={imageIndex.Shipments}
+                      style={{ width: 24, height: 24, tintColor: iconColor }}
+                      resizeMode="contain"
+                    />
                   );
-                case 'Profile':
-                  return <User size={24} color={iconColor} strokeWidth={1.8} />;
                 case 'Chats':
                   return (
-                    <MessageSquare size={24} color={iconColor} strokeWidth={1.8} />
+                    <Image
+                      source={imageIndex.Chat}
+                      style={{ width: 24, height: 24, tintColor: iconColor }}
+                      resizeMode="contain"
+                    />
+                  );
+                case 'Profile':
+                  return (
+                    <Image
+                      source={imageIndex.AccountIcon}
+                      style={{ width: 24, height: 24, tintColor: iconColor }}
+                      resizeMode="contain"
+                    />
                   );
                 default:
                   return null;
@@ -153,8 +169,8 @@ const ShipperTabs = () => (
     <Tab.Screen name="Home" component={ShipperHomeScreen} />
     <Tab.Screen name="MyQuotes" component={MyQuotesScreen} />
     <Tab.Screen name="Post" component={PostLoadScreen} />
-    <Tab.Screen name="Profile" component={ShipperProfileScreen} />
     <Tab.Screen name="Chats" component={ShipperChatsScreen} />
+    <Tab.Screen name="Profile" component={ShipperProfileScreen} />
   </Tab.Navigator>
 );
 

@@ -122,7 +122,18 @@ const AddVehicleModal: React.FC<Props> = ({
         height: 800,
         cropping: false,
         mediaType: 'photo',
+        compressImageQuality: 0.8,
       });
+
+      if (image?.size && image.size > 1 * 1024 * 1024) {
+        Toast.show({
+          type: 'error',
+          text1: 'File Too Large',
+          text2: 'Selected vehicle image must be 1 MB or less.',
+        });
+        return;
+      }
+
       if (image && image.path) {
         setSelectedImage({
           uri: image.path,

@@ -96,6 +96,8 @@ const AddEditHorse = () => {
     healthCertificate: horse?.documents?.healthCertificate || null,
   };
 
+  const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
+
   const handlePickPhoto = async (setFieldValue: (field: string, val: any) => void) => {
     if (isPicking) return;
 
@@ -107,7 +109,18 @@ const AddEditHorse = () => {
         height: 1000,
         cropping: true,
         mediaType: 'photo',
+        compressImageQuality: 0.8,
       });
+
+      if (image?.size && image.size > MAX_FILE_SIZE_BYTES) {
+        Toast.show({
+          type: 'error',
+          text1: 'File Too Large',
+          text2: 'Selected image must be 1 MB or less.',
+        });
+        return;
+      }
+
       if (image?.path) {
         setFieldValue('photo', {
           uri: image.path,
@@ -139,6 +152,16 @@ const AddEditHorse = () => {
     try {
       const [result] = await pick({ type: [types.pdf] });
       if (!result) return;
+
+      if (result.size && result.size > MAX_FILE_SIZE_BYTES) {
+        Toast.show({
+          type: 'error',
+          text1: 'File Too Large',
+          text2: 'Selected document must be 1 MB or less.',
+        });
+        return;
+      }
+
       const rawName = result.name || `${field}.pdf`;
       const pdfName = rawName.toLowerCase().endsWith('.pdf') ? rawName : `${rawName}.pdf`;
       setFieldValue(field, {

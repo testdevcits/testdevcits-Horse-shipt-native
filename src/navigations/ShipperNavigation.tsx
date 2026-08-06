@@ -11,6 +11,7 @@ import ShipperReviewsScreen from '../role/shipper/screens/reviews/ShipperReviews
 import AddVehicleScreen from '../role/shipper/screens/vehicles/AddVehicleModal';
 import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
 import AccountSetupScreen from '../role/shipper/screens/payments/AccountSetupScreen';
+import EditProfileScreen from '../role/shipper/screens/profile/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const ShipperNavigation = () => {
       <Stack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       <Stack.Screen name="AccountSetup" component={AccountSetupScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
     </Stack.Navigator>
   );
 };

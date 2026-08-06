@@ -64,7 +64,17 @@ export const useProfile = () => {
         height: 400,
         cropping: true,
         mediaType: 'photo',
+        compressImageQuality: 0.8,
       });
+
+      if (image?.size && image.size > 1 * 1024 * 1024) {
+        Toast.show({
+          type: 'error',
+          text1: 'File Too Large',
+          text2: 'Selected profile image must be 1 MB or less.',
+        });
+        return;
+      }
 
       setUploading(true);
 

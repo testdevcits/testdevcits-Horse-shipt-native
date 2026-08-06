@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import Toast from 'react-native-toast-message';
 import { pick } from '@react-native-documents/picker';
 import { StepSchemas } from './validation';
 import customerService from '../../../../api/services/customerService';
@@ -216,7 +217,18 @@ const useNewShipment = () => {
         height: 1000,
         cropping: true,
         mediaType: 'photo',
+        compressImageQuality: 0.8,
       });
+
+      if (image?.size && image.size > 1 * 1024 * 1024) {
+        Toast.show({
+          type: 'error',
+          text1: 'File Too Large',
+          text2: 'Selected horse photo must be 1 MB or less.',
+        });
+        return;
+      }
+
       if (image?.path) {
         setForm(prev => {
           const newHorses = [...prev.horses];

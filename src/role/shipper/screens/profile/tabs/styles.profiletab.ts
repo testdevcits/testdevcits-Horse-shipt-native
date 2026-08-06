@@ -6,10 +6,12 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   goldFilledBtn: {
-    backgroundColor: COLORS.primary || '#A06333',
+    backgroundColor: COLORS.primary,
     borderRadius: RADIUS.xs || 8,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.xs,
+    paddingHorizontal: SPACING.lg,
     alignItems: 'center',
+    alignSelf: "flex-end"
   },
   goldFilledBtnText: {
     color: COLORS.white,
