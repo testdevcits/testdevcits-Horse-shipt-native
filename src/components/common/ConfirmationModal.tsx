@@ -151,14 +151,14 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xxxl,
   },
   title: {
-    fontSize: FONT_SIZE.xxl,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     textAlign: 'center',
     marginBottom: SPACING.sm,
   },
   description: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
@@ -187,11 +187,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cancelText: {
-    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
     color: COLORS.grey700,
   },
   confirmText: {
-    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular,
     color: COLORS.white,
   },
 });

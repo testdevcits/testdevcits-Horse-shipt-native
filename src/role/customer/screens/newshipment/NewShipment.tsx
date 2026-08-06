@@ -47,6 +47,7 @@ const NewShipment = () => {
     isDraftModalVisible,
     setIsDraftModalVisible,
     setCurrentStep,
+    resetAllData,
   } = useNewShipment();
 
   const handleConfirmDelete = async () => {
@@ -60,6 +61,7 @@ const NewShipment = () => {
         text1: 'Draft Deleted',
         text2: 'Draft shipment deleted successfully.',
       });
+      resetAllData();
       navigation.goBack();
     } catch (err: any) {
       Toast.show({
@@ -106,6 +108,10 @@ const NewShipment = () => {
     <View style={styles.container}>
       <AppHeader
         showBack={true}
+        onBack={() => {
+          resetAllData();
+          navigation.goBack();
+        }}
         title={isEdit ? 'Edit Shipment' : 'New Shipment'}
         rightElement={
           isEdit && shipmentData?._id ? (
@@ -129,7 +135,10 @@ const NewShipment = () => {
               updateForm={updateForm}
               errors={errors}
               onNext={nextStep}
-              onPrevious={() => navigation.goBack()}
+              onPrevious={() => {
+                resetAllData();
+                navigation.goBack();
+              }}
             />
           )}
           {currentStep === 1 && (
@@ -159,11 +168,13 @@ const NewShipment = () => {
               onNext={nextStep}
               onPrevious={prevStep}
               removeFile={removeFile}
+              errors={errors}
             />
           )}
           {currentStep === 4 && (
             <ReviewStep
               form={form}
+              isEdit={isEdit}
               onPublish={() => setIsPublishModalVisible(true)}
               onSaveDraft={handleSaveDraft}
               onEditSection={stepIndex => setCurrentStep(stepIndex)}
@@ -179,9 +190,13 @@ const NewShipment = () => {
         isVisible={isPublishModalVisible}
         onClose={() => setIsPublishModalVisible(false)}
         onConfirm={handlePublish}
-        title="Publish Shipment?"
-        description="Are you sure you want to save and publish this shipment? Pickup and Horse details cannot be edited later."
-        confirmText="Save & Publish"
+        title={isEdit ? 'Update Shipment Metadata?' : 'Publish Shipment?'}
+        description={
+          isEdit
+            ? 'Are you sure you want to update this shipment metadata?'
+            : 'Are you sure you want to save and publish this shipment? Pickup and Horse details cannot be edited later.'
+        }
+        confirmText={isEdit ? 'Update Metadata' : 'Save & Publish'}
         isLoading={loading}
       />
 

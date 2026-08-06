@@ -25,6 +25,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 
+import customerService from '../../../../api/services/customerService';
+
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
 const QuoteDetailModal = lazy(
@@ -60,11 +62,22 @@ const MyShipmentDetails = ({ route, }: any) => {
   const data = shipment || item;
   const isDraft = (data?.status || '').toLowerCase() === 'draft';
 
-  const handleEditShipment = () => {
-    (navigation as any).navigate('NewShipment', {
-      isEdit: true,
-      shipmentData: data,
-    });
+  const handleEditShipment = async () => {
+    if (!data?._id) return;
+    try {
+      const res: any = await customerService.getShipmentById(data._id);
+      const fetchedShipment = res?.shipment || res?.data?.shipment || res?.data || data;
+      (navigation as any).navigate('NewShipment', {
+        isEdit: true,
+        shipmentData: fetchedShipment,
+      });
+    } catch (err) {
+      console.log('Error fetching shipment details for edit:', err);
+      (navigation as any).navigate('NewShipment', {
+        isEdit: true,
+        shipmentData: data,
+      });
+    }
   };
 
   const handleConfirmDelete = async () => {

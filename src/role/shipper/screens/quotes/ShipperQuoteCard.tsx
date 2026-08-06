@@ -268,7 +268,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
-          {onAssignVehicle && !vehicleObj && (
+          {onAssignVehicle && !vehicleObj && quote?.contractAccepted && (
             <TouchableOpacity
               style={styles.assignVehicleBtn}
               onPress={() => onAssignVehicle(quote)}

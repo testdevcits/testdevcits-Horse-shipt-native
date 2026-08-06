@@ -70,6 +70,68 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
 
     if (selectedHorse) {
       const updatedHorses = [...form.horses];
+
+      // Extract photo from saved horse
+      let photoObj: any = updatedHorses[index]?.photo || null;
+      if (selectedHorse.photo?.url || selectedHorse.photo?.uri) {
+        const photoUri = selectedHorse.photo.url || selectedHorse.photo.uri;
+        photoObj = {
+          uri: photoUri,
+          type: selectedHorse.photo.type || 'image/jpeg',
+          name: selectedHorse.photo.name || 'photo.jpg',
+        };
+      } else if (typeof selectedHorse.photo === 'string') {
+        photoObj = {
+          uri: selectedHorse.photo,
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        };
+      }
+
+      // Extract coggins document from saved horse
+      let cogginsObj: any = updatedHorses[index]?.coggins || null;
+      const cogginsData =
+        selectedHorse.documents?.coggins || (selectedHorse as any).coggins;
+      if (cogginsData?.url || cogginsData?.uri) {
+        const cogginsUri = cogginsData.url || cogginsData.uri;
+        cogginsObj = {
+          uri: cogginsUri,
+          type: cogginsData.type || 'application/pdf',
+          name: cogginsData.originalName || cogginsData.name || 'coggins.pdf',
+        };
+      }
+
+      // Extract health certificate document from saved horse
+      let healthCertObj: any = updatedHorses[index]?.healthCert || null;
+      const healthData =
+        selectedHorse.documents?.healthCertificate ||
+        (selectedHorse.documents as any)?.healthCert ||
+        (selectedHorse as any).healthCert ||
+        (selectedHorse as any).healthCertificate;
+      if (healthData?.url || healthData?.uri) {
+        const healthUri = healthData.url || healthData.uri;
+        healthCertObj = {
+          uri: healthUri,
+          type: healthData.type || 'application/pdf',
+          name: healthData.originalName || healthData.name || 'health.pdf',
+        };
+      }
+
+      // Extract other documents from saved horse
+      let otherDocsObj: any = updatedHorses[index]?.otherDocuments || null;
+      const otherData =
+        (selectedHorse.documents as any)?.otherDocuments ||
+        (selectedHorse.documents as any)?.other ||
+        (selectedHorse as any).otherDocuments;
+      if (otherData?.url || otherData?.uri) {
+        const otherUri = otherData.url || otherData.uri;
+        otherDocsObj = {
+          uri: otherUri,
+          type: otherData.type || 'application/pdf',
+          name: otherData.originalName || otherData.name || 'other_document.pdf',
+        };
+      }
+
       updatedHorses[index] = {
         ...updatedHorses[index],
         registeredName: selectedHorse.registeredName,
@@ -79,8 +141,14 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         age: selectedHorse.age?.toString() || '',
         sex: selectedHorse.sex || '',
         requestedStallSize:
-          selectedHorse.defaultStallSize || selectedHorse.requestedStallSize || 'Box',
+          selectedHorse.defaultStallSize ||
+          (selectedHorse as any).requestedStallSize ||
+          'Box',
         generalInfo: selectedHorse.notes || '',
+        photo: photoObj,
+        coggins: cogginsObj,
+        healthCert: healthCertObj,
+        otherDocuments: otherDocsObj,
       };
       updateForm({ horses: updatedHorses });
     } else {
@@ -205,7 +273,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
             <AppSelect
               label="Request Stall Size"
               placeholder="Select Stall"
-              value={horse.requestedStallSize}
+              value={horse.requestedStallSize || 'Box'}
               options={stallTypes}
               onSelect={v => updateHorseField(index, 'requestedStallSize', v)}
             />

@@ -61,11 +61,25 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     }
   };
 
-  const handleEditDocumentsNotes = () => {
-    navigation.navigate('NewShipment', {
-      isEdit: true,
-      shipmentData: data,
-    });
+  const handleEditDocumentsNotes = async () => {
+    if (!data?._id) return;
+    setLoading(true);
+    try {
+      const res: any = await customerService.getShipmentById(data._id);
+      const fetchedShipment = res?.shipment || res?.data?.shipment || res?.data || data;
+      navigation.navigate('NewShipment', {
+        isEdit: true,
+        shipmentData: fetchedShipment,
+      });
+    } catch (err) {
+      console.log('Error fetching shipment details for edit:', err);
+      navigation.navigate('NewShipment', {
+        isEdit: true,
+        shipmentData: data,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChatWithShipper = () => {
@@ -352,9 +366,20 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
                   {/* Uploaded Documents */}
                   <View style={styles.documentsContainer}>
-                    <AppText style={styles.documentsHeaderTitle}>
-                      Uploaded Documents
-                    </AppText>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.xs }}>
+                      <AppText style={styles.documentsHeaderTitle}>
+                        Uploaded Documents
+                      </AppText>
+                      <TouchableOpacity
+                        style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+                        onPress={handleEditDocumentsNotes}
+                      >
+                        <Edit3 size={14} color={COLORS.primary} />
+                        <AppText style={{ color: COLORS.primary, fontSize: 12, fontFamily: FONTS.semiBold }}>
+                          Edit Docs / Notes
+                        </AppText>
+                      </TouchableOpacity>
+                    </View>
                     <View style={styles.docListGrid}>
                       {horse.documents?.coggins?.url && (
                         <TouchableOpacity

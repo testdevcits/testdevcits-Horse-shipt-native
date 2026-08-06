@@ -88,7 +88,18 @@ export const StepSchemas = [
     ),
   }),
   // Step 3: Documents
-  Yup.object().shape({}),
+  Yup.object().shape({
+    horses: Yup.array().of(
+      Yup.object().shape({
+        photo: Yup.mixed()
+          .nullable()
+          .required('Horse photo is required')
+          .test('photo-required', 'Horse photo is required', value => {
+            return !!(value && (value as any).uri);
+          }),
+      }),
+    ),
+  }),
   // Step 4: Review
   Yup.object().shape({}),
 ];

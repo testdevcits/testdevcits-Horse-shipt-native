@@ -155,9 +155,11 @@ export interface NewShipmentHorse {
   colour: string;
   age: string;
   sex: string;
-  requestedStallSize: string;
+  stallType?: string;
+  requestedStallSize?: string;
   generalInfo: string;
-  photo: FilePayload | null;
+  photoUrl?: FilePayload | null;
+  photo?: FilePayload | any | null;
   coggins: FilePayload | null;
   healthCert: FilePayload | null;
   otherDocuments: FilePayload | null;

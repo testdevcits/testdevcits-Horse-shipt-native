@@ -13,8 +13,8 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
-import { updateUser } from '../../../../redux/slices/authSlice';
-import { AppHeader, AppText } from '../../../../components';
+import { updateUser, logoutUser } from '../../../../redux/slices/authSlice';
+import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -37,6 +37,25 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const [activeTab, setActiveTab] = useState<TabType>('Profile');
+
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = () => {
+    setIsLogoutModalVisible(true);
+  };
+
+  const handleConfirmLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await dispatch(logoutUser()).unwrap();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoggingOut(false);
+      setIsLogoutModalVisible(false);
+    }
+  };
 
   // Data states
   const [profileData, setProfileData] = useState<any>(null);
@@ -448,6 +467,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               user={user}
               navigation={navigation}
               onEditProfile={() => setIsEditModalOpen(true)}
+              onLogout={handleLogout}
             />
           </>
         )}
@@ -511,6 +531,18 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         subscriptionStatus={subscriptionStatus}
         plansData={plansData}
         onSubscriptionSuccess={refreshSubStatus}
+      />
+
+      <ConfirmationModal
+        isVisible={isLogoutModalVisible}
+        onClose={() => setIsLogoutModalVisible(false)}
+        onConfirm={handleConfirmLogout}
+        title="Logout"
+        description="Are you sure you want to log out?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={isLoggingOut}
       />
     </View>
   );

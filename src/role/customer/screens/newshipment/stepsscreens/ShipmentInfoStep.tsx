@@ -13,6 +13,7 @@ import {
   X,
   Trash2,
   FileCheck,
+  Info,
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
 import { AppText, Input } from '../../../../../components';
@@ -30,6 +31,7 @@ interface ShipmentInfoStepProps {
     index: number,
     type: 'photo' | 'coggins' | 'healthCert' | 'otherDocuments',
   ) => void;
+  errors?: any;
 }
 
 const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
@@ -40,6 +42,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
   pickDocument,
   pickImage,
   removeFile,
+  errors = {},
 }) => {
   const renderDocumentRow = (
     horseIndex: number,
@@ -125,11 +128,18 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 
             <View style={styles.cardPadding}>
               {/* PHOTO UPLOAD */}
-              <AppText style={styles.sectionLabel}>Horse Photo</AppText>
+              <View style={styles.sectionHeaderRow}>
+                <AppText style={styles.sectionLabel}>
+                  Horse Photo <AppText style={styles.requiredStar}>*</AppText>
+                </AppText>
+                <AppText style={styles.requiredStar}>*Required</AppText>
+              </View>
               <TouchableOpacity
                 style={[
                   styles.uploadBox,
                   horse?.photo && styles.uploadBoxActive,
+                  (errors?.[`horses[${index}].photo`] || errors?.[`horses.${index}.photo`]) &&
+                    styles.uploadBoxError,
                 ]}
                 onPress={() => pickImage(index)}
               >
@@ -149,10 +159,18 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                 ) : (
                   <View style={styles.uploadPlaceholder}>
                     <ImagePlus size={32} color={COLORS.primary} />
-                    <AppText style={styles.uploadBtnText}>Add Photo</AppText>
+                    <AppText style={styles.uploadBtnText}>Add Photo *</AppText>
                   </View>
                 )}
               </TouchableOpacity>
+              {(errors?.[`horses[${index}].photo`] || errors?.[`horses.${index}.photo`]) && (
+                <View style={styles.errorContainer}>
+                  <Info size={14} color={COLORS.error} />
+                  <AppText style={styles.errorText}>
+                    {errors[`horses[${index}].photo`] || errors[`horses.${index}.photo`]}
+                  </AppText>
+                </View>
+              )}
 
               {/* DOCUMENTS */}
               <AppText style={[styles.sectionLabel, { marginTop: SPACING.md }]}>

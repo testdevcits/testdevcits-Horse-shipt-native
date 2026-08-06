@@ -16,9 +16,9 @@ const defaultHorse: NewShipmentHorse = {
   colour: '',
   age: '',
   sex: '',
-  requestedStallSize: 'Box',
+  stallType: 'Box',
   generalInfo: '',
-  photo: null,
+  photoUrl: null,
   coggins: null,
   healthCert: null,
   otherDocuments: null,
@@ -36,6 +36,20 @@ const getDayAfterTomorrow = () => {
   d.setDate(d.getDate() + 2);
   d.setHours(0, 0, 0, 0);
   return d;
+};
+
+const formatDatePayload = (dateVal: any): string => {
+  if (!dateVal) return '';
+  try {
+    const d = new Date(dateVal);
+    if (!isNaN(d.getTime())) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+  } catch (e) { }
+  return String(dateVal || '');
 };
 
 const createInitialFormState = (): NewShipmentForm => ({
@@ -67,27 +81,34 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
     colour: h.colour || '',
     age: h.age ? h.age.toString() : '',
     sex: h.sex || '',
-    requestedStallSize: h.requestedStallSize || h.stallSize || 'Box',
+    stallType: h.stallType || h.stallSize || 'Box',
     generalInfo: h.generalInfo || h.notes || '',
     photo: h.photo?.url
-      ? { uri: h.photo.url, type: 'image/jpeg', name: 'photo.jpg' }
-      : null,
+      ? { uri: h.photo.url, type: h.photo.type || 'image/jpeg', name: h.photo.name || 'photo.jpg' }
+      : typeof h.photo === 'string'
+        ? { uri: h.photo, type: 'image/jpeg', name: 'photo.jpg' }
+        : h.photo || null,
     coggins: h.coggins?.url
-      ? { uri: h.coggins.url, type: 'application/pdf', name: 'coggins.pdf' }
-      : null,
+      ? { uri: h.coggins.url, type: 'application/pdf', name: h.coggins.originalName || h.coggins.name || 'coggins.pdf' }
+      : h.documents?.coggins?.url
+        ? { uri: h.documents.coggins.url, type: 'application/pdf', name: h.documents.coggins.originalName || h.documents.coggins.name || 'coggins.pdf' }
+        : h.coggins || null,
     healthCert: h.healthCert?.url
-      ? { uri: h.healthCert.url, type: 'application/pdf', name: 'health.pdf' }
-      : null,
-    otherDocuments: h.otherDocuments?.url || h.other?.url || h.documents?.other?.url
+      ? { uri: h.healthCert.url, type: 'application/pdf', name: h.healthCert.originalName || h.healthCert.name || 'health.pdf' }
+      : h.documents?.healthCertificate?.url
+        ? { uri: h.documents.healthCertificate.url, type: 'application/pdf', name: h.documents.healthCertificate.originalName || h.documents.healthCertificate.name || 'health.pdf' }
+        : h.healthCert || null,
+    otherDocuments: h.otherDocuments?.url || h.other?.url || h.documents?.other?.url || h.documents?.otherDocuments?.url
       ? {
         uri:
           h.otherDocuments?.url ||
           h.other?.url ||
-          h.documents?.other?.url,
+          h.documents?.other?.url ||
+          h.documents?.otherDocuments?.url,
         type: 'application/pdf',
         name: 'other_document.pdf',
       }
-      : null,
+      : h.otherDocuments || null,
   }));
 
   return {
@@ -125,7 +146,10 @@ const useNewShipment = () => {
   const isEdit = route.params?.isEdit;
   const shipmentData = route.params?.shipmentData;
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(() => {
+    if (isEdit) return 2;
+    return 0;
+  });
   const [draftLoading, setDraftLoading] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
   const loading = draftLoading || publishLoading;
@@ -198,7 +222,7 @@ const useNewShipment = () => {
           const newHorses = [...prev.horses];
           newHorses[index] = {
             ...newHorses[index],
-            photo: {
+            photoUrl: {
               uri: image.path,
               type: image.mime || 'image/jpeg',
               name: image.filename || `horse_photo_${index + 1}.jpg`,
@@ -259,35 +283,15 @@ const useNewShipment = () => {
     formData?.append('pickupLat', form.pickupLat.toString());
     formData?.append('pickupLng', form.pickupLng.toString());
     formData?.append('pickupTimeOption', form.pickupTimeOption);
-    formData?.append(
-      'pickupStartDate',
-      form.pickupStartDate instanceof Date
-        ? form.pickupStartDate.toISOString()
-        : new Date(form.pickupStartDate).toISOString(),
-    );
-    formData?.append(
-      'pickupEndDate',
-      form.pickupEndDate instanceof Date
-        ? form.pickupEndDate.toISOString()
-        : new Date(form.pickupEndDate).toISOString(),
-    );
+    formData?.append('pickupStartDate', formatDatePayload(form.pickupStartDate));
+    formData?.append('pickupEndDate', formatDatePayload(form.pickupEndDate));
 
     formData?.append('deliveryLocation', form.deliveryLocation);
     formData?.append('deliveryLat', form.deliveryLat.toString());
     formData?.append('deliveryLng', form.deliveryLng.toString());
     formData?.append('deliveryTimeOption', form.deliveryTimeOption);
-    formData?.append(
-      'deliveryStartDate',
-      form.deliveryStartDate instanceof Date
-        ? form.deliveryStartDate.toISOString()
-        : new Date(form.deliveryStartDate).toISOString(),
-    );
-    formData?.append(
-      'deliveryEndDate',
-      form.deliveryEndDate instanceof Date
-        ? form.deliveryEndDate.toISOString()
-        : new Date(form.deliveryEndDate).toISOString(),
-    );
+    formData?.append('deliveryStartDate', formatDatePayload(form.deliveryStartDate));
+    formData?.append('deliveryEndDate', formatDatePayload(form.deliveryEndDate));
 
     formData?.append('numberOfHorses', form.numberOfHorses.toString());
 
@@ -307,6 +311,10 @@ const useNewShipment = () => {
       );
       formData?.append(`horses[${index}][barnName]`, horse?.barnName || '');
       formData?.append(`horses[${index}][breed]`, horse?.breed || '');
+      formData?.append(
+        `horses[${index}][otherBreed]`,
+        (horse as any)?.otherBreed || '',
+      );
       formData?.append(`horses[${index}][colour]`, horse?.colour || '');
       formData?.append(
         `horses[${index}][age]`,
@@ -314,47 +322,102 @@ const useNewShipment = () => {
       );
       formData?.append(`horses[${index}][sex]`, horse?.sex || '');
       formData?.append(
-        `horses[${index}][requestedStallSize]`,
-        horse?.requestedStallSize || 'Box',
+        `horses[${index}][stallType]`,
+        horse?.requestedStallSize || horse?.stallType || 'Box',
       );
+      formData?.append(`horses[${index}][size]`, (horse as any)?.size || '');
       formData?.append(
         `horses[${index}][generalInfo]`,
         horse?.generalInfo || '',
       );
-      formData?.append(`horses[${index}][notes]`, horse?.generalInfo || '');
+      formData?.append(
+        `horses[${index}][notes]`,
+        horse?.generalInfo || (horse as any)?.notes || '',
+      );
 
-      if (horse?.photo) {
-        formData?.append(`horses[${index}][photo]`, {
-          uri: horse?.photo?.uri,
-          name: horse?.photo?.name,
-          type: horse?.photo?.type,
-        } as any);
+      // Photo handling
+      const photoPayload = horse?.photo || horse?.photoUrl;
+      if (photoPayload) {
+        if (typeof photoPayload === 'string') {
+          formData?.append(`horses[${index}][photoUrl]`, photoPayload);
+        } else if (
+          photoPayload.uri?.startsWith('http://') ||
+          photoPayload.uri?.startsWith('https://')
+        ) {
+          formData?.append(`horses[${index}][photoUrl]`, photoPayload.uri);
+        } else if (photoPayload.uri) {
+          formData?.append(`horses[${index}][photoUrl]`, {
+            uri: photoPayload.uri,
+            name: photoPayload.name || `photo_${index + 1}.jpg`,
+            type: photoPayload.type || 'image/jpeg',
+          } as any);
+        }
       }
+
+      // Coggins handling (key: cogins)
       if (horse?.coggins) {
-        formData?.append(`horses[${index}][cogins]`, {
-          uri: horse?.coggins?.uri,
-          name: horse?.coggins?.name,
-          type: horse?.coggins?.type,
-        } as any);
+        if (typeof horse.coggins === 'string') {
+          formData?.append(`horses[${index}][cogins]`, horse.coggins);
+        } else if (
+          horse.coggins.uri?.startsWith('http://') ||
+          horse.coggins.uri?.startsWith('https://')
+        ) {
+          formData?.append(`horses[${index}][cogins]`, horse.coggins.uri);
+        } else if (horse.coggins.uri) {
+          formData?.append(`horses[${index}][cogins]`, {
+            uri: horse.coggins.uri,
+            name: horse.coggins.name || `coggins_${index + 1}.pdf`,
+            type: horse.coggins.type || 'application/pdf',
+          } as any);
+        }
       }
+
+      // Health Certificate handling (key: healthCertificate)
       if (horse?.healthCert) {
-        formData?.append(`horses[${index}][healthCertificate]`, {
-          uri: horse?.healthCert?.uri,
-          name: horse?.healthCert?.name,
-          type: horse?.healthCert?.type,
-        } as any);
+        if (typeof horse.healthCert === 'string') {
+          formData?.append(
+            `horses[${index}][healthCertificate]`,
+            horse.healthCert,
+          );
+        } else if (
+          horse.healthCert.uri?.startsWith('http://') ||
+          horse.healthCert.uri?.startsWith('https://')
+        ) {
+          formData?.append(
+            `horses[${index}][healthCertificate]`,
+            horse.healthCert.uri,
+          );
+        } else if (horse.healthCert.uri) {
+          formData?.append(`horses[${index}][healthCertificate]`, {
+            uri: horse.healthCert.uri,
+            name: horse.healthCert.name || `health_${index + 1}.pdf`,
+            type: horse.healthCert.type || 'application/pdf',
+          } as any);
+        }
       }
+
+      // Other Documents handling (key: otherDocuments)
       if (horse?.otherDocuments) {
-        formData?.append(`horses[${index}][otherDocuments]`, {
-          uri: horse?.otherDocuments?.uri,
-          name: horse?.otherDocuments?.name,
-          type: horse?.otherDocuments?.type,
-        } as any);
-        formData?.append(`horses[${index}][other]`, {
-          uri: horse?.otherDocuments?.uri,
-          name: horse?.otherDocuments?.name,
-          type: horse?.otherDocuments?.type,
-        } as any);
+        if (typeof horse.otherDocuments === 'string') {
+          formData?.append(
+            `horses[${index}][otherDocuments]`,
+            horse.otherDocuments,
+          );
+        } else if (
+          horse.otherDocuments.uri?.startsWith('http://') ||
+          horse.otherDocuments.uri?.startsWith('https://')
+        ) {
+          formData?.append(
+            `horses[${index}][otherDocuments]`,
+            horse.otherDocuments.uri,
+          );
+        } else if (horse.otherDocuments.uri) {
+          formData?.append(`horses[${index}][otherDocuments]`, {
+            uri: horse.otherDocuments.uri,
+            name: horse.otherDocuments.name || `other_${index + 1}.pdf`,
+            type: horse.otherDocuments.type || 'application/pdf',
+          } as any);
+        }
       }
     });
 
@@ -364,36 +427,60 @@ const useNewShipment = () => {
   const buildUpdateFormData = () => {
     const formData = new FormData();
 
-    if (form.additionalInfo) {
-      formData?.append('additionalInfo', form.additionalInfo);
+    let combinedNotes = form.additionalInfo || '';
+    if (form.hasSpecialRequirement && form.specialRequirementDetails) {
+      combinedNotes +=
+        (combinedNotes ? '\n' : '') +
+        `Special Requirements: ${form.specialRequirementDetails}`;
     }
+    formData?.append('additionalInfo', combinedNotes);
 
     form.horses.forEach((horse, index) => {
-      const notesVal = horse?.generalInfo || '';
-      formData?.append(`horses[${index}][generalInfo]`, notesVal);
-      formData?.append(`horses[${index}][notes]`, notesVal);
+      formData?.append(
+        `horses[${index}][generalInfo]`,
+        horse?.generalInfo || '',
+      );
+      formData?.append(
+        `horses[${index}][notes]`,
+        (horse as any)?.notes || horse?.generalInfo || '',
+      );
 
-      if (horse?.coggins && horse?.coggins.uri) {
+      if (
+        horse?.coggins &&
+        horse?.coggins.uri &&
+        !horse.coggins.uri.startsWith('http://') &&
+        !horse.coggins.uri.startsWith('https://')
+      ) {
         formData?.append(`horses[${index}][cogins]`, {
           uri: horse?.coggins.uri,
-          name: horse?.coggins.name || `coggins_${index + 1}.jpg`,
-          type: horse?.coggins.type || 'image/jpeg',
+          name: horse?.coggins.name || `coggins_${index + 1}.pdf`,
+          type: horse?.coggins.type || 'application/pdf',
         } as any);
       }
 
-      if (horse?.healthCert && horse?.healthCert.uri) {
+      if (
+        horse?.healthCert &&
+        horse?.healthCert.uri &&
+        !horse.healthCert.uri.startsWith('http://') &&
+        !horse.healthCert.uri.startsWith('https://')
+      ) {
         formData?.append(`horses[${index}][healthCertificate]`, {
           uri: horse?.healthCert.uri,
-          name: horse?.healthCert.name || `health_${index + 1}.jpg`,
-          type: horse?.healthCert.type || 'image/jpeg',
+          name: horse?.healthCert.name || `health_${index + 1}.pdf`,
+          type: horse?.healthCert.type || 'application/pdf',
         } as any);
       }
 
-      if (horse?.otherDocuments && horse?.otherDocuments.uri) {
+      if (
+        horse?.otherDocuments &&
+        horse?.otherDocuments.uri &&
+        !horse.otherDocuments.uri.startsWith('http://') &&
+        !horse.otherDocuments.uri.startsWith('https://')
+      ) {
         formData?.append(`horses[${index}][otherDocuments]`, {
           uri: horse?.otherDocuments.uri,
-          name: horse?.otherDocuments.name || `other_${index + 1}.jpg`,
-          type: horse?.otherDocuments.type || 'image/jpeg',
+          name: horse?.otherDocuments.name || `other_${index + 1}.pdf`,
+          type: horse?.otherDocuments.type || 'application/pdf',
         } as any);
       }
     });
@@ -405,13 +492,14 @@ const useNewShipment = () => {
     setDraftLoading(true);
     try {
       const targetId = shipmentData?._id || createdShipmentId;
-      const formData = buildFormData();
 
       if (targetId) {
-        await customerService.updateShipment(targetId, formData);
+        const updateFormData = buildUpdateFormData();
+        await customerService.updateShipmentMetadata(targetId, updateFormData);
         setIsDraftModalVisible(true);
         return true;
       } else {
+        const formData = buildFormData();
         const response: any = await customerService.createShipment(formData);
         const success = response?.success || response?.data?.success;
         const shipment = response?.shipment || response?.data?.shipment;
@@ -445,8 +533,8 @@ const useNewShipment = () => {
       const targetId = shipmentData?._id || createdShipmentId;
 
       if (isEdit && targetId) {
-        const formData = buildFormData();
-        await customerService.updateShipment(targetId, formData);
+        const updateFormData = buildUpdateFormData();
+        await customerService.updateShipmentMetadata(targetId, updateFormData);
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
         Alert.alert('Success', 'Shipment updated successfully!', [
@@ -537,6 +625,10 @@ const useNewShipment = () => {
   };
 
   const prevStep = () => {
+    if (isEdit && currentStep === 2) {
+      navigation.goBack();
+      return;
+    }
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
     } else {
@@ -564,6 +656,7 @@ const useNewShipment = () => {
     isDraftModalVisible,
     setIsDraftModalVisible,
     setCurrentStep,
+    resetAllData,
   };
 };
 

@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     },
     headerTextGroup: { flex: 1 },
     headerTitle: {
-        fontSize: 19,
+        fontSize: 14,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
     headerSubtitle: {
-        fontSize: 13,
+        fontSize: 12,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginTop: 2,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardTitle: {
-        fontSize: 13,
+        fontSize: 12,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
         letterSpacing: 0.6,
@@ -239,11 +239,11 @@ const styles = StyleSheet.create({
     infoCard: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: COLORS.grey50,
+        backgroundColor: COLORS.goldLightBg,
         borderRadius: RADIUS.md,
         padding: SPACING.md,
         borderWidth: 1,
-        borderColor: COLORS.grey200,
+        borderColor: COLORS.goldBorder,
         marginBottom: SPACING.xl,
     },
     infoIconBox: {
@@ -254,13 +254,13 @@ const styles = StyleSheet.create({
     infoTitle: {
         fontSize: 13,
         fontFamily: FONTS.bold,
-        color: COLORS.textPrimary,
+        color: COLORS.goldDarkText,
         marginBottom: 2,
     },
     infoSub: {
         fontSize: 12,
         fontFamily: FONTS.regular,
-        color: COLORS.textSecondary,
+        color: COLORS.goldDarkText,
         lineHeight: 17,
     },
 
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     secondaryBtnText: {
-        fontSize: 15,
+        fontSize: 12,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
     },
@@ -302,9 +302,10 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     primaryBtnText: {
-        fontSize: 15,
+        fontSize: 12,
         fontFamily: FONTS.bold,
         color: COLORS.white,
     },
 });
-export default styles
+
+export default styles;

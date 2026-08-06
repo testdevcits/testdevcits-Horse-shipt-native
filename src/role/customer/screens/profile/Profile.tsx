@@ -13,13 +13,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { MessageCircle, PencilLine, Star, User, X } from 'lucide-react-native';
+import { LogOut, MessageCircle, PencilLine, Star, User, X } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import { useProfile } from './useProfile';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { logoutUser } from '../../../../redux/slices/authSlice';
 import {
   AppHeader,
   AppLoader,
   AppText,
+  ConfirmationModal,
   EmptyState,
   Input,
   ReviewCard,
@@ -29,6 +32,7 @@ import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 
 const Profile = ({ navigation }: any) => {
+  const dispatch = useAppDispatch();
   const {
     profile,
     loading,
@@ -39,6 +43,8 @@ const Profile = ({ navigation }: any) => {
   } = useProfile();
   const [activeTab, setActiveTab] = useState('Profile');
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -73,6 +79,22 @@ const Profile = ({ navigation }: any) => {
         text1: 'Error',
         text2: res.message || 'Update failed',
       });
+    }
+  };
+
+  const handleLogout = () => {
+    setIsLogoutModalVisible(true);
+  };
+
+  const handleConfirmLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await dispatch(logoutUser()).unwrap();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoggingOut(false);
+      setIsLogoutModalVisible(false);
     }
   };
 
@@ -171,6 +193,16 @@ const Profile = ({ navigation }: any) => {
               }
             </View>
           </View>
+
+          {/* Logout Button */}
+          <TouchableOpacity
+            style={localStyles.logoutBtn}
+            onPress={handleLogout}
+            activeOpacity={0.8}
+          >
+            <LogOut size={18} color={COLORS.error} />
+            <AppText style={localStyles.logoutBtnText}>Logout</AppText>
+          </TouchableOpacity>
         </ScrollView>
       )}
 
@@ -215,6 +247,19 @@ const Profile = ({ navigation }: any) => {
           </View>
         </View>
       </Modal>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isVisible={isLogoutModalVisible}
+        onClose={() => setIsLogoutModalVisible(false)}
+        onConfirm={handleConfirmLogout}
+        title="Logout"
+        description="Are you sure you want to log out?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={isLoggingOut}
+      />
     </View>
   );
 };
@@ -274,6 +319,24 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
   },
   saveBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.sm },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FEE2E2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.md,
+    marginTop: SPACING.xl,
+    marginBottom: SPACING.xl,
+  },
+  logoutBtnText: {
+    color: COLORS.error,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
 });
 
 export default Profile;

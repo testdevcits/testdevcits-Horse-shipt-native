@@ -271,7 +271,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         {/* INFO BANNER CARD */}
         <View style={styles.infoCard}>
           <View style={styles.infoIconBox}>
-            <Info size={18} color={COLORS.primary} />
+            <Info size={18} color={COLORS.goldDarkText} />
           </View>
           <View style={styles.infoTextContent}>
             <AppText style={styles.infoTitle}>Delivery Timing Note</AppText>

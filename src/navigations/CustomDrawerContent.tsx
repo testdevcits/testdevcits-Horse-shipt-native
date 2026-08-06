@@ -10,7 +10,7 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { ShieldCheck, LogOut, FileText } from 'lucide-react-native';
+import { ShieldCheck, LogOut, FileText, ChevronRight } from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
@@ -29,6 +29,7 @@ interface DrawerMenuItemProps {
   onPress: () => void;
   isActive?: boolean;
   isLast?: boolean;
+  hasChevron?: boolean;
 }
 
 const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
@@ -39,6 +40,7 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
   onPress,
   isActive,
   isLast,
+  hasChevron,
 }) => (
   <TouchableOpacity
     style={[
@@ -73,6 +75,12 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
     >
       {label}
     </AppText>
+    {(isActive || hasChevron) && (
+      <ChevronRight
+        size={18}
+        color={iconColor || (isActive ? COLORS.brandBrown : COLORS.grey400)}
+      />
+    )}
   </TouchableOpacity>
 );
 
@@ -273,6 +281,7 @@ const styles = StyleSheet.create({
     tintColor: COLORS.brandBrown,
   },
   menuLabel: {
+    flex: 1,
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,

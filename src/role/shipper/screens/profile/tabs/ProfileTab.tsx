@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { Pencil, Star } from 'lucide-react-native';
+import { Pencil, Star, LogOut } from 'lucide-react-native';
 import { formatDate } from '../../../../../utils/helpers';
 import { AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
@@ -12,6 +12,7 @@ interface Props {
   user: any;
   navigation: any;
   onEditProfile?: () => void;
+  onLogout?: () => void;
 }
 
 const ProfileTab: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const ProfileTab: React.FC<Props> = ({
   user,
   navigation,
   onEditProfile,
+  onLogout,
 }) => {
   const reviewsList = profileData?.reviews || [];
 
@@ -163,6 +165,18 @@ const ProfileTab: React.FC<Props> = ({
           </View>
         )}
       </View>
+
+      {/* Logout Button */}
+      {onLogout && (
+        <TouchableOpacity
+          style={styles.logoutBtn}
+          onPress={onLogout}
+          activeOpacity={0.8}
+        >
+          <LogOut size={18} color={COLORS.error || '#EF4444'} />
+          <AppText style={styles.logoutBtnText}>Logout</AppText>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

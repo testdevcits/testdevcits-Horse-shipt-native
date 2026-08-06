@@ -159,6 +159,24 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     paddingHorizontal: SPACING.sm,
   },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FEE2E2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.md || 12,
+    marginTop: SPACING.md,
+    marginBottom: SPACING.xl,
+  },
+  logoutBtnText: {
+    color: COLORS.error || '#EF4444',
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
 });
 
 export default styles;

@@ -185,6 +185,7 @@ const ShipperShipmentDetailsScreen = () => {
         title="SHIPMENT DETAILS"
         showBack
         onBack={() => navigation.goBack()}
+        showProfileImage={false}
       />
 
       <ScrollView

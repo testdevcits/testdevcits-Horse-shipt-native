@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
-    backgroundColor: COLORS.surface,
+    // backgroundColor: COLORS.surface,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },

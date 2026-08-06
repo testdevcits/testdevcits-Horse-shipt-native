@@ -74,7 +74,18 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: FONTS.bold,
         color: COLORS.grey800,
-        marginBottom: SPACING.sm,
+        marginBottom: SPACING.xs,
+    },
+    sectionHeaderRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: SPACING.xs,
+    },
+    requiredStar: {
+        fontSize: 11,
+        fontFamily: FONTS.medium,
+        color: COLORS.error,
     },
 
     uploadBox: {
@@ -87,6 +98,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     uploadBoxActive: { borderStyle: 'solid', borderColor: COLORS.primary },
+    uploadBoxError: { borderStyle: 'solid', borderColor: COLORS.error },
     uploadPlaceholder: {
         flex: 1,
         justifyContent: 'center',
@@ -97,6 +109,23 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.medium,
         color: COLORS.primary,
         fontSize: 14,
+    },
+    helperText: {
+        fontSize: 12,
+        fontFamily: FONTS.regular,
+        color: COLORS.grey500,
+        marginTop: SPACING.xs,
+    },
+    errorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginTop: SPACING.xs,
+    },
+    errorText: {
+        fontSize: 12,
+        fontFamily: FONTS.medium,
+        color: COLORS.error,
     },
     imagePreviewContainer: { flex: 1, width: '100%' },
     uploadedImage: { width: '100%', height: '100%', resizeMode: 'contain' },

@@ -38,6 +38,7 @@ interface ReviewStepProps {
   loading?: boolean;
   draftLoading?: boolean;
   publishLoading?: boolean;
+  isEdit?: boolean;
 }
 
 const ReviewStep: React.FC<ReviewStepProps> = ({
@@ -48,6 +49,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   loading = false,
   draftLoading = false,
   publishLoading = false,
+  isEdit = false,
 }) => {
   const navigation = useNavigation();
   const [isHorseExpanded, setIsHorseExpanded] = useState(true);
@@ -111,7 +113,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             </View>
             <View style={styles.statusBadge}>
               <CheckCircle2 size={13} color={COLORS.greenSuccess} />
-              <AppText style={styles.statusBadgeText}>Ready to Publish</AppText>
+              <AppText style={styles.statusBadgeText}>
+                {isEdit ? 'Ready to Update' : 'Ready to Publish'}
+              </AppText>
             </View>
           </View>
           <View style={styles.headerTitleRow}>
@@ -119,9 +123,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               <ShieldCheck size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
-              <AppText style={styles.headerTitle}>Review & Confirm</AppText>
+              <AppText style={styles.headerTitle}>
+                {isEdit ? 'Review & Update Metadata' : 'Review & Confirm'}
+              </AppText>
               <AppText style={styles.headerSubtitle}>
-                Review your route, horse details, and attached documents before publishing.
+                {isEdit
+                  ? 'Verify your updated details and documents before saving.'
+                  : 'Review your route, horse details, and attached documents before publishing.'}
               </AppText>
             </View>
           </View>
@@ -298,7 +306,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           )}
         </View>
 
-        {/* SECTION 3: UPLOADED DOCUMENTS & MEDIA CARD (NEW) */}
+        {/* SECTION 3: UPLOADED DOCUMENTS & MEDIA CARD */}
         <View style={styles.card}>
           <TouchableOpacity
             style={styles.cardHeaderToggle}
@@ -487,25 +495,27 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
-          <TouchableOpacity
-            disabled={loading}
-            style={styles.draftBtn}
-            onPress={onSaveDraft}
-            activeOpacity={0.85}
-          >
-            {draftLoading ? (
-              <ActivityIndicator size="small" color={COLORS.primary} />
-            ) : (
-              <>
-                <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
-                <AppText style={styles.draftBtnText}>Save Draft</AppText>
-              </>
-            )}
-          </TouchableOpacity>
+          {!isEdit && (
+            <TouchableOpacity
+              disabled={loading}
+              style={styles.draftBtn}
+              onPress={onSaveDraft}
+              activeOpacity={0.85}
+            >
+              {draftLoading ? (
+                <ActivityIndicator size="small" color={COLORS.primary} />
+              ) : (
+                <>
+                  <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
+                  <AppText style={styles.draftBtnText}>Save Draft</AppText>
+                </>
+              )}
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             disabled={loading}
-            style={styles.publishBtn}
+            style={[styles.publishBtn, isEdit && { flex: 1 }]}
             onPress={onPublish}
             activeOpacity={0.85}
           >
@@ -513,7 +523,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               <ActivityIndicator size="small" color={COLORS.white} />
             ) : (
               <>
-                <AppText style={styles.publishBtnText}>Save & Publish</AppText>
+                <AppText style={styles.publishBtnText}>
+                  {isEdit ? 'Update Shipment Metadata' : 'Save & Publish'}
+                </AppText>
                 <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
               </>
             )}
@@ -524,7 +536,4 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   );
 };
 
-
-
 export default ReviewStep;
-

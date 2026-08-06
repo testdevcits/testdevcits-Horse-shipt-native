@@ -390,7 +390,7 @@ const LocationPickerCore: React.FC<{
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.resultItem} onPress={() => getPlaceDetails(item?.place_id)}>
                   <View style={styles.resultIcon}>
-                    <MapIcon size={20} color={COLORS.textSecondary} />
+                    <MapIcon size={18} color={COLORS.textSecondary} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <AppText style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</AppText>
@@ -530,8 +530,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  resultMain: { fontSize: 15, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  resultSub: { fontSize: 13, fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2 },
+  resultMain: { fontSize: 14, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
+  resultSub: { fontSize: 12, fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2 },
   emptyState: { padding: 40, alignItems: 'center' },
   emptyText: { color: COLORS.textSecondary, fontSize: 15, fontFamily: FONTS.regular },
 
