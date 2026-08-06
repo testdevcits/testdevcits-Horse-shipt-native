@@ -1,50 +1,119 @@
 import React, { memo } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Star } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
+import { Star, MapPin, Package, User } from 'lucide-react-native';
+import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 
-const ReviewCard = memo(({ item }: { item: any }) => {
-  const renderStars = (count: number) => {
-    // HorseShipt Yellow/Gold
-    const STAR_COLOR = '#FACC15';
+interface ReviewCardProps {
+  item: any;
+  fullWidth?: boolean;
+}
 
-    return Array(5).fill(0).map((_, i) => (
-      <Star
-        key={i}
-        size={16} // Reduced from 24
-        color={i < count ? STAR_COLOR : COLORS.grey200}
-        fill={i < count ? STAR_COLOR : 'transparent'}
-        strokeWidth={1.5}
-      />
-    ));
+const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
+  const shipperObj = typeof item?.shipperId === 'object' ? item?.shipperId : null;
+  const shipmentObj = typeof item?.shipmentId === 'object' ? item?.shipmentId : null;
+
+  const shipperName =
+    item?.shipperName ||
+    shipperObj?.name ||
+    'Shipper';
+
+  const avatarUrl =
+    shipperObj?.profileImage?.url ||
+    shipperObj?.profileImage ||
+    item?.avatar ||
+    null;
+
+  const rating = Number(item?.rating) || 0;
+  const reviewText = item?.reviewText || '';
+  const shipmentCode = shipmentObj?.shipmentCode || item?.shipmentCode || '';
+  const pickupLoc = shipmentObj?.pickupLocation || item?.pickupLocation || '';
+  const deliveryLoc = shipmentObj?.deliveryLocation || item?.deliveryLocation || '';
+  const createdAt = item?.createdAt
+    ? new Date(item.createdAt).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+    : '';
+
+  const renderStars = (count: number) => {
+    const STAR_COLOR = '#F59E0B';
+    return Array(5)
+      .fill(0)
+      .map((_, i) => (
+        <Star
+          key={i}
+          size={16}
+          color={i < count ? STAR_COLOR : '#CBD5E1'}
+          fill={i < count ? STAR_COLOR : 'transparent'}
+          strokeWidth={1.5}
+        />
+      ));
   };
 
   return (
-    <View style={styles.card}>
-      {/* Stars on top */}
+    <View style={[styles.card, fullWidth && styles.fullWidthCard]}>
+      {/* Header: Shipper Info & Date */}
+      <View style={styles.headerRow}>
+        <View style={styles.profileRow}>
+          {avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+          ) : (
+            <View style={styles.avatarFallback}>
+              <User size={20} color={COLORS.primary} />
+            </View>
+          )}
+          <View style={styles.shipperInfo}>
+            <AppText style={styles.shipperName}>{shipperName}</AppText>
+            {shipperObj?.email ? (
+              <AppText style={styles.shipperSubText}>{shipperObj.email}</AppText>
+            ) : null}
+          </View>
+        </View>
+
+        {createdAt ? <AppText style={styles.dateText}>{createdAt}</AppText> : null}
+      </View>
+
+      {/* Stars & Rating Row */}
       <View style={styles.starRow}>
-        {renderStars(item?.rating || 5)}
+        {renderStars(rating)}
+        <AppText style={styles.ratingNumberText}>{rating}.0</AppText>
       </View>
 
       {/* Review Text */}
-      <AppText style={styles.reviewText} numberOfLines={4}>
-        {item?.reviewText}
-      </AppText>
+      {reviewText ? (
+        <AppText style={styles.reviewText}>"{reviewText}"</AppText>
+      ) : null}
 
-      {/* Profile Footer */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: item?.shipperId?.profileImage?.url || 'https://via.placeholder.com/150' }}
-          style={styles.avatar}
-        />
-        <View style={styles.userInfo}>
-          <AppText style={styles.name}>{item?.shipperName || 'Mark'}</AppText>
-          <AppText style={styles.date}>
-            {item?.createdAt ? new Date(item?.createdAt).toLocaleDateString('en-US') : '11/28/2023'}
-          </AppText>
+      {/* Shipment Details Box */}
+      {shipmentCode || pickupLoc || deliveryLoc ? (
+        <View style={styles.shipmentBox}>
+          {shipmentCode ? (
+            <View style={styles.shipmentCodeRow}>
+              <Package size={13} color="#64748B" />
+              <AppText style={styles.shipmentCodeText}>#{shipmentCode}</AppText>
+            </View>
+          ) : null}
+
+          {pickupLoc && deliveryLoc ? (
+            <View style={styles.routeContainer}>
+              <View style={styles.routeRow}>
+                <MapPin size={12} color="#D97706" />
+                <AppText style={styles.routeText} numberOfLines={1}>
+                  {pickupLoc}
+                </AppText>
+              </View>
+              <View style={styles.routeRow}>
+                <MapPin size={12} color="#10B981" />
+                <AppText style={styles.routeText} numberOfLines={1}>
+                  {deliveryLoc}
+                </AppText>
+              </View>
+            </View>
+          ) : null}
         </View>
-      </View>
+      ) : null}
     </View>
   );
 });
@@ -52,57 +121,115 @@ const ReviewCard = memo(({ item }: { item: any }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    padding: SPACING.lg, // Reduced from xl
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.divider,
-    width: 280, // Slightly narrower for horizontal lists
-    // Subtle shadow
-    shadowColor: COLORS.black,
+    borderColor: '#E2E8F0',
+    marginBottom: SPACING.md,
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
     elevation: 2,
-    marginRight: SPACING.md,
+  },
+  fullWidthCard: {
+    width: '100%',
+    marginRight: 0,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.xs,
+  },
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: COLORS.grey100,
+  },
+  avatarFallback: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FEF3C7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shipperInfo: {
+    justifyContent: 'center',
+  },
+  shipperName: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    color: COLORS.textPrimary,
+  },
+  shipperSubText: {
+    fontFamily: FONTS.regular,
+    fontSize: 11,
+    color: COLORS.textSecondary,
+  },
+  dateText: {
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+    color: '#94A3B8',
   },
   starRow: {
     flexDirection: 'row',
-    gap: 3,
-    marginBottom: SPACING.md // Reduced from xl
+    alignItems: 'center',
+    gap: 4,
+    marginVertical: 6,
+  },
+  ratingNumberText: {
+    fontFamily: FONTS.bold,
+    fontSize: 12,
+    color: '#B45309',
+    marginLeft: 4,
   },
   reviewText: {
     fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.lg, // Reduced to 16px (lg)
+    fontSize: 14,
     color: COLORS.textPrimary,
-    lineHeight: 22, // Adjusted for smaller font
-    marginBottom: SPACING.xl, // Reduced gap
-    minHeight: 66, // Keeps cards uniform height (3 lines)
+    lineHeight: 20,
+    marginVertical: 6,
   },
-  profileContainer: {
+  shipmentBox: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: RADIUS.sm,
+    padding: 10,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
+    gap: 6,
+  },
+  shipmentCodeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 'auto' // Pushes footer to bottom if card height is fixed
+    gap: 6,
   },
-  avatar: {
-    width: 42, // Reduced from 56
-    height: 42,
-    borderRadius: RADIUS.round,
-    backgroundColor: COLORS.grey100
-  },
-  userInfo: {
-    marginLeft: SPACING.sm
-  },
-  name: {
+  shipmentCodeText: {
+    fontSize: 11,
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md, // Reduced to 14px (md)
-    color: COLORS.textPrimary,
-    includeFontPadding: false,
+    color: '#475569',
   },
-  date: {
+  routeContainer: {
+    gap: 4,
+  },
+  routeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  routeText: {
+    flex: 1,
+    fontSize: 11,
     fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.sm, // Reduced to 12px (sm)
-    color: COLORS.textSecondary,
-    marginTop: 0
+    color: '#334155',
   },
 });
 

@@ -645,17 +645,31 @@ const shipperService = {
     return axiosClient.put(`/api/shipper/preferred-areas/${id}`, payload);
   },
 
-  // Delete Preferred Area
-  deletePreferredArea: async (
-    id: string,
-  ): Promise<{
+
+
+  deletePreferredArea: async (id: string): Promise<{
     success: boolean;
     message?: string;
     data?: any;
   }> => {
     return axiosClient.delete(`/api/shipper/preferred-areas/${id}`);
   },
+
+  // Submit Customer Review (POST /api/shipper/customer-reviews)
+  submitCustomerReview: async (payload: {
+    customerId: string;
+    shipmentId: string;
+    rating: number;
+    reviewText: string;
+  }): Promise<{
+    success: boolean;
+    message?: string;
+    data?: any;
+  }> => {
+    return axiosClient.post('/api/shipper/customer-reviews', payload);
+  },
 };
 
 export default shipperService;
+
 

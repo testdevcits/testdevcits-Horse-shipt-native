@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -33,6 +32,13 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
   const [radiusKm, setRadiusKm] = useState('50');
   const [loading, setLoading] = useState(false);
 
+  const [errors, setErrors] = useState<{
+    locationName?: string;
+    latitude?: string;
+    longitude?: string;
+    radiusKm?: string;
+  }>({});
+
   useEffect(() => {
     if (areaToEdit) {
       setLocationName(areaToEdit.locationName || '');
@@ -48,6 +54,7 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
     } else {
       resetForm();
     }
+    setErrors({});
   }, [areaToEdit, visible]);
 
   const resetForm = () => {
@@ -55,43 +62,122 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
     setLatitude('');
     setLongitude('');
     setRadiusKm('50');
+    setErrors({});
+  };
+
+  const validate = (fields = { locationName, latitude, longitude, radiusKm }) => {
+    const newErrors: Record<string, string> = {};
+
+    if (!fields.locationName.trim()) {
+      newErrors.locationName = 'Location address is required.';
+    }
+
+    const latNum = parseFloat(fields.latitude);
+    if (!fields.latitude.trim()) {
+      newErrors.latitude = 'Latitude is required.';
+    } else if (isNaN(latNum) || latNum < -90 || latNum > 90) {
+      newErrors.latitude = 'Invalid (-90 to 90).';
+    }
+
+    const lngNum = parseFloat(fields.longitude);
+    if (!fields.longitude.trim()) {
+      newErrors.longitude = 'Longitude is required.';
+    } else if (isNaN(lngNum) || lngNum < -180 || lngNum > 180) {
+      newErrors.longitude = 'Invalid (-180 to 180).';
+    }
+
+    const radNum = parseFloat(fields.radiusKm);
+    if (!fields.radiusKm.trim()) {
+      newErrors.radiusKm = 'Radius is required.';
+    } else if (isNaN(radNum) || radNum <= 0) {
+      newErrors.radiusKm = 'Radius must be > 0 km.';
+    }
+
+    return newErrors;
+  };
+
+  const handleLocationNameChange = (val: string) => {
+    setLocationName(val);
+    if (errors.locationName) {
+      setErrors(prev => ({
+        ...prev,
+        locationName: val.trim() ? undefined : 'Location address is required.',
+      }));
+    }
+  };
+
+  const handleLatitudeChange = (val: string) => {
+    setLatitude(val);
+    if (errors.latitude) {
+      const lat = parseFloat(val);
+      const err = !val.trim()
+        ? 'Latitude is required.'
+        : isNaN(lat) || lat < -90 || lat > 90
+        ? 'Invalid (-90 to 90).'
+        : undefined;
+      setErrors(prev => ({ ...prev, latitude: err }));
+    }
+  };
+
+  const handleLongitudeChange = (val: string) => {
+    setLongitude(val);
+    if (errors.longitude) {
+      const lng = parseFloat(val);
+      const err = !val.trim()
+        ? 'Longitude is required.'
+        : isNaN(lng) || lng < -180 || lng > 180
+        ? 'Invalid (-180 to 180).'
+        : undefined;
+      setErrors(prev => ({ ...prev, longitude: err }));
+    }
+  };
+
+  const handleRadiusChange = (val: string) => {
+    setRadiusKm(val);
+    if (errors.radiusKm) {
+      const rad = parseFloat(val);
+      const err = !val.trim()
+        ? 'Radius is required.'
+        : isNaN(rad) || rad <= 0
+        ? 'Radius must be > 0 km.'
+        : undefined;
+      setErrors(prev => ({ ...prev, radiusKm: err }));
+    }
   };
 
   const handleLocationSelect = (loc: LocationSelectResult) => {
+    const newName = loc.address || locationName;
+    const newLat = loc.latitude ? String(loc.latitude) : latitude;
+    const newLng = loc.longitude ? String(loc.longitude) : longitude;
+
     if (loc.address) setLocationName(loc.address);
     if (loc.latitude) setLatitude(String(loc.latitude));
     if (loc.longitude) setLongitude(String(loc.longitude));
+
+    setErrors(prev => ({
+      ...prev,
+      locationName: newName.trim() ? undefined : prev.locationName,
+      latitude: newLat.trim() ? undefined : prev.latitude,
+      longitude: newLng.trim() ? undefined : prev.longitude,
+    }));
   };
 
   const handleSubmit = async () => {
-    if (!locationName.trim()) {
+    const valErrors = validate();
+    setErrors(valErrors);
+
+    if (Object.keys(valErrors).length > 0) {
       Toast.show({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please enter or select a location name.',
+        text2: 'Please fix the highlighted errors before saving.',
       });
       return;
     }
+
     const latNum = parseFloat(latitude);
     const lngNum = parseFloat(longitude);
     const radNum = parseFloat(radiusKm);
-
-    if (isNaN(latNum) || isNaN(lngNum)) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter valid latitude and longitude coordinates.',
-      });
-      return;
-    }
-    if (isNaN(radNum) || radNum <= 0) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter a valid radius in kilometers.',
-      });
-      return;
-    }
 
     setLoading(true);
     try {
@@ -138,7 +224,6 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
     }
   };
 
-
   return (
     <Modal
       visible={visible}
@@ -151,13 +236,18 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
         style={styles.modalOverlay}
       >
         <View style={styles.modalContainer}>
+          {/* Top Drag Handle Indicator */}
+          <View style={styles.dragHandleContainer}>
+            <View style={styles.modalDragHandle} />
+          </View>
+
           {/* Header */}
           <View style={styles.modalHeader}>
             <AppText style={styles.modalTitle}>
               {areaToEdit ? 'Edit Preferred Area' : 'Add New Preferred Area'}
             </AppText>
-            <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-              <X size={20} color={COLORS.textPrimary} />
+            <TouchableOpacity onPress={onClose} style={styles.closeBtn} activeOpacity={0.7}>
+              <X size={18} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -177,84 +267,91 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
             </View>
 
             {/* Location Address Text Field */}
-            <View style={{ marginBottom: SPACING.md }}>
-              <Input
-                label="Location Address"
-                value={locationName}
-                onChangeText={setLocationName}
-                placeholder="e.g. Indore, Madhya Pradesh, India"
-                leftIcon={<MapPin size={18} color={COLORS.primary} />}
-                multiline
-                inputContainerStyle={{ height: 100 }}
-
-              />
-            </View>
+            <Input
+              label="Location Address"
+              value={locationName}
+              onChangeText={handleLocationNameChange}
+              placeholder="e.g. Indore, Madhya Pradesh, India"
+              leftIcon={<MapPin size={18} color={COLORS.primary} />}
+              multiline
+              inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
+              error={errors.locationName}
+            />
 
             {/* Latitude & Longitude Inputs */}
             <View style={styles.rowTwoCols}>
-              <View style={{ flex: 1, marginBottom: SPACING.md }}>
+              <View style={{ flex: 1 }}>
                 <Input
                   label="Latitude"
                   value={latitude}
-                  onChangeText={setLatitude}
+                  onChangeText={handleLatitudeChange}
                   placeholder="22.777927"
                   keyboardType="numeric"
+                  maxLength={15}
                   leftIcon={<Compass size={16} color={COLORS.textSecondary} />}
+                  error={errors.latitude}
                 />
               </View>
 
-              <View style={{ flex: 1, marginBottom: SPACING.md }}>
+              <View style={{ flex: 1 }}>
                 <Input
                   label="Longitude"
                   value={longitude}
-                  onChangeText={setLongitude}
+                  onChangeText={handleLongitudeChange}
                   placeholder="75.892304"
                   keyboardType="numeric"
+                  maxLength={15}
                   leftIcon={<Navigation size={16} color={COLORS.textSecondary} />}
+                  error={errors.longitude}
                 />
               </View>
             </View>
 
             {/* Radius Input & Presets */}
-            <View style={{ marginBottom: SPACING.md }}>
-              <Input
-                label="Radius (in kilometers)"
-                value={radiusKm}
-                onChangeText={setRadiusKm}
-                placeholder="50"
-                keyboardType="numeric"
-                rightIcon={
-                  <AppText style={{ fontSize: 13, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
-                    km
-                  </AppText>
-                }
-              />
-            </View>
+            <Input
+              label="Radius (in kilometers)"
+              value={radiusKm}
+              onChangeText={handleRadiusChange}
+              placeholder="50"
+              keyboardType="numeric"
+              rightIcon={
+                <AppText style={{ fontSize: 13, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
+                  km
+                </AppText>
+              }
+              error={errors.radiusKm}
+            />
 
-            {/* Radius Quick Presets */}
-            <View style={styles.presetRow}>
-              {RADIUS_PRESETS.map(preset => {
-                const isActive = String(preset) === radiusKm;
-                return (
-                  <TouchableOpacity
-                    key={preset}
-                    style={[
-                      styles.presetChip,
-                      isActive && styles.presetChipActive,
-                    ]}
-                    onPress={() => setRadiusKm(String(preset))}
-                  >
-                    <AppText
+            {/* Quick Presets */}
+            <View style={styles.presetSection}>
+              <AppText style={styles.presetLabel}>Quick Presets</AppText>
+              <View style={styles.presetRow}>
+                {RADIUS_PRESETS.map(preset => {
+                  const isActive = String(preset) === radiusKm;
+                  return (
+                    <TouchableOpacity
+                      key={preset}
                       style={[
-                        styles.presetChipText,
-                        isActive && styles.presetChipTextActive,
+                        styles.presetChip,
+                        isActive && styles.presetChipActive,
                       ]}
+                      onPress={() => {
+                        handleRadiusChange(String(preset));
+                      }}
+                      activeOpacity={0.7}
                     >
-                      {preset} km
-                    </AppText>
-                  </TouchableOpacity>
-                );
-              })}
+                      <AppText
+                        style={[
+                          styles.presetChipText,
+                          isActive && styles.presetChipTextActive,
+                        ]}
+                      >
+                        {preset} km
+                      </AppText>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
             </View>
           </ScrollView>
 
@@ -264,6 +361,7 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               style={styles.cancelBtn}
               onPress={onClose}
               disabled={loading}
+              activeOpacity={0.8}
             >
               <AppText style={styles.cancelBtnText}>Cancel</AppText>
             </TouchableOpacity>
@@ -272,6 +370,7 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               style={styles.submitBtn}
               onPress={handleSubmit}
               disabled={loading}
+              activeOpacity={0.8}
             >
               {loading ? (
                 <ActivityIndicator size="small" color={COLORS.white} />

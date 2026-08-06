@@ -10,7 +10,7 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { ShieldCheck, LogOut, FileText, ChevronRight } from 'lucide-react-native';
+import { ShieldCheck, LogOut, FileText, ChevronRight, Star } from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
@@ -175,6 +175,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             iconSource={imageIndex.AccountIcon}
             isActive={isDrawerRouteActive('Profile')}
             onPress={() => navigateToRoute('Profile')}
+          />
+          <DrawerMenuItem
+            label="Reviews"
+            IconComponent={Star}
+            isActive={isDrawerRouteActive('Reviews')}
+            onPress={() => navigateToRoute('Reviews')}
           />
           <DrawerMenuItem
             label="Help Center"

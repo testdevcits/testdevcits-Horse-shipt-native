@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   FlatList,
@@ -10,6 +10,7 @@ import { Star, MessageCircle } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS, RADIUS } from '../../../../constants';
 import { useReviews } from './useReviews';
 import {
+  AppHeader,
   AppLoader,
   AppText,
   EmptyState,
@@ -19,16 +20,22 @@ import {
 const ReviewsScreen = () => {
   const { reviews, loading, fetchReviews } = useReviews();
 
+  const avgRating = useMemo(() => {
+    if (!reviews || reviews.length === 0) return '5.0';
+    const sum = reviews.reduce((acc, r) => acc + (Number(r?.rating) || 0), 0);
+    return (sum / reviews.length).toFixed(1);
+  }, [reviews]);
+
   const renderSummary = () => (
     <View style={styles.summaryCard}>
       <View style={styles.ratingCircle}>
-        <AppText style={styles.ratingNum}>4.8</AppText>
+        <AppText style={styles.ratingNum}>{avgRating}</AppText>
         <Star size={16} color={COLORS.white} fill={COLORS.white} />
       </View>
       <View style={styles.summaryText}>
-        <AppText style={styles.summaryTitle}>Excellent Service</AppText>
+        <AppText style={styles.summaryTitle}>Customer Reviews</AppText>
         <AppText style={styles.summarySub}>
-          Based on {reviews.length} shipper reviews
+          Based on {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
         </AppText>
       </View>
     </View>
@@ -38,9 +45,7 @@ const ReviewsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <AppText style={styles.title}>Reviews & Ratings</AppText>
-      </View>
+      <AppHeader title="Reviews & Ratings" />
 
       <FlatList
         data={reviews}

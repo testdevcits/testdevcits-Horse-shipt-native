@@ -268,14 +268,14 @@ const LocationPickerCore: React.FC<{
       Geolocation.getCurrentPosition(
         position => {
           const newRegion = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: position?.coords?.latitude,
+            longitude: position?.coords?.longitude,
             latitudeDelta: 0.005,
             longitudeDelta: 0.005,
           };
           mapRef.current?.animateToRegion(newRegion, 1000);
           setRegion(newRegion);
-          reverseGeocode(position.coords.latitude, position.coords.longitude);
+          reverseGeocode(position?.coords?.latitude, position?.coords?.longitude);
         },
         error => console.log('GPS Error', error),
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
@@ -455,11 +455,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    padding: SPACING.lg,
+    padding: SPACING.xs,
     borderRadius: RADIUS.lg,
     borderWidth: 1.5,
     borderColor: COLORS.border,
-    height: 60,
+    // height: 60,
   },
   iconCircle: {
     width: 34,
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  triggerText: { fontSize: FONT_SIZE.md, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
+  triggerText: { fontSize: FONT_SIZE.sm, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
   placeholder: { color: COLORS.textSecondary, fontFamily: FONTS.regular },
 
   // Modal Content

@@ -33,8 +33,15 @@ interface Props {
 }
 
 const VEHICLE_TYPES = ['Truck', 'Trailer', 'Other'];
-const STALL_TYPES = ['Slant Load', 'Stock Trailer', 'Head to Head', 'Semi', 'Other'];
-const STALL_SIZES = ['Single Stall', 'Stall and a half', 'Box Stall', 'Other'];
+const STALL_TYPES = ["Stock Trailer",
+  "Slant Load",
+  "Head to Head",
+  "Semi",
+  "Other"];
+const STALL_SIZES = ["Single Stall",
+  "Stall and a Half",
+  "Box Stall",
+  "Other"];
 
 const AddVehicleModal: React.FC<Props> = ({
   navigation,

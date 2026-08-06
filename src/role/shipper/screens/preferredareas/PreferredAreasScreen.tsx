@@ -334,7 +334,7 @@ const PreferredAreasScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Preferred Areas" showBack />
+      <AppHeader title="Preferred Areas" showBack showProfileImage={false} />
       <AppLoader visible={loading && !refreshing} />
 
       <FlatList
