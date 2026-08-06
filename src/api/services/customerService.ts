@@ -129,7 +129,7 @@ const customerService = {
 
   updateShipment: async (shipmentId: string, payload: any) => {
     const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
+    return axiosClient.put(`/api/customer/shipments/${shipmentId}`, payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
   },

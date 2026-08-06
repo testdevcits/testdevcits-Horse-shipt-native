@@ -494,8 +494,8 @@ const useNewShipment = () => {
       const targetId = shipmentData?._id || createdShipmentId;
 
       if (targetId) {
-        const updateFormData = buildUpdateFormData();
-        await customerService.updateShipmentMetadata(targetId, updateFormData);
+        const formData = buildFormData();
+        await customerService.updateShipment(targetId, formData);
         setIsDraftModalVisible(true);
         return true;
       } else {
@@ -533,8 +533,8 @@ const useNewShipment = () => {
       const targetId = shipmentData?._id || createdShipmentId;
 
       if (isEdit && targetId) {
-        const updateFormData = buildUpdateFormData();
-        await customerService.updateShipmentMetadata(targetId, updateFormData);
+        const formData = buildFormData();
+        await customerService.updateShipment(targetId, formData);
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
         Alert.alert('Success', 'Shipment updated successfully!', [
