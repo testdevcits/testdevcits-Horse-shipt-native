@@ -507,7 +507,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
       <MapModal
         visible={isMapVisible}
         onClose={() => setIsMapVisible(false)}
-        distance={data?.estimatedDistance || '1,240 mi'}
+        distance={data?.estimatedDistance || 'Not Available'}
         pickupCoords={data?.pickupCoords}
         deliveryCoords={data?.deliveryCoords}
         shipmentData={{

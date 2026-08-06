@@ -1,6 +1,6 @@
 
 
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Modal,
@@ -10,9 +10,10 @@ import {
   Animated,
   Platform,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions'; // 1. Import this
+import MapViewDirections from 'react-native-maps-directions';
 import {
   X,
   Navigation,
@@ -22,22 +23,22 @@ import {
   MapPin,
   Package,
   Flag,
+  Truck,
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
 
-const { width, height } = Dimensions.get('window');
-
-// 2. Add your Google API Key here
+const { height } = Dimensions.get('window');
 
 interface MapModalProps {
   visible: boolean;
   onClose: () => void;
   shipmentData?: {
-    pickupLocation: string;
-    deliveryLocation: string;
-    status: string;
+    pickupLocation?: string;
+    deliveryLocation?: string;
+    driverName?: string;
+    status?: string;
     estimatedTime?: string;
   };
   distance?: string;
@@ -60,17 +61,24 @@ const MapModal = ({
     'standard',
   );
   const [loading, setLoading] = useState(true);
-  const [routeInfo, setRouteInfo] = useState({
-    distance: initialDistance,
-    duration: shipmentData?.estimatedTime || '--',
-  });
+
+  // Leg 1: Driver -> Pickup
+  const [leg1Metrics, setLeg1Metrics] = useState({ distance: 0, duration: 0 });
+  // Leg 2: Pickup -> Delivery
+  const [leg2Metrics, setLeg2Metrics] = useState({ distance: 0, duration: 0 });
+
   const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  const hasCurrentLocation = Boolean(
+    currentLocation && currentLocation.latitude && currentLocation.longitude,
+  );
 
   const pickup = pickupCoords || { latitude: 41.1544, longitude: -8.6498 };
   const delivery = deliveryCoords || { latitude: 41.671, longitude: -72.949 };
 
   useEffect(() => {
     if (visible) {
+      setLoading(true);
       Animated.loop(
         Animated.sequence([
           Animated.timing(pulseAnim, {
@@ -86,18 +94,56 @@ const MapModal = ({
         ]),
       ).start();
     }
-  }, [visible]);
+  }, [visible, pulseAnim]);
 
   const toggleMapType = () => {
     setMapType(prev => (prev === 'standard' ? 'hybrid' : 'standard'));
   };
 
-  const centerMap = () => {
-    mapRef.current?.fitToCoordinates([pickup, delivery], {
-      edgePadding: { top: 100, right: 100, bottom: 350, left: 100 },
-      animated: true,
-    });
-  };
+  const centerMap = useCallback(() => {
+    if (!mapRef.current) return;
+    const points: { latitude: number; longitude: number }[] = [];
+    if (hasCurrentLocation && currentLocation) {
+      points.push(currentLocation);
+    }
+    if (pickup) points.push(pickup);
+    if (delivery) points.push(delivery);
+
+    if (points.length > 0) {
+      mapRef.current.fitToCoordinates(points, {
+        edgePadding: { top: 120, right: 60, bottom: 380, left: 60 },
+        animated: true,
+      });
+    }
+  }, [hasCurrentLocation, currentLocation, pickup, delivery]);
+
+  useEffect(() => {
+    if (visible) {
+      const timer = setTimeout(() => {
+        centerMap();
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [visible, centerMap]);
+
+  // Dynamic calculations
+  const totalDistanceKm = hasCurrentLocation
+    ? leg1Metrics.distance + leg2Metrics.distance
+    : leg2Metrics.distance;
+
+  const totalDurationMins = hasCurrentLocation
+    ? leg1Metrics.duration + leg2Metrics.duration
+    : leg2Metrics.duration;
+
+  const displayDistance =
+    totalDistanceKm > 0
+      ? `${totalDistanceKm.toFixed(1)} km`
+      : initialDistance;
+
+  const displayDuration =
+    totalDurationMins > 0
+      ? `${Math.ceil(totalDurationMins)} mins`
+      : shipmentData?.estimatedTime || '--';
 
   return (
     <Modal
@@ -107,111 +153,173 @@ const MapModal = ({
       onRequestClose={onClose}
     >
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+
         <MapView
           ref={mapRef}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           mapType={mapType}
-          showsUserLocation
+          showsUserLocation={false}
           showsCompass={false}
         >
-          {/* 3. ROAD FOLLOWING DIRECTIONS */}
+          {/* LEG 1: DRIVER -> PICKUP (when currentLocation is available) */}
+          {hasCurrentLocation && currentLocation && (
+            <MapViewDirections
+              origin={currentLocation}
+              destination={pickup}
+              apikey={GOOGLE_MAPS_APIKEY}
+              strokeWidth={4}
+              strokeColor="#3B82F6"
+              lineDashPattern={[6, 4]}
+              onReady={result => {
+                setLeg1Metrics({
+                  distance: result.distance,
+                  duration: result.duration,
+                });
+                centerMap();
+              }}
+              onError={err => console.log('Leg 1 Directions Error:', err)}
+            />
+          )}
+
+          {/* LEG 2: PICKUP -> DELIVERY */}
           <MapViewDirections
             origin={pickup}
             destination={delivery}
             apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={4}
-            strokeColor={COLORS.info} // Professional Blue Route Line
-            optimizeWaypoints={true}
-            onStart={() => setLoading(true)}
+            strokeWidth={5}
+            strokeColor={hasCurrentLocation ? '#10B981' : COLORS.primary}
             onReady={result => {
-              setRouteInfo({
-                distance: `${result.distance.toFixed(1)} km`,
-                duration: `${Math.floor(result.duration)} mins`,
-              });
-
-              mapRef.current?.fitToCoordinates(result.coordinates, {
-                edgePadding: { top: 100, right: 50, bottom: 350, left: 50 },
-                animated: true,
+              setLeg2Metrics({
+                distance: result.distance,
+                duration: result.duration,
               });
               setLoading(false);
+              centerMap();
             }}
-            onError={errorMessage => {
-              console.log('Directions Error: ', errorMessage);
+            onError={err => {
+              console.log('Leg 2 Directions Error:', err);
               setLoading(false);
             }}
           />
 
-          {/* Pickup Custom Marker */}
+          {/* Driver Marker */}
+          {hasCurrentLocation && currentLocation && (
+            <Marker
+              coordinate={currentLocation}
+              title="Driver Location"
+              description={shipmentData?.driverName || 'Driver Live Position'}
+              zIndex={10}
+            >
+              <View style={styles.markerWrapper}>
+                <Animated.View
+                  style={[
+                    styles.markerBadge,
+                    {
+                      backgroundColor: '#3B82F6',
+                      transform: [{ scale: pulseAnim }],
+                    },
+                  ]}
+                >
+                  <Truck size={12} color={COLORS.white} />
+                  <AppText style={styles.markerBadgeText}>Driver</AppText>
+                </Animated.View>
+                <View style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}>
+                  <Truck size={18} color={COLORS.white} strokeWidth={2.5} />
+                </View>
+                <View
+                  style={[
+                    styles.markerPointer,
+                    { borderTopColor: '#3B82F6' },
+                  ]}
+                />
+              </View>
+            </Marker>
+          )}
+
+          {/* Pickup Marker */}
           <Marker
             coordinate={pickup}
             title="Pickup Location"
             description={shipmentData?.pickupLocation || 'Pickup Location'}
+            zIndex={5}
           >
             <View style={styles.markerWrapper}>
-              <View style={[styles.markerBadge, { backgroundColor: COLORS.primary }]}>
+              <View
+                style={[
+                  styles.markerBadge,
+                  { backgroundColor: COLORS.primary },
+                ]}
+              >
                 <Package size={12} color={COLORS.white} />
                 <AppText style={styles.markerBadgeText}>Pickup</AppText>
               </View>
-              <View style={[styles.markerPin, { backgroundColor: COLORS.primary }]}>
-                <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
+              <View
+                style={[
+                  styles.markerPin,
+                  { backgroundColor: COLORS.primary },
+                ]}
+              >
+                <Package size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
-              <View style={[styles.markerPointer, { borderTopColor: COLORS.primary }]} />
+              <View
+                style={[
+                  styles.markerPointer,
+                  { borderTopColor: COLORS.primary },
+                ]}
+              />
             </View>
           </Marker>
 
-          {/* Delivery Custom Marker */}
+          {/* Delivery Marker */}
           <Marker
             coordinate={delivery}
             title="Delivery Location"
             description={shipmentData?.deliveryLocation || 'Delivery Location'}
+            zIndex={5}
           >
             <View style={styles.markerWrapper}>
-              <View style={[styles.markerBadge, { backgroundColor: COLORS.error }]}>
+              <View
+                style={[styles.markerBadge, { backgroundColor: COLORS.error }]}
+              >
                 <Flag size={12} color={COLORS.white} />
                 <AppText style={styles.markerBadgeText}>Delivery</AppText>
               </View>
-              <View style={[styles.markerPin, { backgroundColor: COLORS.error }]}>
-                <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
+              <View
+                style={[styles.markerPin, { backgroundColor: COLORS.error }]}
+              >
+                <Flag size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
-              <View style={[styles.markerPointer, { borderTopColor: COLORS.error }]} />
+              <View
+                style={[
+                  styles.markerPointer,
+                  { borderTopColor: COLORS.error },
+                ]}
+              />
             </View>
           </Marker>
-
-          {currentLocation && (
-            <Marker
-              coordinate={currentLocation}
-              title="Current Location"
-              description={'Current Location'}
-            >
-              <View style={styles.markerWrapper}>
-                <View style={[styles.markerBadge, { backgroundColor: COLORS.error }]}>
-                  <Flag size={12} color={COLORS.white} />
-                  <AppText style={styles.markerBadgeText}>Current</AppText>
-                </View>
-                <View style={[styles.markerPin, { backgroundColor: COLORS.error }]}>
-                  <MapPin size={18} color={COLORS.white} strokeWidth={2.5} />
-                </View>
-                <View style={[styles.markerPointer, { borderTopColor: COLORS.error }]} />
-              </View>
-            </Marker>
-          )}
         </MapView>
 
         {loading && (
           <View style={styles.loadingOverlay}>
             <ActivityIndicator size="large" color={COLORS.primary} />
             <AppText style={styles.loadingText}>
-              Fetching best road route...
+              Calculating live route...
             </AppText>
           </View>
         )}
 
-        {/* CONTROLS */}
+        {/* TOP CONTROLS */}
         <View style={styles.topControls}>
-          <TouchableOpacity style={styles.iconBtn} onPress={onClose}>
-            <X size={24} color={COLORS.textPrimary} />
+          <TouchableOpacity
+            style={styles.iconBtn}
+            onPress={onClose}
+            activeOpacity={0.8}
+          >
+            <X size={22} color={COLORS.textPrimary} />
           </TouchableOpacity>
+
           <View style={styles.statusPill}>
             <View style={styles.liveDot} />
             <AppText style={styles.statusPillText}>
@@ -221,41 +329,78 @@ const MapModal = ({
           </View>
         </View>
 
+        {/* SIDE CONTROLS */}
         <View style={styles.sideControls}>
-          <TouchableOpacity style={styles.sideBtn} onPress={toggleMapType}>
+          <TouchableOpacity
+            style={styles.sideBtn}
+            onPress={toggleMapType}
+            activeOpacity={0.8}
+          >
             <Layers size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.sideBtn} onPress={centerMap}>
+
+          <TouchableOpacity
+            style={styles.sideBtn}
+            onPress={centerMap}
+            activeOpacity={0.8}
+          >
             <LocateFixed size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
         </View>
 
-        {/* INFO CARD */}
+        {/* BOTTOM INFO CARD */}
         <View style={styles.infoCardWrapper}>
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
               <View style={styles.statBox}>
                 <Navigation size={18} color={COLORS.primary} />
                 <View>
-                  <AppText style={styles.statLabel}>Road Distance</AppText>
-                  <AppText style={styles.statValue}>
-                    {routeInfo.distance}
+                  <AppText style={styles.statLabel}>
+                    {hasCurrentLocation ? 'Total Distance' : 'Road Distance'}
                   </AppText>
+                  <AppText style={styles.statValue}>{displayDistance}</AppText>
                 </View>
               </View>
+
               <View style={styles.statDivider} />
+
               <View style={styles.statBox}>
                 <Clock size={18} color={COLORS.primary} />
                 <View>
                   <AppText style={styles.statLabel}>Est. Travel</AppText>
-                  <AppText style={styles.statValue}>
-                    {routeInfo.duration}
-                  </AppText>
+                  <AppText style={styles.statValue}>{displayDuration}</AppText>
                 </View>
               </View>
             </View>
 
+            {/* Address Route Timeline */}
             <View style={styles.addressSection}>
+              {hasCurrentLocation && (
+                <View style={styles.addressRow}>
+                  <View style={styles.addressIconCol}>
+                    <View
+                      style={[styles.tinyDot, { backgroundColor: '#3B82F6' }]}
+                    />
+                    <View style={styles.verticalLine} />
+                  </View>
+                  <View style={styles.addressTextCol}>
+                    <AppText style={styles.addressSubLabel}>
+                      Driver Live Location
+                    </AppText>
+                    <AppText numberOfLines={1} style={styles.addressText}>
+                      {shipmentData?.driverName || 'En Route to Pickup'}
+                    </AppText>
+                  </View>
+                  {leg1Metrics.distance > 0 && (
+                    <View style={styles.legChip}>
+                      <AppText style={styles.legChipText}>
+                        {leg1Metrics.distance.toFixed(1)} km
+                      </AppText>
+                    </View>
+                  )}
+                </View>
+              )}
+
               <View style={styles.addressRow}>
                 <View style={styles.addressIconCol}>
                   <View
@@ -267,10 +412,18 @@ const MapModal = ({
                   <View style={styles.verticalLine} />
                 </View>
                 <View style={styles.addressTextCol}>
+                  <AppText style={styles.addressSubLabel}>Pickup Location</AppText>
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {shipmentData?.pickupLocation || 'Not Available'}
                   </AppText>
                 </View>
+                {hasCurrentLocation && leg2Metrics.distance > 0 && (
+                  <View style={styles.legChip}>
+                    <AppText style={styles.legChipText}>
+                      {leg2Metrics.distance.toFixed(1)} km
+                    </AppText>
+                  </View>
+                )}
               </View>
 
               <View style={styles.addressRow}>
@@ -278,6 +431,7 @@ const MapModal = ({
                   <MapPin size={14} color={COLORS.error} />
                 </View>
                 <View style={styles.addressTextCol}>
+                  <AppText style={styles.addressSubLabel}>Delivery Location</AppText>
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {shipmentData?.deliveryLocation || 'Not Available'}
                   </AppText>
@@ -285,8 +439,12 @@ const MapModal = ({
               </View>
             </View>
 
-            <TouchableOpacity onPress={onClose} style={styles.trackBtn} activeOpacity={0.9}>
-              <AppText style={styles.trackBtnText}>Close</AppText>
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.trackBtn}
+              activeOpacity={0.9}
+            >
+              <AppText style={styles.trackBtnText}>Close Map</AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -411,6 +569,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.divider,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   infoCardWrapper: {
     position: 'absolute',
@@ -443,25 +605,43 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
   statDivider: { width: 1, height: '100%', backgroundColor: COLORS.divider },
-  addressSection: { marginVertical: SPACING.lg, gap: 4 },
+  addressSection: { marginVertical: SPACING.lg, gap: 8 },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   addressIconCol: { width: 20, alignItems: 'center' },
   tinyDot: { width: 8, height: 8, borderRadius: 4 },
   verticalLine: {
     width: 2,
-    height: 20,
+    height: 24,
     backgroundColor: COLORS.divider,
     marginVertical: 2,
   },
   addressTextCol: { flex: 1 },
-  addressText: {
-    fontSize: 14,
+  addressSubLabel: {
+    fontSize: 10,
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  addressText: {
+    fontSize: 13,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.bold,
+  },
+  legChip: {
+    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  legChipText: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.bold,
   },
   trackBtn: {
     backgroundColor: COLORS.primary,
-    height: 54,
+    height: 50,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
@@ -470,3 +650,4 @@ const styles = StyleSheet.create({
 });
 
 export default memo(MapModal);
+
