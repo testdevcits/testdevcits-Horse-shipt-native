@@ -29,7 +29,7 @@ import {
   Input,
   ReviewCard,
 } from '../../../../components';
-import styles from './style.profile';
+import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';

@@ -369,6 +369,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: SPACING.sm,
   },
+  emptyContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg || 16,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    padding: SPACING.xxl || 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: SPACING.sm,
+  },
   crownCircle: {
     width: 56,
     height: 56,
@@ -384,7 +394,19 @@ const styles = StyleSheet.create({
     color: '#0F172A',
     marginBottom: 4,
   },
+  emptyTitle: {
+    fontSize: FONT_SIZE.lg || 18,
+    fontFamily: FONTS.bold,
+    color: '#0F172A',
+    marginBottom: 4,
+  },
   emptySubSub: {
+    fontSize: FONT_SIZE.xs + 1,
+    fontFamily: FONTS.regular,
+    color: '#64748B',
+    marginBottom: SPACING.md,
+  },
+  emptySub: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
     color: '#64748B',

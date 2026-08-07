@@ -14,6 +14,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
+import ErrorBoundary from './src/components/common/ErrorBoundary';
 
 const App = () => {
   return (
@@ -31,14 +32,11 @@ const App = () => {
             />
             <SafeAreaView style={{ flex: 1 }}>
               <OfflineBanner />
-              {/*
-              Note: We removed SafeAreaView from here.
-              Professional apps usually handle SafeArea inside screens
-              to allow Maps/Images to go full-screen under the notch.
-          */}
-              <StripeProvider publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}>
-                <AppNavigation />
-              </StripeProvider>
+              <ErrorBoundary>
+                <StripeProvider publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}>
+                  <AppNavigation />
+                </StripeProvider>
+              </ErrorBoundary>
             </SafeAreaView>
 
             {/* 4. Toast at the absolute top of the visual stack */}

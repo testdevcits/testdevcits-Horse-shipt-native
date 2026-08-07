@@ -32,7 +32,182 @@ import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
 
-const ConfirmationModal = lazy(() => import("../../../../components/common/ConfirmationModal"))
+const ConfirmationModal = lazy(() => import("../../../../components/common/ConfirmationModal"));
+
+interface VehicleItemCardProps {
+  vehicle: any;
+  index: number;
+  onAssignDriver: (v: any) => void;
+  onEdit: (v: any) => void;
+  onDelete: (id: string, num: string) => void;
+}
+
+const VehicleItemCard = React.memo(({
+  vehicle,
+  index,
+  onAssignDriver,
+  onEdit,
+  onDelete,
+}: VehicleItemCardProps) => {
+  const [imageError, setImageError] = useState(false);
+  const vehicleImg =
+    vehicle.images && vehicle.images[0]?.url
+      ? vehicle.images[0].url
+      : null;
+  const status = vehicle.verificationStatus || 'PENDING';
+  const assignedDriverName = vehicle.driver?.name;
+
+  return (
+    <View key={vehicle._id || index} style={styles.vehicleCard}>
+      {/* Vehicle Banner Image */}
+      <View style={styles.imageContainer}>
+        {vehicleImg && !imageError ? (
+          <Image
+            source={{ uri: vehicleImg }}
+            style={styles.vehicleImage}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <View style={styles.fallbackImage}>
+            <Truck size={44} color={COLORS.primary} />
+          </View>
+        )}
+        {/* Status Badge */}
+        <View
+          style={[
+            styles.statusBadge,
+            status === 'APPROVED'
+              ? styles.statusApproved
+              : status === 'REJECTED'
+                ? styles.statusRejected
+                : styles.statusPending,
+          ]}
+        >
+          <AppText
+            style={[
+              styles.statusBadgeText,
+              status === 'APPROVED'
+                ? styles.statusApprovedText
+                : status === 'REJECTED'
+                  ? styles.statusRejectedText
+                  : styles.statusPendingText,
+            ]}
+          >
+            {status}
+          </AppText>
+        </View>
+      </View>
+
+      {/* Card Main Info */}
+      <View style={styles.cardContent}>
+        <AppText style={styles.vehicleNum}>
+          {vehicle.vehicleNumber || 'No Plate Number'}
+        </AppText>
+        <AppText style={styles.vehicleType}>
+          {vehicle.vehicleType || 'Truck'} - {vehicle.transportType || 'Trucking'}
+        </AppText>
+
+        {/* 2x2 Specs Grid */}
+        <View style={styles.specsGrid}>
+          <View style={styles.specBox}>
+            <Truck size={18} color={COLORS.primary} />
+            <View style={styles.specBoxTextCol}>
+              <AppText style={styles.specLabel}>VIN</AppText>
+              <AppText style={styles.specValue} numberOfLines={1}>
+                {vehicle.vinNumber || 'N/A'}
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.specBox}>
+            <Box size={18} color={COLORS.primary} />
+            <View style={styles.specBoxTextCol}>
+              <AppText style={styles.specLabel}>Size</AppText>
+              <AppText style={styles.specValue} numberOfLines={1}>
+                {vehicle.stallSize || 'Standard'}
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.specBox}>
+            <Layers size={18} color={COLORS.primary} />
+            <View style={styles.specBoxTextCol}>
+              <AppText style={styles.specLabel}>Stalls</AppText>
+              <AppText style={styles.specValue}>
+                {vehicle.numberOfStalls ? String(vehicle.numberOfStalls).padStart(2, '0') : '01'}
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.specBox}>
+            <Truck size={18} color={COLORS.primary} />
+            <View style={styles.specBoxTextCol}>
+              <AppText style={styles.specLabel}>Stall Type</AppText>
+              <AppText style={styles.specValue} numberOfLines={1}>
+                {vehicle.trailerType || 'N/A'}
+              </AppText>
+            </View>
+          </View>
+        </View>
+
+        {/* Notes / Spec Description */}
+        {vehicle.notes ? (
+          <View style={styles.notesBox}>
+            <FileText size={18} color={COLORS.primary} />
+            <View style={styles.notesTextCol}>
+              <AppText style={styles.notesTitle}>Notes</AppText>
+              <AppText style={styles.notesText}>{vehicle.notes}</AppText>
+            </View>
+          </View>
+        ) : null}
+
+        {/* Action Buttons Row */}
+        <View style={styles.actionsRow}>
+          <TouchableOpacity
+            style={styles.actionPill}
+            onPress={() => onAssignDriver(vehicle)}
+          >
+            {assignedDriverName ? (
+              <UserCheck size={15} color={COLORS.primary} />
+            ) : (
+              <UserPlus size={15} color={COLORS.textPrimary} />
+            )}
+            <AppText
+              style={[
+                styles.actionPillText,
+                assignedDriverName && { color: COLORS.primary, fontFamily: 'PlusJakartaSans-Bold' },
+              ]}
+              numberOfLines={1}
+            >
+              {assignedDriverName ? `${assignedDriverName}` : 'Assign Driver'}
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionPill}
+            onPress={() => onEdit(vehicle)}
+          >
+            <Edit size={15} color={COLORS.textPrimary} />
+            <AppText style={styles.actionPillText}>Edit</AppText>
+          </TouchableOpacity>
+          {
+            vehicle?.currentShipment === null ?
+              <TouchableOpacity
+                style={styles.actionPill}
+                onPress={() => onDelete(vehicle._id, vehicle.vehicleNumber)}
+              >
+                <Trash2 size={15} color="#EF4444" />
+                <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>Delete</AppText>
+              </TouchableOpacity> :
+              <View style={[styles.actionPill, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
+                <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>In-Use</AppText>
+              </View>
+          }
+        </View>
+      </View>
+    </View>
+  );
+});
 
 const MyVehiclesScreen = ({ navigation }: any) => {
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -93,7 +268,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     fetchDrivers();
   };
 
-  const handleOpenAssignDriver = async (vehicle: any) => {
+  const handleOpenAssignDriver = useCallback(async (vehicle: any) => {
     setSelectedVehicleForDriver(vehicle);
     let currentDrivers = drivers;
     if (!currentDrivers || currentDrivers.length === 0) {
@@ -110,7 +285,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     }
 
     driverSelectRef.current?.present();
-  };
+  }, [drivers]);
 
   const handleSelectDriver = async (driverDisplayName: string) => {
     if (!selectedVehicleForDriver) return;
@@ -156,10 +331,10 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     }
   };
 
-  const handleDeleteVehicle = (id: string, vehicleNum: string) => {
+  const handleDeleteVehicle = useCallback((id: string, vehicleNum: string) => {
     setSelectedVehicle({ id, vehicleNum });
     setDeleteModalVisible(true);
-  };
+  }, []);
 
   const confirmDelete = async () => {
     if (!selectedVehicle) return;
@@ -205,12 +380,12 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     });
   };
 
-  const handleEdit = (vehicle: any) => {
+  const handleEdit = useCallback((vehicle: any) => {
     navigation.navigate('AddVehicle', {
       vehicleToEdit: vehicle,
       onSuccess: fetchVehicles,
     });
-  };
+  }, [navigation]);
 
   const renderHeader = () => (
     <View style={styles.topCard}>
@@ -252,193 +427,18 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     );
   };
 
-  const VehicleItemCard = ({
-    vehicle,
-    index,
-    handleOpenAssignDriver,
-    handleEdit,
-    handleDeleteVehicle,
-  }: {
-    vehicle: any;
-    index: number;
-    handleOpenAssignDriver: (v: any) => void;
-    handleEdit: (v: any) => void;
-    handleDeleteVehicle: (id: string, num: string) => void;
-  }) => {
-    const [imageError, setImageError] = useState(false);
-    const vehicleImg =
-      vehicle.images && vehicle.images[0]?.url
-        ? vehicle.images[0].url
-        : null;
-    const status = vehicle.verificationStatus || 'PENDING';
-    const assignedDriverName = vehicle.driver?.name;
-
-    return (
-      <View key={vehicle._id || index} style={styles.vehicleCard}>
-        {/* Vehicle Banner Image */}
-        <View style={styles.imageContainer}>
-          {vehicleImg && !imageError ? (
-            <Image
-              source={{ uri: vehicleImg }}
-              style={styles.vehicleImage}
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <View style={styles.fallbackImage}>
-              <Truck size={44} color={COLORS.primary} />
-            </View>
-          )}
-          {/* Status Badge */}
-          <View
-            style={[
-              styles.statusBadge,
-              status === 'APPROVED'
-                ? styles.statusApproved
-                : status === 'REJECTED'
-                  ? styles.statusRejected
-                  : styles.statusPending,
-            ]}
-          >
-            <AppText
-              style={[
-                styles.statusBadgeText,
-                status === 'APPROVED'
-                  ? styles.statusApprovedText
-                  : status === 'REJECTED'
-                    ? styles.statusRejectedText
-                    : styles.statusPendingText,
-              ]}
-            >
-              {status}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Card Main Info */}
-        <View style={styles.cardContent}>
-          <AppText style={styles.vehicleNum}>
-            {vehicle.vehicleNumber || 'No Plate Number'}
-          </AppText>
-          <AppText style={styles.vehicleType}>
-            {vehicle.vehicleType || 'Truck'} - {vehicle.transportType || 'Trucking'}
-          </AppText>
-
-          {/* 2x2 Specs Grid */}
-          <View style={styles.specsGrid}>
-            <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>VIN</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle.vinNumber || 'N/A'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <Box size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Size</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle.stallSize || 'Standard'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <Layers size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Stalls</AppText>
-                <AppText style={styles.specValue}>
-                  {vehicle.numberOfStalls ? String(vehicle.numberOfStalls).padStart(2, '0') : '01'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Stall Type</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle.trailerType || 'N/A'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          {/* Notes / Spec Description */}
-          {vehicle.notes ? (
-            <View style={styles.notesBox}>
-              <FileText size={18} color={COLORS.primary} />
-              <View style={styles.notesTextCol}>
-                <AppText style={styles.notesTitle}>Notes</AppText>
-                <AppText style={styles.notesText}>{vehicle.notes}</AppText>
-              </View>
-            </View>
-          ) : null}
-
-          {/* Action Buttons Row */}
-          <View style={styles.actionsRow}>
-            <TouchableOpacity
-              style={styles.actionPill}
-              onPress={() => handleOpenAssignDriver(vehicle)}
-            >
-              {assignedDriverName ? (
-                <UserCheck size={15} color={COLORS.primary} />
-              ) : (
-                <UserPlus size={15} color={COLORS.textPrimary} />
-              )}
-              <AppText
-                style={[
-                  styles.actionPillText,
-                  assignedDriverName && { color: COLORS.primary, fontFamily: 'PlusJakartaSans-Bold' },
-                ]}
-                numberOfLines={1}
-              >
-                {assignedDriverName ? `${assignedDriverName}` : 'Assign Driver'}
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.actionPill}
-              onPress={() => handleEdit(vehicle)}
-            >
-              <Edit size={15} color={COLORS.textPrimary} />
-              <AppText style={styles.actionPillText}>Edit</AppText>
-            </TouchableOpacity>
-            {
-              vehicle?.currentShipment === null ?
-                <TouchableOpacity
-                  style={styles.actionPill}
-                  onPress={() => handleDeleteVehicle(vehicle._id, vehicle.vehicleNumber)}
-                >
-                  <Trash2 size={15} color="#EF4444" />
-                  <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>Delete</AppText>
-                </TouchableOpacity> :
-                <View style={[styles.actionPill, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
-                  <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>In-Use</AppText>
-                </View>
-            }
-
-
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const renderVehicleItem = ({ item: vehicle, index }: { item: any; index: number }) => {
+  const renderVehicleItem = useCallback(({ item: vehicle, index }: { item: any; index: number }) => {
     return (
       <VehicleItemCard
         key={vehicle._id || index}
         vehicle={vehicle}
         index={index}
-        handleOpenAssignDriver={handleOpenAssignDriver}
-        handleEdit={handleEdit}
-        handleDeleteVehicle={handleDeleteVehicle}
+        onAssignDriver={handleOpenAssignDriver}
+        onEdit={handleEdit}
+        onDelete={handleDeleteVehicle}
       />
     );
-  };
+  }, [handleOpenAssignDriver, handleEdit, handleDeleteVehicle]);
 
   return (
     <View style={styles.container}>

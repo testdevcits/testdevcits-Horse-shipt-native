@@ -45,30 +45,32 @@ axiosClient.interceptors.request.use(
     }
 
     // --- LOGGING REQUEST ---
-    const fullUrl = `${config.baseURL}${config.url}`;
-    console.log(' ');
-    console.log('🚀 ╔═══════════ AXIOS REQUEST ═══════════╗');
-    console.log(`   ║ 🔗 URL:    ${fullUrl}`);
-    console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
+    if (__DEV__) {
+      const fullUrl = `${config.baseURL}${config.url}`;
+      console.log(' ');
+      console.log('🚀 ╔═══════════ AXIOS REQUEST ═══════════╗');
+      console.log(`   ║ 🔗 URL:    ${fullUrl}`);
+      console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
 
-    if (config.data) {
-      if (
-        config.data instanceof FormData ||
-        (config.data && typeof config.data === 'object' && (config.data as any)._parts)
-      ) {
-        console.log('   ║ 📦 PAYLOAD: [FormData Body]');
-        console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
-      } else {
-        try {
-          console.log('   ║ 📦 PAYLOAD:', JSON.stringify(config.data, null, 2));
-        } catch (e) {
-          console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
+      if (config.data) {
+        if (
+          config.data instanceof FormData ||
+          (config.data && typeof config.data === 'object' && (config.data as any)._parts)
+        ) {
+          console.log('   ║ 📦 PAYLOAD: [FormData Body]');
+          console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
+        } else {
+          try {
+            console.log('   ║ 📦 PAYLOAD:', JSON.stringify(config.data, null, 2));
+          } catch (e) {
+            console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
+          }
         }
+      } else {
+        console.log('   ║ 📦 PAYLOAD: No Body');
       }
-    } else {
-      console.log('   ║ 📦 PAYLOAD: No Body');
+      console.log('   ╚══════════════════════════════════════╝');
     }
-    console.log('   ╚══════════════════════════════════════╝');
 
     return config;
   },
@@ -79,11 +81,13 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response: AxiosResponse) => {
     // --- LOGGING SUCCESS ---
-    console.log(' ');
-    console.log(`✅ ╔═══════════ AXIOS RESPONSE [${response.status}] ═══════════╗`);
-    console.log(`   ║ 🔗 URL:  ${response.config.url}`);
-    console.log('   ║ 📄 DATA:', JSON.stringify(response.data, null, 2));
-    console.log('   ╚════════════════════════════════════════════╝');
+    if (__DEV__) {
+      console.log(' ');
+      console.log(`✅ ╔═══════════ AXIOS RESPONSE [${response.status}] ═══════════╗`);
+      console.log(`   ║ 🔗 URL:  ${response.config.url}`);
+      console.log('   ║ 📄 DATA:', JSON.stringify(response.data, null, 2));
+      console.log('   ╚════════════════════════════════════════════╝');
+    }
 
     return response.data;
   },
@@ -93,11 +97,15 @@ axiosClient.interceptors.response.use(
     const errorBody: any = error.response?.data;
 
     // --- LOGGING ERROR ---
-    console.log(' ');
-    console.log(`❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`);
-    console.log(`   ║ 🔗 URL:     ${url}`);
-    console.log(`   ║ 📝 MESSAGE: ${error.message}`);
-    console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
+    if (__DEV__) {
+      console.log(' ');
+      console.log(`❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`);
+      console.log(`   ║ 🔗 URL:     ${url}`);
+      console.log(`   ║ 📝 MESSAGE: ${error.message}`);
+      console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
+      console.log('   ╚══════════════════════════════════════════════╝');
+    }
+
     const errorMessage: string = String(
       errorBody?.errors?.[0] ||
       errorBody?.message ||
@@ -111,7 +119,6 @@ axiosClient.interceptors.response.use(
       text1: "Error",
       text2: errorMessage,
     });
-    console.log('   ╚══════════════════════════════════════════════╝');
 
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {

@@ -11,7 +11,7 @@ import { COLORS, FONTS } from '../constants'; // Adjust this path to match your 
 // Import our newly created location tracker hook
 import { useActiveLocationTracker } from '../hooks/useActiveLocationTracker';
 import HomeScreen from '../role/driver/screens/home/HomeScreen';
-import AllTrips from '../role/driver/screens/trips/AllTripes';
+import AllTrips from '../role/driver/screens/trips/AllTrips';
 import LocationScreen from '../role/driver/screens/location/LocationScreen';
 import Profile from '../role/driver/screens/profile/Profile';
 

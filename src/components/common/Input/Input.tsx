@@ -103,6 +103,9 @@ const Input = ({
 
         <TextInput
           {...props}
+          accessible={true}
+          accessibilityLabel={label || props.placeholder || 'Text input'}
+          accessibilityHint={error || undefined}
           style={[styles.input, props.style]}
           secureTextEntry={isSecure}
           placeholderTextColor={COLORS.textLight}

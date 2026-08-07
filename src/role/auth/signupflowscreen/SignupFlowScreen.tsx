@@ -23,6 +23,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserRole } from '../../../types/auth';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -108,7 +109,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
       // 1. Clear previous OTP errors
       setErrors(p => ({ ...p, otp: '' }));
 
-      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
+      const savedRole = ((await AsyncStorage.getItem('@user_role')) || 'customer') as UserRole;
       const result = await authService.verifySignupOtp({
         email: email.toLowerCase().trim(),
         role: savedRole,
@@ -147,7 +148,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     try {
-      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
+      const savedRole = ((await AsyncStorage.getItem('@user_role')) || 'customer') as UserRole;
       await authService.forgotPassword(email, savedRole);
       setResendTimer(60);
       Toast.show({ type: 'success', text1: 'OTP Resent' });

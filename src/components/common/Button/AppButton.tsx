@@ -40,6 +40,10 @@ const AppButton = ({
 
   return (
     <TouchableOpacity
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityState={{ disabled: isDisabled, busy: isLoading }}
       activeOpacity={0.8}
       disabled={isDisabled}
       onPress={onPress}
