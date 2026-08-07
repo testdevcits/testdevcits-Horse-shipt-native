@@ -27,9 +27,15 @@ export const fetchCustomerShipments = createAsyncThunk(
   'customerShipments/fetchCustomerShipments',
   async (isRefresh: boolean | undefined, { rejectWithValue }) => {
     try {
-      const response = await customerService.getMyShipments();
-      if (response?.success) {
-        return response.shipments ?? [];
+      const response: any = await customerService.getMyShipments();
+      const shipmentsData =
+        response?.shipments ||
+        response?.data?.shipments ||
+        (Array.isArray(response?.data) ? response.data : null) ||
+        (Array.isArray(response) ? response : []);
+
+      if (Array.isArray(shipmentsData)) {
+        return shipmentsData;
       }
       return rejectWithValue('Failed to fetch shipments');
     } catch (error: any) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   FlatList,
@@ -31,23 +31,34 @@ import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetai
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useShippers } from '../topratedshippers/useShippers';
+import Toast from 'react-native-toast-message';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { fetchWishlistThunk, toggleWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }: { navigation?: any }) => {
+  const dispatch = useAppDispatch();
+  const { wishlist } = useAppSelector(state => state.wishlist);
   const { shipments, loading, refreshing, refresh } = useShipments();
   const {
     shippers,
     loading: shipperloading,
+    toggleWishlist,
     refresh: shipperRefresh,
   } = useShippers();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchWishlistThunk());
+  }, [dispatch]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
       await Promise.all([
         refresh(true),
+        dispatch(fetchWishlistThunk(true)).unwrap().catch(() => null),
         shipperRefresh ? shipperRefresh() : Promise.resolve(),
       ]);
     } catch (error) {
@@ -60,6 +71,8 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
   };
+
+  const displayedShippers = wishlist.length > 0 ? wishlist : shippers;
 
   const { user } = useSelector((state: any) => state.auth || {});
   const userName = user?.name || user?.firstName || 'Not available';
@@ -142,16 +155,17 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           />
         )}
 
-        {shippers && !shipperloading && !loading && (
+        {displayedShippers && !shipperloading && !loading && (
           <FlatList
-            data={shippers}
+            data={displayedShippers}
 
-            keyExtractor={item => item?.id}
+            keyExtractor={(item, index) => item?.id || item?._id || index.toString()}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <ShipperCard
                 item={item}
                 onPress={() => handleShipperPress(item)}
+                onFavoritePress={toggleWishlist}
                 customstyle={{ width: SCREEN_WIDTH - 20 }}
               />
             )}

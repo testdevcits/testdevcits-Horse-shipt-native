@@ -12,6 +12,7 @@ export const useProfile = () => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [picking, setPicking] = useState(false);
   const dispatch = useAppDispatch();
 
   const fetchProfile = useCallback(async () => {
@@ -58,6 +59,8 @@ export const useProfile = () => {
   };
 
   const uploadAvatar = async () => {
+    if (picking) return
+    setPicking(true)
     try {
       const image = await ImagePicker.openPicker({
         width: 400,
@@ -116,6 +119,7 @@ export const useProfile = () => {
       return { success: false };
     } finally {
       setUploading(false);
+      setPicking(false)
     }
   };
 
@@ -132,5 +136,6 @@ export const useProfile = () => {
     uploadAvatar,
     refetch: fetchProfile,
     updateProfile: handleUpdateProfile,
+    picking
   };
 };

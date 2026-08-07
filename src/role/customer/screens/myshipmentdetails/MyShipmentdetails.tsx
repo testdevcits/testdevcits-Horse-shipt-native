@@ -267,6 +267,7 @@ const MyShipmentDetails = ({ route, }: any) => {
               visible={!!selectedQuote}
               quote={selectedQuote}
               onClose={() => setSelectedQuote(null)}
+              isCompleted={data?.status === 'delivered'}
             />
           </Suspense>
 

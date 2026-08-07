@@ -21,6 +21,7 @@ import PaymentCard from './cards/PaymentCard';
 import ReviewCard from './cards/ReviewCard';
 import ShipperCard from './cards/ShipperCard';
 import TruckDriverCard from './cards/TruckDriverCard';
+import CountryCodePicker, { COUNTRIES } from './common/CountryCodePicker/CountryCodePicker';
 
 export {
   AppHeader,
@@ -46,6 +47,8 @@ export {
   ShipmentCard,
   PaymentCard,
   ReviewCard,
+  CountryCodePicker,
+  COUNTRIES,
 };
 
 export type { AppSelectRef } from './common/AppSelect';

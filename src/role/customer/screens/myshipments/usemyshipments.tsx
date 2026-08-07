@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchCustomerShipments } from '../../../../redux/slices/customerShipmentSlice';
 
@@ -14,7 +15,7 @@ const useMyShipments = () => {
   const { shipments, loading, refreshing, lastFetched } = useAppSelector(
     state => state.customerShipments,
   );
-  const [activeTab, setActiveTab] = useState<ShipmentTab>('In Progress');
+  const [activeTab, setActiveTab] = useState<ShipmentTab>('Upcoming');
 
   const fetchShipments = useCallback(
     async (isRefresh = false) => {
@@ -29,26 +30,49 @@ const useMyShipments = () => {
     }
   }, [fetchShipments, lastFetched]);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchShipments(true);
+    }, [fetchShipments]),
+  );
+
   const filteredData = useMemo(() => {
     switch (activeTab) {
       case 'Upcoming':
         return shipments.filter(
           item =>
-            item?.status === 'open_for_offers' ||
-            (item?.status === 'assigned' && !item?.isInProgress),
+            item?.publish !== false &&
+            (item?.status === 'open_for_offers' ||
+              (item?.status === 'assigned' && !item?.isInProgress)),
         );
 
       case 'Draft':
-        return shipments.filter(item => !item?.publish);
+        return shipments.filter(
+          item =>
+            item?.publish === false ||
+            (item?.status || '').toLowerCase() === 'draft',
+        );
 
       case 'In Progress':
-        return shipments.filter(item => item?.isInProgress);
+        return shipments.filter(
+          item =>
+            item?.isInProgress ||
+            (item?.status || '').toLowerCase() === 'in_progress' ||
+            (item?.status || '').toLowerCase() === 'in_transit',
+        );
 
       case 'Completed':
-        return shipments.filter(item => item?.isCompleted);
+        return shipments.filter(
+          item =>
+            item?.isCompleted ||
+            (item?.status || '').toLowerCase() === 'completed' ||
+            (item?.status || '').toLowerCase() === 'delivered',
+        );
 
       case 'Cancelled':
-        return shipments.filter(item => item?.status === 'cancelled');
+        return shipments.filter(
+          item => (item?.status || '').toLowerCase() === 'cancelled',
+        );
 
       default:
         return shipments;
@@ -59,17 +83,34 @@ const useMyShipments = () => {
     () => ({
       Upcoming: shipments.filter(
         item =>
-          item?.status === 'open_for_offers' ||
-          (item?.status === 'assigned' && !item?.isInProgress),
+          item?.publish !== false &&
+          (item?.status === 'open_for_offers' ||
+            (item?.status === 'assigned' && !item?.isInProgress)),
       ).length,
 
-      Draft: shipments.filter(item => !item?.publish).length,
+      Draft: shipments.filter(
+        item =>
+          item?.publish === false ||
+          (item?.status || '').toLowerCase() === 'draft',
+      ).length,
 
-      InProgress: shipments.filter(item => item?.isInProgress).length,
+      InProgress: shipments.filter(
+        item =>
+          item?.isInProgress ||
+          (item?.status || '').toLowerCase() === 'in_progress' ||
+          (item?.status || '').toLowerCase() === 'in_transit',
+      ).length,
 
-      Completed: shipments.filter(item => item?.isCompleted).length,
+      Completed: shipments.filter(
+        item =>
+          item?.isCompleted ||
+          (item?.status || '').toLowerCase() === 'completed' ||
+          (item?.status || '').toLowerCase() === 'delivered',
+      ).length,
 
-      Cancelled: shipments.filter(item => item?.status === 'cancelled').length,
+      Cancelled: shipments.filter(
+        item => (item?.status || '').toLowerCase() === 'cancelled',
+      ).length,
     }),
     [shipments],
   );

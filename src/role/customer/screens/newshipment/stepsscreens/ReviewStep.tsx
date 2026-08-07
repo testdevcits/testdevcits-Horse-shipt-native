@@ -39,6 +39,7 @@ interface ReviewStepProps {
   draftLoading?: boolean;
   publishLoading?: boolean;
   isEdit?: boolean;
+  isDraft?: boolean;
 }
 
 const ReviewStep: React.FC<ReviewStepProps> = ({
@@ -50,6 +51,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   draftLoading = false,
   publishLoading = false,
   isEdit = false,
+  isDraft = false,
 }) => {
   const navigation = useNavigation();
   const [isHorseExpanded, setIsHorseExpanded] = useState(true);
@@ -114,7 +116,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             <View style={styles.statusBadge}>
               <CheckCircle2 size={13} color={COLORS.greenSuccess} />
               <AppText style={styles.statusBadgeText}>
-                {isEdit ? 'Ready to Update' : 'Ready to Publish'}
+                {isEdit && isDraft
+                  ? 'Ready to Update Draft'
+                  : isEdit
+                  ? 'Ready to Update'
+                  : 'Ready to Publish'}
               </AppText>
             </View>
           </View>
@@ -124,10 +130,16 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             </View>
             <View style={styles.headerTextGroup}>
               <AppText style={styles.headerTitle}>
-                {isEdit ? 'Review & Update Metadata' : 'Review & Confirm'}
+                {isEdit && isDraft
+                  ? 'Review & Update Draft'
+                  : isEdit
+                  ? 'Review & Update Shipment'
+                  : 'Review & Confirm'}
               </AppText>
               <AppText style={styles.headerSubtitle}>
-                {isEdit
+                {isEdit && isDraft
+                  ? 'Review your updated details before saving draft changes or publishing.'
+                  : isEdit
                   ? 'Verify your updated details and documents before saving.'
                   : 'Review your route, horse details, and attached documents before publishing.'}
               </AppText>
@@ -495,7 +507,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
-          {!isEdit && (
+          {(!isEdit || isDraft) && (
             <TouchableOpacity
               disabled={loading}
               style={styles.draftBtn}
@@ -507,7 +519,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               ) : (
                 <>
                   <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
-                  <AppText style={styles.draftBtnText}>Save Draft</AppText>
+                  <AppText style={styles.draftBtnText}>
+                    {isEdit && isDraft ? 'Update Draft Data' : 'Save Draft'}
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
@@ -515,7 +529,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
           <TouchableOpacity
             disabled={loading}
-            style={[styles.publishBtn, isEdit && { flex: 1 }]}
+            style={[styles.publishBtn, isEdit && !isDraft && { flex: 1 }]}
             onPress={onPublish}
             activeOpacity={0.85}
           >
@@ -524,7 +538,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             ) : (
               <>
                 <AppText style={styles.publishBtnText}>
-                  {isEdit ? 'Update Shipment Metadata' : 'Save & Publish'}
+                  {isEdit && !isDraft ? 'Update Shipment Details' : 'Save & Publish'}
                 </AppText>
                 <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
               </>

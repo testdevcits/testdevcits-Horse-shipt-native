@@ -35,7 +35,6 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
-  console.log("=====================data=======", data)
 
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
@@ -207,7 +206,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               </AppText>
             </TouchableOpacity>
           )}
-          {data?.status !== 'open_for_offers' && (
+          {data?.status !== 'open_for_offers' && data?.status !== "delivered" && (
             <TouchableOpacity
               style={styles.secondaryActionBtn}
               onPress={() => setIsMapVisible(true)}
@@ -370,15 +369,19 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                       <AppText style={styles.documentsHeaderTitle}>
                         Uploaded Documents
                       </AppText>
-                      <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
-                        onPress={handleEditDocumentsNotes}
-                      >
-                        <Edit3 size={14} color={COLORS.primary} />
-                        <AppText style={{ color: COLORS.primary, fontSize: 12, fontFamily: FONTS.semiBold }}>
-                          Edit Docs / Notes
-                        </AppText>
-                      </TouchableOpacity>
+                      {
+                        data?.status !== "delivered" &&
+                        <TouchableOpacity
+                          style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+                          onPress={handleEditDocumentsNotes}
+                        >
+                          <Edit3 size={14} color={COLORS.primary} />
+                          <AppText style={{ color: COLORS.primary, fontSize: 12, fontFamily: FONTS.semiBold }}>
+                            Edit Docs / Notes
+                          </AppText>
+                        </TouchableOpacity>
+                      }
+
                     </View>
                     <View style={styles.docListGrid}>
                       {horse.documents?.coggins?.url && (

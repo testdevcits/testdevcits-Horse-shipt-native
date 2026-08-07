@@ -511,6 +511,24 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
   },
+  routeMapHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  viewInFullScreenBtn: {
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewInFullScreenBtnText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+  },
 });
 
 export default styles;

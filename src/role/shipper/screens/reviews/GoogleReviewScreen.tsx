@@ -32,11 +32,7 @@ const GoogleReviewScreen = () => {
 
     if (!trimmed) {
       setError('Please enter a valid Google Review URL.');
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter a valid Google Review URL.',
-      });
+
       return;
     }
 

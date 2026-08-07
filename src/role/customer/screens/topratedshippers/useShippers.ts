@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import customerService from '../../../../api/services/customerService';
- 
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { fetchWishlistThunk, toggleWishlistThunk } from '../../../../redux/slices/wishlistSlice';
+
 export const useShippers = () => {
+    const dispatch = useAppDispatch();
+    const { wishlistIds } = useAppSelector(state => state.wishlist);
     const [shippers, setShippers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -22,9 +26,10 @@ export const useShippers = () => {
             if (isRefresh) setRefreshing(true);
             else setLoading(true);
             
-            const res = await customerService.getTopRatedShippers();
-            if (res.success) {
-                setShippers(res.data);
+            dispatch(fetchWishlistThunk(isRefresh));
+            const topRes = await customerService.getTopRatedShippers();
+            if (topRes?.success && Array.isArray(topRes.data)) {
+                setShippers(topRes.data);
             }
         } catch (e) {
             console.error("Error fetching shippers:", e);
@@ -32,13 +37,34 @@ export const useShippers = () => {
             setLoading(false);
             setRefreshing(false);
         }
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => { fetchShippers(); }, [fetchShippers]);
 
+    // Map shippers with real-time wishlist state from Redux
+    const shippersWithFavState = useMemo(() => {
+        const wishSet = new Set(wishlistIds);
+        return shippers.map(s => {
+            const sId = s.id || s._id;
+            const isFav = wishSet.has(sId);
+            return {
+                ...s,
+                isFavorite: isFav,
+                isWishlisted: isFav,
+            };
+        });
+    }, [shippers, wishlistIds]);
+
+    const handleToggleWishlist = useCallback((shipperItem: any) => {
+        const targetId = shipperItem?.id || shipperItem?._id;
+        if (targetId) {
+            dispatch(toggleWishlistThunk({ shipperId: targetId, shipperItem }));
+        }
+    }, [dispatch]);
+
     // Advanced Multi-Filter Logic
     const filteredData = useMemo(() => {
-        return shippers.filter(s => {
+        return shippersWithFavState.filter(s => {
             // 1. Search (Name or Region)
             const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                  s.region.toLowerCase().includes(searchQuery.toLowerCase());
@@ -48,7 +74,6 @@ export const useShippers = () => {
             const matchesRating = s.rating >= minRating;
 
             // 3. Category matches (Exact string matching or 'All')
-            // Note: API fields must match these keys (transportType, experienceLevel, etc.)
             const matchesTransport = activeFilters.transport === 'All' ? true : s.transportType === activeFilters.transport;
             const matchesExp = activeFilters.experience === 'All' ? true : s.experienceLevel === activeFilters.experience;
             const matchesResponse = activeFilters.response === 'All' ? true : s.responseTime === activeFilters.response;
@@ -56,7 +81,7 @@ export const useShippers = () => {
 
             return matchesSearch && matchesRating && matchesTransport && matchesExp && matchesResponse && matchesPrice;
         });
-    }, [shippers, searchQuery, activeFilters]);
+    }, [shippersWithFavState, searchQuery, activeFilters]);
 
     const updateFilter = (category: string, value: string) => {
         setActiveFilters(prev => ({ ...prev, [category]: value }));
@@ -82,6 +107,7 @@ export const useShippers = () => {
         activeFilters,
         updateFilter,
         resetFilters,
+        toggleWishlist: handleToggleWishlist,
         refresh: () => fetchShippers(true),
     };
 };

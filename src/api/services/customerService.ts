@@ -250,6 +250,20 @@ const customerService = {
     return axiosClient.get(`/api/customer/shipper-profile/${id}`);
   },
 
+  toggleWishlistShipper: async (
+    shipperId: string,
+  ): Promise<{ success: boolean; isFavorite?: boolean; message?: string }> => {
+    return axiosClient.post(`/api/customer/wishlist/${shipperId}/toggle`);
+  },
+
+  getWishlist: async (): Promise<{
+    success: boolean;
+    data: any[];
+    shipperIds?: string[];
+  }> => {
+    return axiosClient.get('/api/customer/wishlist');
+  },
+
   // in your shipment.service.ts
   inviteShipper: async (
     shipmentId: string,

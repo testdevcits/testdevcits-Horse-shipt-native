@@ -23,6 +23,8 @@ import {
   AppLoader,
   AppText,
   ConfirmationModal,
+  CountryCodePicker,
+  COUNTRIES,
   EmptyState,
   Input,
   ReviewCard,
@@ -30,9 +32,16 @@ import {
 import styles from './style.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
+import { useAppSelector } from '../../../../hooks/redux';
 
 const Profile = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector(state => state.auth);
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
+  console.log("user from profile screen", JSON.stringify(user, null, 2))
+
+  console.log("======", user?.profileImage)
+
   const {
     profile,
     loading,
@@ -40,6 +49,7 @@ const Profile = ({ navigation }: any) => {
     updateProfile,
     uploading,
     uploadAvatar,
+    picking
   } = useProfile();
   const [activeTab, setActiveTab] = useState('Profile');
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -100,7 +110,7 @@ const Profile = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Profile Details" />
+      <AppHeader showBack={true} title="Profile Details" showProfileImage={false} />
       <AppLoader visible={loading || isUpdating} />
 
       {/* Tabs */}
@@ -132,9 +142,9 @@ const Profile = ({ navigation }: any) => {
           <View style={styles.avatarSection}>
             <View style={styles.imageWrapper}>
               {/* Profile Image Logic - Handles nested .url from your JSON */}
-              {profile?.profileImage?.url ? (
+              {user?.profileImage ? (
                 <Image
-                  source={{ uri: profile.profileImage.url }}
+                  source={{ uri: user?.profileImage }}
                   style={styles.avatar}
                 />
               ) : (
@@ -155,7 +165,7 @@ const Profile = ({ navigation }: any) => {
             <TouchableOpacity
               onPress={uploadAvatar}
               style={[styles.editPictureBtn, uploading && { opacity: 0.7 }]}
-              disabled={uploading}
+              disabled={uploading || picking}
               activeOpacity={0.8}
             >
               {uploading ? (
@@ -237,6 +247,13 @@ const Profile = ({ navigation }: any) => {
                 label="Phone"
                 value={formData?.phone}
                 keyboardType="phone-pad"
+                leftIcon={
+                  <CountryCodePicker
+                    selectedCountry={selectedCountry}
+                    onSelectCountry={c => setSelectedCountry(c)}
+                    showBorder={true}
+                  />
+                }
                 onChangeText={t => setFormData({ ...formData, phone: t })}
               />
             </View>

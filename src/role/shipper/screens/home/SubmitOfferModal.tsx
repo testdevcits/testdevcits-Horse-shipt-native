@@ -467,6 +467,12 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
+
+
+
+
+
+
     </Modal>
   );
 };

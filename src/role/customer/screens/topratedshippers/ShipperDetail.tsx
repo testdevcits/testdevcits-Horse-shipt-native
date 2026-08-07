@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -13,12 +13,17 @@ import {
   User,
   MessageSquare,
   Package,
+  Compass,
+  Heart,
 } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 
 // Constants & Hooks
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import styles from './shipperDetail.styles';
 import { useShipperDetails } from './useShipperDetails';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { toggleWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import {
   AppHeader,
   AppLoader,
@@ -27,15 +32,29 @@ import {
   ErrorView,
 } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
+import { formatDate } from '../../../../utils/helpers';
 
 const ShipperDetail = () => {
   const route = useRoute<any>();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { wishlistIds } = useAppSelector(state => state.wishlist);
 
-  const shipperId = route.params?.item?.id || route.params?.id;
+  const shipperId = route.params?.item?.id || route.params?.item?._id || route.params?.id;
 
   const { shipper, loading, refreshing, error, refresh } =
     useShipperDetails(shipperId);
+
+  const targetId = shipperId || shipper?._id || shipper?.id;
+  const isFavorite = targetId
+    ? wishlistIds.includes(targetId) || !!shipper?.isWishlisted || !!shipper?.isFavorite
+    : false;
+
+  const handleToggleWishlist = () => {
+    if (targetId) {
+      dispatch(toggleWishlistThunk({ shipperId: targetId, shipperItem: shipper || route.params?.item }));
+    }
+  };
 
   // 1. Loading State
   if (loading && !refreshing) {
@@ -71,7 +90,7 @@ const ShipperDetail = () => {
         ))}
       </View>
       <AppText numberOfLines={4} style={styles.reviewBody}>
-        {item?.comment ||
+        {item?.reviewText ||
           'Great experience with this shipper! Very professional and timely.'}
       </AppText>
       <View style={styles.reviewFooter}>
@@ -80,9 +99,9 @@ const ShipperDetail = () => {
         </View>
         <View>
           <AppText style={styles.reviewerName}>
-            {item?.userName || 'Verified User'}
+            {item?.customerName || 'Verified User'}
           </AppText>
-          <AppText style={styles.reviewDate}>{item?.date || 'Recent'}</AppText>
+          <AppText style={styles.reviewDate}>{formatDate(item?.createdAt)}</AppText>
         </View>
       </View>
     </View>
@@ -90,7 +109,25 @@ const ShipperDetail = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Shipper Profile" showBack={true} />
+      <AppHeader
+        title="Shipper Profile"
+        showBack={true}
+        showProfileImage={false}
+        rightElement={
+          <TouchableOpacity
+            onPress={handleToggleWishlist}
+            // disabled={isToggling}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={{ padding: 6 }}
+          >
+            <Heart
+              size={22}
+              color={isFavorite ? COLORS.error : COLORS.grey600}
+              fill={isFavorite ? COLORS.error : 'transparent'}
+            />
+          </TouchableOpacity>
+        }
+      />
       <AppLoader visible={refreshing} />
 
       <ScrollView
@@ -175,6 +212,41 @@ const ShipperDetail = () => {
             horses.
           </AppText>
         </View>
+
+        {/* Preferred Operating Areas Section */}
+        {shipper?.preferredAreas && shipper.preferredAreas.length > 0 && (
+          <View style={styles.section}>
+            <AppText style={styles.sectionTitle}>Preferred Operating Areas</AppText>
+            <View style={styles.contentPadding}>
+              {shipper.preferredAreas.map((area: any, index: number) => {
+                const locationName =
+                  area?.locationName || area?.location || area?.address || 'Service Area';
+                const radius = area?.radiusKm || area?.radius || 0;
+
+                return (
+                  <View key={area?.id || area?._id || index} style={styles.areaCard}>
+                    <View style={styles.areaIconBox}>
+                      <MapPin size={18} color={COLORS.primary} />
+                    </View>
+                    <View style={styles.areaContent}>
+                      <AppText style={styles.areaLocationName} numberOfLines={2}>
+                        {locationName}
+                      </AppText>
+                      {radius > 0 && (
+                        <View style={styles.radiusBadge}>
+                          <Compass size={12} color={COLORS.primary} />
+                          <AppText style={styles.radiusText}>
+                            {radius} km radius coverage
+                          </AppText>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        )}
 
         {/* Reviews Section */}
         <View style={styles.section}>

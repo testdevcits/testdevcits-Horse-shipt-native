@@ -147,7 +147,12 @@ const useNewShipment = () => {
   const isEdit = route.params?.isEdit;
   const shipmentData = route.params?.shipmentData;
 
+  const isDraft =
+    shipmentData?.publish === false ||
+    (shipmentData?.status || '').toLowerCase() === 'draft';
+
   const [currentStep, setCurrentStep] = useState(() => {
+    if (isEdit && isDraft) return 0;
     if (isEdit) return 2;
     return 0;
   });
@@ -173,6 +178,12 @@ const useNewShipment = () => {
     if (isEdit && shipmentData) {
       setForm(parseShipmentDataToForm(shipmentData));
       setCreatedShipmentId(shipmentData?._id);
+      const isDraftShipment =
+        shipmentData?.publish === false ||
+        (shipmentData?.status || '').toLowerCase() === 'draft';
+      if (isDraftShipment) {
+        setCurrentStep(0);
+      }
     }
   }, [isEdit, shipmentData]);
 
@@ -547,14 +558,21 @@ const useNewShipment = () => {
       if (isEdit && targetId) {
         const formData = buildFormData();
         await customerService.updateShipment(targetId, formData);
+
+        if (isDraft) {
+          await customerService.publishShipment(targetId);
+        }
+
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
-        Alert.alert('Success', 'Shipment updated successfully!', [
-          {
-            text: 'OK',
-            onPress: () => navigation.goBack(),
-          },
-        ]);
+        Toast.show({
+          type: 'success',
+          text1: isDraft ? 'Shipment Published' : 'Shipment Updated',
+          text2: isDraft
+            ? 'Draft shipment updated and published successfully!'
+            : 'Shipment updated successfully!',
+        });
+        resetAllData();
         navigation.goBack();
         return true;
       }
@@ -569,7 +587,6 @@ const useNewShipment = () => {
         if (success && shipment?._id) {
           shipmentId = shipment._id;
           setCreatedShipmentId(shipment._id);
-          navigation.goBack();
         } else {
           Alert.alert(
             'Error',
@@ -577,7 +594,6 @@ const useNewShipment = () => {
           );
           setPublishLoading(false);
           setIsPublishModalVisible(false);
-          navigation.goBack();
           return false;
         }
       }
@@ -586,14 +602,13 @@ const useNewShipment = () => {
         await customerService.publishShipment(shipmentId);
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
-        Alert.alert('Success', 'Shipment published successfully!', [
-          {
-            text: 'OK',
-            onPress: () => navigation.goBack(),
-          },
-        ]);
+        Toast.show({
+          type: 'success',
+          text1: 'Shipment Published',
+          text2: 'Shipment published successfully!',
+        });
         resetAllData();
-        navigation?.goBack();
+        navigation.goBack();
         return true;
       }
       return false;
@@ -604,7 +619,6 @@ const useNewShipment = () => {
         error?.response?.data?.message ||
         'Failed to update or publish shipment',
       );
-      navigation?.goBack();
       return false;
     } finally {
       setPublishLoading(false);
@@ -637,7 +651,7 @@ const useNewShipment = () => {
   };
 
   const prevStep = () => {
-    if (isEdit && currentStep === 2) {
+    if (isEdit && !isDraft && currentStep === 2) {
       navigation.goBack();
       return;
     }
@@ -669,6 +683,7 @@ const useNewShipment = () => {
     setIsDraftModalVisible,
     setCurrentStep,
     resetAllData,
+    isDraft,
   };
 };
 

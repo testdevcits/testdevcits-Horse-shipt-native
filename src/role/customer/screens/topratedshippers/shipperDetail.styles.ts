@@ -133,6 +133,56 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey200,
   },
   showMoreText: { fontSize: FONT_SIZE.sm, color: COLORS.grey700, fontFamily: FONTS.bold },
+
+  // Preferred Operating Areas
+  areaCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    shadowColor: COLORS.black,
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  areaIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#EEF2FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  areaContent: {
+    flex: 1,
+  },
+  areaLocationName: {
+    fontSize: FONT_SIZE.xs || 12,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey900,
+    lineHeight: 18,
+  },
+  radiusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: RADIUS.round,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+  },
+  radiusText: {
+    fontSize: 11,
+    fontFamily: FONTS.semiBold || FONTS.medium,
+    color: COLORS.primary,
+  },
 });
 
 export default styles;

@@ -9,6 +9,7 @@ import {
   RefreshControl,
   Dimensions,
   FlatList,
+  Pressable,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
@@ -645,12 +646,23 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
             {filteredShipments.length > 0 && (
               <View style={styles.routeMapCard}>
-                <AppText style={styles.routeMapTitle}>
-                  Shipment Route Map
-                </AppText>
-                <AppText style={styles.routeMapShipmentCode}>
-                  {selectedMapShipment?.shipmentCode}
-                </AppText>
+                <View style={styles.routeMapHeader}>
+                  <View>
+                    <AppText style={styles.routeMapTitle}>
+                      Shipment Route Map
+                    </AppText>
+                    <AppText style={styles.routeMapShipmentCode}>
+                      {selectedMapShipment?.shipmentCode}
+                    </AppText>
+                  </View>
+                  <Pressable onPress={() => {
+                    navigation.navigate('ShipmentMapDirection', {
+                      shipmentData: selectedMapShipment,
+                    });
+                  }} style={styles.viewInFullScreenBtn}>
+                    <AppText style={styles.viewInFullScreenBtnText}>View in Full Map</AppText>
+                  </Pressable>
+                </View>
 
                 {/* Map Preview Container */}
                 <View style={styles.mapWrapper}>

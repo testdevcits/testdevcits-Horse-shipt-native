@@ -33,6 +33,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           text1: 'Onboarding Submitted',
           text2: 'Your Stripe payout account details have been updated.',
         });
+        navigation.goBack();
       }
     }
   };

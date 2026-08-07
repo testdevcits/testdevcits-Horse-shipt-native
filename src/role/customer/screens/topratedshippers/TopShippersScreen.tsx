@@ -26,6 +26,8 @@ import {
   SearchBarCompt,
   ShipperCard,
 } from '../../../../components';
+import Toast from 'react-native-toast-message';
+import customerService from '../../../../api/services/customerService';
 import { useNavigation } from '@react-navigation/native';
 
 const QUICK_FILTERS = ['All', 'Verified', 'Top Rated', 'Nearest'];
@@ -43,10 +45,9 @@ const TopShippersScreen = () => {
     activeFilters,
     updateFilter,
     resetFilters,
+    toggleWishlist,
     refresh,
   } = useShippers();
-
-  console.log('==============================', shippers);
 
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
@@ -164,6 +165,7 @@ const TopShippersScreen = () => {
           <ShipperCard
             item={item}
             onPress={() => handleShipperPress(item)}
+            onFavoritePress={toggleWishlist}
             customstyle={{ width: SCREEN_WIDTH - 20 }}
           />
         )}

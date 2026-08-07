@@ -48,6 +48,7 @@ const NewShipment = () => {
     setIsDraftModalVisible,
     setCurrentStep,
     resetAllData,
+    isDraft,
   } = useNewShipment();
 
   const handleConfirmDelete = async () => {
@@ -112,7 +113,7 @@ const NewShipment = () => {
           resetAllData();
           navigation.goBack();
         }}
-        title={isEdit ? 'Edit Shipment' : 'New Shipment'}
+        title={isEdit && !isDraft ? 'Edit Shipment' : isDraft ? 'Edit Draft Shipment' : 'New Shipment'}
         rightElement={
           isEdit && shipmentData?._id ? (
             <TouchableOpacity
@@ -175,6 +176,7 @@ const NewShipment = () => {
             <ReviewStep
               form={form}
               isEdit={isEdit}
+              isDraft={isDraft}
               onPublish={() => setIsPublishModalVisible(true)}
               onSaveDraft={handleSaveDraft}
               onEditSection={stepIndex => setCurrentStep(stepIndex)}
@@ -190,13 +192,13 @@ const NewShipment = () => {
         isVisible={isPublishModalVisible}
         onClose={() => setIsPublishModalVisible(false)}
         onConfirm={handlePublish}
-        title={isEdit ? 'Update Shipment Metadata?' : 'Publish Shipment?'}
+        title={isEdit && !isDraft ? 'Update Shipment Details?' : 'Publish Shipment?'}
         description={
-          isEdit
-            ? 'Are you sure you want to update this shipment metadata?'
-            : 'Are you sure you want to save and publish this shipment? Pickup and Horse details cannot be edited later.'
+          isEdit && !isDraft
+            ? 'Are you sure you want to update this shipment details?'
+            : 'Are you sure you want to save and publish this shipment? Shippers will be able to view and submit quotes.'
         }
-        confirmText={isEdit ? 'Update Metadata' : 'Save & Publish'}
+        confirmText={isEdit && !isDraft ? 'Update Details' : 'Save & Publish'}
         isLoading={loading}
       />
 

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from '../common/AppText';
+import Toast from 'react-native-toast-message';
 
 export interface TruckDriverCardProps {
   driver: {
@@ -25,6 +26,9 @@ export interface TruckDriverCardProps {
     profileImage?: {
       url?: string;
     };
+    assignedVehicles?: {
+      currentShipment?: string;
+    }[];
   };
   onToggleStatus: (id: string, currentActiveStatus: boolean) => void;
   onEdit: (driver: any) => void;
@@ -37,6 +41,21 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
     const profileUrl = driver.profileImage?.url || null;
     const driverId = driver._id || '';
     const driverName = driver.name || 'Unnamed Driver';
+    const isDriverDeletable =
+      !driver?.assignedVehicles ||
+      driver.assignedVehicles.length === 0 ||
+      driver.assignedVehicles.every(
+        (vehicle: any) => vehicle.currentShipment === null
+      );
+    const canToggleStatus =
+      !driver?.assignedVehicles ||
+      driver.assignedVehicles.length === 0 ||
+      driver.assignedVehicles.every(
+        (vehicle: any) => vehicle.currentShipment === null
+      );
+
+
+
 
     return (
       <View style={styles.driverCard}>
@@ -74,7 +93,15 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
         <View style={styles.actionPillsRow}>
           <TouchableOpacity
             style={styles.actionBtnPill}
-            onPress={() => onToggleStatus(driverId, isActive)}
+            onPress={() => {
+              if (canToggleStatus) { onToggleStatus(driverId, isActive) } else {
+                Toast.show({
+                  type: 'info',
+                  text1: 'Info',
+                  text2: `Driver ${driverName} is assigned to a vehicle.`,
+                });
+              }
+            }}
             activeOpacity={0.7}
           >
             <Power size={15} color={isActive ? '#D97706' : '#10B981'} />
@@ -91,17 +118,22 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             <Edit size={15} color={COLORS.textPrimary} />
             <AppText style={styles.actionBtnPillText}>Edit</AppText>
           </TouchableOpacity>
+          {
+            isDriverDeletable &&
+            <TouchableOpacity
+              style={styles.actionBtnPill}
+              onPress={() => onDelete(driverId, driverName)}
+              activeOpacity={0.7}
+              disabled={!isDriverDeletable}
+            >
+              <Trash2 size={15} color="#EF4444" />
+              <AppText style={[styles.actionBtnPillText, { color: '#EF4444' }]}>
+                Delete
+              </AppText>
+            </TouchableOpacity>
+          }
 
-          <TouchableOpacity
-            style={styles.actionBtnPill}
-            onPress={() => onDelete(driverId, driverName)}
-            activeOpacity={0.7}
-          >
-            <Trash2 size={15} color="#EF4444" />
-            <AppText style={[styles.actionBtnPillText, { color: '#EF4444' }]}>
-              Delete
-            </AppText>
-          </TouchableOpacity>
+
         </View>
 
         {/* Detail Specification Cards */}

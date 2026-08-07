@@ -39,7 +39,7 @@ import customerService from '../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
 
-const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
+const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: any) => {
   const navigation = useNavigation<any>();
   const { confirmPayment } = useStripe();
 
@@ -514,7 +514,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                   </View>
                 </View>
                 {isCancellationWindowActive && (
-                  <TouchableOpacity
+                  isCompleted == false && <TouchableOpacity
                     style={styles.cancelBookingBtn}
                     activeOpacity={0.8}
                     onPress={() => setIsCancelModalVisible(true)}
@@ -524,6 +524,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh }: any) => {
                       Cancel Shipment
                     </AppText>
                   </TouchableOpacity>
+
                 )}
               </View>
             )}

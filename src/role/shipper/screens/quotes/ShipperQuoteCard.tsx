@@ -288,7 +288,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
-          {!isAssignedOrAccepted && (
+          {!isAssignedOrAccepted && shipment?.status !== 'delivered' && (
             <TouchableOpacity
               style={styles.deleteBtn}
               onPress={() => onDelete(quoteId)}

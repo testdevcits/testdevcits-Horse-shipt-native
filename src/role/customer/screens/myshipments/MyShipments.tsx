@@ -49,10 +49,18 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
   ];
 
   const handleShipmentPress = useCallback((item: any) => {
-    navigation?.navigate('MyShipmentDetails', {
-      item: item,
-      quoteId: item?.quoteId,
-    });
+    const isDraftItem = item?.publish === false || (item?.status || '').toLowerCase() === 'draft';
+    if (isDraftItem) {
+      navigation?.navigate('NewShipment', {
+        isEdit: true,
+        shipmentData: item,
+      });
+    } else {
+      navigation?.navigate('MyShipmentDetails', {
+        item: item,
+        quoteId: item?.quoteId,
+      });
+    }
   }, [navigation]);
 
   const handleInitiateDelete = useCallback((item: any) => {

@@ -41,20 +41,20 @@ export const useNotificationSettings = () => {
         newValue,
       );
       if (res.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Preferences Updated',
-          position: 'top',
-        });
+        // Toast.show({
+        //   type: 'success',
+        //   text1: 'Preferences Updated',
+        //   position: 'top',
+        // });
       }
     } catch (error) {
       // 2. Rollback on failure
       setSettings(prev => ({ ...prev, [key]: !newValue }));
-      Toast.show({
-        type: 'error',
-        text1: 'Update Failed',
-        text2: 'Please try again later',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Update Failed',
+      //   text2: 'Please try again later',
+      // });
     }
   };
 
