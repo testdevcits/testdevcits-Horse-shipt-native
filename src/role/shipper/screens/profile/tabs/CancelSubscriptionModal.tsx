@@ -152,6 +152,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
                   multiline
                   numberOfLines={3}
                   editable={!submitting}
+                  allowFontScaling={false}
                 />
               </View>
             )}

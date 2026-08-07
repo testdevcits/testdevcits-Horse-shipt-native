@@ -282,6 +282,7 @@ const DeliveryVerificationScreen = () => {
                             <View style={styles.otpGridContainer}>
                                 {Array(6).fill('').map((_, index) => (
                                     <TextInput
+                                        allowFontScaling={false}
                                         key={index}
                                         ref={(ref) => {
                                             otpInputsRef.current[index] = ref;

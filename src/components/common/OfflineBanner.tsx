@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { WifiOff, Wifi, RefreshCw } from 'lucide-react-native';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
-import { COLORS } from '../../constants';
+import { COLORS, FONTS } from '../../constants';
+import AppText from './AppText';
 
 export const OfflineBanner: React.FC = () => {
   const { isOffline, refresh } = useNetworkStatus();
@@ -66,12 +67,12 @@ export const OfflineBanner: React.FC = () => {
         {isRestored ? (
           <>
             <Wifi size={18} color={COLORS.white} style={styles.icon} />
-            <Text style={styles.text}>Back online! Internet connection restored.</Text>
+            <AppText style={styles.text}>Back online! Internet connection restored.</AppText>
           </>
         ) : (
           <>
             <WifiOff size={18} color={COLORS.white} style={styles.icon} />
-            <Text style={styles.text}>No Internet Connection. Checking connection...</Text>
+            <AppText style={styles.text}>No Internet Connection. Checking connection...</AppText>
             <TouchableOpacity
               style={styles.retryButton}
               onPress={handleRefresh}
@@ -106,10 +107,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   offlineContainer: {
-    backgroundColor: COLORS.error || '#EF4444',
+    backgroundColor: COLORS.error,
   },
   restoredContainer: {
-    backgroundColor: COLORS.success || '#22C55E',
+    backgroundColor: COLORS.success,
   },
   content: {
     flexDirection: 'row',
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   text: {
     color: COLORS.white,
     fontSize: 13,
-    fontWeight: '600',
+    fontFamily: FONTS.semiBold,
     flex: 1,
   },
   retryButton: {
