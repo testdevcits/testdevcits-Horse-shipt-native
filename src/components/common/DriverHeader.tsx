@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Star, ShieldCheck, Radio } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 
 interface DriverHeaderProps {
@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     },
     driverName: {
         fontFamily: FONTS.bold,
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
+
         color: COLORS.textPrimary,
         flexShrink: 1,
     },
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         fontFamily: FONTS.bold,
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         color: COLORS.amberWarning,
     },
     statusBadge: {
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     },
     statusBadgeText: {
         fontFamily: FONTS.bold,
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         color: COLORS.goldDarkText,
         letterSpacing: 0.4,
     },

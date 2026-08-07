@@ -179,7 +179,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   radiusText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.semiBold || FONTS.medium,
     color: COLORS.primary,
   },

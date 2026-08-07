@@ -496,7 +496,8 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   requiredBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: COLORS.white,
     letterSpacing: 0.5,
@@ -539,12 +540,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   trialPillText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#FEF3C7',
   },
   trialSubText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: 'rgba(255, 255, 255, 0.9)',
   },
@@ -563,7 +565,8 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   priceTagInterval: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: 'rgba(255, 255, 255, 0.85)',
   },
@@ -656,7 +659,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   sectionHeaderLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#A06333',
     letterSpacing: 0.8,
@@ -705,7 +709,8 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   planTabName: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#64748B',
     marginBottom: 2,
@@ -800,7 +805,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   footerSubText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     textAlign: 'center',

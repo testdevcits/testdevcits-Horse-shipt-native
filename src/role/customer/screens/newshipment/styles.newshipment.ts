@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS } from "../../../../constants";
+import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from "../../../../constants";
 
 const { width } = Dimensions.get('window');
 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   stepBarActive: { backgroundColor: COLORS.primary },
   stepBarCurrent: { backgroundColor: COLORS.primary, height: 4 },
   stepLabelText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.grey400,
     textAlign: 'center',

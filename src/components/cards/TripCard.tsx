@@ -117,13 +117,13 @@ const styles = StyleSheet.create({
   },
   routeHeader: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.primary,
     letterSpacing: 1,
   },
   shipmentCodeTag: {
     fontFamily: FONTS.bold,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,
   },
   statusBadge: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   pendingDot: { backgroundColor: '#D97706' },
   statusBadgeText: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     textTransform: 'uppercase',
   },
   statusActiveText: {
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontFamily: FONTS.medium,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,
   },
   actionButton: {

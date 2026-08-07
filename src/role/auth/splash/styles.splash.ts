@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../../../constants";
+import { COLORS, FONT_SIZE, FONTS } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
   },
   subtitleText: {
     fontFamily: FONTS.semiBold, // Applied DM Sans Semi-Bold
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     color: COLORS.primary,
     letterSpacing: 3,
     marginTop: 4,

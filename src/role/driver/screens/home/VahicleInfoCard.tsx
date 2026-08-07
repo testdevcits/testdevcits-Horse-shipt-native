@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   tagBadgeText: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.goldDarkText,
   },
   vehicleMetaRow: {

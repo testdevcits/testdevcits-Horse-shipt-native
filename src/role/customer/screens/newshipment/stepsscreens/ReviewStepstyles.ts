@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../../constants';
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.goldBorder,
     },
     stepChipText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.goldDarkText,
         letterSpacing: 0.5,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     statusBadgeText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.greenSuccess,
     },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         color: COLORS.goldDarkText,
     },
     bannerSub: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.textSecondary,
         marginTop: 2,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.goldBorder,
     },
     bannerBadgeText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.primary,
     },
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.goldLightBg,
     },
     miniEditText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.primary,
     },
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         paddingBottom: SPACING.sm,
     },
     routeNodeLabel: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.bold,
         color: COLORS.grey500,
         letterSpacing: 0.5,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     routeDateText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.textSecondary,
     },
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.sm,
     },
     horseTagText: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.bold,
         color: COLORS.grey700,
     },
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
         color: COLORS.textPrimary,
     },
     subFieldLabel: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
         marginBottom: 6,
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.sm,
     },
     photoOverlayText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.white,
     },
@@ -368,14 +368,14 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     noPhotoText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.grey500,
     },
 
     /* DOCUMENTS SECTION */
     docsSectionSub: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginBottom: SPACING.md,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
         color: COLORS.textPrimary,
     },
     docFileName: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginTop: 1,
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.sm,
     },
     uploadedBadgeText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.greenSuccess,
     },
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.goldBorder,
     },
     uploadQuickText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.primary,
     },
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.sm,
     },
     notesLabel: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.grey700,
         marginBottom: 2,

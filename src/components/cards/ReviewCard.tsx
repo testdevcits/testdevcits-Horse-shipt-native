@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Star, MapPin, Package, User } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 
 interface ReviewCardProps {
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
   },
   shipperSubText: {
     fontFamily: FONTS.regular,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,
   },
   dateText: {
     fontFamily: FONTS.medium,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     color: '#94A3B8',
   },
   starRow: {
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   ratingNumberText: {
     fontFamily: FONTS.bold,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     color: '#B45309',
     marginLeft: 4,
   },
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   shipmentCodeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#475569',
   },
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   routeText: {
     flex: 1,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: '#334155',
   },

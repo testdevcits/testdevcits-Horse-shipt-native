@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#FDE68A',
   },
   securityBannerText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: '#8C5226',
   },

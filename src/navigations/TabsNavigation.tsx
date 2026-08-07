@@ -6,7 +6,7 @@ import { Home, List, MapPin, User } from 'lucide-react-native'; // Professional 
 // Import local screens
 
 // Import design systems
-import { COLORS, FONTS } from '../constants'; // Adjust this path to match your structure
+import { COLORS, FONT_SIZE, FONTS } from '../constants'; // Adjust this path to match your structure
 
 // Import our newly created location tracker hook
 import { useActiveLocationTracker } from '../hooks/useActiveLocationTracker';
@@ -69,7 +69,7 @@ const TabsNavigation = () => {
         // Custom layout and border definitions
         tabBarLabelStyle: {
           fontFamily: FONTS.medium, // Applied custom DM Sans typography
-          fontSize: 11,
+          fontSize: FONT_SIZE.sm,
           letterSpacing: 0.2,
           marginTop: -2,
         },

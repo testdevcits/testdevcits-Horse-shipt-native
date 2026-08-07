@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary || '#1E293B',
   },
   shipmentRowSub: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary || '#64748B',
     marginTop: 2,

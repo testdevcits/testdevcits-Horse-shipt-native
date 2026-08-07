@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../../constants';
 
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.goldBorder,
     },
     stepChipText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.goldDarkText,
         letterSpacing: 0.5,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     statusBadgeText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.greenSuccess,
     },
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         color: COLORS.textPrimary,
     },
     headerSubtitle: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginTop: 2,
@@ -119,13 +119,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardTitle: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
         letterSpacing: 0.6,
     },
     requiredStar: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.error,
     },
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.sm,
     },
     infoTagText: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.primary,
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.md,
     },
     helperText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.textLight,
         marginTop: SPACING.xs,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         marginTop: SPACING.xs,
     },
     errorText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.error,
     },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     fieldLabel: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
         marginBottom: 6,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     dateLabelBadge: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.bold,
         color: COLORS.grey500,
         letterSpacing: 0.5,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     tipSub: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.goldDarkText,
         lineHeight: 17,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     secondaryBtnText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
     },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     primaryBtnText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.bold,
         color: COLORS.white,
     },

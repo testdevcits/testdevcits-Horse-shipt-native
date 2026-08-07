@@ -20,7 +20,7 @@ import {
 } from 'lucide-react-native';
 
 // Import your constants
-import { COLORS, FONTS, SPACING, RADIUS, SCREEN_WIDTH } from '../../../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, SCREEN_WIDTH, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         marginRight: 6,
     },
     statusText: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.medium,
         color: COLORS.textSecondary,
         textTransform: 'uppercase',
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         marginHorizontal: SPACING.md,
     },
     statLabel: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.medium,
         color: COLORS.textLight,
     },
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
         marginLeft: SPACING.sm,
     },
     addressLabel: {
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         fontFamily: FONTS.bold,
         color: COLORS.textLight,
         textTransform: 'uppercase',

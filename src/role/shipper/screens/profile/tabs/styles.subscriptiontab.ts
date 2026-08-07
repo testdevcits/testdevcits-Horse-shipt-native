@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     borderColor: '#BFDBFE',
   },
   statusBadgeText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
   },
   statusBadgeTextSuccess: {
@@ -354,7 +354,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs || 4,
   },
   viewPdfBtnText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: COLORS.primary || '#A06333',
   },

@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   amberDot: { backgroundColor: '#D97706' },
   statusPillText: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     letterSpacing: 0.5,
   },
   greenPillText: { color: '#15803D' },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   routeLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.primary,
     letterSpacing: 1.2,
     marginBottom: 4,

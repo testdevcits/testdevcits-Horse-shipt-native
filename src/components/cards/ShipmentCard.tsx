@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { MoveRight, Calendar, User, Info, ChevronRight, MapPin } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 import { formatDate } from '../../utils/helpers';
 
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   dateLabel: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textLight,
     marginTop: 2,
   },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   statusText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     letterSpacing: 0.3,
   },

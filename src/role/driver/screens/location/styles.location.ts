@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONT_SIZE, FONTS } from "../../../../constants";
 
 
 const styles = StyleSheet.create({
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   cardHeaderSubtitle: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.lightGrey,
     marginTop: 2,
   },
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   highlightLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     letterSpacing: 0.5,
     marginBottom: 4,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   tipLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.primary,
     letterSpacing: 0.5,
     marginBottom: 6,

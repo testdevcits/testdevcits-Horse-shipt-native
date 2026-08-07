@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS, SPACING } from "../../../../constants";
+import { COLORS, FONT_SIZE, FONTS, SPACING } from "../../../../constants";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   activeCountBadge: { backgroundColor: 'rgba(255,255,255,0.3)' },
   countText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },

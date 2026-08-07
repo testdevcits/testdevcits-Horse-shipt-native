@@ -14,6 +14,7 @@ import {
 import { X, Star, User } from 'lucide-react-native';
 import {
   COLORS,
+  FONT_SIZE,
   FONTS,
   RADIUS,
   SPACING,
@@ -215,7 +216,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   inputLabel: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
     marginBottom: 8,
@@ -239,7 +241,7 @@ const styles = StyleSheet.create({
   },
   confirmBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: 15 },
   footerText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 16,

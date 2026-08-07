@@ -11,7 +11,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Plus } from 'lucide-react-native';
 import { AppText } from '../components';
-import { COLORS, FONTS } from '../constants';
+import { COLORS, FONT_SIZE, FONTS } from '../constants';
 import imageIndex from '../assets/images/imageIndex';
 
 // Screens
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   tabLabelFocused: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#A06333',
     marginTop: 3,

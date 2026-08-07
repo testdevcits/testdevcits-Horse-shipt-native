@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     padding: SPACING.sm,
   },
   coordLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary || '#64748B',
     letterSpacing: 0.5,
@@ -239,7 +239,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   exactPointNoteText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary || '#64748B',
   },

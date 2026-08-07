@@ -654,7 +654,8 @@ const styles = StyleSheet.create({
   },
 
   captionText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 4,
@@ -726,7 +727,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   fileCaptionText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 2,
@@ -748,7 +749,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   removeContractText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: COLORS.error,
   },

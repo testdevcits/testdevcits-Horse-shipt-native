@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   badgePillText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
   },

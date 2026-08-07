@@ -376,7 +376,10 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           onPress={handleEditDocumentsNotes}
                         >
                           <Edit3 size={14} color={COLORS.primary} />
-                          <AppText style={{ color: COLORS.primary, fontSize: 12, fontFamily: FONTS.semiBold }}>
+                          <AppText style={{
+                            color: COLORS.primary, fontSize: FONT_SIZE.sm,
+                            fontFamily: FONTS.semiBold
+                          }}>
                             Edit Docs / Notes
                           </AppText>
                         </TouchableOpacity>
@@ -614,7 +617,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timelineLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -741,7 +744,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
   },
   summaryBoxHeader: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -836,7 +839,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   logSectionHeader: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -867,7 +870,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   logTimeText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textLight,
   },
@@ -911,7 +914,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   docSub: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.goldDarkText,
   },

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 
 const { width } = Dimensions.get('window');
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
   },
   message: {
     fontFamily: FONTS.medium,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     color: COLORS.textSecondary,
     lineHeight: 16,
   },

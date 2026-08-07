@@ -25,7 +25,7 @@ import {
   Truck,
 } from 'lucide-react-native';
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
 import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
@@ -378,7 +378,8 @@ const styles = StyleSheet.create({
     marginRight: SPACING.xs,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -440,7 +441,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   lastUpdated: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 2,
@@ -490,7 +492,8 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   etaLabel: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
@@ -510,7 +513,7 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   distanceText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },
@@ -544,12 +547,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationTitle: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   locationSub: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 1,

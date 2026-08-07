@@ -102,7 +102,7 @@ const PostLoadScreen = () => {
   const handleTrackShipment = (item: any) => {
     const shipmentId = item?.shipment?._id || item?._id || item?.id;
     if (shipmentId) {
-      navigation.navigate('ShipperTrackShipment', { shipmentId });
+      navigation.navigate('LiveTracking', { shipmentId });
     }
   };
 

@@ -531,7 +531,10 @@ const styles = StyleSheet.create({
     marginRight: SPACING.md,
   },
   resultMain: { fontSize: 14, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
-  resultSub: { fontSize: 12, fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2 },
+  resultSub: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2
+  },
   emptyState: { padding: 40, alignItems: 'center' },
   emptyText: { color: COLORS.textSecondary, fontSize: 15, fontFamily: FONTS.regular },
 
@@ -598,7 +601,7 @@ const styles = StyleSheet.create({
   dotOuter: { width: 14, height: 14, borderRadius: RADIUS.round, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
   dotInner: { width: 6, height: 6, borderRadius: RADIUS.round, backgroundColor: COLORS.primary },
   line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: SPACING.xs },
-  label: { fontSize: 11, fontFamily: FONTS.bold, color: COLORS.textSecondary, letterSpacing: 1.5 },
+  label: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.textSecondary, letterSpacing: 1.5 },
   addressText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
   skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: RADIUS.xs, marginTop: 10 },
   confirmButton: {
@@ -608,7 +611,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  confirmButtonText: { color: COLORS.white, fontSize: 12, fontFamily: FONTS.bold },
+  confirmButtonText: {
+    color: COLORS.white, fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold
+  },
 });
 
 export default LocationPicker;

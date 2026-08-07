@@ -160,7 +160,10 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
               leftIcon={
                 <View style={styles.phonePrefix}>
                   <AppText style={{ fontSize: 13 }}>🇺🇸</AppText>
-                  <AppText style={{ fontSize: 12, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
+                  <AppText style={{
+                    fontSize: FONT_SIZE.sm,
+                    color: COLORS.textSecondary, fontFamily: FONTS.medium
+                  }}>
                     +1
                   </AppText>
                 </View>
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   charCounter: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary || '#64748B',
   },

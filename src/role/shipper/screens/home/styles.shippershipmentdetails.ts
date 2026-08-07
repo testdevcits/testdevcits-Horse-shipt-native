@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
   },
   heroBannerBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: COLORS.white,
     textTransform: 'uppercase',
@@ -92,7 +93,8 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   horseCountTagText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     padding: SPACING.sm,
   },
   dateCardLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   specStatLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timelineLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#A06333',
     textTransform: 'uppercase',
@@ -333,7 +335,7 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.sm,
   },
   totalDistanceLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
@@ -422,7 +424,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   horseMiniPillText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#A06333',
     textTransform: 'uppercase',
@@ -444,7 +446,7 @@ const styles = StyleSheet.create({
     padding: SPACING.sm,
   },
   horseSpecLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
@@ -476,7 +478,7 @@ const styles = StyleSheet.create({
     color: '#A06333',
   },
   notesDateText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
   },
@@ -528,7 +530,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   summaryCodeLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',

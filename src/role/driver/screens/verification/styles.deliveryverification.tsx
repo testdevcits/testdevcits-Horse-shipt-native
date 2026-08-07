@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONT_SIZE, FONTS } from "../../../../constants";
 
 const styles = StyleSheet.create({
     safeArea: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     },
     navSubtitle: {
         fontFamily: FONTS.medium,
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         color: COLORS.textLight,
         marginTop: 2,
     },
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
     },
     stepLabel: {
         fontFamily: FONTS.medium,
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
+
         color: COLORS.textLight,
         textAlign: 'center',
     },
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     },
     shipmentHeaderLabel: {
         fontFamily: FONTS.bold,
-        fontSize: 10,
+        fontSize: FONT_SIZE.xs,
         color: COLORS.textLight,
         letterSpacing: 0.5,
         marginBottom: 12,
@@ -137,7 +138,8 @@ const styles = StyleSheet.create({
     },
     badgeText: {
         fontFamily: FONTS.bold,
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
+
         color: COLORS.primary,
     },
     stopBox: {
@@ -229,7 +231,7 @@ const styles = StyleSheet.create({
     },
     successBannerText: {
         fontFamily: FONTS.bold,
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         color: COLORS.greenActive,
         marginLeft: 8,
     },
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
     },
     otpLabelDigits: {
         fontFamily: FONTS.medium,
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         color: COLORS.textLight,
         marginTop: 10,
         marginBottom: 20,

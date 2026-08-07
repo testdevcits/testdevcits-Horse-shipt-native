@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   notConnectedBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#92400E',
   },
@@ -94,7 +95,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   connectedBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#047857',
   },
@@ -131,7 +133,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#A06333',
   },
   stepperLabelActive: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#8C5226',
     marginTop: 4,
@@ -147,7 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   stepperLabelInactive: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: '#94A3B8',
     marginTop: 4,
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#FDE68A',
   },
   encryptionFooterText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#A06333',
     letterSpacing: 0.6,

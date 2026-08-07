@@ -306,7 +306,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   shipmentRowSub: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 2,
@@ -691,7 +692,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   succeededText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#03543F',
   },
@@ -799,7 +800,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   redCrossText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#EF4444',
   },

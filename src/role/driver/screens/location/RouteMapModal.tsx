@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   markerLabelText: {
     color: COLORS.white,
     fontFamily: FONTS.bold,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
   },
   markerIconCircle: {
     width: 28,
@@ -404,7 +404,8 @@ const styles = StyleSheet.create({
   metricItem: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   metricTextContent: { gap: 2 },
   metricLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
   },

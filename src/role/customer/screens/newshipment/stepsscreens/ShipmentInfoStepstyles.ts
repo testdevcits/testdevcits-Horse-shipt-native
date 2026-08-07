@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../../constants';
 
 
 const styles = StyleSheet.create({
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.xs,
     },
     requiredStar: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
+
         fontFamily: FONTS.medium,
         color: COLORS.error,
     },
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     helperText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.grey500,
         marginTop: SPACING.xs,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         marginTop: SPACING.xs,
     },
     errorText: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.medium,
         color: COLORS.error,
     },
@@ -166,13 +167,15 @@ const styles = StyleSheet.create({
         color: COLORS.textPrimary,
     },
     fileName: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
+
         fontFamily: FONTS.regular,
         color: COLORS.greenActive,
         marginTop: 2,
     },
     fileStatus: {
-        fontSize: 11,
+        fontSize: FONT_SIZE.sm,
+
         fontFamily: FONTS.regular,
         color: COLORS.grey400,
         marginTop: 2,
@@ -183,7 +186,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
         borderRadius: RADIUS.sm,
     },
-    miniUploadText: { fontSize: 12, fontFamily: FONTS.bold, color: COLORS.white },
+    miniUploadText: {
+        fontSize: FONT_SIZE.sm,
+        fontFamily: FONTS.bold, color: COLORS.white
+    },
     removeBtn: { padding: 8 },
 
     notesSection: { marginTop: SPACING.md },
@@ -210,7 +216,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.xs,
     },
     shareTrackingSubtext: {
-        fontSize: 12,
+        fontSize: FONT_SIZE.sm,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginTop: 6,

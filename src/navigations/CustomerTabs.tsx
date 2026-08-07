@@ -18,7 +18,7 @@ import NewShipment from '../role/customer/screens/newshipment/NewShipment';
 import MyHorses from '../role/customer/screens/myhorses/MyHorses';
 import ShipperList from '../role/customer/screens/chats/Shipperlist';
 import { AppText } from '../components';
-import { COLORS, FONTS } from '../constants';
+import { COLORS, FONT_SIZE, FONTS } from '../constants';
 import imageIndex from '../assets/images/imageIndex';
 
 const Tab = createBottomTabNavigator();
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   tabLabelFocused: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.brandBrown || '#A06333',
     marginTop: 3,

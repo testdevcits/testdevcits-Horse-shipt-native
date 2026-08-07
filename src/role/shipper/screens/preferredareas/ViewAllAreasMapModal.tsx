@@ -470,12 +470,14 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   countPillText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.semiBold,
     color: COLORS.primary,
   },
   modalSubTitle: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     lineHeight: 15,
@@ -521,7 +523,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   floatingBtnText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.semiBold,
     color: COLORS.textPrimary,
   },
@@ -566,7 +569,7 @@ const styles = StyleSheet.create({
     transform: [{ scale: 1.1 }],
   },
   customMarkerText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },
@@ -620,7 +623,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: COLORS.textPrimary,
     padding: 0,
@@ -678,7 +681,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   indexBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -706,12 +710,13 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   radiusPillText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: COLORS.primary,
   },
   coordsText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
   },
@@ -724,7 +729,7 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   emptyStateText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },

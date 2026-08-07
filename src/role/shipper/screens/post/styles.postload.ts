@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   badgePillText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
   },
@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   subFilterText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.medium,
     color: '#475569',
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
   },
   subFilterBadgeText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#475569',
   },
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF3C7',
   },
   statusBadgeText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: '#B45309',
     textTransform: 'uppercase',
@@ -270,7 +271,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   dateText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
   },
@@ -345,7 +347,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
   },
   myCodeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#334155',
   },
@@ -364,7 +367,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   myBadgePillText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     textTransform: 'uppercase',
   },
@@ -469,7 +472,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize"
   },
   priceValue: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#059669',
   },
@@ -494,7 +497,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   viewContractBtnText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#A06333',
   },
@@ -514,7 +517,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   trackShipmentBtnText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },
@@ -534,7 +537,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   reviewCustomerBtnText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },

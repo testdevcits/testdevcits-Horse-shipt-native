@@ -23,7 +23,7 @@ import {
 } from 'lucide-react-native';
 
 // Constants
-import { SPACING, RADIUS, COLORS, FONTS } from '../../../constants';
+import { SPACING, RADIUS, COLORS, FONTS, FONT_SIZE } from '../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
 import { AppText } from '../../../components';
 
@@ -320,7 +320,8 @@ const styles = StyleSheet.create({
     color: COLORS.grey900,
   },
   searchRowSub: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: COLORS.grey500,
     marginTop: 2,

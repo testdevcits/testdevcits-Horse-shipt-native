@@ -14,7 +14,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { X, MapPin, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
-import { COLORS } from '../../../../constants';
+import { COLORS, FONT_SIZE } from '../../../../constants';
 import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
 import shipperService from '../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../hooks/redux';
@@ -186,7 +186,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     leftIcon={
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                         <AppText>🇺🇸</AppText>
-                        <AppText style={{ fontSize: 12, color: COLORS.textSecondary }}>+1</AppText>
+                        <AppText style={{ fontSize: FONT_SIZE.sm, color: COLORS.textSecondary }}>+1</AppText>
                       </View>
                     }
                   />

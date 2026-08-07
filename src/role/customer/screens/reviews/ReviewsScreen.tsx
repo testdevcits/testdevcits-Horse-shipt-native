@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Star, MessageCircle } from 'lucide-react-native';
-import { COLORS, SPACING, FONTS, RADIUS } from '../../../../constants';
+import { COLORS, SPACING, FONTS, RADIUS, FONT_SIZE } from '../../../../constants';
 import { useReviews } from './useReviews';
 import {
   AppHeader,
@@ -101,7 +101,10 @@ const styles = StyleSheet.create({
   ratingNum: { fontSize: 22, fontFamily: FONTS.bold, color: COLORS.white },
   summaryText: { marginLeft: SPACING.lg },
   summaryTitle: { fontSize: 18, fontFamily: FONTS.bold, color: COLORS.white },
-  summarySub: { fontSize: 12, color: 'rgba(255,255,255,0.8)', marginTop: 2 },
+  summarySub: {
+    fontSize: FONT_SIZE.sm,
+    color: 'rgba(255,255,255,0.8)', marginTop: 2
+  },
 });
 
 export default ReviewsScreen;

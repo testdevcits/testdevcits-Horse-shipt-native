@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   sourceBadgeText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',

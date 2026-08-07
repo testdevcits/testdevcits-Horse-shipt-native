@@ -484,7 +484,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: SPACING.md,
     bottom: SPACING.sm,
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.regular,
     color: '#94A3B8',
   },
@@ -592,7 +593,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pendingHeaderLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#8C5226',
     letterSpacing: 0.5,
@@ -640,7 +642,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statusHeaderLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#92400E',
     letterSpacing: 0.5,
@@ -707,7 +710,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   responseHeaderLabel: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#065F46',
     letterSpacing: 0.5,
@@ -722,7 +726,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   answeredBadgeText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
+
     fontFamily: FONTS.bold,
     color: '#047857',
   },

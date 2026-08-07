@@ -25,7 +25,7 @@ import {
   Flag,
   Truck,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
 
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   },
   markerBadgeText: {
     color: COLORS.white,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
   },
   markerPin: {
@@ -553,7 +553,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: COLORS.success,
   },
-  statusPillText: { color: COLORS.white, fontSize: 12, fontFamily: FONTS.bold },
+  statusPillText: {
+    color: COLORS.white, fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold
+  },
   sideControls: {
     position: 'absolute',
     right: SPACING.lg,
@@ -598,7 +601,10 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.divider,
   },
   statBox: { flexDirection: 'row', gap: 10, alignItems: 'center' },
-  statLabel: { fontSize: 12, color: COLORS.textSecondary },
+  statLabel: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.textSecondary
+  },
   statValue: {
     fontSize: 15,
     color: COLORS.textPrimary,
@@ -617,7 +623,7 @@ const styles = StyleSheet.create({
   },
   addressTextCol: { flex: 1 },
   addressSubLabel: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
     textTransform: 'uppercase',
@@ -635,7 +641,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   legChipText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.textSecondary,
     fontFamily: FONTS.bold,
   },

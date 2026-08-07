@@ -240,8 +240,8 @@ const Notifications = () => {
               filter === 'all'
                 ? allCount
                 : filter === 'unread'
-                ? unreadCount
-                : readCount;
+                  ? unreadCount
+                  : readCount;
 
             return (
               <TouchableOpacity
@@ -295,8 +295,8 @@ const Notifications = () => {
                 activeFilter === 'all'
                   ? "You're all caught up! No notifications to show right now."
                   : activeFilter === 'unread'
-                  ? 'No unread notifications.'
-                  : 'No read notifications found.'
+                    ? 'No unread notifications.'
+                    : 'No read notifications found.'
               }
             />
           ) : null
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
   },
   countText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.grey700,
   },
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   notifTime: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: COLORS.grey400,
     marginTop: 6,
@@ -612,7 +612,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   selectAllToggleText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: '#94A3B8',
     textDecorationLine: 'underline',
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
     borderColor: '#059669',
   },
   batchMarkReadText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#34D399',
   },
@@ -649,7 +649,7 @@ const styles = StyleSheet.create({
     borderColor: '#DC2626',
   },
   batchDeleteText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: '#FCA5A5',
   },

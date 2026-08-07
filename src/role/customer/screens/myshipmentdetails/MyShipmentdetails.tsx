@@ -124,6 +124,7 @@ const MyShipmentDetails = ({ route, }: any) => {
             matching={matchingShippers}
             invited={invitedShippers}
             shipmentId={item?._id}
+            status={data?.status}
           />
         );
       default:

@@ -19,7 +19,7 @@ import {
 import customerService from '../../../../../api/services/customerService';
 import imageIndex from '../../../../../assets/images/imageIndex';
 
-const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
+const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited, showRequestButton = true }: any) => {
   const [inviting, setInviting] = useState(false);
   const [isInvited, setIsInvited] = useState(alreadyInvited);
 
@@ -105,24 +105,27 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited }: any) => {
           <AppText style={styles.requestedText}>Quote Requested</AppText>
         </View>
       ) : (
-        <TouchableOpacity
-          style={styles.inviteBtn}
-          onPress={handleInvite}
-          disabled={inviting}
-          activeOpacity={0.8}
-        >
-          {inviting ? (
-            <ActivityIndicator size="small" color={COLORS.white} />
-          ) : (
-            <AppText style={styles.inviteBtnText}>Request Quote</AppText>
-          )}
-        </TouchableOpacity>
+        showRequestButton && (
+          <TouchableOpacity
+            style={styles.inviteBtn}
+            onPress={handleInvite}
+            disabled={inviting}
+            activeOpacity={0.8}
+          >
+            {inviting ? (
+              <ActivityIndicator size="small" color={COLORS.white} />
+            ) : (
+              <AppText style={styles.inviteBtnText}>Request Quote</AppText>
+            )}
+          </TouchableOpacity>
+        )
       )}
     </View>
   );
 };
 
-const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
+const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
+
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -183,6 +186,7 @@ const FindShipperTab = ({ matching, invited, shipmentId }: any) => {
           profile={profile}
           shipmentId={shipmentId}
           alreadyInvited={invited?.includes(profile?.id)}
+          showRequestButton={status === "in_transit" || status === "delivered" ? false : true}
         />
       ))}
 

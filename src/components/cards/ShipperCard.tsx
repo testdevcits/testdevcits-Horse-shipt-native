@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { Star, MapPin, Heart, CheckCircle2 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants'; // Adjust paths
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants'; // Adjust paths
 import AppText from '../common/AppText';
 import imageIndex from '../../assets/images/imageIndex';
 
@@ -188,14 +188,14 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   ratingText: {
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.grey800,
   },
   reviewCount: {
     fontFamily: FONTS.regular,
     color: COLORS.grey500,
-    fontSize: 12,
+    fontSize: FONT_SIZE.sm,
   },
   divider: {
     height: 1,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   locationText: {
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.grey600,
     marginLeft: 4,
