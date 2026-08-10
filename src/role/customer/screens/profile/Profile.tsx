@@ -141,17 +141,28 @@ const Profile = ({ navigation }: any) => {
           {/* Avatar Section */}
           <View style={styles.avatarSection}>
             <View style={styles.imageWrapper}>
-              {/* Profile Image Logic - Handles nested .url from your JSON */}
-              {user?.profileImage ? (
-                <Image
-                  source={{ uri: user?.profileImage }}
-                  style={styles.avatar}
-                />
-              ) : (
-                <View style={[styles.avatar, styles.placeholderAvatar]}>
-                  <User size={40} color={COLORS.grey400} />
-                </View>
-              )}
+              {/* Profile Image Logic - Safely extracts string URL */}
+              {(() => {
+                const rawAvatar = (user?.profileImage || profile?.profileImage) as any;
+                const avatarUri =
+                  typeof rawAvatar === 'string'
+                    ? rawAvatar
+                    : rawAvatar?.url || rawAvatar?.uri;
+                const isValidAvatar =
+                  avatarUri &&
+                  typeof avatarUri === 'string' &&
+                  avatarUri.trim() !== '' &&
+                  avatarUri !== '/default-avatar.png' &&
+                  avatarUri !== '/images/default_profile.png';
+
+                return isValidAvatar ? (
+                  <Image source={{ uri: avatarUri }} style={styles.avatar} />
+                ) : (
+                  <View style={[styles.avatar, styles.placeholderAvatar]}>
+                    <User size={40} color={COLORS.grey400} />
+                  </View>
+                );
+              })()}
 
               {/* Loader Overlay: Shown only during upload */}
               {uploading && (

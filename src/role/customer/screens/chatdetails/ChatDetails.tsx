@@ -30,6 +30,7 @@ import ImagePicker, {
 import Toast from 'react-native-toast-message';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
 import imageIndex from '../../../../assets/images/imageIndex';
+import { set } from 'date-fns';
 
 const PhotoSourceSheet = lazy(
   () => import('../../../../components/common/PhotoSourceSheet'),
@@ -66,6 +67,7 @@ const ChatDetails = () => {
   const [inputText, setInputText] = useState('');
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
+  const [pickingImage, setPickingImage] = useState(false);
 
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
@@ -73,8 +75,12 @@ const ChatDetails = () => {
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
 
+    
+
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
-  const isLocked = Boolean(isChatLocked || shipment?.isChatLocked || shipment?.status === 'completed');
+  const isLocked = Boolean(
+    isChatLocked || shipment?.isChatLocked || shipment?.status === 'completed',
+  );
 
   const handleSend = async () => {
     if (isLocked) return;
@@ -137,10 +143,10 @@ const ChatDetails = () => {
   };
 
   const pickPhotoFromGallery = async () => {
-    if (isLocked) return;
+    if (isLocked || pickingImage) return;
     const hasPermission = await permissionService.request('gallery');
     if (!hasPermission) return;
-
+    setPickingImage(true);
     try {
       const image = await ImagePicker.openPicker({
         width: 1000,
@@ -163,13 +169,16 @@ const ChatDetails = () => {
       setShowPhotoSheet(false);
     } catch (e) {
       console.log(e);
+    } finally {
+      setPickingImage(false);
     }
   };
 
   const takeProfilePhoto = async () => {
-    if (isLocked) return;
+    if (isLocked || pickingImage) return;
     const hasPermission = await permissionService.request('camera');
     if (!hasPermission) return;
+    setPickingImage(true);
 
     try {
       const image = await ImagePicker.openCamera({
@@ -193,6 +202,8 @@ const ChatDetails = () => {
       setShowPhotoSheet(false);
     } catch (e) {
       console.log(e);
+    } finally {
+      setPickingImage(false);
     }
   };
 
@@ -215,10 +226,7 @@ const ChatDetails = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
         </TouchableOpacity>
-        <Image
-          source={imageIndex.AccountIcon}
-          style={styles.headerAvatar}
-        />
+        <Image source={imageIndex.AccountIcon} style={styles.headerAvatar} />
         <View style={styles.headerInfo}>
           <AppText style={styles.headerTitle}>{partnerName}</AppText>
           <AppText style={styles.headerSubtitle}>
@@ -308,7 +316,7 @@ const ChatDetails = () => {
         <Suspense fallback={null}>
           <PhotoSourceSheet
             visible={showPhotoSheet}
-            onClose={() => setShowPhotoSheet(false)}
+            onClose={() => setShowPhotoSheet(!showPhotoSheet)}
             onCamera={takeProfilePhoto}
             onGallery={pickPhotoFromGallery}
             hasImage={true}
@@ -320,5 +328,3 @@ const ChatDetails = () => {
 };
 
 export default ChatDetails;
-
-

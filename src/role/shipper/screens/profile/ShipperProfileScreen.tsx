@@ -30,7 +30,12 @@ import ConnectBankModal from '../home/ConnectBankModal';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 
-type TabType = 'Profile' | 'Shipment' | 'Payments' | 'Subscription' | 'Notification';
+type TabType =
+  | 'Profile'
+  | 'Shipment'
+  | 'Payments'
+  | 'Subscription'
+  | 'Notification';
 
 const ShipperProfileScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -59,12 +64,13 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   // Data states
   const [profileData, setProfileData] = useState<any>(null);
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
+
+
+ 
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
-  const [subscriptionStatusData, setSubscriptionStatusData] = useState<any>(null);
+  const [subscriptionStatusData, setSubscriptionStatusData] =
+    useState<any>(null);
 
-
-
-  console.log("======billingHistoryData========+++", billingHistoryData)
   const [settingsData, setSettingsData] = useState<any>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -86,7 +92,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [profileUploading, setProfileUploading] = useState(false);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [billingFilter, setBillingFilter] = useState<'All' | 'Invoices' | 'Payments' | 'Payouts'>('All');
+  const [billingFilter, setBillingFilter] = useState<
+    'All' | 'Invoices' | 'Payments' | 'Payouts'
+  >('All');
 
   // Notification Checkbox Toggles State
   const [notifications, setNotifications] = useState<any>({
@@ -275,14 +283,15 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   const fetchAllProfileData = async () => {
     try {
-      const [profRes, subRes, billRes, setRes, stripeRes, subStatusRes] = await Promise.all([
-        shipperService.getProfile().catch(() => null),
-        shipperService.getSubscriptionPlan().catch(() => null),
-        shipperService.getBillingHistory().catch(() => null),
-        shipperService.getSettings().catch(() => null),
-        shipperService.getStripeStatus().catch(() => null),
-        shipperService.getSubscriptionStatus().catch(() => null),
-      ]);
+      const [profRes, subRes, billRes, setRes, stripeRes, subStatusRes] =
+        await Promise.all([
+          shipperService.getProfile().catch(() => null),
+          shipperService.getSubscriptionPlan().catch(() => null),
+          shipperService.getBillingHistory().catch(() => null),
+          shipperService.getSettings().catch(() => null),
+          shipperService.getStripeStatus().catch(() => null),
+          shipperService.getSubscriptionStatus().catch(() => null),
+        ]);
 
       if (profRes?.data) {
         setProfileData(profRes.data);
@@ -307,6 +316,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         }
       }
       if (subRes?.data) {
+        console.log('Subscription Data:4444444444444444', subRes);
         setSubscriptionData(subRes.data);
       }
       if (billRes) {
@@ -339,7 +349,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     fetchAllProfileData();
   };
 
-  const handleToggleNotification = async (key: string, channel: 'email' | 'sms') => {
+  const handleToggleNotification = async (
+    key: string,
+    channel: 'email' | 'sms',
+  ) => {
     const updated = {
       ...notifications,
       [key]: {
@@ -356,7 +369,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     }
   };
 
-  const ratingVal = Number(profileData?.rating ?? profileData?.averageRating ?? 0.0);
+  const ratingVal = Number(
+    profileData?.rating ?? profileData?.averageRating ?? 0.0,
+  );
   const shipmentCount =
     profileData?.completedShipments ??
     profileData?.totalShipments ??
@@ -375,23 +390,31 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.tabBarScroll}
         >
-          {(['Profile', 'Shipment', 'Payments', 'Subscription', 'Notification'] as TabType[]).map(
-            tab => {
-              const isActive = activeTab === tab;
-              return (
-                <TouchableOpacity
-                  key={tab}
-                  style={[styles.tabItem, isActive && styles.tabItemActive]}
-                  onPress={() => setActiveTab(tab)}
+          {(
+            [
+              'Profile',
+              'Shipment',
+              'Payments',
+              'Subscription',
+              'Notification',
+            ] as TabType[]
+          ).map(tab => {
+            const isActive = activeTab === tab;
+            return (
+              <TouchableOpacity
+                key={tab}
+                style={[styles.tabItem, isActive && styles.tabItemActive]}
+                onPress={() => setActiveTab(tab)}
+              >
+                <AppText
+                  style={[styles.tabText, isActive && styles.tabTextActive]}
                 >
-                  <AppText style={[styles.tabText, isActive && styles.tabTextActive]}>
-                    {tab}
-                  </AppText>
-                  {isActive && <View style={styles.activeTabIndicator} />}
-                </TouchableOpacity>
-              );
-            },
-          )}
+                  {tab}
+                </AppText>
+                {isActive && <View style={styles.activeTabIndicator} />}
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
       </View>
 
@@ -411,15 +434,20 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           <>
             {/* TOP SECTION: BANNER IMAGE */}
             <View style={styles.bannerWrapper}>
-              <Image
-                source={
-                  bannerUrl || profileData?.bannerImage?.url
-                    ? { uri: bannerUrl || profileData?.bannerImage?.url }
-                    : imageIndex.Banner
-                }
-                style={styles.bannerImg}
-                resizeMode="cover"
-              />
+              {(() => {
+                const displayBanner =
+                  bannerUrl ||
+                  (typeof profileData?.bannerImage === 'string'
+                    ? profileData?.bannerImage
+                    : profileData?.bannerImage?.url);
+                return displayBanner ? (
+                  <Image
+                    source={{ uri: displayBanner }}
+                    style={styles.bannerImg}
+                    resizeMode="cover"
+                  />
+                ) : null;
+              })()}
               <TouchableOpacity
                 style={styles.editBannerBtn}
                 onPress={handleUploadBannerImage}
@@ -455,9 +483,15 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                     displayAvatar !== '/default-avatar.png';
 
                   return isValidAvatar ? (
-                    <Image source={{ uri: displayAvatar }} style={styles.avatarImg} />
+                    <Image
+                      source={{ uri: displayAvatar }}
+                      style={styles.avatarImg}
+                    />
                   ) : (
-                    <Image source={imageIndex.AccountIcon} style={styles.avatarImg} />
+                    <Image
+                      source={imageIndex.AccountIcon}
+                      style={styles.avatarImg}
+                    />
                   );
                 })()}
               </View>
@@ -516,10 +550,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           </>
         )}
 
-
-        {activeTab === 'Shipment' && (
-          <ShipmentTab navigation={navigation} />
-        )}
+        {activeTab === 'Shipment' && <ShipmentTab navigation={navigation} />}
 
         {activeTab === 'Payments' && (
           <PaymentsTab
@@ -537,6 +568,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             billingFilter={billingFilter}
             setBillingFilter={setBillingFilter}
             onOpenSubscriptionModal={openSubModal}
+            subsciptionPlans={subscriptionData?.plans ||[]}
           />
         )}
 

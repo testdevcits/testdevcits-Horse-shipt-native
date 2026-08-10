@@ -20,12 +20,18 @@ export const useProfile = () => {
       setLoading(true);
       const response = await customerService.getProfile();
       if (response.success && response.data) {
+        const imgObj = response.data?.profileImage as any;
+        const fetchedImg =
+          typeof imgObj === 'string'
+            ? imgObj
+            : imgObj?.url || imgObj?.uri || imgObj;
+
         setProfile(response.data);
         dispatch(
           updateUser({
             name: `${response.data?.firstName || ''} ${response.data?.lastName || ''}`.trim() || response.data?.name,
             email: response.data?.email,
-            profileImage: response.data?.profileImage as any,
+            profileImage: fetchedImg as any,
             phoneNumber: response.data?.phone,
             metadata: response.data,
           }),
@@ -59,8 +65,8 @@ export const useProfile = () => {
   };
 
   const uploadAvatar = async () => {
-    if (picking) return
-    setPicking(true)
+    if (picking) return;
+    setPicking(true);
     try {
       const image = await ImagePicker.openPicker({
         width: 400,
@@ -91,13 +97,19 @@ export const useProfile = () => {
       const response = await customerService.updateProfileImage(formData);
 
       if (response.success) {
+        const resImg = response.profileImage as any;
+        const newImgUrl =
+          typeof resImg === 'string'
+            ? resImg
+            : resImg?.url || resImg?.uri || resImg;
+
         setProfile((prev: any) => ({
           ...prev,
-          profileImage: response.profileImage,
+          profileImage: newImgUrl,
         }));
         dispatch(
           updateUser({
-            profileImage: response.profileImage as any,
+            profileImage: newImgUrl as any,
           }),
         );
         Toast.show({

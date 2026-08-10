@@ -19,21 +19,24 @@ const useChatDetails = (shipmentId: string) => {
       setLoading(true);
       let roomRes: any;
       if (isShipper) {
-        roomRes = await shipperService.getOrCreateChatRoom(shipmentId);
+        roomRes = await shipperService?.getOrCreateChatRoom(shipmentId);
       } else {
-        roomRes = await customerService.getChatRoom(shipmentId);
+        roomRes = await customerService?.getChatRoom(shipmentId);
       }
 
       if (roomRes?.success) {
-        setRoom(roomRes.room);
-        setShipment(roomRes.shipment);
 
-        const roomId = roomRes.roomId || roomRes.room?._id;
+        // console.log('Chat Room:======pickupLocation========', roomRes?.shipment?.pickupLocation);
+        // console.log('Chat Room:======deliveryLocation========', roomRes?.shipment?.deliveryLocation);
+
+        setRoom(roomRes?.room);
+        setShipment(roomRes?.shipment);
+        const roomId = roomRes?.roomId || roomRes?.room?._id;
         let msgRes: any;
         if (isShipper) {
-          msgRes = await shipperService.getChatRoomMessages(roomId);
+          msgRes = await shipperService?.getChatRoomMessages(roomId);
         } else {
-          msgRes = await customerService.getChatMessages(roomId);
+          msgRes = await customerService?.getChatMessages(roomId);
         }
 
         if (msgRes?.success) {
@@ -79,16 +82,16 @@ const useChatDetails = (shipmentId: string) => {
         } as any);
 
         if (isShipper) {
-          res = await shipperService.sendChatMessage(roomId, formData);
+          res = await shipperService?.sendChatMessage(roomId, formData);
         } else {
-          res = await customerService.sendMessage(roomId, formData);
+          res = await customerService?.sendMessage(roomId, formData);
         }
       } else {
         const payload = { message: text?.trim() || '' };
         if (isShipper) {
-          res = await shipperService.sendChatMessage(roomId, payload);
+          res = await shipperService?.sendChatMessage(roomId, payload);
         } else {
-          res = await customerService.sendMessage(roomId, payload);
+          res = await customerService?.sendMessage(roomId, payload);
         }
       }
 

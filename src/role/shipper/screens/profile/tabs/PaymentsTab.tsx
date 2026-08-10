@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   Modal,
   StyleSheet,
-  SafeAreaView,
+
   StatusBar,
   Platform,
 } from 'react-native';
@@ -16,6 +16,7 @@ import { AppText } from '../../../../../components';
 import { COLORS, FONTS, FONT_SIZE, SPACING, RADIUS } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props {
   stripeStatus: any;

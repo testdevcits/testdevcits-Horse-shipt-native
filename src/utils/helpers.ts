@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow } from 'date-fns';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 
 
 
@@ -19,12 +20,23 @@ export const getFormattedDate = (dateString: string) => {
 };
 
 
+// export const formatDate = (
+//   date?: any,
+//   formatPattern: string = 'MMM DD, YYYY',
+// ): string => {
+//   if (!date) return '';
+//   const m = moment(date);
+//   return m.isValid() ? m.format(formatPattern) : '';
+// };
+
 export const formatDate = (
-  date?: any,
-  formatPattern: string = 'MMM DD, YYYY',
+  date?: string | Date | number | null,
+  formatPattern: string = 'MMM D, YYYY hh:mm:ss A',
 ): string => {
   if (!date) return '';
-  const m = moment(date);
+
+  const m = moment.utc(date).tz('America/New_York');
+
   return m.isValid() ? m.format(formatPattern) : '';
 };
 

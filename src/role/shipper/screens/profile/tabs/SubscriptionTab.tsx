@@ -27,6 +27,7 @@ interface Props {
   billingFilter: 'All' | 'Invoices' | 'Payments' | 'Payouts';
   setBillingFilter: (filter: 'All' | 'Invoices' | 'Payments' | 'Payouts') => void;
   onOpenSubscriptionModal?: () => void;
+  subsciptionPlans?: any;
 }
 
 const SubscriptionTab: React.FC<Props> = ({
@@ -36,7 +37,13 @@ const SubscriptionTab: React.FC<Props> = ({
   billingFilter,
   setBillingFilter,
   onOpenSubscriptionModal,
+  subsciptionPlans
 }) => {
+
+
+  console.log('subsciptionPlans Data:', subsciptionPlans);
+
+  
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
   const [cancelingSub, setCancelingSub] = useState(false);
   const [cancellationResult, setCancellationResult] = useState<{
@@ -255,7 +262,7 @@ const SubscriptionTab: React.FC<Props> = ({
                 <AppText style={styles.planPrice}>
                   {isSubTrial
                     ? '$0.00 USD'
-                    : `$${latestSub?.amount ?? subscriptionData?.monthly?.amount ?? '19.99'} USD`}
+                    : `$${latestSub?.amount ?? subscriptionData?.monthly?.amount ?? '00.00'} USD`}
                 </AppText>
                 <AppText style={styles.planBillingFrequency}>
                   {isSubTrial ? 'Trial Period' : '/ billing cycle'}

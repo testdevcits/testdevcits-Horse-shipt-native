@@ -12,7 +12,8 @@ export const COLORS = {
   secondaryLight: '#5EEAD4',
 
   // Background
-  background: '#F8FAFC',
+  // background: '#F8FAFC',
+  background: '#f7f5f1',
   surface: '#FFFFFF',
 
   // Text
@@ -47,7 +48,6 @@ export const COLORS = {
   grey900: '#111827',
   lightGrey: '#94A3B8',
 
-
   // Misc
   transparent: 'transparent',
   shadow: 'rgba(0, 0, 0, 0.15)',
@@ -63,9 +63,6 @@ export const COLORS = {
   inputBorder: '#D1D5DB',
   inputFocus: '#2563EB',
   inputPlaceholder: '#94A3B8',
-
-
-
 
   goldPrimary: '#A37F3D',
   goldWarmPrimary: '#B5874A',
@@ -117,4 +114,4 @@ export const COLORS = {
   greenBadgeText: '#15803D',
 } as const;
 
-export default COLORS;// colors.ts
+export default COLORS; // colors.ts

@@ -28,6 +28,7 @@
     "date-fns": "^4.4.0",
     "formik": "^2.4.9",
     "lucide-react-native": "^1.24.0",
+    "moment-timezone": "^0.6.3",
     "react": "19.2.3",
     "react-native": "0.84.1",
     "react-native-background-actions": "^4.1.0",

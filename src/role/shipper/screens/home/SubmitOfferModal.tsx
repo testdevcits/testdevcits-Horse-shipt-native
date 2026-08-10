@@ -28,6 +28,8 @@ import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
+import { useNavigation } from '@react-navigation/native';
+
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -44,8 +46,15 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   shipmentCode,
   onSuccess,
 }) => {
+
+
+
+
+
+
   const sigRef = useRef<any>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  const navigation = useNavigation()
 
   const [totalPrice, setTotalPrice] = useState('');
   const [cancellationDays, setCancellationDays] = useState('');
@@ -62,6 +71,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   const [sigError, setSigError] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [isPicking, setIsPicking] = useState(false);
+
+
+
 
 
 
@@ -183,6 +195,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           text1: 'Submission Failed',
           text2: errorMsg,
         });
+
       }
     } catch (error: any) {
       console.error('Submit Offer Error:', error);
@@ -197,6 +210,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         text1: 'Submission Failed',
         text2: errorMsg,
       });
+
     } finally {
       setIsLoading(false);
     }
@@ -286,6 +300,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 }}
                 error={priceError}
                 leftIcon={<AppText style={styles.currencyPrefix}>$</AppText>}
+                maxLength={9}
               />
             </View>
 
@@ -305,6 +320,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   if (daysError) setDaysError('');
                 }}
                 error={daysError}
+                maxLength={2}
               />
               <AppText style={styles.captionText}>
                 Number of days customer can cancel this shipment
@@ -439,6 +455,12 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   <AppText style={styles.focusedErrorText}>{submitError}</AppText>
                 </View>
               )}
+              {
+                submitError &&
+                <TouchableOpacity style={[styles.submitBtn, { marginVertical: SPACING.md }]} onPress={() => navigation.navigate("Profile")}>
+                  <AppText style={styles.submitBtnText}>Go to Subscription Page</AppText>
+                </TouchableOpacity>
+              }
             </View>
 
             {/* 6. Action Buttons Row */}
@@ -468,6 +490,8 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
+
+
 
 
 
