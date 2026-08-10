@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   },
   stopLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     color: COLORS.textSecondary,
     letterSpacing: 0.6,
     marginBottom: 2,

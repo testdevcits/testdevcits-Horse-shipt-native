@@ -315,7 +315,7 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               placeholder="50"
               keyboardType="numeric"
               rightIcon={
-                <AppText style={{ fontSize: 13, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
+                <AppText style={{ fontSize: FONT_SIZE.md, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
                   km
                 </AppText>
               }

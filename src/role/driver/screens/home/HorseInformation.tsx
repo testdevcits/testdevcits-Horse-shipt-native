@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   gridLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
     marginBottom: 2,

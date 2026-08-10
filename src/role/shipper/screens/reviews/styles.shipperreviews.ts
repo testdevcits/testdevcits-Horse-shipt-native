@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xs,
   },
   summaryRatingText: {
-    fontSize: 32,
+    fontSize: FONT_SIZE.giant,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   starsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: SPACING.xs,
   },
   summarySubText: {
     fontSize: FONT_SIZE.sm,

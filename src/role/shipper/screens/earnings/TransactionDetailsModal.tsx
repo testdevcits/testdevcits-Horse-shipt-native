@@ -224,17 +224,17 @@ const styles = StyleSheet.create({
         borderColor: '#F3E5C2',
     },
     heroLabel: {
-        fontSize: FONT_SIZE.xs - 2,
+        fontSize: FONT_SIZE.xxs,
         fontFamily: FONTS.bold,
         color: COLORS.primary,
         letterSpacing: 0.8,
         textTransform: 'uppercase',
     },
     heroAmount: {
-        fontSize: 26,
+        fontSize: FONT_SIZE.display,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
-        marginVertical: 4,
+        marginVertical: SPACING.xs,
     },
     currencyText: {
         fontSize: FONT_SIZE.xs,

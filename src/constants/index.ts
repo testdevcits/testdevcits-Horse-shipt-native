@@ -8,4 +8,5 @@ export {
   RADIUS,
   FONT_SIZE,
   ICON_SIZE,
+  SIZES,
 } from './dimensions';

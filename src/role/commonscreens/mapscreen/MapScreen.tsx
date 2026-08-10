@@ -223,7 +223,7 @@ const autocompleteStyles = {
     shadowRadius: 10,
   },
   textInput: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.medium,
     color: COLORS.grey900,
     backgroundColor: 'transparent',
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   searchRowTitle: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.grey900,
   },

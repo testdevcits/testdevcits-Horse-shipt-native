@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   paymentLabel: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',

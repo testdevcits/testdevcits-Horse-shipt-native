@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS } from "../../../constants";
+import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
@@ -15,23 +15,23 @@ const styles = StyleSheet.create({
   },
 
   logoIcon: { width: 90, height: 90, marginTop: -45, alignSelf: "center" },
-  scrollContent: { paddingTop: SPACING.xl, paddingBottom: 40, flexGrow: 1 },
+  scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant, flexGrow: 1 },
   textHeader: { marginBottom: SPACING.xl, alignItems: 'center' },
   title: {
-    fontSize: 28, fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.display, fontFamily: FONTS.bold,
     color: COLORS.textPrimary, marginBottom: SPACING.xs,
   },
   subtitle: {
-    fontSize: 14, fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.md, fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
-    lineHeight: 20, paddingHorizontal: SPACING.md,
+    lineHeight: SPACING.xl, paddingHorizontal: SPACING.md,
   },
   captchaContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: COLORS.white,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.divider,
     borderRadius: RADIUS.sm,
     padding: SPACING.md,
@@ -40,16 +40,16 @@ const styles = StyleSheet.create({
   },
   captchaLeft: { flexDirection: 'row', alignItems: 'center' },
   checkbox: {
-    width: 24, height: 24, borderRadius: 4,
-    borderWidth: 2, borderColor: '#C1C1C1',
+    width: SPACING.xxl, height: SPACING.xxl, borderRadius: RADIUS.xs,
+    borderWidth: SIZES.borderWidthThick, borderColor: '#C1C1C1',
     marginRight: SPACING.md, backgroundColor: COLORS.white,
     justifyContent: 'center', alignItems: 'center'
   },
   checkboxActive: { borderColor: COLORS.primary },
-  checkInner: { width: 12, height: 12, backgroundColor: COLORS.primary, borderRadius: 2 },
-  captchaText: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textPrimary },
-  recaptchaLogo: { width: 30, height: 30 },
-  submitBtn: { backgroundColor: COLORS.primary, height: 56, borderRadius: RADIUS.md },
+  checkInner: { width: SPACING.md, height: SPACING.md, backgroundColor: COLORS.primary, borderRadius: RADIUS.xxs },
+  captchaText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textPrimary },
+  recaptchaLogo: { width: RADIUS.pill, height: RADIUS.pill },
+  submitBtn: { backgroundColor: COLORS.primary, height: SIZES.headerHeight, borderRadius: RADIUS.md },
 });
 
-export default styles
+export default styles;

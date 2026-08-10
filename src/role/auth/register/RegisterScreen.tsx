@@ -10,7 +10,7 @@ import {
     Platform,
 } from 'react-native';
 import { Apple } from 'lucide-react-native'; // Standard icons
-import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE, SIZES } from '../../../constants';
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -194,15 +194,15 @@ const styles = StyleSheet.create({
         gap: SPACING.sm,
     },
     title: {
-        fontSize: 28,
+        fontSize: FONT_SIZE.display,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
     description: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.medium,
         color: COLORS.textPrimary,
-        lineHeight: 20,
+        lineHeight: SPACING.xl,
         paddingHorizontal: SPACING.sm,
     },
     buttonContainer: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     dividerText: {
         color: COLORS.grey600,
         fontFamily: FONTS.medium,
-        fontSize: 16,
+        fontSize: FONT_SIZE.lg,
     },
     // Social Button Styles
     appleBtn: {
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         marginTop: SPACING.xl,
     },
     loginText: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         color: COLORS.grey600,
         fontFamily: FONTS.regular,
     },

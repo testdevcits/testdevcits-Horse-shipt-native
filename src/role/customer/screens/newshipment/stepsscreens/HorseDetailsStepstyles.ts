@@ -1,11 +1,11 @@
 
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../../constants';
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.white },
     scrollView: { flex: 1 },
-    scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
+    scrollContent: { padding: SPACING.lg, paddingBottom: SPACING.massive },
     titleRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.xl,
     },
     mainTitle: {
-        fontSize: 22,
+        fontSize: FONT_SIZE.title,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     noHorsesText: {
         flex: 1,
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         color: COLORS.primary,
         fontFamily: FONTS.medium,
     },
@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
     },
     line: { flex: 1, height: 1, backgroundColor: COLORS.grey300 },
     sectionLabel: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.grey500,
         marginHorizontal: 10,
     },
     row: { flexDirection: 'row', justifyContent: 'space-between' },
     radioLabel: {
-        fontSize: 15,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
         marginTop: SPACING.md,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
     },
     radioText: {
-        fontSize: 15,
+        fontSize: FONT_SIZE.lg,
         color: COLORS.textPrimary,
         fontFamily: FONTS.medium,
     },

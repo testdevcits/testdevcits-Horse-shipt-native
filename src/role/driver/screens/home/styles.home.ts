@@ -1,6 +1,6 @@
 // src/screens/home/styles.home.ts
-import { StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../../../../constants";
+import { StyleSheet } from 'react-native';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.lg,
+    paddingBottom: SPACING.giant,
   },
   center: {
     flex: 1,
@@ -24,37 +24,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.background,
   },
-  // Empty State Styles
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: SPACING.xl,
+  },
+  loaderText: {
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.md,
+  },
   emptyCard: {
     backgroundColor: COLORS.white,
     borderWidth: 1.5,
     borderColor: COLORS.goldBorder,
-    borderRadius: 8,
-    padding: 24,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.xxl,
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: SPACING.sm2,
+    marginBottom: SPACING.xl,
+  },
+  emptyContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.md,
+    padding: SPACING.xl,
+    alignItems: 'center',
+    marginTop: SPACING.sm2,
+    marginBottom: SPACING.xl,
   },
   emptyText: {
     fontFamily: FONTS.regular,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.lg,
   },
   refreshBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm2,
+    borderRadius: RADIUS.sm,
   },
   refreshBtnText: {
     fontFamily: FONTS.bold,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     color: COLORS.white,
-    marginLeft: 8,
+    marginLeft: SPACING.sm,
   },
 });
 

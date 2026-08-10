@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
     paddingRight: SPACING.xs,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },
@@ -559,7 +559,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   priceTagAmount: {
-    fontSize: 20,
+    fontSize: FONT_SIZE.xxl,
     fontFamily: FONTS.bold,
     color: COLORS.white,
     lineHeight: 24,
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkItemText: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
   },
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   planTabPrice: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },

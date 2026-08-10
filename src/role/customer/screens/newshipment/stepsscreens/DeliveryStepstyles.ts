@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     headerTextGroup: { flex: 1 },
     headerTitle: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
     },
     sectionSubtitle: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginBottom: SPACING.md,
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
     },
     dateValueText: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.semiBold,
         color: COLORS.textPrimary,
     },
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     },
     infoTextContent: { flex: 1 },
     infoTitle: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.goldDarkText,
         marginBottom: 2,

@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locLabel: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textLight,
     textTransform: 'uppercase',
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   routeLocLabel: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: '#64748B',
     textTransform: 'uppercase',
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDE68A',
   },
   metaLabel: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: '#92400E',
     textTransform: 'uppercase',

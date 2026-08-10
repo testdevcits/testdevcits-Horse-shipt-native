@@ -7,25 +7,41 @@ export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
 
 export const SPACING = {
+  xxs: 2,
   xs: 4,
+  xs2: 6,
   sm: 8,
+  sm2: 10,
+  md: 12,
+  md2: 14,
+  lg: 16,
+  lg2: 18,
+  xl: 20,
+  xxl: 24,
+  xxxl: 32,
+  giant: 40,
+  huge: 48,
+  massive: 60,
+} as const;
+
+export const RADIUS = {
+  xxs: 2,
+  xs: 4,
+  xs2: 6,
+  sm: 8,
+  sm2: 10,
   md: 12,
   lg: 16,
   xl: 20,
   xxl: 24,
-  xxxl: 32,
-} as const;
-
-export const RADIUS = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
+  pill: 30,
+  circle: 50,
   round: 999,
 } as const;
 
 export const FONT_SIZE = {
+  xxs: 8,
+  mini: 9,
   xs: 10,
   sm: 12,
   md: 14,
@@ -35,14 +51,31 @@ export const FONT_SIZE = {
   title: 22,
   heading: 24,
   display: 28,
+  hero: 30,
+  giant: 32,
 } as const;
 
 export const ICON_SIZE = {
+  mini: 12,
   xs: 14,
   sm: 18,
   md: 22,
   lg: 26,
   xl: 32,
+  xxl: 40,
+  giant: 48,
+} as const;
+
+export const SIZES = {
+  borderWidthThin: 1,
+  borderWidthThick: 2,
+  avatarSm: 32,
+  avatarMd: 40,
+  avatarLg: 48,
+  avatarXl: 64,
+  buttonHeight: 48,
+  headerHeight: 56,
+  inputHeight: 48,
 } as const;
 
 export default {
@@ -52,4 +85,5 @@ export default {
   RADIUS,
   FONT_SIZE,
   ICON_SIZE,
+  SIZES,
 };

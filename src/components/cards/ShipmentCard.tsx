@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { MoveRight, Calendar, User, Info, ChevronRight, MapPin } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
 import AppText from '../common/AppText';
 import { formatDate } from '../../utils/helpers';
 
@@ -100,27 +100,27 @@ const styles = StyleSheet.create({
   },
   shipmentCode: {
     fontFamily: FONTS.bold,
-    fontSize: 16,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
     letterSpacing: 0.5,
   },
   dateLabel: {
     fontSize: FONT_SIZE.sm,
     color: COLORS.textLight,
-    marginTop: 2,
+    marginTop: SPACING.xxs,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
+    paddingHorizontal: SPACING.sm2,
+    paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.xl,
   },
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginRight: 6,
+    width: SPACING.xs2,
+    height: SPACING.xs2,
+    borderRadius: RADIUS.xs,
+    marginRight: SPACING.xs2,
   },
   statusText: {
     fontSize: FONT_SIZE.sm,
@@ -140,37 +140,37 @@ const styles = StyleSheet.create({
   },
   routeLineContainer: {
     alignItems: 'center',
-    marginRight: 12,
-    height: 50,
+    marginRight: SPACING.md,
+    height: RADIUS.circle,
     justifyContent: 'space-between',
   },
   routeDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderWidth: 2,
+    width: SPACING.sm2,
+    height: SPACING.sm2,
+    borderRadius: RADIUS.xs2,
+    borderWidth: SIZES.borderWidthThick,
     backgroundColor: COLORS.white,
   },
   line: {
-    width: 1,
+    width: SIZES.borderWidthThin,
     flex: 1,
     backgroundColor: COLORS.divider,
-    marginVertical: 2,
+    marginVertical: SPACING.xxs,
     borderStyle: 'dashed', // Dashing requires more complex implementation in RN, so we use a solid line or a dedicated component
   },
   locations: {
     flex: 1,
     justifyContent: 'space-between',
-    height: 60,
+    height: SPACING.massive,
   },
   locationTitle: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
   },
   horseImg: {
-    width: 60,
-    height: 60,
+    width: SPACING.massive,
+    height: SPACING.massive,
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.grey100,
     marginLeft: SPACING.md,
@@ -181,37 +181,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: SPACING.lg,
     paddingTop: SPACING.md,
-    borderTopWidth: 1,
+    borderTopWidth: SIZES.borderWidthThin,
     borderTopColor: COLORS.grey100,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: SPACING.md,
   },
   metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: SPACING.xs2,
   },
   metaValue: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
   divider: {
-    width: 1,
-    height: 14,
+    width: SIZES.borderWidthThin,
+    height: SPACING.md2,
     backgroundColor: COLORS.divider,
   },
   chevronCircle: {
     backgroundColor: COLORS.primary,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
+    width: SIZES.avatarSm,
+    height: SIZES.avatarSm,
+    borderRadius: RADIUS.lg,
     alignItems: 'center',
-  }
+    justifyContent: 'center',
+  },
 });
 
 export default memo(ShipmentCard);

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS } from "../../../../constants";
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from "../../../../constants";
 
 
 const styles = StyleSheet.create({
@@ -51,82 +51,82 @@ const styles = StyleSheet.create({
   },
   cardHeaderTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 16,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
   },
   cardHeaderSubtitle: {
     fontFamily: FONTS.regular,
     fontSize: FONT_SIZE.sm,
     color: COLORS.lightGrey,
-    marginTop: 2,
+    marginTop: SPACING.xxs,
   },
   highlightInfoBox: {
     backgroundColor: COLORS.goldLightBg,
     borderWidth: 1.5,
     borderColor: COLORS.goldBorder,
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    marginBottom: 20,
+    borderRadius: RADIUS.sm,
+    paddingVertical: SPACING.md2,
+    paddingHorizontal: SPACING.lg,
+    marginBottom: SPACING.xl,
   },
   highlightLabel: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     letterSpacing: 0.5,
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   driverName: {
     fontFamily: FONTS.bold,
-    fontSize: 16,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   coordinateText: {
     fontFamily: FONTS.medium,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     color: COLORS.grey400,
   },
   goldButton: {
     flexDirection: 'row',
     backgroundColor: COLORS.primary,
-    height: 48,
-    borderRadius: 8,
+    height: SIZES.buttonHeight,
+    borderRadius: RADIUS.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: SPACING.md,
   },
   autoTrackActiveButton: {
     backgroundColor: '#374151',
   },
   btnIcon: {
-    marginRight: 8,
+    marginRight: SPACING.sm,
   },
   buttonText: {
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.white,
   },
   tipCard: {
     backgroundColor: COLORS.white,
     borderWidth: 1.5,
     borderColor: COLORS.goldBorder,
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.lg,
   },
   tipLabel: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
     color: COLORS.primary,
     letterSpacing: 0.5,
-    marginBottom: 6,
+    marginBottom: SPACING.xs2,
   },
   tipDescription: {
     fontFamily: FONTS.regular,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     color: COLORS.lightGrey,
-    lineHeight: 18,
+    lineHeight: SPACING.lg2,
   },
 });
 
-export default styles
+export default styles;

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   slotBadgeText: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary || '#64748B',
     letterSpacing: 0.5,

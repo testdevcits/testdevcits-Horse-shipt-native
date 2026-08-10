@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { WifiOff, Wifi, RefreshCw } from 'lucide-react-native';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
-import { COLORS, FONTS } from '../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, ICON_SIZE } from '../../constants';
 import AppText from './AppText';
 
 export const OfflineBanner: React.FC = () => {
@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 9999,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingVertical: SPACING.sm2,
+    paddingHorizontal: SPACING.lg,
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -118,19 +118,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: {
-    marginRight: 8,
+    marginRight: SPACING.sm,
   },
   text: {
     color: COLORS.white,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
     flex: 1,
   },
   retryButton: {
-    padding: 6,
-    borderRadius: 12,
+    padding: SPACING.xs2,
+    borderRadius: RADIUS.md,
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    marginLeft: 8,
+    marginLeft: SPACING.sm,
   },
 });
 

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   activeTab: { backgroundColor: COLORS.primary },
   tabText: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },

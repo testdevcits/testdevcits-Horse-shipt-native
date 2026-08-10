@@ -6,7 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
     height: 100,
   },
   title: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
     color: '#333333',
     marginBottom: SPACING.md,
     textAlign: 'center',
   },
   description: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.regular,
     color: '#666666',
     textAlign: 'center',

@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     borderColor: '#F3E5C2',
   },
   breedTagText: {
-    fontSize: FONT_SIZE.xs - 1,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.semiBold,
     color: COLORS.primary,
   },
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   pillLabel: {
-    fontSize: FONT_SIZE.xs - 2,
+    fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     borderColor: '#A7F3D0',
   },
   docBadgeTextSuccess: {
-    fontSize: FONT_SIZE.xs - 1,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.semiBold,
     color: '#047857',
   },
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   notesHeading: {
-    fontSize: FONT_SIZE.xs - 1,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
     textTransform: 'uppercase',

@@ -37,6 +37,7 @@ import {
   RADIUS,
   FONT_SIZE,
   ICON_SIZE,
+  SIZES,
 } from '../../../constants';
 import AppText from '../AppText';
 import { Button } from '../..';
@@ -522,21 +523,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   resultIcon: {
-    width: 40,
-    height: 40,
+    width: SIZES.avatarMd,
+    height: SIZES.avatarMd,
     borderRadius: RADIUS.xl,
     backgroundColor: COLORS.grey50,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  resultMain: { fontSize: 14, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
+  resultMain: { fontSize: FONT_SIZE.md, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
   resultSub: {
     fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: 2
+    fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: SPACING.xxs
   },
-  emptyState: { padding: 40, alignItems: 'center' },
-  emptyText: { color: COLORS.textSecondary, fontSize: 15, fontFamily: FONTS.regular },
+  emptyState: { padding: SPACING.giant, alignItems: 'center' },
+  emptyText: { color: COLORS.textSecondary, fontSize: FONT_SIZE.lg, fontFamily: FONTS.regular },
 
   // Marker
   markerFixed: {

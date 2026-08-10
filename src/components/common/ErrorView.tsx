@@ -2,15 +2,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { memo } from 'react'
 import { AlertCircle, RefreshCcw } from 'lucide-react-native';
 import AppText from './AppText';
-import { COLORS, FONTS, RADIUS } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE } from '../../constants';
 
 const ErrorView = ({ message, onRetry }: { message: string; onRetry: () => void }) => (
     <View style={styles.centerContainer}>
-        <AlertCircle size={48} color={COLORS.error} />
+        <AlertCircle size={ICON_SIZE.giant} color={COLORS.error} />
         <AppText style={styles.errorTitle}>Oops! Something went wrong</AppText>
         <AppText style={styles.errorMessage}>{message}</AppText>
         <TouchableOpacity style={styles.retryBtn} onPress={onRetry}>
-            <RefreshCcw size={16} color={COLORS.white} style={{ marginRight: 8 }} />
+            <RefreshCcw size={ICON_SIZE.xs} color={COLORS.white} style={{ marginRight: SPACING.sm }} />
             <AppText style={styles.retryText}>Try Again</AppText>
         </TouchableOpacity>
     </View>
@@ -23,27 +23,27 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 40,
-        marginTop: 60,
+        padding: SPACING.giant,
+        marginTop: SPACING.massive,
     },
     errorTitle: {
         fontFamily: FONTS.bold,
-        fontSize: 18,
+        fontSize: FONT_SIZE.xl,
         color: COLORS.error,
-        marginTop: 16,
+        marginTop: SPACING.lg,
     },
     errorMessage: {
         textAlign: 'center',
         color: COLORS.textSecondary,
-        marginTop: 8,
-        marginBottom: 24,
+        marginTop: SPACING.sm,
+        marginBottom: SPACING.xxl,
     },
     retryBtn: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: COLORS.primary,
-        paddingHorizontal: 24,
-        paddingVertical: 12,
+        paddingHorizontal: SPACING.xxl,
+        paddingVertical: SPACING.md,
         borderRadius: RADIUS.round,
     },
     retryText: {

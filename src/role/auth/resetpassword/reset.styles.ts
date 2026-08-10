@@ -1,11 +1,11 @@
 import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS } from "../../../constants";
+import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
 
 export default StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
   headerImage: { width: SCREEN_WIDTH },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.18)' },
-  backBtn: { padding: 20, marginTop: Platform.OS === 'ios' ? 40 : 20 },
+  backBtn: { padding: SPACING.xl, marginTop: Platform.OS === 'ios' ? SPACING.giant : SPACING.xl },
   keyboardView: { flex: 1, marginTop: -RADIUS.xl * 2 },
   contentCard: {
     flex: 1, // Crucial for 85% height logic
@@ -30,20 +30,20 @@ export default StyleSheet.create({
     justifyContent: 'center', alignItems: 'center',
     borderWidth: 1.5, borderColor: COLORS.primary,
   },
-  logoIcon: { width: 40, height: 40, tintColor: COLORS.goldDarkText },
-  scrollContent: { paddingTop: SPACING.xl, paddingBottom: 40, flexGrow: 1 },
+  logoIcon: { width: SIZES.avatarMd, height: SIZES.avatarMd, tintColor: COLORS.goldDarkText },
+  scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant, flexGrow: 1 },
   textHeader: { marginBottom: SPACING.xl, alignItems: 'center' },
-  title: { fontSize: 28, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
-  subtitle: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: 8, lineHeight: 20, paddingHorizontal: 10 },
+  title: { fontSize: FONT_SIZE.display, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
+  subtitle: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: SPACING.sm, lineHeight: SPACING.xl, paddingHorizontal: SPACING.sm2 },
   form: { gap: SPACING.sm },
   submitBtn: {
     backgroundColor: COLORS.primary,
-    height: 56,
+    height: SIZES.headerHeight,
     borderRadius: RADIUS.md,
     marginTop: SPACING.lg,
     shadowColor: COLORS.primary,
     shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowRadius: SPACING.sm,
     elevation: 5
   },
 });

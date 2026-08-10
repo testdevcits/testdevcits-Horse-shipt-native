@@ -26,6 +26,7 @@ import {
   FONTS,
   RADIUS,
   SPACING,
+  SIZES,
 } from '../../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import { AppText } from '../../../../components';
@@ -359,7 +360,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textPrimary,
   },
   liveIndicator: {
@@ -369,13 +370,13 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   pulseDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: SPACING.xs2,
+    height: SPACING.xs2,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#10B981',
   },
   liveText: {
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -410,18 +411,18 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
   },
   metricValue: {
-    fontSize: 16,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  metricDivider: { width: 1, height: 30, backgroundColor: COLORS.divider },
-  divider: { height: 1, backgroundColor: COLORS.divider, marginVertical: 18 },
+  metricDivider: { width: SIZES.borderWidthThin, height: RADIUS.pill, backgroundColor: COLORS.divider },
+  divider: { height: SIZES.borderWidthThin, backgroundColor: COLORS.divider, marginVertical: SPACING.lg2 },
   addressSection: { gap: 10 },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  dot: { width: 8, height: 8, borderRadius: 4 },
+  dot: { width: SPACING.sm, height: SPACING.sm, borderRadius: RADIUS.xs },
   addressText: {
     flex: 1,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textPrimary,
     fontFamily: FONTS.medium,
   },

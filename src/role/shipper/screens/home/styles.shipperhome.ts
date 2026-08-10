@@ -58,10 +58,10 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   statCount: {
-    fontSize: 26,
+    fontSize: FONT_SIZE.display,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
-    marginTop: 4,
+    marginTop: SPACING.xs,
   },
   statIconBox: {
     width: 44,

@@ -159,7 +159,7 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
               keyboardType="phone-pad"
               leftIcon={
                 <View style={styles.phonePrefix}>
-                  <AppText style={{ fontSize: 13 }}>🇺🇸</AppText>
+                  <AppText style={{ fontSize: FONT_SIZE.md }}>🇺🇸</AppText>
                   <AppText style={{
                     fontSize: FONT_SIZE.sm,
                     color: COLORS.textSecondary, fontFamily: FONTS.medium

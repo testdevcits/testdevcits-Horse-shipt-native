@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS } from "../../../constants";
+import { COLORS, FONT_SIZE, FONTS, SPACING, RADIUS } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   linesClipContainer: {
     position: 'absolute',
-    left: 20,
+    left: SPACING.xl,
     width: 100,
     height: 80,
     overflow: 'hidden',
@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
   speedLine: {
     height: 3,
     backgroundColor: COLORS.secondaryLight,
-    borderRadius: 2,
+    borderRadius: RADIUS.xxs,
   },
   truckContainer: {
-    marginLeft: 40,
+    marginLeft: SPACING.giant,
     shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: SPACING.giant,
   },
   titleText: {
     fontFamily: FONTS.bold, // Applied DM Sans Bold
-    fontSize: 28,
+    fontSize: FONT_SIZE.display,
     color: COLORS.textSecondary,
     letterSpacing: 4,
   },
@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
 
     color: COLORS.primary,
     letterSpacing: 3,
-    marginTop: 4,
+    marginTop: SPACING.xs,
   },
   loader: {
-    marginTop: 50,
+    marginTop: RADIUS.circle,
   },
 });
 
-export default styles
+export default styles;

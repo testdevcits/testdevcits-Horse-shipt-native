@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Star, ShieldCheck, Radio } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
 import AppText from './AppText';
 
 interface DriverHeaderProps {
@@ -114,22 +114,25 @@ const styles = StyleSheet.create({
     headerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.xs2,
+        backgroundColor: COLORS.white,
+        borderBottomWidth: SIZES.borderWidthThin,
+        borderBottomColor: COLORS.grey200,
         ...Platform.select({
             android: {
-                paddingTop: 14,
+                paddingTop: SPACING.md2,
             },
         }),
     },
     leftContainer: {
         position: 'relative',
-        marginRight: 12,
+        marginRight: SPACING.md,
     },
     avatarWrapper: {
-        width: 50,
-        height: 50,
-        borderWidth: 2,
+        width: RADIUS.circle,
+        height: RADIUS.circle,
+        borderWidth: SIZES.borderWidthThick,
         borderColor: COLORS.primary,
         borderRadius: RADIUS.md,
         backgroundColor: COLORS.goldLightBg,
@@ -143,15 +146,15 @@ const styles = StyleSheet.create({
     },
     monogramText: {
         fontFamily: FONTS.bold,
-        fontSize: 22,
+        fontSize: FONT_SIZE.title,
         color: COLORS.primary,
     },
     indicatorDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
+        width: SPACING.md,
+        height: SPACING.md,
+        borderRadius: RADIUS.xs2,
         backgroundColor: COLORS.greenActive,
-        borderWidth: 2,
+        borderWidth: SIZES.borderWidthThick,
         borderColor: COLORS.goldLightBg,
         position: 'absolute',
         bottom: -2,
@@ -165,12 +168,11 @@ const styles = StyleSheet.create({
     nameRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 6,
+        gap: SPACING.xs2,
     },
     driverName: {
         fontFamily: FONTS.bold,
         fontSize: FONT_SIZE.sm,
-
         color: COLORS.textPrimary,
         flexShrink: 1,
     },
@@ -179,9 +181,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 3,
         backgroundColor: COLORS.amberLightBg,
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 10,
+        paddingHorizontal: SPACING.xs2,
+        paddingVertical: SPACING.xxs,
+        borderRadius: RADIUS.sm2,
     },
     ratingText: {
         fontFamily: FONTS.bold,
@@ -192,13 +194,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        borderWidth: 1,
+        borderWidth: SIZES.borderWidthThin,
         borderColor: COLORS.goldBorder,
         backgroundColor: COLORS.goldLightBg,
-        borderRadius: 12,
+        borderRadius: RADIUS.md,
         paddingVertical: 3,
-        paddingHorizontal: 10,
-        marginTop: 4,
+        paddingHorizontal: SPACING.sm2,
+        marginTop: SPACING.xs,
         alignSelf: 'flex-start',
     },
     statusBadgeText: {
@@ -210,23 +212,23 @@ const styles = StyleSheet.create({
     rightContainer: {
         justifyContent: 'center',
         alignItems: 'flex-end',
-        marginLeft: 8,
+        marginLeft: SPACING.sm,
     },
     captainShieldBox: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
+        paddingHorizontal: SPACING.sm,
+        paddingVertical: SPACING.xs,
         backgroundColor: COLORS.white,
         borderRadius: RADIUS.sm,
-        borderWidth: 1,
+        borderWidth: SIZES.borderWidthThin,
         borderColor: COLORS.goldBorder,
     },
     verifiedCaptainTag: {
         fontFamily: FONTS.bold,
-        fontSize: 8,
+        fontSize: FONT_SIZE.xxs,
         color: COLORS.primary,
-        marginTop: 2,
+        marginTop: SPACING.xxs,
         letterSpacing: 0.5,
     },
 });

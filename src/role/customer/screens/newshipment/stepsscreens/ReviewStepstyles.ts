@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     },
     headerTextGroup: { flex: 1 },
     headerTitle: {
-        fontSize: 19,
+        fontSize: FONT_SIZE.xl,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
     headerSubtitle: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         marginTop: 2,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     bannerLeft: { flex: 1 },
     bannerTitle: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.goldDarkText,
     },
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardTitle: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
         letterSpacing: 0.6,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
     },
     routeAddressText: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.semiBold,
         color: COLORS.textPrimary,
         marginTop: 2,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
         color: COLORS.grey700,
     },
     horseNameTitle: {
-        fontSize: 15,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -306,12 +306,12 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
     },
     infoLabel: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.medium,
         color: COLORS.textSecondary,
     },
     infoValue: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.semiBold,
         color: COLORS.textPrimary,
     },
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.sm,
     },
     horseDocHeaderText: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     docTitleText: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.semiBold,
         color: COLORS.textPrimary,
     },
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     notesValue: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         lineHeight: 18,
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     draftBtnText: {
-        fontSize: 15,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.semiBold,
         color: COLORS.grey700,
     },
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     publishBtnText: {
-        fontSize: 15,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.bold,
         color: COLORS.white,
     },

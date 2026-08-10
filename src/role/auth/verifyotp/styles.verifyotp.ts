@@ -1,11 +1,11 @@
 import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS } from "../../../constants";
+import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
   headerImage: { width: SCREEN_WIDTH },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.15)' },
-  backBtn: { padding: SPACING.lg, marginTop: Platform.OS === 'ios' ? 40 : 20 },
+  backBtn: { padding: SPACING.lg, marginTop: Platform.OS === 'ios' ? SPACING.giant : SPACING.xl },
   keyboardView: { flex: 1, marginTop: -RADIUS.xl * 2 },
   contentCard: {
     flex: 1, backgroundColor: COLORS.white,
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     width: 72, height: 72, borderRadius: 36, backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center', alignItems: 'center', borderWidth: 1.5, borderColor: COLORS.primary,
   },
-  logoIcon: { width: 40, height: 40, tintColor: COLORS.goldDarkText },
-  scrollContent: { paddingTop: SPACING.xl, paddingBottom: 40, flexGrow: 1 },
+  logoIcon: { width: SIZES.avatarMd, height: SIZES.avatarMd, tintColor: COLORS.goldDarkText },
+  scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant, flexGrow: 1 },
   textHeader: { marginBottom: SPACING.xl, alignItems: 'center' },
-  title: { fontSize: 30, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
-  subtitle: { fontSize: 14, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: 8, lineHeight: 20 },
+  title: { fontSize: FONT_SIZE.hero, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
+  subtitle: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: SPACING.sm, lineHeight: SPACING.xl },
 
   // OTP UI
   otpWrapper: { marginTop: SPACING.lg },
@@ -40,14 +40,14 @@ const styles = StyleSheet.create({
   activeBox: { borderColor: COLORS.primary, borderWidth: 2, backgroundColor: COLORS.white },
   filledBox: { borderColor: COLORS.grey400, backgroundColor: COLORS.white },
   errorBox: { borderColor: COLORS.error },
-  otpText: { fontSize: 22, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  otpText: { fontSize: FONT_SIZE.title, fontFamily: FONTS.bold, color: COLORS.textPrimary },
 
-  errorText: { color: COLORS.error, fontSize: 13, fontFamily: FONTS.medium, marginTop: 12, textAlign: 'center' },
+  errorText: { color: COLORS.error, fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, marginTop: SPACING.md, textAlign: 'center' },
 
-  resendRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: SPACING.xl, gap: 6 },
-  resendLabel: { fontSize: 14, fontFamily: FONTS.regular, color: COLORS.textSecondary },
-  resendLink: { fontSize: 14, fontFamily: FONTS.bold, color: COLORS.primary },
+  resendRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: SPACING.xl, gap: SPACING.xs2 },
+  resendLabel: { fontSize: FONT_SIZE.md, fontFamily: FONTS.regular, color: COLORS.textSecondary },
+  resendLink: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.primary },
 
-  submitBtn: { backgroundColor: COLORS.primary, height: 56, borderRadius: RADIUS.md, marginTop: SPACING.xl },
+  submitBtn: { backgroundColor: COLORS.primary, height: SIZES.headerHeight, borderRadius: RADIUS.md, marginTop: SPACING.xl },
 });
-export default styles
+export default styles;

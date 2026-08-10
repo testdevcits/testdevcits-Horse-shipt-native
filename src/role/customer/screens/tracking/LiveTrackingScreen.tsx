@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey100,
   },
   driverName: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   etaTime: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     marginTop: 2,

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.xl,
     },
     mainTitle: {
-        fontSize: 22,
+        fontSize: FONT_SIZE.title,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
     },
     instructionTextContent: { flex: 1 },
     instructionTitle: {
-        fontSize: 18,
+        fontSize: FONT_SIZE.xl,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
     instructionSub: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.regular,
         color: COLORS.textSecondary,
         lineHeight: 18,
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
     horseHeaderText: {
         fontFamily: FONTS.bold,
         color: COLORS.grey700,
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         letterSpacing: 0.5,
     },
     cardPadding: { padding: SPACING.md },
 
     sectionLabel: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.grey800,
         marginBottom: SPACING.xs,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontFamily: FONTS.medium,
         color: COLORS.primary,
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
     },
     helperText: {
         fontSize: FONT_SIZE.sm,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     },
     docIconBoxSuccess: { backgroundColor: COLORS.greenLightBg },
     docLabel: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.semiBold,
         color: COLORS.textPrimary,
     },
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.goldBorder || '#E8DFD1',
     },
     shareTrackingTitle: {
-        fontSize: 16,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
         marginBottom: SPACING.xs,

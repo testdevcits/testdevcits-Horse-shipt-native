@@ -246,8 +246,8 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.divider,
   },
   logoIcon: {
-    width: 32,
-    height: 32,
+    width: ICON_SIZE.xl,
+    height: ICON_SIZE.xl,
     marginRight: SPACING.xs,
   },
   logoText: {
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.xs + 2,
+    paddingVertical: SPACING.xs2,
     paddingHorizontal: SPACING.sm,
     marginBottom: SPACING.xs,
     borderRadius: RADIUS.sm,
@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.brandBrownLightBg,
   },
   iconContainer: {
-    width: 28,
-    height: 28,
+    width: FONT_SIZE.display,
+    height: FONT_SIZE.display,
     alignItems: 'center',
     justifyContent: 'center',
   },

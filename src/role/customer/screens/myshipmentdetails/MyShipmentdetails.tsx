@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import Toast from 'react-native-toast-message';
-import { COLORS } from '../../../../constants';
+import { COLORS, FONT_SIZE } from '../../../../constants';
 import { AppHeader, AppText, AppLoader, ConfirmationModal } from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
@@ -157,7 +157,7 @@ const MyShipmentDetails = ({ route, }: any) => {
                     }}
                   >
                     <Trash2 size={16} color={COLORS.error} />
-                    <AppText style={{ color: COLORS.error, fontSize: 13 }}>
+                    <AppText style={{ color: COLORS.error, fontSize: FONT_SIZE.md }}>
                       Delete
                     </AppText>
                   </TouchableOpacity>
@@ -173,7 +173,7 @@ const MyShipmentDetails = ({ route, }: any) => {
                     }}
                   >
                     <Pencil size={16} color={COLORS.primary} />
-                    <AppText style={{ color: COLORS.primary, fontSize: 13 }}>
+                    <AppText style={{ color: COLORS.primary, fontSize: FONT_SIZE.md }}>
                       Edit
                     </AppText>
                   </TouchableOpacity>

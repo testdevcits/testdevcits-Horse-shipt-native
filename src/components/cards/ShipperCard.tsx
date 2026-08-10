@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { Star, MapPin, Heart, CheckCircle2 } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants'; // Adjust paths
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants'; // Adjust paths
 import AppText from '../common/AppText';
 import imageIndex from '../../assets/images/imageIndex';
 
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
   },
   name: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.grey900,
     letterSpacing: 0.3,
@@ -181,11 +181,11 @@ const styles = StyleSheet.create({
   ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: SPACING.xs,
   },
   stars: {
     flexDirection: 'row',
-    marginRight: 6,
+    marginRight: SPACING.xs2,
   },
   ratingText: {
     fontSize: FONT_SIZE.sm,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   divider: {
-    height: 1,
+    height: SIZES.borderWidthThin,
     backgroundColor: COLORS.grey100,
     marginVertical: SPACING.md,
   },
@@ -211,22 +211,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    marginRight: 8,
+    marginRight: SPACING.sm,
   },
   locationText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.grey600,
-    marginLeft: 4,
+    marginLeft: SPACING.xs,
   },
   badge: {
     backgroundColor: '#E8F5E9', // Light green
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xxs,
+    borderRadius: RADIUS.xs2,
   },
   badgeText: {
-    fontSize: 8,
+    fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.bold,
     color: '#2E7D32', // Dark green
     textTransform: 'uppercase',

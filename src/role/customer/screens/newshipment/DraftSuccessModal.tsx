@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
 import { AppText } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     textAlign: 'center',
     marginBottom: SPACING.lg,
   },
   description: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     textAlign: 'center',
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   reviewBtnText: {
     color: COLORS.white,
     fontFamily: FONTS.medium,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
   },
   dashboardBtn: {
     flex: 1,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   dashboardBtnText: {
     color: COLORS.textSecondary,
     fontFamily: FONTS.medium,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
   },
 });
 

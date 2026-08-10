@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         fontFamily: FONTS.bold,
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         color: COLORS.textPrimary,
     },
     statusBadge: {
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
         color: COLORS.textLight,
     },
     statValue: {
-        fontSize: 14,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.bold,
         color: COLORS.textPrimary,
     },
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     addressText: {
-        fontSize: 13,
+        fontSize: FONT_SIZE.md,
         fontFamily: FONTS.medium,
         color: COLORS.textPrimary,
         marginTop: 2,
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     },
     actionButtonText: {
         color: COLORS.white,
-        fontSize: 16,
+        fontSize: FONT_SIZE.lg,
         fontFamily: FONTS.bold,
     },
 });

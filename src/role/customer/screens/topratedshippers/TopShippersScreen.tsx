@@ -16,6 +16,7 @@ import {
   FONTS,
   RADIUS,
   SCREEN_WIDTH,
+  FONT_SIZE,
 } from '../../../../constants';
 import { useShippers } from './useShippers';
 import {
@@ -274,8 +275,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
   },
-  title: { fontSize: 26, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  subtitle: { fontSize: 13, color: COLORS.textSecondary, marginTop: 2 },
+  title: { fontSize: FONT_SIZE.display, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  subtitle: { fontSize: FONT_SIZE.md, color: COLORS.textSecondary, marginTop: 2 },
   filterCircle: {
     width: 44,
     height: 44,
@@ -312,7 +313,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderColor: COLORS.primary,
   },
-  chipText: { fontSize: 13, fontFamily: FONTS.bold, color: COLORS.grey600 },
+  chipText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.grey600 },
   activeChipText: { color: COLORS.white },
   list: { paddingBottom: 100 },
 
@@ -338,14 +339,14 @@ const styles = StyleSheet.create({
   },
   closeIcon: { padding: 4 },
   modalTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   resetText: {
     color: COLORS.primary,
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
   },
   modalScroll: { padding: SPACING.lg },
   modalSection: { marginBottom: SPACING.xl },
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   modalSectionTitle: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textLight,
     textTransform: 'uppercase',
@@ -384,7 +385,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   modalChipText: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
@@ -411,7 +412,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },
-  applyBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: 16 },
+  applyBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.lg },
 });
 
 export default TopShippersScreen;

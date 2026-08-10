@@ -18,6 +18,7 @@ import {
   FONTS,
   RADIUS,
   SPACING,
+  SIZES,
 } from '../../../../constants';
 import { AppText, Input } from '../../../../components';
 import customerService from '../../../../api/services/customerService';
@@ -182,37 +183,37 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
   description: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: SPACING.xl,
     marginBottom: SPACING.md,
   },
   shipperRow: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    gap: 8,
+    gap: SPACING.sm,
     marginBottom: SPACING.xl,
   },
   avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: SIZES.avatarSm,
+    height: SIZES.avatarSm,
+    borderRadius: RADIUS.lg,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  shipperName: { fontSize: 14, fontFamily: FONTS.medium },
+  shipperName: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium },
   starRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 8,
+    gap: SPACING.sm,
     marginBottom: SPACING.xl,
   },
   inputLabel: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
 
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
   },
   textInput: {
     borderWidth: 1,
@@ -234,12 +235,12 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     backgroundColor: COLORS.primary,
-    padding: 14,
+    padding: SPACING.md2,
     borderRadius: RADIUS.md,
     alignItems: 'center',
     marginBottom: SPACING.lg,
   },
-  confirmBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: 15 },
+  confirmBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.lg },
   footerText: {
     fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,

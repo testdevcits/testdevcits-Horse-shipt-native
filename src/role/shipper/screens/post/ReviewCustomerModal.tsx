@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
     borderRadius: RADIUS.md,
     padding: SPACING.md,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.regular,
     color: COLORS.textPrimary,
   },

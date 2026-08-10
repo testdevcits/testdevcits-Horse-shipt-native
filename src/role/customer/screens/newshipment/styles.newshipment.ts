@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.goldDarkText,
     marginBottom: SPACING.sm
   },

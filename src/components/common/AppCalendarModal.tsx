@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { X } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants'; // Adjust paths
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants'; // Adjust paths
 import AppText from './AppText';
  
 interface AppCalendarModalProps {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xs,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },

@@ -574,7 +574,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   customMarkerTextFocused: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
   },
 
   // BOTTOM DRAWER

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from './AppText';
 
 const { width } = Dimensions.get('window');
@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : 10,
   },
   iconWrapper: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: SIZES.avatarMd,
+    height: SIZES.avatarMd,
+    borderRadius: RADIUS.xl,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.md,
@@ -111,18 +111,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textPrimary,
-    marginBottom: 2,
+    marginBottom: SPACING.xxs,
   },
   message: {
     fontFamily: FONTS.medium,
     fontSize: FONT_SIZE.sm,
 
     color: COLORS.textSecondary,
-    lineHeight: 16,
+    lineHeight: FONT_SIZE.lg,
   },
   rightPadding: {
-    width: 10,
+    width: SPACING.sm2,
   }
 });

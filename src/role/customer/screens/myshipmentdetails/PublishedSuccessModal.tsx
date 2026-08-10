@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: 20,
+    fontSize: FONT_SIZE.xxl,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     textAlign: 'center',
@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
   description: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     textAlign: 'center',
     marginBottom: SPACING.xl,
-    lineHeight: 20,
+    lineHeight: SPACING.xl,
     paddingHorizontal: SPACING.sm,
   },
   buttonContainer: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   primaryBtnText: {
     color: COLORS.white,
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
   },
   secondaryBtn: {
     backgroundColor: '#F2F4F5', // Light grey background like image
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   secondaryBtnText: {
     color: COLORS.textSecondary,
     fontFamily: FONTS.bold,
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
   },
 });
 

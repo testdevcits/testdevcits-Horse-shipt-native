@@ -25,7 +25,7 @@ import {
   Flag,
   Truck,
 } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
 
@@ -600,26 +600,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
-  statBox: { flexDirection: 'row', gap: 10, alignItems: 'center' },
+  statBox: { flexDirection: 'row', gap: SPACING.sm2, alignItems: 'center' },
   statLabel: {
     fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary
   },
   statValue: {
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
     fontFamily: FONTS.bold,
   },
-  statDivider: { width: 1, height: '100%', backgroundColor: COLORS.divider },
-  addressSection: { marginVertical: SPACING.lg, gap: 8 },
-  addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  addressIconCol: { width: 20, alignItems: 'center' },
-  tinyDot: { width: 8, height: 8, borderRadius: 4 },
+  statDivider: { width: SIZES.borderWidthThin, height: '100%', backgroundColor: COLORS.divider },
+  addressSection: { marginVertical: SPACING.lg, gap: SPACING.sm },
+  addressRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
+  addressIconCol: { width: SPACING.xl, alignItems: 'center' },
+  tinyDot: { width: SPACING.sm, height: SPACING.sm, borderRadius: RADIUS.xs },
   verticalLine: {
-    width: 2,
-    height: 24,
+    width: SIZES.borderWidthThick,
+    height: SPACING.xxl,
     backgroundColor: COLORS.divider,
-    marginVertical: 2,
+    marginVertical: SPACING.xxs,
   },
   addressTextCol: { flex: 1 },
   addressSubLabel: {
@@ -630,15 +630,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   addressText: {
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
     color: COLORS.textPrimary,
     fontFamily: FONTS.bold,
   },
   legChip: {
     backgroundColor: COLORS.grey100 || '#F3F4F6',
-    paddingHorizontal: 8,
+    paddingHorizontal: SPACING.sm,
     paddingVertical: 3,
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
   },
   legChipText: {
     fontSize: FONT_SIZE.xs,
@@ -647,12 +647,12 @@ const styles = StyleSheet.create({
   },
   trackBtn: {
     backgroundColor: COLORS.primary,
-    height: 50,
+    height: RADIUS.circle,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  trackBtnText: { color: COLORS.white, fontSize: 16, fontFamily: FONTS.bold },
+  trackBtnText: { color: COLORS.white, fontSize: FONT_SIZE.lg, fontFamily: FONTS.bold },
 });
 
 export default memo(MapModal);

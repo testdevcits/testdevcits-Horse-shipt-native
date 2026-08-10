@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
-import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../constants';
+import { COLORS, FONTS, SPACING, FONT_SIZE, ICON_SIZE, RADIUS, SIZES } from '../../constants';
 import AppText from './AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -65,14 +65,14 @@ const AppHeader = memo(
               onPress={onBack ? onBack : () => navigation.goBack()}
               style={styles.iconBtn}
             >
-              <ChevronLeft color={COLORS.textPrimary} size={24} />
+              <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={styles.iconBtn}
             >
-              <Menu color={COLORS.textPrimary} size={24} />
+              <Menu color={COLORS.textPrimary} size={ICON_SIZE.md} />
             </TouchableOpacity>
           )}
         </View>
@@ -96,7 +96,7 @@ const AppHeader = memo(
                 activeOpacity={0.7}
               >
                 <View style={styles.bellContainer}>
-                  <BellIcon color={COLORS.textPrimary} size={20} />
+                  <BellIcon color={COLORS.textPrimary} size={SPACING.xl} />
                   {unreadCount > 0 && (
                     <View style={styles.badge}>
                       <AppText style={styles.badgeText}>
@@ -120,9 +120,9 @@ const AppHeader = memo(
                           imageIndex.AccountIcon
                         }
                         style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 16,
+                          width: SIZES.avatarSm,
+                          height: SIZES.avatarSm,
+                          borderRadius: RADIUS.lg,
                           // backgroundColor: COLORS.grey200,
                         }}
 
@@ -134,9 +134,9 @@ const AppHeader = memo(
                             : imageIndex.AccountIcon
                         }
                         style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 16,
+                          width: SIZES.avatarSm,
+                          height: SIZES.avatarSm,
+                          borderRadius: RADIUS.lg,
                           backgroundColor: COLORS.grey200,
                         }}
                         onError={() => setImageError(true)}
@@ -155,12 +155,12 @@ const AppHeader = memo(
 
 const styles = StyleSheet.create({
   header: {
-    height: 60,
+    height: SPACING.massive,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
     // backgroundColor: COLORS.surface,
-    borderBottomWidth: 1,
+    borderBottomWidth: SIZES.borderWidthThin,
     borderBottomColor: COLORS.divider,
   },
   leftContainer: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   iconBtn: {
-    padding: 6,
+    padding: SPACING.xs2,
   },
   bellContainer: {
     position: 'relative',
@@ -194,9 +194,9 @@ const styles = StyleSheet.create({
     top: -5,
     right: -7,
     backgroundColor: '#EF4444',
-    minWidth: 16,
-    height: 16,
-    borderRadius: 8,
+    minWidth: RADIUS.lg,
+    height: RADIUS.lg,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: 3,
     justifyContent: 'center',
     alignItems: 'center',
@@ -205,14 +205,14 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: COLORS.white,
-    fontSize: 9,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    lineHeight: 12,
+    lineHeight: SPACING.md,
   },
   profileBtn: {
     marginLeft: SPACING.xs,
-    padding: 4,
+    padding: SPACING.xs,
   },
 });
 

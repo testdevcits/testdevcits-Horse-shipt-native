@@ -27,7 +27,7 @@ import {
   FileText,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE } from '../constants/dimensions';
+import { SPACING, FONT_SIZE, ICON_SIZE } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText, ConfirmationModal } from '../components';
@@ -259,12 +259,12 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.grey100,
   },
   logoIcon: {
-    width: 32,
-    height: 32,
+    width: ICON_SIZE.xl,
+    height: ICON_SIZE.xl,
     marginRight: SPACING.xs,
   },
   logoText: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
     color: COLORS.grey800,
     letterSpacing: -0.5,
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: SPACING.md2,
     paddingHorizontal: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.grey50,
@@ -287,15 +287,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.goldLightBg,
   },
   iconContainer: {
-    width: 26,
-    height: 26,
+    width: ICON_SIZE.lg,
+    height: ICON_SIZE.lg,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: SPACING.xs,
   },
   menuImage: {
-    width: 20,
-    height: 20,
+    width: SPACING.xl,
+    height: SPACING.xl,
   },
   menuLabel: {
     fontSize: FONT_SIZE.sm,

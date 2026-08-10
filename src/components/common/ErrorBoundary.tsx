@@ -1,7 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import AppText from './AppText';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
 
 interface Props {
   children: ReactNode;
@@ -80,31 +80,31 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   title: {
-    fontSize: 20,
+    fontSize: FONT_SIZE.xxl,
     fontFamily: FONTS.bold,
     color: '#0F172A',
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
     textAlign: 'center',
   },
   message: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.regular,
     color: '#64748B',
     textAlign: 'center',
-    marginBottom: 24,
-    lineHeight: 20,
+    marginBottom: SPACING.xxl,
+    lineHeight: SPACING.xl,
   },
   button: {
     backgroundColor: COLORS.primary || '#A06333',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: RADIUS.md || 8,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.xxl,
+    borderRadius: RADIUS.md,
     alignItems: 'center',
     width: '100%',
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 15,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
   },
 });

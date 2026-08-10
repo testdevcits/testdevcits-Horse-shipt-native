@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
     marginRight: SPACING.xs,
   },
   flagText: {
-    fontSize: 18,
-    marginRight: 4,
+    fontSize: FONT_SIZE.xl,
+    marginRight: SPACING.xs,
   },
   codeText: {
     fontFamily: FONTS.medium,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.sm,
     borderRadius: RADIUS.md,
-    marginVertical: 2,
+    marginVertical: SPACING.xxs,
   },
   selectedRow: {
     backgroundColor: COLORS.primaryLight || '#F0F9FF',
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalFlag: {
-    fontSize: 22,
+    fontSize: FONT_SIZE.title,
     marginRight: SPACING.sm,
   },
   countryName: {
