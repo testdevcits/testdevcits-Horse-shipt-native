@@ -635,7 +635,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
   legChip: {
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 3,
     borderRadius: RADIUS.sm,

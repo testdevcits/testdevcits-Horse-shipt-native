@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   shipmentRowCard: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     flexDirection: 'row',
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   shipmentRowIconBox: {
     width: 44,
     height: 44,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#FAF6EE',
     justifyContent: 'center',
     alignItems: 'center',
@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
   shipmentRowTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   shipmentRowSub: {
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
 });

@@ -8,20 +8,20 @@ const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   sectionHeaderSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
     marginBottom: SPACING.sm,
   },
   notificationsCard: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md || 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.md,
   },
   subCardHeader: {
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
   goldSquareIconBox: {
     width: 40,
     height: 40,
-    borderRadius: RADIUS.xs || 8,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
   subHeaderTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   cardDivider: {
     height: 1,
-    backgroundColor: COLORS.divider || '#E2E8F0',
+    backgroundColor: COLORS.divider,
     marginVertical: SPACING.md,
   },
   notifColHeadersRow: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
   notifItemRow: {
     flexDirection: 'row',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider || '#E2E8F0',
+    borderBottomColor: COLORS.divider,
   },
   notifTextCol: {
     flex: 1,
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
   notifItemTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   notifItemDesc: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   notifCheckboxesCol: {
@@ -95,27 +95,27 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   notifCheckboxActive: {
-    backgroundColor: COLORS.primary || '#A06333',
-    borderColor: COLORS.primary || '#A06333',
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   calloutBanner: {
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
-    borderRadius: RADIUS.xs || 8,
+    backgroundColor: COLORS.goldLightBg,
+    borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     marginTop: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
   },
   calloutText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
   },
 });
 

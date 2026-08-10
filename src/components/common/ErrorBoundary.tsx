@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg || 16,
+    borderRadius: RADIUS.lg,
     padding: SPACING.xl,
     alignItems: 'center',
     width: '100%',
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     lineHeight: SPACING.xl,
   },
   button: {
-    backgroundColor: COLORS.primary || '#A06333',
+    backgroundColor: COLORS.primary,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xxl,
     borderRadius: RADIUS.md,

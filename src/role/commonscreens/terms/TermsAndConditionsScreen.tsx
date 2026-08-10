@@ -48,7 +48,7 @@ const TermsAndConditionsScreen = () => {
             background-color: ${COLORS.white};
           }
           h1 {
-            color: ${COLORS.brandBrown || '#A06333'};
+            color: ${COLORS.brandBrown};
             font-size: 22px;
             margin-bottom: 12px;
             font-weight: 700;

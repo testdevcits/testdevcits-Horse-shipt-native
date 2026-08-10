@@ -79,21 +79,21 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
   const getStatusBadgeStyle = () => {
     if (isAccepted) {
       return {
-        bg: COLORS.greenLightBg || '#ECFDF5',
-        text: COLORS.greenPrimary || '#059669',
+        bg: COLORS.greenLightBg,
+        text: COLORS.greenPrimary,
         border: '#A7F3D0',
       };
     }
     if (isCancelled || isRejected) {
       return {
         bg: '#FEF2F2',
-        text: COLORS.error || '#DC2626',
+        text: COLORS.error,
         border: '#FCA5A5',
       };
     }
     return {
-      bg: COLORS.goldLightBg || '#FFFBEB',
-      text: COLORS.primary || '#D97706',
+      bg: COLORS.goldLightBg,
+      text: COLORS.primary,
       border: '#FDE68A',
     };
   };
@@ -808,7 +808,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -900,7 +900,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    backgroundColor: COLORS.greenPrimary || '#059669',
+    backgroundColor: COLORS.greenPrimary,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,
@@ -1043,7 +1043,7 @@ const styles = StyleSheet.create({
   },
   disabledBtn: {
     opacity: 0.6,
-    backgroundColor: COLORS.black || '#000000',
+    backgroundColor: COLORS.black,
     shadowOpacity: 0,
     elevation: 0,
   },

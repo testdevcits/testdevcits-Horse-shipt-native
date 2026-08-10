@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 380,
         backgroundColor: COLORS.white,
-        borderRadius: RADIUS.lg || 16,
+        borderRadius: RADIUS.lg,
         padding: SPACING.lg,
         borderWidth: 1,
         borderColor: '#E2E8F0',

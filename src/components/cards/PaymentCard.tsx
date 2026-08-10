@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     width: 30, // Reduced from 36
     height: 30, // Reduced from 36
     borderRadius: RADIUS.round,
-    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    backgroundColor: COLORS.goldLightBg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: COLORS.grey50 || '#F8FAFC',
+    backgroundColor: COLORS.grey50,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.round,

@@ -227,7 +227,7 @@ const PaymentsTab: React.FC<Props> = ({
               style={modalStyles.backBtn}
               onPress={() => setWebViewUrl(null)}
             >
-              <ArrowLeft size={22} color={COLORS.textPrimary || '#0F172A'} />
+              <ArrowLeft size={22} color={COLORS.primary} />
             </TouchableOpacity>
 
             <AppText style={modalStyles.headerTitle}>Account Setup</AppText>
@@ -236,7 +236,7 @@ const PaymentsTab: React.FC<Props> = ({
               style={modalStyles.closeBtn}
               onPress={() => setWebViewUrl(null)}
             >
-              <X size={20} color={COLORS.textSecondary || '#64748B'} />
+              <X size={20} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -300,7 +300,7 @@ const modalStyles = StyleSheet.create({
   headerTitle: {
     fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#0F172A',
+    color: COLORS.textPrimary,
   },
   securityBanner: {
     flexDirection: 'row',

@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   sectionHeaderSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
     marginBottom: SPACING.xs,
   },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   payoutMainCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: RADIUS.md || 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: '#FDE68A',
     overflow: 'hidden',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   goldHorseIconBox: {
     width: 44,
     height: 44,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#FAF6EE',
     justifyContent: 'center',
     alignItems: 'center',
@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
   payoutTitle: {
     fontSize: FONT_SIZE.sm + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   payoutSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   notConnectedBadge: {
@@ -170,12 +170,12 @@ const styles = StyleSheet.create({
   connectDescription: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     lineHeight: 18,
   },
   setupPayoutBtn: {
     backgroundColor: '#A06333',
-    borderRadius: RADIUS.md || 20,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg,
     paddingVertical: 11,
     flexDirection: 'row',
@@ -218,13 +218,13 @@ const styles = StyleSheet.create({
   verifiedTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
     marginBottom: 4,
   },
   verifiedSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     lineHeight: 18,
   },
   encryptionFooterBar: {

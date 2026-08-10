@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   areaLocationName: {
-    fontSize: FONT_SIZE.xs || 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.grey900,
     lineHeight: 18,

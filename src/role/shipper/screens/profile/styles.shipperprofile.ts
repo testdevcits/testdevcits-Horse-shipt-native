@@ -746,10 +746,10 @@ const styles = StyleSheet.create({
 
   // PAYMENTS & VERIFICATION CARDS
   verifiedCard: {
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.md,
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -762,7 +762,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },

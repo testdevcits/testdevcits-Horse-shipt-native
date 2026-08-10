@@ -57,8 +57,8 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
         <View style={styles.tabBarButtonsContainer}>
           {state.routes.map((route: any, index: number) => {
             const isFocused = state.index === index;
-            const activeColor = COLORS.brandBrown || '#A06333';
-            const inactiveColor = COLORS.grey500 || '#4B5563';
+            const activeColor = COLORS.brandBrown;
+            const inactiveColor = COLORS.grey500;
 
             const onPress = () => {
               const event = navigation.emit({

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: RADIUS.round,
-    backgroundColor: COLORS.greenActive || '#10B981',
+    backgroundColor: COLORS.greenActive,
   },
   avatar: {
     width: 44,

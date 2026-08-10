@@ -200,14 +200,14 @@ const styles = StyleSheet.create({
     },
 
     shareTrackingCard: {
-        backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+        backgroundColor: COLORS.goldLightBg,
         borderLeftWidth: 4,
         borderLeftColor: COLORS.primary,
         borderRadius: RADIUS.sm,
         padding: SPACING.md,
         marginTop: SPACING.lg,
         borderWidth: 1,
-        borderColor: COLORS.goldBorder || '#E8DFD1',
+        borderColor: COLORS.goldBorder,
     },
     shareTrackingTitle: {
         fontSize: FONT_SIZE.lg,

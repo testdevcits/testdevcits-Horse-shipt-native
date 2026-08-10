@@ -558,7 +558,7 @@ const styles = StyleSheet.create({
   },
   // Top Card
   topCard: {
-    backgroundColor: COLORS.surface || '#FFFFFF',
+    backgroundColor: COLORS.surface,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.sm,
     padding: SPACING.md,
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
 
   // Details Card
   detailsCard: {
-    backgroundColor: COLORS.surface || '#FFFFFF',
+    backgroundColor: COLORS.surface,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.md,
     borderRadius: RADIUS.md,

@@ -169,7 +169,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={styles.summaryRatingText.color || '#F59E0B'}
+            tintColor={styles.summaryRatingText.color}
           />
         }
       />

@@ -49,7 +49,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <ArrowLeft size={22} color={COLORS.textPrimary || '#0F172A'} />
+          <ArrowLeft size={22} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
         <AppText style={styles.headerTitle}>{title}</AppText>
@@ -59,7 +59,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <X size={20} color={COLORS.textSecondary || '#64748B'} />
+          <X size={20} color={COLORS.textSecondary} />
         </TouchableOpacity>
       </View>
 
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#0F172A',
+    color: COLORS.textPrimary,
   },
   securityBanner: {
     flexDirection: 'row',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   loaderText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.medium,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: SPACING.xs,
   },
   emptyContainer: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
 });
 

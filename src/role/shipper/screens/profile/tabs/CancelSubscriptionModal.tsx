@@ -146,7 +146,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
                 <TextInput
                   style={styles.otherTextInput}
                   placeholder="Tell us why you are canceling..."
-                  placeholderTextColor={COLORS.textLight || '#94A3B8'}
+                  placeholderTextColor={COLORS.textLight}
                   value={otherText}
                   onChangeText={setOtherText}
                   multiline
@@ -166,9 +166,9 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
             >
               <View style={styles.checkboxBox}>
                 {isChecked ? (
-                  <CheckSquare size={20} color={COLORS.primary || '#A06333'} />
+                  <CheckSquare size={20} color={COLORS.primary} />
                 ) : (
-                  <Square size={20} color={COLORS.textLight || '#94A3B8'} />
+                  <Square size={20} color={COLORS.textLight} />
                 )}
               </View>
               <AppText style={styles.checkboxText}>
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     maxWidth: 480,
     maxHeight: '90%',
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg || 16,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     overflow: 'hidden',
@@ -263,12 +263,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   subtitle: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   closeBtn: {
@@ -277,26 +277,26 @@ const styles = StyleSheet.create({
   planImpactBox: {
     backgroundColor: '#FFFBEB',
     borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary || '#A06333',
-    borderRadius: RADIUS.xs || 6,
+    borderLeftColor: COLORS.primary,
+    borderRadius: RADIUS.xs,
     padding: SPACING.sm + 2,
     marginBottom: SPACING.md,
   },
   planImpactTitle: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   planImpactSub: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   sectionTitle: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
     marginBottom: SPACING.sm,
   },
   asterisk: {
@@ -313,23 +313,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.sm,
     justifyContent: 'center',
   },
   reasonBtnSelected: {
-    borderColor: COLORS.primary || '#A06333',
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.goldLightBg,
   },
   reasonBtnText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   reasonBtnTextSelected: {
     fontFamily: FONTS.bold,
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
   },
   otherInputWrapper: {
     marginBottom: SPACING.md,
@@ -337,18 +337,18 @@ const styles = StyleSheet.create({
   otherInputLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginBottom: 4,
   },
   otherTextInput: {
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#CBD5E1',
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
     textAlignVertical: 'top',
     minHeight: 70,
   },
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     lineHeight: 16,
   },
   actionsRow: {
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   keepBtn: {
     flex: 1,
     height: 44,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#F1F5F9',
     justifyContent: 'center',
     alignItems: 'center',
@@ -387,12 +387,12 @@ const styles = StyleSheet.create({
   keepBtnText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   cancelBtn: {
     flex: 1,
     height: 44,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#EF4444',
     justifyContent: 'center',
     alignItems: 'center',

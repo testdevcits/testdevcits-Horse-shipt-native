@@ -8,20 +8,20 @@ const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   sectionHeaderSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
     marginBottom: SPACING.sm,
   },
   subCardContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md || 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.md,
     marginBottom: SPACING.md,
   },
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
   goldSquareIconBox: {
     width: 40,
     height: 40,
-    borderRadius: RADIUS.xs || 8,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
   subHeaderTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   subHeaderSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   subActiveBadge: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderColor: '#A7F3D0',
     paddingHorizontal: SPACING.xs + 2,
     paddingVertical: 3,
-    borderRadius: RADIUS.round || 20,
+    borderRadius: RADIUS.round,
   },
   subActiveBadgeText: {
     fontSize: FONT_SIZE.xs - 1,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   cardDivider: {
     height: 1,
-    backgroundColor: COLORS.divider || '#E2E8F0',
+    backgroundColor: COLORS.divider,
     marginVertical: SPACING.md,
   },
   statusPillsRow: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   greenOutlinePill: {
     paddingHorizontal: SPACING.md,
     paddingVertical: 5,
-    borderRadius: RADIUS.round || 20,
+    borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: '#059669',
     backgroundColor: '#ECFDF5',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   blueOutlinePill: {
     paddingHorizontal: SPACING.md,
     paddingVertical: 5,
-    borderRadius: RADIUS.round || 20,
+    borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: '#2563EB',
     backgroundColor: '#EFF6FF',
@@ -107,21 +107,21 @@ const styles = StyleSheet.create({
   goldOutlinePill: {
     paddingHorizontal: SPACING.md,
     paddingVertical: 5,
-    borderRadius: RADIUS.round || 20,
+    borderRadius: RADIUS.round,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    borderColor: COLORS.goldBorder,
+    backgroundColor: COLORS.goldLightBg,
   },
   goldOutlinePillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
   },
   planDetailsBox: {
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
-    borderRadius: RADIUS.sm || 10,
+    backgroundColor: COLORS.goldLightBg,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.md,
     marginVertical: SPACING.sm,
     gap: SPACING.xs,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   planLabel: {
     fontSize: FONT_SIZE.xs - 2,
     fontFamily: FONTS.bold,
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
     letterSpacing: 0.6,
   },
   planRow: {
@@ -146,23 +146,23 @@ const styles = StyleSheet.create({
   planName: {
     fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   planPeriodText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   planPrice: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   planBillingFrequency: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 1,
   },
   subActiveBannerRow: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECFDF5',
     borderWidth: 1,
     borderColor: '#A7F3D0',
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     padding: SPACING.sm,
   },
   subActiveBannerText: {
@@ -194,8 +194,7 @@ const styles = StyleSheet.create({
     borderColor: '#FCA5A5',
     paddingHorizontal: SPACING.sm + 2,
     paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.xs || 8,
-    justifyContent: 'center',
+    borderRadius: RADIUS.xs,
     alignItems: 'center',
   },
   cancelSubTriggerBtnText: {
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFBEB',
     borderWidth: 1,
     borderColor: '#FDE68A',
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     marginTop: SPACING.xs,
   },
@@ -229,30 +228,30 @@ const styles = StyleSheet.create({
   billingFilterPill: {
     paddingHorizontal: SPACING.sm + 2,
     paddingVertical: 6,
-    borderRadius: RADIUS.round || 20,
-    backgroundColor: COLORS.grey100 || '#F1F5F9',
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.grey100,
     borderWidth: 1,
-    borderColor: COLORS.divider || '#CBD5E1',
+    borderColor: COLORS.divider,
   },
   billingFilterPillActive: {
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    backgroundColor: COLORS.goldLightBg,
+    borderColor: COLORS.goldBorder,
   },
   billingFilterText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
   billingFilterTextActive: {
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
   },
 
   historyListContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md || 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     overflow: 'hidden',
     marginTop: SPACING.xs,
   },
@@ -267,7 +266,7 @@ const styles = StyleSheet.create({
   itemIconBox: {
     width: 36,
     height: 36,
-    borderRadius: RADIUS.xs || 8,
+    borderRadius: RADIUS.xs,
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',
@@ -288,13 +287,13 @@ const styles = StyleSheet.create({
   itemTitleText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
     flex: 1,
   },
   itemAmountText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
   },
   itemBottomRow: {
     flexDirection: 'row',
@@ -304,12 +303,12 @@ const styles = StyleSheet.create({
   itemDateText: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
   itemCardText: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.medium,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
   itemBadgeRow: {
     flexDirection: 'row',
@@ -346,9 +345,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E6D7BD',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: RADIUS.xs || 4,
@@ -357,12 +356,12 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: COLORS.primary || '#A06333',
+    color: COLORS.primary,
   },
 
   emptySubCard: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg || 16,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     padding: SPACING.xxl || 32,
@@ -372,7 +371,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg || 16,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     padding: SPACING.xxl || 32,
@@ -390,13 +389,13 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   emptySubTitle: {
-    fontSize: FONT_SIZE.lg || 18,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: '#0F172A',
     marginBottom: 4,
   },
   emptyTitle: {
-    fontSize: FONT_SIZE.lg || 18,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: '#0F172A',
     marginBottom: 4,
@@ -417,7 +416,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A06333',
     paddingHorizontal: SPACING.lg,
     paddingVertical: 10,
-    borderRadius: RADIUS.md || 8,
+    borderRadius: RADIUS.md
   },
   subscribeNowBtnText: {
     color: COLORS.white,

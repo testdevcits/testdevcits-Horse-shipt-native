@@ -57,8 +57,8 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
         <View style={styles.tabBarButtonsContainer}>
           {state.routes.map((route: any, index: number) => {
             const isFocused = state.index === index;
-            const activeColor = COLORS.brandBrown || '#A06333';
-            const inactiveColor = COLORS.grey500 || '#6B7280';
+            const activeColor = COLORS.brandBrown;
+            const inactiveColor = COLORS.grey500;
 
             const onPress = () => {
               const event = navigation.emit({
@@ -225,18 +225,18 @@ const styles = StyleSheet.create({
   tabLabelFocused: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: COLORS.brandBrown || '#A06333',
+    color: COLORS.brandBrown,
     marginTop: 3,
   },
   centerButton: {
     width: 62,
     height: 62,
     borderRadius: 31,
-    backgroundColor: COLORS.brandBrown || '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
     top: -28,
-    shadowColor: COLORS.brandBrown || '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 6,

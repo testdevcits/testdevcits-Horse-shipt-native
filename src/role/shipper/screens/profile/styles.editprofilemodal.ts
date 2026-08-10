@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
     minHeight: 46,
   },
   disabledInput: {
-    backgroundColor: COLORS.grey100 || '#F8FAFC',
-    borderColor: COLORS.grey200 || '#E2E8F0',
+    backgroundColor: COLORS.grey100,
+    borderColor: COLORS.grey200,
     color: COLORS.textSecondary,
   },
   multilineInput: {
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingTop: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.grey100 || '#F1F5F9',
+    borderTopColor: COLORS.grey100,
   },
   cancelBtn: {
     flexDirection: 'row',

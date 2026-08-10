@@ -75,6 +75,11 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     letterSpacing: 0.5,
   },
+  changeTextLink: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.primary,
+  },
   subtitle: {
     fontSize: FONT_SIZE.md, // 14
     fontFamily: FONTS.medium,

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   View,
@@ -23,6 +24,7 @@ import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import RoleSelectionModal, { UserRole } from './RoleSelectionModal';
 
 const Login = () => {
   const navigation = useNavigation<any>();
@@ -36,6 +38,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string>('');
+  const [isRoleModalVisible, setIsRoleModalVisible] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
 
   useEffect(() => {
@@ -124,7 +127,7 @@ const Login = () => {
       {/* Top Right Change Role Button */}
       <TouchableOpacity
         style={styles.changeRoleBtn}
-        onPress={() => navigation.navigate('RoleSelection')}
+        onPress={() => setIsRoleModalVisible(true)}
         activeOpacity={0.8}
       >
         <UserCog size={16} color={COLORS.primary} />
@@ -168,13 +171,18 @@ const Login = () => {
             <View style={styles.textHeader}>
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
 
-              {/* Selected Role Badge Label */}
-              <View style={styles.roleBadgeContainer}>
+              {/* Selected Role Badge Label (Tap to open modal) */}
+              <TouchableOpacity
+                style={styles.roleBadgeContainer}
+                onPress={() => setIsRoleModalVisible(true)}
+                activeOpacity={0.7}
+              >
                 <AppText style={styles.roleBadgeLabel}>Signing in as: </AppText>
                 <AppText style={styles.roleBadgeValue}>
                   {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
                 </AppText>
-              </View>
+                <AppText style={styles.changeTextLink}> (Change)</AppText>
+              </TouchableOpacity>
 
               <AppText style={styles.subtitle}>
                 Sign in to manage your shipments, track your horses in real
@@ -263,6 +271,21 @@ const Login = () => {
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
+
+      {/* Role Selection Modal */}
+      <RoleSelectionModal
+        visible={isRoleModalVisible}
+        currentRole={selectedRole || 'customer'}
+        onClose={() => setIsRoleModalVisible(false)}
+        onSelectRole={newRole => {
+          setSelectedRole(newRole);
+          Toast.show({
+            type: 'info',
+            text1: 'Role Selected',
+            text2: `Switched signing in mode to ${newRole.toUpperCase()}`,
+          });
+        }}
+      />
     </View>
   );
 };

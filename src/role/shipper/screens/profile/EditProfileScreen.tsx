@@ -237,14 +237,14 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   fieldLabel: {
-    fontSize: FONT_SIZE.xs || 12,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary || '#1E293B',
+    color: COLORS.textPrimary,
     marginBottom: SPACING.xs,
   },
   mapContainer: {
     height: 160,
-    borderRadius: RADIUS.md || 12,
+    borderRadius: RADIUS.md,
     overflow: 'hidden',
     marginTop: SPACING.sm,
     borderWidth: 1,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   charCounter: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: COLORS.textSecondary || '#64748B',
+    color: COLORS.textSecondary,
   },
   footer: {
     padding: SPACING.md,

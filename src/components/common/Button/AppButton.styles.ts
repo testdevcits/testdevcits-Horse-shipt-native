@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
 
   disabledButton: {
-    backgroundColor: COLORS.buttonDisabled || '#CBD5E1',
+    backgroundColor: COLORS.buttonDisabled,
     opacity: 0.7,
   },
 

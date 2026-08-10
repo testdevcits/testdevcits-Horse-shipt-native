@@ -742,7 +742,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={4}
                             strokeColor={
-                              COLORS.brandBrown || COLORS.primary || '#A06333'
+                              COLORS.brandBrown || COLORS.primary
                             }
                             lineDashPattern={[0]}
                             onError={err =>
@@ -775,7 +775,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                                   78.737,
                               },
                             ]}
-                            strokeColor={COLORS.primary || '#A37F3D'}
+                            strokeColor={COLORS.primary}
                             strokeWidth={3}
                             lineDashPattern={[6, 6]}
                           />

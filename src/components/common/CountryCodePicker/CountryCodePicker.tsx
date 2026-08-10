@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xxs,
   },
   selectedRow: {
-    backgroundColor: COLORS.primaryLight || '#F0F9FF',
+    backgroundColor: COLORS.primaryLight,
   },
   countryLeft: {
     flexDirection: 'row',

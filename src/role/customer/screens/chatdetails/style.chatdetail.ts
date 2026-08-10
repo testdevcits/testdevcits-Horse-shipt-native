@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   disabledSendBtn: {
     opacity: 0.5,
-    backgroundColor: COLORS.black || '#000000',
+    backgroundColor: COLORS.black,
   },
 
   draftPreviewContainer: {

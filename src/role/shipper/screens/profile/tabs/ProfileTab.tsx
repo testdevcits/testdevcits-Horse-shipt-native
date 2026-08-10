@@ -45,7 +45,7 @@ const ProfileTab: React.FC<Props> = ({
             onPress={onEditProfile}
             activeOpacity={0.7}
           >
-            <Pencil size={16} color={COLORS.textPrimary || '#1E293B'} />
+            <Pencil size={16} color={COLORS.textPrimary} />
           </TouchableOpacity>
         </View>
 
@@ -156,7 +156,7 @@ const ProfileTab: React.FC<Props> = ({
         ) : (
           <View style={styles.emptyReviewsCard}>
             <View style={styles.emptyIconCircle}>
-              <Star size={22} color={COLORS.primary || '#A06333'} />
+              <Star size={22} color={COLORS.primary} />
             </View>
             <AppText style={styles.emptyReviewsTitle}>No Reviews Yet</AppText>
             <AppText style={styles.emptyReviewsSubtitle}>
@@ -173,7 +173,7 @@ const ProfileTab: React.FC<Props> = ({
           onPress={onLogout}
           activeOpacity={0.8}
         >
-          <LogOut size={18} color={COLORS.error || '#EF4444'} />
+          <LogOut size={18} color={COLORS.error} />
           <AppText style={styles.logoutBtnText}>Logout</AppText>
         </TouchableOpacity>
       )}

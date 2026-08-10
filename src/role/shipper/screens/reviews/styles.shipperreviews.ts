@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   sourceBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: COLORS.grey100 || '#F1F5F9',
+    backgroundColor: COLORS.grey100,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,

@@ -400,7 +400,7 @@ const AddVehicleModal: React.FC<Props> = ({
             >
               {isPicking ? (
                 <View style={styles.uploadPlaceholder}>
-                  <ActivityIndicator size="small" color={COLORS.primary || '#A37F3D'} />
+                  <ActivityIndicator size="small" color={COLORS.primary} />
                 </View>
               ) : selectedImage ? (
                 <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />

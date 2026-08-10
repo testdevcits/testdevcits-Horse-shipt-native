@@ -359,7 +359,7 @@ const SubscriptionTab: React.FC<Props> = ({
         <View style={styles.historyListContainer}>
           {filteredList.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <FileText size={32} color={COLORS.textLight || '#94A3B8'} />
+              <FileText size={32} color={COLORS.textLight} />
               <AppText style={styles.emptyTitle}>No records found</AppText>
               <AppText style={styles.emptySub}>
                 No {billingFilter.toLowerCase()} available for this account.

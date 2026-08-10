@@ -611,7 +611,7 @@ const styles = StyleSheet.create({
   searchBarWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.grey100 || '#F8FAFC',
+    backgroundColor: COLORS.grey100,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     borderRadius: RADIUS.sm,
@@ -673,7 +673,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 6,
-    backgroundColor: COLORS.grey100 || '#F1F5F9',
+    backgroundColor: COLORS.grey100,
     justifyContent: 'center',
     alignItems: 'center',
   },
