@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xxxl,
     alignItems: 'center',
     // Shadow for depth
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.title,
     fontFamily: FONTS.bold,
-    color: '#333333',
+    color: COLORS.textPrimary,
     marginBottom: SPACING.md,
     textAlign: 'center',
   },
   description: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.regular,
-    color: '#666666',
+    color: COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: SPACING.sm,

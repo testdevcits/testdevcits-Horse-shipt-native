@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: COLORS.slate50,
   },
   scrollContent: {
     padding: SPACING.md,
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xs,
   },
   statusBadgePill: {
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#E5D6C3',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: RADIUS.xs,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   statusBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     textTransform: 'uppercase',
   },
   postedDateText: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     overflow: 'hidden',
     marginBottom: SPACING.md,
     shadowColor: COLORS.black,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: SPACING.sm,
     left: SPACING.sm,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: RADIUS.xs,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   shipmentCodeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     marginBottom: SPACING.xs,
   },
   customerRow: {
@@ -145,10 +145,10 @@ const styles = StyleSheet.create({
   },
   dateCard: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.sm,
   },
   dateCardLabel: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   dateCardValue: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
   },
 
   // Route Map Card
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     shadowColor: COLORS.black,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     padding: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     shadowColor: COLORS.black,
@@ -290,9 +290,9 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -300,16 +300,16 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
   timelineLine: {
     width: 2,
     height: 30,
-    backgroundColor: '#EFE5D8',
+    backgroundColor: COLORS.goldBorder,
     marginLeft: 15,
     marginVertical: 4,
   },
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   timelineLabel: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     textTransform: 'uppercase',
   },
   timelineAddress: {
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   totalDistanceValue: {
     fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     marginTop: 2,
   },
   totalDistanceSub: {
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     overflow: 'hidden',
     marginBottom: SPACING.md,
   },
@@ -384,11 +384,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: SPACING.md,
     marginBottom: SPACING.md,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
   },
   horseThumb: {
     width: 80,
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   horseMiniPill: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   horseMiniPillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     textTransform: 'uppercase',
   },
 
@@ -460,9 +460,9 @@ const styles = StyleSheet.create({
 
   // Chronological Notes
   notesBox: {
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#E5D6C3',
+    borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
   },
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
   notesTitle: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
   },
   notesDateText: {
     fontSize: FONT_SIZE.xs,
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     padding: SPACING.md,
     alignItems: 'center',
     marginBottom: SPACING.md,
@@ -521,9 +521,9 @@ const styles = StyleSheet.create({
   },
   summaryCodeBox: {
     width: '100%',
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.md,
     paddingVertical: 12,
     alignItems: 'center',
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
   summaryCodeValue: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     marginTop: 2,
   },
   askQuestionBtn: {
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#A06333',
+    borderColor: COLORS.brandBrown,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
@@ -555,16 +555,16 @@ const styles = StyleSheet.create({
   askQuestionBtnText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
   },
   submitOfferBtn: {
     width: '100%',
     height: 48,
     borderRadius: RADIUS.md,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -581,7 +581,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#10B981',
+    backgroundColor: COLORS.greenActive,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#EF4444',
+    backgroundColor: COLORS.error,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
@@ -629,9 +629,9 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.sm,
@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
   },
   modalInputContainerError: {
     borderColor: COLORS.error,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
   },
   modalTextInput: {
     width: '100%',
@@ -701,7 +701,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     borderRadius: RADIUS.md,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
   },

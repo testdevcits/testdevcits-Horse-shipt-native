@@ -48,9 +48,9 @@ const getNotificationIcon = (title: string = '', message: string = '') => {
     content.includes('pickup') ||
     content.includes('transit')
   ) {
-    return { Icon: Truck, color: COLORS.brandBrown, bg: '#FAF6EE', border: '#EEDCBD' };
+    return { Icon: Truck, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
   }
-  return { Icon: Bell, color: COLORS.brandBrown, bg: '#FAF6EE', border: '#EEDCBD' };
+  return { Icon: Bell, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
 };
 
 const Notifications = () => {
@@ -372,10 +372,12 @@ const Notifications = () => {
   );
 };
 
+export default Notifications;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
   },
 
   // HEADER RIGHT ACTION
@@ -398,9 +400,9 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.sm,
     paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: COLORS.slate200,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 3,
@@ -420,7 +422,7 @@ const styles = StyleSheet.create({
 
   tabsWrapper: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     borderRadius: RADIUS.md,
     padding: 3,
     gap: 4,
@@ -436,7 +438,7 @@ const styles = StyleSheet.create({
   },
   tabPillActive: {
     backgroundColor: COLORS.brandBrown,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
@@ -452,7 +454,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
   countBadge: {
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.slate200,
     paddingHorizontal: 7,
     paddingVertical: 1,
     borderRadius: 10,
@@ -487,21 +489,21 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 2,
     elevation: 1,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.03,
     shadowRadius: 3,
   },
   notifCardUnread: {
-    backgroundColor: '#FFFBF5',
-    borderColor: '#EEDCBD',
+    backgroundColor: COLORS.goldLightBg,
+    borderColor: COLORS.goldBorder,
   },
   notifCardRead: {
     backgroundColor: COLORS.white,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
   },
   notifCardSelected: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.amberLightBg,
     borderColor: COLORS.brandBrown,
     borderWidth: 1.5,
   },
@@ -525,7 +527,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     backgroundColor: COLORS.white,
   },
 
@@ -587,14 +589,14 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === 'ios' ? 24 : 16,
     left: SPACING.md,
     right: SPACING.md,
-    backgroundColor: '#0F172A',
+    backgroundColor: COLORS.slate900,
     borderRadius: RADIUS.lg,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
     shadowRadius: 16,
@@ -614,7 +616,7 @@ const styles = StyleSheet.create({
   selectAllToggleText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#94A3B8',
+    color: COLORS.slate400,
     textDecorationLine: 'underline',
   },
 
@@ -636,32 +638,30 @@ const styles = StyleSheet.create({
   batchMarkReadText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#34D399',
+    color: COLORS.emeraldBorder,
   },
   batchDeleteBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#7F1D1D',
+    backgroundColor: COLORS.redPrimary,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#DC2626',
+    borderColor: COLORS.redPrimary,
   },
   batchDeleteText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#FCA5A5',
+    color: COLORS.redBorder,
   },
   batchCloseBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#334155',
+    backgroundColor: COLORS.slate700,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 4,
   },
 });
-
-export default Notifications;
