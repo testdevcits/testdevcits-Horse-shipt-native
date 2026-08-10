@@ -156,28 +156,28 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
             };
           case 'completed':
             return {
-              bg: '#ECFDF5',
-              border: '#A7F3D0',
-              text: '#059669',
+              bg: COLORS.emeraldLightBg,
+              border: COLORS.emeraldBorder,
+              text: COLORS.emeraldPrimary,
               label: 'COMPLETED',
-              icon: <Check size={12} color="#059669" />,
+              icon: <Check size={12} color={COLORS.emeraldPrimary} />,
             };
           case 'cancelled':
             return {
-              bg: '#FEE2E2',
-              border: '#FCA5A5',
-              text: '#DC2626',
+              bg: COLORS.redLightBg,
+              border: COLORS.redBorder,
+              text: COLORS.redPrimary,
               label: 'CANCELLED',
-              icon: <AlertCircle size={12} color="#DC2626" />,
+              icon: <AlertCircle size={12} color={COLORS.redPrimary} />,
             };
           case 'upcoming':
           default:
             return {
-              bg: '#FEF3C7',
-              border: '#FDE68A',
-              text: '#B45309',
+              bg: COLORS.amberLightBg,
+              border: COLORS.amberBorder,
+              text: COLORS.amberWarning,
               label: 'UPCOMING',
-              icon: <Clock size={12} color="#B45309" />,
+              icon: <Clock size={12} color={COLORS.amberWarning} />,
             };
         }
       };
@@ -189,7 +189,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
           {/* Header Row: Code & Badges */}
           <View style={styles.myHeaderRow}>
             <View style={styles.codeBadge}>
-              <Package size={12} color="#475569" />
+              <Package size={12} color={COLORS.textSecondary} />
               <AppText style={styles.myCodeText}>#{code}</AppText>
             </View>
 
@@ -214,15 +214,15 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               style={[
                 styles.myBadgePill,
                 isPaid
-                  ? { backgroundColor: '#ECFDF5', borderColor: '#A7F3D0' }
-                  : { backgroundColor: '#F8FAFC', borderColor: '#CBD5E1' },
+                  ? { backgroundColor: COLORS.emeraldLightBg, borderColor: COLORS.emeraldBorder }
+                  : { backgroundColor: COLORS.slate50, borderColor: COLORS.slate300 },
               ]}
             >
-              <CreditCard size={11} color={isPaid ? '#059669' : '#475569'} />
+              <CreditCard size={11} color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary} />
               <AppText
                 style={[
                   styles.myBadgePillText,
-                  isPaid ? { color: '#059669' } : { color: '#475569' },
+                  isPaid ? { color: COLORS.emeraldPrimary } : { color: COLORS.textSecondary },
                 ]}
               >
                 {paymentStatusRaw.toUpperCase()}

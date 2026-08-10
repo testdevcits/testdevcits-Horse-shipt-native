@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   priceValue: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#059669',
+    color: COLORS.emeraldPrimary,
   },
 
   // Action Buttons Row

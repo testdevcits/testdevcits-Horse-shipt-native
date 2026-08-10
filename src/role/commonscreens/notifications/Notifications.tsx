@@ -37,10 +37,10 @@ import {
 const getNotificationIcon = (title: string = '', message: string = '') => {
   const content = (title + ' ' + message).toLowerCase();
   if (content.includes('quote') || content.includes('offer') || content.includes('bid')) {
-    return { Icon: FileText, color: '#059669', bg: '#ECFDF5', border: '#A7F3D0' };
+    return { Icon: FileText, color: COLORS.emeraldPrimary, bg: COLORS.emeraldLightBg, border: COLORS.emeraldBorder };
   }
   if (content.includes('chat') || content.includes('message') || content.includes('question')) {
-    return { Icon: MessageSquare, color: '#2563EB', bg: '#EFF6FF', border: '#BFDBFE' };
+    return { Icon: MessageSquare, color: COLORS.bluePrimary, bg: COLORS.blueLightBg, border: COLORS.blueBorder };
   }
   if (
     content.includes('shipment') ||
@@ -323,7 +323,7 @@ const Notifications = () => {
               onPress={handleMarkSelectedRead}
               activeOpacity={0.8}
             >
-              <Check size={16} color="#059669" style={{ marginRight: 4 }} />
+              <Check size={16} color={COLORS.emeraldPrimary} style={{ marginRight: 4 }} />
               <AppText style={styles.batchMarkReadText}>Mark Read</AppText>
             </TouchableOpacity>
 
@@ -626,12 +626,12 @@ const styles = StyleSheet.create({
   batchMarkReadBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#064E3B',
+    backgroundColor: COLORS.emeraldDark,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#059669',
+    borderColor: COLORS.emeraldPrimary,
   },
   batchMarkReadText: {
     fontSize: FONT_SIZE.sm,

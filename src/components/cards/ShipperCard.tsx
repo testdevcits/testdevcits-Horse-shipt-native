@@ -46,8 +46,8 @@ const ShipperCard = memo(({ item, onPress, onFavoritePress, customstyle }: Shipp
       <Star
         key={index}
         size={14}
-        color={index <= Math.round(ratingValue) ? "#FFB800" : COLORS.grey300}
-        fill={index <= Math.round(ratingValue) ? "#FFB800" : 'transparent'}
+        color={index <= Math.round(ratingValue) ? COLORS.warning : COLORS.grey300}
+        fill={index <= Math.round(ratingValue) ? COLORS.warning : 'transparent'}
         style={{ marginRight: 2 }}
       />
     ));
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.xs,
   },
   badge: {
-    backgroundColor: '#E8F5E9', // Light green
+    backgroundColor: COLORS.emeraldLightBg, // Light green
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xxs,
     borderRadius: RADIUS.xs2,
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.bold,
-    color: '#2E7D32', // Dark green
+    color: COLORS.emeraldDark, // Dark green
     textTransform: 'uppercase',
   }
 });

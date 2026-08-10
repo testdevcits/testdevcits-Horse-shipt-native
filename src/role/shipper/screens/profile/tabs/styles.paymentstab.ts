@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   },
   connectedBadge: {
     borderWidth: 1,
-    borderColor: '#A7F3D0',
-    backgroundColor: '#ECFDF5',
+    borderColor: COLORS.emeraldBorder,
+    backgroundColor: COLORS.emeraldLightBg,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: '#047857',
+    color: COLORS.emeraldDark,
   },
   cardDivider: {
     height: 1,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: COLORS.divider,
   },
 
   // Stepper Bar

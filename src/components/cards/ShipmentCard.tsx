@@ -12,7 +12,7 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
 
   // Dynamic Status Colors
   const statusColor = item?.isInProgress ? COLORS.info : COLORS.success;
-  const statusBg = item?.isInProgress ? '#E0F2FE' : '#DCFCE7';
+  const statusBg = item?.isInProgress ? COLORS.blueLightBg : COLORS.greenBadgeBg;
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onView} style={styles.card}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
     marginBottom: SPACING.md,
     // Soft Shadow
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.07,
     shadowRadius: 10,

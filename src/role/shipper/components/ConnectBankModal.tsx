@@ -151,7 +151,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
             {/* Why is this required section */}
             <View style={styles.sectionHeader}>
               <View style={styles.infoIconWrapper}>
-                <Info size={16} color="#8B5A2B" />
+                <Info size={16} color={COLORS.goldBrownText} />
               </View>
               <AppText style={styles.sectionTitle}>Why is this required?</AppText>
             </View>
@@ -161,7 +161,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 1: Receive Payments */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <Landmark size={20} color="#8B5A2B" />
+                  <Landmark size={20} color={COLORS.goldBrownText} />
                 </View>
                 <AppText style={styles.cardTitle}>Receive Payments</AppText>
                 <AppText style={styles.cardSub}>
@@ -172,7 +172,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 2: Secure Transactions */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <Lock size={20} color="#8B5A2B" />
+                  <Lock size={20} color={COLORS.goldBrownText} />
                 </View>
                 <AppText style={styles.cardTitle}>Secure Transactions</AppText>
                 <AppText style={styles.cardSub}>
@@ -183,7 +183,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
 
             {/* Security Encryption Notice */}
             <View style={styles.encryptionCard}>
-              <Lock size={18} color="#374151" style={{ marginTop: 2 }} />
+              <Lock size={18} color={COLORS.grey700} style={{ marginTop: 2 }} />
               <AppText style={styles.encryptionText}>
                 Your banking information is encrypted and process only by stripe. We never store your bank details.
               </AppText>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   },
   /* Header Banner */
   headerBanner: {
-    backgroundColor: '#B5874A',
+    backgroundColor: COLORS.goldWarmPrimary,
     paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.lg,
     paddingBottom: SPACING.xl,
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   bannerSubtitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
-    color: '#F4EBE0',
+    color: COLORS.goldLightText,
   },
 
   /* Scrollable Content */
@@ -332,14 +332,14 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 1.5,
-    borderColor: '#8B5A2B',
+    borderColor: COLORS.goldBrownText,
     alignItems: 'center',
     justifyContent: 'center',
   },
   sectionTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: '#1F2937',
+    color: COLORS.grey800,
   },
 
   /* Cards Grid */
@@ -350,9 +350,9 @@ const styles = StyleSheet.create({
   },
   featureCard: {
     flex: 1,
-    backgroundColor: '#F9F8F5',
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
-    borderColor: '#EFEBE2',
+    borderColor: COLORS.goldCreamBorder,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
   },
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 8,
-    backgroundColor: '#F1E9DA',
+    backgroundColor: COLORS.goldTintBox,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: SPACING.sm,
@@ -368,13 +368,13 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#1F2937',
+    color: COLORS.grey800,
     marginBottom: 4,
   },
   cardSub: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: '#6B7280',
+    color: COLORS.textSecondary,
     lineHeight: 16,
   },
 
@@ -383,9 +383,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 10,
-    backgroundColor: '#FAF9F6',
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
-    borderColor: '#EFEBE2',
+    borderColor: COLORS.goldCreamBorder,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -394,15 +394,15 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#4B5563',
+    color: COLORS.grey600,
     lineHeight: 18,
   },
 
   /* Setup Steps Box */
   setupCard: {
-    backgroundColor: '#F6F0E6',
+    backgroundColor: COLORS.goldBannerBg,
     borderLeftWidth: 4,
-    borderLeftColor: '#B5874A',
+    borderLeftColor: COLORS.goldWarmPrimary,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
   setupTitle: {
     fontSize: FONT_SIZE.sm + 1,
     fontFamily: FONTS.bold,
-    color: '#8B5A2B',
+    color: COLORS.goldBrownText,
     marginBottom: SPACING.xs,
   },
   stepItem: {
@@ -419,26 +419,26 @@ const styles = StyleSheet.create({
   stepText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#5C441E',
+    color: COLORS.goldDarkText,
     lineHeight: 20,
   },
   timeNote: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#8B5A2B',
+    color: COLORS.goldBrownText,
     marginTop: SPACING.xs + 2,
   },
 
   /* Action Buttons */
   connectBtn: {
     height: 50,
-    backgroundColor: '#B5874A',
+    backgroundColor: COLORS.goldWarmPrimary,
     borderRadius: RADIUS.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    shadowColor: '#B5874A',
+    shadowColor: COLORS.goldWarmPrimary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -459,12 +459,12 @@ const styles = StyleSheet.create({
   maybeLaterText: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: '#374151',
+    color: COLORS.grey700,
   },
   footerNote: {
     textAlign: 'center',
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: '#9CA3AF',
+    color: COLORS.textLight,
   },
 });

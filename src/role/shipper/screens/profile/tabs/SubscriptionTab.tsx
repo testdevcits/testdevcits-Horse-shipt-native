@@ -191,14 +191,14 @@ const SubscriptionTab: React.FC<Props> = ({
             <View
               style={[
                 styles.subActiveBadge,
-                !isSubActive && { backgroundColor: '#FEF2F2', borderColor: '#FCA5A5' },
+                !isSubActive && { backgroundColor: COLORS.redLightBg, borderColor: COLORS.redBorder },
               ]}
             >
-              <ShieldCheck size={14} color={isSubActive ? '#059669' : '#DC2626'} />
+              <ShieldCheck size={14} color={isSubActive ? COLORS.emeraldPrimary : COLORS.redPrimary} />
               <AppText
                 style={[
                   styles.subActiveBadgeText,
-                  !isSubActive && { color: '#DC2626' },
+                  !isSubActive && { color: COLORS.redPrimary },
                 ]}
               >
                 {isSubActive ? 'Active' : 'Inactive'}
@@ -278,7 +278,7 @@ const SubscriptionTab: React.FC<Props> = ({
           ) : (
             <View style={styles.subActiveBannerRow}>
               <View style={styles.subActiveBanner}>
-                <CheckCircle size={18} color="#059669" />
+                <CheckCircle size={18} color={COLORS.emeraldPrimary} />
                 <AppText style={styles.subActiveBannerText}>
                   Subscription Active
                 </AppText>
@@ -302,7 +302,7 @@ const SubscriptionTab: React.FC<Props> = ({
       <View style={{ marginTop: SPACING.lg }}>
         <View style={styles.subCardHeader}>
           <View style={styles.goldSquareIconBox}>
-            <Calendar size={22} color="#A06333" />
+            <Calendar size={22} color={COLORS.brandBrown} />
           </View>
 
           <View style={styles.subHeaderTextCol}>
@@ -411,11 +411,11 @@ const SubscriptionTab: React.FC<Props> = ({
                   {/* Left Type Icon */}
                   <View style={styles.itemIconBox}>
                     {isInvoice ? (
-                      <FileText size={18} color="#A06333" />
+                      <FileText size={18} color={COLORS.brandBrown} />
                     ) : isPayment ? (
-                      <CreditCard size={18} color="#2563EB" />
+                      <CreditCard size={18} color={COLORS.bluePrimary} />
                     ) : (
-                      <ArrowUpRight size={18} color="#059669" />
+                      <ArrowUpRight size={18} color={COLORS.emeraldPrimary} />
                     )}
                   </View>
 

@@ -231,7 +231,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {/* Sub Trial Pill */}
                 <View style={styles.trialPillRow}>
                   <View style={styles.trialPill}>
-                    <ShieldCheck size={13} color="#FEF3C7" />
+                    <ShieldCheck size={13} color={COLORS.amberLightBg} />
                     <AppText style={styles.trialPillText}>{trialDays}-day free trial</AppText>
                   </View>
                   <AppText style={styles.trialSubText}>Cancel anytime • No hidden charges</AppText>
@@ -268,7 +268,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {/* Card Input Error Banner */}
                 {!!cardError && (
                   <View style={styles.errorBanner}>
-                    <AlertCircle size={15} color="#DC2626" />
+                    <AlertCircle size={15} color={COLORS.redPrimary} />
                     <AppText style={styles.errorBannerText}>{cardError}</AppText>
                   </View>
                 )}
@@ -279,10 +279,10 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     postalCodeEnabled={true}
                     style={styles.stripeCardField}
                     cardStyle={{
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: COLORS.white,
                       textColor: COLORS.textPrimary,
                       fontSize: FONT_SIZE.md,
-                      placeholderColor: '#94A3B8',
+                      placeholderColor: COLORS.textLight,
                     }}
                     onCardChange={details => setCardDetails(details)}
                   />
@@ -338,7 +338,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     ].map((item, idx) => (
                       <View key={idx} style={styles.checkItemRow}>
                         <View style={styles.checkIconSquare}>
-                          <CheckCircle2 size={16} color="#A06333" fill="#FAF6F0" />
+                          <CheckCircle2 size={16} color={COLORS.brandBrown} fill={COLORS.goldLightBg} />
                         </View>
                         <AppText style={styles.checkItemText}>{item}</AppText>
                       </View>
@@ -404,7 +404,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {!shipperStatus.hasCard && (
                   <View style={styles.cardWarningBox}>
                     <View style={styles.cardWarningIconBox}>
-                      <AlertCircle size={18} color="#B45309" />
+                      <AlertCircle size={18} color={COLORS.amberWarning} />
                     </View>
                     <View style={styles.cardWarningTextCol}>
                       <AppText style={styles.cardWarningTitle}>Payment Method Required</AppText>
@@ -476,9 +476,11 @@ const styles = StyleSheet.create({
 
   // HEADER BANNER
   headerBanner: {
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     padding: SPACING.lg,
     paddingTop: SPACING.lg,
+    borderTopLeftRadius: RADIUS.xl,
+    borderTopRightRadius: RADIUS.xl,
   },
   headerTopRow: {
     flexDirection: 'row',
@@ -497,7 +499,6 @@ const styles = StyleSheet.create({
   },
   requiredBadgeText: {
     fontSize: FONT_SIZE.sm,
-
     fontFamily: FONTS.bold,
     color: COLORS.white,
     letterSpacing: 0.5,
@@ -527,6 +528,10 @@ const styles = StyleSheet.create({
   },
   trialPillRow: {
     marginTop: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    flexWrap: 'wrap',
   },
   trialPill: {
     flexDirection: 'row',
@@ -542,11 +547,10 @@ const styles = StyleSheet.create({
   trialPillText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#FEF3C7',
+    color: COLORS.amberLightBg,
   },
   trialSubText: {
     fontSize: FONT_SIZE.sm,
-
     fontFamily: FONTS.regular,
     color: 'rgba(255, 255, 255, 0.9)',
   },
@@ -566,7 +570,6 @@ const styles = StyleSheet.create({
   },
   priceTagInterval: {
     fontSize: FONT_SIZE.sm,
-
     fontFamily: FONTS.medium,
     color: 'rgba(255, 255, 255, 0.85)',
   },
@@ -598,8 +601,8 @@ const styles = StyleSheet.create({
   errorBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FEF2F2',
-    borderColor: '#FCA5A5',
+    backgroundColor: COLORS.redLightBg,
+    borderColor: COLORS.redBorder,
     borderWidth: 1,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
@@ -609,13 +612,13 @@ const styles = StyleSheet.create({
   errorBannerText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#DC2626',
+    color: COLORS.redPrimary,
     flex: 1,
   },
   stripeCardContainer: {
     height: 52,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.white,
     paddingHorizontal: SPACING.sm,
@@ -627,9 +630,9 @@ const styles = StyleSheet.create({
     height: 44,
   },
   securityNoteBox: {
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     borderLeftWidth: 4,
-    borderLeftColor: '#A06333',
+    borderLeftColor: COLORS.brandBrown,
     borderRadius: RADIUS.xs,
     padding: SPACING.md,
     marginBottom: SPACING.xl,
@@ -637,7 +640,7 @@ const styles = StyleSheet.create({
   securityNoteText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
     lineHeight: 18,
   },
   backBtn: {
@@ -653,16 +656,15 @@ const styles = StyleSheet.create({
 
   // STEP 1: INCLUDED SECTION
   includedSection: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.md,
   },
   sectionHeaderLabel: {
     fontSize: FONT_SIZE.sm,
-
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     letterSpacing: 0.8,
     marginBottom: SPACING.xs + 2,
   },
@@ -698,21 +700,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     paddingVertical: SPACING.md - 2,
     paddingHorizontal: 4,
     alignItems: 'center',
   },
   planTabCardActive: {
-    borderColor: '#A06333',
-    backgroundColor: '#FAF6F0',
+    borderColor: COLORS.brandBrown,
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1.5,
   },
   planTabName: {
     fontSize: FONT_SIZE.sm,
-
     fontFamily: FONTS.bold,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     marginBottom: 2,
   },
   planTabPrice: {
@@ -721,17 +722,17 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   planTabTextActive: {
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
   },
 
   // PAYMENT METHOD WARNING
   cardWarningBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FEFCE8',
+    backgroundColor: COLORS.amberLightBg,
     borderRadius: RADIUS.md,
     borderWidth: 1.5,
-    borderColor: '#FCD34D',
+    borderColor: COLORS.amberBorder,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     gap: SPACING.xs,
@@ -740,7 +741,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -750,20 +751,20 @@ const styles = StyleSheet.create({
   cardWarningTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#92400E',
+    color: COLORS.amberWarning,
   },
   cardWarningSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#B45309',
+    color: COLORS.amberWarning,
     marginTop: 1,
   },
 
   // TRIAL NOTE
   trialNoteBox: {
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     borderLeftWidth: 4,
-    borderLeftColor: '#A06333',
+    borderLeftColor: COLORS.brandBrown,
     borderRadius: RADIUS.xs,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
@@ -771,12 +772,12 @@ const styles = StyleSheet.create({
   trialNoteText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
     lineHeight: 18,
   },
   trialNoteBold: {
     fontFamily: FONTS.bold,
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
   },
 
   // ACTION BUTTON
@@ -784,11 +785,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: RADIUS.md,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.xs,
-    shadowColor: '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 6,

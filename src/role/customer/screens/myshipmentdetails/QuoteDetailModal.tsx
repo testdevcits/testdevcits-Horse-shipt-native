@@ -81,7 +81,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
       return {
         bg: COLORS.greenLightBg,
         text: COLORS.greenPrimary,
-        border: '#A7F3D0',
+        border: COLORS.emeraldBorder,
       };
     }
     if (isCancelled || isRejected) {
@@ -235,10 +235,10 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
             {/* CANCELLATION TIMEFRAME BANNER */}
             {!isCancelled && !isRejected && quote?.cancellationLastDate && (
               <View style={styles.cancelBanner}>
-                <Clock size={ICON_SIZE.sm} color="#B45309" style={{ marginRight: SPACING.xs }} />
+                <Clock size={ICON_SIZE.sm} color={COLORS.amberWarning} style={{ marginRight: SPACING.xs }} />
                 <AppText style={styles.cancelText}>
                   Cancel Window:{' '}
-                  <AppText style={{ fontFamily: FONTS.bold, color: '#92400E' }}>
+                  <AppText style={{ fontFamily: FONTS.bold, color: COLORS.amberWarning }}>
                     {formatDate(quote?.cancellationLastDate, 'MMM DD, YYYY · hh:mm A')}
                   </AppText>
                 </AppText>
@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   content: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
     borderTopLeftRadius: RADIUS.xl,
     borderTopRightRadius: RADIUS.xl,
     height: '90%',
@@ -643,7 +643,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 4,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: COLORS.slate300,
   },
   header: {
     paddingHorizontal: SPACING.lg,
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
   },
   headerTitleWrap: { flex: 1 },
   reviewLabel: {
@@ -673,7 +673,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: RADIUS.round,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -681,16 +681,16 @@ const styles = StyleSheet.create({
   cancelBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: RADIUS.sm,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: COLORS.amberBorder,
   },
   cancelText: {
-    color: '#92400E',
+    color: COLORS.amberWarning,
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     flex: 1,
@@ -707,9 +707,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     marginBottom: SPACING.md,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.slate900,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
     shadowRadius: 4,
@@ -977,21 +977,21 @@ const styles = StyleSheet.create({
   successMessageCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     padding: SPACING.sm,
     borderRadius: RADIUS.sm,
     gap: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.emeraldBorder,
   },
   successTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#065F46',
+    color: COLORS.emeraldDark,
   },
   successSub: {
     fontSize: FONT_SIZE.xs,
-    color: '#047857',
+    color: COLORS.emeraldDark,
     marginTop: 1,
   },
 

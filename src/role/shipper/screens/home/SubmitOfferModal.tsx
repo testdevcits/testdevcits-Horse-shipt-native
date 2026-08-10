@@ -223,7 +223,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           {/* Header */}
           <View style={styles.headerRow}>
             <View style={styles.headerIconBox}>
-              <FileText size={20} color="#A06333" />
+              <FileText size={20} color={COLORS.brandBrown} />
             </View>
 
             <View style={styles.headerTextCol}>
@@ -242,7 +242,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           <View style={styles.paymentInfoRow}>
             <View style={styles.paymentInfoBox}>
               <View style={styles.paymentIconBox}>
-                <CreditCard size={18} color="#A06333" />
+                <CreditCard size={18} color={COLORS.brandBrown} />
               </View>
               <View style={styles.paymentTextCol}>
                 <AppText style={styles.paymentLabel}>PAYMENT METHOD</AppText>
@@ -252,7 +252,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
 
             <View style={styles.paymentInfoBox}>
               <View style={styles.paymentIconBox}>
-                <Box size={18} color="#A06333" />
+                <Box size={18} color={COLORS.brandBrown} />
               </View>
               <View style={styles.paymentTextCol}>
                 <AppText style={styles.paymentLabel}>PAYMENT DUE</AppText>
@@ -272,7 +272,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 1. Pricing Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <DollarSign size={18} color="#A06333" />
+                <DollarSign size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Pricing</AppText>
               </View>
 
@@ -292,7 +292,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 2. Cancellation Policy Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <Info size={18} color="#A06333" />
+                <Info size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Cancellation Policy</AppText>
               </View>
 
@@ -314,7 +314,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 3. Additional Notes Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <FileText size={18} color="#A06333" />
+                <FileText size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Additional Notes</AppText>
               </View>
 
@@ -329,7 +329,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 4. Shipper Contract Section (Optional File Upload) */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <FileText size={18} color="#A06333" />
+                <FileText size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Shipper Contract</AppText>
               </View>
 
@@ -372,7 +372,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 5. Digital Signature Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <Edit3 size={18} color="#A06333" />
+                <Edit3 size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Digital Signature </AppText>
                 <AppText style={styles.asterisk}>*</AppText>
               </View>
@@ -412,14 +412,15 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                 <TouchableOpacity
                   style={styles.clearSigBtn}
                   onPress={handleClearSignature}
+                  activeOpacity={0.7}
                 >
-                  <RotateCcw size={14} color="#2563EB" />
+                  <RotateCcw size={14} color={COLORS.bluePrimary} />
                   <AppText style={styles.clearSigText}>Clear Signature</AppText>
                 </TouchableOpacity>
 
                 {signature ? (
                   <View style={styles.capturedRow}>
-                    <CheckCircle2 size={14} color="#10B981" />
+                    <CheckCircle2 size={14} color={COLORS.greenActive} />
                     <AppText style={styles.capturedText}>
                       Signature captured
                     </AppText>
@@ -508,9 +509,9 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: '#EFE5D8',
+    borderColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -535,7 +536,7 @@ const styles = StyleSheet.create({
   // Readonly Payment Bar
   paymentInfoRow: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     padding: SPACING.sm,
     gap: SPACING.sm,
   },
@@ -552,7 +553,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 4,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -615,7 +616,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.sm,
     height: 46,
@@ -638,7 +639,7 @@ const styles = StyleSheet.create({
   // Standard Input
   standardInputContainer: {
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.sm,
     height: 46,
@@ -670,9 +671,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
     borderRadius: RADIUS.xs,
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xs + 2,
@@ -686,13 +687,13 @@ const styles = StyleSheet.create({
   },
   inputError: {
     borderColor: COLORS.error,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
   },
 
   // Textarea
   textAreaContainer: {
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
     backgroundColor: COLORS.white,
@@ -708,7 +709,7 @@ const styles = StyleSheet.create({
   // Dashed Contract File
   dashedFileContainer: {
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     borderStyle: 'dashed',
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
@@ -734,7 +735,7 @@ const styles = StyleSheet.create({
   },
   chooseFileBtn: {
     borderWidth: 1,
-    borderColor: '#A06333',
+    borderColor: COLORS.brandBrown,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: RADIUS.xs,
@@ -743,7 +744,7 @@ const styles = StyleSheet.create({
   chooseFileBtnText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
   },
   removeContractBtn: {
     marginTop: 4,
@@ -765,7 +766,7 @@ const styles = StyleSheet.create({
   signatureWrapper: {
     height: 180,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.slate300,
     borderRadius: RADIUS.sm,
     overflow: 'hidden',
     backgroundColor: COLORS.white,
@@ -784,7 +785,7 @@ const styles = StyleSheet.create({
   clearSigText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#2563EB',
+    color: COLORS.bluePrimary,
   },
   capturedRow: {
     flexDirection: 'row',
@@ -794,7 +795,7 @@ const styles = StyleSheet.create({
   capturedText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#10B981',
+    color: COLORS.greenActive,
   },
 
   // Footer Actions
@@ -808,8 +809,8 @@ const styles = StyleSheet.create({
     height: 46,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#A06333',
-    backgroundColor: '#F8FAFC',
+    borderColor: COLORS.brandBrown,
+    backgroundColor: COLORS.slate50,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -822,10 +823,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 46,
     borderRadius: RADIUS.sm,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,

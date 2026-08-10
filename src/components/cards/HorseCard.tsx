@@ -134,14 +134,14 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
         <View style={styles.docsBadgesRow}>
           {hasCoggins ? (
             <View style={styles.docBadgeSuccess}>
-              <ShieldCheck size={13} color="#059669" />
+              <ShieldCheck size={13} color={COLORS.emeraldPrimary} />
               <AppText style={styles.docBadgeTextSuccess}>Coggins PDF</AppText>
             </View>
           ) : null}
 
           {hasHealthCert ? (
             <View style={styles.docBadgeSuccess}>
-              <ShieldCheck size={13} color="#059669" />
+              <ShieldCheck size={13} color={COLORS.emeraldPrimary} />
               <AppText style={styles.docBadgeTextSuccess}>Health Cert PDF</AppText>
             </View>
           ) : null}
@@ -168,10 +168,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.grey200,
     marginBottom: SPACING.sm,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
@@ -190,17 +190,17 @@ const styles = StyleSheet.create({
     height: 54,
     borderRadius: 27,
     borderWidth: 1.5,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.goldBorder,
   },
   avatarPlaceholder: {
     width: 54,
     height: 54,
     borderRadius: 27,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.goldBorder,
   },
   avatarPlaceholderIcon: {
     width: 26,
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
   },
   breedTag: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,
     marginTop: 4,
     borderWidth: 1,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.goldBorder,
   },
   breedTagText: {
     fontSize: FONT_SIZE.mini,
@@ -250,26 +250,26 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.goldBorder,
   },
   deleteActionBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
   },
 
   pillsRow: {
     flexDirection: 'row',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
     borderRadius: RADIUS.sm,
     paddingVertical: SPACING.xs,
     paddingHorizontal: SPACING.xs,
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
   },
   pillItem: {
     flex: 1,
@@ -308,27 +308,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 3,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.emeraldBorder,
   },
   docBadgeTextSuccess: {
     fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.semiBold,
-    color: '#047857',
+    color: COLORS.emeraldDark,
   },
 
   notesBox: {
     flexDirection: 'row',
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg,
     borderRadius: RADIUS.sm,
     padding: SPACING.xs + 2,
     marginTop: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.goldBorder,
   },
   notesContent: {
     marginLeft: SPACING.xs,

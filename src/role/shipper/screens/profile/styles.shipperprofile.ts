@@ -814,26 +814,26 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: RADIUS.round,
     borderWidth: 1,
-    borderColor: '#059669',
-    backgroundColor: '#ECFDF5',
+    borderColor: COLORS.emeraldPrimary,
+    backgroundColor: COLORS.emeraldLightBg,
   },
   greenOutlinePillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#059669',
+    color: COLORS.emeraldPrimary,
   },
   blueOutlinePill: {
     paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderRadius: RADIUS.round,
     borderWidth: 1,
-    borderColor: '#2563EB',
-    backgroundColor: '#EFF6FF',
+    borderColor: COLORS.bluePrimary,
+    backgroundColor: COLORS.blueLightBg,
   },
   blueOutlinePillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#2563EB',
+    color: COLORS.bluePrimary,
   },
   planDetailsBox: {
     backgroundColor: COLORS.goldLightBg,
@@ -863,9 +863,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.emeraldBorder,
     borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     marginTop: SPACING.xs,
@@ -873,7 +873,7 @@ const styles = StyleSheet.create({
   subActiveBannerText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#059669',
+    color: COLORS.emeraldPrimary,
   },
 });
 

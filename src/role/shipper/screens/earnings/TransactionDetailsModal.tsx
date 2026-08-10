@@ -98,11 +98,11 @@ const TransactionDetailsModal = ({
                                 isSuccess ? styles.statusSuccess : styles.statusPending,
                             ]}
                         >
-                            <ShieldCheck size={13} color={isSuccess ? '#047857' : '#D97706'} />
+                            <ShieldCheck size={13} color={isSuccess ? COLORS.emeraldDark : COLORS.amberPrimary} />
                             <AppText
                                 style={[
                                     styles.statusText,
-                                    { color: isSuccess ? '#047857' : '#D97706' },
+                                    { color: isSuccess ? COLORS.emeraldDark : COLORS.amberPrimary },
                                 ]}
                             >
                                 {isSuccess
@@ -252,14 +252,14 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     statusSuccess: {
-        backgroundColor: '#ECFDF5',
+        backgroundColor: COLORS.emeraldLightBg,
         borderWidth: 1,
-        borderColor: '#A7F3D0',
+        borderColor: COLORS.emeraldBorder,
     },
     statusPending: {
-        backgroundColor: '#FEF3C7',
+        backgroundColor: COLORS.amberLightBg,
         borderWidth: 1,
-        borderColor: '#FDE68A',
+        borderColor: COLORS.amberBorder,
     },
     statusText: {
         fontSize: FONT_SIZE.xs - 1,

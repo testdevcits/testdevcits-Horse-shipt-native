@@ -126,8 +126,8 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               activeOpacity={0.7}
               disabled={!isDriverDeletable}
             >
-              <Trash2 size={15} color="#EF4444" />
-              <AppText style={[styles.actionBtnPillText, { color: '#EF4444' }]}>
+              <Trash2 size={15} color={COLORS.error} />
+              <AppText style={[styles.actionBtnPillText, { color: COLORS.error }]}>
                 Delete
               </AppText>
             </TouchableOpacity>

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: RADIUS.xs,
   },
   otherBubble: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     borderBottomLeftRadius: RADIUS.xs,
   },
 
@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
     minHeight: 44,
     maxHeight: 100,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     borderRadius: RADIUS.round,
     justifyContent: 'center',
     paddingHorizontal: SPACING.md,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
   },
   textInput: {
     fontFamily: FONTS.regular,

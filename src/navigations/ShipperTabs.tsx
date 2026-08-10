@@ -79,7 +79,7 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
                   activeOpacity={0.85}
                   style={styles.centerButton}
                 >
-                  <Plus size={28} color="#FFF" strokeWidth={2.5} />
+                  <Plus size={28} color={COLORS.white} strokeWidth={2.5} />
                 </TouchableOpacity>
               );
             }
@@ -183,11 +183,11 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   tabBarBackground: {
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.white,
     height: Platform.OS === 'ios' ? 88 : 72,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
@@ -199,10 +199,10 @@ const styles = StyleSheet.create({
     left: width / 2 - 45,
     width: 90,
     height: 60,
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
@@ -223,18 +223,18 @@ const styles = StyleSheet.create({
   tabLabelFocused: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.brandBrown,
     marginTop: 3,
   },
   centerButton: {
     width: 62,
     height: 62,
     borderRadius: 31,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
     top: -28,
-    shadowColor: '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 6,

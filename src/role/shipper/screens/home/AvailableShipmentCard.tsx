@@ -99,7 +99,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <View style={styles.timelineDot} />
           <View style={styles.timelineDashedLine} />
           <View style={styles.timelineTruckNode}>
-            <Truck size={12} color="#059669" />
+            <Truck size={12} color={COLORS.emeraldPrimary} />
           </View>
           <View style={styles.timelineDashedLine} />
           <View style={styles.timelineDot} />

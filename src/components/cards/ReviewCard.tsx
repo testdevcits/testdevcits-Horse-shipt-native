@@ -38,14 +38,14 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
     : '';
 
   const renderStars = (count: number) => {
-    const STAR_COLOR = '#F59E0B';
+    const STAR_COLOR = COLORS.warning;
     return Array(5)
       .fill(0)
       .map((_, i) => (
         <Star
           key={i}
           size={16}
-          color={i < count ? STAR_COLOR : '#CBD5E1'}
+          color={i < count ? STAR_COLOR : COLORS.slate300}
           fill={i < count ? STAR_COLOR : 'transparent'}
           strokeWidth={1.5}
         />
@@ -91,7 +91,7 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
         <View style={styles.shipmentBox}>
           {shipmentCode ? (
             <View style={styles.shipmentCodeRow}>
-              <Package size={13} color="#64748B" />
+              <Package size={13} color={COLORS.textSecondary} />
               <AppText style={styles.shipmentCodeText}>#{shipmentCode}</AppText>
             </View>
           ) : null}
@@ -99,13 +99,13 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
           {pickupLoc && deliveryLoc ? (
             <View style={styles.routeContainer}>
               <View style={styles.routeRow}>
-                <MapPin size={12} color="#D97706" />
+                <MapPin size={12} color={COLORS.amberPrimary} />
                 <AppText style={styles.routeText} numberOfLines={1}>
                   {pickupLoc}
                 </AppText>
               </View>
               <View style={styles.routeRow}>
-                <MapPin size={12} color="#10B981" />
+                <MapPin size={12} color={COLORS.greenActive} />
                 <AppText style={styles.routeText} numberOfLines={1}>
                   {deliveryLoc}
                 </AppText>
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     marginBottom: SPACING.md,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.slate900,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontFamily: FONTS.medium,
     fontSize: FONT_SIZE.sm,
-    color: '#94A3B8',
+    color: COLORS.textLight,
   },
   starRow: {
     flexDirection: 'row',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   ratingNumberText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
-    color: '#B45309',
+    color: COLORS.amberWarning,
     marginLeft: SPACING.xs,
   },
   reviewText: {
@@ -199,12 +199,12 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs2,
   },
   shipmentBox: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm2,
     marginTop: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
     gap: 6,
   },
   shipmentCodeRow: {
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   shipmentCodeText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#475569',
+    color: COLORS.textSecondary,
   },
   routeContainer: {
     gap: 4,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
-    color: '#334155',
+    color: COLORS.slate700,
   },
 });
 

@@ -200,13 +200,13 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.responseHeaderRow}>
                     <View style={styles.responseLeftHeader}>
                       <View style={styles.responseIconSquare}>
-                        <CheckCheck size={16} color="#059669" />
+                        <CheckCheck size={16} color={COLORS.emeraldPrimary} />
                       </View>
                       <AppText style={styles.responseHeaderLabel}>CUSTOMER RESPONSE</AppText>
                     </View>
 
                     <View style={styles.answeredBadge}>
-                      <Check size={12} color="#047857" />
+                      <Check size={12} color={COLORS.emeraldDark} />
                       <AppText style={styles.answeredBadgeText}>Answered</AppText>
                     </View>
                   </View>
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
   // Progress Bar
   progressTrack: {
     height: 6,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.slate200,
     borderRadius: 3,
     overflow: 'hidden',
     marginTop: SPACING.xs,
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     borderRadius: 3,
   },
   hintText: {
@@ -519,9 +519,9 @@ const styles = StyleSheet.create({
 
   // Tips Box
   tipsBox: {
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.goldLightBg,
     borderLeftWidth: 4,
-    borderLeftColor: '#A06333',
+    borderLeftColor: COLORS.brandBrown,
     borderRadius: RADIUS.xs,
     padding: SPACING.md,
     marginBottom: SPACING.xl,
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
   tipItem: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
     lineHeight: 18,
   },
 
@@ -539,11 +539,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 48,
     borderRadius: RADIUS.md,
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.brandBrown,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.md,
-    shadowColor: '#A06333',
+    shadowColor: COLORS.brandBrown,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -571,10 +571,10 @@ const styles = StyleSheet.create({
 
   // Pending Question State Styles
   pendingQuestionCard: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.slate50,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     padding: SPACING.md,
     marginBottom: SPACING.md,
   },
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 6,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -596,7 +596,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: '#8C5226',
+    color: COLORS.goldDarkText,
     letterSpacing: 0.5,
   },
   pendingQuestionText: {
@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
   },
   pendingDivider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.slate200,
     marginVertical: SPACING.xs,
   },
   pendingAskedDateText: {
@@ -620,10 +620,10 @@ const styles = StyleSheet.create({
 
   // Status Card
   statusCard: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.amberLightBg,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#FCD34D',
+    borderColor: COLORS.amberBorder,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
   },
@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 6,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -645,20 +645,20 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: '#92400E',
+    color: COLORS.amberWarning,
     letterSpacing: 0.5,
   },
   statusMainTitle: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#92400E',
+    color: COLORS.amberWarning,
     marginTop: 2,
   },
   typingBubbleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.amberLightBg,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 14,
@@ -666,27 +666,27 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginVertical: SPACING.xs + 2,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: COLORS.amberBorder,
   },
   statusDot: {
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: '#D97706',
+    backgroundColor: COLORS.amberPrimary,
   },
   statusSubText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#B45309',
+    color: COLORS.amberWarning,
     marginTop: 2,
   },
 
   // Customer Response Card Styles
   responseCard: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#6EE7B7',
+    borderColor: COLORS.emeraldBorder,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
   },
@@ -705,7 +705,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 6,
-    backgroundColor: '#D1FAE5',
+    backgroundColor: COLORS.emeraldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -713,13 +713,13 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: '#065F46',
+    color: COLORS.emeraldDark,
     letterSpacing: 0.5,
   },
   answeredBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#D1FAE5',
+    backgroundColor: COLORS.emeraldLightBg,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
@@ -729,7 +729,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.bold,
-    color: '#047857',
+    color: COLORS.emeraldDark,
   },
   responseText: {
     fontSize: FONT_SIZE.sm,
@@ -740,25 +740,25 @@ const styles = StyleSheet.create({
   },
   responseDivider: {
     height: 1,
-    backgroundColor: '#A7F3D0',
+    backgroundColor: COLORS.emeraldBorder,
     marginVertical: SPACING.xs,
   },
   responseDateText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#047857',
+    color: COLORS.emeraldDark,
     marginTop: 2,
   },
 
   // Pending Footer Close Action
   pendingFooter: {
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: COLORS.slate200,
     paddingTop: SPACING.md,
     alignItems: 'flex-end',
   },
   pendingCloseBtn: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     paddingHorizontal: SPACING.lg,
     paddingVertical: 10,
     borderRadius: RADIUS.sm,
