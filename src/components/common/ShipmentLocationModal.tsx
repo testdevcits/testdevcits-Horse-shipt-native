@@ -24,7 +24,7 @@ import {
   ExternalLink,
 } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SIZES, SPACING } from '../../constants';
 import AppText from './AppText';
 
 export interface ShipmentData {
@@ -504,22 +504,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
     paddingHorizontal: SPACING.xs,
-    paddingVertical: 4,
+    paddingVertical: SPACING.xs,
     borderRadius: RADIUS.xs,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.grey200,
   },
   copyBtnText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.grey600,
-    marginLeft: 4,
+    marginLeft: SPACING.xs,
   },
   addressBox: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.grey200,
   },
   addressText: {

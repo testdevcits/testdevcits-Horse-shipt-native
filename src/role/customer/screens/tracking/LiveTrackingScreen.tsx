@@ -28,7 +28,7 @@ import {
   RefreshCw,
 } from 'lucide-react-native';
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SIZES, SPACING } from '../../../../constants';
 import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
@@ -542,7 +542,7 @@ const styles = StyleSheet.create({
     marginRight: SPACING.xs,
   },
   statusText: {
-    fontSize: FONT_SIZE.xs + 1,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.white,
     letterSpacing: 0.5,
@@ -556,8 +556,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   controlBtn: {
-    width: 44,
-    height: 44,
+    width: SIZES.controlBtn,
+    height: SIZES.controlBtn,
     borderRadius: RADIUS.round,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
@@ -595,9 +595,9 @@ const styles = StyleSheet.create({
     paddingRight: SPACING.xs,
   },
   driverAvatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: SIZES.avatarMd44,
+    height: SIZES.avatarMd44,
+    borderRadius: RADIUS.circle,
     backgroundColor: COLORS.grey100,
   },
   driverName: {
@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
   sheetHandle: {
     width: 36,
     height: 4,
-    borderRadius: 2,
+    borderRadius: RADIUS.xxs,
     backgroundColor: COLORS.grey200,
     alignSelf: 'center',
     marginBottom: SPACING.md,
@@ -656,12 +656,12 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   etaLabel: {
-    fontSize: FONT_SIZE.xs + 1,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
   etaTime: {
-    fontSize: FONT_SIZE.lg + 2,
+    fontSize: FONT_SIZE.xl,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
     marginTop: 2,
@@ -671,12 +671,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs + 1,
+    paddingVertical: SPACING.xs,
     borderRadius: RADIUS.round,
     gap: SPACING.xs,
   },
   distanceText: {
-    fontSize: FONT_SIZE.xs + 1,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },
@@ -696,7 +696,7 @@ const styles = StyleSheet.create({
   timelinePoint: {
     width: 24,
     height: 24,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     backgroundColor: COLORS.grey100,
     justifyContent: 'center',
     alignItems: 'center',
@@ -710,7 +710,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   locationSub: {
-    fontSize: FONT_SIZE.xs + 1,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 1,

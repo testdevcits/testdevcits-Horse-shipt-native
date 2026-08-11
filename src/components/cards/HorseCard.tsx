@@ -6,7 +6,7 @@ import {
   ShieldCheck,
   FileText,
 } from 'lucide-react-native';
-import { SPACING, RADIUS, FONT_SIZE } from '../../constants/dimensions';
+import { SPACING, RADIUS, FONT_SIZE, SIZES, ICON_SIZE } from '../../constants/dimensions';
 import { COLORS, FONTS } from '../../constants';
 import AppText from '../common/AppText';
 import { Horse } from '../../types/customer';
@@ -186,16 +186,16 @@ const styles = StyleSheet.create({
     marginRight: SPACING.sm,
   },
   avatarImage: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
+    width: SIZES.avatar54,
+    height: SIZES.avatar54,
+    borderRadius: RADIUS.round,
     borderWidth: 1.5,
     borderColor: COLORS.goldBorder,
   },
   avatarPlaceholder: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
+    width: SIZES.avatar54,
+    height: SIZES.avatar54,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.goldBorder,
   },
   avatarPlaceholderIcon: {
-    width: 26,
-    height: 26,
+    width: ICON_SIZE.lg,
+    height: ICON_SIZE.lg,
     tintColor: COLORS.primary,
   },
 
@@ -247,23 +247,23 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.xs,
   },
   editActionBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: SIZES.avatarSm,
+    height: SIZES.avatarSm,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.goldBorder,
   },
   deleteActionBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: SIZES.avatarSm,
+    height: SIZES.avatarSm,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.redLightBg,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.redBorder,
   },
 

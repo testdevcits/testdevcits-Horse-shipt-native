@@ -10,7 +10,7 @@ import {
   Phone,
   Award,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, SIZES, ICON_SIZE } from '../../constants';
 import AppText from '../common/AppText';
 import Toast from 'react-native-toast-message';
 
@@ -255,11 +255,11 @@ const styles = StyleSheet.create({
   },
   activeBadge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 2,
+    paddingHorizontal: SPACING.sm2,
+    paddingVertical: SPACING.xxs,
     borderRadius: RADIUS.round,
-    marginTop: 4,
-    borderWidth: 1,
+    marginTop: SPACING.xs,
+    borderWidth: SIZES.borderWidthThin,
   },
   badgeActiveBg: {
     backgroundColor: COLORS.greenLightBg,
@@ -290,11 +290,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.divider,
     paddingVertical: SPACING.sm,
     borderRadius: RADIUS.xs,
-    gap: 5,
+    gap: SPACING.xs2,
   },
   actionBtnPillText: {
     fontSize: FONT_SIZE.xs,
@@ -308,16 +308,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
     gap: SPACING.sm,
   },
   specIconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: SIZES.iconActionBtn,
+    height: SIZES.iconActionBtn,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',

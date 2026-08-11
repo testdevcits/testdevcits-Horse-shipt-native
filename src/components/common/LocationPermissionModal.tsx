@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { MapPin, ShieldCheck, Navigation, X } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from './AppText';
 import { openDeviceSettings } from '../../utils/permissionHelper';
 
@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   iconContainer: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
+    width: SIZES.iconHeaderBg,
+    height: SIZES.iconHeaderBg,
+    borderRadius: RADIUS.round,
     backgroundColor: '#FEF3C7',
     justifyContent: 'center',
     alignItems: 'center',
@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
   },
   badgeIcon: {
     position: 'absolute',
-    bottom: -2,
-    right: -2,
+    bottom: -SPACING.xxs,
+    right: -SPACING.xxs,
     backgroundColor: COLORS.brandBrown,
-    borderRadius: 10,
-    padding: 3,
+    borderRadius: RADIUS.sm2,
+    padding: SPACING.xxs,
   },
   content: {
     alignItems: 'center',
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
     borderRadius: RADIUS.md,
     padding: SPACING.md,
-    borderWidth: 1,
+    borderWidth: SIZES.borderWidthThin,
     borderColor: '#E2E8F0',
     width: '100%',
   },
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    height: 48,
+    height: SIZES.buttonHeight,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',

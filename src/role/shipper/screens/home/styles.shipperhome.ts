@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, SIZES } from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -299,21 +299,24 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
-    marginVertical: 3,
+    marginVertical: SPACING.xxs,
   },
   shipmentStatus: {
     color: COLORS.emeraldPrimary,
     fontFamily: FONTS.semiBold,
     fontSize: FONT_SIZE.xs,
     textTransform: 'none',
-    borderWidth: 0.5,
-    borderColor: COLORS.amberBorder, borderRadius: RADIUS.md, paddingHorizontal: SPACING.sm, paddingVertical: 1
+    borderWidth: SIZES.borderWidthThin,
+    borderColor: COLORS.amberBorder,
+    borderRadius: RADIUS.md,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xxs,
   },
   infoMetaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginTop: 2,
+    gap: SPACING.xs,
+    marginTop: SPACING.xxs,
   },
   infoMetaText: {
     fontSize: FONT_SIZE.xs,
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
   cardRightCol: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 2,
+    paddingVertical: SPACING.xxs,
   },
   externalActionBtn: {
     width: 26,

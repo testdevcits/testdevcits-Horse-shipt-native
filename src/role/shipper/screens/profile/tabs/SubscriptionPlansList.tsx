@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.emeraldPrimary,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: SPACING.xs2,
+    paddingVertical: SPACING.xxs,
     borderRadius: RADIUS.xs,
-    gap: 3,
+    gap: SPACING.xxs,
   },
   currentBadgeText: {
     color: COLORS.white,
