@@ -22,6 +22,7 @@ import ReviewCard from './cards/ReviewCard';
 import ShipperCard from './cards/ShipperCard';
 import TruckDriverCard from './cards/TruckDriverCard';
 import CountryCodePicker, { COUNTRIES } from './common/CountryCodePicker/CountryCodePicker';
+import ShipmentLocationModal from './common/ShipmentLocationModal';
 
 export {
   AppHeader,
@@ -30,6 +31,7 @@ export {
   PhotoSourceSheet,
   AppSelect,
   MapModal,
+  ShipmentLocationModal,
   ChatlistCard,
   Button,
   Input,

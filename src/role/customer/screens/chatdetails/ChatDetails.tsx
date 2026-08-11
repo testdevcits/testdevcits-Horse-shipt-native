@@ -17,13 +17,14 @@ import {
   X,
   Lock,
   Image as ImageIcon,
+  MapPin,
 } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, Input } from '../../../../components';
+import { AppText, Input, ShipmentLocationModal } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -68,6 +69,7 @@ const ChatDetails = () => {
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
@@ -75,7 +77,7 @@ const ChatDetails = () => {
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
 
-    
+
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
   const isLocked = Boolean(
@@ -227,15 +229,26 @@ const ChatDetails = () => {
           <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
         </TouchableOpacity>
         <Image source={imageIndex.AccountIcon} style={styles.headerAvatar} />
-        <View style={styles.headerInfo}>
+        <TouchableOpacity
+          style={styles.headerInfo}
+          onPress={() => setShowLocationModal(true)}
+          activeOpacity={0.7}
+        >
           <AppText style={styles.headerTitle}>{partnerName}</AppText>
           <AppText style={styles.headerSubtitle}>
             Shipment ID {shipment?.shipmentCode || 'Not Available'}
           </AppText>
-        </View>
-        <TouchableOpacity>
-          <MoreVertical color={COLORS.textPrimary} size={ICON_SIZE.sm} />
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={{ paddingHorizontal: 6 }}
+          onPress={() => setShowLocationModal(true)}
+          activeOpacity={0.7}
+        >
+          <MapPin color={COLORS.primary} size={ICON_SIZE.sm} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowLocationModal(true)}>
+          <MoreVertical color={COLORS.textPrimary} size={ICON_SIZE.sm} />
+        </TouchableOpacity> */}
       </View>
 
       <FlatList
@@ -323,6 +336,13 @@ const ChatDetails = () => {
           />
         </Suspense>
       )}
+
+      {/* Shipment Location Details Modal */}
+      <ShipmentLocationModal
+        isVisible={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        shipment={shipment}
+      />
     </KeyboardAvoidingView>
   );
 };

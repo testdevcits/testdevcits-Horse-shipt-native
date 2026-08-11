@@ -100,7 +100,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         </View>
 
         <FlatList
-          data={shipments.slice(0, 2)}
+          data={shipments.slice(0, 5)}
           keyExtractor={item => item?._id}
           scrollEnabled={false}
           ListHeaderComponent={

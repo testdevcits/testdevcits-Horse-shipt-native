@@ -33,6 +33,8 @@ import {
 import PublishedSuccessModal from '../PublishedSuccessModal';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
+import { fetchCustomerShipments } from '../../../../../redux/slices/customerShipmentSlice';
+import { useAppDispatch } from '../../../../../hooks/redux';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
@@ -41,6 +43,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch()
 
   const openUrl = (url: string | null) => {
     if (url) Linking.openURL(url);
@@ -52,6 +55,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
       const res = await customerService.publishShipment(id);
       if (res.success) {
         setIsSuccessModalVisible(true);
+        setTimeout(() => {
+          dispatch(fetchCustomerShipments());
+        }, 1000);
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to publish shipment.');
@@ -181,7 +187,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             </TouchableOpacity>
           )}
 
-          {(data?.shipper?._id || data?.shipper) &&
+          {/* {(data?.shipper?._id || data?.shipper) &&
             data?.status !== 'delivered' && (
               <TouchableOpacity
                 style={styles.chatActionBtn}
@@ -193,7 +199,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   Chat with Shipper
                 </AppText>
               </TouchableOpacity>
-            )}
+            )} */}
           {data?.status === 'delivered' && (
             <TouchableOpacity
               style={styles.chatActionBtn}

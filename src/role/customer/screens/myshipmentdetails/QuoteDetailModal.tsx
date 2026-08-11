@@ -40,6 +40,7 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
 
 const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: any) => {
+  console.log("====QuoteDetailModal=====", quote)
   const navigation = useNavigation<any>();
   const { confirmPayment } = useStripe();
 
