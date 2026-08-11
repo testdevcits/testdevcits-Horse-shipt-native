@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey200,
   },
   copyBtnText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.grey600,
     marginLeft: 4,

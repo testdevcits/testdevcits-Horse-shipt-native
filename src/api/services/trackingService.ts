@@ -3,26 +3,30 @@ import axiosClient from '../axiosClient';
 
 export interface TrackingResponse {
   success: boolean;
-  tripStatus: 'assigned' | 'enRouteToPickup' | 'pickupComplete' | 'inTransit' | 'nearDestination' | 'delivered';
-  driver: {
-    lat: number;
-    lng: number;
-    heading: number;
-    updatedAt: string;
+  tripStatus: string;
+  driver?: {
+    lat?: number;
+    lng?: number;
+    heading?: number;
+    updatedAt?: string;
+    name?: string;
+    phone?: string;
+    avatar?: string;
+    vehicleNumber?: string;
   };
-  pickup: {
-    location: string;
-    lat: number;
-    lng: number;
-    distanceKm: number;
-    etaMinutes: number;
+  pickup?: {
+    location?: string;
+    lat?: number;
+    lng?: number;
+    distanceKm?: number;
+    etaMinutes?: number;
   };
-  delivery: {
-    location: string;
-    lat: number;
-    lng: number;
-    distanceKm: number;
-    etaMinutes: number;
+  delivery?: {
+    location?: string;
+    lat?: number;
+    lng?: number;
+    distanceKm?: number;
+    etaMinutes?: number;
   };
 }
 

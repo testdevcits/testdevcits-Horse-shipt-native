@@ -6,20 +6,18 @@ import {
     TouchableOpacity,
     TextInput,
     ActivityIndicator,
-
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
 import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
 import { ArrowLeft, Check, Smartphone, Send, Milestone, CheckCircle2, User, Truck } from 'lucide-react-native';
+import { OtpInput } from 'react-native-otp-entry';
 
 import { COLORS, FONTS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.deliveryverification';
-
-
 
 const DeliveryVerificationScreen = () => {
     const navigation = useNavigation<any>();
@@ -28,16 +26,13 @@ const DeliveryVerificationScreen = () => {
     // Extract shipment details from navigation parameters (fallback to mock structure if params are empty)
     const shipment = route.params?.shipment || {};
 
-
-
     // State Management
     const [step, setStep] = useState<1 | 2 | 3>(1);
     const [isLoading, setIsLoading] = useState(false);
     const [otpSentSuccess, setOtpSentSuccess] = useState(false);
 
-    // 6-Digit OTP Box state and references
-    const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
-    const otpInputsRef = useRef<Array<TextInput | null>>([]);
+    // 6-Digit OTP Box state
+    const [otp, setOtp] = useState<string>('');
 
     // Confirmation modal states
     const [modalConfig, setModalConfig] = useState({
@@ -70,7 +65,7 @@ const DeliveryVerificationScreen = () => {
 
     // 2. Trigger API to Verify OTP
     const handleVerifyOtp = async () => {
-        const otpCodeString = otp.join('');
+        const otpCodeString = typeof otp === 'string' ? otp : (otp as any).join('');
         if (otpCodeString.length < 6) {
             setModalConfig({
                 isVisible: true,
@@ -96,26 +91,6 @@ const DeliveryVerificationScreen = () => {
             });
         } finally {
             setIsLoading(false);
-        }
-    };
-
-    // Handler for dynamic 6-digit input auto-shifting focus
-    const handleOtpInput = (text: string, index: number) => {
-        const cleanText = text.replace(/[^0-9]/g, '');
-        const newOtp = [...otp];
-        newOtp[index] = cleanText;
-        setOtp(newOtp);
-
-        // Auto-focus next input box if filled
-        if (cleanText && index < 5) {
-            otpInputsRef.current[index + 1]?.focus();
-        }
-    };
-
-    // Backspace focus transition back
-    const handleOtpKeyPress = (e: any, index: number) => {
-        if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
-            otpInputsRef.current[index - 1]?.focus();
         }
     };
 
@@ -278,27 +253,24 @@ const DeliveryVerificationScreen = () => {
                                 </View>
                             )}
 
-                            {/* 6 Digit Box Slots */}
+                            {/* 6 Digit Box Slots using react-native-otp-entry */}
                             <View style={styles.otpGridContainer}>
-                                {Array(6).fill('').map((_, index) => (
-                                    <TextInput
-                                        allowFontScaling={false}
-                                        key={index}
-                                        ref={(ref) => {
-                                            otpInputsRef.current[index] = ref;
-                                        }}
-                                        style={styles.otpInputBox}
-                                        keyboardType="number-pad"
-                                        maxLength={1}
-                                        value={otp[index]}
-                                        onChangeText={(text) => handleOtpInput(text, index)}
-                                        onKeyPress={(e) => handleOtpKeyPress(e, index)}
-                                        selectTextOnFocus
-                                        textAlign="center"
-                                    />
-                                ))}
+                                <OtpInput
+                                    numberOfDigits={6}
+                                    focusColor={COLORS.primary}
+                                    onTextChange={(text) => setOtp(text)}
+                                    onFilled={(text) => setOtp(text)}
+                                    theme={{
+                                        containerStyle: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
+                                        pinCodeContainerStyle: styles.otpInputBox,
+                                        pinCodeTextStyle: styles.otpPinCodeText,
+                                        focusedPinCodeContainerStyle: styles.activeOtpInputBox,
+                                    }}
+                                />
                             </View>
-                            <AppText style={styles.otpLabelDigits}>0/6 digits</AppText>
+                            <AppText style={styles.otpLabelDigits}>
+                                {otp.length}/6 digits
+                            </AppText>
 
                             {/* Resend Action Trigger */}
                             <TouchableOpacity activeOpacity={0.7} onPress={handleSendOtp}>

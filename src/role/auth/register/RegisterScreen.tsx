@@ -91,12 +91,12 @@ const RegisterScreen = ({ navigation }: any) => {
                             onPress={() => navigation.navigate('SignupFlowScreen')}
                         />
 
-                        <View style={styles.dividerRow}>
+                        {/* <View style={styles.dividerRow}>
                             <AppText style={styles.dividerText}>Or</AppText>
-                        </View>
+                        </View> */}
 
                         {/* Social Logins */}
-                        {
+                        {/* {
                             Platform.OS === "ios" &&
                             <AppButton
                                 title="Continue with Apple"
@@ -104,22 +104,22 @@ const RegisterScreen = ({ navigation }: any) => {
                                 buttonStyle={styles.appleBtn}
                                 textStyle={styles.whiteBtnText}
                             />
-                        }
+                        } */}
 
 
-                        <AppButton
+                        {/* <AppButton
                             title="Continue with Google"
                             leftIcon={<GoogleIcon />}
                             buttonStyle={styles.googleBtn}
                             textStyle={styles.darkBtnText}
-                        />
+                        /> */}
 
-                        <AppButton
+                        {/* <AppButton
                             title="Continue with Facebook"
                             leftIcon={<FacebookIcon />}
                             buttonStyle={styles.facebookBtn}
                             textStyle={styles.whiteBtnText}
-                        />
+                        /> */}
                     </View>
 
                     {/* 5. Footer Link */}

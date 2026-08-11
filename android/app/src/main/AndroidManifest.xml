@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
 
+    <!-- Notifications permission (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <!-- Foreground service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -46,6 +49,10 @@
         </intent-filter>
       </activity>
        
+      <service
+        android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask"
+        android:foregroundServiceType="location"
+        android:exported="false" />
       <service
         android:name="com.asterinet.reactnativebackgroundactions.RNBackgroundActionsTask"
         android:foregroundServiceType="location"

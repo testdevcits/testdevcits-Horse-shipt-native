@@ -40,7 +40,6 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
 
 const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: any) => {
-  console.log("====QuoteDetailModal=====", quote)
   const navigation = useNavigation<any>();
   const { confirmPayment } = useStripe();
 
@@ -128,6 +127,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
         { paymentMethodType: 'Card' },
       );
       if (error) {
+        console.error('Stripe Payment Error:--------------------', error);
         Alert.alert('Payment Error', error.message);
         setLoading(false);
         return;

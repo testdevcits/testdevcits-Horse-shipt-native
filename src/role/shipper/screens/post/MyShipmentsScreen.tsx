@@ -308,6 +308,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                 <AppText style={styles.reviewCustomerBtnText}>Review Customer</AppText>
               </TouchableOpacity>
             ) : (
+              paymentStatusRaw !== "pending" &&
               <TouchableOpacity
                 style={styles.trackShipmentBtn}
                 onPress={() => onTrackShipment(item)}

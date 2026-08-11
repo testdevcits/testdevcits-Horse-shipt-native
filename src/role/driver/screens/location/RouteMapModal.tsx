@@ -19,6 +19,8 @@ import {
   Clock,
   LocateFixed,
   Map as MapIcon,
+  Plus,
+  Minus,
 } from 'lucide-react-native';
 import {
   COLORS,
@@ -119,12 +121,39 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
       }
     }, [userCoords, pickupCoords, deliveryCoords]);
 
+    const handleZoomIn = useCallback(() => {
+      if (mapRef.current) {
+        mapRef.current.getCamera().then(camera => {
+          if (camera) {
+            camera.zoom = (camera.zoom || 12) + 1.2;
+            mapRef.current?.animateCamera(camera, { duration: 300 });
+          }
+        }).catch(err => {
+          console.warn('Zoom In error:', err);
+        });
+      }
+    }, []);
+
+    const handleZoomOut = useCallback(() => {
+      if (mapRef.current) {
+        mapRef.current.getCamera().then(camera => {
+          if (camera) {
+            camera.zoom = Math.max((camera.zoom || 12) - 1.2, 1);
+            mapRef.current?.animateCamera(camera, { duration: 300 });
+          }
+        }).catch(err => {
+          console.warn('Zoom Out error:', err);
+        });
+      }
+    }, []);
+
     useEffect(() => {
       if (visible) {
         fetchUserLocation();
-        setTimeout(handleFitAll, 1500);
+        const timer = setTimeout(handleFitAll, 1000);
+        return () => clearTimeout(timer);
       }
-    }, [visible, userCoords?.latitude, handleFitAll, fetchUserLocation]);
+    }, [visible]);
 
     // Combined totals
     const totalDistance = (
@@ -151,6 +180,12 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             mapType={mapType}
             showsUserLocation={false}
             showsCompass={false}
+            zoomEnabled={true}
+            zoomControlEnabled={true}
+            scrollEnabled={true}
+            pitchEnabled={true}
+            rotateEnabled={true}
+            zoomTapEnabled={true}
           >
             {userCoords && pickupCoords && deliveryCoords && (
               <>
@@ -238,8 +273,14 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
           {/* SIDE CONTROLS */}
           <View style={styles.sideControls}>
-            <TouchableOpacity style={styles.circleBtn} onPress={handleFitAll}>
+            <TouchableOpacity style={styles.circleBtn} onPress={handleFitAll} activeOpacity={0.8}>
               <LocateFixed size={20} color={COLORS.textPrimary} />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomIn} activeOpacity={0.8}>
+              <Plus size={20} color={COLORS.textPrimary} />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomOut} activeOpacity={0.8}>
+              <Minus size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -291,7 +332,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           {loading && (
             <View style={styles.loader}>
               <ActivityIndicator size="large" color={COLORS.primary} />
-              <AppText style={styles.loadingText}>Syncing Leg data?...</AppText>
+              <AppText style={styles.loadingText}>Finding the best route..</AppText>
             </View>
           )}
         </View>

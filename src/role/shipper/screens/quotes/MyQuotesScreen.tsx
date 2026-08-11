@@ -28,8 +28,7 @@ const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
 
-  console.log("===============quotes", quotes.map((i) => i.status));
-
+ 
 
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

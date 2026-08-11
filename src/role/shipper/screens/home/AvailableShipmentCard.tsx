@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { Truck, MapPin, Calendar, ExternalLink } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS } from '../../../../constants';
+import { COLORS, FONTS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperhome';
@@ -14,6 +14,9 @@ interface AvailableShipmentCardProps {
 }
 
 const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onPress }) => {
+
+
+
   const [imageError, setImageError] = useState(false);
 
   const horsePhoto =
@@ -64,9 +67,19 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
       <View style={styles.cardInfoCol}>
         <AppText style={styles.horseTitle}>{horseName}</AppText>
         <AppText style={styles.horseSpecs}>{horseSpecs}</AppText>
-        <AppText style={styles.shipmentCode}>
-          {item?.shipmentCode || ''}
-        </AppText>
+        <View style={styles.shipmentHeader}>
+          <AppText style={styles.shipmentCode}>
+            {item?.shipmentCode || ''}
+          </AppText>
+
+          <AppText style={styles.shipmentStatus}>
+            {item?.status
+              ? item.status
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, char => char.toUpperCase())
+              : ''}
+          </AppText>
+        </View>
 
         <View style={styles.infoMetaRow}>
           <MapPin size={14} color={COLORS.textSecondary} />
@@ -105,7 +118,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <View style={styles.timelineDot} />
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity >
   );
 };
 

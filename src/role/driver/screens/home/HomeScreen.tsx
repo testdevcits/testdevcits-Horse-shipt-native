@@ -26,7 +26,7 @@ import { useDriverMe } from '../../../../hooks/useDriverMe';
 import AppText from '../../../../components/common/AppText';
 import DriverHeader from '../../../../components/common/DriverHeader';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';
-import { Button } from '../../../../components';
+import { Button, LocationPermissionModal } from '../../../../components';
 import styles from './styles.home';
 import { COLORS, SPACING } from '../../../../constants';
 import Toast from 'react-native-toast-message';
@@ -44,6 +44,10 @@ const HomeScreen = ({ navigation }: any) => {
     refresh,
     handleStartTrip,
     startTripLoading,
+    isLocationPermissionModalVisible,
+    locationModalTitle,
+    locationModalMessage,
+    closeLocationPermissionModal,
   } = useDriverMe();
 
   // Collapsible accordion state for the Assigned Vehicle card [1]
@@ -206,6 +210,14 @@ const HomeScreen = ({ navigation }: any) => {
           deliveryCoords={activeShipment?.shipment?.deliveryCoords}
         />
       )}
+
+      {/* Custom Professional Location Permission Modal */}
+      <LocationPermissionModal
+        isVisible={isLocationPermissionModalVisible}
+        onClose={closeLocationPermissionModal}
+        title={locationModalTitle}
+        message={locationModalMessage}
+      />
     </View>
   );
 };

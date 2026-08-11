@@ -65,14 +65,18 @@ const ShipperCard = memo(({ item, onPress, onFavoritePress, customstyle }: Shipp
       {/* Top Row: Avatar and Favorite */}
       <View style={styles.headerRow}>
         <View style={styles.avatarContainer}>
-          <Image
-            source={
-              item?.profileImage && item.profileImage !== '/default-avatar.png'
-                ? { uri: item.profileImage }
-                : imageIndex.AccountIcon
-            }
-            style={styles.avatar}
-          />
+          {(() => {
+            const profileUri = typeof item?.profileImage === 'string'
+              ? item.profileImage
+              : (item?.profileImage as any)?.url;
+            const hasValidImage = Boolean(profileUri && profileUri !== '/default-avatar.png');
+            return (
+              <Image
+                source={hasValidImage ? { uri: profileUri } : imageIndex.AccountIcon}
+                style={styles.avatar}
+              />
+            );
+          })()}
           <View style={styles.verifiedBadge}>
             <CheckCircle2 size={12} color={COLORS.white} fill={COLORS.primary} />
           </View>

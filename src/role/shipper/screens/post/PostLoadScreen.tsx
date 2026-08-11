@@ -108,7 +108,7 @@ const ShipmentsScreen = ({ route }: { route?: any }) => {
   };
 
   const handleTrackShipment = (item: any) => {
-    const shipmentId = item?.shipment?._id || item?._id || item?.id;
+    const shipmentId = item?._id || item?.vehicle?.currentShipment;
     if (shipmentId) {
       navigation.navigate('LiveTracking', { shipmentId });
     }

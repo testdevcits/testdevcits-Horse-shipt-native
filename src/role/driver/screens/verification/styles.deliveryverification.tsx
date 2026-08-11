@@ -249,9 +249,18 @@ const styles = StyleSheet.create({
         borderColor: COLORS.border,
         borderRadius: RADIUS.sm,
         backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    activeOtpInputBox: {
+        borderColor: COLORS.primary,
+        borderWidth: 2,
+    },
+    otpPinCodeText: {
         fontFamily: FONTS.bold,
         fontSize: FONT_SIZE.xxl,
         color: COLORS.textPrimary,
+        textAlign: 'center',
     },
     otpLabelDigits: {
         fontFamily: FONTS.medium,

@@ -41,7 +41,7 @@ const SubscriptionPlansList: React.FC<Props> = ({
 
       {plans.map((plan) => {
         const isCurrentPlan = plan.priceId === currentPriceId;
-        
+
         return (
           <TouchableOpacity
             key={plan.priceId}
@@ -63,7 +63,7 @@ const SubscriptionPlansList: React.FC<Props> = ({
                   </View>
                 )}
               </View>
-              
+
               <AppText style={styles.planPrice}>
                 ${plan.amount.toFixed(2)}{' '}
                 <AppText style={styles.planInterval}>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   currentBadgeText: {
     color: COLORS.white,
-    fontSize: 10,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     textTransform: 'uppercase',
   },

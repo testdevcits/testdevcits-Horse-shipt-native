@@ -1,6 +1,5 @@
 // src/services/autoLocationService.ts
 import BackgroundService from 'react-native-background-actions';
-import { AppState } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import driverService from '../api/services/driverService';
@@ -11,64 +10,58 @@ const sleep = (time: number) =>
   new Promise<void>(resolve => setTimeout(resolve, time));
 
 /**
- * Background loop executed by BackgroundService (Android Foreground Service & iOS background runner).
- * Periodically gets current GPS coordinates and sends location update API request.
- * - Foreground ('active'): every 5 seconds (5000 ms)
- * - Background/Killed (not 'active'): every 10 seconds (10000 ms)
+ * Background location tracking task executed inside native Foreground Service.
+ * Runs continuously in background mode and when app is minimized/closed/killed.
  */
 const autoLocationTask = async (taskDataArguments?: any) => {
-  console.log('[AutoLocationService] Background tracking task initiated');
+  console.log('[AutoLocationService] Background tracking service loop started');
+  const delay = taskDataArguments?.delay || 10000;
 
   while (BackgroundService.isRunning()) {
-    const storedRole = await AsyncStorage.getItem('@user_role');
-    if (!storedRole || storedRole.toLowerCase() !== 'driver') {
-      console.log('[AutoLocationService] Role is not driver, stopping auto tracking service');
-      await BackgroundService.stop();
-      break;
+    try {
+      await new Promise<void>(resolve => {
+        Geolocation.getCurrentPosition(
+          async position => {
+            try {
+              const { latitude, longitude, speed, heading } = position.coords;
+              await driverService.updateLocation({
+                lat: latitude,
+                lng: longitude,
+                speed: speed ?? 0,
+                heading: heading ?? 0,
+              });
+              console.log('[AutoLocationService] Background location synced:', latitude, longitude);
+            } catch (err) {
+              console.warn('[AutoLocationService] Location API update error:', err);
+            } finally {
+              resolve();
+            }
+          },
+          error => {
+            console.warn('[AutoLocationService] GPS lock error:', error.message);
+            resolve();
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 5000,
+          }
+        );
+      });
+    } catch (err) {
+      console.warn('[AutoLocationService] Task error:', err);
     }
 
-    const isForeground = AppState.currentState === 'active';
-    const intervalMs = isForeground ? 5000 : 10000;
-
-    await new Promise<void>(resolve => {
-      Geolocation.getCurrentPosition(
-        async position => {
-          try {
-            const { latitude, longitude, speed, heading } = position.coords;
-            await driverService.updateLocation({
-              lat: latitude,
-              lng: longitude,
-              speed: speed ?? 0,
-              heading: heading ?? 0,
-            });
-          } catch (err) {
-            console.warn('[AutoLocationService] Location API update error:', err);
-          } finally {
-            resolve();
-          }
-        },
-        error => {
-          console.warn('[AutoLocationService] GPS lock error:', error.message);
-          resolve();
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 8000,
-          maximumAge: 3000,
-        }
-      );
-    });
-
-    await sleep(intervalMs);
+    await sleep(delay);
   }
 
-  console.log('[AutoLocationService] Background tracking task stopped');
+  console.log('[AutoLocationService] Background tracking service loop stopped');
 };
 
 const options = {
   taskName: 'HorseShiptAutoTrackService',
   taskTitle: 'Horse Shipt Live Tracking',
-  taskDesc: 'Auto-tracking driver position (5s active / 10s background)',
+  taskDesc: 'Auto-tracking driver position in background',
   taskIcon: {
     name: 'ic_launcher',
     type: 'mipmap',
@@ -76,8 +69,9 @@ const options = {
   color: '#A06333',
   linkingURI: 'horseshipt://location',
   parameters: {
-    delay: 5000,
+    delay: 10000,
   },
+  foregroundServiceType: ['location'],
 };
 
 export const startAutoTracking = async (): Promise<boolean> => {

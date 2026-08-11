@@ -290,11 +290,24 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     marginTop: 1,
   },
+  shipmentHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   shipmentCode: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
     marginVertical: 3,
+  },
+  shipmentStatus: {
+    color: COLORS.emeraldPrimary,
+    fontFamily: FONTS.semiBold,
+    fontSize: FONT_SIZE.xs,
+    textTransform: 'none',
+    borderWidth: 0.5,
+    borderColor: COLORS.amberBorder, borderRadius: RADIUS.md, paddingHorizontal: SPACING.sm, paddingVertical: 1
   },
   infoMetaRow: {
     flexDirection: 'row',

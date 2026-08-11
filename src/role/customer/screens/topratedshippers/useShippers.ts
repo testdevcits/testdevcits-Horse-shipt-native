@@ -27,10 +27,42 @@ export const useShippers = () => {
             else setLoading(true);
             
             dispatch(fetchWishlistThunk(isRefresh));
-            const topRes = await customerService.getTopRatedShippers();
-            if (topRes?.success && Array.isArray(topRes.data)) {
-                setShippers(topRes.data);
+
+            const [topRes, wishRes]: [any, any] = await Promise.all([
+                customerService.getTopRatedShippers().catch(() => null),
+                customerService.getWishlist().catch(() => null),
+            ]);
+
+            const topList = topRes?.data || (topRes as any)?.shippers || (topRes as any)?.topRatedShippers || [];
+            const wishList = wishRes?.data || (wishRes as any)?.wishlist || [];
+
+            const combinedMap = new Map<string, any>();
+
+            if (Array.isArray(topList)) {
+                topList.forEach((s: any) => {
+                    const id = s?.id || s?._id;
+                    if (id) {
+                        combinedMap.set(String(id), s);
+                    }
+                });
             }
+
+            if (Array.isArray(wishList)) {
+                wishList.forEach((s: any) => {
+                    const id = s?.id || s?._id;
+                    if (id) {
+                        const existing = combinedMap.get(String(id)) || {};
+                        combinedMap.set(String(id), {
+                            ...existing,
+                            ...s,
+                            isWishlisted: true,
+                            isFavorite: true,
+                        });
+                    }
+                });
+            }
+
+            setShippers(Array.from(combinedMap.values()));
         } catch (e) {
             console.error("Error fetching shippers:", e);
         } finally {
@@ -46,9 +78,22 @@ export const useShippers = () => {
         const wishSet = new Set(wishlistIds);
         return shippers.map(s => {
             const sId = s.id || s._id;
-            const isFav = wishSet.has(sId);
+            const isFav = wishSet.has(sId) || s?.isWishlisted === true;
+            const img = typeof s?.profileImage === 'string' 
+                ? s.profileImage 
+                : (s?.profileImage?.url || s?.avatar || s?.image || '');
+            const shipperName = s?.name || s?.shipperName || `${s?.firstName || ''} ${s?.lastName || ''}`.trim() || 'Professional Shipper';
+            const locationRegion = s?.region || s?.location || s?.address || s?.city || 'Region N/A';
+
             return {
                 ...s,
+                _id: s._id || s.id,
+                id: s.id || s._id,
+                profileImage: img,
+                name: shipperName,
+                region: locationRegion,
+                rating: Number(s?.rating) || 5,
+                reviewCount: Number(s?.reviewCount) || 0,
                 isFavorite: isFav,
                 isWishlisted: isFav,
             };
@@ -66,20 +111,33 @@ export const useShippers = () => {
     const filteredData = useMemo(() => {
         return shippersWithFavState.filter(s => {
             // 1. Search (Name or Region)
-            const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                 s.region.toLowerCase().includes(searchQuery.toLowerCase());
-            
-            // 2. Rating (Number comparison)
+            const nameStr = String(s?.name || '').toLowerCase();
+            const regionStr = String(s?.region || '').toLowerCase();
+            const qStr = searchQuery.trim().toLowerCase();
+
+            const matchesSearch = !qStr || nameStr.includes(qStr) || regionStr.includes(qStr);
+
+            // 2. Quick filter
+            let matchesQuick = true;
+            if (activeFilters.quick === 'Verified') {
+                matchesQuick = Boolean(s?.isVerified || s?.verified || (s?.rating || 0) >= 4);
+            } else if (activeFilters.quick === 'Top Rated') {
+                matchesQuick = (Number(s?.rating) || 0) >= 4;
+            } else if (activeFilters.quick === 'Nearest') {
+                matchesQuick = true;
+            }
+
+            // 3. Rating (Number comparison)
             const minRating = activeFilters.rating === 'All' ? 0 : parseFloat(activeFilters.rating.replace('+', ''));
-            const matchesRating = s.rating >= minRating;
+            const matchesRating = (Number(s?.rating) || 0) >= minRating;
 
-            // 3. Category matches (Exact string matching or 'All')
-            const matchesTransport = activeFilters.transport === 'All' ? true : s.transportType === activeFilters.transport;
-            const matchesExp = activeFilters.experience === 'All' ? true : s.experienceLevel === activeFilters.experience;
-            const matchesResponse = activeFilters.response === 'All' ? true : s.responseTime === activeFilters.response;
-            const matchesPrice = activeFilters.price === 'Any Price' ? true : s.priceTier === activeFilters.price;
+            // 4. Category matches (If field exists check match, otherwise pass through)
+            const matchesTransport = activeFilters.transport === 'All' || !s?.transportType ? true : s?.transportType === activeFilters.transport;
+            const matchesExp = activeFilters.experience === 'All' || !s?.experienceLevel ? true : s?.experienceLevel === activeFilters.experience;
+            const matchesResponse = activeFilters.response === 'All' || !s?.responseTime ? true : s?.responseTime === activeFilters.response;
+            const matchesPrice = activeFilters.price === 'Any Price' || !s?.priceTier ? true : s?.priceTier === activeFilters.price;
 
-            return matchesSearch && matchesRating && matchesTransport && matchesExp && matchesResponse && matchesPrice;
+            return matchesSearch && matchesQuick && matchesRating && matchesTransport && matchesExp && matchesResponse && matchesPrice;
         });
     }, [shippersWithFavState, searchQuery, activeFilters]);
 

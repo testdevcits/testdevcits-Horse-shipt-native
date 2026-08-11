@@ -55,6 +55,8 @@ const ShipmentHorizontalCard = memo(
     const horse = item?.horses?.[0];
     const pickupDate = formatDate(item?.pickupDateRange?.start);
     const statusLabel = formatStatus(item?.status);
+    console.log("==========item===============", item)
+
     const isDraft = item?.publish === false;
 
     return (

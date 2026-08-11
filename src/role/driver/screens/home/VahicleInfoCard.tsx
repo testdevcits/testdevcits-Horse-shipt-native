@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
   },
   vehicleImageContainer: {
     width: '100%',
-    height: 170,
+    // height: 250,
+    aspectRatio: 16 / 9,
     borderRadius: RADIUS.sm,
     overflow: 'hidden',
     position: 'relative',

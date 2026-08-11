@@ -69,10 +69,10 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
                         <AppText style={styles.driverName} numberOfLines={1}>
                             Captain {name || 'Driver'}
                         </AppText>
-                        <View style={styles.ratingBadge}>
+                        {/* <View style={styles.ratingBadge}>
                             <Star size={12} color={COLORS.warning} fill={COLORS.warning} />
                             <AppText style={styles.ratingText}>{rating.toFixed(1)}</AppText>
-                        </View>
+                        </View> */}
                     </View>
 
                     <TouchableOpacity

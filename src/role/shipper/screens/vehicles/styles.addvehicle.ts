@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     color: COLORS.textLight,
   },
   uploadDashedCard: {
-    height: 120,
+    height: 220,
     backgroundColor: COLORS.grey50,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   previewImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
+    resizeMode: "contain",
   },
   uploadPlaceholder: {
     justifyContent: 'center',

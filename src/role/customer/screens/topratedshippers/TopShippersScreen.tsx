@@ -50,6 +50,9 @@ const TopShippersScreen = () => {
     refresh,
   } = useShippers();
 
+
+  console.log("---------shippers-------", shippers)
+
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
   };
@@ -161,17 +164,19 @@ const TopShippersScreen = () => {
       <AppHeader showBack={true} title="Top Shippers" />
       <FlatList
         data={shippers}
-        keyExtractor={(item, index) => item?._id ?? index.toString()} // ListHeaderComponent={renderHeader}
+        keyExtractor={(item, index) => item?._id || item?.id || index.toString()}
+        ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <ShipperCard
             item={item}
             onPress={() => handleShipperPress(item)}
             onFavoritePress={toggleWishlist}
             customstyle={{ width: SCREEN_WIDTH - 20 }}
+
+
           />
         )}
         contentContainerStyle={styles.list}
-        stickyHeaderIndices={[0]}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

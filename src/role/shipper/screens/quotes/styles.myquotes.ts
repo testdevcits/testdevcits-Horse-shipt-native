@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   imageContainer: {
-    height: 180,
+    height: 250,
     width: '100%',
     backgroundColor: COLORS.grey100,
     position: 'relative',
