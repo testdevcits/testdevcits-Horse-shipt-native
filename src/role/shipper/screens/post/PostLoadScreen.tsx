@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   TouchableOpacity,
   RefreshControl,
   ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { AppHeader, AppText } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import AskQuestionModal from '../home/AskQuestionModal';
@@ -18,10 +18,18 @@ import styles from './styles.postload';
 
 export type TabType = 'my_shipments' | 'quote_request' | 'all_shipment';
 
-const PostLoadScreen = () => {
+const ShipmentsScreen = ({ route }: { route?: any }) => {
   const navigation = useNavigation<any>();
 
   const [activeTab, setActiveTab] = useState<TabType>('my_shipments');
+
+  useFocusEffect(
+    useCallback(() => {
+      if (route?.params?.initialTab) {
+        setActiveTab(route.params.initialTab);
+      }
+    }, [route?.params?.initialTab])
+  );
   const [allShipments, setAllShipments] = useState<any[]>([]);
   const [myQuotes, setMyQuotes] = useState<any[]>([]);
   const [invitations, setInvitations] = useState<any[]>([]);
@@ -106,10 +114,18 @@ const PostLoadScreen = () => {
     }
   };
 
-  // Counts
-  const myShipmentsCount = myQuotes.length;
-  const quoteRequestsCount = invitations.length;
-  const allShipmentsCount = allShipments.length;
+  const getHeaderTitle = () => {
+    switch (activeTab) {
+      case 'my_shipments':
+        return 'My Shipments';
+      case 'quote_request':
+        return 'Quote Requests';
+      case 'all_shipment':
+        return 'All Shipments';
+      default:
+        return 'Shipments';
+    }
+  };
 
   const renderActiveScreen = () => {
     switch (activeTab) {
@@ -148,7 +164,7 @@ const PostLoadScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Shipments" />
+      <AppHeader title={getHeaderTitle()} />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -157,98 +173,6 @@ const PostLoadScreen = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {/* Top Banner Card */}
-        {/* <View style={styles.topCard}>
-          <AppText style={styles.topTitle}>Shipments</AppText>
-          <AppText style={styles.topSub}>
-            Explore available shipments, customer quote requests, and active loads.
-          </AppText>
-        </View> */}
-
-        {/* 3 Horizontal Filter Tabs */}
-        <View style={styles.tabsWrapper}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.tabsContainer}
-          >
-            {/* Tab 1: My Shipments */}
-            <TouchableOpacity
-              style={[
-                styles.tabBtn,
-                activeTab === 'my_shipments' && styles.tabBtnActive,
-              ]}
-              onPress={() => setActiveTab('my_shipments')}
-            >
-              <AppText
-                style={[
-                  styles.tabBtnText,
-                  activeTab === 'my_shipments' && styles.tabBtnTextActive,
-                ]}
-              >
-                My Shipments
-              </AppText>
-              {myShipmentsCount > 0 && (
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {String(myShipmentsCount).padStart(2, '0')}
-                  </AppText>
-                </View>
-              )}
-            </TouchableOpacity>
-
-            {/* Tab 2: Quote Request */}
-            <TouchableOpacity
-              style={[
-                styles.tabBtn,
-                activeTab === 'quote_request' && styles.tabBtnActive,
-              ]}
-              onPress={() => setActiveTab('quote_request')}
-            >
-              <AppText
-                style={[
-                  styles.tabBtnText,
-                  activeTab === 'quote_request' && styles.tabBtnTextActive,
-                ]}
-              >
-                Quote Request
-              </AppText>
-              {quoteRequestsCount > 0 && (
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {String(quoteRequestsCount).padStart(2, '0')}
-                  </AppText>
-                </View>
-              )}
-            </TouchableOpacity>
-
-            {/* Tab 3: All Shipment */}
-            <TouchableOpacity
-              style={[
-                styles.tabBtn,
-                activeTab === 'all_shipment' && styles.tabBtnActive,
-              ]}
-              onPress={() => setActiveTab('all_shipment')}
-            >
-              <AppText
-                style={[
-                  styles.tabBtnText,
-                  activeTab === 'all_shipment' && styles.tabBtnTextActive,
-                ]}
-              >
-                All Shipment
-              </AppText>
-              {allShipmentsCount > 0 && (
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {String(allShipmentsCount).padStart(2, '0')}
-                  </AppText>
-                </View>
-              )}
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
-
         {/* Active Tab Screen */}
         {renderActiveScreen()}
       </ScrollView>
@@ -298,4 +222,5 @@ const PostLoadScreen = () => {
   );
 };
 
-export default PostLoadScreen;
+export const PostLoadScreen = ShipmentsScreen;
+export default ShipmentsScreen;

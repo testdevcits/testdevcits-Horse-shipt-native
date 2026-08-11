@@ -367,7 +367,7 @@ const AddEditHorse = () => {
                   error={touched.barnName ? (errors.barnName as string) : ''}
                 />
 
-                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                <Suspense fallback={null}>
                   <AppSelect
                     label={'Color'}
                     placeholder="Select Color"
@@ -389,7 +389,7 @@ const AddEditHorse = () => {
                   error={touched.age ? (errors.age as string) : ''}
                 />
 
-                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                <Suspense fallback={null}>
                   <AppSelect
                     label={'Breed'}
                     placeholder="Select Breed"
@@ -411,7 +411,7 @@ const AddEditHorse = () => {
                   />
                 )}
 
-                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                <Suspense fallback={null}>
                   <AppSelect
                     label={'Sex'}
                     placeholder="Select Sex"
@@ -422,7 +422,7 @@ const AddEditHorse = () => {
                   />
                 </Suspense>
 
-                <Suspense fallback={<ActivityIndicator size={'small'} />}>
+                <Suspense fallback={null}>
                   <AppSelect
                     label={'Stall Type'}
                     placeholder="Select Stall Type"

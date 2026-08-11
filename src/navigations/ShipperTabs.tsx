@@ -17,7 +17,7 @@ import imageIndex from '../assets/images/imageIndex';
 // Screens
 import ShipperHomeScreen from '../role/shipper/screens/home/ShipperHomeScreen';
 import MyQuotesScreen from '../role/shipper/screens/quotes/MyQuotesScreen';
-import PostLoadScreen from '../role/shipper/screens/post/PostLoadScreen';
+import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
 import ShipperProfileScreen from '../role/shipper/screens/profile/ShipperProfileScreen';
 import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
 
@@ -168,7 +168,7 @@ const ShipperTabs = () => (
   >
     <Tab.Screen name="Home" component={ShipperHomeScreen} />
     <Tab.Screen name="MyQuotes" component={MyQuotesScreen} />
-    <Tab.Screen name="Post" component={PostLoadScreen} />
+    <Tab.Screen name="Post" component={ShipmentsScreen} />
     <Tab.Screen name="Chats" component={ShipperChatsScreen} />
     <Tab.Screen name="Profile" component={ShipperProfileScreen} />
   </Tab.Navigator>

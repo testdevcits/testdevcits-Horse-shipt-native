@@ -14,6 +14,7 @@ import {
   AppLoader,
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
+import imageIndex from '../../../../assets/images/imageIndex';
 
 const ShipperList = ({ navigation }: { navigation?: any }) => {
   const {
@@ -70,7 +71,7 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
                 navigation.navigate('ChatDetails', {
                   shipmentId: item?.shipmentId,
                   isChatLocked: item?.isChatLocked,
-
+                  avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
                 })
               }
             />

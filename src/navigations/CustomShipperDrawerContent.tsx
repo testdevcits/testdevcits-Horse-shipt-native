@@ -23,8 +23,10 @@ import {
   ShieldCheck,
   LogOut,
   ChevronRight,
+  ChevronDown,
   Locate,
   FileText,
+  Edit3,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, ICON_SIZE } from '../constants/dimensions';
@@ -41,6 +43,7 @@ interface DrawerItemProps {
   onPress: () => void;
   isActive?: boolean;
   hasChevron?: boolean;
+  isExpanded?: boolean;
 }
 
 const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
@@ -50,6 +53,7 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
   onPress,
   isActive,
   hasChevron,
+  isExpanded,
 }) => (
   <TouchableOpacity
     style={[styles.menuItem, isActive && styles.menuItemActive]}
@@ -74,13 +78,51 @@ const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
     <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
       {label}
     </AppText>
-    {(isActive || hasChevron) && (
-      <ChevronRight
-        size={18}
-        color={isActive ? COLORS.brandBrown : COLORS.textLight}
-        style={styles.chevron}
-      />
+    {hasChevron ? (
+      isExpanded ? (
+        <ChevronDown
+          size={18}
+          color={isActive ? COLORS.brandBrown : COLORS.textLight}
+          style={styles.chevron}
+        />
+      ) : (
+        <ChevronRight
+          size={18}
+          color={isActive ? COLORS.brandBrown : COLORS.textLight}
+          style={styles.chevron}
+        />
+      )
+    ) : (
+      isActive && (
+        <ChevronRight
+          size={18}
+          color={COLORS.brandBrown}
+          style={styles.chevron}
+        />
+      )
     )}
+  </TouchableOpacity>
+);
+
+interface SubMenuItemProps {
+  label: string;
+  onPress: () => void;
+  isActive?: boolean;
+}
+
+const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
+  label,
+  onPress,
+  isActive,
+}) => (
+  <TouchableOpacity
+    style={[styles.subMenuItem, isActive && styles.subMenuItemActive]}
+    onPress={onPress}
+    activeOpacity={0.7}
+  >
+    <AppText style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}>
+      {label}
+    </AppText>
   </TouchableOpacity>
 );
 
@@ -88,6 +130,7 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
   const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
+  const [isShipmentExpanded, setIsShipmentExpanded] = React.useState(true);
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
   const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
@@ -95,6 +138,9 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
   const currentActiveTab = mainTabsState?.routes
     ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
     : 'Home';
+
+  const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Post');
+  const activeSubTab = postRoute?.params?.initialTab || 'my_shipments';
 
   const isTabActive = (tabName: string) => {
     return currentDrawerRoute === 'MainTabs' && currentActiveTab === tabName;
@@ -104,8 +150,8 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
     return currentDrawerRoute === routeName;
   };
 
-  const navigateToTab = (tabName: string) => {
-    navigation.navigate('MainTabs', { screen: tabName });
+  const navigateToTab = (tabName: string, params?: any) => {
+    navigation.navigate('MainTabs', { screen: tabName, params });
     navigation.closeDrawer();
   };
 
@@ -118,6 +164,8 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
     setIsLogoutModalVisible(false);
     dispatch(logoutUser());
   };
+
+  const isPostActive = isTabActive('Post');
 
   return (
     <View style={styles.safeArea}>
@@ -145,10 +193,36 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
           />
           <ShipperDrawerMenuItem
             label="Shipment"
-            IconComponent={Package}
-            isActive={isTabActive('Post')}
-            onPress={() => navigateToTab('Post')}
+            IconComponent={Edit3}
+            isActive={isPostActive}
+            hasChevron
+            isExpanded={isShipmentExpanded}
+            onPress={() => {
+              setIsShipmentExpanded(prev => !prev);
+              if (!isPostActive) {
+                navigateToTab('Post', { initialTab: 'my_shipments' });
+              }
+            }}
           />
+          {isShipmentExpanded && (
+            <View style={styles.subMenuContainer}>
+              <ShipperDrawerSubMenuItem
+                label="My Shipment"
+                isActive={isPostActive && activeSubTab === 'my_shipments'}
+                onPress={() => navigateToTab('Post', { initialTab: 'my_shipments' })}
+              />
+              <ShipperDrawerSubMenuItem
+                label="Quote Requests"
+                isActive={isPostActive && activeSubTab === 'quote_request'}
+                onPress={() => navigateToTab('Post', { initialTab: 'quote_request' })}
+              />
+              <ShipperDrawerSubMenuItem
+                label="All Shipments"
+                isActive={isPostActive && activeSubTab === 'all_shipment'}
+                onPress={() => navigateToTab('Post', { initialTab: 'all_shipment' })}
+              />
+            </View>
+          )}
           <ShipperDrawerMenuItem
             label="My Quotes"
             IconComponent={ClipboardList}
@@ -309,6 +383,27 @@ const styles = StyleSheet.create({
   },
   chevron: {
     marginLeft: 'auto',
+  },
+  subMenuContainer: {
+    backgroundColor: COLORS.white,
+    paddingBottom: SPACING.xs,
+  },
+  subMenuItem: {
+    paddingVertical: SPACING.sm + 2,
+    paddingLeft: SPACING.xl + 24,
+    paddingRight: SPACING.md,
+  },
+  subMenuItemActive: {
+    backgroundColor: COLORS.goldLightBg,
+  },
+  subMenuLabel: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey700,
+  },
+  subMenuLabelActive: {
+    color: COLORS.brandBrown,
+    fontFamily: FONTS.bold,
   },
   footerContainer: {
     paddingVertical: SPACING.xs,

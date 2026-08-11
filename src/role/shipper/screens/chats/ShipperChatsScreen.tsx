@@ -17,6 +17,7 @@ import {
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
+import imageIndex from '../../../../assets/images/imageIndex';
 
 const ChatItemCard = memo(
   ({
@@ -128,6 +129,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
       navigation.navigate('ChatDetails', {
         shipmentId: item?.shipmentId,
         name: item?.name || 'Customer',
+        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
       });
     },
     [navigation],

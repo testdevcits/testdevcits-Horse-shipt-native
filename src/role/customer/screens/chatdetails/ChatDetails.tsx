@@ -64,7 +64,7 @@ const ChatMessageImage = ({ uri }: { uri?: string }) => {
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { shipmentId, name, isChatLocked }: any = route.params || {};
+  const { shipmentId, name, isChatLocked, avatar }: any = route.params || {};
   const [inputText, setInputText] = useState('');
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
@@ -228,7 +228,7 @@ const ChatDetails = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
         </TouchableOpacity>
-        <Image source={imageIndex.AccountIcon} style={styles.headerAvatar} />
+        <Image source={avatar} style={styles.headerAvatar} />
         <TouchableOpacity
           style={styles.headerInfo}
           onPress={() => setShowLocationModal(true)}
