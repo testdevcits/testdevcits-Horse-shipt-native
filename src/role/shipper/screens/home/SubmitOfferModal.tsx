@@ -23,7 +23,7 @@ import {
   AlertCircle,
 } from 'lucide-react-native';
 import SignatureScreen from 'react-native-signature-canvas';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { pick, types } from '@react-native-documents/picker';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
@@ -43,7 +43,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   isVisible,
   onClose,
   shipmentId,
-  shipmentCode,
+  shipmentCode: _shipmentCode,
   onSuccess,
 }) => {
 
@@ -94,24 +94,25 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
     }
   }, [isVisible]);
 
-  const handleChooseFile = () => {
+  const handleChooseFile = async () => {
     if (isPicking) return;
     setIsPicking(true);
     try {
-      launchImageLibrary({ mediaType: 'photo', quality: 0.8 }, response => {
-        setIsPicking(false);
-        if (response.didCancel) return;
-        if (response.errorMessage) {
-          console.error('ImagePicker Error:', response.errorMessage);
-          return;
-        }
-        if (response.assets && response.assets.length > 0) {
-          setContractFile(response.assets[0]);
-        }
+      const [result] = await pick({
+        type: [types.pdf, types.images],
       });
-    } catch (error) {
-      console.error('File pick error:', error);
       setIsPicking(false);
+      if (result) {
+        setContractFile({
+          uri: result.uri,
+          type: result.type || 'application/pdf',
+          name: result.name || 'contract.pdf',
+          fileName: result.name || 'contract.pdf',
+        });
+      }
+    } catch (error) {
+      setIsPicking(false);
+      console.log('File pick error:', error);
     }
   };
 
@@ -171,8 +172,8 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
       if (contractFile) {
         formData?.append('contractFile', {
           uri: contractFile.uri,
-          type: contractFile.type || 'image/jpeg',
-          name: contractFile.fileName || 'shipper_contract.jpg',
+          type: contractFile.type || 'application/pdf',
+          name: contractFile.name || contractFile.fileName || 'shipper_contract.pdf',
         } as any);
       }
 

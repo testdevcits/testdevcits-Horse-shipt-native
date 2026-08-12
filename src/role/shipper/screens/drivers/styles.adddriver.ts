@@ -128,6 +128,19 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
   },
+  errorContainer: {
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
+    borderRadius: RADIUS.xs,
+    padding: SPACING.sm,
+    marginTop: SPACING.sm,
+  },
+  errorText: {
+    color: COLORS.error,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+  },
 });
 
 export default styles;

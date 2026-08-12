@@ -332,6 +332,7 @@ const AddVehicleModal: React.FC<Props> = ({
                 setErrors(prev => ({ ...prev, numberOfStalls: '' }));
               }
             }}
+            maxLength={2}
           />
 
           <View style={{ marginBottom: 12 }}>

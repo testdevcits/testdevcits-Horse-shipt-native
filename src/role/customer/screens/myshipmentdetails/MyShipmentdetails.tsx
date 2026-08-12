@@ -40,6 +40,10 @@ const RatingModal = lazy(
 const MyShipmentDetails = ({ route, }: any) => {
   const dispatch = useAppDispatch();
   const { item, quoteId } = route.params;
+
+  console.log("=========quoteId===============", quoteId)
+
+
   const [activeTab, setActiveTab] = useState('Overview');
   const [isRatingVisible, setIsRatingVisible] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
@@ -57,6 +61,8 @@ const MyShipmentDetails = ({ route, }: any) => {
     refreshing,
     onRefresh,
   } = useShipmentDetails(item?._id);
+
+
 
   const data = shipment || item;
   const isDraft = (data?.status || '').toLowerCase() === 'draft';
@@ -110,7 +116,7 @@ const MyShipmentDetails = ({ route, }: any) => {
           <OverviewTab
             data={data}
             onReview={() => setIsRatingVisible(true)}
-            quoteId={quoteId}
+            quoteId={item?.quoteId}
           />
         );
       case 'Quotes':

@@ -90,7 +90,8 @@ export interface Shipment {
     name: string;
     email: string;
   };
-  horses: any[]; // You can further define this if needed
+  horses: any[]; // You can further define this if needed,
+  deliveryOtpVerified: boolean
 }
 
 export interface GetShipmentsResponse {

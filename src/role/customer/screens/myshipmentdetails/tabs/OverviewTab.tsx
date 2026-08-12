@@ -38,6 +38,7 @@ import { useAppDispatch } from '../../../../../hooks/redux';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
+
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -215,7 +216,8 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           {data?.status !== 'open_for_offers' && data?.status !== "delivered" && (
             <TouchableOpacity
               style={styles.secondaryActionBtn}
-              onPress={() => setIsMapVisible(true)}
+              // onPress={() => setIsMapVisible(true)}
+              onPress={() => { navigation.navigate("LiveTracking", { shipmentId: quoteId }) }}
               activeOpacity={0.8}
             >
               <MapIcon size={15} color={COLORS.textPrimary} />

@@ -31,8 +31,16 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
   const [licenseNumber, setLicenseNumber] = useState('');
   const [password, setPassword] = useState('');
   const [notes, setNotes] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [_showPassword, _setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    phone?: string;
+    licenseNumber?: string;
+    password?: string;
+  }>({});
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     if (driverToEdit) {
@@ -62,44 +70,26 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
   };
 
   const handleSubmit = async () => {
+    const newErrors: { [key: string]: string } = {};
+
     if (!name.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter driver name.',
-      });
-      return;
+      newErrors.name = 'Please enter driver name.';
     }
     if (!email.trim() || !validateEmail(email.trim())) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter a valid email address.',
-      });
-      return;
+      newErrors.email = 'Please enter a valid email address.';
     }
     if (!phone.trim() || phone.trim().length < 8) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter a valid phone number.',
-      });
-      return;
+      newErrors.phone = 'Please enter a valid phone number.';
     }
     if (!licenseNumber.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please enter license number.',
-      });
-      return;
+      newErrors.licenseNumber = 'Please enter license number.';
     }
     if (!driverToEdit && (!password || password.length < 6)) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Password must be at least 6 characters.',
-      });
+      newErrors.password = 'Password must be at least 6 characters.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
@@ -144,18 +134,21 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
           text1: 'Error',
           text2: res?.message || 'Failed to save driver.',
         });
+        setSubmitError(res?.message || 'Failed to save driver.');
       }
     } catch (error: any) {
       console.error('Save Driver Error:', error);
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: error?.response?.data?.message || 'Failed to save driver details.',
+        text2: error?.message || 'Failed to save driver details.',
       });
+      setSubmitError(error?.message || 'Failed to save driver details.');
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -186,7 +179,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 label="Driver name *"
                 placeholder="Enter Driver Name"
                 value={name}
-                onChangeText={setName}
+                onChangeText={text => {
+                  setName(text);
+                  if (errors?.name) setErrors(prev => ({ ...prev, name: '' }));
+                }}
+                error={errors?.name}
               />
 
               <Input
@@ -195,7 +192,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 keyboardType="email-address"
                 autoCapitalize="none"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={text => {
+                  setEmail(text);
+                  if (errors?.email) setErrors(prev => ({ ...prev, email: '' }));
+                }}
+                error={errors?.email}
               />
 
               <Input
@@ -203,7 +204,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 placeholder="Enter Phone Number"
                 keyboardType="phone-pad"
                 value={phone}
-                onChangeText={setPhone}
+                onChangeText={text => {
+                  setPhone(text);
+                  if (errors?.phone) setErrors(prev => ({ ...prev, phone: '' }));
+                }}
+                error={errors?.phone}
               />
 
               {/* Section 2: License & Access */}
@@ -215,7 +220,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 label="License number *"
                 placeholder="Enter License Number"
                 value={licenseNumber}
-                onChangeText={setLicenseNumber}
+                onChangeText={text => {
+                  setLicenseNumber(text);
+                  if (errors?.licenseNumber) setErrors(prev => ({ ...prev, licenseNumber: '' }));
+                }}
+                error={errors?.licenseNumber}
               />
 
               {!driverToEdit && (
@@ -224,7 +233,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                   placeholder="Enter Password"
                   isPassword
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={text => {
+                    setPassword(text);
+                    if (errors?.password) setErrors(prev => ({ ...prev, password: '' }));
+                  }}
+                  error={errors?.password}
                 />
               )}
 
@@ -235,6 +248,13 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 onChangeText={setNotes}
                 multiline
               />
+
+
+              {submitError && (
+                <View style={styles.errorContainer}>
+                  <AppText style={styles.errorText}>{submitError}</AppText>
+                </View>
+              )}
 
               {/* Action Buttons Row */}
               <View style={styles.buttonRow}>

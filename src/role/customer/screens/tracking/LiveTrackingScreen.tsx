@@ -209,7 +209,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             origin={{ latitude: driverLat!, longitude: driverLng! }}
             destination={{ latitude: pickupLat, longitude: pickupLng }}
             apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={4}
+            strokeWidth={6}
             strokeColor="#3B82F6"
             optimizeWaypoints={true}
           />
@@ -221,7 +221,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             origin={{ latitude: pickupLat, longitude: pickupLng }}
             destination={{ latitude: deliveryLat, longitude: deliveryLng }}
             apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={4}
+            strokeWidth={6}
             strokeColor={COLORS.primary}
             optimizeWaypoints={true}
             onReady={result => {

@@ -13,11 +13,12 @@ const useStripeStatus = () => {
 
             if (res?.success) {
                 const needsVerification =
-                    res.needsVerification === true ||
-                    res.onboardingCompleted === false ||
-                    res.chargesEnabled === false ||
-                    res.payoutsEnabled === false ||
-                    res.verified === false;
+                    // res.needsVerification === true ||
+                    res.onboardingCompleted === false
+                // ||
+                // res.chargesEnabled === false ||
+                // res.payoutsEnabled === false ||
+                // res.verified === false;
 
                 setIsStripeReady(!needsVerification);
 
