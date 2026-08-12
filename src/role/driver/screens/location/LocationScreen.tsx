@@ -47,7 +47,10 @@ const LocationScreen = () => {
     const checkState = async () => {
       const isRunning = isAutoTrackingActive();
       const isStored = await getStoredAutoTrackingState();
-      if (isRunning || isStored) {
+      if (isStored && !isRunning) {
+        await startAutoTracking();
+        setIsAutoTracking(true);
+      } else if (isRunning) {
         setIsAutoTracking(true);
       }
     };
