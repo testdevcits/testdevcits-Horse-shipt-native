@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Modal,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
-  Share,
   Platform,
 } from 'react-native';
 import {
@@ -14,15 +13,13 @@ import {
   X,
   Copy,
   Navigation,
-  CheckCircle2,
-  Clock,
   Lock,
   MessageSquare,
   Package,
   ArrowDown,
-  Share2,
-  ExternalLink,
 } from 'lucide-react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SIZES, SPACING } from '../../constants';
 import AppText from './AppText';
@@ -60,6 +57,8 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
   status: propStatus,
   onOpenMapModal,
 }) => {
+  const insets = useSafeAreaInsets();
+
   // Extract values with fallbacks
   const pickup = propPickup || shipment?.pickupLocation || 'Pickup location not specified';
   const delivery = propDelivery || shipment?.deliveryLocation || 'Delivery location not specified';
@@ -112,34 +111,31 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
 
   const statusStyle = getStatusBadge();
 
-  // Copy or Share Location text
-  const handleCopyLocation = async (type: 'pickup' | 'delivery' | 'code') => {
-    let textToShare = '';
+  // Copy Location or Code to Clipboard
+  const handleCopyLocation = (type: 'pickup' | 'delivery' | 'code') => {
+    let textToCopy = '';
     let label = '';
 
     if (type === 'pickup') {
-      textToShare = pickup;
+      textToCopy = pickup;
       label = 'Pickup address';
     } else if (type === 'delivery') {
-      textToShare = delivery;
+      textToCopy = delivery;
       label = 'Delivery address';
     } else {
-      textToShare = code;
-      label = 'Shipment Code';
+      textToCopy = code;
+      label = 'Shipment code';
     }
 
     try {
-      await Share.share({
-        message: textToShare,
-        title: label,
-      });
+      Clipboard.setString(textToCopy);
       Toast.show({
         type: 'success',
-        text1: 'Copied / Shared',
-        text2: `${label} ready to paste or share.`,
+        text1: 'Copied to Clipboard',
+        text2: `${label} copied successfully.`,
       });
     } catch (error) {
-      console.log('Share Error:', error);
+      console.log('Clipboard Copy Error:', error);
     }
   };
 
@@ -151,21 +147,31 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
       return;
     }
 
-    const query = encodeURIComponent(`${pickup} to ${delivery}`);
-    const mapUrl = Platform.select({
-      ios: `maps://?q=${query}`,
-      android: `geo:0,0?q=${encodeURIComponent(delivery)}`,
-    }) || `https://www.google.com/maps/search/?api=1&query=${query}`;
+    if (!pickup || pickup.includes('not specified') || !delivery || delivery.includes('not specified')) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Location',
+        text2: 'Complete pickup and delivery locations are required for navigation.',
+      });
+      return;
+    }
 
-    Linking.canOpenURL(mapUrl)
-      .then(supported => {
-        if (supported) {
-          Linking.openURL(mapUrl);
-        } else {
-          Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(delivery)}`);
-        }
-      })
-      .catch(err => console.error('An error occurred opening map', err));
+    const encodedPickup = encodeURIComponent(pickup);
+    const encodedDelivery = encodeURIComponent(delivery);
+
+    const mapUrl = Platform.select({
+      ios: `https://maps.apple.com/?saddr=${encodedPickup}&daddr=${encodedDelivery}&dirflg=d`,
+      android: `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}&travelmode=driving`,
+    }) || `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}`;
+
+    Linking.openURL(mapUrl).catch(err => {
+      console.error('An error occurred opening map', err);
+      Toast.show({
+        type: 'error',
+        text1: 'Unable to Open Maps',
+        text2: 'Could not open map application.',
+      });
+    });
   };
 
   return (
@@ -174,15 +180,21 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
       visible={isVisible}
       animationType="slide"
       onRequestClose={onClose}
+      accessibilityViewIsModal
     >
       <TouchableOpacity
         style={styles.overlay}
         activeOpacity={1}
         onPress={onClose}
+        accessibilityRole="button"
+        accessibilityLabel="Close overlay"
       >
         <TouchableOpacity
           activeOpacity={1}
-          style={styles.cardContainer}
+          style={[
+            styles.cardContainer,
+            { paddingBottom: Math.max(insets.bottom, SPACING.lg) },
+          ]}
           onPress={e => e.stopPropagation()}
         >
           {/* Header Bar Indicator */}
@@ -200,6 +212,9 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                   style={styles.codeRow}
                   activeOpacity={0.7}
                   onPress={() => handleCopyLocation('code')}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Shipment code ${code}`}
+                  accessibilityHint="Tap to copy shipment code to clipboard"
                 >
                   <AppText style={styles.headerSubtitle}>{code}</AppText>
                   <Copy size={12} color={COLORS.textLight} style={{ marginLeft: 4 }} />
@@ -207,7 +222,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               </View>
             </View>
 
-            <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={onClose}
+              accessibilityRole="button"
+              accessibilityLabel="Close modal"
+            >
               <X size={ICON_SIZE.md} color={COLORS.grey600} />
             </TouchableOpacity>
           </View>
@@ -261,6 +281,9 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                     style={styles.copyIconButton}
                     onPress={() => handleCopyLocation('pickup')}
                     activeOpacity={0.7}
+                    accessibilityRole="button"
+                    accessibilityLabel="Copy pickup location"
+                    accessibilityHint="Copies pickup address to clipboard"
                   >
                     <Copy size={14} color={COLORS.grey500} />
                     <AppText style={styles.copyBtnText}>Copy</AppText>
@@ -296,6 +319,9 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                     style={styles.copyIconButton}
                     onPress={() => handleCopyLocation('delivery')}
                     activeOpacity={0.7}
+                    accessibilityRole="button"
+                    accessibilityLabel="Copy delivery location"
+                    accessibilityHint="Copies delivery address to clipboard"
                   >
                     <Copy size={14} color={COLORS.grey500} />
                     <AppText style={styles.copyBtnText}>Copy</AppText>
@@ -316,6 +342,9 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               style={styles.mapButton}
               onPress={handleOpenExternalMaps}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Get Directions"
+              accessibilityHint="Opens external map application for directions"
             >
               <Navigation size={18} color={COLORS.primary} strokeWidth={2.2} style={{ marginRight: 8 }} />
               <AppText style={styles.mapButtonText}>Get Directions</AppText>
@@ -325,6 +354,8 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               style={styles.closePrimaryBtn}
               onPress={onClose}
               activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel="Close"
             >
               <AppText style={styles.closePrimaryText}>Close</AppText>
             </TouchableOpacity>
@@ -347,7 +378,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: RADIUS.xxl || 24,
     paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.sm,
-    paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.lg,
     maxHeight: '85%',
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
@@ -597,4 +627,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShipmentLocationModal;
+export default memo(ShipmentLocationModal);

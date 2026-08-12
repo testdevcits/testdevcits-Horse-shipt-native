@@ -42,40 +42,40 @@ export const RADIUS = {
   round: 999,
 } as const;
 
-// export const FONT_SIZE = {
-//   xxs: 8,
-//   mini: 9,
-//   xs: 10,
-//   sm: 12,
-//   md: 14,
-//   lg: 16,
-//   xl: 18,
-//   xxl: 20,
-//   title: 22,
-//   heading: 24,
-//   display: 28,
-//   hero: 30,
-//   giant: 32,
-// } as const;
-
-
-
-
 export const FONT_SIZE = {
-  xxs: RFValue(8),
-  mini: RFValue(9),
-  xs: RFValue(10),
-  sm: RFValue(12),
-  md: RFValue(14),
-  lg: RFValue(16),
-  xl: RFValue(18),
-  xxl: RFValue(20),
-  title: RFValue(22),
-  heading: RFValue(24),
-  display: RFValue(28),
-  hero: RFValue(30),
-  giant: RFValue(32),
+  xxs: 8,
+  mini: 9,
+  xs: 10,
+  sm: 12,
+  md: 14,
+  lg: 16,
+  xl: 18,
+  xxl: 20,
+  title: 22,
+  heading: 24,
+  display: 28,
+  hero: 30,
+  giant: 32,
 } as const;
+
+
+
+
+// export const FONT_SIZE = {
+//   xxs: RFValue(8),
+//   mini: RFValue(9),
+//   xs: RFValue(10),
+//   sm: RFValue(12),
+//   md: RFValue(14),
+//   lg: RFValue(16),
+//   xl: RFValue(18),
+//   xxl: RFValue(20),
+//   title: RFValue(22),
+//   heading: RFValue(24),
+//   display: RFValue(28),
+//   hero: RFValue(30),
+//   giant: RFValue(32),
+// } as const;
 
 export const ICON_SIZE = {
   mini: 12,
