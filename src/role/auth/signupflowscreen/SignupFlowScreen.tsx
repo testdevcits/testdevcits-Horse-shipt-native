@@ -90,7 +90,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
         role: savedRole,
       });
 
-      if (res.success) {
+      if (res?.success) {
         setStep(2);
         setResendTimer(60);
         Toast.show({ type: 'success', text1: 'OTP Sent', text2: 'Please check your email' });

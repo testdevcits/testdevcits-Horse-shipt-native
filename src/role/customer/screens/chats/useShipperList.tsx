@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import customerService from '../../../../api/services/customerService';
- 
+
 const useShipperList = () => {
   const [shippers, setShippers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const useShipperList = () => {
       setLoading(true);
       setError(null);
       const res = await customerService.getChatShippers();
-      if (res.success) setShippers(res.data);
+      if (res?.success) setShippers(res?.data);
     } catch (err: any) {
       setError(err.message || "Failed to load chats");
     } finally {
@@ -26,14 +26,14 @@ const useShipperList = () => {
   const filteredShippers = useMemo(() => {
     return shippers.filter(s => {
       // Search matches either shipper name or shipment code
-      const matchesSearch = 
-        s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      const matchesSearch =
+        s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.shipmentCode.toLowerCase().includes(searchQuery.toLowerCase());
 
       // Filter matches Online/Offline status
-      const matchesStatus = 
-        activeFilter === 'All' ? true : 
-        activeFilter === 'Online' ? s.isOnline : !s.isOnline;
+      const matchesStatus =
+        activeFilter === 'All' ? true :
+          activeFilter === 'Online' ? s.isOnline : !s.isOnline;
 
       return matchesSearch && matchesStatus;
     });

@@ -60,13 +60,13 @@ const ShipperShipmentDetailsScreen = () => {
     try {
       const res = await shipperService.getShipmentQuestions(shipment?._id);
       if (res?.success && res?.data?.pending) {
-        if (res.data?.pending.length > 0) {
-          setPendingQuestion(res.data?.pending[0]);
+        if (res?.data?.pending.length > 0) {
+          setPendingQuestion(res?.data?.pending[0]);
         } else {
           setPendingQuestion(null);
         }
-        if (res.data?.answered.length > 0) {
-          setAnsweredQuestion(res.data?.answered[0]);
+        if (res?.data?.answered.length > 0) {
+          setAnsweredQuestion(res?.data?.answered[0]);
         } else {
           setAnsweredQuestion(null);
         }
@@ -91,7 +91,7 @@ const ShipperShipmentDetailsScreen = () => {
   const [expandedHorseIndices, setExpandedHorseIndices] = useState<number[]>(
     horsesList.map((_, idx) => idx),
   );
-  
+
   const toggleHorseExpanded = (index: number) => {
     setExpandedHorseIndices(prev =>
       prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index],
@@ -172,8 +172,8 @@ const ShipperShipmentDetailsScreen = () => {
           text1: 'Success',
           text2: res.message || 'Question submitted successfully',
         });
-        if (res.data) {
-          setPendingQuestion(res.data);
+        if (res?.data) {
+          setPendingQuestion(res?.data);
         } else {
           fetchQuestions();
         }

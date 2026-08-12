@@ -105,7 +105,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getChatCustomers();
       if (res?.success || res?.data) {
-        setChatCustomers(res.data || []);
+        setChatCustomers(res?.data || []);
       }
     } catch (error: any) {
       console.error('Fetch Chat Customers Error:', error);

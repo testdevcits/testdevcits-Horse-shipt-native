@@ -74,7 +74,7 @@ const ResetPassword = ({ navigation, route }: any) => {
         newPassword: form.newPassword
       });
 
-      if (res.success) {
+      if (res?.success) {
         Toast.show({
           type: 'success',
           text1: 'Password Updated',

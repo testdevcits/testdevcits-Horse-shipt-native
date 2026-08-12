@@ -53,7 +53,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     setLoading(true);
     try {
       const res = await customerService.publishShipment(id);
-      if (res.success) {
+      if (res?.success) {
         setIsSuccessModalVisible(true);
         setTimeout(() => {
           dispatch(fetchCustomerShipments());

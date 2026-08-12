@@ -228,7 +228,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getVehicles();
       if (res?.success || res?.vehicles) {
-        setVehicles(res.vehicles || []);
+        setVehicles(res?.vehicles || []);
       }
     } catch (error: any) {
       console.error('Fetch Vehicles Error:', error);

@@ -123,7 +123,7 @@ const EarningsScreen = () => {
       if (res?.success || res?.transactions) {
         const txs = res.transactions || [];
         setTransactions(txs);
-        setTotalTransactionsCount(res.totalTransactions || txs.length);
+        setTotalTransactionsCount(res?.totalTransactions || txs.length);
       }
     } catch (error: any) {
       console.error('Fetch Payout History Error:', error);

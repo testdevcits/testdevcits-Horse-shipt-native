@@ -28,7 +28,7 @@ const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
 
- 
+
 
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ const MyQuotesScreen = () => {
     try {
       const res = await shipperService.getVehicles();
       if (res?.success || res?.vehicles) {
-        setVehicles(res.vehicles || []);
+        setVehicles(res?.vehicles || []);
       }
     } catch (error) {
       console.error('Fetch Vehicles Error:', error);
@@ -65,7 +65,7 @@ const MyQuotesScreen = () => {
     try {
       const res = await shipperService.getMyQuotes();
       if (res?.success || res?.quotes) {
-        setQuotes(res.quotes || []);
+        setQuotes(res?.quotes || []);
       }
     } catch (error: any) {
       console.error('Fetch Quotes Error:', error);

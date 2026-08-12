@@ -55,7 +55,7 @@ const PaymentDetails = () => {
       }).fetch('GET', url);
 
       if (Platform.OS === 'ios') {
-        ReactNativeBlobUtil.ios.openDocument(res.data);
+        ReactNativeBlobUtil.ios.openDocument(res?.data);
       } else {
         Toast.show({
           type: 'success',

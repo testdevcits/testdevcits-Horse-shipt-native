@@ -88,7 +88,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
         reviewText: reviewText.trim(),
       });
 
-      if (res.success || (res as any).data) {
+      if (res?.success || (res as any).data) {
         Alert.alert('Success', res.message || 'Customer review submitted successfully');
         setRating(5);
         setReviewText('');

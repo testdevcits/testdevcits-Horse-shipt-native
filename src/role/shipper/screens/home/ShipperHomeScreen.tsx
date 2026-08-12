@@ -163,7 +163,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getMyQuotes();
       if (res?.success || res?.quotes) {
-        setQuotes(res.quotes || []);
+        setQuotes(res?.quotes || []);
       }
     } catch (error: any) {
       console.error('Fetch Quotes Error:', error);

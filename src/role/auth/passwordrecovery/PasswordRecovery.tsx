@@ -35,7 +35,7 @@ const PasswordRecovery = ({ navigation }: any) => {
             // Assuming role comes from a global constant or prop, e.g., 'customer'
             const res = await authService.forgotPassword(email, 'customer');
 
-            if (res.success) {
+            if (res?.success) {
                 Toast.show({
                     type: 'success',
                     text1: 'Email Sent',

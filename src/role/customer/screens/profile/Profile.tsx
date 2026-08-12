@@ -76,7 +76,7 @@ const Profile = ({ navigation }: any) => {
 
   const handleSave = async () => {
     const res = await updateProfile(formData);
-    if (res.success) {
+    if (res?.success) {
       setIsEditModalVisible(false);
       Toast.show({
         type: 'success',

@@ -66,7 +66,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
 
 
- 
+
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
   const [subscriptionStatusData, setSubscriptionStatusData] =
     useState<any>(null);
@@ -140,7 +140,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           mediaType: 'photo',
           quality: 0.8,
         });
-        if (res.didCancel || !res.assets || res.assets.length === 0) return;
+        if (res?.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
         if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
           Toast.show({
@@ -167,7 +167,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
       const res = await shipperService?.updateBannerImage?.(formData);
       if (res?.success && res.bannerImage?.url) {
-        setBannerUrl(res.bannerImage.url);
+        setBannerUrl(res?.bannerImage.url);
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -225,7 +225,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           mediaType: 'photo',
           quality: 0.8,
         });
-        if (res.didCancel || !res.assets || res.assets.length === 0) return;
+        if (res?.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
         if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
           Toast.show({
@@ -251,7 +251,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       } as any);
 
       const res = await shipperService?.updateProfileImage?.(formData);
-      if (res?.success && (res.profileImage?.url || res.profileImage)) {
+      if (res?.success && (res?.profileImage?.url || res.profileImage)) {
         const newImg = res.profileImage;
         const newUrl = typeof newImg === 'string' ? newImg : newImg?.url;
         if (newUrl) {
@@ -568,7 +568,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             billingFilter={billingFilter}
             setBillingFilter={setBillingFilter}
             onOpenSubscriptionModal={openSubModal}
-            subsciptionPlans={subscriptionData?.plans ||[]}
+            subsciptionPlans={subscriptionData?.plans || []}
           />
         )}
 

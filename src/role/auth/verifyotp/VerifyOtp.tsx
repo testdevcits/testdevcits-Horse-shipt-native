@@ -61,7 +61,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
         otp: finalOtp,
       });
 
-      if (res.success) {
+      if (res?.success) {
         Toast.show({ type: 'success', text1: 'OTP Verified' });
         navigation.navigate('ResetPassword', { email, role, otp: finalOtp });
       }

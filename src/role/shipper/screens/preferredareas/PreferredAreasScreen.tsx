@@ -50,7 +50,7 @@ const PreferredAreasScreen = () => {
     try {
       const res = await shipperService.getPreferredAreas();
       if (res?.success || Array.isArray(res?.data)) {
-        setAreas(res.data || []);
+        setAreas(res?.data || []);
       }
     } catch (error: any) {
       console.error('Fetch Preferred Areas Error:', error);

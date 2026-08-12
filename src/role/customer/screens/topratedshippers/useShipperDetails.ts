@@ -19,8 +19,8 @@ export const useShipperDetails = (shipperId: string) => {
 
         const res = await customerService.getShipperProfile(shipperId);
 
-        if (res.success) {
-          setShipper(res.data);
+        if (res?.success) {
+          setShipper(res?.data);
         } else {
           // Handle cases where API returns success: false
           setError((res as any).message || 'Failed to load shipper profile');
@@ -30,8 +30,8 @@ export const useShipperDetails = (shipperId: string) => {
         // Extract error message from API response or generic error
         setError(
           e?.response?.data?.message ||
-            e.message ||
-            'An unexpected error occurred',
+          e.message ||
+          'An unexpected error occurred',
         );
       } finally {
         setLoading(false);

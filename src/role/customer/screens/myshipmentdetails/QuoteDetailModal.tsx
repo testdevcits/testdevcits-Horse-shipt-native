@@ -170,7 +170,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
       const res = await customerService.cancelQuote(quote?._id, {
         reason: cancelReason.trim(),
       });
-      if (res.success) {
+      if (res?.success) {
         Alert.alert('Success', 'Shipment has been cancelled.');
         setIsCancelModalVisible(false);
         onClose();

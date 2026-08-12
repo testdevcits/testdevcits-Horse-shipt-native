@@ -19,7 +19,7 @@ export const useNotificationSettings = () => {
     const init = async () => {
       try {
         const res = await customerService.getNotificationSettings();
-        if (res.success) setSettings(res.data);
+        if (res?.success) setSettings(res?.data);
       } catch (e) {
         console.log(e);
       } finally {
@@ -40,7 +40,7 @@ export const useNotificationSettings = () => {
         key,
         newValue,
       );
-      if (res.success) {
+      if (res?.success) {
         // Toast.show({
         //   type: 'success',
         //   text1: 'Preferences Updated',

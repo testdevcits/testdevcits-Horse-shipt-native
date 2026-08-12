@@ -14,7 +14,7 @@ const PrivacyPolicyScreen = () => {
     try {
       const res = await shipperService.getPrivacyPolicy();
       if (res?.success && res.data && res.data?.length > 0) {
-        setPolicyData(res.data[0]);
+        setPolicyData(res?.data[0]);
       }
     } catch (error) {
       console.error('Fetch Privacy Policy Error:', error);

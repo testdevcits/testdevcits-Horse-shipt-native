@@ -14,7 +14,7 @@ const TermsAndConditionsScreen = () => {
     try {
       const res = await customerService.getTermsAndConditions();
       if (res?.success && res.data && res.data?.length > 0) {
-        setTermsData(res.data[0]);
+        setTermsData(res?.data[0]);
       }
     } catch (error) {
       console.error('Fetch Terms & Conditions Error:', error);

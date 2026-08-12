@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import customerService from '../../../../api/services/customerService';
- 
+
 export const usePayments = () => {
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,10 +11,10 @@ export const usePayments = () => {
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
-      
+
       const res = await customerService.getPayments();
-      if (res.success) {
-        setPayments(res.payments);
+      if (res?.success) {
+        setPayments(res?.payments);
         setError(null);
       }
     } catch (err: any) {

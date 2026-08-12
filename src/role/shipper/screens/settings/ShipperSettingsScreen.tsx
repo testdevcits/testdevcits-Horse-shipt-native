@@ -64,7 +64,7 @@ const ShipperSettingsScreen = () => {
       setLoading(true);
       const res = await shipperService.getSettings();
       if (res?.data?.notifications) {
-        setNotifications(res.data?.notifications);
+        setNotifications(res?.data?.notifications);
       }
     } catch (error: any) {
       console.error('Fetch Shipper Settings Error:', error);

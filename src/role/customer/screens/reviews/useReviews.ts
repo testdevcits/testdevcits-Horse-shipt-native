@@ -14,7 +14,7 @@ export const useReviews = () => {
         try {
             setLoading(true);
             const res = await customerService.getReceivedReviews();
-            if (res.success) setReviews(res.data);
+            if (res?.success) setReviews(res?.data);
         } catch (err: any) {
             setError(err.message || "Failed to load reviews");
         } finally {

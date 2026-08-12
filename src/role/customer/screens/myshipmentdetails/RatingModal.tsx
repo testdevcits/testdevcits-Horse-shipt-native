@@ -65,7 +65,7 @@ const RatingModal = ({
         reviewText: review.trim(),
       });
 
-      if (res.success || (res as any).data) {
+      if (res?.success || (res as any).data) {
         Alert.alert('Success', res.message || 'Review added successfully');
         setRating(0);
         setReview('');
