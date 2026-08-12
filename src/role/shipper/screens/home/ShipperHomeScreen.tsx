@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
-  StyleSheet,
+
   ScrollView,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
+
   RefreshControl,
   Dimensions,
   FlatList,
@@ -16,15 +15,13 @@ import {
   Truck,
   FileText,
   Search,
-  SlidersHorizontal,
+
   List,
   Map as MapIcon,
   MapPin,
-  Calendar,
-  ExternalLink,
+
   ChevronRight,
-  ArrowRight,
-  ArrowLeftRight,
+
 } from 'lucide-react-native';
 import {
   AppHeader,
@@ -36,15 +33,13 @@ import {
 } from '../../../../components';
 import {
   COLORS,
-  FONTS,
+
   SPACING,
-  RADIUS,
-  FONT_SIZE,
+
 } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
-import imageIndex from '../../../../assets/images/imageIndex';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
@@ -59,7 +54,6 @@ import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 
-const { width } = Dimensions.get('window');
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();

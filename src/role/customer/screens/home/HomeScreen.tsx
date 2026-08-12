@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
+
   RefreshControl,
   Image,
   Pressable,
@@ -14,9 +14,9 @@ import {
   COLORS,
   SPACING,
   FONTS,
-  RADIUS,
+
   SCREEN_WIDTH,
-  SCREEN_HEIGHT,
+
   FONT_SIZE,
 } from '../../../../constants';
 import {
@@ -31,9 +31,8 @@ import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetai
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useShippers } from '../topratedshippers/useShippers';
-import Toast from 'react-native-toast-message';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { fetchWishlistThunk, toggleWishlistThunk } from '../../../../redux/slices/wishlistSlice';
+import { fetchWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }: { navigation?: any }) => {

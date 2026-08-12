@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import {
   ChevronLeft, Copy, ExternalLink,
   Download, Verified, MapPin,
-  User, Mail, Phone
+  User, Phone
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';

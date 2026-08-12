@@ -9,9 +9,9 @@ import {
 import {
   HelpCircle,
   Mail,
-  X,
+
   ChevronRight,
-  MessageCircle,
+
 } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';

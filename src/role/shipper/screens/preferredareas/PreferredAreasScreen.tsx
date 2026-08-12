@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {
   View,
   FlatList,

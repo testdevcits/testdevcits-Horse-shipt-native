@@ -6,9 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  TextInput,
-  Platform,
-  Animated,
+
 } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE, MapType } from 'react-native-maps';
 import {
@@ -20,16 +18,15 @@ import {
   EyeOff,
   Layers,
   Search,
-  Navigation,
+
   Compass,
-  CheckSquare,
-  Square,
+
 } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 interface Props {
   visible: boolean;

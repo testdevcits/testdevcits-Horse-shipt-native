@@ -3,22 +3,16 @@ import React, { useState } from 'react';
 import {
   View,
   ScrollView,
-  StyleSheet,
+
   ActivityIndicator,
   TouchableOpacity,
   RefreshControl,
-  Image,
+
 } from 'react-native';
 import {
-  Truck,
-  MapPin,
-  Calendar,
-  Clock,
-  ChevronUp,
-  ChevronDown,
-  Map,
+
   RotateCw,
-  Compass,
+
 } from 'lucide-react-native';
 
 // Imported design systems & components

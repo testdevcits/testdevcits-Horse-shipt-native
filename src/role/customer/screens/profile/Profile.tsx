@@ -6,14 +6,13 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  FlatList,
-  RefreshControl,
+
   Modal,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { LogOut, MessageCircle, PencilLine, Star, User, X } from 'lucide-react-native';
+import { LogOut, PencilLine, User, X } from 'lucide-react-native';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import { useProfile } from './useProfile';
 import { useAppDispatch } from '../../../../hooks/redux';
@@ -25,22 +24,21 @@ import {
   ConfirmationModal,
   CountryCodePicker,
   COUNTRIES,
-  EmptyState,
+
   Input,
-  ReviewCard,
+
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';
 
-const Profile = ({ navigation }: any) => {
+const Profile = ({ }: any) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   console.log("user from profile screen", JSON.stringify(user, null, 2))
 
-  console.log("======", user?.profileImage)
 
   const {
     profile,

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { View, FlatList, RefreshControl, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { View, FlatList, RefreshControl, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CreditCard, WalletCards } from 'lucide-react-native';
+import { WalletCards } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
 import { AppLoader, AppText, EmptyState, ErrorView, PaymentCard } from '../../../../components';
 import { usePayments } from './usePayments';

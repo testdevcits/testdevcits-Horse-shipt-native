@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
-  SafeAreaView,
+
   PermissionsAndroid,
   ActivityIndicator,
   Pressable,

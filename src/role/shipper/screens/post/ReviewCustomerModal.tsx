@@ -8,7 +8,7 @@ import {
   Platform,
   Pressable,
   Alert,
-  ActivityIndicator,
+
   TextInput,
 } from 'react-native';
 import { X, Star, User } from 'lucide-react-native';

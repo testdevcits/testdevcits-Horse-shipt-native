@@ -4,7 +4,7 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
-  ScrollView,
+
 } from 'react-native';
 import { Star, MessageCircle } from 'lucide-react-native';
 import { COLORS, SPACING, FONTS, RADIUS, FONT_SIZE } from '../../../../constants';

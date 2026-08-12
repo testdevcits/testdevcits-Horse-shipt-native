@@ -12,7 +12,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
-import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { COLORS, SCREEN_HEIGHT, } from '../../../constants';
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import authService from '../../../api/services/authService';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View,
-  StyleSheet,
+
   TouchableOpacity,
   ScrollView,
   Image,
@@ -25,7 +25,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, } from '../../../../../constants';
 import { AppText } from '../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import styles from './ReviewStepstyles';
@@ -119,8 +119,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 {isEdit && isDraft
                   ? 'Ready to Update Draft'
                   : isEdit
-                  ? 'Ready to Update'
-                  : 'Ready to Publish'}
+                    ? 'Ready to Update'
+                    : 'Ready to Publish'}
               </AppText>
             </View>
           </View>
@@ -133,15 +133,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 {isEdit && isDraft
                   ? 'Review & Update Draft'
                   : isEdit
-                  ? 'Review & Update Shipment'
-                  : 'Review & Confirm'}
+                    ? 'Review & Update Shipment'
+                    : 'Review & Confirm'}
               </AppText>
               <AppText style={styles.headerSubtitle}>
                 {isEdit && isDraft
                   ? 'Review your updated details before saving draft changes or publishing.'
                   : isEdit
-                  ? 'Verify your updated details and documents before saving.'
-                  : 'Review your route, horse details, and attached documents before publishing.'}
+                    ? 'Verify your updated details and documents before saving.'
+                    : 'Review your route, horse details, and attached documents before publishing.'}
               </AppText>
             </View>
           </View>

@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { Lock, Eye, EyeOff, ChevronLeft, ShieldCheck } from 'lucide-react-native';
-import { COLORS, FONTS, SCREEN_HEIGHT } from '../../../constants';
+import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import authService from '../../../api/services/authService';

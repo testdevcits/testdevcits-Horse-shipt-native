@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-    StyleSheet,
+
     View,
     FlatList,
     TouchableOpacity,
@@ -11,7 +11,7 @@ import {
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader';
 import { AlertCircle } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SPACING } from '../../../../constants';
+import { COLORS, ICON_SIZE, } from '../../../../constants';
 import { AppText, TripCard } from '../../../../components';
 import styles from './styles.alltrips';
 

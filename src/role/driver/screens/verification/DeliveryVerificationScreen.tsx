@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import {
-    StyleSheet,
+
     View,
     ScrollView,
     TouchableOpacity,
-    TextInput,
+
     ActivityIndicator,
     KeyboardAvoidingView,
     Platform,
@@ -13,7 +13,7 @@ import { useNavigation, useRoute, CommonActions } from '@react-navigation/native
 import { ArrowLeft, Check, Smartphone, Send, Milestone, CheckCircle2, User, Truck } from 'lucide-react-native';
 import { OtpInput } from 'react-native-otp-entry';
 
-import { COLORS, FONTS } from '../../../../constants';
+import { COLORS, } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import driverService from '../../../../api/services/driverService';

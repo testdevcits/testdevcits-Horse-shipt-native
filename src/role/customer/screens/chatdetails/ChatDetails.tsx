@@ -2,7 +2,6 @@ import React, { useState, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
-  TextInput,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
@@ -13,7 +12,6 @@ import {
   ChevronLeft,
   Send,
   Upload,
-  MoreVertical,
   X,
   Lock,
   Image as ImageIcon,
@@ -30,8 +28,6 @@ import ImagePicker, {
 } from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
-import imageIndex from '../../../../assets/images/imageIndex';
-import { set } from 'date-fns';
 
 const PhotoSourceSheet = lazy(
   () => import('../../../../components/common/PhotoSourceSheet'),

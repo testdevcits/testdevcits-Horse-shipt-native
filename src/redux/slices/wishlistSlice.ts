@@ -1,6 +1,5 @@
 // src/redux/slices/wishlistSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import Toast from 'react-native-toast-message';
 import customerService from '../../api/services/customerService';
 
 interface WishlistState {

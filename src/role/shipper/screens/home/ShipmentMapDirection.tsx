@@ -7,12 +7,12 @@ import {
     Platform,
     StatusBar,
 } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {
     ChevronLeft,
     MapPin,
-    Navigation,
+
     Clock,
     Route,
     Target,
@@ -20,7 +20,7 @@ import {
 } from 'lucide-react-native';
 
 // Import your constants
-import { COLORS, FONTS, SPACING, RADIUS, SCREEN_WIDTH, FONT_SIZE } from '../../../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   FlatList,
@@ -14,7 +14,7 @@ import {
   Check,
   CheckCheck,
   Trash2,
-  Package,
+
   Truck,
   MessageSquare,
   FileText,
@@ -22,7 +22,7 @@ import {
   CheckCircle2,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, ICON_SIZE } from '../../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, } from '../../../constants';
 import useNotifications, { NotificationFilter } from './useNotifications';
 import {
   AppHeader,

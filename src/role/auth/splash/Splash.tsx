@@ -9,7 +9,6 @@ import {
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
-import { Truck } from 'lucide-react-native';
 
 import { COLORS } from '../../../constants';
 import styles from './styles.splash';

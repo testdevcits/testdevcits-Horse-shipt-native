@@ -1,7 +1,7 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet,
+
   View,
   ScrollView,
   TouchableOpacity,
@@ -10,7 +10,7 @@ import {
 import { Map, Compass, Zap } from 'lucide-react-native';
 import Geolocation from 'react-native-geolocation-service';
 
-import { COLORS, FONTS } from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import DriverHeader from '../../../../components/common/DriverHeader';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';

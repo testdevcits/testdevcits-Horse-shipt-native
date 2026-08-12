@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Modal,
   View,
-  StyleSheet,
+
   TouchableOpacity,
   ActivityIndicator,
   Linking,
@@ -12,7 +12,7 @@ import {
 import { WebView } from 'react-native-webview';
 import { Download, FileText } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+import { COLORS, } from '../../../../constants';
 import styles from './styles.contractmodal';
 
 interface ContractModalProps {
@@ -23,7 +23,6 @@ interface ContractModalProps {
   quoteData?: any;
 }
 
-const { height } = Dimensions.get('window');
 
 const ContractModal: React.FC<ContractModalProps> = ({
   visible,

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet } from 'react-native';
 import {
     Calendar,
-    DollarSign,
+
     Hash,
     X,
     ShieldCheck,

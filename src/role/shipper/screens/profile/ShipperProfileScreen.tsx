@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { Pencil, Star, Camera } from 'lucide-react-native';
+import { Pencil, Camera } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
@@ -73,7 +73,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   const [settingsData, setSettingsData] = useState<any>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
   const {

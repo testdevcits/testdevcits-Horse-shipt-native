@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  StyleSheet,
+
   View,
   ImageBackground,
   StatusBar,
@@ -13,7 +13,7 @@ import {
   Keyboard,
 } from 'react-native';
 import { CheckCircle2, Circle, ChevronLeft } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { COLORS, FONTS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Input } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';

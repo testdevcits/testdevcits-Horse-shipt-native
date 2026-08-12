@@ -7,13 +7,11 @@ import {
   RefreshCw,
   FileText,
   Calendar,
-  Trash2,
-  FileCheck,
+
 } from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
-import imageIndex from '../../../../assets/images/imageIndex';
 import styles from './styles.myquotes';
 import { horsePlaceholderImage } from '../../../../config/constants';
 

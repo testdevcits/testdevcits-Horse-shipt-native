@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
+
   TouchableOpacity,
   ScrollView,
   Image,
@@ -15,7 +15,7 @@ import {
   FileCheck,
   Info,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, SPACING } from '../../../../../constants';
 import { AppText, Input } from '../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import styles from './ShipmentInfoStepstyles';
@@ -139,7 +139,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                   styles.uploadBox,
                   horse?.photo && styles.uploadBoxActive,
                   (errors?.[`horses[${index}].photo`] || errors?.[`horses.${index}.photo`]) &&
-                    styles.uploadBoxError,
+                  styles.uploadBoxError,
                 ]}
                 onPress={() => pickImage(index)}
               >

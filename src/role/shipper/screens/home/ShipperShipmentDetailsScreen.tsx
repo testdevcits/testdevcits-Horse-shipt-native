@@ -11,7 +11,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import {
   MapPin,
-  Calendar,
+
   Compass,
   Box,
   ChevronDown,

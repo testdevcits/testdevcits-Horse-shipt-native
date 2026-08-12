@@ -7,10 +7,9 @@ import {
     StatusBar,
     Image,
     ScrollView,
-    Platform,
 } from 'react-native';
 import { Apple } from 'lucide-react-native'; // Standard icons
-import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE, SIZES } from '../../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE } from '../../../constants';
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -24,12 +23,7 @@ const GoogleIcon = () => (
     />
 );
 
-const FacebookIcon = () => (
-    <Image
-        source={imageIndex.Facebook}
-        style={{ width: 18, height: 18, marginRight: 10, tintColor: COLORS.white }}
-    />
-);
+
 
 const AppleIcon = () => (
     <Image

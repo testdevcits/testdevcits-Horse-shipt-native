@@ -4,13 +4,12 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  SafeAreaView,
   Platform,
   StatusBar,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Lock, ArrowLeft, RefreshCw, X } from 'lucide-react-native';
-import { AppHeader, AppText } from '../../../../components';
+import { Lock, ArrowLeft, X } from 'lucide-react-native';
+import { AppText } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE, SPACING, RADIUS } from '../../../../constants';
 import Toast from 'react-native-toast-message';
 
@@ -39,7 +38,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
 
       {/* APP HEADER WITH GO BACK */}
@@ -94,7 +93,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { Truck, MapPin, Calendar, ExternalLink } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
-import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperhome';
 import { horsePlaceholderImage } from '../../../../config/constants';

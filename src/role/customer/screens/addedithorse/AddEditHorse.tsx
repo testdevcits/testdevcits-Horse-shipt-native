@@ -7,7 +7,7 @@ import {
   Platform,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+
 } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -21,7 +21,7 @@ import {
   RADIUS,
   FONTS,
   FONT_SIZE,
-  ICON_SIZE,
+
 } from '../../../../constants';
 
 import { HorseSchema } from './schema';

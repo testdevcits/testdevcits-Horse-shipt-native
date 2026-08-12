@@ -11,7 +11,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { X, MapPin, Compass, Navigation } from 'lucide-react-native';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
 import styles from './styles.preferredareas';
@@ -113,8 +113,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Latitude is required.'
         : isNaN(lat) || lat < -90 || lat > 90
-        ? 'Invalid (-90 to 90).'
-        : undefined;
+          ? 'Invalid (-90 to 90).'
+          : undefined;
       setErrors(prev => ({ ...prev, latitude: err }));
     }
   };
@@ -126,8 +126,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Longitude is required.'
         : isNaN(lng) || lng < -180 || lng > 180
-        ? 'Invalid (-180 to 180).'
-        : undefined;
+          ? 'Invalid (-180 to 180).'
+          : undefined;
       setErrors(prev => ({ ...prev, longitude: err }));
     }
   };
@@ -139,8 +139,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Radius is required.'
         : isNaN(rad) || rad <= 0
-        ? 'Radius must be > 0 km.'
-        : undefined;
+          ? 'Radius must be > 0 km.'
+          : undefined;
       setErrors(prev => ({ ...prev, radiusKm: err }));
     }
   };

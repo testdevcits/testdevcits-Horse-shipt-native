@@ -14,7 +14,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import {
   X,
   Navigation,
-  Compass,
+
   MapPin,
   Clock,
   LocateFixed,
@@ -34,7 +34,7 @@ import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import { AppText } from '../../../../components';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 interface Coords {
   latitude: number;

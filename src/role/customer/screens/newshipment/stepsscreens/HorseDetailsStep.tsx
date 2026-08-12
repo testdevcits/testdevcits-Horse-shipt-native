@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import {
   View,
-  StyleSheet,
+
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { PlusCircle } from 'lucide-react-native';
 import { useRoute } from '@react-navigation/native';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS, } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
 import { Horse } from '../../../../../types/customer';
@@ -37,7 +37,6 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   const isEdit = route.params?.isEdit;
   const { horses: savedHorses, loading } = useMyHorses();
 
-  console.log("===savedHorses======", savedHorses)
 
   const handleNumberOfHorsesChange = (val: string) => {
     if (isEdit) return;

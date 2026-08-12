@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
-  StyleSheet,
+
   TouchableOpacity,
   ScrollView,
-  TextInput,
-  Alert,
+
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Eye, EyeOff } from 'lucide-react-native';
+import { X, } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';

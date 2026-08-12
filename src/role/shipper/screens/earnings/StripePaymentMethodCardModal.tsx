@@ -8,7 +8,7 @@ import {
 import { X, ShieldCheck, AlertCircle, User } from 'lucide-react-native';
 import { CardField } from '@stripe/stripe-react-native';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONT_SIZE, FONTS, SPACING, RADIUS } from '../../../../constants';
+import { COLORS, FONT_SIZE, } from '../../../../constants';
 import styles from './styles.earnings';
 
 interface StripePaymentMethodCardModalProps {

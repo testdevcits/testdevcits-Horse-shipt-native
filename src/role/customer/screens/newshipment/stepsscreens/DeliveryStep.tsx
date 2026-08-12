@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import {
   MapPin,
   Calendar as CalendarIcon,
@@ -12,7 +12,7 @@ import {
 } from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
 import styles from './DeliveryStepstyles';

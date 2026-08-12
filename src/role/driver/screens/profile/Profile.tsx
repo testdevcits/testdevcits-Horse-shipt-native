@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
+
   View,
   ScrollView,
   Image,
   TouchableOpacity,
-  Alert,
+
   ActivityIndicator,
 
 } from 'react-native';
-import { useNavigation, CommonActions } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { Mail, Phone, FileText, Box, LogOut } from 'lucide-react-native';
 
 // Custom Design Systems
@@ -37,7 +36,6 @@ const PROFILE_COLORS = {
 };
 
 const Profile = () => {
-  const navigation = useNavigation<any>();
   const { driver, allShipments, loading, refresh } = useDriverMe();
   const dispatch = useAppDispatch();
 

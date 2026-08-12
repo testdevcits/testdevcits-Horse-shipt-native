@@ -17,19 +17,14 @@ import {
   Eye,
   FileText,
   Plus,
-  X,
+
   XCircle,
-  ShieldCheck,
-  AlertCircle,
-  User,
-  Hash,
-  Calendar,
-  DollarSign,
+
 } from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { useStripe } from '@stripe/stripe-react-native';
 import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import { COLORS, SPACING, } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {
   View,
-  StyleSheet,
+
   FlatList,
   ScrollView,
   TouchableOpacity,
@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Truck } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { COLORS, SPACING, FONTS } from '../../../../constants';
 import useMyShipments, { ShipmentTab } from './useMyShipments';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';

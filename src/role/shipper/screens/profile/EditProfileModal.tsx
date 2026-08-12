@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { X, MapPin, Check } from 'lucide-react-native';
+import { X, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONT_SIZE } from '../../../../constants';

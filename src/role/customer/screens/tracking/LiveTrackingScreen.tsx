@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Image,
   Platform,
-  Dimensions,
+
   ActivityIndicator,
   Linking,
   Share,
@@ -15,9 +15,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {
   X,
-  Phone,
-  MessageCircle,
-  Share2,
+
   Navigation,
   LocateFixed,
   Clock,
@@ -34,7 +32,6 @@ import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import imageIndex from '../../../../assets/images/imageIndex';
 
-const { width, height } = Dimensions.get('window');
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
@@ -60,16 +57,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const driverLng = data?.driver?.lng;
 
   // Origin for route directions: Driver location if available, otherwise Pickup location
-  const routeOrigin = useMemo(() => {
-    if (hasDriverCoords) {
-      return { latitude: driverLat!, longitude: driverLng! };
-    }
-    return { latitude: pickupLat, longitude: pickupLng };
-  }, [hasDriverCoords, driverLat, driverLng, pickupLat, pickupLng]);
 
-  const routeDestination = useMemo(() => {
-    return { latitude: deliveryLat, longitude: deliveryLng };
-  }, [deliveryLat, deliveryLng]);
+
+
 
   // Auto-fit camera when coordinates change
   const handleRecenterMap = () => {

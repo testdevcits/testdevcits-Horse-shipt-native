@@ -2,16 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { X, MapPin, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Button, Input } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../../constants';

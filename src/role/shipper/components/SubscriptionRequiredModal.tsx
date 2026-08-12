@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
-  Platform,
+
 } from 'react-native';
 import {
   X,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   ScrollView,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import {
   Star,
   MapPin,
@@ -16,7 +16,6 @@ import {
   Compass,
   Heart,
 } from 'lucide-react-native';
-import Toast from 'react-native-toast-message';
 
 // Constants & Hooks
 import { COLORS, ICON_SIZE } from '../../../../constants';
@@ -36,7 +35,6 @@ import { formatDate } from '../../../../utils/helpers';
 
 const ShipperDetail = () => {
   const route = useRoute<any>();
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { wishlistIds } = useAppSelector(state => state.wishlist);
 
