@@ -4,7 +4,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Linking,
+
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -12,13 +12,9 @@ import {
 } from '@react-navigation/drawer';
 import {
   Home,
-  Package,
   ClipboardList,
-  Disc,
   User,
   MessageSquare,
-  DollarSign,
-  Star,
   Settings,
   ShieldCheck,
   LogOut,

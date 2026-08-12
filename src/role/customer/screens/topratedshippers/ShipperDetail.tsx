@@ -43,6 +43,8 @@ const ShipperDetail = () => {
   const { shipper, loading, refreshing, error, refresh } =
     useShipperDetails(shipperId);
 
+  console.log("=================120", shipper)
+
   const targetId = shipperId || shipper?._id || shipper?.id;
   const isFavorite = targetId
     ? wishlistIds.includes(targetId) || !!shipper?.isWishlisted || !!shipper?.isFavorite
@@ -143,13 +145,11 @@ const ShipperDetail = () => {
         <View style={styles.headerSection}>
           <Image
             source={
-              shipper?.bannerImage
-                ? {
-                  uri: shipper?.bannerImage,
-                }
-                : imageIndex.HorseBg
+              {
+                uri: shipper?.bannerImage,
+              }
             }
-            style={styles.bannerImage}
+            style={[styles.bannerImage, { backgroundColor: shipper?.bannerImage ? COLORS.white : COLORS.background }]}
           />
           <View style={styles.profileImageContainer}>
             <Image

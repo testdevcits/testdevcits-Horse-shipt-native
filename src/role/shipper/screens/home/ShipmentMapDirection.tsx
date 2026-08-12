@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, } from 'react';
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     SafeAreaView,
-    Platform,
+
     StatusBar,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';

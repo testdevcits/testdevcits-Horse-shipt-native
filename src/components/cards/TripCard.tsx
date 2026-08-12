@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { StyleSheet, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { MapPin, Calendar, ArrowRight, Truck, ShieldCheck, ChevronRight } from 'lucide-react-native';
+import { ArrowRight, Truck, ShieldCheck, ChevronRight } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 

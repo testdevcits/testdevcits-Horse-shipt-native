@@ -3,8 +3,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
+
   RefreshControl,
 } from 'react-native';
 

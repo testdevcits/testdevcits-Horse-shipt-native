@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Animated,
   Modal,
-  SafeAreaView,
   Keyboard,
   Platform,
   PermissionsAndroid,
@@ -19,7 +18,7 @@ import axios from 'axios';
 import {
   MapPin,
   Search,
-  Navigation,
+
   ArrowLeft,
   X,
   Map as MapIcon,
@@ -32,7 +31,6 @@ import {
   COLORS,
   FONTS,
   SCREEN_HEIGHT,
-  SCREEN_WIDTH,
   SPACING,
   RADIUS,
   FONT_SIZE,

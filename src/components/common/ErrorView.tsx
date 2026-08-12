@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { memo } from 'react'
 import { AlertCircle, RefreshCcw } from 'lucide-react-native';
 import AppText from './AppText';

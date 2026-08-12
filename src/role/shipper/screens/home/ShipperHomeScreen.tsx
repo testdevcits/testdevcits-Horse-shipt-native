@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 
   RefreshControl,
-  Dimensions,
+
   FlatList,
   Pressable,
 } from 'react-native';
@@ -33,9 +33,7 @@ import {
 } from '../../../../components';
 import {
   COLORS,
-
   SPACING,
-
 } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
@@ -225,6 +223,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getStripeStatus();
       if (res && res.success) {
+
+        console.log("======checkStripeStatus==========", res)
         const needsModal =
           res.needsVerification === true ||
           res.onboardingCompleted === false ||
@@ -529,7 +529,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       {viewMode === 'list' && (
         <View style={{ marginTop: SPACING.sm, marginBottom: SPACING.xs }}>
           <SectionHeader
-            title="Current Shipment"
+            title="New Shipment"
             showAction={true}
             onPress={() => navigation.navigate('Post')}
             containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }}

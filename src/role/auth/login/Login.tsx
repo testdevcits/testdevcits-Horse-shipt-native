@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { Mail, Lock, Check, UserCog, RefreshCw } from 'lucide-react-native';
-import { COLORS, RADIUS, SCREEN_HEIGHT } from '../../../constants';
+import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import AppText from '../../../components/common/AppText';
 import { Input } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
@@ -24,7 +24,7 @@ import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import RoleSelectionModal, { UserRole } from './RoleSelectionModal';
+import RoleSelectionModal from './RoleSelectionModal';
 
 const Login = () => {
   const navigation = useNavigation<any>();

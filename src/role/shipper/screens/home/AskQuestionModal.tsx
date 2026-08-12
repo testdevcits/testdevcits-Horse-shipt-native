@@ -90,7 +90,6 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
   answeredQuestion
 }) => {
 
-  console.log("=====answeredQuestion=============", answeredQuestion)
 
   const [question, setQuestion] = useState('');
   const [error, setError] = useState('');

@@ -1,12 +1,9 @@
 import React, { useCallback } from 'react';
-import { View, FlatList, RefreshControl, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, FlatList, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 import { Wind } from 'lucide-react-native';
 import {
   COLORS,
-  SPACING,
-  RADIUS,
-  FONTS,
-  FONT_SIZE,
+
 } from '../../../../constants';
 
 import useMyHorses from './usemyhorses';

@@ -12,7 +12,6 @@ import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScre
 import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
 import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
-import AddVehicleModal from '../role/shipper/screens/vehicles/AddVehicleModal';
 
 const Drawer = createDrawerNavigator();
 

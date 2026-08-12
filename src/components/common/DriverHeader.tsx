@@ -8,8 +8,8 @@ import {
     StyleProp,
     TouchableOpacity,
 } from 'react-native';
-import { Star, ShieldCheck, Radio } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
+import { ShieldCheck, Radio } from 'lucide-react-native';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from './AppText';
 
 interface DriverHeaderProps {
@@ -28,7 +28,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
     statusText = 'ON DISPATCH',
     profileImageUrl,
     isOnline = true,
-    rating = 4.9,
+
     rightComponent,
     containerStyle,
     onStatusToggle,

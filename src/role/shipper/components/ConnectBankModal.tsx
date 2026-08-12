@@ -58,14 +58,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
 
         const onboardingUrl =
           onboardRes?.onboardingUrl ||
-          onboardRes?.onBoardingUrl ||
-          onboardRes?.url ||
-          onboardRes?.data?.onBoardingUrl ||
-          onboardRes?.data?.onboardingUrl ||
-          onboardRes?.data?.url ||
-          createRes?.accountLinkUrl ||
-          createRes?.url;
-
+          onboardRes?.data?.onboardingUrl;
         if (onboardingUrl) {
           onClose();
           setTimeout(() => {

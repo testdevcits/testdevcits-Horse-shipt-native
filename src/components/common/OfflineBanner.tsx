@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-  Text,
+
   StyleSheet,
   TouchableOpacity,
   Animated,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { WifiOff, Wifi, RefreshCw } from 'lucide-react-native';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, ICON_SIZE } from '../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
 
 export const OfflineBanner: React.FC = () => {

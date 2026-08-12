@@ -13,7 +13,7 @@ import {
 import { X, } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+import { COLORS, SPACING, } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.adddriver';
 

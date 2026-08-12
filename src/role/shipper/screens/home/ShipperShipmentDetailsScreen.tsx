@@ -27,6 +27,9 @@ import { COLORS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippershipmentdetails';
+import useStripeStatus from '../../../../hooks/useStripeStatus';
+import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
+import ConnectBankModal from './ConnectBankModal';
 
 
 const AskQuestionModal = lazy(() => import("./AskQuestionModal"))
@@ -35,13 +38,18 @@ const SubmitOfferModal = lazy(() => import("./SubmitOfferModal"))
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
+  const { isStripeReady, loading } = useStripeStatus();
+  const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+
+
+  // console.log("======ShipmentDetails checkStripeStatus======", isStripeReady, loading)
+
 
   // Extract shipment from route params or fallback to default sample payload
   const shipment = route.params?.shipment || {};
 
 
 
-  console.log('ShipperShipmentDetailsScreen - Shipment:', shipment?.horses);
 
   const [isMapVisible, setIsMapVisible] = useState(true);
 
@@ -196,7 +204,11 @@ const ShipperShipmentDetailsScreen = () => {
   };
 
   const handleSubmitOfferPress = () => {
-    setIsSubmitOfferModalVisible(true);
+    if (!isStripeReady && !loading) {
+      setIsBankModalVisible(true);
+    } else {
+      setIsSubmitOfferModalVisible(true);
+    }
   };
 
   return (
@@ -602,6 +614,18 @@ const ShipperShipmentDetailsScreen = () => {
           shipmentCode={shipment?.shipmentCode}
         />
       </Suspense>
+
+
+      {
+        !loading && !isStripeReady && (
+          <ConnectBankModal
+            isVisible={isBankModalVisible}
+            onClose={() => setIsBankModalVisible(false)}
+            navigation={navigation}
+          />
+        )
+
+      }
     </View>
   );
 };

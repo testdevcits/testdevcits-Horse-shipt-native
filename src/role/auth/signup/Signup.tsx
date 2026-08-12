@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
+
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
+import { COLORS, } from '../../../constants';
 import { AppText, Input } from '../../../components';
 import Ionicons from "@react-native-vector-icons/ionicons"
 import AppButton from '../../../components/common/Button/AppButton';

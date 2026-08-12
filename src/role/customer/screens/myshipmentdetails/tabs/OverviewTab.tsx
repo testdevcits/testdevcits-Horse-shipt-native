@@ -17,7 +17,7 @@ import {
   MessageSquare,
   Edit3,
   ExternalLink,
-  Truck,
+
   User,
   Clock,
 } from 'lucide-react-native';

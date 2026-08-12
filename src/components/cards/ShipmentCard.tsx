@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { MoveRight, Calendar, User, Info, ChevronRight, MapPin } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
+import { User, Info, ChevronRight, MapPin } from 'lucide-react-native';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from '../common/AppText';
 import { formatDate } from '../../utils/helpers';
 
-const { width } = Dimensions.get('window');
 
 const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
   const horsePhoto = item?.horses[0]?.photo?.url;

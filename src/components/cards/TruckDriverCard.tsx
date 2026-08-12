@@ -10,7 +10,7 @@ import {
   Phone,
   Award,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, SIZES, ICON_SIZE } from '../../constants';
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, SIZES } from '../../constants';
 import AppText from '../common/AppText';
 import Toast from 'react-native-toast-message';
 

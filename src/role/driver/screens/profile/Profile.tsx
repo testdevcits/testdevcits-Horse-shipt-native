@@ -9,11 +9,10 @@ import {
   ActivityIndicator,
 
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Mail, Phone, FileText, Box, LogOut } from 'lucide-react-native';
 
 // Custom Design Systems
-import { COLORS, FONTS } from '../../../../constants'; // Adjust relative path as needed
+import { COLORS, } from '../../../../constants'; // Adjust relative path as needed
 import AppText from '../../../../components/common/AppText';
 import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
 import styles from './styles.profile';

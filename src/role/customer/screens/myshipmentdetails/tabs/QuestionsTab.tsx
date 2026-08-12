@@ -17,6 +17,7 @@ import {
   ICON_SIZE,
 } from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
+import Toast from 'react-native-toast-message';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
@@ -41,10 +42,18 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
     setSubmitting(questionId);
     try {
       await customerService.submitAnswer(questionId, answerText);
-      Alert.alert('Success', 'Answer submitted successfully');
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Answer submitted successfully',
+      });
       if (onRefresh) onRefresh();
     } catch (error) {
-      Alert.alert('Error', 'Failed to submit answer. Please try again.');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to submit answer. Please try again.',
+      });
     } finally {
       setSubmitting(null);
     }

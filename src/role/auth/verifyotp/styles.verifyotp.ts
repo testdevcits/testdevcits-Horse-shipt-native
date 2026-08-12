@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
+import { COLORS, RADIUS, SPACING, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
