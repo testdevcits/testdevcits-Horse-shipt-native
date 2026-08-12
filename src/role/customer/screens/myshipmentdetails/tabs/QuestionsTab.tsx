@@ -113,7 +113,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
               >
                 {/* Shipper Name */}
                 <AppText style={styles.shipperName}>
-                  {item?.shipperId?.name || 'Shipper name'}
+                  {item?.shipperId?.name || 'Not Available'}
                 </AppText>
 
                 {/* Question Text */}

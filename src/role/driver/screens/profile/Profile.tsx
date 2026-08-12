@@ -126,7 +126,7 @@ const Profile = () => {
           </View>
 
           {/* Driver Metadata */}
-          <AppText style={styles.driverName}>{driver?.name || 'Test Driver'}</AppText>
+          <AppText style={styles.driverName}>{driver?.name || 'Not Available'}</AppText>
 
           <View style={styles.statusBadge}>
             <View style={styles.statusDot} />
@@ -173,7 +173,7 @@ const Profile = () => {
               <Mail size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
               <View>
                 <AppText style={styles.detailLabel}>EMAIL</AppText>
-                <AppText style={styles.detailValue}>{driver?.email || 'testdevcits@gmail.com'}</AppText>
+                <AppText style={styles.detailValue}>{driver?.email || 'Not Available'}</AppText>
               </View>
             </View>
 

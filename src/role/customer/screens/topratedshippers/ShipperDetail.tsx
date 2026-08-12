@@ -97,7 +97,7 @@ const ShipperDetail = () => {
         </View>
         <View>
           <AppText style={styles.reviewerName}>
-            {item?.customerName || 'Verified User'}
+            {item?.customerName || 'Not Available'}
           </AppText>
           <AppText style={styles.reviewDate}>{formatDate(item?.createdAt)}</AppText>
         </View>

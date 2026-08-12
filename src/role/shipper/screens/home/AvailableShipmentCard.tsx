@@ -26,19 +26,19 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
   const horseName =
     item?.horses && item?.horses[0]?.registeredName
       ? item?.horses[0].registeredName
-      : 'Thunder - Sky';
+      : 'Not Available';
 
   const horseSpecs =
     item?.horses && item?.horses[0]
-      ? `${item?.horses[0].breed || 'Belgian Warmblood'} | ${item?.horses[0].age || '2'
-      }yr | ${item?.horses[0].colour || 'Blood bay'}`
-      : 'Belgian Warmblood | 2yr | Blood bay';
+      ? `${item?.horses[0].breed || 'Not Available'} | ${item?.horses[0].age || '2'
+      }yr | ${item?.horses[0].colour || 'Not Available'}`
+      : 'Not Available | Not Available | Not Available';
 
   const locationText = item?.pickupLocation
     ? item?.pickupLocation.split(',')[0] +
     ', ' +
     (item?.pickupLocation.split(',')[1] || '')
-    : 'Ghbaleh, Lebanon';
+    : 'Not Available';
 
   return (
     <TouchableOpacity

@@ -77,7 +77,7 @@ const ChatItemCard = memo(
 
           {/* Shipment Code Subtitle */}
           <AppText style={styles.shipmentCodeSub}>
-            Shipment ID {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
+            Shipment ID {item?.shipmentCode || 'Not Available'}
           </AppText>
 
           {/* Location Route / Last Message Preview */}

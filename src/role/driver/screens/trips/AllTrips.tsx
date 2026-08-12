@@ -92,8 +92,8 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
         <View style={styles.container}>
             {/* Shared Global Header */}
             <DriverHeader
-                name={driver?.name || 'Test Driver'}
-                statusText={driver?.driverStatus || 'ON TRIP'}
+                name={driver?.name || 'Not Available'}
+                statusText={driver?.driverStatus || 'Not Available'}
                 profileImageUrl={driver?.profileImage?.url}
                 isOnline={driver?.isActive !== false}
             />

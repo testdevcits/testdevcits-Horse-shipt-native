@@ -395,7 +395,7 @@ const ShipperShipmentDetailsScreen = () => {
               <View style={styles.timelineTextCol}>
                 <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
                 <AppText style={styles.timelineAddress}>
-                  {shipment?.pickupLocation || 'Dubai, UAE'}
+                  {shipment?.pickupLocation || 'Not Available'}
                 </AppText>
               </View>
             </View>
@@ -412,7 +412,7 @@ const ShipperShipmentDetailsScreen = () => {
               <View style={styles.timelineTextCol}>
                 <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
                 <AppText style={styles.timelineAddress}>
-                  {shipment?.deliveryLocation || 'Latvia'}
+                  {shipment?.deliveryLocation || 'Not Available'}
                 </AppText>
               </View>
             </View>

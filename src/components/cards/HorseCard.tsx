@@ -52,7 +52,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
         {/* Center Info */}
         <View style={styles.infoWrapper}>
           <AppText style={styles.registeredNameText} numberOfLines={1}>
-            {item?.registeredName || 'Unnamed Horse'}
+            {item?.registeredName || 'Not Available'}
           </AppText>
           {item?.barnName ? (
             <AppText style={styles.barnNameText} numberOfLines={1}>

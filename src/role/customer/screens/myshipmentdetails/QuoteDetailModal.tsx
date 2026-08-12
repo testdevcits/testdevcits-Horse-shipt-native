@@ -363,7 +363,7 @@ const QuoteDetailModal = ({ visible, quote, onClose, onRefresh, isCompleted }: a
                               ? quote?.shipperContract
                               : quote?.shipperContract.url;
                           const docTitle =
-                            quote?.shipperContract?.originalName || 'Shipper Contract';
+                            quote?.shipperContract?.originalName || 'Not Available';
                           if (shipperUrl) {
                             onClose();
                             navigation.navigate('PdfViewer', {

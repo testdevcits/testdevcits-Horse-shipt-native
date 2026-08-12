@@ -257,7 +257,7 @@ const MyShipmentDetails = ({ route, }: any) => {
             <RatingModal
               visible={isRatingVisible}
               onClose={() => setIsRatingVisible(false)}
-              shipperName={data?.shipper?.name || 'Shipper'}
+              shipperName={data?.shipper?.name || 'Not Available'}
               shipmentTitle={data?.shipmentCode}
               shipperId={data?.shipper?._id || data?.shipper}
               shipmentId={data?._id}

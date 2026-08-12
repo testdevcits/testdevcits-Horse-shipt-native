@@ -10,7 +10,7 @@ interface PaymentCardProps {
 }
 
 const PaymentCard = memo(({ item, onPress }: PaymentCardProps) => {
-  const brand = (item?.cardBrand || item?.brand || item?.paymentMethod || 'CARD').toUpperCase();
+  const brand = (item?.cardBrand || item?.brand || item?.paymentMethod || 'Not Available').toUpperCase();
   const last4 = item?.last4 ? `•••• ${item.last4}` : '';
   const title = last4 ? `${brand} ${last4}` : brand;
   const dateStr = item?.paymentDateTime || (item?.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US') : '');

@@ -45,7 +45,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotGreen} />
           <AppText style={styles.locationText} numberOfLines={2}>
-            {shipmentData?.pickupLocation || 'Unknown Pickup'}
+            {shipmentData?.pickupLocation || 'Not Available'}
           </AppText>
         </View>
 
@@ -54,7 +54,7 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />
           <AppText style={styles.locationText} numberOfLines={2}>
-            {shipmentData?.deliveryLocation || 'Unknown Dropoff'}
+            {shipmentData?.deliveryLocation || 'Not Available'}
           </AppText>
         </View>
       </View>

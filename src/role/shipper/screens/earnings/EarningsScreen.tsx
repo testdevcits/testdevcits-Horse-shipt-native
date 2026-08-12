@@ -242,10 +242,10 @@ const EarningsScreen = () => {
       if (saveRes?.success) {
         setCardStatus({
           hasCard: true,
-          cardBrand: saveRes.cardBrand || cardDetails?.brand || 'visa',
-          cardLast4: saveRes.cardLast4 || cardDetails?.last4 || '4242',
-          cardExpMonth: saveRes.cardExpMonth || cardDetails?.expiryMonth,
-          cardExpYear: saveRes.cardExpYear || cardDetails?.expiryYear,
+          cardBrand: saveRes.cardBrand || cardDetails?.brand || 'Not Available',
+          cardLast4: saveRes.cardLast4 || cardDetails?.last4 || 'Not Available',
+          cardExpMonth: saveRes.cardExpMonth || cardDetails?.expiryMonth || 'Not Available',
+          cardExpYear: saveRes.cardExpYear || cardDetails?.expiryYear || 'Not Available',
         });
         setIsCardModalVisible(false);
         showFeedback(
@@ -308,7 +308,7 @@ const EarningsScreen = () => {
               <View style={styles.activeCardTextCol}>
                 <AppText style={styles.activeCardLabel}>Active Card</AppText>
                 <AppText style={styles.activeCardNumber}>
-                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....{cardStatus.cardLast4 || '4242'}
+                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....{cardStatus.cardLast4 || 'Not Available'}
                 </AppText>
               </View>
               <CheckCircle size={22} color="#10B981" />

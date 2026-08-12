@@ -122,7 +122,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
           <View key={index} style={styles.horseCard}>
             <View style={styles.horseHeader}>
               <AppText style={styles.horseHeaderText}>
-                HORSE {index + 1}: {horse.registeredName || 'Unnamed Horse'}
+                HORSE {index + 1}: {horse.registeredName || 'Not Available'}
               </AppText>
             </View>
 

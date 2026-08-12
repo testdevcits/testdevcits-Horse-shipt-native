@@ -104,7 +104,7 @@ const VehicleItemCard = React.memo(({
           {vehicle.vehicleNumber || 'No Plate Number'}
         </AppText>
         <AppText style={styles.vehicleType}>
-          {vehicle.vehicleType || 'Truck'} - {vehicle.transportType || 'Trucking'}
+          {vehicle.vehicleType || 'Not Available'} - {vehicle.transportType || 'Not Available'}
         </AppText>
 
         {/* 2x2 Specs Grid */}
@@ -495,8 +495,8 @@ const MyVehiclesScreen = ({ navigation }: any) => {
         hideSelector
         label="Select Driver to Assign"
         placeholder="Select Driver"
-        value={selectedVehicleForDriver?.driver?.name || ''}
-        options={drivers.map(d => d.name || d.email || 'Unnamed Driver')}
+        value={selectedVehicleForDriver?.driver?.name || 'Not Available'}
+        options={drivers.map(d => d.name || d.email || 'Not Available')}
         onSelect={handleSelectDriver}
         searchable
       />

@@ -51,7 +51,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   useEffect(() => {
     if (visible) {
       const loc = profileData?.locale || {};
-      setAddress(loc.address || 'Indore, Madhya Pradesh, India');
+      setAddress(loc.address || 'Not Available');
       setLatitude(typeof loc.latitude === 'number' ? loc.latitude : DEFAULT_LAT);
       setLongitude(typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG);
       setMobile(profileData?.mobile || user?.phoneNumber || '');

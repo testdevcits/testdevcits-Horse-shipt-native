@@ -53,7 +53,7 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
           {pickupTitle}
         </AppText>
         <AppText style={styles.mapSelectShipmentCode}>
-          {item?.shipmentCode || 'HS-SHIP-2026-CODE'}
+          {item?.shipmentCode || 'Not Available'}
         </AppText>
         <AppText style={styles.mapSelectDeliverySub} numberOfLines={1}>
           ➜ {deliveryTitle}

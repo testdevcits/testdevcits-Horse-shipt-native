@@ -181,7 +181,7 @@ const DeliveryVerificationScreen = () => {
                         <AppText style={styles.shipmentHeaderLabel}>SHIPMENT DETAILS</AppText>
 
                         <View style={styles.shipmentTitleRow}>
-                            <AppText style={styles.shipmentTitle}>{shipment.shipment.horses?.[0]?.registeredName || 'Test'}</AppText>
+                            <AppText style={styles.shipmentTitle}>{shipment.shipment.horses?.[0]?.registeredName || 'Not Available'}</AppText>
                             <View style={styles.passengerCountBadge}>
                                 <AppText style={styles.badgeText}>
                                     {shipment.shipment.numberOfHorses} {shipment.shipment.numberOfHorses > 1 ? 'Horses' : 'Horse'}
@@ -214,7 +214,7 @@ const DeliveryVerificationScreen = () => {
                             <Truck size={16} color={COLORS.textLight} style={styles.metaIcon} />
                             <View>
                                 <AppText style={styles.metaLabel}>VEHICLE</AppText>
-                                <AppText style={styles.metaValue}>{shipment.vehicle?.vehicleNumber || 'MP19-8890'}</AppText>
+                                <AppText style={styles.metaValue}>{shipment.vehicle?.vehicleNumber || 'Not Available'}</AppText>
                             </View>
                         </View>
                     </View>
