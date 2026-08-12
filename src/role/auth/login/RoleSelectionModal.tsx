@@ -27,6 +27,8 @@ interface RoleSelectionModalProps {
   currentRole: string;
   onClose: () => void;
   onSelectRole: (role: UserRole) => void;
+  allowedRoles?: UserRole[];
+  isSignup?: boolean;
 }
 
 const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
@@ -34,16 +36,58 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
   currentRole,
   onClose,
   onSelectRole,
+  allowedRoles,
+  isSignup,
 }) => {
   const [selected, setSelected] = useState<UserRole>('customer');
 
+  const ROLES: {
+    id: UserRole;
+    title: string;
+    subtitle: string;
+    Icon: any;
+    tag: string;
+  }[] = [
+    {
+      id: 'customer',
+      title: 'Customer / Horse Owner',
+      subtitle: 'Book transportation, track shipments live & post load requests.',
+      Icon: User,
+      tag: 'BOOK & TRACK',
+    },
+    {
+      id: 'shipper',
+      title: 'Shipper / Transport Company',
+      subtitle: 'Manage dispatch operations, list vehicles & issue quotes.',
+      Icon: Building2,
+      tag: 'MANAGE FLEET',
+    },
+    {
+      id: 'driver',
+      title: 'Driver / Transporter',
+      subtitle: 'Accept assigned trips, navigate routes & verify deliveries.',
+      Icon: Truck,
+      tag: 'HAUL & DELIVER',
+    },
+  ];
+
+  // Filter roles: if called from signup or allowedRoles specified, show Customer & Shipper only
+  const availableRoles = isSignup
+    ? ROLES.filter(r => r.id === 'customer' || r.id === 'shipper')
+    : allowedRoles
+    ? ROLES.filter(r => allowedRoles.includes(r.id))
+    : ROLES;
+
   useEffect(() => {
-    if (currentRole === 'customer' || currentRole === 'shipper' || currentRole === 'driver') {
+    if (
+      currentRole &&
+      availableRoles.some(roleItem => roleItem.id === currentRole)
+    ) {
       setSelected(currentRole as UserRole);
-    } else {
-      setSelected('customer');
+    } else if (availableRoles.length > 0) {
+      setSelected(availableRoles[0].id);
     }
-  }, [currentRole, visible]);
+  }, [currentRole, visible, isSignup, allowedRoles]);
 
   const handleConfirm = async () => {
     try {
@@ -54,36 +98,6 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
     onSelectRole(selected);
     onClose();
   };
-
-  const ROLES: {
-    id: UserRole;
-    title: string;
-    subtitle: string;
-    Icon: any;
-    tag: string;
-  }[] = [
-      {
-        id: 'customer',
-        title: 'Customer / Horse Owner',
-        subtitle: 'Book transportation, track shipments live & post load requests.',
-        Icon: User,
-        tag: 'BOOK & TRACK',
-      },
-      {
-        id: 'shipper',
-        title: 'Shipper / Transport Company',
-        subtitle: 'Manage dispatch operations, list vehicles & issue quotes.',
-        Icon: Building2,
-        tag: 'MANAGE FLEET',
-      },
-      {
-        id: 'driver',
-        title: 'Driver / Transporter',
-        subtitle: 'Accept assigned trips, navigate routes & verify deliveries.',
-        Icon: Truck,
-        tag: 'HAUL & DELIVER',
-      },
-    ];
 
   return (
     <Modal
@@ -119,7 +133,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
 
           {/* Role Cards List */}
           <View style={styles.rolesList}>
-            {ROLES.map(roleItem => {
+            {availableRoles.map(roleItem => {
               const isSelected = selected === roleItem.id;
               const RoleIcon = roleItem.Icon;
 
@@ -202,12 +216,13 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
           {/* Bottom Confirm Button */}
           <View style={styles.footerContainer}>
             <AppButton
-              title={`Continue as ${selected === 'customer'
-                ? 'Customer'
-                : selected === 'shipper'
+              title={`Continue as ${
+                selected === 'customer'
+                  ? 'Customer'
+                  : selected === 'shipper'
                   ? 'Shipper'
                   : 'Driver'
-                }`}
+              }`}
               onPress={handleConfirm}
               buttonStyle={styles.confirmBtn}
             />

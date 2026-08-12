@@ -76,6 +76,27 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textDecorationLine: 'none',
   },
+  roleBadgeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.xs,
+  },
+  roleBadgeLabel: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
+  roleBadgeValue: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.primary,
+    letterSpacing: 0.5,
+  },
+  changeTextLink: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.primary,
+  },
 });
 
 export default styles

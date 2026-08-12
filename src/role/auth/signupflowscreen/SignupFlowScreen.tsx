@@ -24,6 +24,7 @@ import { setCredentials } from '../../../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
+import RoleSelectionModal from '../login/RoleSelectionModal';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
+  const [selectedRole, setSelectedRole] = useState<string>('');
+  const [isRoleModalVisible, setIsRoleModalVisible] = useState(false);
 
   // Form State
   const [name, setName] = useState('');
@@ -208,6 +211,19 @@ const SignupFlowScreen = ({ navigation }: any) => {
             {step === 1 && (
               <View style={styles.formContainer}>
                 <AppText style={styles.title}>Create Account 1/3</AppText>
+
+                {/* Selected Role Badge Label (Tap to open modal) */}
+                <TouchableOpacity
+                  style={styles.roleBadgeContainer}
+                  onPress={() => setIsRoleModalVisible(true)}
+                  activeOpacity={0.7}
+                >
+                  <AppText style={styles.roleBadgeLabel}>Signing in as: </AppText>
+                  <AppText style={styles.roleBadgeValue}>
+                    {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
+                  </AppText>
+                  <AppText style={styles.changeTextLink}> (Change)</AppText>
+                </TouchableOpacity>
                 {renderStepper(1)}
 
                 <Input label="Full Name" placeholder="John Doe" value={name} onChangeText={(t) => { setName(t); setErrors(p => ({ ...p, name: '' })); }} error={errors.name} />
@@ -281,6 +297,21 @@ const SignupFlowScreen = ({ navigation }: any) => {
               </View>
             )}
           </ScrollView>
+          {/* Role Selection Modal */}
+          <RoleSelectionModal
+            visible={isRoleModalVisible}
+            currentRole={selectedRole || 'customer'}
+            isSignup={true}
+            onClose={() => setIsRoleModalVisible(false)}
+            onSelectRole={newRole => {
+              setSelectedRole(newRole);
+              Toast.show({
+                type: 'info',
+                text1: 'Role Selected',
+                text2: `Switched signup mode to ${newRole.toUpperCase()}`,
+              });
+            }}
+          />
         </View>
       </KeyboardAvoidingView>
     </View>
