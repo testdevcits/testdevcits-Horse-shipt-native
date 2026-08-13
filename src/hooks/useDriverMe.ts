@@ -26,11 +26,11 @@ export const useDriverMe = () => {
       if (response?.driver) {
         dispatch(
           updateUser({
-            name: response.driver.name,
-            email: response.driver.email,
-            profileImage: response.driver.profileImage as any,
-            phoneNumber: response.driver.phone,
-            metadata: response.driver,
+            name: response?.driver?.name,
+            email: response?.driver?.email,
+            profileImage: response?.driver?.profileImage as any,
+            phoneNumber: response?.driver?.phone,
+            metadata: response?.driver,
           }),
         );
       }

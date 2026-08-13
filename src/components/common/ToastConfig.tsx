@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
-import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react-native';
+import { CheckCircle2, AlertCircle, Info,} from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from './AppText';
 

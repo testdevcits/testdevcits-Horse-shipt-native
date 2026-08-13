@@ -1,6 +1,12 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from "../../../../constants";
-
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -88,13 +94,8 @@ const styles = StyleSheet.create({
     color: COLORS.grey400,
   },
   goldButton: {
-    flexDirection: 'row',
     backgroundColor: COLORS.primary,
-    height: SIZES.buttonHeight,
-    borderRadius: RADIUS.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: SPACING.md,
+    marginVertical: SPACING.md,
   },
   autoTrackActiveButton: {
     backgroundColor: '#374151',

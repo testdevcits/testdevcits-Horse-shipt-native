@@ -25,7 +25,7 @@ import {
   Edit3,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE } from '../constants/dimensions';
+import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText, ConfirmationModal } from '../components';
@@ -355,6 +355,7 @@ const styles = StyleSheet.create({
   },
   menuItemActive: {
     backgroundColor: COLORS.goldLightBg,
+    borderRadius:RADIUS.md,
   },
   iconContainer: {
     width: ICON_SIZE.lg,
@@ -390,7 +391,7 @@ const styles = StyleSheet.create({
     paddingRight: SPACING.md,
   },
   subMenuItemActive: {
-    backgroundColor: COLORS.goldLightBg,
+    // backgroundColor: COLORS.goldLightBg,
   },
   subMenuLabel: {
     fontSize: FONT_SIZE.sm,

@@ -1,7 +1,6 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect } from 'react';
 import {
-
   View,
   ScrollView,
   TouchableOpacity,
@@ -31,6 +30,7 @@ import {
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
 import { RouteMapModal } from './RouteMapModal';
+import { Button } from '../../../../components';
 
 const LocationScreen = () => {
   const { driver, activeShipment, loading } = useDriverMe();
@@ -65,7 +65,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
   const fallbackLat =
@@ -238,8 +238,6 @@ const LocationScreen = () => {
 
   const [mapVisible, setMapVisible] = useState(false);
 
-
-
   if (loading && !driver) {
     return (
       <View style={styles.center}>
@@ -288,41 +286,24 @@ const LocationScreen = () => {
               </AppText>
             </View>
 
-            <TouchableOpacity
-              style={styles.goldButton}
+            <Button
+              title="Update My Location"
               onPress={handleUpdateLocation}
               disabled={isUpdating}
-              activeOpacity={0.8}
-            >
-              {isUpdating ? (
-                <ActivityIndicator color={COLORS.white} size="small" />
-              ) : (
-                <>
-                  <Compass
-                    size={18}
-                    color={COLORS.white}
-                    style={styles.btnIcon}
-                  />
-                  <AppText style={styles.buttonText}>
-                    Update My Location
-                  </AppText>
-                </>
-              )}
-            </TouchableOpacity>
+              isLoading={isUpdating}
+              leftIcon={<Compass size={18} color={COLORS.white} />}
+            />
 
-            <TouchableOpacity
-              style={[
+            <Button
+              buttonStyle={[
                 styles.goldButton,
                 isAutoTracking && styles.autoTrackActiveButton,
               ]}
+              
               onPress={handleToggleAutoTrack}
-              activeOpacity={0.8}
-            >
-              <Zap size={18} color={COLORS.white} style={styles.btnIcon} />
-              <AppText style={styles.buttonText}>
-                {isAutoTracking ? 'Stop Auto-Track' : 'Start Auto-Track'}
-              </AppText>
-            </TouchableOpacity>
+              title={isAutoTracking ? 'Stop Auto-Track' : 'Start Auto-Track'}
+              leftIcon={<Zap size={18} color={COLORS.white} />}
+            />
           </View>
 
           <View style={styles.tipCard}>
