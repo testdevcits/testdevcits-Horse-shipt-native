@@ -9,19 +9,20 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {
-  ChevronDown,
-  ImagePlus,
-  Compass,
-  Check,
-} from 'lucide-react-native';
+import { ChevronDown, ImagePlus, Compass, Check } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
-import { AppHeader, AppText, Button as ButtonCompt, Input } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  Button as ButtonCompt,
+  Input,
+} from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
 import imageIndex from '../../../../assets/images/imageIndex';
+import { isValidVehicleNumber, isValidVIN } from '../../../../utils/valiations';
 
 interface Props {
   navigation?: any;
@@ -33,15 +34,14 @@ interface Props {
 }
 
 const VEHICLE_TYPES = ['Truck', 'Trailer', 'Other'];
-const STALL_TYPES = ["Stock Trailer",
-  "Slant Load",
-  "Head to Head",
-  "Semi",
-  "Other"];
-const STALL_SIZES = ["Single Stall",
-  "Stall and a Half",
-  "Box Stall",
-  "Other"];
+const STALL_TYPES = [
+  'Stock Trailer',
+  'Slant Load',
+  'Head to Head',
+  'Semi',
+  'Other',
+];
+const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
 
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
@@ -52,6 +52,8 @@ const AddVehicleModal: React.FC<Props> = ({
   vehicleToEdit: propVehicleToEdit,
 }) => {
   const vehicleToEdit = route?.params?.vehicleToEdit || propVehicleToEdit;
+
+  console.log('AddVehicleModal vehicleToEdit:', vehicleToEdit);
 
   const handleClose = () => {
     if (navigation?.canGoBack?.()) {
@@ -74,9 +76,10 @@ const AddVehicleModal: React.FC<Props> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isPicking, setIsPicking] = useState(false);
 
-
   // Dropdown Picker States
-  const [activePicker, setActivePicker] = useState<'vehicleType' | 'stallType' | 'stallSize' | null>(null);
+  const [activePicker, setActivePicker] = useState<
+    'vehicleType' | 'stallType' | 'stallSize' | null
+  >(null);
 
   useEffect(() => {
     if (vehicleToEdit) {
@@ -84,12 +87,16 @@ const AddVehicleModal: React.FC<Props> = ({
       setVehicleType(vehicleToEdit.vehicleType || '');
       setVehicleNumber(vehicleToEdit.vehicleNumber || '');
       setVinNumber(vehicleToEdit.vinNumber || '');
-      setNumberOfStalls(vehicleToEdit.numberOfStalls ? String(vehicleToEdit.numberOfStalls) : '');
-      setStallType(vehicleToEdit.stallType || '');
+      setNumberOfStalls(
+        vehicleToEdit.numberOfStalls
+          ? String(vehicleToEdit.numberOfStalls)
+          : '',
+      );
+      setStallType(vehicleToEdit.trailerType || '');
       setStallSize(vehicleToEdit.stallSize || '');
       setNotes(vehicleToEdit.notes || '');
-      if (vehicleToEdit.image?.url) {
-        setSelectedImage({ uri: vehicleToEdit.image.url });
+      if (vehicleToEdit.images?.[0]?.url) {
+        setSelectedImage({ uri: vehicleToEdit.images[0].url });
       } else {
         setSelectedImage(null);
       }
@@ -148,11 +155,9 @@ const AddVehicleModal: React.FC<Props> = ({
       if (error?.code !== 'E_PICKER_CANCELLED') {
         console.error('ImagePicker Error:', error);
       }
-    }
-    finally {
+    } finally {
       setIsPicking(false);
     }
-
   };
 
   const handleSubmit = async () => {
@@ -163,6 +168,12 @@ const AddVehicleModal: React.FC<Props> = ({
     }
     if (!vehicleNumber.trim()) {
       newErrors.vehicleNumber = 'Please enter a vehicle number.';
+    } else if (!isValidVehicleNumber(vehicleNumber)) {
+      newErrors.vehicleNumber = 'Please enter a valid vehicle number.';
+    }
+    // VIN is optional, but if entered it must be valid
+    if (vinNumber.trim() && !isValidVIN(vinNumber)) {
+      newErrors.vinNumber = 'Please enter a valid 17-character VIN.';
     }
     if (!numberOfStalls.trim()) {
       newErrors.numberOfStalls = 'Please enter number of stalls.';
@@ -195,7 +206,11 @@ const AddVehicleModal: React.FC<Props> = ({
       formData?.append('stallSize', stallSize);
       formData?.append('notes', notes.trim());
 
-      if (selectedImage && selectedImage.uri && !selectedImage.uri.startsWith('http')) {
+      if (
+        selectedImage &&
+        selectedImage.uri &&
+        !selectedImage.uri.startsWith('http')
+      ) {
         formData?.append('images', {
           uri: selectedImage.uri,
           type: selectedImage.type || 'image/jpeg',
@@ -244,7 +259,10 @@ const AddVehicleModal: React.FC<Props> = ({
 
   return (
     <View style={styles.screenContainer}>
-      <AppHeader title={vehicleToEdit ? 'Edit Vehicle' : 'Add Vehicle'} showBack />
+      <AppHeader
+        title={vehicleToEdit ? 'Edit Vehicle' : 'Add Vehicle'}
+        showBack
+      />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -260,9 +278,12 @@ const AddVehicleModal: React.FC<Props> = ({
               <Compass size={22} color="#A06333" />
             </View>
             <View style={styles.headerTextCol}>
-              <AppText style={styles.vehicleDetailsTitle}>Vehicle details</AppText>
+              <AppText style={styles.vehicleDetailsTitle}>
+                Vehicle details
+              </AppText>
               <AppText style={styles.vehicleDetailsSub}>
-                Tell us about your vehicle(s) so we can match you with the right shipments.
+                Tell us about your vehicle(s) so we can match you with the right
+                shipments.
               </AppText>
             </View>
           </View>
@@ -288,7 +309,9 @@ const AddVehicleModal: React.FC<Props> = ({
             >
               <AppText
                 style={
-                  vehicleType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                  vehicleType
+                    ? styles.dropdownTextSelected
+                    : styles.dropdownTextPlaceholder
                 }
               >
                 {vehicleType || 'Select vehicle type'}
@@ -305,7 +328,7 @@ const AddVehicleModal: React.FC<Props> = ({
             placeholder="Enter Vehicle Number"
             value={vehicleNumber}
             error={errors.vehicleNumber}
-            onChangeText={(text) => {
+            onChangeText={text => {
               setVehicleNumber(text);
               if (errors.vehicleNumber) {
                 setErrors(prev => ({ ...prev, vehicleNumber: '' }));
@@ -317,7 +340,23 @@ const AddVehicleModal: React.FC<Props> = ({
             label="VIN Number (Optional)"
             placeholder="Enter VIN Number"
             value={vinNumber}
-            onChangeText={setVinNumber}
+            onChangeText={text => {
+              setVinNumber(text);
+              if (errors.vinNumber) {
+                setErrors(prev => ({ ...prev, vinNumber: '' }));
+              }
+            }}
+            onBlur={() => {
+              if (vinNumber.trim() && !isValidVIN(vinNumber)) {
+                setErrors(prev => ({
+                  ...prev,
+                  vinNumber: 'Please enter a valid 17-character VIN.',
+                }));
+              } else if (errors.vinNumber) {
+                setErrors(prev => ({ ...prev, vinNumber: '' }));
+              }
+            }}
+            error={errors.vinNumber}
           />
 
           <Input
@@ -326,7 +365,7 @@ const AddVehicleModal: React.FC<Props> = ({
             keyboardType="numeric"
             value={numberOfStalls}
             error={errors.numberOfStalls}
-            onChangeText={(text) => {
+            onChangeText={text => {
               setNumberOfStalls(text);
               if (errors.numberOfStalls) {
                 setErrors(prev => ({ ...prev, numberOfStalls: '' }));
@@ -348,7 +387,9 @@ const AddVehicleModal: React.FC<Props> = ({
             >
               <AppText
                 style={
-                  stallType ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                  stallType
+                    ? styles.dropdownTextSelected
+                    : styles.dropdownTextPlaceholder
                 }
               >
                 {stallType || 'Select Stall Type'}
@@ -373,7 +414,9 @@ const AddVehicleModal: React.FC<Props> = ({
             >
               <AppText
                 style={
-                  stallSize ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder
+                  stallSize
+                    ? styles.dropdownTextSelected
+                    : styles.dropdownTextPlaceholder
                 }
               >
                 {stallSize || 'Select Stall Size'}
@@ -404,7 +447,10 @@ const AddVehicleModal: React.FC<Props> = ({
                   <ActivityIndicator size="small" color={COLORS.primary} />
                 </View>
               ) : selectedImage ? (
-                <Image source={{ uri: selectedImage.uri }} style={styles.previewImage} />
+                <Image
+                  source={{ uri: selectedImage.uri }}
+                  style={styles.previewImage}
+                />
               ) : (
                 <View style={styles.uploadPlaceholder}>
                   <ImagePlus size={36} color={COLORS.textSecondary} />
@@ -427,7 +473,9 @@ const AddVehicleModal: React.FC<Props> = ({
           />
 
           {!!errors.submit && (
-            <AppText style={[styles.errorText, { marginTop: 8, textAlign: 'center' }]}>
+            <AppText
+              style={[styles.errorText, { marginTop: 8, textAlign: 'center' }]}
+            >
               {errors.submit}
             </AppText>
           )}
@@ -559,8 +607,8 @@ const AddVehicleModal: React.FC<Props> = ({
               <Image
                 source={imageIndex.runningtruck}
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: 200,
+                  height: 200,
                 }}
                 resizeMode="contain"
               />
@@ -568,7 +616,8 @@ const AddVehicleModal: React.FC<Props> = ({
 
             <AppText style={styles.loadingTitle}>Saving Vehicle</AppText>
             <AppText style={styles.loadingSubtitle}>
-              Registering your vehicle... Please wait while we save the information.
+              Registering your vehicle... Please wait while we save the
+              information.
             </AppText>
           </View>
         </View>

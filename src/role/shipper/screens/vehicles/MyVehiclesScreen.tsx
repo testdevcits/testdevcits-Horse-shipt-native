@@ -24,7 +24,6 @@ import {
   AppText,
   AppLoader,
   EmptyState,
-
   AppSelect,
   AppSelectRef,
 } from '../../../../components';

@@ -20,7 +20,7 @@ import {
   SPACING,
   SIZES,
 } from '../../../../constants';
-import { AppText, Input } from '../../../../components';
+import { AppText, Button, Input } from '../../../../components';
 import customerService from '../../../../api/services/customerService';
 
 interface Props {
@@ -42,6 +42,8 @@ const RatingModal = ({
   shipmentId,
   onSuccess,
 }: Props) => {
+
+
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -104,13 +106,17 @@ const RatingModal = ({
                 {shipmentTitle}?
               </AppText>
             </AppText>
+            {
+              shipperName !== null && shipperName !== '' && shipmentTitle !== undefined && (
+                <View style={styles.shipperRow}>
+                  <View style={styles.avatar}>
+                    <User size={18} color={COLORS.primary} />
+                  </View>
+                  <AppText style={styles.shipperName}>{shipperName}</AppText>
+                </View>)
+            }
 
-            <View style={styles.shipperRow}>
-              <View style={styles.avatar}>
-                <User size={18} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.shipperName}>{shipperName}</AppText>
-            </View>
+
 
             {/* Stars */}
             <View style={styles.starRow}>
@@ -135,17 +141,15 @@ const RatingModal = ({
               containerStyle={{ marginBottom: SPACING.xl }}
             />
 
-            <TouchableOpacity
-              style={styles.confirmBtn}
+
+
+
+            <Button
+              title="Submit Review"
               onPress={handleSubmitReview}
               disabled={submitting}
-            >
-              {submitting ? (
-                <ActivityIndicator color={COLORS.white} />
-              ) : (
-                <AppText style={styles.confirmBtnText}>Submit Review</AppText>
-              )}
-            </TouchableOpacity>
+              isLoading={submitting}
+            />
 
             <AppText style={styles.footerText}>
               If you need to report any issues or incidents{'\n'}
@@ -233,14 +237,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     marginBottom: SPACING.xl,
   },
-  confirmBtn: {
-    backgroundColor: COLORS.primary,
-    padding: SPACING.md2,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-    marginBottom: SPACING.lg,
-  },
-  confirmBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.lg },
+
   footerText: {
     fontSize: FONT_SIZE.sm,
     color: COLORS.textSecondary,

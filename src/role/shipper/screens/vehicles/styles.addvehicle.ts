@@ -240,8 +240,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   truckIconContainer: {
-    width: 80,
-    height: 80,
+    width: 200,
+    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
