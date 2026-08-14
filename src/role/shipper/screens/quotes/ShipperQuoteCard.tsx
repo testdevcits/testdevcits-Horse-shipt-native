@@ -20,6 +20,7 @@ interface ShipperQuoteCardProps {
   onViewContract: (quote: any) => void;
   onDelete: (quoteId: string) => void;
   onAssignVehicle?: (quote: any) => void;
+  onShipperContract: (quote: any) => void;
 }
 
 const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
@@ -27,6 +28,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   onViewContract,
   onDelete,
   onAssignVehicle,
+  onShipperContract,
 }) => {
   const [imageError, setImageError] = useState(false);
 
@@ -47,8 +49,12 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
     quote?.isCancelled === true
   ) {
     cat = 'cancelled';
-  } else if (shipmentStatus === 'delivered' || shipmentStatus === 'completed') {
-    cat = 'delivered';
+  } else if (
+    shipmentStatus === 'delivered' ||
+    shipmentStatus === 'completed' ||
+    quote?.tripStatus === 'completed'
+  ) {
+    cat = 'completed';
   } else if (
     shipmentStatus === 'in_transit' ||
     shipmentStatus === 'in-transit' ||
@@ -73,8 +79,8 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
     statusLabel = 'Cancelled';
     statusBadgeStyle = styles.badgeCancelled;
     statusTextStyle = styles.badgeCancelledText;
-  } else if (cat === 'delivered') {
-    statusLabel = 'Delivered';
+  } else if (cat === 'completed') {
+    statusLabel = 'Completed';
     statusBadgeStyle = styles.badgeDelivered;
     statusTextStyle = styles.badgeDeliveredText;
   } else if (cat === 'in_transit') {
@@ -89,7 +95,11 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
   const quoteId = quote?._id || quote?.id;
 
-  const isAssignedOrAccepted = cat === 'upcoming' || cat === 'in_transit';
+  const isAssignedOrAccepted =
+    cat === 'upcoming' ||
+    cat === 'in_transit' ||
+    cat === 'completed' ||
+    cat === 'delivered';
 
   const vehicleObj =
     typeof quote?.vehicle === 'object' && quote?.vehicle !== null
@@ -266,7 +276,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
-          {onAssignVehicle && !vehicleObj && quote?.contractAccepted && (
+          {onAssignVehicle && !vehicleObj && quote?.contractAccepted && cat !== 'completed' && cat !== 'delivered' && (
             <TouchableOpacity
               style={styles.assignVehicleBtn}
               onPress={() => onAssignVehicle(quote)}
@@ -286,7 +296,19 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
-          {!isAssignedOrAccepted && shipment?.status !== 'delivered' && (
+
+          {
+            <TouchableOpacity
+              style={[styles.viewContractBtn]}
+              onPress={() => onShipperContract(quote)}
+              activeOpacity={0.8}
+            >
+              {/* <FileCheck size={16} color={COLORS.white} /> */}
+              <AppText style={styles.viewContractBtnText}>View Shipper Contract</AppText>
+            </TouchableOpacity>
+          }
+
+          {!isAssignedOrAccepted && shipment?.status !== 'delivered' && shipment?.status !== 'completed' && (
             <TouchableOpacity
               style={styles.deleteBtn}
               onPress={() => onDelete(quoteId)}

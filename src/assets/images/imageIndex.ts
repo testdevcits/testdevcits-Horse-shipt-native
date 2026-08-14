@@ -25,6 +25,8 @@ export default {
   addedithorseiocn: require('../images/addedithorseiocn.png'),
   racinghorse: require('../images/racinghorse.gif'),
   runningtruck: require('../images/runningtruck.gif'),
+  success: require('../images/success.gif'),
+
 
   googlereview: require('../images/googlereview.png'),
   vehicles: require('../images/vehicles.png'),

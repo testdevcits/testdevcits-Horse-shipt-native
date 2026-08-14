@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -36,6 +36,10 @@ const RatingModal = lazy(
   () => import('./RatingModal'),
 );
 
+const DeliveredSuccessModal = lazy(
+  () => import('./DeliveredSuccessModal'),
+);
+
 
 const MyShipmentDetails = ({ route, }: any) => {
   const dispatch = useAppDispatch();
@@ -49,6 +53,8 @@ const MyShipmentDetails = ({ route, }: any) => {
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeliveredModalVisible, setIsDeliveredModalVisible] = useState(false);
+  const [hasShownDeliveredModal, setHasShownDeliveredModal] = useState(false);
   const navigation = useNavigation();
 
   const {
@@ -62,9 +68,17 @@ const MyShipmentDetails = ({ route, }: any) => {
     onRefresh,
   } = useShipmentDetails(item?._id);
 
-
-
   const data = shipment || item;
+
+  const isDelivered = (data?.status || '').toLowerCase() === 'delivered';
+
+  useEffect(() => {
+    if (isDelivered && !hasShownDeliveredModal) {
+      setIsDeliveredModalVisible(true);
+      setHasShownDeliveredModal(true);
+    }
+  }, [isDelivered, hasShownDeliveredModal]);
+
   const isDraft = (data?.status || '').toLowerCase() === 'draft';
 
   const handleEditShipment = async () => {
@@ -124,6 +138,7 @@ const MyShipmentDetails = ({ route, }: any) => {
       case 'Questions':
         return <QuestionsTab questions={questions} onRefresh={onRefresh} />;
       case 'Find Shipper':
+        if (isDelivered) return null;
         return (
           <FindShipperTab
             matching={matchingShippers}
@@ -203,7 +218,7 @@ const MyShipmentDetails = ({ route, }: any) => {
           {/* TABS BAR - REFINED STYLING */}
           <View style={styles.tabContainer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {TABS.map(tab => {
+              {TABS.filter(tab => !(isDelivered && tab === 'Find Shipper')).map(tab => {
                 const isActive = activeTab === tab;
                 let badgeCount = 0;
                 if (tab === 'Quotes') badgeCount = quotes.length || 0; // Placeholder 3 to match image
@@ -258,6 +273,13 @@ const MyShipmentDetails = ({ route, }: any) => {
           </ScrollView>
 
           {/* MODALS */}
+          <Suspense fallback={null}>
+            <DeliveredSuccessModal
+              visible={isDeliveredModalVisible}
+              onClose={() => setIsDeliveredModalVisible(false)}
+              onLeaveReview={() => setIsRatingVisible(true)}
+            />
+          </Suspense>
           <Suspense fallback={null}>
             <RatingModal
               visible={isRatingVisible}

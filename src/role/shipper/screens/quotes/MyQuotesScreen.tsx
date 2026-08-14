@@ -34,7 +34,7 @@ const MyQuotesScreen = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed'>('all');
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
   const [selectedContractData, setSelectedContractData] = useState<{
     url?: string;
@@ -97,6 +97,43 @@ const MyQuotesScreen = () => {
     }
     vehicleSelectRef.current?.present();
   };
+
+  const handleOpenShipperContractModal = (quote: any) => {
+
+    const url =
+      quote?.contract?.url ||
+      quote?.shipperContract?.url ||
+      (typeof quote?.contract === 'string' ? quote?.contract : null) ||
+      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+    const code = quote?.shipment?.shipmentCode || '';
+
+    if (!url) {
+      Toast.show({
+        type: 'info',
+        text1: 'No Contract',
+        text2: 'No contract file available for this quote.',
+      });
+      return;
+    }
+
+    const cleanUrl = url.toLowerCase().split('?')[0];
+    const isPdf =
+      cleanUrl.endsWith('.pdf') ||
+      cleanUrl.includes('.pdf') ||
+      cleanUrl.includes('/raw/upload/');
+
+    if (isPdf) {
+      navigation.navigate('PdfViewer', {
+        url: url,
+        title: code ? `Contract (${code})` : 'Shipper Contract',
+      });
+    } else {
+      setSelectedContractData({ url, code, quote });
+      setIsContractModalVisible(true);
+    }
+
+
+  }
 
   const handleSelectVehicle = async (selectedLabel: string) => {
     if (!selectedQuoteForVehicle) return;
@@ -229,8 +266,12 @@ const MyQuotesScreen = () => {
       return 'cancelled';
     }
 
-    if (shipmentStatus === 'delivered' || shipmentStatus === 'completed') {
-      return 'delivered';
+    if (
+      shipmentStatus === 'delivered' ||
+      shipmentStatus === 'completed' ||
+      q?.tripStatus === 'completed'
+    ) {
+      return 'completed';
     }
 
     if (
@@ -271,6 +312,7 @@ const MyQuotesScreen = () => {
       upcoming: 0,
       cancelled: 0,
       pending: 0,
+      completed: 0,
     };
 
     quotes.forEach(q => {
@@ -330,6 +372,7 @@ const MyQuotesScreen = () => {
             onViewContract={openContractModal}
             onDelete={quoteId => setQuoteToDelete(quoteId)}
             onAssignVehicle={handleOpenVehicleSelect}
+            onShipperContract={handleOpenShipperContractModal}
           />
         )}
         ListHeaderComponent={
@@ -415,6 +458,28 @@ const MyQuotesScreen = () => {
                 <View style={styles.badgePill}>
                   <AppText style={styles.badgePillText}>
                     {counts.upcoming}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tabBtn,
+                  activeTab === 'completed' && styles.tabBtnActive,
+                ]}
+                onPress={() => setActiveTab('completed')}
+              >
+                <AppText
+                  style={[
+                    styles.tabBtnText,
+                    activeTab === 'completed' && styles.tabBtnTextActive,
+                  ]}
+                >
+                  Completed
+                </AppText>
+                <View style={styles.badgePill}>
+                  <AppText style={styles.badgePillText}>
+                    {counts.completed}
                   </AppText>
                 </View>
               </TouchableOpacity>

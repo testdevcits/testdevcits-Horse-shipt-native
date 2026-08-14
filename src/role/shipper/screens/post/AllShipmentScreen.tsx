@@ -101,7 +101,7 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
         keyExtractor={(item, index) => item?._id || item?.id || String(index)}
         renderItem={renderCard}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 16, paddingTop: 10 }}
         scrollEnabled={false}
       />
     </View>

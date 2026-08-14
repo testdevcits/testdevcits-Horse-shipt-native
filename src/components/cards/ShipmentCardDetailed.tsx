@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     width: '32%',
     height: '100%',
     backgroundColor: COLORS.grey100,
+    aspectRatio: 1
   },
   content: {
     flex: 1,

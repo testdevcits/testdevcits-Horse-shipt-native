@@ -208,7 +208,7 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
                 onPress={() => navigateToTab('Post', { initialTab: 'my_shipments' })}
               />
               <ShipperDrawerSubMenuItem
-                label="Quote Requests"
+                label="Quote Received"
                 isActive={isPostActive && activeSubTab === 'quote_request'}
                 onPress={() => navigateToTab('Post', { initialTab: 'quote_request' })}
               />
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   },
   menuItemActive: {
     backgroundColor: COLORS.goldLightBg,
-    borderRadius:RADIUS.md,
+    borderRadius: RADIUS.md,
   },
   iconContainer: {
     width: ICON_SIZE.lg,
