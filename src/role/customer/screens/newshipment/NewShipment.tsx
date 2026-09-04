@@ -113,7 +113,13 @@ const NewShipment = () => {
           resetAllData();
           navigation.goBack();
         }}
-        title={isEdit && !isDraft ? 'Edit Shipment' : isDraft ? 'Edit Draft Shipment' : 'New Shipment'}
+        title={
+          isEdit && !isDraft
+            ? 'Edit Shipment'
+            : isDraft
+            ? 'Edit Draft Shipment'
+            : 'New Shipment'
+        }
         rightElement={
           isEdit && shipmentData?._id ? (
             <TouchableOpacity
@@ -126,9 +132,10 @@ const NewShipment = () => {
         }
       />
       {renderStepper()}
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
-
-
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ flex: 1 }}>
           {currentStep === 0 && (
             <PickupStep
@@ -192,7 +199,9 @@ const NewShipment = () => {
         isVisible={isPublishModalVisible}
         onClose={() => setIsPublishModalVisible(false)}
         onConfirm={handlePublish}
-        title={isEdit && !isDraft ? 'Update Shipment Details?' : 'Publish Shipment?'}
+        title={
+          isEdit && !isDraft ? 'Update Shipment Details?' : 'Publish Shipment?'
+        }
         description={
           isEdit && !isDraft
             ? 'Are you sure you want to update this shipment details?'

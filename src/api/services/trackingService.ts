@@ -30,6 +30,8 @@ export interface TrackingResponse {
   };
 }
 
-export const getLiveTracking = async (shipmentId: string): Promise<TrackingResponse> => {
+export const getLiveTracking = async (
+  shipmentId: string,
+): Promise<TrackingResponse> => {
   return axiosClient.get(`/api/tracking/track/${shipmentId}`);
 };

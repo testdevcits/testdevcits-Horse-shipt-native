@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, FlatList, RefreshControl, TouchableOpacity, Platform } from 'react-native';
-import { Wind } from 'lucide-react-native';
 import {
-  COLORS,
-
-} from '../../../../constants';
+  View,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import { Wind } from 'lucide-react-native';
+import { COLORS } from '../../../../constants';
 
 import useMyHorses from './usemyhorses';
 import {
@@ -31,15 +34,21 @@ const MyHorses = ({ navigation }: any) => {
     setRefreshing,
   } = useMyHorses();
 
-  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+  const keyExtractor = useCallback(
+    (item: any) => item?._id || String(Math.random()),
+    [],
+  );
 
-  const renderItem = useCallback(({ item }: { item: any }) => (
-    <HorseCard
-      item={item}
-      onDelete={() => handleDelete(item?._id)}
-      onEdit={() => handleEdit(item)}
-    />
-  ), [handleDelete, handleEdit]);
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <HorseCard
+        item={item}
+        onDelete={() => handleDelete(item?._id)}
+        onEdit={() => handleEdit(item)}
+      />
+    ),
+    [handleDelete, handleEdit],
+  );
 
   return (
     <View style={styles.container}>
@@ -107,7 +116,5 @@ const MyHorses = ({ navigation }: any) => {
     </View>
   );
 };
-
-
 
 export default MyHorses;

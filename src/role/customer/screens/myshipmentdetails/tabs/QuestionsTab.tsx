@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
- } from 'react-native';
+} from 'react-native';
 import { MessageSquare, Send, HelpCircle, Bell } from 'lucide-react-native';
 import { AppText, Input } from '../../../../../components';
 import {
@@ -24,10 +24,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
 
   const allQuestions = Array.isArray(questions)
     ? questions
-    : [
-      ...(questions?.pending || []),
-      ...(questions?.answered || []),
-    ];
+    : [...(questions?.pending || []), ...(questions?.answered || [])];
   const totalCount = allQuestions.length;
 
   const handleInputChange = (id: string, text: string) => {
@@ -77,7 +74,8 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
           <AppText style={styles.emptyTitle}>No Questions Asked Yet</AppText>
 
           <AppText style={styles.emptySubtitle}>
-            Service providers haven't submitted any questions regarding this shipment. Any inquiries about route or horse care will appear here.
+            Service providers haven't submitted any questions regarding this
+            shipment. Any inquiries about route or horse care will appear here.
           </AppText>
 
           <View style={styles.infoCardsContainer}>
@@ -86,7 +84,9 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                 <HelpCircle size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
-                <AppText style={styles.infoCardTitle}>Pre-Quote Inquiries</AppText>
+                <AppText style={styles.infoCardTitle}>
+                  Pre-Quote Inquiries
+                </AppText>
                 <AppText style={styles.infoCardText}>
                   Shippers may ask questions to clarify details before bidding.
                 </AppText>
@@ -98,7 +98,9 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                 <Bell size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
-                <AppText style={styles.infoCardTitle}>Instant Notifications</AppText>
+                <AppText style={styles.infoCardTitle}>
+                  Instant Notifications
+                </AppText>
                 <AppText style={styles.infoCardText}>
                   You'll be notified immediately when a question is posted.
                 </AppText>
@@ -151,11 +153,15 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                         ]}
                         onPress={() => handleSubmit(item?._id)}
                         disabled={
-                          submitting === item?._id || !answers[item?._id]?.trim()
+                          submitting === item?._id ||
+                          !answers[item?._id]?.trim()
                         }
                       >
                         {submitting === item?._id ? (
-                          <ActivityIndicator size="small" color={COLORS.white} />
+                          <ActivityIndicator
+                            size="small"
+                            color={COLORS.white}
+                          />
                         ) : (
                           <Send size={ICON_SIZE.xs} color={COLORS.white} />
                         )}
@@ -344,4 +350,3 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
 });
-

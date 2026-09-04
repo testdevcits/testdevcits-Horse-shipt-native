@@ -18,7 +18,7 @@ export const usePayments = () => {
         setError(null);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load transactions");
+      setError(err.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
       setRefreshing(false);

@@ -1,13 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { AppText } from '../../../../../components';
-import {
-  ChevronRight,
-  Star,
-  FileText,
-  Clock,
-  Bell,
-} from 'lucide-react-native';
+import { ChevronRight, Star, FileText, Clock, Bell } from 'lucide-react-native';
 import {
   COLORS,
   FONTS,
@@ -45,12 +39,15 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
           <AppText style={styles.emptyTitle}>No Quotes Received Yet</AppText>
 
           <AppText style={styles.emptySubtitle}>
-            Verified service providers are currently reviewing your shipment details. Quotes will appear here once submitted.
+            Verified service providers are currently reviewing your shipment
+            details. Quotes will appear here once submitted.
           </AppText>
 
           <View style={styles.statusPill}>
             <View style={styles.statusDot} />
-            <AppText style={styles.statusPillText}>Request Active & Searching</AppText>
+            <AppText style={styles.statusPillText}>
+              Request Active & Searching
+            </AppText>
           </View>
 
           <View style={styles.infoCardsContainer}>
@@ -59,7 +56,9 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                 <Clock size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
-                <AppText style={styles.infoCardTitle}>Estimated Response Time</AppText>
+                <AppText style={styles.infoCardTitle}>
+                  Estimated Response Time
+                </AppText>
                 <AppText style={styles.infoCardText}>
                   Quotes usually arrive within 24 to 48 hours.
                 </AppText>
@@ -71,7 +70,9 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                 <Bell size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
-                <AppText style={styles.infoCardTitle}>Instant Notifications</AppText>
+                <AppText style={styles.infoCardTitle}>
+                  Instant Notifications
+                </AppText>
                 <AppText style={styles.infoCardText}>
                   We'll notify you as soon as a new quote is received.
                 </AppText>
@@ -329,4 +330,3 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
 });
-

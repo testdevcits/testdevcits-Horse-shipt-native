@@ -8,11 +8,16 @@ import {
   Platform,
   Pressable,
   Alert,
-
   TextInput,
 } from 'react-native';
 import { X, Star, User } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 import { AppText, Button } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 
@@ -54,7 +59,9 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
     '';
 
   const customerId =
-    typeof rawCustomerId === 'object' ? rawCustomerId?._id || '' : rawCustomerId;
+    typeof rawCustomerId === 'object'
+      ? rawCustomerId?._id || ''
+      : rawCustomerId;
 
   const customerName =
     item?.customerName ||
@@ -66,7 +73,9 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
     'Customer';
 
   const shipmentCode =
-    item?.shipmentCode || shipment?.shipmentCode || (shipmentId ? shipmentId.slice(-6) : '');
+    item?.shipmentCode ||
+    shipment?.shipmentCode ||
+    (shipmentId ? shipmentId.slice(-6) : '');
 
   const handleSubmitReview = async () => {
     if (!rating || rating === 0) {
@@ -89,13 +98,19 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
       });
 
       if (res?.success || (res as any).data) {
-        Alert.alert('Success', res.message || 'Customer review submitted successfully');
+        Alert.alert(
+          'Success',
+          res.message || 'Customer review submitted successfully',
+        );
         setRating(5);
         setReviewText('');
         if (onSuccess) onSuccess();
         onClose();
       } else {
-        Alert.alert('Error', res.message || 'Failed to submit customer review.');
+        Alert.alert(
+          'Error',
+          res.message || 'Failed to submit customer review.',
+        );
       }
     } catch (error: any) {
       const errMsg =
@@ -126,13 +141,21 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       <Pressable style={styles.overlay} onPress={onClose}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.centeredView}
         >
-          <Pressable style={styles.modalView} onPress={e => e.stopPropagation()}>
+          <Pressable
+            style={styles.modalView}
+            onPress={e => e.stopPropagation()}
+          >
             {/* Header */}
             <View style={styles.header}>
               <AppText style={styles.modalTitle}>Review Customer</AppText>
@@ -144,7 +167,9 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
             {/* Description / Info */}
             <AppText style={styles.description}>
               Share your experience with the customer for shipment{'\n'}
-              <AppText style={{ fontFamily: FONTS.bold, color: COLORS.primary }}>
+              <AppText
+                style={{ fontFamily: FONTS.bold, color: COLORS.primary }}
+              >
                 #{shipmentCode}
               </AppText>
             </AppText>
@@ -175,7 +200,9 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
                   </TouchableOpacity>
                 ))}
               </View>
-              <AppText style={styles.ratingLabel}>{getRatingLabel(rating)}</AppText>
+              <AppText style={styles.ratingLabel}>
+                {getRatingLabel(rating)}
+              </AppText>
             </View>
 
             {/* Review Input */}
@@ -196,7 +223,12 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
 
             {/* Submit Action Button */}
 
-            <Button title='Submit Review' onPress={handleSubmitReview} disabled={submitting} isLoading={submitting} />
+            <Button
+              title="Submit Review"
+              onPress={handleSubmitReview}
+              disabled={submitting}
+              isLoading={submitting}
+            />
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
@@ -305,7 +337,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: COLORS.textPrimary,
   },
-
 });
 
 export default memo(ReviewCustomerModal);

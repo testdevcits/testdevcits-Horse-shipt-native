@@ -22,14 +22,14 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
 }) => {
   const pickupTitle = item?.pickupLocation
     ? item?.pickupLocation.split(',')[0] +
-    ', ' +
-    (item?.pickupLocation.split(',')[1] || '')
+      ', ' +
+      (item?.pickupLocation.split(',')[1] || '')
     : 'Ghbaleh, Lebanon';
 
   const deliveryTitle = item?.deliveryLocation
     ? item?.deliveryLocation.split(',')[0] +
-    ', ' +
-    (item?.deliveryLocation.split(',')[1] || '')
+      ', ' +
+      (item?.deliveryLocation.split(',')[1] || '')
     : 'Myanmar';
 
   return (

@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Image } from 'react-native';
 import Pdf from 'react-native-pdf';
 import WebView from 'react-native-webview';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

@@ -148,7 +148,9 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
               >
                 {renderIcon(isFocused ? activeColor : inactiveColor)}
                 {isFocused && (
-                  <AppText style={styles.tabLabelFocused}>{getTabLabel()}</AppText>
+                  <AppText style={styles.tabLabelFocused}>
+                    {getTabLabel()}
+                  </AppText>
                 )}
               </TouchableOpacity>
             );
@@ -245,4 +247,3 @@ const styles = StyleSheet.create({
 });
 
 export default CustomerTabs;
-

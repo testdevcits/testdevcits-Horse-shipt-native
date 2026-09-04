@@ -1,5 +1,3 @@
-
-
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
@@ -25,7 +23,14 @@ import {
   Flag,
   Truck,
 } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING,   SIZES } from '../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
 
@@ -136,9 +141,7 @@ const MapModal = ({
     : leg2Metrics.duration;
 
   const displayDistance =
-    totalDistanceKm > 0
-      ? `${totalDistanceKm.toFixed(1)} km`
-      : initialDistance;
+    totalDistanceKm > 0 ? `${totalDistanceKm.toFixed(1)} km` : initialDistance;
 
   const displayDuration =
     totalDurationMins > 0
@@ -225,14 +228,13 @@ const MapModal = ({
                   <Truck size={12} color={COLORS.white} />
                   <AppText style={styles.markerBadgeText}>Driver</AppText>
                 </Animated.View>
-                <View style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}>
+                <View
+                  style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}
+                >
                   <Truck size={18} color={COLORS.white} strokeWidth={2.5} />
                 </View>
                 <View
-                  style={[
-                    styles.markerPointer,
-                    { borderTopColor: '#3B82F6' },
-                  ]}
+                  style={[styles.markerPointer, { borderTopColor: '#3B82F6' }]}
                 />
               </View>
             </Marker>
@@ -256,10 +258,7 @@ const MapModal = ({
                 <AppText style={styles.markerBadgeText}>Pickup</AppText>
               </View>
               <View
-                style={[
-                  styles.markerPin,
-                  { backgroundColor: COLORS.primary },
-                ]}
+                style={[styles.markerPin, { backgroundColor: COLORS.primary }]}
               >
                 <Package size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
@@ -292,10 +291,7 @@ const MapModal = ({
                 <Flag size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
               <View
-                style={[
-                  styles.markerPointer,
-                  { borderTopColor: COLORS.error },
-                ]}
+                style={[styles.markerPointer, { borderTopColor: COLORS.error }]}
               />
             </View>
           </Marker>
@@ -412,7 +408,9 @@ const MapModal = ({
                   <View style={styles.verticalLine} />
                 </View>
                 <View style={styles.addressTextCol}>
-                  <AppText style={styles.addressSubLabel}>Pickup Location</AppText>
+                  <AppText style={styles.addressSubLabel}>
+                    Pickup Location
+                  </AppText>
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {shipmentData?.pickupLocation || 'Not Available'}
                   </AppText>
@@ -431,7 +429,9 @@ const MapModal = ({
                   <MapPin size={14} color={COLORS.error} />
                 </View>
                 <View style={styles.addressTextCol}>
-                  <AppText style={styles.addressSubLabel}>Delivery Location</AppText>
+                  <AppText style={styles.addressSubLabel}>
+                    Delivery Location
+                  </AppText>
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {shipmentData?.deliveryLocation || 'Not Available'}
                   </AppText>
@@ -554,8 +554,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.success,
   },
   statusPillText: {
-    color: COLORS.white, fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold
+    color: COLORS.white,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
   },
   sideControls: {
     position: 'absolute',
@@ -603,14 +604,18 @@ const styles = StyleSheet.create({
   statBox: { flexDirection: 'row', gap: SPACING.sm2, alignItems: 'center' },
   statLabel: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.textSecondary
+    color: COLORS.textSecondary,
   },
   statValue: {
     fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
     fontFamily: FONTS.bold,
   },
-  statDivider: { width: SIZES.borderWidthThin, height: '100%', backgroundColor: COLORS.divider },
+  statDivider: {
+    width: SIZES.borderWidthThin,
+    height: '100%',
+    backgroundColor: COLORS.divider,
+  },
   addressSection: { marginVertical: SPACING.lg, gap: SPACING.sm },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
   addressIconCol: { width: SPACING.xl, alignItems: 'center' },
@@ -652,8 +657,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  trackBtnText: { color: COLORS.white, fontSize: FONT_SIZE.lg, fontFamily: FONTS.bold },
+  trackBtnText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.bold,
+  },
 });
 
 export default memo(MapModal);
-

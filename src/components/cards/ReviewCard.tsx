@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Star, MapPin, Package, User } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
+import AppIcon from '../AppIcon';
 
 interface ReviewCardProps {
   item: any;
@@ -10,13 +10,12 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
-  const shipperObj = typeof item?.shipperId === 'object' ? item?.shipperId : null;
-  const shipmentObj = typeof item?.shipmentId === 'object' ? item?.shipmentId : null;
+  const shipperObj =
+    typeof item?.shipperId === 'object' ? item?.shipperId : null;
+  const shipmentObj =
+    typeof item?.shipmentId === 'object' ? item?.shipmentId : null;
 
-  const shipperName =
-    item?.shipperName ||
-    shipperObj?.name ||
-    'Shipper';
+  const shipperName = item?.shipperName || shipperObj?.name || 'Shipper';
 
   const avatarUrl =
     shipperObj?.profileImage?.url ||
@@ -28,13 +27,14 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
   const reviewText = item?.reviewText || '';
   const shipmentCode = shipmentObj?.shipmentCode || item?.shipmentCode || '';
   const pickupLoc = shipmentObj?.pickupLocation || item?.pickupLocation || '';
-  const deliveryLoc = shipmentObj?.deliveryLocation || item?.deliveryLocation || '';
+  const deliveryLoc =
+    shipmentObj?.deliveryLocation || item?.deliveryLocation || '';
   const createdAt = item?.createdAt
     ? new Date(item.createdAt).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
     : '';
 
   const renderStars = (count: number) => {
@@ -42,12 +42,12 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
     return Array(5)
       .fill(0)
       .map((_, i) => (
-        <Star
-          key={i}
+        <AppIcon
+          name="Star"
           size={16}
           color={i < count ? STAR_COLOR : COLORS.slate300}
-          fill={i < count ? STAR_COLOR : 'transparent'}
           strokeWidth={1.5}
+          fill={i < count ? STAR_COLOR : 'transparent'}
         />
       ));
   };
@@ -61,18 +61,22 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
             <Image source={{ uri: avatarUrl }} style={styles.avatar} />
           ) : (
             <View style={styles.avatarFallback}>
-              <User size={20} color={COLORS.primary} />
+              <AppIcon name={'User'} size={20} color={COLORS.primary} />
             </View>
           )}
           <View style={styles.shipperInfo}>
             <AppText style={styles.shipperName}>{shipperName}</AppText>
             {shipperObj?.email ? (
-              <AppText style={styles.shipperSubText}>{shipperObj.email}</AppText>
+              <AppText style={styles.shipperSubText}>
+                {shipperObj.email}
+              </AppText>
             ) : null}
           </View>
         </View>
 
-        {createdAt ? <AppText style={styles.dateText}>{createdAt}</AppText> : null}
+        {createdAt ? (
+          <AppText style={styles.dateText}>{createdAt}</AppText>
+        ) : null}
       </View>
 
       {/* Stars & Rating Row */}
@@ -91,7 +95,11 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
         <View style={styles.shipmentBox}>
           {shipmentCode ? (
             <View style={styles.shipmentCodeRow}>
-              <Package size={13} color={COLORS.textSecondary} />
+              <AppIcon
+                name={'Package'}
+                size={13}
+                color={COLORS.textSecondary}
+              />
               <AppText style={styles.shipmentCodeText}>#{shipmentCode}</AppText>
             </View>
           ) : null}
@@ -99,13 +107,17 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
           {pickupLoc && deliveryLoc ? (
             <View style={styles.routeContainer}>
               <View style={styles.routeRow}>
-                <MapPin size={12} color={COLORS.amberPrimary} />
+                <AppIcon
+                  name={'MapPin'}
+                  size={12}
+                  color={COLORS.amberPrimary}
+                />
                 <AppText style={styles.routeText} numberOfLines={1}>
                   {pickupLoc}
                 </AppText>
               </View>
               <View style={styles.routeRow}>
-                <MapPin size={12} color={COLORS.greenActive} />
+                <AppIcon name={'MapPin'} size={12} color={COLORS.greenActive} />
                 <AppText style={styles.routeText} numberOfLines={1}>
                   {deliveryLoc}
                 </AppText>

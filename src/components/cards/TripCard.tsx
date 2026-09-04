@@ -1,6 +1,17 @@
 import React, { memo } from 'react';
-import { StyleSheet, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { ArrowRight, Truck, ShieldCheck, ChevronRight } from 'lucide-react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+import {
+  ArrowRight,
+  Truck,
+  ShieldCheck,
+  ChevronRight,
+} from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 
@@ -10,7 +21,11 @@ interface TripCardProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerStyle }) => {
+const TripCard: React.FC<TripCardProps> = ({
+  item,
+  onCompletePress,
+  containerStyle,
+}) => {
   const shipmentData = item?.shipment || {};
   const status = item?.tripStatus;
   const isTransit = status === 'inTransit' || status === 'started';
@@ -22,19 +37,30 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.headerTitleRow}>
           <AppText style={styles.routeHeader}>DISPATCH MANIFEST</AppText>
           {shipmentData?.shipmentCode && (
-            <AppText style={styles.shipmentCodeTag}>#{shipmentData?.shipmentCode}</AppText>
+            <AppText style={styles.shipmentCodeTag}>
+              #{shipmentData?.shipmentCode}
+            </AppText>
           )}
         </View>
 
-        <View style={[
-          styles.statusBadge,
-          isTransit ? styles.statusBadgeActive : styles.statusBadgePending
-        ]}>
-          <View style={[styles.statusDot, isTransit ? styles.activeDot : styles.pendingDot]} />
-          <AppText style={[
-            styles.statusBadgeText,
-            isTransit ? styles.statusActiveText : styles.statusPendingText
-          ]}>
+        <View
+          style={[
+            styles.statusBadge,
+            isTransit ? styles.statusBadgeActive : styles.statusBadgePending,
+          ]}
+        >
+          <View
+            style={[
+              styles.statusDot,
+              isTransit ? styles.activeDot : styles.pendingDot,
+            ]}
+          />
+          <AppText
+            style={[
+              styles.statusBadgeText,
+              isTransit ? styles.statusActiveText : styles.statusPendingText,
+            ]}
+          >
             {isTransit ? 'In Transit' : status || 'Pending'}
           </AppText>
         </View>
@@ -64,7 +90,8 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.infoBadge}>
           <Truck size={14} color={COLORS.primary} />
           <AppText style={styles.infoText}>
-            {shipmentData?.numberOfHorses || 1} {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
+            {shipmentData?.numberOfHorses || 1}{' '}
+            {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
           </AppText>
         </View>
 
@@ -81,7 +108,9 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
           activeOpacity={0.85}
           onPress={() => onCompletePress(item?._id)}
         >
-          <AppText style={styles.actionButtonText}>Complete Delivery (OTP)</AppText>
+          <AppText style={styles.actionButtonText}>
+            Complete Delivery (OTP)
+          </AppText>
           <ChevronRight size={16} color={COLORS.white} />
         </TouchableOpacity>
       )}

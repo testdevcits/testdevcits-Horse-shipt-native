@@ -10,10 +10,23 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import { X, Send, MessageSquare, Clock, CheckCheck, Check } from 'lucide-react-native';
+import {
+  X,
+  Send,
+  MessageSquare,
+  Clock,
+  CheckCheck,
+  Check,
+} from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 interface AskQuestionModalProps {
   isVisible: boolean;
@@ -87,10 +100,8 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
   shipmentCode,
   pendingQuestion,
   loadingQuestions = false,
-  answeredQuestion
+  answeredQuestion,
 }) => {
-
-
   const [question, setQuestion] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -152,7 +163,8 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
             <View style={styles.headerTextCol}>
               <AppText style={styles.headerTitle}>Ask a question</AppText>
               <AppText style={styles.headerSub}>
-                Get clarity about this shipment {shipmentCode ? `(${shipmentCode})` : ''}
+                Get clarity about this shipment{' '}
+                {shipmentCode ? `(${shipmentCode})` : ''}
               </AppText>
             </View>
 
@@ -180,7 +192,9 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     <View style={styles.pendingIconSquare}>
                       <MessageSquare size={16} color="#A06333" />
                     </View>
-                    <AppText style={styles.pendingHeaderLabel}>YOUR QUESTION</AppText>
+                    <AppText style={styles.pendingHeaderLabel}>
+                      YOUR QUESTION
+                    </AppText>
                   </View>
 
                   <AppText style={styles.pendingQuestionText}>
@@ -190,7 +204,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.pendingDivider} />
 
                   <AppText style={styles.pendingAskedDateText}>
-                    Asked on {formatDate(answeredQuestion.createdAt, 'DD/MM/YYYY [at] HH:mm')}
+                    Asked on{' '}
+                    {formatDate(
+                      answeredQuestion.createdAt,
+                      'DD/MM/YYYY [at] HH:mm',
+                    )}
                   </AppText>
                 </View>
 
@@ -201,12 +219,16 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                       <View style={styles.responseIconSquare}>
                         <CheckCheck size={16} color={COLORS.emeraldPrimary} />
                       </View>
-                      <AppText style={styles.responseHeaderLabel}>CUSTOMER RESPONSE</AppText>
+                      <AppText style={styles.responseHeaderLabel}>
+                        CUSTOMER RESPONSE
+                      </AppText>
                     </View>
 
                     <View style={styles.answeredBadge}>
                       <Check size={12} color={COLORS.emeraldDark} />
-                      <AppText style={styles.answeredBadgeText}>Answered</AppText>
+                      <AppText style={styles.answeredBadgeText}>
+                        Answered
+                      </AppText>
                     </View>
                   </View>
 
@@ -217,13 +239,20 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.responseDivider} />
 
                   <AppText style={styles.responseDateText}>
-                    Answered on {formatDate(answeredQuestion.answeredAt, 'DD/MM/YYYY [at] HH:mm')}
+                    Answered on{' '}
+                    {formatDate(
+                      answeredQuestion.answeredAt,
+                      'DD/MM/YYYY [at] HH:mm',
+                    )}
                   </AppText>
                 </View>
 
                 {/* 3. Footer Action */}
                 <View style={styles.pendingFooter}>
-                  <TouchableOpacity style={styles.pendingCloseBtn} onPress={onClose}>
+                  <TouchableOpacity
+                    style={styles.pendingCloseBtn}
+                    onPress={onClose}
+                  >
                     <AppText style={styles.pendingCloseBtnText}>Close</AppText>
                   </TouchableOpacity>
                 </View>
@@ -237,7 +266,9 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     <View style={styles.pendingIconSquare}>
                       <MessageSquare size={16} color="#A06333" />
                     </View>
-                    <AppText style={styles.pendingHeaderLabel}>YOUR QUESTION</AppText>
+                    <AppText style={styles.pendingHeaderLabel}>
+                      YOUR QUESTION
+                    </AppText>
                   </View>
 
                   <AppText style={styles.pendingQuestionText}>
@@ -247,7 +278,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.pendingDivider} />
 
                   <AppText style={styles.pendingAskedDateText}>
-                    Asked on {formatDate(pendingQuestion.createdAt, 'DD/MM/YYYY [at] HH:mm')}
+                    Asked on{' '}
+                    {formatDate(
+                      pendingQuestion.createdAt,
+                      'DD/MM/YYYY [at] HH:mm',
+                    )}
                   </AppText>
                 </View>
 
@@ -273,7 +308,10 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
 
                 {/* 3. Footer Action */}
                 <View style={styles.pendingFooter}>
-                  <TouchableOpacity style={styles.pendingCloseBtn} onPress={onClose}>
+                  <TouchableOpacity
+                    style={styles.pendingCloseBtn}
+                    onPress={onClose}
+                  >
                     <AppText style={styles.pendingCloseBtnText}>Close</AppText>
                   </TouchableOpacity>
                 </View>
@@ -284,8 +322,8 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 {/* Top Notice Box with Left Accent Line */}
                 <View style={styles.noticeBox}>
                   <AppText style={styles.noticeText}>
-                    Ask a specific question about this shipment. The customer will review and respond
-                    as soon as possible.
+                    Ask a specific question about this shipment. The customer
+                    will review and respond as soon as possible.
                   </AppText>
                 </View>
 
@@ -306,13 +344,20 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   }}
                   error={error}
                   rightIcon={
-                    <AppText style={styles.counterText}>{charCount}/500</AppText>
+                    <AppText style={styles.counterText}>
+                      {charCount}/500
+                    </AppText>
                   }
                 />
 
                 {/* Progress Bar & Hint */}
                 <View style={styles.progressTrack}>
-                  <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progressPercent}%` },
+                    ]}
+                  />
                 </View>
                 <AppText style={styles.hintText}>{getHintText()}</AppText>
 

@@ -9,7 +9,7 @@ import {
   Modal,
   Platform,
 } from 'react-native';
-import { SlidersHorizontal, Award, X, } from 'lucide-react-native';
+import { SlidersHorizontal, Award, X } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
@@ -48,8 +48,6 @@ const TopShippersScreen = () => {
     toggleWishlist,
     refresh,
   } = useShippers();
-
-
 
   const handleShipperPress = (item: any) => {
     navigation.navigate('ShipperDetail', { item });
@@ -162,7 +160,9 @@ const TopShippersScreen = () => {
       <AppHeader showBack={true} title="Top Shippers" />
       <FlatList
         data={shippers}
-        keyExtractor={(item, index) => item?._id || item?.id || index.toString()}
+        keyExtractor={(item, index) =>
+          item?._id || item?.id || index.toString()
+        }
         ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <ShipperCard
@@ -170,8 +170,6 @@ const TopShippersScreen = () => {
             onPress={() => handleShipperPress(item)}
             onFavoritePress={toggleWishlist}
             customstyle={{ width: SCREEN_WIDTH - 20 }}
-
-
           />
         )}
         contentContainerStyle={styles.list}
@@ -278,8 +276,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
   },
-  title: { fontSize: FONT_SIZE.display, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  subtitle: { fontSize: FONT_SIZE.md, color: COLORS.textSecondary, marginTop: 2 },
+  title: {
+    fontSize: FONT_SIZE.display,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  subtitle: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
   filterCircle: {
     width: 44,
     height: 44,
@@ -316,7 +322,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderColor: COLORS.primary,
   },
-  chipText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.grey600 },
+  chipText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey600,
+  },
   activeChipText: { color: COLORS.white },
   list: { paddingBottom: 100 },
 
@@ -415,7 +425,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },
-  applyBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.lg },
+  applyBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.lg,
+  },
 });
 
 export default TopShippersScreen;

@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
-
   ScrollView,
   TouchableOpacity,
-
   RefreshControl,
-
   FlatList,
   Pressable,
 } from 'react-native';
@@ -15,13 +12,10 @@ import {
   Truck,
   FileText,
   Search,
-
   List,
   Map as MapIcon,
   MapPin,
-
   ChevronRight,
-
 } from 'lucide-react-native';
 import {
   AppHeader,
@@ -31,10 +25,7 @@ import {
   Input,
   SectionHeader,
 } from '../../../../components';
-import {
-  COLORS,
-  SPACING,
-} from '../../../../constants';
+import { COLORS, SPACING } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -51,7 +42,6 @@ import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
-
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -95,19 +85,26 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       setSubmittingCard(true);
       let paymentMethodId = '';
-      const setupIntentRes = await shipperService.getSetupIntent().catch(() => null);
+      const setupIntentRes = await shipperService
+        .getSetupIntent()
+        .catch(() => null);
       const clientSecret = setupIntentRes?.clientSecret;
 
       if (clientSecret && clientSecret.includes('_secret_')) {
-        const { setupIntent, error: stripeError } = await confirmSetupIntent(clientSecret, {
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: { name: cardholderName.trim() || undefined },
+        const { setupIntent, error: stripeError } = await confirmSetupIntent(
+          clientSecret,
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: { name: cardholderName.trim() || undefined },
+            },
           },
-        });
+        );
         if (stripeError) {
           setSubmittingCard(false);
-          setCardFormError(stripeError.message || 'Failed to confirm card setup.');
+          setCardFormError(
+            stripeError.message || 'Failed to confirm card setup.',
+          );
           return;
         }
         paymentMethodId =
@@ -117,31 +114,43 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       }
 
       if (!paymentMethodId) {
-        const { paymentMethod, error: stripeError } = await createPaymentMethod({
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: { name: cardholderName.trim() || undefined },
+        const { paymentMethod, error: stripeError } = await createPaymentMethod(
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: { name: cardholderName.trim() || undefined },
+            },
           },
-        });
+        );
         if (stripeError) {
           setSubmittingCard(false);
-          setCardFormError(stripeError.message || 'Failed to process card details.');
+          setCardFormError(
+            stripeError.message || 'Failed to process card details.',
+          );
           return;
         }
         paymentMethodId = paymentMethod?.id || '';
       }
 
       if (paymentMethodId) {
-        const saveRes = await shipperService.savePaymentMethod({ paymentMethodId });
+        const saveRes = await shipperService.savePaymentMethod({
+          paymentMethodId,
+        });
         if (saveRes?.success) {
           setIsCardModalVisible(false);
-          Toast.show({ type: 'success', text1: 'Card Saved', text2: 'Payment method saved successfully.' });
+          Toast.show({
+            type: 'success',
+            text1: 'Card Saved',
+            text2: 'Payment method saved successfully.',
+          });
           refreshSubStatus();
         }
       }
     } catch (e: any) {
       console.error('Save Card Error:', e);
-      setCardFormError(e?.response?.data?.message || 'Failed to save payment method.');
+      setCardFormError(
+        e?.response?.data?.message || 'Failed to save payment method.',
+      );
     } finally {
       setSubmittingCard(false);
     }
@@ -223,8 +232,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getStripeStatus();
       if (res && res.success) {
-
-        console.log("======checkStripeStatus==========", res)
+        console.log('======checkStripeStatus==========', res);
         const needsModal =
           res.needsVerification === true ||
           res.onboardingCompleted === false ||
@@ -649,12 +657,17 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                       {selectedMapShipment?.shipmentCode}
                     </AppText>
                   </View>
-                  <Pressable onPress={() => {
-                    navigation.navigate('ShipmentMapDirection', {
-                      shipmentData: selectedMapShipment,
-                    });
-                  }} style={styles.viewInFullScreenBtn}>
-                    <AppText style={styles.viewInFullScreenBtnText}>View in Full Map</AppText>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('ShipmentMapDirection', {
+                        shipmentData: selectedMapShipment,
+                      });
+                    }}
+                    style={styles.viewInFullScreenBtn}
+                  >
+                    <AppText style={styles.viewInFullScreenBtnText}>
+                      View in Full Map
+                    </AppText>
                   </Pressable>
                 </View>
 
@@ -735,9 +748,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                             }}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={4}
-                            strokeColor={
-                              COLORS.brandBrown || COLORS.primary
-                            }
+                            strokeColor={COLORS.brandBrown || COLORS.primary}
                             lineDashPattern={[0]}
                             onError={err =>
                               console.log('MapViewDirections Error:', err)

@@ -1,6 +1,12 @@
 import React from 'react';
 import { Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 import { AppText } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 

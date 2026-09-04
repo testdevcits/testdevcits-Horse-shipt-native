@@ -53,7 +53,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
       if (!isNaN(d.getTime())) {
         return d.toISOString().split('T')[0];
       }
-    } catch (e) { }
+    } catch (e) {}
     return new Date().toISOString().split('T')[0];
   };
 
@@ -124,16 +124,21 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
               <MapPin size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
-              <AppText style={styles.headerTitle}>Delivery Destination & Window</AppText>
+              <AppText style={styles.headerTitle}>
+                Delivery Destination & Window
+              </AppText>
               <AppText style={styles.headerSubtitle}>
-                Where should the horse be delivered, and what is your target drop-off window?
+                Where should the horse be delivered, and what is your target
+                drop-off window?
               </AppText>
             </View>
           </View>
         </View>
 
         {/* SECTION 1: DELIVERY LOCATION CARD */}
-        <View style={[styles.card, errors.deliveryLocation && styles.cardError]}>
+        <View
+          style={[styles.card, errors.deliveryLocation && styles.cardError]}
+        >
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
@@ -159,7 +164,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           {errors.deliveryLocation ? (
             <View style={styles.errorContainer}>
               <Info size={14} color={COLORS.error} />
-              <AppText style={styles.errorText}>{errors.deliveryLocation}</AppText>
+              <AppText style={styles.errorText}>
+                {errors.deliveryLocation}
+              </AppText>
             </View>
           ) : (
             <AppText style={styles.helperText}>
@@ -204,7 +211,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 <View style={styles.dateCardTop}>
                   <CalendarIcon
                     size={16}
-                    color={form.deliveryStartDate ? COLORS.primary : COLORS.grey400}
+                    color={
+                      form.deliveryStartDate ? COLORS.primary : COLORS.grey400
+                    }
                   />
                   <AppText style={styles.dateLabelBadge}>FROM</AppText>
                 </View>
@@ -219,7 +228,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 </AppText>
               </TouchableOpacity>
               {errors.deliveryStartDate && (
-                <AppText style={styles.errorText}>{errors.deliveryStartDate}</AppText>
+                <AppText style={styles.errorText}>
+                  {errors.deliveryStartDate}
+                </AppText>
               )}
             </View>
 
@@ -247,7 +258,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 <View style={styles.dateCardTop}>
                   <CalendarIcon
                     size={16}
-                    color={form.deliveryEndDate ? COLORS.primary : COLORS.grey400}
+                    color={
+                      form.deliveryEndDate ? COLORS.primary : COLORS.grey400
+                    }
                   />
                   <AppText style={styles.dateLabelBadge}>TO</AppText>
                 </View>
@@ -262,7 +275,9 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 </AppText>
               </TouchableOpacity>
               {errors.deliveryEndDate && (
-                <AppText style={styles.errorText}>{errors.deliveryEndDate}</AppText>
+                <AppText style={styles.errorText}>
+                  {errors.deliveryEndDate}
+                </AppText>
               )}
             </View>
           </View>
@@ -276,7 +291,8 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           <View style={styles.infoTextContent}>
             <AppText style={styles.infoTitle}>Delivery Timing Note</AppText>
             <AppText style={styles.infoSub}>
-              Delivery dates automatically start after your pickup timeframe so haulers have sufficient transit time.
+              Delivery dates automatically start after your pickup timeframe so
+              haulers have sufficient transit time.
             </AppText>
           </View>
         </View>
@@ -284,13 +300,27 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.secondaryBtn} onPress={onPrevious}>
-            <ArrowLeft size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
+            <ArrowLeft
+              size={18}
+              color={COLORS.grey700}
+              style={{ marginRight: 6 }}
+            />
             <AppText style={styles.secondaryBtnText}>Previous</AppText>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.primaryBtn} onPress={onNext} activeOpacity={0.85}>
-            <AppText style={styles.primaryBtnText}>Continue to Horse Details</AppText>
-            <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+          <TouchableOpacity
+            style={styles.primaryBtn}
+            onPress={onNext}
+            activeOpacity={0.85}
+          >
+            <AppText style={styles.primaryBtnText}>
+              Continue to Horse Details
+            </AppText>
+            <ArrowRight
+              size={18}
+              color={COLORS.white}
+              style={{ marginLeft: 6 }}
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -300,7 +330,11 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         visible={activeDateType !== null}
         onClose={handleCloseCalendar}
         onSelect={handleDateSelect}
-        title={activeDateType === 'start' ? 'Delivery Start Date' : 'Delivery End Date'}
+        title={
+          activeDateType === 'start'
+            ? 'Delivery Start Date'
+            : 'Delivery End Date'
+        }
         initialDate={
           activeDateType === 'start'
             ? getSafeDateStr(form.deliveryStartDate)
@@ -310,15 +344,12 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           activeDateType === 'start'
             ? getMinDeliveryStartStr()
             : form.deliveryStartDate
-              ? getSafeDateStr(form.deliveryStartDate)
-              : getMinDeliveryStartStr()
+            ? getSafeDateStr(form.deliveryStartDate)
+            : getMinDeliveryStartStr()
         }
       />
     </View>
   );
 };
 
-
-
 export default DeliveryStep;
-

@@ -1,4 +1,12 @@
-import React, { useState, useRef, useCallback, useMemo, memo, forwardRef, useImperativeHandle } from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  memo,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import { ChevronDown, Search, X, Check } from 'lucide-react-native';
 import {
@@ -104,7 +112,9 @@ const AppSelect = memo(
 
       return (
         <View style={hideSelector ? undefined : styles.container}>
-          {!hideSelector && label && <AppText style={styles.label}>{label}</AppText>}
+          {!hideSelector && label && (
+            <AppText style={styles.label}>{label}</AppText>
+          )}
 
           {!hideSelector && (
             <TouchableOpacity
@@ -126,7 +136,9 @@ const AppSelect = memo(
             </TouchableOpacity>
           )}
 
-          {!hideSelector && error && <AppText style={styles.errorText}>{error}</AppText>}
+          {!hideSelector && error && (
+            <AppText style={styles.errorText}>{error}</AppText>
+          )}
 
           <BottomSheetModal
             ref={bottomSheetModalRef}

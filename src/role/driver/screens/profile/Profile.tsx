@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import {
-
   View,
   ScrollView,
   Image,
   TouchableOpacity,
-
   ActivityIndicator,
-
 } from 'react-native';
 import { Mail, Phone, FileText, Box, LogOut } from 'lucide-react-native';
 
 // Custom Design Systems
-import { COLORS, } from '../../../../constants'; // Adjust relative path as needed
+import { COLORS } from '../../../../constants'; // Adjust relative path as needed
 import AppText from '../../../../components/common/AppText';
 import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
 import styles from './styles.profile';
@@ -40,7 +37,9 @@ const Profile = () => {
 
   // Extract completed shipments count
   const completedShipments = allShipments.filter(
-    (shipment) => shipment?.tripStatus === 'delivered' || shipment.tripStatus === 'completed'
+    shipment =>
+      shipment?.tripStatus === 'delivered' ||
+      shipment.tripStatus === 'completed',
   );
   const completedCount = completedShipments.length;
 
@@ -74,16 +73,14 @@ const Profile = () => {
       // This automatically clears AsyncStorage + Sets Redux User/Token to null
       await dispatch(logoutUser()).unwrap();
 
-      // SUCCESS: 
-      // You don't need navigation.reset()! 
-      // AppNavigation.tsx (Root Navigator) will see that 'token' is now null 
+      // SUCCESS:
+      // You don't need navigation.reset()!
+      // AppNavigation.tsx (Root Navigator) will see that 'token' is now null
       // and will automatically unmount the Tabs and mount the Login screen.
-
     } catch (error) {
       console.error('Manual logout failed:', error);
     }
   };
-
 
   if (loading && !driver) {
     return (
@@ -116,7 +113,10 @@ const Profile = () => {
           {/* Avatar Area */}
           <View style={styles.avatarWrapper}>
             {driver?.profileImage?.url ? (
-              <Image source={{ uri: driver.profileImage.url }} style={styles.avatarImage} />
+              <Image
+                source={{ uri: driver.profileImage.url }}
+                style={styles.avatarImage}
+              />
             ) : (
               <View style={styles.monogramBox}>
                 <AppText style={styles.monogramText}>{firstLetter}</AppText>
@@ -125,12 +125,16 @@ const Profile = () => {
           </View>
 
           {/* Driver Metadata */}
-          <AppText style={styles.driverName}>{driver?.name || 'Not Available'}</AppText>
+          <AppText style={styles.driverName}>
+            {driver?.name || 'Not Available'}
+          </AppText>
 
           <View style={styles.statusBadge}>
             <View style={styles.statusDot} />
             <AppText style={styles.statusText}>
-              {driver?.driverStatus ? driver.driverStatus.replace(/([A-Z])/g, ' $1').toUpperCase() : 'ON TRIP'}
+              {driver?.driverStatus
+                ? driver.driverStatus.replace(/([A-Z])/g, ' $1').toUpperCase()
+                : 'ON TRIP'}
             </AppText>
           </View>
 
@@ -143,18 +147,36 @@ const Profile = () => {
             </View>
 
             {/* Account active stats box */}
-            <View style={[
-              styles.accountBox,
-              driver?.isActive === false && styles.accountBoxInactive
-            ]}>
-              <AppText style={[
-                styles.statLabel,
-                { color: driver?.isActive === false ? COLORS.textSecondary : PROFILE_COLORS.greenPrimary }
-              ]}>ACCOUNT</AppText>
-              <AppText style={[
-                styles.statValue,
-                { color: driver?.isActive === false ? COLORS.textSecondary : PROFILE_COLORS.greenPrimary }
-              ]}>
+            <View
+              style={[
+                styles.accountBox,
+                driver?.isActive === false && styles.accountBoxInactive,
+              ]}
+            >
+              <AppText
+                style={[
+                  styles.statLabel,
+                  {
+                    color:
+                      driver?.isActive === false
+                        ? COLORS.textSecondary
+                        : PROFILE_COLORS.greenPrimary,
+                  },
+                ]}
+              >
+                ACCOUNT
+              </AppText>
+              <AppText
+                style={[
+                  styles.statValue,
+                  {
+                    color:
+                      driver?.isActive === false
+                        ? COLORS.textSecondary
+                        : PROFILE_COLORS.greenPrimary,
+                  },
+                ]}
+              >
                 {driver?.isActive !== false ? 'Active' : 'Inactive'}
               </AppText>
             </View>
@@ -164,33 +186,53 @@ const Profile = () => {
         {/* Personal Details Section */}
         <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
-            <AppText style={styles.detailsHeaderTitle}>Personal Details</AppText>
+            <AppText style={styles.detailsHeaderTitle}>
+              Personal Details
+            </AppText>
           </View>
           <View style={styles.detailsBody}>
             {/* Email field */}
             <View style={styles.detailRow}>
-              <Mail size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
+              <Mail
+                size={18}
+                color={PROFILE_COLORS.primary}
+                style={styles.detailIcon}
+              />
               <View>
                 <AppText style={styles.detailLabel}>EMAIL</AppText>
-                <AppText style={styles.detailValue}>{driver?.email || 'Not Available'}</AppText>
+                <AppText style={styles.detailValue}>
+                  {driver?.email || 'Not Available'}
+                </AppText>
               </View>
             </View>
 
             {/* Phone field */}
             <View style={styles.detailRow}>
-              <Phone size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
+              <Phone
+                size={18}
+                color={PROFILE_COLORS.primary}
+                style={styles.detailIcon}
+              />
               <View>
                 <AppText style={styles.detailLabel}>PHONE</AppText>
-                <AppText style={styles.detailValue}>{driver?.phone || 'N/A'}</AppText>
+                <AppText style={styles.detailValue}>
+                  {driver?.phone || 'N/A'}
+                </AppText>
               </View>
             </View>
 
             {/* License field */}
             <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-              <FileText size={18} color={PROFILE_COLORS.primary} style={styles.detailIcon} />
+              <FileText
+                size={18}
+                color={PROFILE_COLORS.primary}
+                style={styles.detailIcon}
+              />
               <View>
                 <AppText style={styles.detailLabel}>LICENSE</AppText>
-                <AppText style={styles.detailValue}>{driver?.licenseNumber || 'N/A'}</AppText>
+                <AppText style={styles.detailValue}>
+                  {driver?.licenseNumber || 'N/A'}
+                </AppText>
               </View>
             </View>
           </View>
@@ -200,9 +242,13 @@ const Profile = () => {
         <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
             <View style={styles.row}>
-              <AppText style={styles.detailsHeaderTitle}>Completed Shipments</AppText>
+              <AppText style={styles.detailsHeaderTitle}>
+                Completed Shipments
+              </AppText>
               <View style={styles.completedBadgeCount}>
-                <AppText style={styles.badgeCountText}>{completedCount}</AppText>
+                <AppText style={styles.badgeCountText}>
+                  {completedCount}
+                </AppText>
               </View>
             </View>
           </View>
@@ -212,14 +258,17 @@ const Profile = () => {
                 <View style={styles.emptyIconBox}>
                   <Box size={24} color={PROFILE_COLORS.primary} />
                 </View>
-                <AppText style={styles.emptyText}>No completed shipments yet</AppText>
+                <AppText style={styles.emptyText}>
+                  No completed shipments yet
+                </AppText>
               </View>
             ) : (
               completedShipments.map((shipment, index) => (
                 <View key={shipment._id} style={styles.completedShipmentRow}>
                   <Box size={18} color={PROFILE_COLORS.primary} />
                   <AppText style={styles.completedShipmentText}>
-                    {shipment.shipment.pickupLocation} ➔ {shipment.shipment.deliveryLocation}
+                    {shipment.shipment.pickupLocation} ➔{' '}
+                    {shipment.shipment.deliveryLocation}
                   </AppText>
                 </View>
               ))
@@ -236,7 +285,6 @@ const Profile = () => {
           <LogOut size={18} color={COLORS.white} style={styles.logoutIcon} />
           <AppText style={styles.logoutText}>Logout</AppText>
         </TouchableOpacity>
-
       </ScrollView>
 
       {/* 3. Integrated Confirmation Modal */}
@@ -255,4 +303,3 @@ const Profile = () => {
 };
 
 export default Profile;
-

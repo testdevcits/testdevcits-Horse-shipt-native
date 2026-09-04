@@ -34,8 +34,14 @@ const ShipperNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ShipperDrawer" component={ShipperDrawer} />
-      <Stack.Screen name="ShipperShipmentDetails" component={ShipperShipmentDetailsScreen} />
-      <Stack.Screen name="ShipmentDetails" component={ShipperShipmentDetailsScreen} />
+      <Stack.Screen
+        name="ShipperShipmentDetails"
+        component={ShipperShipmentDetailsScreen}
+      />
+      <Stack.Screen
+        name="ShipmentDetails"
+        component={ShipperShipmentDetailsScreen}
+      />
       <Stack.Screen name="ChatDetails" component={ChatDetails} />
       <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="LiveTracking" component={LiveTrackingScreen} />
@@ -46,11 +52,12 @@ const ShipperNavigation = () => {
       <Stack.Screen name="AccountSetup" component={AccountSetupScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
 
-      <Stack.Screen name="ShipmentMapDirection" component={ShipmentMapDirection} />
-
+      <Stack.Screen
+        name="ShipmentMapDirection"
+        component={ShipmentMapDirection}
+      />
     </Stack.Navigator>
   );
 };
-
 
 export default ShipperNavigation;

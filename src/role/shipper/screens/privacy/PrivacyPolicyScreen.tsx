@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { AppHeader, AppText } from '../../../../components';
-import { COLORS, } from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.privacypolicy';
 
@@ -27,7 +27,9 @@ const PrivacyPolicyScreen = () => {
     fetchPrivacyPolicy();
   }, []);
 
-  const htmlContent = policyData?.content || `
+  const htmlContent =
+    policyData?.content ||
+    `
     <h1>PRIVACY POLICY</h1>
     <p>This Privacy Policy applies to our website and the Horseshipt platform...</p>
   `;
@@ -84,12 +86,18 @@ const PrivacyPolicyScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Privacy Policy" showProfileImage={false} />
+      <AppHeader
+        showBack={true}
+        title="Privacy Policy"
+        showProfileImage={false}
+      />
 
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <AppText style={styles.loadingText}>Loading Privacy Policy...</AppText>
+          <AppText style={styles.loadingText}>
+            Loading Privacy Policy...
+          </AppText>
         </View>
       ) : (
         <WebView
@@ -97,7 +105,6 @@ const PrivacyPolicyScreen = () => {
           source={{ html: webViewHtml, baseUrl: '' }}
           style={styles.webView}
           showsVerticalScrollIndicator={false}
-
         />
       )}
     </View>

@@ -1,21 +1,18 @@
 import React from 'react';
 import {
   View,
-
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-
 } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { COLORS, } from '../../../constants';
+import { COLORS } from '../../../constants';
 import { AppText, Input } from '../../../components';
-import Ionicons from "@react-native-vector-icons/ionicons"
+import Ionicons from '@react-native-vector-icons/ionicons';
 import AppButton from '../../../components/common/Button/AppButton';
 import styles from './styles';
-
 
 // Validation Schema
 const SignupSchema = Yup.object().shape({
@@ -50,7 +47,9 @@ const Signup = ({ navigation }: any) => {
           <View style={styles.header}>
             <AppText style={styles.title}>Create Account</AppText>
             <View style={styles.loginRow}>
-              <AppText style={styles.subtitle}>Already have an account? </AppText>
+              <AppText style={styles.subtitle}>
+                Already have an account?{' '}
+              </AppText>
               <TouchableOpacity onPress={() => navigation?.goBack()}>
                 <AppText style={styles.loginLink}>Login</AppText>
               </TouchableOpacity>
@@ -68,10 +67,16 @@ const Signup = ({ navigation }: any) => {
             validationSchema={SignupSchema}
             onSubmit={handleSignup}
           >
-            {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              setFieldValue,
+              values,
+              errors,
+              touched,
+            }) => (
               <View style={styles.form}>
-
-
                 {/* Role Selection - Professional Card Style */}
                 <AppText style={styles.label}>Select your role</AppText>
                 <View style={styles.roleContainer}>
@@ -85,9 +90,18 @@ const Signup = ({ navigation }: any) => {
                     <Ionicons
                       name="bus-outline"
                       size={24}
-                      color={values.role === 'shipper' ? COLORS.primary : COLORS.grey400}
+                      color={
+                        values.role === 'shipper'
+                          ? COLORS.primary
+                          : COLORS.grey400
+                      }
                     />
-                    <AppText style={[styles.roleText, values.role === 'shipper' && styles.activeRoleText]}>
+                    <AppText
+                      style={[
+                        styles.roleText,
+                        values.role === 'shipper' && styles.activeRoleText,
+                      ]}
+                    >
                       Shipper
                     </AppText>
                   </TouchableOpacity>
@@ -102,9 +116,18 @@ const Signup = ({ navigation }: any) => {
                     <Ionicons
                       name="person-outline"
                       size={24}
-                      color={values.role === 'customer' ? COLORS.primary : COLORS.grey400}
+                      color={
+                        values.role === 'customer'
+                          ? COLORS.primary
+                          : COLORS.grey400
+                      }
                     />
-                    <AppText style={[styles.roleText, values.role === 'customer' && styles.activeRoleText]}>
+                    <AppText
+                      style={[
+                        styles.roleText,
+                        values.role === 'customer' && styles.activeRoleText,
+                      ]}
+                    >
                       Customer
                     </AppText>
                   </TouchableOpacity>
@@ -141,7 +164,13 @@ const Signup = ({ navigation }: any) => {
                   onBlur={handleBlur('password')}
                   value={values.password}
                   error={touched.password ? errors.password : ''}
-                  rightIcon={<Ionicons name="eye-outline" size={20} color={COLORS.grey400} />}
+                  rightIcon={
+                    <Ionicons
+                      name="eye-outline"
+                      size={20}
+                      color={COLORS.grey400}
+                    />
+                  }
                 />
 
                 <Input
@@ -152,15 +181,19 @@ const Signup = ({ navigation }: any) => {
                   onBlur={handleBlur('confirmPassword')}
                   value={values.confirmPassword}
                   error={touched.confirmPassword ? errors.confirmPassword : ''}
-                  rightIcon={<Ionicons name="eye-outline" size={20} color={COLORS.grey400} />}
+                  rightIcon={
+                    <Ionicons
+                      name="eye-outline"
+                      size={20}
+                      color={COLORS.grey400}
+                    />
+                  }
                 />
-
 
                 <AppButton
                   title="Signup"
                   onPress={() => handleSubmit()}
                   buttonStyle={styles.signupButton}
-
                 />
 
                 <View style={styles.dividerContainer}>
@@ -176,7 +209,6 @@ const Signup = ({ navigation }: any) => {
                   />
                   <AppText style={styles.googleButtonText}>Continue with Google</AppText>
                 </TouchableOpacity> */}
-
               </View>
             )}
           </Formik>
@@ -185,7 +217,5 @@ const Signup = ({ navigation }: any) => {
     </View>
   );
 };
-
-
 
 export default Signup;

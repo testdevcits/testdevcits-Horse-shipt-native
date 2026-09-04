@@ -85,12 +85,18 @@ const PrivacyPolicyScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Privacy Policy" showProfileImage={false} />
+      <AppHeader
+        showBack={true}
+        title="Privacy Policy"
+        showProfileImage={false}
+      />
 
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <AppText style={styles.loadingText}>Loading Privacy Policy...</AppText>
+          <AppText style={styles.loadingText}>
+            Loading Privacy Policy...
+          </AppText>
         </View>
       ) : (
         <WebView

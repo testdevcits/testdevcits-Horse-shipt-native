@@ -6,9 +6,13 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-
 } from 'react-native';
-import MapView, { Marker, Circle, PROVIDER_GOOGLE, MapType } from 'react-native-maps';
+import MapView, {
+  Marker,
+  Circle,
+  PROVIDER_GOOGLE,
+  MapType,
+} from 'react-native-maps';
 import {
   X,
   Check,
@@ -18,13 +22,17 @@ import {
   EyeOff,
   Layers,
   Search,
-
   Compass,
-
 } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const { height } = Dimensions.get('window');
 
@@ -153,9 +161,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
   const filteredAreas = useMemo(() => {
     if (!searchQuery.trim()) return areas;
     const q = searchQuery.toLowerCase();
-    return areas.filter(a =>
-      (a.locationName || '').toLowerCase().includes(q),
-    );
+    return areas.filter(a => (a.locationName || '').toLowerCase().includes(q));
   }, [areas, searchQuery]);
 
   return (
@@ -170,7 +176,9 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
         <View style={styles.modalHeader}>
           <View style={styles.headerTitleCol}>
             <View style={styles.titleBadgeRow}>
-              <AppText style={styles.modalTitle}>Preferred Coverage Map</AppText>
+              <AppText style={styles.modalTitle}>
+                Preferred Coverage Map
+              </AppText>
               <View style={styles.countPill}>
                 <AppText style={styles.countPillText}>
                   {selectedIds.length}/{areas.length} Active
@@ -178,7 +186,8 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               </View>
             </View>
             <AppText style={styles.modalSubTitle}>
-              Tap any location card to focus or toggle checkboxes to customize visible radii.
+              Tap any location card to focus or toggle checkboxes to customize
+              visible radii.
             </AppText>
           </View>
 
@@ -291,7 +300,9 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
             >
               <Layers
                 size={16}
-                color={mapType === 'hybrid' ? COLORS.primary : COLORS.textPrimary}
+                color={
+                  mapType === 'hybrid' ? COLORS.primary : COLORS.textPrimary
+                }
               />
             </TouchableOpacity>
           </View>
@@ -311,7 +322,9 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               style={styles.selectAllToggleBtn}
             >
               <AppText style={styles.selectAllToggleText}>
-                {selectedIds.length === areas.length ? 'Deselect All' : 'Select All'}
+                {selectedIds.length === areas.length
+                  ? 'Deselect All'
+                  : 'Select All'}
               </AppText>
             </TouchableOpacity>
           </View>

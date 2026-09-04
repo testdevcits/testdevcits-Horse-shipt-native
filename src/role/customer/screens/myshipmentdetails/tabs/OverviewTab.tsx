@@ -17,7 +17,6 @@ import {
   MessageSquare,
   Edit3,
   ExternalLink,
-
   User,
   Clock,
 } from 'lucide-react-native';
@@ -37,14 +36,12 @@ import { fetchCustomerShipments } from '../../../../../redux/slices/customerShip
 import { useAppDispatch } from '../../../../../hooks/redux';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
-
-
   const navigation = useNavigation<any>();
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const openUrl = (url: string | null) => {
     if (url) Linking.openURL(url);
@@ -72,7 +69,8 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     setLoading(true);
     try {
       const res: any = await customerService.getShipmentById(data._id);
-      const fetchedShipment = res?.shipment || res?.data?.shipment || res?.data || data;
+      const fetchedShipment =
+        res?.shipment || res?.data?.shipment || res?.data || data;
       navigation.navigate('NewShipment', {
         isEdit: true,
         shipmentData: fetchedShipment,
@@ -213,17 +211,22 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               </AppText>
             </TouchableOpacity>
           )}
-          {data?.status !== 'open_for_offers' && data?.status !== "delivered" && (
-            <TouchableOpacity
-              style={styles.secondaryActionBtn}
-              // onPress={() => setIsMapVisible(true)}
-              onPress={() => { navigation.navigate("LiveTracking", { shipmentId: quoteId }) }}
-              activeOpacity={0.8}
-            >
-              <MapIcon size={15} color={COLORS.textPrimary} />
-              <AppText style={styles.secondaryActionBtnText}>View Map</AppText>
-            </TouchableOpacity>
-          )}
+          {data?.status !== 'open_for_offers' &&
+            data?.status !== 'delivered' && (
+              <TouchableOpacity
+                style={styles.secondaryActionBtn}
+                // onPress={() => setIsMapVisible(true)}
+                onPress={() => {
+                  navigation.navigate('LiveTracking', { shipmentId: quoteId });
+                }}
+                activeOpacity={0.8}
+              >
+                <MapIcon size={15} color={COLORS.textPrimary} />
+                <AppText style={styles.secondaryActionBtnText}>
+                  View Map
+                </AppText>
+              </TouchableOpacity>
+            )}
         </View>
       </View>
 
@@ -373,26 +376,38 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
                   {/* Uploaded Documents */}
                   <View style={styles.documentsContainer}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.xs }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: SPACING.xs,
+                      }}
+                    >
                       <AppText style={styles.documentsHeaderTitle}>
                         Uploaded Documents
                       </AppText>
-                      {
-                        data?.status !== "delivered" &&
+                      {data?.status !== 'delivered' && (
                         <TouchableOpacity
-                          style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 4,
+                          }}
                           onPress={handleEditDocumentsNotes}
                         >
                           <Edit3 size={14} color={COLORS.primary} />
-                          <AppText style={{
-                            color: COLORS.primary, fontSize: FONT_SIZE.sm,
-                            fontFamily: FONTS.semiBold
-                          }}>
+                          <AppText
+                            style={{
+                              color: COLORS.primary,
+                              fontSize: FONT_SIZE.sm,
+                              fontFamily: FONTS.semiBold,
+                            }}
+                          >
                             Edit Docs / Notes
                           </AppText>
                         </TouchableOpacity>
-                      }
-
+                      )}
                     </View>
                     <View style={styles.docListGrid}>
                       {horse.documents?.coggins?.url && (

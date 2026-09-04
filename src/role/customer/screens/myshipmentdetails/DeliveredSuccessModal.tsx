@@ -1,11 +1,12 @@
 import React from 'react';
+import { Modal, StyleSheet, View, Image } from 'react-native';
 import {
-  Modal,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 import { AppText, Button as ButtonCompt } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
@@ -54,16 +55,20 @@ const DeliveredSuccessModal = ({
                   onClose();
                   onLeaveReview();
                 }}
-              // buttonStyle={styles.primaryBtn}
-              // textStyle={styles.primaryBtnText}
+                // buttonStyle={styles.primaryBtn}
+                // textStyle={styles.primaryBtnText}
               />
             )}
 
             <ButtonCompt
               title="Close"
               onPress={onClose}
-              buttonStyle={onLeaveReview ? styles.secondaryBtn : styles.primaryBtn}
-              textStyle={onLeaveReview ? styles.secondaryBtnText : styles.primaryBtnText}
+              buttonStyle={
+                onLeaveReview ? styles.secondaryBtn : styles.primaryBtn
+              }
+              textStyle={
+                onLeaveReview ? styles.secondaryBtnText : styles.primaryBtnText
+              }
             />
           </View>
         </View>
@@ -133,18 +138,15 @@ const styles = StyleSheet.create({
   },
   primaryBtnText: {
     color: COLORS.white,
-
   },
   secondaryBtn: {
     backgroundColor: '#F2F4F5',
-
 
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
   secondaryBtnText: {
     color: COLORS.textSecondary,
-
   },
 });
 

@@ -71,7 +71,9 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
                 navigation.navigate('ChatDetails', {
                   shipmentId: item?.shipmentId,
                   isChatLocked: item?.isChatLocked,
-                  avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
+                  avatar: item?.avatar
+                    ? { uri: item?.avatar }
+                    : imageIndex.AccountIcon,
                 })
               }
             />

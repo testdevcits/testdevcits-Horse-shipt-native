@@ -10,7 +10,13 @@ import {
 } from 'react-native';
 import { AlertCircle, X, CheckSquare, Square } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
-import { COLORS, FONT_SIZE, FONTS, SPACING, RADIUS } from '../../../../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  SPACING,
+  RADIUS,
+} from '../../../../../constants';
 
 interface CancelSubscriptionModalProps {
   visible: boolean;
@@ -78,9 +84,12 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
               </View>
 
               <View style={styles.headerTextCol}>
-                <AppText style={styles.title}>We're sorry to see you go</AppText>
+                <AppText style={styles.title}>
+                  We're sorry to see you go
+                </AppText>
                 <AppText style={styles.subtitle}>
-                  Please help us understand why you're canceling your subscription
+                  Please help us understand why you're canceling your
+                  subscription
                 </AppText>
               </View>
 
@@ -106,7 +115,8 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
 
             {/* Reason Selection Title */}
             <AppText style={styles.sectionTitle}>
-              Why are you canceling? <AppText style={styles.asterisk}>*</AppText>
+              Why are you canceling?{' '}
+              <AppText style={styles.asterisk}>*</AppText>
             </AppText>
 
             {/* Reason Buttons Grid */}
@@ -172,7 +182,8 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
                 )}
               </View>
               <AppText style={styles.checkboxText}>
-                I understand that my subscription will be canceled and I will lose access at the end of my billing period
+                I understand that my subscription will be canceled and I will
+                lose access at the end of my billing period
               </AppText>
             </TouchableOpacity>
           </ScrollView>

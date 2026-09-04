@@ -2,7 +2,13 @@ import { Image, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { AppText, Button } from '../../../../components';
 import { FileText, Award } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 import { horsePlaceholderImage } from '../../../../config/constants';
 
 const HorseInformation = ({
@@ -32,7 +38,10 @@ const HorseInformation = ({
       <View style={styles.cardBody}>
         {horses.map((horse: any, idx: number) => {
           const hasError = imageErrors[idx];
-          const photoUrl = !hasError && horse?.photo?.url ? horse.photo.url : horsePlaceholderImage;
+          const photoUrl =
+            !hasError && horse?.photo?.url
+              ? horse.photo.url
+              : horsePlaceholderImage;
 
           return (
             <View key={idx} style={styles.horseCard}>
@@ -46,7 +55,10 @@ const HorseInformation = ({
                 />
                 {horse?.registeredName ? (
                   <View style={styles.horseNameBadge}>
-                    <AppText style={styles.horseNameBadgeText} numberOfLines={1}>
+                    <AppText
+                      style={styles.horseNameBadgeText}
+                      numberOfLines={1}
+                    >
                       {horse.registeredName}
                     </AppText>
                   </View>
@@ -76,7 +88,8 @@ const HorseInformation = ({
                 <View style={styles.gridCell}>
                   <AppText style={styles.gridLabel}>SEX / AGE</AppText>
                   <AppText style={styles.gridValue} numberOfLines={1}>
-                    {horse?.sex || 'N/A'} {horse?.age ? `• ${horse.age} yrs` : ''}
+                    {horse?.sex || 'N/A'}{' '}
+                    {horse?.age ? `• ${horse.age} yrs` : ''}
                   </AppText>
                 </View>
               </View>

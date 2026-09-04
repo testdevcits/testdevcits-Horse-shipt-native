@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
   View,
-
   FlatList,
   ScrollView,
   TouchableOpacity,
@@ -47,20 +46,25 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     'Cancelled',
   ];
 
-  const handleShipmentPress = useCallback((item: any) => {
-    const isDraftItem = item?.publish === false || (item?.status || '').toLowerCase() === 'draft';
-    if (isDraftItem) {
-      navigation?.navigate('NewShipment', {
-        isEdit: true,
-        shipmentData: item,
-      });
-    } else {
-      navigation?.navigate('MyShipmentDetails', {
-        item: item,
-        quoteId: item?.quoteId,
-      });
-    }
-  }, [navigation]);
+  const handleShipmentPress = useCallback(
+    (item: any) => {
+      const isDraftItem =
+        item?.publish === false ||
+        (item?.status || '').toLowerCase() === 'draft';
+      if (isDraftItem) {
+        navigation?.navigate('NewShipment', {
+          isEdit: true,
+          shipmentData: item,
+        });
+      } else {
+        navigation?.navigate('MyShipmentDetails', {
+          item: item,
+          quoteId: item?.quoteId,
+        });
+      }
+    },
+    [navigation],
+  );
 
   const handleInitiateDelete = useCallback((item: any) => {
     setShipmentToDelete(item);
@@ -90,15 +94,21 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     }
   };
 
-  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+  const keyExtractor = useCallback(
+    (item: any) => item?._id || String(Math.random()),
+    [],
+  );
 
-  const renderItem = useCallback(({ item }: { item: any }) => (
-    <ShipmentHorizontalCard
-      item={item}
-      onPress={() => handleShipmentPress(item)}
-      onDelete={handleInitiateDelete}
-    />
-  ), [handleShipmentPress, handleInitiateDelete]);
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <ShipmentHorizontalCard
+        item={item}
+        onPress={() => handleShipmentPress(item)}
+        onDelete={handleInitiateDelete}
+      />
+    ),
+    [handleShipmentPress, handleInitiateDelete],
+  );
 
   const renderTab = (tab: ShipmentTab) => {
     const isActive = activeTab === tab;

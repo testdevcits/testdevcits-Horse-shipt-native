@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, SIZES } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  SIZES,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -273,7 +280,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-
   },
   cardInfoCol: {
     flex: 1,

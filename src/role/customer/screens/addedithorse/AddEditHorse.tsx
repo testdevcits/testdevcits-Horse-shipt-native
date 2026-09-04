@@ -7,7 +7,6 @@ import {
   Platform,
   Image,
   TouchableOpacity,
-
 } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -21,7 +20,6 @@ import {
   RADIUS,
   FONTS,
   FONT_SIZE,
-
 } from '../../../../constants';
 
 import { HorseSchema } from './schema';
@@ -67,7 +65,9 @@ const AddEditHorse = () => {
             .filter((c: any) => c.isActive !== false && c.name)
             .map((c: any) => c.name);
           if (activeColors.length > 0 && isMounted) {
-            const merged = Array.from(new Set([...activeColors, ...defaultColors]));
+            const merged = Array.from(
+              new Set([...activeColors, ...defaultColors]),
+            );
             setColorOptions(merged);
           }
         }
@@ -98,7 +98,9 @@ const AddEditHorse = () => {
 
   const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
 
-  const handlePickPhoto = async (setFieldValue: (field: string, val: any) => void) => {
+  const handlePickPhoto = async (
+    setFieldValue: (field: string, val: any) => void,
+  ) => {
     if (isPicking) return;
 
     setIsPicking(true);
@@ -135,8 +137,7 @@ const AddEditHorse = () => {
       ) {
         console.log('Image picker error:', e);
       }
-    }
-    finally {
+    } finally {
       setIsPicking(false);
     }
   };
@@ -163,7 +164,9 @@ const AddEditHorse = () => {
       }
 
       const rawName = result.name || `${field}.pdf`;
-      const pdfName = rawName.toLowerCase().endsWith('.pdf') ? rawName : `${rawName}.pdf`;
+      const pdfName = rawName.toLowerCase().endsWith('.pdf')
+        ? rawName
+        : `${rawName}.pdf`;
       setFieldValue(field, {
         uri: result.uri,
         type: 'application/pdf',
@@ -173,8 +176,7 @@ const AddEditHorse = () => {
       if (error?.code !== 'DOCUMENT_PICKER_CANCELED') {
         console.log('Document picker error:', error);
       }
-    }
-    finally {
+    } finally {
       setIsPicking(false);
     }
   };
@@ -192,7 +194,7 @@ const AddEditHorse = () => {
         'otherBreed',
         values.breed === 'Other' || values.breed === 'Other Breed'
           ? values.otherBreed
-          : (values.otherBreed || ''),
+          : values.otherBreed || '',
       );
       formData.append('sex', values.sex);
       formData.append('stallType', values.defaultStallSize);
@@ -208,7 +210,9 @@ const AddEditHorse = () => {
 
       if (values.coggins && values.coggins.uri) {
         const rawName = values.coggins.name || 'coggins.pdf';
-        const pdfName = rawName.toLowerCase().endsWith('.pdf') ? rawName : `${rawName}.pdf`;
+        const pdfName = rawName.toLowerCase().endsWith('.pdf')
+          ? rawName
+          : `${rawName}.pdf`;
         formData.append('coggins', {
           uri: values.coggins.uri,
           type: 'application/pdf',
@@ -217,8 +221,11 @@ const AddEditHorse = () => {
       }
 
       if (values.healthCertificate && values.healthCertificate.uri) {
-        const rawName = values.healthCertificate.name || 'healthCertificate.pdf';
-        const pdfName = rawName.toLowerCase().endsWith('.pdf') ? rawName : `${rawName}.pdf`;
+        const rawName =
+          values.healthCertificate.name || 'healthCertificate.pdf';
+        const pdfName = rawName.toLowerCase().endsWith('.pdf')
+          ? rawName
+          : `${rawName}.pdf`;
         formData.append('healthCertificate', {
           uri: values.healthCertificate.uri,
           type: 'application/pdf',
@@ -340,10 +347,11 @@ const AddEditHorse = () => {
                         onPress={() => handlePickPhoto(setFieldValue)}
                         activeOpacity={0.7}
                         disabled={isPicking}
-
                       >
                         <Camera size={26} color={COLORS.primary} />
-                        <AppText style={styles.uploadBoxText}>Upload Photo</AppText>
+                        <AppText style={styles.uploadBoxText}>
+                          Upload Photo
+                        </AppText>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -355,7 +363,9 @@ const AddEditHorse = () => {
                   value={values.registeredName}
                   onChangeText={handleChange('registeredName')}
                   error={
-                    touched.registeredName ? (errors.registeredName as string) : ''
+                    touched.registeredName
+                      ? (errors.registeredName as string)
+                      : ''
                   }
                 />
 
@@ -401,13 +411,16 @@ const AddEditHorse = () => {
                   />
                 </Suspense>
 
-                {(values.breed === 'Other' || values.breed === 'Other Breed') && (
+                {(values.breed === 'Other' ||
+                  values.breed === 'Other Breed') && (
                   <Input
                     label={'Other Breed'}
                     placeholder="Enter custom breed name"
                     value={values.otherBreed}
                     onChangeText={handleChange('otherBreed')}
-                    error={touched.otherBreed ? (errors.otherBreed as string) : ''}
+                    error={
+                      touched.otherBreed ? (errors.otherBreed as string) : ''
+                    }
                   />
                 )}
 
@@ -449,7 +462,9 @@ const AddEditHorse = () => {
 
                 {/* Documents Upload Section */}
                 <View style={styles.sectionCard}>
-                  <AppText style={styles.sectionTitle}>Documents (PDF only)</AppText>
+                  <AppText style={styles.sectionTitle}>
+                    Documents (PDF only)
+                  </AppText>
 
                   {/* Coggins Row */}
                   <View style={styles.docRow}>
@@ -467,7 +482,6 @@ const AddEditHorse = () => {
                     {values.coggins ? (
                       <TouchableOpacity
                         disabled={isPicking}
-
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('coggins', null)}
                       >
@@ -476,12 +490,15 @@ const AddEditHorse = () => {
                     ) : (
                       <TouchableOpacity
                         disabled={isPicking}
-
                         style={styles.docUploadBtn}
-                        onPress={() => handlePickDocument('coggins', setFieldValue)}
+                        onPress={() =>
+                          handlePickDocument('coggins', setFieldValue)
+                        }
                       >
                         <Upload size={14} color={COLORS.primary} />
-                        <AppText style={styles.docUploadBtnText}>Upload</AppText>
+                        <AppText style={styles.docUploadBtnText}>
+                          Upload
+                        </AppText>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -491,7 +508,9 @@ const AddEditHorse = () => {
                     <View style={styles.docLeft}>
                       <Paperclip size={18} color={COLORS.primary} />
                       <View style={styles.docTextWrap}>
-                        <AppText style={styles.docLabel}>Health Certificate</AppText>
+                        <AppText style={styles.docLabel}>
+                          Health Certificate
+                        </AppText>
                         <AppText style={styles.docSubtext} numberOfLines={1}>
                           {values.healthCertificate?.name ||
                             values.healthCertificate?.originalName ||
@@ -502,7 +521,6 @@ const AddEditHorse = () => {
                     {values.healthCertificate ? (
                       <TouchableOpacity
                         disabled={isPicking}
-
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('healthCertificate', null)}
                       >
@@ -511,14 +529,15 @@ const AddEditHorse = () => {
                     ) : (
                       <TouchableOpacity
                         disabled={isPicking}
-
                         style={styles.docUploadBtn}
                         onPress={() =>
                           handlePickDocument('healthCertificate', setFieldValue)
                         }
                       >
                         <Upload size={14} color={COLORS.primary} />
-                        <AppText style={styles.docUploadBtnText}>Upload</AppText>
+                        <AppText style={styles.docUploadBtnText}>
+                          Upload
+                        </AppText>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -591,7 +610,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  infoDesc: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, marginTop: 1 },
+  infoDesc: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    marginTop: 1,
+  },
 
   form: { gap: SPACING.xs },
 

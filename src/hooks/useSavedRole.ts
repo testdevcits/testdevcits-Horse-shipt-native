@@ -13,15 +13,15 @@ export const useSavedRole = () => {
   const getSavedRole = useCallback(async (): Promise<UserRole> => {
     try {
       const storedRole = await AsyncStorage.getItem(ROLE_KEY);
-      
+
       // Sanitize: Handle actual null, undefined, or the string "null"
-      if (!storedRole || storedRole === "null" || storedRole === "") {
+      if (!storedRole || storedRole === 'null' || storedRole === '') {
         return null;
       }
-      
+
       return storedRole as UserRole;
     } catch (error) {
-      console.error("Error reading role from storage", error);
+      console.error('Error reading role from storage', error);
       return null;
     }
   }, []);
@@ -36,7 +36,7 @@ export const useSavedRole = () => {
       }
       setRole(newRole);
     } catch (error) {
-      console.error("Error saving role", error);
+      console.error('Error saving role', error);
     }
   };
 
@@ -55,5 +55,11 @@ export const useSavedRole = () => {
     init();
   }, [getSavedRole]);
 
-  return { role, saveRole, clearRole, isLoadingRole, refreshRole: getSavedRole };
+  return {
+    role,
+    saveRole,
+    clearRole,
+    isLoadingRole,
+    refreshRole: getSavedRole,
+  };
 };

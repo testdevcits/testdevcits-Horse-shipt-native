@@ -7,7 +7,14 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import { User, Building2, Truck, Check, X, ShieldCheck } from 'lucide-react-native';
+import {
+  User,
+  Building2,
+  Truck,
+  Check,
+  X,
+  ShieldCheck,
+} from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   COLORS,
@@ -51,7 +58,8 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
     {
       id: 'customer',
       title: 'Customer / Horse Owner',
-      subtitle: 'Book transportation, track shipments live & post load requests.',
+      subtitle:
+        'Book transportation, track shipments live & post load requests.',
       Icon: User,
       tag: 'BOOK & TRACK',
     },
@@ -107,7 +115,10 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
       onRequestClose={onClose}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
-        <Pressable style={styles.modalContent} onPress={e => e.stopPropagation()}>
+        <Pressable
+          style={styles.modalContent}
+          onPress={e => e.stopPropagation()}
+        >
           {/* Top Sheet Handle */}
           <View style={styles.sheetHandle} />
 
@@ -142,10 +153,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
                   key={roleItem.id}
                   activeOpacity={0.85}
                   onPress={() => setSelected(roleItem.id)}
-                  style={[
-                    styles.roleCard,
-                    isSelected && styles.roleCardActive,
-                  ]}
+                  style={[styles.roleCard, isSelected && styles.roleCardActive]}
                 >
                   {/* Left Icon Badge */}
                   <View

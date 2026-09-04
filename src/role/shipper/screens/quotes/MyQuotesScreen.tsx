@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -28,13 +34,13 @@ const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
 
-
-
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed'
+  >('all');
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
   const [selectedContractData, setSelectedContractData] = useState<{
     url?: string;
@@ -48,7 +54,8 @@ const MyQuotesScreen = () => {
 
   // Vehicle Assignment State
   const vehicleSelectRef = useRef<AppSelectRef>(null);
-  const [selectedQuoteForVehicle, setSelectedQuoteForVehicle] = useState<any>(null);
+  const [selectedQuoteForVehicle, setSelectedQuoteForVehicle] =
+    useState<any>(null);
 
   const fetchVehicles = async () => {
     try {
@@ -99,12 +106,13 @@ const MyQuotesScreen = () => {
   };
 
   const handleOpenShipperContractModal = (quote: any) => {
-
     const url =
       quote?.contract?.url ||
       quote?.shipperContract?.url ||
       (typeof quote?.contract === 'string' ? quote?.contract : null) ||
-      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+      (typeof quote?.shipperContract === 'string'
+        ? quote?.shipperContract
+        : null);
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
@@ -131,17 +139,22 @@ const MyQuotesScreen = () => {
       setSelectedContractData({ url, code, quote });
       setIsContractModalVisible(true);
     }
-
-
-  }
+  };
 
   const handleSelectVehicle = async (selectedLabel: string) => {
     if (!selectedQuoteForVehicle) return;
 
-    const foundVehicle = vehicles.find(v => {
-      const label = `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim();
-      return label === selectedLabel || v.vehicleNumber === selectedLabel || v._id === selectedLabel;
-    }) || vehicles[0];
+    const foundVehicle =
+      vehicles.find(v => {
+        const label = `${v.make || ''} ${v.model || ''} (${
+          v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+        })`.trim();
+        return (
+          label === selectedLabel ||
+          v.vehicleNumber === selectedLabel ||
+          v._id === selectedLabel
+        );
+      }) || vehicles[0];
 
     if (!foundVehicle) {
       Toast.show({
@@ -156,7 +169,10 @@ const MyQuotesScreen = () => {
     const vehicleId = foundVehicle._id || foundVehicle.id;
 
     try {
-      const res = await shipperService.assignVehicleToQuote({ quoteId, vehicleId });
+      const res = await shipperService.assignVehicleToQuote({
+        quoteId,
+        vehicleId,
+      });
       if (res?.success) {
         Toast.show({
           type: 'success',
@@ -192,7 +208,9 @@ const MyQuotesScreen = () => {
       quote?.contract?.url ||
       quote?.shipperContract?.url ||
       (typeof quote?.contract === 'string' ? quote?.contract : null) ||
-      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+      (typeof quote?.shipperContract === 'string'
+        ? quote?.shipperContract
+        : null);
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
@@ -232,7 +250,9 @@ const MyQuotesScreen = () => {
           text1: 'Success',
           text2: res.message || 'Quote deleted successfully',
         });
-        setQuotes(prev => prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete));
+        setQuotes(prev =>
+          prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete),
+        );
       } else {
         Toast.show({
           type: 'error',
@@ -571,7 +591,9 @@ const MyQuotesScreen = () => {
         placeholder="Select Vehicle"
         value=""
         options={vehicles?.map(v =>
-          `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim(),
+          `${v.make || ''} ${v.model || ''} (${
+            v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+          })`.trim(),
         )}
         onSelect={handleSelectVehicle}
         searchable

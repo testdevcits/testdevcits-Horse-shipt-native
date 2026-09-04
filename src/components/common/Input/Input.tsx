@@ -60,7 +60,8 @@ const Input = ({
         return (
           <TouchableOpacity
             onPress={() => setShowPassword(prev => !prev)}
-            hitSlop={10}>
+            hitSlop={10}
+          >
             {rightIcon}
           </TouchableOpacity>
         );
@@ -72,7 +73,8 @@ const Input = ({
       return (
         <TouchableOpacity
           onPress={() => setShowPassword(prev => !prev)}
-          hitSlop={10}>
+          hitSlop={10}
+        >
           {showPassword ? (
             <EyeOff size={20} color={COLORS.textSecondary} />
           ) : (
@@ -96,7 +98,8 @@ const Input = ({
           focused && styles.focusedBorder,
           error && styles.errorBorder,
           disabled && styles.disabledBorder,
-        ]}>
+        ]}
+      >
         {leftIcon ? (
           <View style={styles.leftIconContainer}>{leftIcon}</View>
         ) : null}

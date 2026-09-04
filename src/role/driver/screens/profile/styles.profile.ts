@@ -1,6 +1,11 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from "../../../../constants";
-
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONTS,
+  FONT_SIZE,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {

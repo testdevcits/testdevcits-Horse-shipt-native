@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-
   View,
   ImageBackground,
   StatusBar,
@@ -49,9 +48,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const otpInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
-    return () => { showSubscription.remove(); hideSubscription.remove(); };
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
+      setIsKeyboardOpen(true),
+    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
+      setIsKeyboardOpen(false),
+    );
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -69,20 +75,36 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const isPasswordValid = hasLength && hasNumber && hasSymbol;
 
-  const getPasswordScore = () => [hasLength, hasNumber, hasSymbol].filter(Boolean).length;
-  const barWidth = getPasswordScore() === 0 ? '0%' : getPasswordScore() === 1 ? '33%' : getPasswordScore() === 2 ? '66%' : '100%';
-  const barColor = getPasswordScore() === 3 ? COLORS.success : getPasswordScore() === 2 ? COLORS.warning : COLORS.error;
+  const getPasswordScore = () =>
+    [hasLength, hasNumber, hasSymbol].filter(Boolean).length;
+  const barWidth =
+    getPasswordScore() === 0
+      ? '0%'
+      : getPasswordScore() === 1
+      ? '33%'
+      : getPasswordScore() === 2
+      ? '66%'
+      : '100%';
+  const barColor =
+    getPasswordScore() === 3
+      ? COLORS.success
+      : getPasswordScore() === 2
+      ? COLORS.warning
+      : COLORS.error;
 
   // --- API HANDLERS ---
 
   const handleInitialSignup = async () => {
-    if (!name.trim()) return setErrors(p => ({ ...p, name: 'Name is required' }));
-    if (!emailRegex.test(email)) return setErrors(p => ({ ...p, email: 'Invalid email' }));
+    if (!name.trim())
+      return setErrors(p => ({ ...p, name: 'Name is required' }));
+    if (!emailRegex.test(email))
+      return setErrors(p => ({ ...p, email: 'Invalid email' }));
     if (!isPasswordValid) return;
 
     try {
       setIsLoading(true);
-      const savedRole = (await AsyncStorage.getItem('@user_role')) || 'customer';
+      const savedRole =
+        (await AsyncStorage.getItem('@user_role')) || 'customer';
       const res = await authService.signup({
         name: name.trim(),
         email: email.toLowerCase().trim(),
@@ -93,7 +115,11 @@ const SignupFlowScreen = ({ navigation }: any) => {
       if (res?.success) {
         setStep(2);
         setResendTimer(60);
-        Toast.show({ type: 'success', text1: 'OTP Sent', text2: 'Please check your email' });
+        Toast.show({
+          type: 'success',
+          text1: 'OTP Sent',
+          text2: 'Please check your email',
+        });
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Signup failed';
@@ -112,7 +138,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
       // 1. Clear previous OTP errors
       setErrors(p => ({ ...p, otp: '' }));
 
-      const savedRole = ((await AsyncStorage.getItem('@user_role')) || 'customer') as UserRole;
+      const savedRole = ((await AsyncStorage.getItem('@user_role')) ||
+        'customer') as UserRole;
       const result = await authService.verifySignupOtp({
         email: email.toLowerCase().trim(),
         role: savedRole,
@@ -120,26 +147,21 @@ const SignupFlowScreen = ({ navigation }: any) => {
       });
 
       // 2. Log result for debugging
-      console.log("OTP Verification Result:", result);
+      console.log('OTP Verification Result:', result);
 
       if (result && result.token) {
-
         // 4. Move to Success Step
         setStep(3);
-
 
         // 3. Update Redux State
         setTimeout(() => {
           dispatch(setCredentials(result));
-        }, 1500)
-
-
+        }, 1500);
       } else {
-        throw new Error("Invalid response structure");
+        throw new Error('Invalid response structure');
       }
-
     } catch (err: any) {
-      console.log("Verify Error:", err);
+      console.log('Verify Error:', err);
       // ONLY set error if the API actually failed
       const msg = err?.response?.data?.message || 'Invalid or expired OTP';
       setErrors(p => ({ ...p, otp: msg }));
@@ -151,7 +173,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     try {
-      const savedRole = ((await AsyncStorage.getItem('@user_role')) || 'customer') as UserRole;
+      const savedRole = ((await AsyncStorage.getItem('@user_role')) ||
+        'customer') as UserRole;
       await authService.forgotPassword(email, savedRole);
       setResendTimer(60);
       Toast.show({ type: 'success', text1: 'OTP Resent' });
@@ -165,15 +188,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const renderStepper = (current: number) => (
     <View style={styles.stepperContainer}>
       {/* Change [1, 2] to [1, 2, 3] */}
-      {[1, 2, 3].map((item) => (
+      {[1, 2, 3].map(item => (
         <View
           key={item}
           style={[
             styles.stepLine,
             {
               width: 40,
-              backgroundColor: item <= current ? COLORS.primary : COLORS.grey200
-            }
+              backgroundColor:
+                item <= current ? COLORS.primary : COLORS.grey200,
+            },
           ]}
         />
       ))}
@@ -182,31 +206,49 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
       <ImageBackground
         source={imageIndex.HorseBg}
-        style={[styles.backgroundImage, { height: isKeyboardOpen ? SCREEN_HEIGHT * 0.20 : SCREEN_HEIGHT * 0.45 }]}
+        style={[
+          styles.backgroundImage,
+          {
+            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+          },
+        ]}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
         {step < 3 && (
-          <TouchableOpacity onPress={() => step === 1 ? navigation.goBack() : setStep(1)} style={styles.backBtn}>
+          <TouchableOpacity
+            onPress={() => (step === 1 ? navigation.goBack() : setStep(1))}
+            style={styles.backBtn}
+          >
             <ChevronLeft color={COLORS.white} size={28} />
           </TouchableOpacity>
         )}
       </ImageBackground>
 
-      <KeyboardAvoidingView style={styles.cardContainer} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView
+        style={styles.cardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <View style={styles.contentCard}>
+          <Image
+            source={imageIndex.Logo}
+            style={styles.logoIcon}
+            resizeMode="contain"
+          />
 
-
-
-          <Image source={imageIndex.Logo} style={styles.logoIcon} resizeMode="contain" />
-
-
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+          >
             {/* STEP 1: INFORMATION */}
             {step === 1 && (
               <View style={styles.formContainer}>
@@ -218,7 +260,9 @@ const SignupFlowScreen = ({ navigation }: any) => {
                   onPress={() => setIsRoleModalVisible(true)}
                   activeOpacity={0.7}
                 >
-                  <AppText style={styles.roleBadgeLabel}>Signing in as: </AppText>
+                  <AppText style={styles.roleBadgeLabel}>
+                    Signing in as:{' '}
+                  </AppText>
                   <AppText style={styles.roleBadgeValue}>
                     {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
                   </AppText>
@@ -226,18 +270,60 @@ const SignupFlowScreen = ({ navigation }: any) => {
                 </TouchableOpacity>
                 {renderStepper(1)}
 
-                <Input label="Full Name" placeholder="John Doe" value={name} onChangeText={(t) => { setName(t); setErrors(p => ({ ...p, name: '' })); }} error={errors.name} />
-                <Input label="Email Address" placeholder="john@example.com" value={email} onChangeText={(t) => { setEmail(t); setErrors(p => ({ ...p, email: '' })); }} error={errors.email} keyboardType="email-address" autoCapitalize="none" />
-                <Input label="Password" placeholder="••••••••" value={password} onChangeText={setPassword} isPassword={true} />
+                <Input
+                  label="Full Name"
+                  placeholder="John Doe"
+                  value={name}
+                  onChangeText={t => {
+                    setName(t);
+                    setErrors(p => ({ ...p, name: '' }));
+                  }}
+                  error={errors.name}
+                />
+                <Input
+                  label="Email Address"
+                  placeholder="john@example.com"
+                  value={email}
+                  onChangeText={t => {
+                    setEmail(t);
+                    setErrors(p => ({ ...p, email: '' }));
+                  }}
+                  error={errors.email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                <Input
+                  label="Password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChangeText={setPassword}
+                  isPassword={true}
+                />
 
-                <View style={styles.meterTrack}><View style={[styles.meterFill, { width: barWidth as any, backgroundColor: barColor }]} /></View>
+                <View style={styles.meterTrack}>
+                  <View
+                    style={[
+                      styles.meterFill,
+                      { width: barWidth as any, backgroundColor: barColor },
+                    ]}
+                  />
+                </View>
                 <View style={styles.checklist}>
-                  <CheckListItem status={hasLength} label="8 characters minimum" />
+                  <CheckListItem
+                    status={hasLength}
+                    label="8 characters minimum"
+                  />
                   <CheckListItem status={hasNumber} label="A number" />
                   <CheckListItem status={hasSymbol} label="A symbol" />
                 </View>
 
-                <AppButton title="Continue" onPress={handleInitialSignup} isLoading={isLoading} disabled={!name || !email || !isPasswordValid} buttonStyle={styles.actionBtn} />
+                <AppButton
+                  title="Continue"
+                  onPress={handleInitialSignup}
+                  isLoading={isLoading}
+                  disabled={!name || !email || !isPasswordValid}
+                  buttonStyle={styles.actionBtn}
+                />
               </View>
             )}
 
@@ -247,33 +333,84 @@ const SignupFlowScreen = ({ navigation }: any) => {
                 <AppText style={styles.title}>Verify Email 2/3</AppText>
                 {renderStepper(2)}
                 <AppText style={[styles.subtitle, { textAlign: 'center' }]}>
-                  We sent a 6-digit code to{" "}
-                  <AppText style={{ fontFamily: FONTS.bold, color: COLORS.textPrimary }}>
+                  We sent a 6-digit code to{' '}
+                  <AppText
+                    style={{
+                      fontFamily: FONTS.bold,
+                      color: COLORS.textPrimary,
+                    }}
+                  >
                     {email}
                   </AppText>
                 </AppText>
-                <TouchableOpacity activeOpacity={1} style={styles.otpWrapper} onPress={() => otpInputRef.current?.focus()}>
-                  <TextInput ref={otpInputRef} value={otp} onChangeText={(t) => { setOtp(t); if (t.length === 6) handleOtpVerify(t); }} maxLength={6} keyboardType="number-pad" style={styles.hiddenOtpInput} autoFocus />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={styles.otpWrapper}
+                  onPress={() => otpInputRef.current?.focus()}
+                >
+                  <TextInput
+                    ref={otpInputRef}
+                    value={otp}
+                    onChangeText={t => {
+                      setOtp(t);
+                      if (t.length === 6) handleOtpVerify(t);
+                    }}
+                    maxLength={6}
+                    keyboardType="number-pad"
+                    style={styles.hiddenOtpInput}
+                    autoFocus
+                  />
                   <View style={styles.otpBoxContainer}>
-                    {Array(6).fill(0).map((_, idx) => (
-                      <View key={idx} style={[styles.otpBox, otp.length === idx && styles.otpBoxFocused, otp[idx] && styles.otpBoxFilled]}>
-                        <AppText style={styles.otpText}>{otp[idx] || ''}</AppText>
-                      </View>
-                    ))}
+                    {Array(6)
+                      .fill(0)
+                      .map((_, idx) => (
+                        <View
+                          key={idx}
+                          style={[
+                            styles.otpBox,
+                            otp.length === idx && styles.otpBoxFocused,
+                            otp[idx] && styles.otpBoxFilled,
+                          ]}
+                        >
+                          <AppText style={styles.otpText}>
+                            {otp[idx] || ''}
+                          </AppText>
+                        </View>
+                      ))}
                   </View>
                 </TouchableOpacity>
-                {errors.otp ? <AppText style={styles.errorText}>{errors.otp}</AppText> : null}
+                {errors.otp ? (
+                  <AppText style={styles.errorText}>{errors.otp}</AppText>
+                ) : null}
 
                 <View style={styles.resendRow}>
-                  <AppText style={styles.resendText}>Didn't receive code?</AppText>
-                  <TouchableOpacity onPress={handleResendOtp} disabled={resendTimer > 0}>
-                    <AppText style={[styles.resendLink, resendTimer > 0 && { color: COLORS.grey400 }]}>
-                      {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend Code'}
+                  <AppText style={styles.resendText}>
+                    Didn't receive code?
+                  </AppText>
+                  <TouchableOpacity
+                    onPress={handleResendOtp}
+                    disabled={resendTimer > 0}
+                  >
+                    <AppText
+                      style={[
+                        styles.resendLink,
+                        resendTimer > 0 && { color: COLORS.grey400 },
+                      ]}
+                    >
+                      {resendTimer > 0
+                        ? `Resend in ${resendTimer}s`
+                        : 'Resend Code'}
                     </AppText>
                   </TouchableOpacity>
                 </View>
 
-                <AppButton title="Verify & Create Account" onPress={() => handleOtpVerify()} isLoading={isLoading} disabled={otp.length !== 6} buttonStyle={styles.actionBtn} />
+                <AppButton
+                  title="Verify & Create Account"
+                  onPress={() => handleOtpVerify()}
+                  isLoading={isLoading}
+                  disabled={otp.length !== 6}
+                  buttonStyle={styles.actionBtn}
+                />
               </View>
             )}
 
@@ -285,10 +422,18 @@ const SignupFlowScreen = ({ navigation }: any) => {
                 {renderStepper(3)}
 
                 <View style={styles.successIconWrapper}>
-                  <Image source={imageIndex.HorseIcon} style={styles.successIcon} resizeMode="contain" />
+                  <Image
+                    source={imageIndex.HorseIcon}
+                    style={styles.successIcon}
+                    resizeMode="contain"
+                  />
                 </View>
-                <AppText style={styles.successTitle}>Your account{"\n"}was successfully created!</AppText>
-                <AppText style={styles.successSub}>One tap to book your next horse shipment.</AppText>
+                <AppText style={styles.successTitle}>
+                  Your account{'\n'}was successfully created!
+                </AppText>
+                <AppText style={styles.successSub}>
+                  One tap to book your next horse shipment.
+                </AppText>
                 <AppButton
                   title="Login"
                   onPress={() => navigation.navigate('Main')}
@@ -318,10 +463,24 @@ const SignupFlowScreen = ({ navigation }: any) => {
   );
 };
 
-const CheckListItem = ({ status, label }: { status: boolean, label: string }) => (
+const CheckListItem = ({
+  status,
+  label,
+}: {
+  status: boolean;
+  label: string;
+}) => (
   <View style={styles.checkItem}>
-    {status ? <CheckCircle2 size={14} color={COLORS.success} /> : <Circle size={14} color={COLORS.grey300} />}
-    <AppText style={[styles.checkText, status && { color: COLORS.textPrimary }]}>{label}</AppText>
+    {status ? (
+      <CheckCircle2 size={14} color={COLORS.success} />
+    ) : (
+      <Circle size={14} color={COLORS.grey300} />
+    )}
+    <AppText
+      style={[styles.checkText, status && { color: COLORS.textPrimary }]}
+    >
+      {label}
+    </AppText>
   </View>
 );
 

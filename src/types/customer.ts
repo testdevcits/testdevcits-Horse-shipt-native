@@ -19,7 +19,6 @@ export interface HorseDocumentItem {
   originalName?: string;
 }
 
-
 export interface HorseDocuments {
   coggins?: HorseDocumentItem;
   healthCertificate?: HorseDocumentItem;
@@ -64,12 +63,18 @@ export interface CreateHorsePayload {
   healthCertificate?: any;
 }
 
-
 export interface Shipment {
   _id: string;
   shipmentCode: string;
   quoteId?: string;
-  status: 'pending' | 'assigned' | 'in_transit' | 'delivered' | 'cancelled' | 'open_for_offers' | string;
+  status:
+    | 'pending'
+    | 'assigned'
+    | 'in_transit'
+    | 'delivered'
+    | 'cancelled'
+    | 'open_for_offers'
+    | string;
   pickupLocation: string;
   deliveryLocation: string;
   pickupDateRange: {
@@ -91,7 +96,7 @@ export interface Shipment {
     email: string;
   };
   horses: any[]; // You can further define this if needed,
-  deliveryOtpVerified: boolean
+  deliveryOtpVerified: boolean;
 }
 
 export interface GetShipmentsResponse {
@@ -99,8 +104,6 @@ export interface GetShipmentsResponse {
   count: number;
   shipments: Shipment[];
 }
-
-
 
 export interface TopRatedShipper {
   id: string;
@@ -117,8 +120,6 @@ export interface TopRatedShippersResponse {
   success: boolean;
   data: TopRatedShipper[];
 }
-
-
 
 export interface ProfileImage {
   url: string;
@@ -147,7 +148,6 @@ export interface CustomerProfileResponse {
   message: string;
   data: CustomerProfileData;
 }
-
 
 export interface TermsCondition {
   _id: string;
@@ -185,7 +185,6 @@ export interface GetShipmentByIdResponse {
   success: boolean;
   shipment: Shipment;
 }
-
 
 export interface GetQuotesResponse {
   success: boolean;
@@ -274,7 +273,6 @@ export interface Question {
   createdAt: string;
   updatedAt: string;
 }
-
 
 export interface MatchingShippersResponse {
   success: boolean;

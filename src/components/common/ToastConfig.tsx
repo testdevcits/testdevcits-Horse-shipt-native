@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import { ToastConfig, BaseToastProps } from 'react-native-toast-message';
-import { CheckCircle2, AlertCircle, Info,} from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
+import { CheckCircle2, AlertCircle, Info } from 'lucide-react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 
 const { width } = Dimensions.get('window');
@@ -15,12 +22,12 @@ const CustomToastBase = ({
   text1,
   text2,
   icon: Icon,
-  color
+  color,
 }: {
   text1?: string;
   text2?: string;
   icon: any;
-  color: string
+  color: string;
 }) => (
   <View style={[styles.container, { borderLeftColor: color }]}>
     {/* Icon Section with subtle background tint */}
@@ -124,5 +131,5 @@ const styles = StyleSheet.create({
   },
   rightPadding: {
     width: SPACING.sm2,
-  }
+  },
 });

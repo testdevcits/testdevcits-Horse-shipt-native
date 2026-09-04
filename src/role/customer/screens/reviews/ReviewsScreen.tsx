@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
-import {
-  View,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-
-} from 'react-native';
+import { View, FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { Star, MessageCircle } from 'lucide-react-native';
-import { COLORS, SPACING, FONTS, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  SPACING,
+  FONTS,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 import { useReviews } from './useReviews';
 import {
   AppHeader,
@@ -35,7 +35,8 @@ const ReviewsScreen = () => {
       <View style={styles.summaryText}>
         <AppText style={styles.summaryTitle}>Customer Reviews</AppText>
         <AppText style={styles.summarySub}>
-          Based on {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+          Based on {reviews.length}{' '}
+          {reviews.length === 1 ? 'review' : 'reviews'}
         </AppText>
       </View>
     </View>
@@ -80,7 +81,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
   },
-  title: { fontSize: FONT_SIZE.heading, fontFamily: FONTS.bold, color: COLORS.textPrimary },
+  title: {
+    fontSize: FONT_SIZE.heading,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
   list: { padding: SPACING.lg },
   summaryCard: {
     flexDirection: 'row',
@@ -98,12 +103,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ratingNum: { fontSize: FONT_SIZE.title, fontFamily: FONTS.bold, color: COLORS.white },
+  ratingNum: {
+    fontSize: FONT_SIZE.title,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+  },
   summaryText: { marginLeft: SPACING.lg },
-  summaryTitle: { fontSize: FONT_SIZE.xl, fontFamily: FONTS.bold, color: COLORS.white },
+  summaryTitle: {
+    fontSize: FONT_SIZE.xl,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+  },
   summarySub: {
     fontSize: FONT_SIZE.sm,
-    color: 'rgba(255,255,255,0.8)', marginTop: 2
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
   },
 });
 

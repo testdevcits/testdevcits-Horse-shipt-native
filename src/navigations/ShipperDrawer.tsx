@@ -22,7 +22,7 @@ const Drawer = createDrawerNavigator<{
   Settings: undefined;
   PrivacyPolicy: undefined;
   TermsAndConditions: undefined;
-  PreferredAreas: undefined;  
+  PreferredAreas: undefined;
 }>();
 
 const ShipperDrawer = () => {
@@ -44,11 +44,13 @@ const ShipperDrawer = () => {
       <Drawer.Screen name="GoogleReview" component={GoogleReviewScreen} />
       <Drawer.Screen name="Settings" component={ShipperSettingsScreen} />
       <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
-      <Drawer.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
+      <Drawer.Screen
+        name="TermsAndConditions"
+        component={TermsAndConditionsScreen}
+      />
       <Drawer.Screen name="PreferredAreas" component={PreferredAreasScreen} />
     </Drawer.Navigator>
   );
 };
-
 
 export default ShipperDrawer;

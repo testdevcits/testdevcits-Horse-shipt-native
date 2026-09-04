@@ -21,7 +21,10 @@ const initialState: NotificationState = {
 
 export const fetchNotificationsThunk = createAsyncThunk(
   'notification/fetchNotifications',
-  async (arg: { isRefresh?: boolean } | void, { getState, rejectWithValue }) => {
+  async (
+    arg: { isRefresh?: boolean } | void,
+    { getState, rejectWithValue },
+  ) => {
     try {
       const state: any = getState();
       const isShipper = state?.auth?.user?.role === 'shipper';
@@ -35,15 +38,17 @@ export const fetchNotificationsThunk = createAsyncThunk(
 
       if (res?.success || res?.data) {
         const rawData = res.data || [];
-        const notifications: NotificationActivity[] = rawData?.map((n: any) => ({
-          ...n,
-          read:
-            typeof n.read === 'boolean'
-              ? n.read
-              : typeof n.isRead === 'boolean'
+        const notifications: NotificationActivity[] = rawData?.map(
+          (n: any) => ({
+            ...n,
+            read:
+              typeof n.read === 'boolean'
+                ? n.read
+                : typeof n.isRead === 'boolean'
                 ? n.isRead
                 : !!n.readAt,
-        }));
+          }),
+        );
         const unreadCount =
           typeof res.unreadCount === 'number'
             ? res.unreadCount
@@ -54,7 +59,7 @@ export const fetchNotificationsThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.message || 'Error fetching notifications');
     }
-  }
+  },
 );
 
 export const markNotificationsReadThunk = createAsyncThunk(
@@ -100,13 +105,13 @@ const notificationSlice = createSlice({
     setUnreadCount: (state, action: PayloadAction<number>) => {
       state.unreadCount = action.payload;
     },
-    clearNotifications: (state) => {
+    clearNotifications: state => {
       state.notifications = [];
       state.unreadCount = 0;
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     // fetchNotificationsThunk
     builder
       .addCase(fetchNotificationsThunk.pending, (state, action) => {
@@ -129,33 +134,41 @@ const notificationSlice = createSlice({
 
     // markNotificationsReadThunk
     builder
-      .addCase(markNotificationsReadThunk.pending, (state) => {
+      .addCase(markNotificationsReadThunk.pending, state => {
         state.actionLoading = true;
       })
       .addCase(markNotificationsReadThunk.fulfilled, (state, action) => {
         state.actionLoading = false;
         const ids = action.payload;
         state.notifications = state.notifications.map(n =>
-          ids.includes(n._id) ? { ...n, read: true } : n
+          ids.includes(n._id) ? { ...n, read: true } : n,
         );
-        state.unreadCount = Math.max(0, state.notifications.filter(n => !n.read).length);
+        state.unreadCount = Math.max(
+          0,
+          state.notifications.filter(n => !n.read).length,
+        );
       })
-      .addCase(markNotificationsReadThunk.rejected, (state) => {
+      .addCase(markNotificationsReadThunk.rejected, state => {
         state.actionLoading = false;
       });
 
     // deleteNotificationsThunk
     builder
-      .addCase(deleteNotificationsThunk.pending, (state) => {
+      .addCase(deleteNotificationsThunk.pending, state => {
         state.actionLoading = true;
       })
       .addCase(deleteNotificationsThunk.fulfilled, (state, action) => {
         state.actionLoading = false;
         const ids = action.payload;
-        state.notifications = state.notifications.filter(n => !ids.includes(n._id));
-        state.unreadCount = Math.max(0, state.notifications.filter(n => !n.read).length);
+        state.notifications = state.notifications.filter(
+          n => !ids.includes(n._id),
+        );
+        state.unreadCount = Math.max(
+          0,
+          state.notifications.filter(n => !n.read).length,
+        );
       })
-      .addCase(deleteNotificationsThunk.rejected, (state) => {
+      .addCase(deleteNotificationsThunk.rejected, state => {
         state.actionLoading = false;
       });
   },

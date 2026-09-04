@@ -3,20 +3,17 @@ import {
   View,
   FlatList,
   StyleSheet,
-
   RefreshControl,
   Image,
   Pressable,
   ScrollView,
 } from 'react-native';
-import {   PackageSearch, Award } from 'lucide-react-native';
+import { PackageSearch, Award } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
   FONTS,
-
   SCREEN_WIDTH,
-
   FONT_SIZE,
 } from '../../../../constants';
 import {
@@ -57,7 +54,9 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     try {
       await Promise.all([
         refresh(true),
-        dispatch(fetchWishlistThunk(true)).unwrap().catch(() => null),
+        dispatch(fetchWishlistThunk(true))
+          .unwrap()
+          .catch(() => null),
         shipperRefresh ? shipperRefresh() : Promise.resolve(),
       ]);
     } catch (error) {
@@ -75,7 +74,6 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
 
   const { user } = useSelector((state: any) => state.auth || {});
   const userName = user?.name || user?.firstName || 'Not available';
-
 
   return (
     <View style={styles.container}>
@@ -157,8 +155,9 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         {displayedShippers && !shipperloading && !loading && (
           <FlatList
             data={displayedShippers}
-
-            keyExtractor={(item, index) => item?.id || item?._id || index.toString()}
+            keyExtractor={(item, index) =>
+              item?.id || item?._id || index.toString()
+            }
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <ShipperCard
@@ -209,7 +208,6 @@ const styles = StyleSheet.create({
   welcomeHeader: {
     marginBottom: SPACING.md,
     paddingHorizontal: SPACING.lg,
-
   },
   welcomeTitle: {
     fontSize: FONT_SIZE.xl,
@@ -225,4 +223,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-

@@ -5,15 +5,28 @@ import {
   ActivityIndicator,
   Modal,
   StyleSheet,
-
   StatusBar,
   Platform,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Building2, Check, ArrowRight, Shield, Lock, X, ArrowLeft } from 'lucide-react-native';
+import {
+  Building2,
+  Check,
+  ArrowRight,
+  Shield,
+  Lock,
+  X,
+  ArrowLeft,
+} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText } from '../../../../../components';
-import { COLORS, FONTS, FONT_SIZE, SPACING, RADIUS } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  FONT_SIZE,
+  SPACING,
+  RADIUS,
+} from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -47,7 +60,9 @@ const PaymentsTab: React.FC<Props> = ({
 
       if (createRes?.success) {
         // 2. Call Onboarding API (/api/shipper/stripe/onboarding)
-        const onboardRes = await shipperService.getStripeOnboarding().catch(() => null);
+        const onboardRes = await shipperService
+          .getStripeOnboarding()
+          .catch(() => null);
 
         const onboardingUrl =
           onboardRes?.onboardingUrl ||
@@ -72,7 +87,10 @@ const PaymentsTab: React.FC<Props> = ({
           Toast.show({
             type: 'success',
             text1: 'Stripe Payout Account',
-            text2: createRes.message || onboardRes?.message || 'Stripe account processed.',
+            text2:
+              createRes.message ||
+              onboardRes?.message ||
+              'Stripe account processed.',
           });
         }
 
@@ -83,7 +101,8 @@ const PaymentsTab: React.FC<Props> = ({
         Toast.show({
           type: 'error',
           text1: 'Payout Setup Error',
-          text2: createRes?.message || 'Failed to create Stripe payout account.',
+          text2:
+            createRes?.message || 'Failed to create Stripe payout account.',
         });
       }
     } catch (err: any) {
@@ -104,13 +123,16 @@ const PaymentsTab: React.FC<Props> = ({
     <View style={styles.tabSection}>
       <AppText style={styles.sectionHeaderTitle}>Payment Settings</AppText>
       <AppText style={styles.sectionHeaderSub}>
-        Set up your payout account to securely receive payments for completed horse shipments.
+        Set up your payout account to securely receive payments for completed
+        horse shipments.
       </AppText>
 
       {/* Red Alert Banner if not created/connected */}
       {!isConnected && (
         <View style={styles.redAlertBanner}>
-          <AppText style={styles.redAlertText}>Stripe account not created</AppText>
+          <AppText style={styles.redAlertText}>
+            Stripe account not created
+          </AppText>
         </View>
       )}
 
@@ -122,14 +144,26 @@ const PaymentsTab: React.FC<Props> = ({
             <Building2 size={22} color="#A06333" />
           </View>
           <View style={styles.payoutTextCol}>
-            <AppText style={styles.payoutTitle}>Horse Shipper Payout Account</AppText>
+            <AppText style={styles.payoutTitle}>
+              Horse Shipper Payout Account
+            </AppText>
             <AppText style={styles.payoutSub}>
               Receive payments for completed shipments
             </AppText>
           </View>
 
-          <View style={isConnected ? styles.connectedBadge : styles.notConnectedBadge}>
-            <AppText style={isConnected ? styles.connectedBadgeText : styles.notConnectedBadgeText}>
+          <View
+            style={
+              isConnected ? styles.connectedBadge : styles.notConnectedBadge
+            }
+          >
+            <AppText
+              style={
+                isConnected
+                  ? styles.connectedBadgeText
+                  : styles.notConnectedBadgeText
+              }
+            >
               {isConnected ? 'Connected' : 'Not connected'}
             </AppText>
           </View>
@@ -145,21 +179,27 @@ const PaymentsTab: React.FC<Props> = ({
                 <View style={styles.stepperCircleActive}>
                   <View style={styles.stepperDotActive} />
                 </View>
-                <AppText style={styles.stepperLabelActive}>Create account</AppText>
+                <AppText style={styles.stepperLabelActive}>
+                  Create account
+                </AppText>
               </View>
 
               <View style={styles.stepperLine} />
 
               <View style={styles.stepperNode}>
                 <View style={styles.stepperCircleInactive} />
-                <AppText style={styles.stepperLabelInactive}>Complete setup</AppText>
+                <AppText style={styles.stepperLabelInactive}>
+                  Complete setup
+                </AppText>
               </View>
 
               <View style={styles.stepperLine} />
 
               <View style={styles.stepperNode}>
                 <View style={styles.stepperCircleInactive} />
-                <AppText style={styles.stepperLabelInactive}>Verify identity</AppText>
+                <AppText style={styles.stepperLabelInactive}>
+                  Verify identity
+                </AppText>
               </View>
             </View>
 
@@ -168,7 +208,8 @@ const PaymentsTab: React.FC<Props> = ({
             {/* Description & Action Button */}
             <View style={styles.payoutActionSection}>
               <AppText style={styles.connectDescription}>
-                Connect your payout account to start receiving payments for your horse shipments.
+                Connect your payout account to start receiving payments for your
+                horse shipments.
               </AppText>
 
               <TouchableOpacity
@@ -181,7 +222,9 @@ const PaymentsTab: React.FC<Props> = ({
                   <ActivityIndicator size="small" color="#FFFFFF" />
                 ) : (
                   <>
-                    <AppText style={styles.setupPayoutBtnText}>Set up payout account</AppText>
+                    <AppText style={styles.setupPayoutBtnText}>
+                      Set up payout account
+                    </AppText>
                     <ArrowRight size={16} color="#FFFFFF" />
                   </>
                 )}
@@ -197,9 +240,12 @@ const PaymentsTab: React.FC<Props> = ({
                 <Check size={16} color="#A06333" />
               </View>
               <View style={styles.verifiedTextCol}>
-                <AppText style={styles.verifiedTitle}>Payout Account Verified</AppText>
+                <AppText style={styles.verifiedTitle}>
+                  Payout Account Verified
+                </AppText>
                 <AppText style={styles.verifiedSub}>
-                  Your payout account is connected and ready to receive payments for completed shipments.
+                  Your payout account is connected and ready to receive payments
+                  for completed shipments.
                 </AppText>
               </View>
             </View>
@@ -210,7 +256,8 @@ const PaymentsTab: React.FC<Props> = ({
         <View style={styles.encryptionFooterBar}>
           <Shield size={13} color="#A06333" />
           <AppText style={styles.encryptionFooterText}>
-            ALL TRANSACTIONS ARE ENCRYPTED AND SECURELY PROCESSED THROUGH YOUR PAYOUT ACCOUNT.
+            ALL TRANSACTIONS ARE ENCRYPTED AND SECURELY PROCESSED THROUGH YOUR
+            PAYOUT ACCOUNT.
           </AppText>
         </View>
       </View>

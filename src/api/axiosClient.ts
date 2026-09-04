@@ -1,8 +1,9 @@
-
-
-
-
-import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from '../app/store';
 import { logoutUser } from '../redux/slices/authSlice';
@@ -24,7 +25,10 @@ axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     // Check network connectivity before making request
     const netState = await NetInfo.fetch();
-    if (netState.isConnected === false || netState.isInternetReachable === false) {
+    if (
+      netState.isConnected === false ||
+      netState.isInternetReachable === false
+    ) {
       Toast.show({
         type: 'error',
         text1: 'No Internet Connection',
@@ -38,7 +42,8 @@ axiosClient.interceptors.request.use(
 
     // Auth Token Logic
     const state = store.getState();
-    const token = state.auth.token || (await AsyncStorage.getItem('@user_token'));
+    const token =
+      state.auth.token || (await AsyncStorage.getItem('@user_token'));
 
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -55,13 +60,18 @@ axiosClient.interceptors.request.use(
       if (config.data) {
         if (
           config.data instanceof FormData ||
-          (config.data && typeof config.data === 'object' && (config.data as any)._parts)
+          (config.data &&
+            typeof config.data === 'object' &&
+            (config.data as any)._parts)
         ) {
           console.log('   ║ 📦 PAYLOAD: [FormData Body]');
           console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
         } else {
           try {
-            console.log('   ║ 📦 PAYLOAD:', JSON.stringify(config.data, null, 2));
+            console.log(
+              '   ║ 📦 PAYLOAD:',
+              JSON.stringify(config.data, null, 2),
+            );
           } catch (e) {
             console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
           }
@@ -74,7 +84,7 @@ axiosClient.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  error => Promise.reject(error),
 );
 
 // 2. Response Interceptor
@@ -83,7 +93,9 @@ axiosClient.interceptors.response.use(
     // --- LOGGING SUCCESS ---
     if (__DEV__) {
       console.log(' ');
-      console.log(`✅ ╔═══════════ AXIOS RESPONSE [${response.status}] ═══════════╗`);
+      console.log(
+        `✅ ╔═══════════ AXIOS RESPONSE [${response.status}] ═══════════╗`,
+      );
       console.log(`   ║ 🔗 URL:  ${response.config.url}`);
       console.log('   ║ 📄 DATA:', JSON.stringify(response.data, null, 2));
       console.log('   ╚════════════════════════════════════════════╝');
@@ -99,7 +111,9 @@ axiosClient.interceptors.response.use(
     // --- LOGGING ERROR ---
     if (__DEV__) {
       console.log(' ');
-      console.log(`❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`);
+      console.log(
+        `❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`,
+      );
       console.log(`   ║ 🔗 URL:     ${url}`);
       console.log(`   ║ 📝 MESSAGE: ${error.message}`);
       console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
@@ -108,15 +122,15 @@ axiosClient.interceptors.response.use(
 
     const errorMessage: string = String(
       errorBody?.errors?.[0] ||
-      errorBody?.message ||
-      errorBody?.error ||
-      error.message ||
-      'An error occurred',
+        errorBody?.message ||
+        errorBody?.error ||
+        error.message ||
+        'An error occurred',
     );
 
     Toast.show({
       type: 'error',
-      text1: "Error",
+      text1: 'Error',
       text2: errorMessage,
     });
 
@@ -126,13 +140,16 @@ axiosClient.interceptors.response.use(
       if (state.auth.token) {
         console.warn('⚠️ Session Expired: Dispatching global logout...');
         store.dispatch(logoutUser());
-        return Promise.reject({ message: 'Session expired. Please login again.', status: 401 });
+        return Promise.reject({
+          message: 'Session expired. Please login again.',
+          status: 401,
+        });
       }
     }
 
     // Parse and reject with a clean error object
     return Promise.reject(parseApiError(error));
-  }
+  },
 );
 
 /**

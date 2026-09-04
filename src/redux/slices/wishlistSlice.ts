@@ -34,7 +34,9 @@ export const fetchWishlistThunk = createAsyncThunk(
       return rejectWithValue(response?.message || 'Failed to fetch wishlist');
     } catch (error: any) {
       return rejectWithValue(
-        error?.response?.data?.message || error?.message || 'Failed to fetch wishlist',
+        error?.response?.data?.message ||
+          error?.message ||
+          'Failed to fetch wishlist',
       );
     }
   },
@@ -50,9 +52,12 @@ export const toggleWishlistThunk = createAsyncThunk(
     dispatch(optimisticToggleWishlist({ shipperId, shipperItem }));
 
     try {
-      const response: any = await customerService.toggleWishlistShipper(shipperId);
+      const response: any = await customerService.toggleWishlistShipper(
+        shipperId,
+      );
       if (response?.success !== false) {
-        const isFav = response?.isFavorite !== undefined ? response.isFavorite : undefined;
+        const isFav =
+          response?.isFavorite !== undefined ? response.isFavorite : undefined;
         // Toast.show({
         //   type: 'success',
         //   text2:
@@ -70,12 +75,17 @@ export const toggleWishlistThunk = createAsyncThunk(
         //   text1: 'Error',
         //   text2: response?.message || 'Failed to update wishlist',
         // });
-        return rejectWithValue(response?.message || 'Failed to update wishlist');
+        return rejectWithValue(
+          response?.message || 'Failed to update wishlist',
+        );
       }
     } catch (error: any) {
       // Revert on exception
       dispatch(optimisticToggleWishlist({ shipperId, shipperItem }));
-      const msg = error?.response?.data?.message || error?.message || 'Failed to update wishlist';
+      const msg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Failed to update wishlist';
       // Toast.show({
       //   type: 'error',
       //   text1: 'Error',

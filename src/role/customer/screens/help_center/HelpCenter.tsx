@@ -6,14 +6,14 @@ import {
   ScrollView,
   Linking,
 } from 'react-native';
+import { HelpCircle, Mail, ChevronRight } from 'lucide-react-native';
 import {
-  HelpCircle,
-  Mail,
-
-  ChevronRight,
-
-} from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';
 
 const HelpCenter = ({ navigation }: any) => {

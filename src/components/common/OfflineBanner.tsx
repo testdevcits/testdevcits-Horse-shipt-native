@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-
   StyleSheet,
   TouchableOpacity,
   Animated,
@@ -62,22 +61,28 @@ export const OfflineBanner: React.FC = () => {
         styles.container,
         isRestored ? styles.restoredContainer : styles.offlineContainer,
         { transform: [{ translateY: slideAnim }] },
-      ]}>
+      ]}
+    >
       <View style={styles.content}>
         {isRestored ? (
           <>
             <Wifi size={18} color={COLORS.white} style={styles.icon} />
-            <AppText style={styles.text}>Back online! Internet connection restored.</AppText>
+            <AppText style={styles.text}>
+              Back online! Internet connection restored.
+            </AppText>
           </>
         ) : (
           <>
             <WifiOff size={18} color={COLORS.white} style={styles.icon} />
-            <AppText style={styles.text}>No Internet Connection. Checking connection...</AppText>
+            <AppText style={styles.text}>
+              No Internet Connection. Checking connection...
+            </AppText>
             <TouchableOpacity
               style={styles.retryButton}
               onPress={handleRefresh}
               disabled={isRefreshing}
-              activeOpacity={0.8}>
+              activeOpacity={0.8}
+            >
               {isRefreshing ? (
                 <ActivityIndicator size="small" color={COLORS.white} />
               ) : (

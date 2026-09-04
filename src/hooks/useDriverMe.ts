@@ -10,9 +10,16 @@ export const useDriverMe = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [startTripLoading, setStartTripLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLocationPermissionModalVisible, setIsLocationPermissionModalVisible] = useState<boolean>(false);
-  const [locationModalTitle, setLocationModalTitle] = useState<string>('Background Location Mandate');
-  const [locationModalMessage, setLocationModalMessage] = useState<string>('Auto-Tracking mandates background location access ("Allow all the time"). Please open system settings to grant location permissions.');
+  const [
+    isLocationPermissionModalVisible,
+    setIsLocationPermissionModalVisible,
+  ] = useState<boolean>(false);
+  const [locationModalTitle, setLocationModalTitle] = useState<string>(
+    'Background Location Mandate',
+  );
+  const [locationModalMessage, setLocationModalMessage] = useState<string>(
+    'Auto-Tracking mandates background location access ("Allow all the time"). Please open system settings to grant location permissions.',
+  );
   const dispatch = useAppDispatch();
 
   const fetchDriverData = useCallback(async () => {
@@ -92,6 +99,7 @@ export const useDriverMe = () => {
     isLocationPermissionModalVisible,
     locationModalTitle,
     locationModalMessage,
-    closeLocationPermissionModal: () => setIsLocationPermissionModalVisible(false),
+    closeLocationPermissionModal: () =>
+      setIsLocationPermissionModalVisible(false),
   };
 };

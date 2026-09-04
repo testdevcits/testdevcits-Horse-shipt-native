@@ -7,9 +7,8 @@ import Geolocation from 'react-native-geolocation-service';
  * if permanently blocked by the driver.
  */
 export const requestLocationPermission = async (
-  onShowSettingsPrompt: (title: string, message: string) => void
+  onShowSettingsPrompt: (title: string, message: string) => void,
 ): Promise<boolean> => {
-  
   // --- iOS Handling ---
   if (Platform.OS === 'ios') {
     try {
@@ -17,12 +16,12 @@ export const requestLocationPermission = async (
       if (status === 'granted') {
         return true;
       }
-      
+
       // If blocked, prompt settings redirect
       if (status === 'denied' || status === 'restricted') {
         onShowSettingsPrompt(
           'Location Services Required',
-          'GPS access is restricted. Please open system settings and enable Location permissions manually to sync active route coordinates.'
+          'GPS access is restricted. Please open system settings and enable Location permissions manually to sync active route coordinates.',
         );
       }
       return false;
@@ -37,7 +36,7 @@ export const requestLocationPermission = async (
     try {
       // 1. Check if permission was already granted previously
       const hasPermission = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (hasPermission) return true;
 
@@ -46,11 +45,12 @@ export const requestLocationPermission = async (
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: 'Dispatch Location Sync',
-          message: 'Horse Shipt needs access to your GPS coordinates to coordinate active shipment progress and arrival times.',
+          message:
+            'Horse Shipt needs access to your GPS coordinates to coordinate active shipment progress and arrival times.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
-        }
+        },
       );
 
       if (status === PermissionsAndroid.RESULTS.GRANTED) {
@@ -61,7 +61,7 @@ export const requestLocationPermission = async (
       if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
         onShowSettingsPrompt(
           'GPS Access Blocked',
-          'Location tracking access is permanently denied. Please open your system settings and grant location permissions manually to sync active runs.'
+          'Location tracking access is permanently denied. Please open your system settings and grant location permissions manually to sync active runs.',
         );
       }
       return false;
@@ -79,7 +79,7 @@ export const requestLocationPermission = async (
  * Returns true ONLY if background location permission is granted.
  */
 export const requestBackgroundLocationPermission = async (
-  onShowSettingsPrompt: (title: string, message: string) => void
+  onShowSettingsPrompt: (title: string, message: string) => void,
 ): Promise<boolean> => {
   // --- iOS Handling ---
   if (Platform.OS === 'ios') {
@@ -91,7 +91,7 @@ export const requestBackgroundLocationPermission = async (
 
       onShowSettingsPrompt(
         'Background Location Mandate Required',
-        'Auto-Tracking requires background location access ("Always Allow") to continuously sync your location during trips even when the app is closed or minimized. Please grant "Always" location access in system settings.'
+        'Auto-Tracking requires background location access ("Always Allow") to continuously sync your location during trips even when the app is closed or minimized. Please grant "Always" location access in system settings.',
       );
       return false;
     } catch (error) {
@@ -105,7 +105,7 @@ export const requestBackgroundLocationPermission = async (
     try {
       // 1. Check and request fine foreground location first
       const hasFineLocation = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
 
       if (!hasFineLocation) {
@@ -113,17 +113,18 @@ export const requestBackgroundLocationPermission = async (
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
             title: 'Location Permission Needed',
-            message: 'Horse Shipt requires GPS location access for driver tracking.',
+            message:
+              'Horse Shipt requires GPS location access for driver tracking.',
             buttonNeutral: 'Ask Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
-          }
+          },
         );
 
         if (fineStatus !== PermissionsAndroid.RESULTS.GRANTED) {
           onShowSettingsPrompt(
             'Foreground Location Required',
-            'Foreground location access was denied. Background auto-tracking cannot function without location permission.'
+            'Foreground location access was denied. Background auto-tracking cannot function without location permission.',
           );
           return false;
         }
@@ -132,11 +133,11 @@ export const requestBackgroundLocationPermission = async (
       // 2. Notification permission check (Android 13+) for foreground service notification
       if (Platform.Version >= 33) {
         const hasNotif = await PermissionsAndroid.check(
-          'android.permission.POST_NOTIFICATIONS' as any
+          'android.permission.POST_NOTIFICATIONS' as any,
         );
         if (!hasNotif) {
           await PermissionsAndroid.request(
-            'android.permission.POST_NOTIFICATIONS' as any
+            'android.permission.POST_NOTIFICATIONS' as any,
           );
         }
       }
@@ -144,7 +145,7 @@ export const requestBackgroundLocationPermission = async (
       // 3. Mandate Background Location permission (Android 10+ / API 29+)
       if (Platform.Version >= 29) {
         const hasBackgroundLocation = await PermissionsAndroid.check(
-          PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
+          PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
         );
 
         if (hasBackgroundLocation) {
@@ -160,7 +161,7 @@ export const requestBackgroundLocationPermission = async (
             buttonNeutral: 'Ask Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'Grant Background Access',
-          }
+          },
         );
 
         if (bgStatus === PermissionsAndroid.RESULTS.GRANTED) {
@@ -169,7 +170,7 @@ export const requestBackgroundLocationPermission = async (
 
         onShowSettingsPrompt(
           'Background Location Required',
-          'Auto-Tracking mandates background location access ("Allow all the time"). Please open your system settings and set Location permission to "Allow all the time" to start Auto-Tracking.'
+          'Auto-Tracking mandates background location access ("Allow all the time"). Please open your system settings and set Location permission to "Allow all the time" to start Auto-Tracking.',
         );
         return false;
       }

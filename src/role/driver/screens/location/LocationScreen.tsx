@@ -1,11 +1,6 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  ScrollView,
-  
-  ActivityIndicator,
-} from 'react-native';
+import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { Map, Compass, Zap } from 'lucide-react-native';
 import Geolocation from 'react-native-geolocation-service';
 
@@ -299,7 +294,6 @@ const LocationScreen = () => {
                 styles.goldButton,
                 isAutoTracking && styles.autoTrackActiveButton,
               ]}
-              
               onPress={handleToggleAutoTrack}
               title={isAutoTracking ? 'Stop Auto-Track' : 'Start Auto-Track'}
               leftIcon={<Zap size={18} color={COLORS.white} />}

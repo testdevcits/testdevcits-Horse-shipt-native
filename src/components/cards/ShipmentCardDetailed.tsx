@@ -1,6 +1,12 @@
 import React, { memo, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { MapPin, Calendar, ExternalLink, Truck, Trash2 } from 'lucide-react-native';
+import {
+  MapPin,
+  Calendar,
+  ExternalLink,
+  Truck,
+  Trash2,
+} from 'lucide-react-native';
 import {
   COLORS,
   FONTS,
@@ -65,26 +71,24 @@ const ShipmentHorizontalCard = memo(
         onPress={onPress}
       >
         {/* 1. Left Section: Horse Image */}
-        {
-          imageError ?
-            <Image
-              source={{
-                uri: horsePlaceholderImage
-              }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-            :
-            <Image
-              source={{
-                uri:
-                  horse?.photo?.url || horsePlaceholderImage
-              }}
-              style={styles.image}
-              resizeMode="cover"
-              onError={() => setImageError(true)}
-            />
-        }
+        {imageError ? (
+          <Image
+            source={{
+              uri: horsePlaceholderImage,
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        ) : (
+          <Image
+            source={{
+              uri: horse?.photo?.url || horsePlaceholderImage,
+            }}
+            style={styles.image}
+            resizeMode="cover"
+            onError={() => setImageError(true)}
+          />
+        )}
 
         {/* 2. Middle Section: Details */}
         <View style={styles.content}>
@@ -97,7 +101,9 @@ const ShipmentHorizontalCard = memo(
             </AppText>
 
             {/* Shipment Code / External Action / Delete Action */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+            >
               {isDraft && onDelete && (
                 <TouchableOpacity
                   style={styles.deleteIconBtn}
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
     width: '32%',
     height: '100%',
     backgroundColor: COLORS.grey100,
-    aspectRatio: 1
+    aspectRatio: 1,
   },
   content: {
     flex: 1,

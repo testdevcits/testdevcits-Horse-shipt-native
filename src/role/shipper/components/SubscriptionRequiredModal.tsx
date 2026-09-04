@@ -6,7 +6,6 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
-
 } from 'react-native';
 import {
   X,
@@ -48,8 +47,12 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
   onOpenAddCardModal,
   onSubscriptionSuccess,
 }) => {
-  const [step, setStep] = useState<'plan_selection' | 'add_card'>('plan_selection');
-  const [selectedPlanType, setSelectedPlanType] = useState<'daily' | 'monthly' | 'yearly'>('monthly');
+  const [step, setStep] = useState<'plan_selection' | 'add_card'>(
+    'plan_selection',
+  );
+  const [selectedPlanType, setSelectedPlanType] = useState<
+    'daily' | 'monthly' | 'yearly'
+  >('monthly');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Stripe Card state for inline card addition
@@ -78,9 +81,16 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
 
   const selectedPlan = getSelectedPlan();
   const trialDays = plansData?.trialDays ?? 1;
-  const currencySymbol = selectedPlan?.currency?.toUpperCase() === 'USD' ? '$' : '$';
-  const planAmount = selectedPlan?.amount ?? (selectedPlanType === 'yearly' ? 219.89 : 1);
-  const intervalLabel = selectedPlanType === 'daily' ? 'day' : selectedPlanType === 'yearly' ? 'year' : 'month';
+  const currencySymbol =
+    selectedPlan?.currency?.toUpperCase() === 'USD' ? '$' : '$';
+  const planAmount =
+    selectedPlan?.amount ?? (selectedPlanType === 'yearly' ? 219.89 : 1);
+  const intervalLabel =
+    selectedPlanType === 'daily'
+      ? 'day'
+      : selectedPlanType === 'yearly'
+      ? 'year'
+      : 'month';
 
   const handleActionPress = async () => {
     // If shipper has no payment card, switch to inline Add Payment Method step
@@ -115,7 +125,8 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
         Toast.show({
           type: 'error',
           text1: 'Subscription Error',
-          text2: res?.message || 'Failed to process subscription. Please try again.',
+          text2:
+            res?.message || 'Failed to process subscription. Please try again.',
         });
       }
     } catch (error: any) {
@@ -123,7 +134,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: error?.response?.data?.message || 'Something went wrong while subscribing.',
+        text2:
+          error?.response?.data?.message ||
+          'Something went wrong while subscribing.',
       });
     } finally {
       setIsSubmitting(false);
@@ -140,16 +153,23 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
 
     try {
       let paymentMethodId = '';
-      const setupIntentRes = await shipperService.getSetupIntent().catch(() => null);
+      const setupIntentRes = await shipperService
+        .getSetupIntent()
+        .catch(() => null);
       const clientSecret = setupIntentRes?.clientSecret;
 
       if (clientSecret && clientSecret.includes('_secret_')) {
-        const { setupIntent, error: stripeError } = await confirmSetupIntent(clientSecret, {
-          paymentMethodType: 'Card',
-        });
+        const { setupIntent, error: stripeError } = await confirmSetupIntent(
+          clientSecret,
+          {
+            paymentMethodType: 'Card',
+          },
+        );
         if (stripeError) {
           setIsSavingCard(false);
-          setCardError(stripeError.message || 'Failed to process card details.');
+          setCardError(
+            stripeError.message || 'Failed to process card details.',
+          );
           return;
         }
         paymentMethodId =
@@ -159,19 +179,25 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
       }
 
       if (!paymentMethodId) {
-        const { paymentMethod, error: stripeError } = await createPaymentMethod({
-          paymentMethodType: 'Card',
-        });
+        const { paymentMethod, error: stripeError } = await createPaymentMethod(
+          {
+            paymentMethodType: 'Card',
+          },
+        );
         if (stripeError) {
           setIsSavingCard(false);
-          setCardError(stripeError.message || 'Failed to process card details.');
+          setCardError(
+            stripeError.message || 'Failed to process card details.',
+          );
           return;
         }
         paymentMethodId = paymentMethod?.id || '';
       }
 
       if (paymentMethodId) {
-        const saveRes = await shipperService.savePaymentMethod({ paymentMethodId });
+        const saveRes = await shipperService.savePaymentMethod({
+          paymentMethodId,
+        });
         if (saveRes?.success) {
           shipperStatus.hasCard = true;
           Toast.show({
@@ -189,7 +215,10 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
       }
     } catch (err: any) {
       console.error('Card saving error:', err);
-      setCardError(err?.response?.data?.message || 'Failed to save card. Please try again.');
+      setCardError(
+        err?.response?.data?.message ||
+          'Failed to save card. Please try again.',
+      );
     } finally {
       setIsSavingCard(false);
     }
@@ -210,7 +239,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
               {/* Top Left Badge */}
               <View style={styles.requiredBadge}>
                 <Zap size={13} color={COLORS.white} fill={COLORS.white} />
-                <AppText style={styles.requiredBadgeText}>SUBSCRIPTION REQUIRED</AppText>
+                <AppText style={styles.requiredBadgeText}>
+                  SUBSCRIPTION REQUIRED
+                </AppText>
               </View>
 
               {/* Close Button */}
@@ -232,18 +263,25 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 <View style={styles.trialPillRow}>
                   <View style={styles.trialPill}>
                     <ShieldCheck size={13} color={COLORS.amberLightBg} />
-                    <AppText style={styles.trialPillText}>{trialDays}-day free trial</AppText>
+                    <AppText style={styles.trialPillText}>
+                      {trialDays}-day free trial
+                    </AppText>
                   </View>
-                  <AppText style={styles.trialSubText}>Cancel anytime • No hidden charges</AppText>
+                  <AppText style={styles.trialSubText}>
+                    Cancel anytime • No hidden charges
+                  </AppText>
                 </View>
               </View>
 
               {/* Top Right Price Tag */}
               <View style={styles.priceTagBox}>
                 <AppText style={styles.priceTagAmount}>
-                  {currencySymbol}{planAmount}
+                  {currencySymbol}
+                  {planAmount}
                 </AppText>
-                <AppText style={styles.priceTagInterval}>/{intervalLabel}</AppText>
+                <AppText style={styles.priceTagInterval}>
+                  /{intervalLabel}
+                </AppText>
               </View>
             </View>
           </View>
@@ -259,7 +297,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {/* Header Title Row */}
                 <View style={styles.addCardHeaderRow}>
                   <CreditCard size={20} color={COLORS.textPrimary} />
-                  <AppText style={styles.addCardHeaderTitle}>Add Payment Method</AppText>
+                  <AppText style={styles.addCardHeaderTitle}>
+                    Add Payment Method
+                  </AppText>
                 </View>
                 <AppText style={styles.addCardSubTitle}>
                   You won't be charged until your trial ends
@@ -269,7 +309,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {!!cardError && (
                   <View style={styles.errorBanner}>
                     <AlertCircle size={15} color={COLORS.redPrimary} />
-                    <AppText style={styles.errorBannerText}>{cardError}</AppText>
+                    <AppText style={styles.errorBannerText}>
+                      {cardError}
+                    </AppText>
                   </View>
                 )}
 
@@ -307,7 +349,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                   ) : (
                     <View style={styles.actionBtnContent}>
                       <Check size={18} color={COLORS.white} />
-                      <AppText style={styles.actionBtnText}>Save Card & Continue</AppText>
+                      <AppText style={styles.actionBtnText}>
+                        Save Card & Continue
+                      </AppText>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -326,7 +370,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
               <>
                 {/* WHAT'S INCLUDED CHECKLIST */}
                 <View style={styles.includedSection}>
-                  <AppText style={styles.sectionHeaderLabel}>WHAT'S INCLUDED</AppText>
+                  <AppText style={styles.sectionHeaderLabel}>
+                    WHAT'S INCLUDED
+                  </AppText>
 
                   <View style={styles.checkListContainer}>
                     {[
@@ -338,7 +384,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     ].map((item, idx) => (
                       <View key={idx} style={styles.checkItemRow}>
                         <View style={styles.checkIconSquare}>
-                          <CheckCircle2 size={16} color={COLORS.brandBrown} fill={COLORS.goldLightBg} />
+                          <CheckCircle2
+                            size={16}
+                            color={COLORS.brandBrown}
+                            fill={COLORS.goldLightBg}
+                          />
                         </View>
                         <AppText style={styles.checkItemText}>{item}</AppText>
                       </View>
@@ -357,11 +407,24 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     onPress={() => setSelectedPlanType('daily')}
                     activeOpacity={0.85}
                   >
-                    <AppText style={[styles.planTabName, selectedPlanType === 'daily' && styles.planTabTextActive]}>
+                    <AppText
+                      style={[
+                        styles.planTabName,
+                        selectedPlanType === 'daily' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
                       ONE DAY
                     </AppText>
-                    <AppText style={[styles.planTabPrice, selectedPlanType === 'daily' && styles.planTabTextActive]}>
-                      {currencySymbol}{plansData?.daily?.amount ?? 1}
+                    <AppText
+                      style={[
+                        styles.planTabPrice,
+                        selectedPlanType === 'daily' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
+                      {currencySymbol}
+                      {plansData?.daily?.amount ?? 1}
                     </AppText>
                   </TouchableOpacity>
 
@@ -369,16 +432,30 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                   <TouchableOpacity
                     style={[
                       styles.planTabCard,
-                      selectedPlanType === 'monthly' && styles.planTabCardActive,
+                      selectedPlanType === 'monthly' &&
+                        styles.planTabCardActive,
                     ]}
                     onPress={() => setSelectedPlanType('monthly')}
                     activeOpacity={0.85}
                   >
-                    <AppText style={[styles.planTabName, selectedPlanType === 'monthly' && styles.planTabTextActive]}>
+                    <AppText
+                      style={[
+                        styles.planTabName,
+                        selectedPlanType === 'monthly' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
                       MONTHLY
                     </AppText>
-                    <AppText style={[styles.planTabPrice, selectedPlanType === 'monthly' && styles.planTabTextActive]}>
-                      {currencySymbol}{plansData?.monthly?.amount ?? 1}
+                    <AppText
+                      style={[
+                        styles.planTabPrice,
+                        selectedPlanType === 'monthly' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
+                      {currencySymbol}
+                      {plansData?.monthly?.amount ?? 1}
                     </AppText>
                   </TouchableOpacity>
 
@@ -391,11 +468,24 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     onPress={() => setSelectedPlanType('yearly')}
                     activeOpacity={0.85}
                   >
-                    <AppText style={[styles.planTabName, selectedPlanType === 'yearly' && styles.planTabTextActive]}>
+                    <AppText
+                      style={[
+                        styles.planTabName,
+                        selectedPlanType === 'yearly' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
                       YEARLY
                     </AppText>
-                    <AppText style={[styles.planTabPrice, selectedPlanType === 'yearly' && styles.planTabTextActive]}>
-                      {currencySymbol}{plansData?.yearly?.amount ?? 219.89}
+                    <AppText
+                      style={[
+                        styles.planTabPrice,
+                        selectedPlanType === 'yearly' &&
+                          styles.planTabTextActive,
+                      ]}
+                    >
+                      {currencySymbol}
+                      {plansData?.yearly?.amount ?? 219.89}
                     </AppText>
                   </TouchableOpacity>
                 </View>
@@ -407,7 +497,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                       <AlertCircle size={18} color={COLORS.amberWarning} />
                     </View>
                     <View style={styles.cardWarningTextCol}>
-                      <AppText style={styles.cardWarningTitle}>Payment Method Required</AppText>
+                      <AppText style={styles.cardWarningTitle}>
+                        Payment Method Required
+                      </AppText>
                       <AppText style={styles.cardWarningSub}>
                         Add a card to start your free trial
                       </AppText>
@@ -419,8 +511,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 <View style={styles.trialNoteBox}>
                   <AppText style={styles.trialNoteText}>
                     You won't be charged during your{' '}
-                    <AppText style={styles.trialNoteBold}>{trialDays}-day free trial</AppText>. After the
-                    trial, billing is {currencySymbol}{planAmount}/{intervalLabel}.
+                    <AppText style={styles.trialNoteBold}>
+                      {trialDays}-day free trial
+                    </AppText>
+                    . After the trial, billing is {currencySymbol}
+                    {planAmount}/{intervalLabel}.
                   </AppText>
                 </View>
 
@@ -435,7 +530,9 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     <ActivityIndicator color={COLORS.white} />
                   ) : (
                     <View style={styles.actionBtnContent}>
-                      {!shipperStatus.hasCard && <CreditCard size={18} color={COLORS.white} />}
+                      {!shipperStatus.hasCard && (
+                        <CreditCard size={18} color={COLORS.white} />
+                      )}
                       <AppText style={styles.actionBtnText}>
                         {!shipperStatus.hasCard
                           ? 'Add Payment Method'
@@ -447,7 +544,8 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
 
                 {/* FOOTER SUBTEXT */}
                 <AppText style={styles.footerSubText}>
-                  {currencySymbol}{planAmount}/{intervalLabel} after trial • Cancel anytime
+                  {currencySymbol}
+                  {planAmount}/{intervalLabel} after trial • Cancel anytime
                 </AppText>
               </>
             )}

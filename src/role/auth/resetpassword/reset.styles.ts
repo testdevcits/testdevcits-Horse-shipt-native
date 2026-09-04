@@ -1,11 +1,25 @@
-import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, SCREEN_WIDTH, FONTS, FONT_SIZE, SIZES } from "../../../constants";
+import { StyleSheet, Platform } from 'react-native';
+import {
+  COLORS,
+  RADIUS,
+  SPACING,
+  SCREEN_WIDTH,
+  FONTS,
+  FONT_SIZE,
+  SIZES,
+} from '../../../constants';
 
 export default StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
   headerImage: { width: SCREEN_WIDTH },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.18)' },
-  backBtn: { padding: SPACING.xl, marginTop: Platform.OS === 'ios' ? SPACING.giant : SPACING.xl },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.18)',
+  },
+  backBtn: {
+    padding: SPACING.xl,
+    marginTop: Platform.OS === 'ios' ? SPACING.giant : SPACING.xl,
+  },
   keyboardView: { flex: 1, marginTop: -RADIUS.xl * 2 },
   contentCard: {
     flex: 1, // Crucial for 85% height logic
@@ -13,28 +27,60 @@ export default StyleSheet.create({
     borderTopLeftRadius: RADIUS.xl * 1.5,
     borderTopRightRadius: RADIUS.xl * 1.5,
     paddingHorizontal: SPACING.xxl,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 15,
     elevation: 10,
   },
   logoOuterRing: {
-    width: 90, height: 90, borderRadius: 45,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: 'rgba(163, 127, 61, 0.20)',
-    justifyContent: 'center', alignItems: 'center', alignSelf: 'center',
-    marginTop: -45, borderWidth: 1, borderColor: COLORS.goldBorder, zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: -45,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    zIndex: 10,
   },
   logoInnerRing: {
-    width: 72, height: 72, borderRadius: 36,
+    width: 72,
+    height: 72,
+    borderRadius: 36,
     backgroundColor: COLORS.goldLightBg,
-    justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1.5, borderColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
   },
-  logoIcon: { width: SIZES.avatarMd, height: SIZES.avatarMd, tintColor: COLORS.goldDarkText },
-  scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant, flexGrow: 1 },
+  logoIcon: {
+    width: SIZES.avatarMd,
+    height: SIZES.avatarMd,
+    tintColor: COLORS.goldDarkText,
+  },
+  scrollContent: {
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.giant,
+    flexGrow: 1,
+  },
   textHeader: { marginBottom: SPACING.xl, alignItems: 'center' },
-  title: { fontSize: FONT_SIZE.display, fontFamily: FONTS.bold, color: COLORS.textPrimary, textAlign: 'center' },
-  subtitle: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: SPACING.sm, lineHeight: SPACING.xl, paddingHorizontal: SPACING.sm2 },
+  title: {
+    fontSize: FONT_SIZE.display,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    marginTop: SPACING.sm,
+    lineHeight: SPACING.xl,
+    paddingHorizontal: SPACING.sm2,
+  },
   form: { gap: SPACING.sm },
   submitBtn: {
     backgroundColor: COLORS.primary,
@@ -44,6 +90,6 @@ export default StyleSheet.create({
     shadowColor: COLORS.primary,
     shadowOpacity: 0.3,
     shadowRadius: SPACING.sm,
-    elevation: 5
+    elevation: 5,
   },
 });

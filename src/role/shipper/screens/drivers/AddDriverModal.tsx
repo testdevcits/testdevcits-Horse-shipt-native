@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
-
   TouchableOpacity,
   ScrollView,
-
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, } from 'lucide-react-native';
+import { X } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
-import { COLORS, SPACING, } from '../../../../constants';
+import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.adddriver';
 
@@ -24,7 +22,12 @@ interface Props {
   driverToEdit?: any;
 }
 
-const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) => {
+const AddDriverModal = ({
+  visible,
+  onClose,
+  onSuccess,
+  driverToEdit,
+}: Props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -115,7 +118,11 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
         });
       }
 
-      if (res?.success || res?.data || res?.message === 'Data fetched successfully') {
+      if (
+        res?.success ||
+        res?.data ||
+        res?.message === 'Data fetched successfully'
+      ) {
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -149,7 +156,6 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
     }
   };
 
-
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.overlay}>
@@ -163,7 +169,8 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
               <View>
                 <AppText style={styles.title}>Truck Driver Management</AppText>
                 <AppText style={styles.subtitle}>
-                  {driverToEdit ? 'Edit Driver' : 'Add Driver'} - Enter the driver's contact details and license information.
+                  {driverToEdit ? 'Edit Driver' : 'Add Driver'} - Enter the
+                  driver's contact details and license information.
                 </AppText>
               </View>
               <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
@@ -173,7 +180,9 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
 
             <ScrollView showsVerticalScrollIndicator={false}>
               {/* Section 1: Contact Information */}
-              <AppText style={styles.sectionHeader}>Contact Information</AppText>
+              <AppText style={styles.sectionHeader}>
+                Contact Information
+              </AppText>
 
               <Input
                 label="Driver name *"
@@ -194,7 +203,8 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 value={email}
                 onChangeText={text => {
                   setEmail(text);
-                  if (errors?.email) setErrors(prev => ({ ...prev, email: '' }));
+                  if (errors?.email)
+                    setErrors(prev => ({ ...prev, email: '' }));
                 }}
                 error={errors?.email}
               />
@@ -206,13 +216,16 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 value={phone}
                 onChangeText={text => {
                   setPhone(text);
-                  if (errors?.phone) setErrors(prev => ({ ...prev, phone: '' }));
+                  if (errors?.phone)
+                    setErrors(prev => ({ ...prev, phone: '' }));
                 }}
                 error={errors?.phone}
               />
 
               {/* Section 2: License & Access */}
-              <AppText style={[styles.sectionHeader, { marginTop: SPACING.md }]}>
+              <AppText
+                style={[styles.sectionHeader, { marginTop: SPACING.md }]}
+              >
                 License & Access
               </AppText>
 
@@ -222,7 +235,8 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 value={licenseNumber}
                 onChangeText={text => {
                   setLicenseNumber(text);
-                  if (errors?.licenseNumber) setErrors(prev => ({ ...prev, licenseNumber: '' }));
+                  if (errors?.licenseNumber)
+                    setErrors(prev => ({ ...prev, licenseNumber: '' }));
                 }}
                 error={errors?.licenseNumber}
               />
@@ -235,7 +249,8 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                   value={password}
                   onChangeText={text => {
                     setPassword(text);
-                    if (errors?.password) setErrors(prev => ({ ...prev, password: '' }));
+                    if (errors?.password)
+                      setErrors(prev => ({ ...prev, password: '' }));
                   }}
                   error={errors?.password}
                 />
@@ -248,7 +263,6 @@ const AddDriverModal = ({ visible, onClose, onSuccess, driverToEdit }: Props) =>
                 onChangeText={setNotes}
                 multiline
               />
-
 
               {submitError && (
                 <View style={styles.errorContainer}>

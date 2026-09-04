@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Modal,
   View,
-
   TouchableOpacity,
   ActivityIndicator,
   Linking,
@@ -12,7 +11,7 @@ import {
 import { WebView } from 'react-native-webview';
 import { Download, FileText } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, } from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import styles from './styles.contractmodal';
 
 interface ContractModalProps {
@@ -22,7 +21,6 @@ interface ContractModalProps {
   shipmentCode?: string;
   quoteData?: any;
 }
-
 
 const ContractModal: React.FC<ContractModalProps> = ({
   visible,
@@ -119,7 +117,9 @@ const ContractModal: React.FC<ContractModalProps> = ({
               activeOpacity={0.8}
             >
               <Download size={18} color={COLORS.white} />
-              <AppText style={styles.downloadBtnText}>Download Contract</AppText>
+              <AppText style={styles.downloadBtnText}>
+                Download Contract
+              </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity

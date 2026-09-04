@@ -1,7 +1,15 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
-import { COLORS, FONTS, SPACING, FONT_SIZE, ICON_SIZE, RADIUS, SIZES } from '../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+  RADIUS,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -13,17 +21,23 @@ interface HeaderProps {
   showBack?: boolean;
   onBack?: () => void;
   rightElement?: React.ReactNode;
-  showProfileImage?: boolean
+  showProfileImage?: boolean;
 }
 
 // 2. Wrap the component in memo
 const AppHeader = memo(
-  ({ title, showBack, onBack, rightElement, showProfileImage = true }: HeaderProps) => {
+  ({
+    title,
+    showBack,
+    onBack,
+    rightElement,
+    showProfileImage = true,
+  }: HeaderProps) => {
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
     const { unreadCount } = useAppSelector(state => state.notification);
-    const [imageError, setImageError] = useState(false)
+    const [imageError, setImageError] = useState(false);
 
     const userId = (user as any)?._id || user?.id;
 
@@ -106,45 +120,37 @@ const AppHeader = memo(
                   )}
                 </View>
               </TouchableOpacity>
-              {
-
-                showProfileImage &&
+              {showProfileImage && (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Profile')}
                   style={styles.profileBtn}
                 >
-                  {
-                    imageError ?
-                      <Image
-                        source={
-                          imageIndex.AccountIcon
-                        }
-                        style={{
-                          width: SIZES.avatarSm,
-                          height: SIZES.avatarSm,
-                          borderRadius: RADIUS.lg,
-                          // backgroundColor: COLORS.grey200,
-                        }}
-
-                      /> :
-                      <Image
-                        source={
-                          avatarUri
-                            ? { uri: avatarUri }
-                            : imageIndex.AccountIcon
-                        }
-                        style={{
-                          width: SIZES.avatarSm,
-                          height: SIZES.avatarSm,
-                          borderRadius: RADIUS.lg,
-                          backgroundColor: COLORS.grey200,
-                        }}
-                        onError={() => setImageError(true)}
-                      />}
+                  {imageError ? (
+                    <Image
+                      source={imageIndex.AccountIcon}
+                      style={{
+                        width: SIZES.avatarSm,
+                        height: SIZES.avatarSm,
+                        borderRadius: RADIUS.lg,
+                        // backgroundColor: COLORS.grey200,
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      source={
+                        avatarUri ? { uri: avatarUri } : imageIndex.AccountIcon
+                      }
+                      style={{
+                        width: SIZES.avatarSm,
+                        height: SIZES.avatarSm,
+                        borderRadius: RADIUS.lg,
+                        backgroundColor: COLORS.grey200,
+                      }}
+                      onError={() => setImageError(true)}
+                    />
+                  )}
                 </TouchableOpacity>
-              }
-
-
+              )}
             </>
           )}
         </View>

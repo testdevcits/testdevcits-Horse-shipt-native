@@ -12,10 +12,10 @@ interface AvailableShipmentCardProps {
   onPress: (item: any) => void;
 }
 
-const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onPress }) => {
-
-
-
+const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
+  item,
+  onPress,
+}) => {
   const [imageError, setImageError] = useState(false);
 
   const horsePhoto =
@@ -30,14 +30,15 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
 
   const horseSpecs =
     item?.horses && item?.horses[0]
-      ? `${item?.horses[0].breed || 'Not Available'} | ${item?.horses[0].age || '2'
-      }yr | ${item?.horses[0].colour || 'Not Available'}`
+      ? `${item?.horses[0].breed || 'Not Available'} | ${
+          item?.horses[0].age || '2'
+        }yr | ${item?.horses[0].colour || 'Not Available'}`
       : 'Not Available | Not Available | Not Available';
 
   const locationText = item?.pickupLocation
     ? item?.pickupLocation.split(',')[0] +
-    ', ' +
-    (item?.pickupLocation.split(',')[1] || '')
+      ', ' +
+      (item?.pickupLocation.split(',')[1] || '')
     : 'Not Available';
 
   return (
@@ -74,8 +75,8 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <AppText style={styles.shipmentStatus}>
             {item?.status
               ? item.status
-                .replace(/_/g, ' ')
-                .replace(/\b\w/g, char => char.toUpperCase())
+                  .replace(/_/g, ' ')
+                  .replace(/\b\w/g, char => char.toUpperCase())
               : ''}
           </AppText>
         </View>
@@ -117,7 +118,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({ item, onP
           <View style={styles.timelineDot} />
         </View>
       </View>
-    </TouchableOpacity >
+    </TouchableOpacity>
   );
 };
 

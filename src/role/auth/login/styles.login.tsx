@@ -144,7 +144,12 @@ const styles = StyleSheet.create({
   },
   changeRoleBtn: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 52 : (StatusBar.currentHeight ? StatusBar.currentHeight + 12 : 36),
+    top:
+      Platform.OS === 'ios'
+        ? 52
+        : StatusBar.currentHeight
+        ? StatusBar.currentHeight + 12
+        : 36,
     right: SPACING.lg,
     zIndex: 99,
     flexDirection: 'row',

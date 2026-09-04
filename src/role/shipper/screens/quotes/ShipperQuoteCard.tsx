@@ -7,7 +7,6 @@ import {
   RefreshCw,
   FileText,
   Calendar,
-
 } from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { AppText } from '../../../../components';
@@ -104,20 +103,22 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   const vehicleObj =
     typeof quote?.vehicle === 'object' && quote?.vehicle !== null
       ? quote?.vehicle
-      : typeof quote?.assignedVehicle === 'object' && quote?.assignedVehicle !== null
-        ? quote?.assignedVehicle
-        : null;
+      : typeof quote?.assignedVehicle === 'object' &&
+        quote?.assignedVehicle !== null
+      ? quote?.assignedVehicle
+      : null;
 
   const driverObj = vehicleObj?.driver;
 
-  const vehicleName =
-    vehicleObj
-      ? `${vehicleObj?.vehicleType || vehicleObj?.make || 'Vehicle'} (${vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || ''})`.trim()
-      : typeof quote?.vehicle === 'string'
-        ? quote?.vehicle
-        : typeof quote?.assignedVehicle === 'string'
-          ? quote?.assignedVehicle
-          : null;
+  const vehicleName = vehicleObj
+    ? `${vehicleObj?.vehicleType || vehicleObj?.make || 'Vehicle'} (${
+        vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || ''
+      })`.trim()
+    : typeof quote?.vehicle === 'string'
+    ? quote?.vehicle
+    : typeof quote?.assignedVehicle === 'string'
+    ? quote?.assignedVehicle
+    : null;
 
   return (
     <View style={styles.quoteCard}>
@@ -131,7 +132,10 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             resizeMode="cover"
           />
         ) : (
-          <Image source={{ uri: horsePlaceholderImage }} style={styles.horseBanner} />
+          <Image
+            source={{ uri: horsePlaceholderImage }}
+            style={styles.horseBanner}
+          />
         )}
         {/* Status Badge */}
         <View style={[styles.statusPill, statusBadgeStyle]}>
@@ -185,7 +189,9 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Stall</AppText>
               <AppText style={styles.specValue}>
-                {quote?.stallsRequired ? String(quote?.stallsRequired).padStart(2, '0') : '01'}
+                {quote?.stallsRequired
+                  ? String(quote?.stallsRequired).padStart(2, '0')
+                  : '01'}
               </AppText>
             </View>
           </View>
@@ -195,7 +201,11 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Refund</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
-                {(quote?.payoutStatus || quote?.paymentStatus || 'Pending').toUpperCase()}
+                {(
+                  quote?.payoutStatus ||
+                  quote?.paymentStatus ||
+                  'Pending'
+                ).toUpperCase()}
               </AppText>
             </View>
           </View>
@@ -219,12 +229,13 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
                 <AppText style={styles.boldLabel}>Vehicle Number: </AppText>
                 {vehicleObj?.vehicleNumber || 'N/A'}
               </AppText>
-              {vehicleObj?.numberOfStalls !== undefined && vehicleObj?.numberOfStalls !== null && (
-                <AppText style={styles.vehicleDetailText}>
-                  <AppText style={styles.boldLabel}>Stalls: </AppText>
-                  {vehicleObj?.numberOfStalls}
-                </AppText>
-              )}
+              {vehicleObj?.numberOfStalls !== undefined &&
+                vehicleObj?.numberOfStalls !== null && (
+                  <AppText style={styles.vehicleDetailText}>
+                    <AppText style={styles.boldLabel}>Stalls: </AppText>
+                    {vehicleObj?.numberOfStalls}
+                  </AppText>
+                )}
               {driverObj?.name ? (
                 <AppText style={styles.vehicleDetailText}>
                   <AppText style={styles.boldLabel}>Driver: </AppText>
@@ -249,7 +260,9 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           <View style={styles.assignedVehicleContainer}>
             <Truck size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
             <AppText style={styles.assignedVehicleText}>
-              <AppText style={{ fontFamily: FONTS.bold }}>Assigned Vehicle : </AppText>
+              <AppText style={{ fontFamily: FONTS.bold }}>
+                Assigned Vehicle :{' '}
+              </AppText>
               {vehicleName}
             </AppText>
           </View>
@@ -258,7 +271,11 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* Notes Container */}
         {quote?.notes ? (
           <View style={styles.notesContainer}>
-            <FileText size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
+            <FileText
+              size={16}
+              color={COLORS.primary}
+              style={{ marginTop: 2 }}
+            />
             <AppText style={styles.notesText}>
               <AppText style={{ fontFamily: FONTS.bold }}>Notes : </AppText>
               {quote?.notes.trim()}
@@ -270,22 +287,29 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         <View style={styles.cancelNoticeContainer}>
           <Calendar size={16} color="#EF4444" style={{ marginTop: 2 }} />
           <AppText style={styles.cancelNoticeText}>
-            Cancel before : {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
+            Cancel before :{' '}
+            {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
           </AppText>
         </View>
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
-          {onAssignVehicle && !vehicleObj && quote?.contractAccepted && cat !== 'completed' && cat !== 'delivered' && (
-            <TouchableOpacity
-              style={styles.assignVehicleBtn}
-              onPress={() => onAssignVehicle(quote)}
-              activeOpacity={0.8}
-            >
-              {/* <Truck size={16} color={COLORS.primary} /> */}
-              <AppText style={styles.assignVehicleBtnText}>Assign Vehicle</AppText>
-            </TouchableOpacity>
-          )}
+          {onAssignVehicle &&
+            !vehicleObj &&
+            quote?.contractAccepted &&
+            cat !== 'completed' &&
+            cat !== 'delivered' && (
+              <TouchableOpacity
+                style={styles.assignVehicleBtn}
+                onPress={() => onAssignVehicle(quote)}
+                activeOpacity={0.8}
+              >
+                {/* <Truck size={16} color={COLORS.primary} /> */}
+                <AppText style={styles.assignVehicleBtnText}>
+                  Assign Vehicle
+                </AppText>
+              </TouchableOpacity>
+            )}
 
           <TouchableOpacity
             style={[styles.viewContractBtn]}
@@ -296,7 +320,6 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
-
           {
             <TouchableOpacity
               style={[styles.viewContractBtn]}
@@ -304,20 +327,24 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               activeOpacity={0.8}
             >
               {/* <FileCheck size={16} color={COLORS.white} /> */}
-              <AppText style={styles.viewContractBtnText}>View Shipper Contract</AppText>
+              <AppText style={styles.viewContractBtnText}>
+                View Shipper Contract
+              </AppText>
             </TouchableOpacity>
           }
 
-          {!isAssignedOrAccepted && shipment?.status !== 'delivered' && shipment?.status !== 'completed' && (
-            <TouchableOpacity
-              style={styles.deleteBtn}
-              onPress={() => onDelete(quoteId)}
-              activeOpacity={0.8}
-            >
-              {/* <Trash2 size={16} color={COLORS.textPrimary} /> */}
-              <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
-            </TouchableOpacity>
-          )}
+          {!isAssignedOrAccepted &&
+            shipment?.status !== 'delivered' &&
+            shipment?.status !== 'completed' && (
+              <TouchableOpacity
+                style={styles.deleteBtn}
+                onPress={() => onDelete(quoteId)}
+                activeOpacity={0.8}
+              >
+                {/* <Trash2 size={16} color={COLORS.textPrimary} /> */}
+                <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
+              </TouchableOpacity>
+            )}
         </View>
       </View>
     </View>

@@ -6,7 +6,15 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { MapPin, Mail, Star, Check, Users, Truck, Calendar } from 'lucide-react-native';
+import {
+  MapPin,
+  Mail,
+  Star,
+  Check,
+  Users,
+  Truck,
+  Calendar,
+} from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import {
   COLORS,
@@ -19,7 +27,12 @@ import {
 import customerService from '../../../../../api/services/customerService';
 import imageIndex from '../../../../../assets/images/imageIndex';
 
-const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited, showRequestButton = true }: any) => {
+const ShipperProfileCard = ({
+  profile,
+  shipmentId,
+  alreadyInvited,
+  showRequestButton = true,
+}: any) => {
   const [inviting, setInviting] = useState(false);
   const [isInvited, setIsInvited] = useState(alreadyInvited);
 
@@ -62,7 +75,9 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited, showRequestBu
                 color={COLORS.primary}
                 fill={COLORS.primary}
               />
-              <AppText style={styles.ratingText}>{profile?.rating || 0}</AppText>
+              <AppText style={styles.ratingText}>
+                {profile?.rating || 0}
+              </AppText>
             </View>
           </View>
           <AppText style={styles.shipperTitle}>Horse transport shipper</AppText>
@@ -125,7 +140,6 @@ const ShipperProfileCard = ({ profile, shipmentId, alreadyInvited, showRequestBu
 };
 
 const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
-
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -186,7 +200,9 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
           profile={profile}
           shipmentId={shipmentId}
           alreadyInvited={invited?.includes(profile?.id)}
-          showRequestButton={status === "in_transit" || status === "delivered" ? false : true}
+          showRequestButton={
+            status === 'in_transit' || status === 'delivered' ? false : true
+          }
         />
       ))}
 
@@ -196,10 +212,13 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
             <Users size={32} color={COLORS.primary} />
           </View>
 
-          <AppText style={styles.emptyTitle}>No Matching Shippers Found</AppText>
+          <AppText style={styles.emptyTitle}>
+            No Matching Shippers Found
+          </AppText>
 
           <AppText style={styles.emptySubtitle}>
-            There are currently no verified shippers matching your specific route or schedule criteria.
+            There are currently no verified shippers matching your specific
+            route or schedule criteria.
           </AppText>
 
           <View style={styles.infoCardsContainer}>
@@ -208,7 +227,9 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
                 <Truck size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
-                <AppText style={styles.infoCardTitle}>Public Marketplace Visibility</AppText>
+                <AppText style={styles.infoCardTitle}>
+                  Public Marketplace Visibility
+                </AppText>
                 <AppText style={styles.infoCardText}>
                   Your shipment is broadcast live to all drivers in the network.
                 </AppText>
@@ -222,7 +243,8 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>Flexible Dates</AppText>
                 <AppText style={styles.infoCardText}>
-                  Expanding your pickup or delivery window helps match more drivers.
+                  Expanding your pickup or delivery window helps match more
+                  drivers.
                 </AppText>
               </View>
             </View>
@@ -324,7 +346,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
-  statLabel: { fontSize: FONT_SIZE.xs, color: COLORS.textLight, fontFamily: FONTS.bold },
+  statLabel: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textLight,
+    fontFamily: FONTS.bold,
+  },
   statValue: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
@@ -443,4 +469,3 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
 });
-

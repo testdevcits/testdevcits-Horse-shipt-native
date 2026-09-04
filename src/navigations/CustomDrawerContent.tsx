@@ -10,7 +10,13 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { ShieldCheck, LogOut, FileText, ChevronRight, Star } from 'lucide-react-native';
+import {
+  ShieldCheck,
+  LogOut,
+  FileText,
+  ChevronRight,
+  Star,
+} from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
@@ -55,7 +61,9 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
       {IconComponent ? (
         <IconComponent
           size={18}
-          color={iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)}
+          color={
+            iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)
+          }
           strokeWidth={1.8}
         />
       ) : iconSource ? (

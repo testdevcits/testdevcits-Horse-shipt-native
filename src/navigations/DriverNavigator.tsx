@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DriverTabs from './DriverTabs';
 import DeliveryVerificationScreen from '../role/driver/screens/verification/DeliveryVerificationScreen';
 
-
 const Stack = createNativeStackNavigator<{
   DriverTabs: undefined;
   DeliveryVerification: undefined;
@@ -18,7 +17,6 @@ const DriverNavigator = () => {
         name="DeliveryVerification"
         component={DeliveryVerificationScreen}
       />
-
     </Stack.Navigator>
   );
 };

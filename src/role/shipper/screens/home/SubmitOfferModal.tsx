@@ -3,7 +3,6 @@ import {
   Modal,
   View,
   TouchableOpacity,
-
   ActivityIndicator,
   StyleSheet,
   ScrollView,
@@ -26,10 +25,15 @@ import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
-
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -46,15 +50,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   shipmentCode: _shipmentCode,
   onSuccess,
 }) => {
-
-
-
-
-
-
   const sigRef = useRef<any>(null);
   const scrollViewRef = useRef<ScrollView>(null);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const [totalPrice, setTotalPrice] = useState('');
   const [cancellationDays, setCancellationDays] = useState('');
@@ -71,11 +69,6 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
   const [sigError, setSigError] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [isPicking, setIsPicking] = useState(false);
-
-
-
-
-
 
   useEffect(() => {
     if (isVisible) {
@@ -127,14 +120,22 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
     let isValid = true;
     setSubmitError('');
 
-    if (!totalPrice.trim() || isNaN(Number(totalPrice)) || Number(totalPrice) <= 0) {
+    if (
+      !totalPrice.trim() ||
+      isNaN(Number(totalPrice)) ||
+      Number(totalPrice) <= 0
+    ) {
       setPriceError('Please enter a valid price');
       isValid = false;
     } else {
       setPriceError('');
     }
 
-    if (!cancellationDays.trim() || isNaN(Number(cancellationDays)) || Number(cancellationDays) < 0) {
+    if (
+      !cancellationDays.trim() ||
+      isNaN(Number(cancellationDays)) ||
+      Number(cancellationDays) < 0
+    ) {
       setDaysError('Please enter valid cancellation days');
       isValid = false;
     } else {
@@ -173,7 +174,10 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         formData?.append('contractFile', {
           uri: contractFile.uri,
           type: contractFile.type || 'application/pdf',
-          name: contractFile.name || contractFile.fileName || 'shipper_contract.pdf',
+          name:
+            contractFile.name ||
+            contractFile.fileName ||
+            'shipper_contract.pdf',
         } as any);
       }
 
@@ -196,7 +200,6 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           text1: 'Submission Failed',
           text2: errorMsg,
         });
-
       }
     } catch (error: any) {
       console.error('Submit Offer Error:', error);
@@ -211,7 +214,6 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         text1: 'Submission Failed',
         text2: errorMsg,
       });
-
     } finally {
       setIsLoading(false);
     }
@@ -242,7 +244,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             </View>
 
             <View style={styles.headerTextCol}>
-              <AppText style={styles.headerTitle}>Submit Shipping Offer</AppText>
+              <AppText style={styles.headerTitle}>
+                Submit Shipping Offer
+              </AppText>
               <AppText style={styles.headerSub}>
                 Complete the form below and sign to confirm your offer
               </AppText>
@@ -309,7 +313,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
                 <Info size={18} color={COLORS.brandBrown} />
-                <AppText style={styles.sectionTitle}>Cancellation Policy</AppText>
+                <AppText style={styles.sectionTitle}>
+                  Cancellation Policy
+                </AppText>
               </View>
 
               <Input
@@ -356,7 +362,8 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                     {contractFile?.fileName || 'No file chosen'}
                   </AppText>
                   <AppText style={styles.fileCaptionText}>
-                    Optional PDF or image. Customers can review it before accepting the quote?.
+                    Optional PDF or image. Customers can review it before
+                    accepting the quote?.
                   </AppText>
                 </View>
 
@@ -369,7 +376,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   {isPicking ? (
                     <ActivityIndicator size="small" color={COLORS.white} />
                   ) : (
-                    <AppText style={styles.chooseFileBtnText}>Choose File</AppText>
+                    <AppText style={styles.chooseFileBtnText}>
+                      Choose File
+                    </AppText>
                   )}
                 </TouchableOpacity>
               </View>
@@ -390,7 +399,9 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
                 <Edit3 size={18} color={COLORS.brandBrown} />
-                <AppText style={styles.sectionTitle}>Digital Signature </AppText>
+                <AppText style={styles.sectionTitle}>
+                  Digital Signature{' '}
+                </AppText>
                 <AppText style={styles.asterisk}>*</AppText>
               </View>
               <AppText style={styles.sigSub}>
@@ -453,15 +464,21 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
               {Boolean(submitError) && (
                 <View style={styles.focusedErrorBox}>
                   <AlertCircle size={15} color={COLORS.error} />
-                  <AppText style={styles.focusedErrorText}>{submitError}</AppText>
+                  <AppText style={styles.focusedErrorText}>
+                    {submitError}
+                  </AppText>
                 </View>
               )}
-              {
-                submitError === "subscription is required" &&
-                <TouchableOpacity style={[styles.submitBtn, { marginVertical: SPACING.md }]} onPress={() => navigation.navigate("Profile")}>
-                  <AppText style={styles.submitBtnText}>Go to Subscription Page</AppText>
+              {submitError === 'subscription is required' && (
+                <TouchableOpacity
+                  style={[styles.submitBtn, { marginVertical: SPACING.md }]}
+                  onPress={() => navigation.navigate('Profile')}
+                >
+                  <AppText style={styles.submitBtnText}>
+                    Go to Subscription Page
+                  </AppText>
                 </TouchableOpacity>
-              }
+              )}
             </View>
 
             {/* 6. Action Buttons Row */}
@@ -491,14 +508,6 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
-
-
-
-
-
-
-
-
     </Modal>
   );
 };

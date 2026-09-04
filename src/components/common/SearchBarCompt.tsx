@@ -44,7 +44,11 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
       }
       rightIcon={
         value.length > 0 ? (
-          <XCircle size={ICON_SIZE.sm} color={COLORS.grey300} fill={COLORS.grey100} />
+          <XCircle
+            size={ICON_SIZE.sm}
+            color={COLORS.grey300}
+            fill={COLORS.grey100}
+          />
         ) : undefined
       }
       onRightIconPress={handleClear}

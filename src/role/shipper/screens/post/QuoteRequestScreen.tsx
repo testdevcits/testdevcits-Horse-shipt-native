@@ -46,7 +46,8 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
         <Package size={48} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>No Quote Requests Found</AppText>
         <AppText style={styles.emptySub}>
-          There are currently no customer quote invitations or requests available.
+          There are currently no customer quote invitations or requests
+          available.
         </AppText>
       </View>
     );

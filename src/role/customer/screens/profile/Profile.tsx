@@ -1,19 +1,22 @@
-
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
   Image,
   TouchableOpacity,
   ScrollView,
-
   Modal,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { LogOut, PencilLine, User, X } from 'lucide-react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 import { useProfile } from './useProfile';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
@@ -24,21 +27,18 @@ import {
   ConfirmationModal,
   CountryCodePicker,
   COUNTRIES,
-
   Input,
-
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';
 
-const Profile = ({ }: any) => {
+const Profile = ({}: any) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
-  console.log("user from profile screen", JSON.stringify(user, null, 2))
-
+  console.log('user from profile screen', JSON.stringify(user, null, 2));
 
   const {
     profile,
@@ -47,7 +47,7 @@ const Profile = ({ }: any) => {
     updateProfile,
     uploading,
     uploadAvatar,
-    picking
+    picking,
   } = useProfile();
   const [activeTab, setActiveTab] = useState('Profile');
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -108,7 +108,11 @@ const Profile = ({ }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Profile Details" showProfileImage={false} />
+      <AppHeader
+        showBack={true}
+        title="Profile Details"
+        showProfileImage={false}
+      />
       <AppLoader visible={loading || isUpdating} />
 
       {/* Tabs */}
@@ -141,7 +145,8 @@ const Profile = ({ }: any) => {
             <View style={styles.imageWrapper}>
               {/* Profile Image Logic - Safely extracts string URL */}
               {(() => {
-                const rawAvatar = (user?.profileImage || profile?.profileImage) as any;
+                const rawAvatar = (user?.profileImage ||
+                  profile?.profileImage) as any;
                 const avatarUri =
                   typeof rawAvatar === 'string'
                     ? rawAvatar
@@ -200,16 +205,19 @@ const Profile = ({ }: any) => {
               </TouchableOpacity>
             </View>
             <View style={styles.infoList}>
-              {
-                profile?.firstName && profile?.lastName && <InfoRow
+              {profile?.firstName && profile?.lastName && (
+                <InfoRow
                   label="Name"
                   value={`${profile?.firstName} ${profile?.lastName}`}
                 />
-              }
-              <InfoRow label="Email" value={profile?.email || 'Not Available'} />
-              {
-                profile?.phone && <InfoRow label="Phone" value={profile?.phone} isLast />
-              }
+              )}
+              <InfoRow
+                label="Email"
+                value={profile?.email || 'Not Available'}
+              />
+              {profile?.phone && (
+                <InfoRow label="Phone" value={profile?.phone} isLast />
+              )}
             </View>
           </View>
 
@@ -344,7 +352,11 @@ const localStyles = StyleSheet.create({
     borderRadius: RADIUS.md,
     alignItems: 'center',
   },
-  saveBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.sm },
+  saveBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',

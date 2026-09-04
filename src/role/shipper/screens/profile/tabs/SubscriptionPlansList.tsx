@@ -2,7 +2,13 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { CheckCircle, Sparkles, ChevronRight } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
-import { COLORS, SPACING, RADIUS, FONT_SIZE, FONTS } from '../../../../../constants';
+import {
+  COLORS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  FONTS,
+} from '../../../../../constants';
 
 interface Plan {
   priceId: string;
@@ -39,16 +45,13 @@ const SubscriptionPlansList: React.FC<Props> = ({
         <AppText style={styles.title}>Available Plans</AppText>
       </View>
 
-      {plans.map((plan) => {
+      {plans.map(plan => {
         const isCurrentPlan = plan.priceId === currentPriceId;
 
         return (
           <TouchableOpacity
             key={plan.priceId}
-            style={[
-              styles.planCard,
-              isCurrentPlan && styles.activePlanCard
-            ]}
+            style={[styles.planCard, isCurrentPlan && styles.activePlanCard]}
             onPress={() => !isCurrentPlan && onSelectPlan(plan)}
             disabled={isCurrentPlan || isLoading}
             activeOpacity={0.7}

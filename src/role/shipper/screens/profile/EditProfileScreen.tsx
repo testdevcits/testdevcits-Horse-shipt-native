@@ -9,8 +9,16 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Button, Input } from '../../../../components';
-import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../../constants';
-import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
+import {
+  COLORS,
+  FONTS,
+  FONT_SIZE,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
+import LocationPicker, {
+  LocationSelectResult,
+} from '../../../../components/common/LocationPicker/LocationPicker';
 import shipperService from '../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
@@ -23,7 +31,10 @@ interface EditProfileScreenProps {
 const DEFAULT_LAT = 22.7195687;
 const DEFAULT_LNG = 75.8577258;
 
-const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route }) => {
+const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
+  navigation,
+  route,
+}) => {
   const dispatch = useAppDispatch();
   const profileData = route?.params?.profileData || {};
   const user = route?.params?.user || {};
@@ -39,7 +50,9 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
     const loc = profileData?.locale || {};
     setAddress(loc.address || 'Not Available');
     setLatitude(typeof loc.latitude === 'number' ? loc.latitude : DEFAULT_LAT);
-    setLongitude(typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG);
+    setLongitude(
+      typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG,
+    );
     setMobile(profileData?.mobile || user?.phoneNumber || '');
     setDescription(profileData?.description || '');
   }, [profileData, user]);
@@ -90,7 +103,10 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
       }
     } catch (err: any) {
       console.error('Update Profile Error:', err);
-      const msg = err?.response?.data?.message || err?.message || 'Failed to update profile.';
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        'Failed to update profile.';
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -155,10 +171,13 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
               leftIcon={
                 <View style={styles.phonePrefix}>
                   <AppText style={{ fontSize: FONT_SIZE.md }}>🇺🇸</AppText>
-                  <AppText style={{
-                    fontSize: FONT_SIZE.sm,
-                    color: COLORS.textSecondary, fontFamily: FONTS.medium
-                  }}>
+                  <AppText
+                    style={{
+                      fontSize: FONT_SIZE.sm,
+                      color: COLORS.textSecondary,
+                      fontFamily: FONTS.medium,
+                    }}
+                  >
                     +1
                   </AppText>
                 </View>
@@ -169,12 +188,7 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ navigation, route
           {/* EMAIL & ACCOUNT TYPE ROW */}
           <View style={styles.row}>
             <View style={styles.col}>
-              <Input
-                label="EMAIL"
-                value={email}
-                disabled
-                editable={false}
-              />
+              <Input label="EMAIL" value={email} disabled editable={false} />
             </View>
             <View style={styles.col}>
               <Input

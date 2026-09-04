@@ -25,7 +25,6 @@ const useChatDetails = (shipmentId: string) => {
       }
 
       if (roomRes?.success) {
-
         // console.log('Chat Room:======pickupLocation========', roomRes?.shipment?.pickupLocation);
         // console.log('Chat Room:======deliveryLocation========', roomRes?.shipment?.deliveryLocation);
 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   View,
@@ -6,7 +5,6 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
-
   ImageBackground,
   Image,
   StatusBar,

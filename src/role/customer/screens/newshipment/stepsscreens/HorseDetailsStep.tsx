@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import {
   View,
-
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import { PlusCircle } from 'lucide-react-native';
 import { useRoute } from '@react-navigation/native';
-import { COLORS, } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
 import { Horse } from '../../../../../types/customer';
@@ -36,7 +35,6 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   const navigation = useNavigation<any>();
   const isEdit = route.params?.isEdit;
   const { horses: savedHorses, loading } = useMyHorses();
-
 
   const handleNumberOfHorsesChange = (val: string) => {
     if (isEdit) return;
@@ -127,7 +125,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
         otherDocsObj = {
           uri: otherUri,
           type: otherData.type || 'application/pdf',
-          name: otherData.originalName || otherData.name || 'other_document.pdf',
+          name:
+            otherData.originalName || otherData.name || 'other_document.pdf',
         };
       }
 
@@ -186,7 +185,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           >
             <PlusCircle size={20} color={COLORS.primary} />
             <AppText style={styles.noHorsesText}>
-              You don't have any saved horses. Tap here to add one, or enter details manually below.
+              You don't have any saved horses. Tap here to add one, or enter
+              details manually below.
             </AppText>
           </Pressable>
         )}
@@ -344,9 +344,9 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
               isFormValid
                 ? onNext()
                 : Alert.alert(
-                  'Missing Info',
-                  'Please fill in registered name, breed, sex, and stall size for all horses.',
-                )
+                    'Missing Info',
+                    'Please fill in registered name, breed, sex, and stall size for all horses.',
+                  )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>
@@ -356,7 +356,5 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
     </View>
   );
 };
-
-
 
 export default HorseDetailsStep;

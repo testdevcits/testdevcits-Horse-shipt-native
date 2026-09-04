@@ -1,8 +1,21 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Calendar, Clock, MapPin, Truck, Compass, ShieldCheck } from 'lucide-react-native';
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Truck,
+  Compass,
+  ShieldCheck,
+} from 'lucide-react-native';
 import { AppText, Button } from '../../../../components';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const ActiveShipment = ({
   activeShipment,
@@ -13,13 +26,19 @@ const ActiveShipment = ({
   getShortLocation?: any;
   onLaunchMap?: () => void;
 }) => {
-  const isTripInTransit = activeShipment?.tripStatus === 'inTransit' || activeShipment?.tripStatus === 'started';
+  const isTripInTransit =
+    activeShipment?.tripStatus === 'inTransit' ||
+    activeShipment?.tripStatus === 'started';
 
-  const pickupLoc = activeShipment?.shipment?.pickupLocation || 'Pickup address N/A';
-  const deliveryLoc = activeShipment?.shipment?.deliveryLocation || 'Delivery address N/A';
+  const pickupLoc =
+    activeShipment?.shipment?.pickupLocation || 'Pickup address N/A';
+  const deliveryLoc =
+    activeShipment?.shipment?.deliveryLocation || 'Delivery address N/A';
 
   const originShort = getShortLocation ? getShortLocation(pickupLoc) : 'Origin';
-  const destShort = getShortLocation ? getShortLocation(deliveryLoc) : 'Destination';
+  const destShort = getShortLocation
+    ? getShortLocation(deliveryLoc)
+    : 'Destination';
 
   return (
     <View style={styles.card}>
@@ -27,12 +46,31 @@ const ActiveShipment = ({
       <View style={styles.cardHeader}>
         <View style={styles.headerLeftRow}>
           <Compass size={20} color={COLORS.primary} />
-          <AppText style={styles.cardHeaderTitle}>Active Dispatch Manifest</AppText>
+          <AppText style={styles.cardHeaderTitle}>
+            Active Dispatch Manifest
+          </AppText>
         </View>
-        <View style={[styles.statusBadgePill, isTripInTransit ? styles.transitPill : styles.pendingPill]}>
-          <View style={[styles.statusDot, isTripInTransit ? styles.greenDot : styles.amberDot]} />
-          <AppText style={[styles.statusPillText, isTripInTransit ? styles.greenPillText : styles.amberPillText]}>
-            {isTripInTransit ? 'IN TRANSIT' : activeShipment?.tripStatus?.toUpperCase() || 'ASSIGNED'}
+        <View
+          style={[
+            styles.statusBadgePill,
+            isTripInTransit ? styles.transitPill : styles.pendingPill,
+          ]}
+        >
+          <View
+            style={[
+              styles.statusDot,
+              isTripInTransit ? styles.greenDot : styles.amberDot,
+            ]}
+          />
+          <AppText
+            style={[
+              styles.statusPillText,
+              isTripInTransit ? styles.greenPillText : styles.amberPillText,
+            ]}
+          >
+            {isTripInTransit
+              ? 'IN TRANSIT'
+              : activeShipment?.tripStatus?.toUpperCase() || 'ASSIGNED'}
           </AppText>
         </View>
       </View>
@@ -64,7 +102,9 @@ const ActiveShipment = ({
         <View style={styles.timelineContainer}>
           {/* Pickup Node */}
           <View style={styles.stopCard}>
-            <View style={[styles.nodeIconCircle, { backgroundColor: '#10B981' }]}>
+            <View
+              style={[styles.nodeIconCircle, { backgroundColor: '#10B981' }]}
+            >
               <MapPin size={16} color={COLORS.white} />
             </View>
             <View style={styles.stopDetails}>
@@ -84,7 +124,9 @@ const ActiveShipment = ({
 
           {/* Delivery Node */}
           <View style={styles.stopCard}>
-            <View style={[styles.nodeIconCircle, { backgroundColor: '#EF4444' }]}>
+            <View
+              style={[styles.nodeIconCircle, { backgroundColor: '#EF4444' }]}
+            >
               <MapPin size={16} color={COLORS.white} />
             </View>
             <View style={styles.stopDetails}>
@@ -281,5 +323,3 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.goldBorder,
   },
 });
-
-

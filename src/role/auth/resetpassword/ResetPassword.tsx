@@ -10,7 +10,13 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { Lock, Eye, EyeOff, ChevronLeft, ShieldCheck } from 'lucide-react-native';
+import {
+  Lock,
+  Eye,
+  EyeOff,
+  ChevronLeft,
+  ShieldCheck,
+} from 'lucide-react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -28,13 +34,23 @@ const ResetPassword = ({ navigation, route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [form, setForm] = useState({ newPassword: '', confirmPassword: '' });
-  const [errors, setErrors] = useState({ newPassword: '', confirmPassword: '' });
+  const [errors, setErrors] = useState({
+    newPassword: '',
+    confirmPassword: '',
+  });
 
   // 1. Keyboard Logic for 85% view
   useEffect(() => {
-    const show = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    const hide = Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
-    return () => { show.remove(); hide.remove(); };
+    const show = Keyboard.addListener('keyboardDidShow', () =>
+      setIsKeyboardOpen(true),
+    );
+    const hide = Keyboard.addListener('keyboardDidHide', () =>
+      setIsKeyboardOpen(false),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
   }, []);
 
   const validate = () => {
@@ -71,14 +87,14 @@ const ResetPassword = ({ navigation, route }: any) => {
         email,
         role,
         otp,
-        newPassword: form.newPassword
+        newPassword: form.newPassword,
       });
 
       if (res?.success) {
         Toast.show({
           type: 'success',
           text1: 'Password Updated',
-          text2: 'You can now log in with your new password.'
+          text2: 'You can now log in with your new password.',
         });
         // Success: Redirect to Login
         navigation.navigate('Login');
@@ -93,26 +109,47 @@ const ResetPassword = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
       {/* Dynamic Background Image (Shrinks to 15% when keyboard open) */}
       <ImageBackground
         source={imageIndex.HorseBg}
-        style={[styles.headerImage, { height: isKeyboardOpen ? SCREEN_HEIGHT * 0.15 : SCREEN_HEIGHT * 0.45 }]}
+        style={[
+          styles.headerImage,
+          {
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.15
+              : SCREEN_HEIGHT * 0.45,
+          },
+        ]}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeft color="white" size={30} />
         </TouchableOpacity>
       </ImageBackground>
 
-      <KeyboardAvoidingView style={styles.keyboardView} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <View style={styles.contentCard}>
           {/* Logo Seal Overlap */}
           <View style={styles.logoOuterRing}>
             <View style={styles.logoInnerRing}>
-              <Image source={imageIndex.LogoIcon} style={styles.logoIcon} resizeMode="contain" />
+              <Image
+                source={imageIndex.LogoIcon}
+                style={styles.logoIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
 
@@ -124,7 +161,8 @@ const ResetPassword = ({ navigation, route }: any) => {
             <View style={styles.textHeader}>
               <AppText style={styles.title}>New Password</AppText>
               <AppText style={styles.subtitle}>
-                Set a strong password to protect your HorseShipt account and shipment data?.
+                Set a strong password to protect your HorseShipt account and
+                shipment data?.
               </AppText>
             </View>
 
@@ -134,11 +172,15 @@ const ResetPassword = ({ navigation, route }: any) => {
                 placeholder="••••••••"
                 secureTextEntry={!showPass}
                 value={form.newPassword}
-                onChangeText={(t) => handleInputChange('newPassword', t)}
+                onChangeText={t => handleInputChange('newPassword', t)}
                 leftIcon={<Lock size={20} color={COLORS.textSecondary} />}
                 rightIcon={
                   <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                    {showPass ? <EyeOff size={20} color={COLORS.textSecondary} /> : <Eye size={20} color={COLORS.textSecondary} />}
+                    {showPass ? (
+                      <EyeOff size={20} color={COLORS.textSecondary} />
+                    ) : (
+                      <Eye size={20} color={COLORS.textSecondary} />
+                    )}
                   </TouchableOpacity>
                 }
                 error={errors.newPassword}
@@ -149,8 +191,10 @@ const ResetPassword = ({ navigation, route }: any) => {
                 placeholder="••••••••"
                 secureTextEntry={!showPass}
                 value={form.confirmPassword}
-                onChangeText={(t) => handleInputChange('confirmPassword', t)}
-                leftIcon={<ShieldCheck size={20} color={COLORS.textSecondary} />}
+                onChangeText={t => handleInputChange('confirmPassword', t)}
+                leftIcon={
+                  <ShieldCheck size={20} color={COLORS.textSecondary} />
+                }
                 error={errors.confirmPassword}
               />
 

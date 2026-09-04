@@ -73,8 +73,6 @@ const ChatDetails = () => {
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
 
-
-
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
   const isLocked = Boolean(
     isChatLocked || shipment?.isChatLocked || shipment?.status === 'completed',

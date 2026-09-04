@@ -1,10 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  View,
-
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import {
   MapPin,
   Calendar as CalendarIcon,
@@ -18,7 +13,7 @@ import {
 } from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
-import { COLORS, } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
 import styles from './pickupstepstyles';
@@ -59,7 +54,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
       if (!isNaN(d.getTime())) {
         return d.toISOString().split('T')[0];
       }
-    } catch (e) { }
+    } catch (e) {}
     return new Date().toISOString().split('T')[0];
   };
 
@@ -149,7 +144,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
     ],
   );
 
-  const isLocationSelected = Boolean(form.pickupLocation && form.pickupLocation.trim() !== '');
+  const isLocationSelected = Boolean(
+    form.pickupLocation && form.pickupLocation.trim() !== '',
+  );
 
   return (
     <View style={styles.container}>
@@ -177,7 +174,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
               <MapPin size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
-              <AppText style={styles.headerTitle}>Pickup Location & Window</AppText>
+              <AppText style={styles.headerTitle}>
+                Pickup Location & Window
+              </AppText>
               <AppText style={styles.headerSubtitle}>
                 Where will the horse be picked up, and when are you available?
               </AppText>
@@ -212,7 +211,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
           {errors.pickupLocation ? (
             <View style={styles.errorContainer}>
               <Info size={14} color={COLORS.error} />
-              <AppText style={styles.errorText}>{errors.pickupLocation}</AppText>
+              <AppText style={styles.errorText}>
+                {errors.pickupLocation}
+              </AppText>
             </View>
           ) : (
             <AppText style={styles.helperText}>
@@ -257,7 +258,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
                 <View style={styles.dateCardTop}>
                   <CalendarIcon
                     size={16}
-                    color={form.pickupStartDate ? COLORS.primary : COLORS.grey400}
+                    color={
+                      form.pickupStartDate ? COLORS.primary : COLORS.grey400
+                    }
                   />
                   <AppText style={styles.dateLabelBadge}>START</AppText>
                 </View>
@@ -272,7 +275,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
                 </AppText>
               </TouchableOpacity>
               {errors.pickupStartDate && (
-                <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>
+                <AppText style={styles.errorText}>
+                  {errors.pickupStartDate}
+                </AppText>
               )}
             </View>
 
@@ -315,7 +320,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
                 </AppText>
               </TouchableOpacity>
               {errors.pickupEndDate && (
-                <AppText style={styles.errorText}>{errors.pickupEndDate}</AppText>
+                <AppText style={styles.errorText}>
+                  {errors.pickupEndDate}
+                </AppText>
               )}
             </View>
           </View>
@@ -329,7 +336,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
           <View style={styles.tipTextContent}>
             <AppText style={styles.tipTitle}>Pro Tip for Faster Quotes</AppText>
             <AppText style={styles.tipSub}>
-              A flexible 3–5 day window gives haulers room to route efficiently, resulting in more competitive bids.
+              A flexible 3–5 day window gives haulers room to route efficiently,
+              resulting in more competitive bids.
             </AppText>
           </View>
         </View>
@@ -337,13 +345,27 @@ const PickupStep: React.FC<PickupStepProps> = ({
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.secondaryBtn} onPress={onPrevious}>
-            <ArrowLeft size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
+            <ArrowLeft
+              size={18}
+              color={COLORS.grey700}
+              style={{ marginRight: 6 }}
+            />
             <AppText style={styles.secondaryBtnText}>Cancel</AppText>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.primaryBtn} onPress={onNext} activeOpacity={0.85}>
-            <AppText style={styles.primaryBtnText}>Continue to Delivery</AppText>
-            <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+          <TouchableOpacity
+            style={styles.primaryBtn}
+            onPress={onNext}
+            activeOpacity={0.85}
+          >
+            <AppText style={styles.primaryBtnText}>
+              Continue to Delivery
+            </AppText>
+            <ArrowRight
+              size={18}
+              color={COLORS.white}
+              style={{ marginLeft: 6 }}
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -353,7 +375,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
         visible={activeDateType !== null}
         onClose={handleCloseCalendar}
         onSelect={handleDateSelect}
-        title={activeDateType === 'start' ? 'Pickup Start Date' : 'Pickup End Date'}
+        title={
+          activeDateType === 'start' ? 'Pickup Start Date' : 'Pickup End Date'
+        }
         initialDate={
           activeDateType === 'start'
             ? getSafeDateStr(form.pickupStartDate)
@@ -363,15 +387,12 @@ const PickupStep: React.FC<PickupStepProps> = ({
           activeDateType === 'start'
             ? getTomorrowStr()
             : form.pickupStartDate
-              ? getSafeDateStr(form.pickupStartDate)
-              : getTomorrowStr()
+            ? getSafeDateStr(form.pickupStartDate)
+            : getTomorrowStr()
         }
       />
     </View>
   );
 };
 
-
-
 export default PickupStep;
-

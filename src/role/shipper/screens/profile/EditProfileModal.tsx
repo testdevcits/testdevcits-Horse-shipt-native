@@ -15,7 +15,9 @@ import { X, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONT_SIZE } from '../../../../constants';
-import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
+import LocationPicker, {
+  LocationSelectResult,
+} from '../../../../components/common/LocationPicker/LocationPicker';
 import shipperService from '../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
@@ -52,8 +54,12 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     if (visible) {
       const loc = profileData?.locale || {};
       setAddress(loc.address || 'Not Available');
-      setLatitude(typeof loc.latitude === 'number' ? loc.latitude : DEFAULT_LAT);
-      setLongitude(typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG);
+      setLatitude(
+        typeof loc.latitude === 'number' ? loc.latitude : DEFAULT_LAT,
+      );
+      setLongitude(
+        typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG,
+      );
       setMobile(profileData?.mobile || user?.phoneNumber || '');
       setDescription(profileData?.description || '');
     }
@@ -102,7 +108,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       }
     } catch (err: any) {
       console.error('Update Profile Error:', err);
-      const msg = err?.response?.data?.message || err?.message || 'Failed to update profile.';
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        'Failed to update profile.';
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -184,9 +193,22 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     placeholder="Phone number"
                     keyboardType="phone-pad"
                     leftIcon={
-                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 4,
+                        }}
+                      >
                         <AppText>🇺🇸</AppText>
-                        <AppText style={{ fontSize: FONT_SIZE.sm, color: COLORS.textSecondary }}>+1</AppText>
+                        <AppText
+                          style={{
+                            fontSize: FONT_SIZE.sm,
+                            color: COLORS.textSecondary,
+                          }}
+                        >
+                          +1
+                        </AppText>
                       </View>
                     }
                   />

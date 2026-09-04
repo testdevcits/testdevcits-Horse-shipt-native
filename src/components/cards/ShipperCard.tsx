@@ -5,10 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
-  
 } from 'react-native';
 import { Star, MapPin, Heart, CheckCircle2 } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants'; // Adjust paths
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants'; // Adjust paths
 import AppText from '../common/AppText';
 import imageIndex from '../../assets/images/imageIndex';
 
@@ -28,110 +34,128 @@ interface ShipperCardProps {
   customstyle?: any;
 }
 
-const ShipperCard = memo(({ item, onPress, onFavoritePress, customstyle }: ShipperCardProps) => {
-  // Extract City/Area from a long address string
-  const formatLocation = (address: string) => {
-    if (!address) return 'Unknown Location';
-    const parts = address.split(',');
-    // Returns "Indore, India" or the last two parts of the address
-    return parts.length > 2
-      ? `${parts[parts.length - 2].trim()}, ${parts[parts.length - 1].trim()}`
-      : address;
-  };
+const ShipperCard = memo(
+  ({ item, onPress, onFavoritePress, customstyle }: ShipperCardProps) => {
+    // Extract City/Area from a long address string
+    const formatLocation = (address: string) => {
+      if (!address) return 'Unknown Location';
+      const parts = address.split(',');
+      // Returns "Indore, India" or the last two parts of the address
+      return parts.length > 2
+        ? `${parts[parts.length - 2].trim()}, ${parts[parts.length - 1].trim()}`
+        : address;
+    };
 
-  const ratingValue = item?.rating ?? 0;
+    const ratingValue = item?.rating ?? 0;
 
-  const renderStars = () => {
-    return [1, 2, 3, 4, 5].map(index => (
-      <Star
-        key={index}
-        size={14}
-        color={index <= Math.round(ratingValue) ? COLORS.warning : COLORS.grey300}
-        fill={index <= Math.round(ratingValue) ? COLORS.warning : 'transparent'}
-        style={{ marginRight: 2 }}
-      />
-    ));
-  };
+    const renderStars = () => {
+      return [1, 2, 3, 4, 5].map(index => (
+        <Star
+          key={index}
+          size={14}
+          color={
+            index <= Math.round(ratingValue) ? COLORS.warning : COLORS.grey300
+          }
+          fill={
+            index <= Math.round(ratingValue) ? COLORS.warning : 'transparent'
+          }
+          style={{ marginRight: 2 }}
+        />
+      ));
+    };
 
-  return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.card,
-        pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-        customstyle
-      ]}
-    >
-      {/* Top Row: Avatar and Favorite */}
-      <View style={styles.headerRow}>
-        <View style={styles.avatarContainer}>
-          {(() => {
-            const profileUri = typeof item?.profileImage === 'string'
-              ? item.profileImage
-              : (item?.profileImage as any)?.url;
-            const hasValidImage = Boolean(profileUri && profileUri !== '/default-avatar.png');
-            return (
-              <Image
-                source={hasValidImage ? { uri: profileUri } : imageIndex.AccountIcon}
-                style={styles.avatar}
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.card,
+          pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
+          customstyle,
+        ]}
+      >
+        {/* Top Row: Avatar and Favorite */}
+        <View style={styles.headerRow}>
+          <View style={styles.avatarContainer}>
+            {(() => {
+              const profileUri =
+                typeof item?.profileImage === 'string'
+                  ? item.profileImage
+                  : (item?.profileImage as any)?.url;
+              const hasValidImage = Boolean(
+                profileUri && profileUri !== '/default-avatar.png',
+              );
+              return (
+                <Image
+                  source={
+                    hasValidImage ? { uri: profileUri } : imageIndex.AccountIcon
+                  }
+                  style={styles.avatar}
+                />
+              );
+            })()}
+            <View style={styles.verifiedBadge}>
+              <CheckCircle2
+                size={12}
+                color={COLORS.white}
+                fill={COLORS.primary}
               />
-            );
-          })()}
-          <View style={styles.verifiedBadge}>
-            <CheckCircle2 size={12} color={COLORS.white} fill={COLORS.primary} />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={styles.favoriteBtn}
+            onPress={e => {
+              e?.stopPropagation?.();
+              onFavoritePress?.(item);
+            }}
+          >
+            <Heart
+              size={20}
+              color={item?.isFavorite ? COLORS.error : COLORS.grey400}
+              fill={item?.isFavorite ? COLORS.error : 'transparent'}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Body Section */}
+        <View style={styles.content}>
+          <AppText style={styles.name} numberOfLines={1}>
+            {item?.name || 'Unnamed Shipper'}
+          </AppText>
+
+          <View style={styles.ratingRow}>
+            <View style={styles.stars}>{renderStars()}</View>
+            <AppText style={styles.ratingText}>
+              {ratingValue.toFixed(1)}
+              <AppText style={styles.reviewCount}>
+                {' '}
+                ({item?.reviewCount || 0})
+              </AppText>
+            </AppText>
           </View>
         </View>
 
-        <TouchableOpacity
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          style={styles.favoriteBtn}
-          onPress={(e) => {
-            e?.stopPropagation?.();
-            onFavoritePress?.(item);
-          }}
-        >
-          <Heart
-            size={20}
-            color={item?.isFavorite ? COLORS.error : COLORS.grey400}
-            fill={item?.isFavorite ? COLORS.error : 'transparent'}
-          />
-        </TouchableOpacity>
-      </View>
+        {/* Divider */}
+        <View style={styles.divider} />
 
-      {/* Body Section */}
-      <View style={styles.content}>
-        <AppText style={styles.name} numberOfLines={1}>
-          {item?.name || "Unnamed Shipper"}
-        </AppText>
+        {/* Footer Section */}
+        <View style={styles.footerRow}>
+          <View style={styles.locationContainer}>
+            <MapPin size={14} color={COLORS.primary} />
+            <AppText style={styles.locationText} numberOfLines={1}>
+              {formatLocation(item?.region)}
+            </AppText>
+          </View>
 
-        <View style={styles.ratingRow}>
-          <View style={styles.stars}>{renderStars()}</View>
-          <AppText style={styles.ratingText}>
-            {ratingValue.toFixed(1)}
-            <AppText style={styles.reviewCount}> ({item?.reviewCount || 0})</AppText>
-          </AppText>
-        </View>
-      </View>
-
-      {/* Divider */}
-      <View style={styles.divider} />
-
-      {/* Footer Section */}
-      <View style={styles.footerRow}>
-        <View style={styles.locationContainer}>
-          <MapPin size={14} color={COLORS.primary} />
-          <AppText style={styles.locationText} numberOfLines={1}>
-            {formatLocation(item?.region)}
-          </AppText>
-        </View>
-
-        {/* <View style={styles.badge}>
+          {/* <View style={styles.badge}>
           <AppText style={styles.badgeText}>Active</AppText>
         </View> */}
-      </View>
-    </Pressable>
-  );
-});
+        </View>
+      </Pressable>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   card: {
@@ -141,7 +165,6 @@ const styles = StyleSheet.create({
     width: 280,
     marginHorizontal: SPACING.sm,
     marginVertical: SPACING.sm,
-
 
     borderWidth: 1,
     borderColor: COLORS.grey200,
@@ -234,7 +257,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.emeraldDark, // Dark green
     textTransform: 'uppercase',
-  }
+  },
 });
 
 export default ShipperCard;

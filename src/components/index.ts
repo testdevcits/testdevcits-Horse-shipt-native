@@ -21,7 +21,9 @@ import PaymentCard from './cards/PaymentCard';
 import ReviewCard from './cards/ReviewCard';
 import ShipperCard from './cards/ShipperCard';
 import TruckDriverCard from './cards/TruckDriverCard';
-import CountryCodePicker, { COUNTRIES } from './common/CountryCodePicker/CountryCodePicker';
+import CountryCodePicker, {
+  COUNTRIES,
+} from './common/CountryCodePicker/CountryCodePicker';
 import ShipmentLocationModal from './common/ShipmentLocationModal';
 import LocationPermissionModal from './common/LocationPermissionModal';
 
@@ -56,4 +58,3 @@ export {
 };
 
 export type { AppSelectRef } from './common/AppSelect';
-

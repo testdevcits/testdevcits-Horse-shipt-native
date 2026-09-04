@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   screenContainer: {
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
   previewImage: {
     width: '100%',
     height: '100%',
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   uploadPlaceholder: {
     justifyContent: 'center',

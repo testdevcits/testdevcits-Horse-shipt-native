@@ -1,5 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { View, FlatList, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {
   Package,
   MapPin,
@@ -18,8 +24,12 @@ import { COLORS } from '../../../../constants';
 import styles from './styles.postload';
 import ReviewCustomerModal from './ReviewCustomerModal';
 
-
-export type StatusFilterType = 'all' | 'in_transit' | 'completed' | 'upcoming' | 'cancelled';
+export type StatusFilterType =
+  | 'all'
+  | 'in_transit'
+  | 'completed'
+  | 'upcoming'
+  | 'cancelled';
 
 interface MyShipmentsScreenProps {
   data: any[];
@@ -30,9 +40,19 @@ interface MyShipmentsScreenProps {
   onRefresh?: () => void;
 }
 
-export const getItemTripStatus = (item: any): 'in_transit' | 'completed' | 'upcoming' | 'cancelled' => {
-  const tripStatusRaw = (item?.tripStatus || item?.shipment?.tripStatus || '').toLowerCase();
-  const statusRaw = (item?.status || item?.shipment?.status || '').toLowerCase();
+export const getItemTripStatus = (
+  item: any,
+): 'in_transit' | 'completed' | 'upcoming' | 'cancelled' => {
+  const tripStatusRaw = (
+    item?.tripStatus ||
+    item?.shipment?.tripStatus ||
+    ''
+  ).toLowerCase();
+  const statusRaw = (
+    item?.status ||
+    item?.shipment?.status ||
+    ''
+  ).toLowerCase();
   const isCancelled =
     item?.isCancelled === true ||
     statusRaw === 'cancelled' ||
@@ -123,7 +143,8 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
   const renderCard = useCallback(
     ({ item }: { item: any }) => {
       const shipment = item?.shipment || item;
-      const code = item?.shipmentCode || shipment.shipmentCode || 'Not available';
+      const code =
+        item?.shipmentCode || shipment.shipmentCode || 'Not available';
       const pickupLoc =
         item?.pickupLocation ||
         shipment.pickupLocation ||
@@ -132,7 +153,8 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
         item?.deliveryLocation ||
         shipment.deliveryLocation ||
         'Delivery location unavailable';
-      const horsesCount = shipment.numberOfHorses || shipment.horses?.length || 0;
+      const horsesCount =
+        shipment.numberOfHorses || shipment.horses?.length || 0;
 
       const itemStatus = getItemTripStatus(item);
       const paymentStatusRaw = (item?.paymentStatus || 'pending').toLowerCase();
@@ -192,8 +214,6 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               <Package size={12} color={COLORS.textSecondary} />
               <AppText style={styles.myCodeText}>#{code}</AppText>
             </View>
-
-
           </View>
           <View style={styles.myBadgesRow}>
             {/* Trip Status Badge */}
@@ -214,15 +234,26 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               style={[
                 styles.myBadgePill,
                 isPaid
-                  ? { backgroundColor: COLORS.emeraldLightBg, borderColor: COLORS.emeraldBorder }
-                  : { backgroundColor: COLORS.slate50, borderColor: COLORS.slate300 },
+                  ? {
+                      backgroundColor: COLORS.emeraldLightBg,
+                      borderColor: COLORS.emeraldBorder,
+                    }
+                  : {
+                      backgroundColor: COLORS.slate50,
+                      borderColor: COLORS.slate300,
+                    },
               ]}
             >
-              <CreditCard size={11} color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary} />
+              <CreditCard
+                size={11}
+                color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary}
+              />
               <AppText
                 style={[
                   styles.myBadgePillText,
-                  isPaid ? { color: COLORS.emeraldPrimary } : { color: COLORS.textSecondary },
+                  isPaid
+                    ? { color: COLORS.emeraldPrimary }
+                    : { color: COLORS.textSecondary },
                 ]}
               >
                 {paymentStatusRaw.toUpperCase()}
@@ -296,7 +327,9 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               activeOpacity={0.8}
             >
               <FileText size={14} color="#A06333" />
-              <AppText style={styles.viewContractBtnText}>View Contract</AppText>
+              <AppText style={styles.viewContractBtnText}>
+                View Contract
+              </AppText>
             </TouchableOpacity>
             {itemStatus === 'completed' || item?.tripStatus === 'completed' ? (
               <TouchableOpacity
@@ -305,18 +338,23 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                 activeOpacity={0.8}
               >
                 <Star size={14} color="#FFFFFF" fill="#FFFFFF" />
-                <AppText style={styles.reviewCustomerBtnText}>Review Customer</AppText>
+                <AppText style={styles.reviewCustomerBtnText}>
+                  Review Customer
+                </AppText>
               </TouchableOpacity>
             ) : (
-              paymentStatusRaw !== "pending" &&
-              <TouchableOpacity
-                style={styles.trackShipmentBtn}
-                onPress={() => onTrackShipment(item)}
-                activeOpacity={0.8}
-              >
-                <Navigation size={14} color="#FFFFFF" />
-                <AppText style={styles.trackShipmentBtnText}>Track Shipment</AppText>
-              </TouchableOpacity>
+              paymentStatusRaw !== 'pending' && (
+                <TouchableOpacity
+                  style={styles.trackShipmentBtn}
+                  onPress={() => onTrackShipment(item)}
+                  activeOpacity={0.8}
+                >
+                  <Navigation size={14} color="#FFFFFF" />
+                  <AppText style={styles.trackShipmentBtnText}>
+                    Track Shipment
+                  </AppText>
+                </TouchableOpacity>
+              )
             )}
           </View>
         </View>
@@ -345,15 +383,22 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
     return (
       <View style={styles.emptyContainer}>
         <Package size={48} color={COLORS.textLight} />
-        <AppText style={styles.emptyTitle}>No {labelMap[selectedStatus]} Found</AppText>
+        <AppText style={styles.emptyTitle}>
+          No {labelMap[selectedStatus]} Found
+        </AppText>
         <AppText style={styles.emptySub}>
-          There are currently no shipments under the "{labelMap[selectedStatus]}" category.
+          There are currently no shipments under the "{labelMap[selectedStatus]}
+          " category.
         </AppText>
       </View>
     );
   }, [loading, selectedStatus]);
 
-  const filterTabs: Array<{ key: StatusFilterType; label: string; count: number }> = [
+  const filterTabs: Array<{
+    key: StatusFilterType;
+    label: string;
+    count: number;
+  }> = [
     { key: 'all', label: 'All', count: counts.all },
     { key: 'in_transit', label: 'In Transit', count: counts.in_transit },
     { key: 'completed', label: 'Completed', count: counts.completed },
@@ -375,14 +420,27 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
             return (
               <TouchableOpacity
                 key={tab.key}
-                style={[styles.subFilterPill, isActive && styles.subFilterPillActive]}
+                style={[
+                  styles.subFilterPill,
+                  isActive && styles.subFilterPillActive,
+                ]}
                 onPress={() => setSelectedStatus(tab.key)}
                 activeOpacity={0.8}
               >
-                <AppText style={[styles.subFilterText, isActive && styles.subFilterTextActive]}>
+                <AppText
+                  style={[
+                    styles.subFilterText,
+                    isActive && styles.subFilterTextActive,
+                  ]}
+                >
                   {tab.label}
                 </AppText>
-                <View style={[styles.subFilterBadge, isActive && styles.subFilterBadgeActive]}>
+                <View
+                  style={[
+                    styles.subFilterBadge,
+                    isActive && styles.subFilterBadgeActive,
+                  ]}
+                >
                   <AppText
                     style={[
                       styles.subFilterBadgeText,

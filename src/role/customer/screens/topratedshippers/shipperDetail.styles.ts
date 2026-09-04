@@ -1,5 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  RADIUS,
+  SPACING,
+  FONTS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const { width } = Dimensions.get('window');
 
@@ -52,17 +58,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statBox: { flex: 1, alignItems: 'center' },
-  statValue: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.grey900 },
+  statValue: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey900,
+  },
   ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  statLabel: { fontSize: FONT_SIZE.xs, color: COLORS.grey500, fontFamily: FONTS.medium, marginTop: 2, textTransform: 'uppercase' },
+  statLabel: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.grey500,
+    fontFamily: FONTS.medium,
+    marginTop: 2,
+    textTransform: 'uppercase',
+  },
   vDivider: { width: 1, height: 24, backgroundColor: COLORS.grey100 },
 
   // Content
   contentPadding: { paddingHorizontal: SPACING.md },
-  locationContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, marginBottom: SPACING.md },
-  locationLabel: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.medium, color: COLORS.grey700 },
-  sectionTitleSmall: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
-  descriptionText: { fontSize: FONT_SIZE.xs, color: COLORS.grey600, lineHeight: 18, fontFamily: FONTS.regular },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: SPACING.md,
+  },
+  locationLabel: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.grey700,
+  },
+  sectionTitleSmall: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey800,
+    marginBottom: SPACING.xs,
+  },
+  descriptionText: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.grey600,
+    lineHeight: 18,
+    fontFamily: FONTS.regular,
+  },
 
   // Sections Common
   section: { marginTop: SPACING.md },
@@ -90,8 +125,19 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   starRow: { flexDirection: 'row', gap: 2, marginBottom: SPACING.xs },
-  reviewBody: { fontSize: FONT_SIZE.xs, color: COLORS.grey700, lineHeight: 16, fontFamily: FONTS.regular, minHeight: 48 },
-  reviewFooter: { flexDirection: 'row', alignItems: 'center', marginTop: SPACING.sm, gap: SPACING.xs },
+  reviewBody: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.grey700,
+    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    minHeight: 48,
+  },
+  reviewFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: SPACING.sm,
+    gap: SPACING.xs,
+  },
   avatarPlaceholder: {
     width: 28,
     height: 28,
@@ -101,8 +147,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reviewerAvatar: { width: 28, height: 28, borderRadius: 14 },
-  reviewerName: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, color: COLORS.grey800 },
-  reviewDate: { fontSize: FONT_SIZE.xs, color: COLORS.grey400, fontFamily: FONTS.regular },
+  reviewerName: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey800,
+  },
+  reviewDate: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.grey400,
+    fontFamily: FONTS.regular,
+  },
 
   // Shipment Card
   shipmentCard: {
@@ -112,7 +166,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.grey100,
   },
-  shipmentTitle: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.grey800, marginBottom: SPACING.xs },
+  shipmentTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.grey800,
+    marginBottom: SPACING.xs,
+  },
 
   // Empty states
   emptyContainer: {
@@ -132,7 +191,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.grey200,
   },
-  showMoreText: { fontSize: FONT_SIZE.sm, color: COLORS.grey700, fontFamily: FONTS.bold },
+  showMoreText: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.grey700,
+    fontFamily: FONTS.bold,
+  },
 
   // Preferred Operating Areas
   areaCard: {

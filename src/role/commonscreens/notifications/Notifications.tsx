@@ -14,7 +14,6 @@ import {
   Check,
   CheckCheck,
   Trash2,
-
   Truck,
   MessageSquare,
   FileText,
@@ -22,7 +21,7 @@ import {
   CheckCircle2,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, } from '../../../constants';
+import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../constants';
 import useNotifications, { NotificationFilter } from './useNotifications';
 import {
   AppHeader,
@@ -36,11 +35,29 @@ import {
 // Helper to determine notification icon based on content
 const getNotificationIcon = (title: string = '', message: string = '') => {
   const content = (title + ' ' + message).toLowerCase();
-  if (content.includes('quote') || content.includes('offer') || content.includes('bid')) {
-    return { Icon: FileText, color: COLORS.emeraldPrimary, bg: COLORS.emeraldLightBg, border: COLORS.emeraldBorder };
+  if (
+    content.includes('quote') ||
+    content.includes('offer') ||
+    content.includes('bid')
+  ) {
+    return {
+      Icon: FileText,
+      color: COLORS.emeraldPrimary,
+      bg: COLORS.emeraldLightBg,
+      border: COLORS.emeraldBorder,
+    };
   }
-  if (content.includes('chat') || content.includes('message') || content.includes('question')) {
-    return { Icon: MessageSquare, color: COLORS.bluePrimary, bg: COLORS.blueLightBg, border: COLORS.blueBorder };
+  if (
+    content.includes('chat') ||
+    content.includes('message') ||
+    content.includes('question')
+  ) {
+    return {
+      Icon: MessageSquare,
+      color: COLORS.bluePrimary,
+      bg: COLORS.blueLightBg,
+      border: COLORS.blueBorder,
+    };
   }
   if (
     content.includes('shipment') ||
@@ -48,9 +65,19 @@ const getNotificationIcon = (title: string = '', message: string = '') => {
     content.includes('pickup') ||
     content.includes('transit')
   ) {
-    return { Icon: Truck, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
+    return {
+      Icon: Truck,
+      color: COLORS.brandBrown,
+      bg: COLORS.goldLightBg,
+      border: COLORS.goldBorder,
+    };
   }
-  return { Icon: Bell, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
+  return {
+    Icon: Bell,
+    color: COLORS.brandBrown,
+    bg: COLORS.goldLightBg,
+    border: COLORS.goldBorder,
+  };
 };
 
 const Notifications = () => {
@@ -207,7 +234,11 @@ const Notifications = () => {
               onPress={handleMarkAllRead}
               activeOpacity={0.8}
             >
-              <CheckCheck size={18} color={COLORS.brandBrown} style={{ marginRight: 4 }} />
+              <CheckCheck
+                size={18}
+                color={COLORS.brandBrown}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.headerMarkReadText}>Mark all read</AppText>
             </TouchableOpacity>
           ) : undefined
@@ -223,7 +254,10 @@ const Notifications = () => {
           <AppText style={styles.summaryText}>
             {unreadCount > 0 ? (
               <>
-                You have <AppText style={styles.summaryHighlight}>{unreadCount} unread</AppText>{' '}
+                You have{' '}
+                <AppText style={styles.summaryHighlight}>
+                  {unreadCount} unread
+                </AppText>{' '}
                 notification{unreadCount > 1 ? 's' : ''}
               </>
             ) : (
@@ -234,34 +268,48 @@ const Notifications = () => {
 
         {/* Filter Tabs */}
         <View style={styles.tabsWrapper}>
-          {(['all', 'unread', 'read'] as const).map((filter: NotificationFilter) => {
-            const isActive = activeFilter === filter;
-            const count =
-              filter === 'all'
-                ? allCount
-                : filter === 'unread'
+          {(['all', 'unread', 'read'] as const).map(
+            (filter: NotificationFilter) => {
+              const isActive = activeFilter === filter;
+              const count =
+                filter === 'all'
+                  ? allCount
+                  : filter === 'unread'
                   ? unreadCount
                   : readCount;
 
-            return (
-              <TouchableOpacity
-                key={filter}
-                style={[styles.tabPill, isActive && styles.tabPillActive]}
-                onPress={() => setActiveFilter(filter)}
-                activeOpacity={0.8}
-              >
-                <AppText style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-                  {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                </AppText>
-
-                <View style={[styles.countBadge, isActive && styles.countBadgeActive]}>
-                  <AppText style={[styles.countText, isActive && styles.countTextActive]}>
-                    {count}
+              return (
+                <TouchableOpacity
+                  key={filter}
+                  style={[styles.tabPill, isActive && styles.tabPillActive]}
+                  onPress={() => setActiveFilter(filter)}
+                  activeOpacity={0.8}
+                >
+                  <AppText
+                    style={[styles.tabLabel, isActive && styles.tabLabelActive]}
+                  >
+                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
                   </AppText>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+
+                  <View
+                    style={[
+                      styles.countBadge,
+                      isActive && styles.countBadgeActive,
+                    ]}
+                  >
+                    <AppText
+                      style={[
+                        styles.countText,
+                        isActive && styles.countTextActive,
+                      ]}
+                    >
+                      {count}
+                    </AppText>
+                  </View>
+                </TouchableOpacity>
+              );
+            },
+          )}
         </View>
       </View>
 
@@ -295,8 +343,8 @@ const Notifications = () => {
                 activeFilter === 'all'
                   ? "You're all caught up! No notifications to show right now."
                   : activeFilter === 'unread'
-                    ? 'No unread notifications.'
-                    : 'No read notifications found.'
+                  ? 'No unread notifications.'
+                  : 'No read notifications found.'
               }
             />
           ) : null
@@ -310,9 +358,14 @@ const Notifications = () => {
             <AppText style={styles.selectedCountText}>
               {selectedIds.length} Selected
             </AppText>
-            <TouchableOpacity onPress={selectAll} style={styles.selectAllToggle}>
+            <TouchableOpacity
+              onPress={selectAll}
+              style={styles.selectAllToggle}
+            >
               <AppText style={styles.selectAllToggleText}>
-                {selectedIds.length === notifications.length ? 'Deselect All' : 'Select All'}
+                {selectedIds.length === notifications.length
+                  ? 'Deselect All'
+                  : 'Select All'}
               </AppText>
             </TouchableOpacity>
           </View>
@@ -323,7 +376,11 @@ const Notifications = () => {
               onPress={handleMarkSelectedRead}
               activeOpacity={0.8}
             >
-              <Check size={16} color={COLORS.emeraldPrimary} style={{ marginRight: 4 }} />
+              <Check
+                size={16}
+                color={COLORS.emeraldPrimary}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.batchMarkReadText}>Mark Read</AppText>
             </TouchableOpacity>
 
@@ -332,7 +389,11 @@ const Notifications = () => {
               onPress={handleInitiateDeleteSelected}
               activeOpacity={0.8}
             >
-              <Trash2 size={16} color={COLORS.error} style={{ marginRight: 4 }} />
+              <Trash2
+                size={16}
+                color={COLORS.error}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.batchDeleteText}>Delete</AppText>
             </TouchableOpacity>
 

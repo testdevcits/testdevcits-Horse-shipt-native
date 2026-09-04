@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-
   TouchableOpacity,
   ScrollView,
   Image,
@@ -25,7 +24,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS, } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import { AppText } from '../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import styles from './ReviewStepstyles';
@@ -119,8 +118,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 {isEdit && isDraft
                   ? 'Ready to Update Draft'
                   : isEdit
-                    ? 'Ready to Update'
-                    : 'Ready to Publish'}
+                  ? 'Ready to Update'
+                  : 'Ready to Publish'}
               </AppText>
             </View>
           </View>
@@ -133,15 +132,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 {isEdit && isDraft
                   ? 'Review & Update Draft'
                   : isEdit
-                    ? 'Review & Update Shipment'
-                    : 'Review & Confirm'}
+                  ? 'Review & Update Shipment'
+                  : 'Review & Confirm'}
               </AppText>
               <AppText style={styles.headerSubtitle}>
                 {isEdit && isDraft
                   ? 'Review your updated details before saving draft changes or publishing.'
                   : isEdit
-                    ? 'Verify your updated details and documents before saving.'
-                    : 'Review your route, horse details, and attached documents before publishing.'}
+                  ? 'Verify your updated details and documents before saving.'
+                  : 'Review your route, horse details, and attached documents before publishing.'}
               </AppText>
             </View>
           </View>
@@ -152,7 +151,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <View style={styles.bannerLeft}>
             <AppText style={styles.bannerTitle}>Shipment Overview</AppText>
             <AppText style={styles.bannerSub}>
-              {form?.numberOfHorses || form.horses?.length || 1} Horse(s) • {uploadedDocCount} of {totalDocCount} Papers Attached
+              {form?.numberOfHorses || form.horses?.length || 1} Horse(s) •{' '}
+              {uploadedDocCount} of {totalDocCount} Papers Attached
             </AppText>
           </View>
           <View style={styles.bannerBadge}>
@@ -196,7 +196,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <View style={styles.routeDateBadge}>
                   <CalendarIcon size={13} color={COLORS.primary} />
                   <AppText style={styles.routeDateText}>
-                    {formatDateDisplay(form?.pickupStartDate)} — {formatDateDisplay(form?.pickupEndDate)}
+                    {formatDateDisplay(form?.pickupStartDate)} —{' '}
+                    {formatDateDisplay(form?.pickupEndDate)}
                   </AppText>
                 </View>
               </View>
@@ -213,14 +214,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <View style={styles.deliveryDot} />
               </View>
               <View style={styles.routeTextContent}>
-                <AppText style={styles.routeNodeLabel}>DELIVERY DESTINATION</AppText>
+                <AppText style={styles.routeNodeLabel}>
+                  DELIVERY DESTINATION
+                </AppText>
                 <AppText style={styles.routeAddressText}>
                   {form?.deliveryLocation || 'Delivery location not specified'}
                 </AppText>
                 <View style={styles.routeDateBadge}>
                   <CalendarIcon size={13} color={COLORS.primary} />
                   <AppText style={styles.routeDateText}>
-                    {formatDateDisplay(form?.deliveryStartDate)} — {formatDateDisplay(form?.deliveryEndDate)}
+                    {formatDateDisplay(form?.deliveryStartDate)} —{' '}
+                    {formatDateDisplay(form?.deliveryEndDate)}
                   </AppText>
                 </View>
               </View>
@@ -241,7 +245,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               </View>
               <AppText style={styles.cardTitle}>HORSE DETAILS</AppText>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            >
               <TouchableOpacity
                 style={styles.miniEditBtn}
                 onPress={() => onEditSection(2)}
@@ -272,7 +278,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                   >
                     <View style={styles.horseHeaderRow}>
                       <View style={styles.horseTag}>
-                        <AppText style={styles.horseTagText}>HORSE {index + 1}</AppText>
+                        <AppText style={styles.horseTagText}>
+                          HORSE {index + 1}
+                        </AppText>
                       </View>
                       <AppText style={styles.horseNameTitle}>
                         {horse?.registeredName || 'Unnamed Horse'}
@@ -280,18 +288,32 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                     </View>
 
                     <View style={styles.infoGrid}>
-                      <InfoRow label="Registered Name:" value={horse?.registeredName} />
-                      {!!horse?.barnName && <InfoRow label="Barn Name:" value={horse?.barnName} />}
+                      <InfoRow
+                        label="Registered Name:"
+                        value={horse?.registeredName}
+                      />
+                      {!!horse?.barnName && (
+                        <InfoRow label="Barn Name:" value={horse?.barnName} />
+                      )}
                       <InfoRow label="Breed:" value={horse?.breed} />
                       <InfoRow label="Sex:" value={horse?.sex} />
-                      {!!horse?.age && <InfoRow label="Age:" value={`${horse?.age} yrs`} />}
-                      {!!horse?.colour && <InfoRow label="Colour:" value={horse?.colour} />}
-                      <InfoRow label="Stall Size:" value={horse?.requestedStallSize || 'Box'} />
+                      {!!horse?.age && (
+                        <InfoRow label="Age:" value={`${horse?.age} yrs`} />
+                      )}
+                      {!!horse?.colour && (
+                        <InfoRow label="Colour:" value={horse?.colour} />
+                      )}
+                      <InfoRow
+                        label="Stall Size:"
+                        value={horse?.requestedStallSize || 'Box'}
+                      />
                     </View>
 
                     {/* HORSE PHOTO PREVIEW */}
                     <View style={styles.photoContainer}>
-                      <AppText style={styles.subFieldLabel}>Horse Photo</AppText>
+                      <AppText style={styles.subFieldLabel}>
+                        Horse Photo
+                      </AppText>
                       {photoUri ? (
                         <View style={styles.photoPreviewCard}>
                           <Image
@@ -301,13 +323,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                           />
                           <View style={styles.photoOverlayBadge}>
                             <CheckCircle2 size={12} color={COLORS.white} />
-                            <AppText style={styles.photoOverlayText}>Photo Attached</AppText>
+                            <AppText style={styles.photoOverlayText}>
+                              Photo Attached
+                            </AppText>
                           </View>
                         </View>
                       ) : (
                         <View style={styles.noPhotoBox}>
                           <ImageIcon size={20} color={COLORS.grey400} />
-                          <AppText style={styles.noPhotoText}>No photo attached</AppText>
+                          <AppText style={styles.noPhotoText}>
+                            No photo attached
+                          </AppText>
                         </View>
                       )}
                     </View>
@@ -331,7 +357,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               </View>
               <AppText style={styles.cardTitle}>ATTACHED DOCUMENTS</AppText>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            >
               <TouchableOpacity
                 style={styles.miniEditBtn}
                 onPress={() => onEditSection(3)}
@@ -355,20 +383,34 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               </AppText>
 
               {form.horses.map((horse: NewShipmentHorse, index: number) => {
-                const cogginsName = getDocName(horse?.coggins, 'Coggins_Test.pdf');
-                const healthCertName = getDocName(horse?.healthCert, 'Health_Certificate.pdf');
+                const cogginsName = getDocName(
+                  horse?.coggins,
+                  'Coggins_Test.pdf',
+                );
+                const healthCertName = getDocName(
+                  horse?.healthCert,
+                  'Health_Certificate.pdf',
+                );
 
                 return (
                   <View key={index} style={styles.horseDocsCard}>
                     <View style={styles.horseDocHeader}>
                       <AppText style={styles.horseDocHeaderText}>
-                        {horse?.registeredName || `Horse ${index + 1}`} Documents
+                        {horse?.registeredName || `Horse ${index + 1}`}{' '}
+                        Documents
                       </AppText>
                     </View>
 
                     {/* COGGINS TEST ROW */}
                     <View style={styles.docRow}>
-                      <View style={[styles.docIconBox, horse?.coggins ? styles.docIconBoxSuccess : styles.docIconBoxMuted]}>
+                      <View
+                        style={[
+                          styles.docIconBox,
+                          horse?.coggins
+                            ? styles.docIconBoxSuccess
+                            : styles.docIconBoxMuted,
+                        ]}
+                      >
                         {horse?.coggins ? (
                           <FileCheck size={18} color={COLORS.greenSuccess} />
                         ) : (
@@ -377,7 +419,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                       </View>
 
                       <View style={styles.docTextGroup}>
-                        <AppText style={styles.docTitleText}>Coggins Test</AppText>
+                        <AppText style={styles.docTitleText}>
+                          Coggins Test
+                        </AppText>
                         <AppText style={styles.docFileName} numberOfLines={1}>
                           {cogginsName || 'Not uploaded yet'}
                         </AppText>
@@ -386,21 +430,32 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                       {horse?.coggins ? (
                         <View style={styles.uploadedBadge}>
                           <CheckCircle2 size={12} color={COLORS.greenSuccess} />
-                          <AppText style={styles.uploadedBadgeText}>Attached</AppText>
+                          <AppText style={styles.uploadedBadgeText}>
+                            Attached
+                          </AppText>
                         </View>
                       ) : (
                         <TouchableOpacity
                           style={styles.uploadQuickBtn}
                           onPress={() => onEditSection(3)}
                         >
-                          <AppText style={styles.uploadQuickText}>+ Upload</AppText>
+                          <AppText style={styles.uploadQuickText}>
+                            + Upload
+                          </AppText>
                         </TouchableOpacity>
                       )}
                     </View>
 
                     {/* HEALTH CERTIFICATE ROW */}
                     <View style={styles.docRow}>
-                      <View style={[styles.docIconBox, horse?.healthCert ? styles.docIconBoxSuccess : styles.docIconBoxMuted]}>
+                      <View
+                        style={[
+                          styles.docIconBox,
+                          horse?.healthCert
+                            ? styles.docIconBoxSuccess
+                            : styles.docIconBoxMuted,
+                        ]}
+                      >
                         {horse?.healthCert ? (
                           <FileCheck size={18} color={COLORS.greenSuccess} />
                         ) : (
@@ -409,7 +464,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                       </View>
 
                       <View style={styles.docTextGroup}>
-                        <AppText style={styles.docTitleText}>Health Certificate</AppText>
+                        <AppText style={styles.docTitleText}>
+                          Health Certificate
+                        </AppText>
                         <AppText style={styles.docFileName} numberOfLines={1}>
                           {healthCertName || 'Not uploaded yet'}
                         </AppText>
@@ -418,21 +475,32 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                       {horse?.healthCert ? (
                         <View style={styles.uploadedBadge}>
                           <CheckCircle2 size={12} color={COLORS.greenSuccess} />
-                          <AppText style={styles.uploadedBadgeText}>Attached</AppText>
+                          <AppText style={styles.uploadedBadgeText}>
+                            Attached
+                          </AppText>
                         </View>
                       ) : (
                         <TouchableOpacity
                           style={styles.uploadQuickBtn}
                           onPress={() => onEditSection(3)}
                         >
-                          <AppText style={styles.uploadQuickText}>+ Upload</AppText>
+                          <AppText style={styles.uploadQuickText}>
+                            + Upload
+                          </AppText>
                         </TouchableOpacity>
                       )}
                     </View>
 
                     {/* OTHER DOCUMENTS ROW */}
                     <View style={styles.docRow}>
-                      <View style={[styles.docIconBox, horse?.otherDocuments ? styles.docIconBoxSuccess : styles.docIconBoxMuted]}>
+                      <View
+                        style={[
+                          styles.docIconBox,
+                          horse?.otherDocuments
+                            ? styles.docIconBoxSuccess
+                            : styles.docIconBoxMuted,
+                        ]}
+                      >
                         {horse?.otherDocuments ? (
                           <FileCheck size={18} color={COLORS.greenSuccess} />
                         ) : (
@@ -441,23 +509,32 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                       </View>
 
                       <View style={styles.docTextGroup}>
-                        <AppText style={styles.docTitleText}>Other Documents</AppText>
+                        <AppText style={styles.docTitleText}>
+                          Other Documents
+                        </AppText>
                         <AppText style={styles.docFileName} numberOfLines={1}>
-                          {getDocName(horse?.otherDocuments, 'Other_Document.pdf') || 'Not uploaded yet'}
+                          {getDocName(
+                            horse?.otherDocuments,
+                            'Other_Document.pdf',
+                          ) || 'Not uploaded yet'}
                         </AppText>
                       </View>
 
                       {horse?.otherDocuments ? (
                         <View style={styles.uploadedBadge}>
                           <CheckCircle2 size={12} color={COLORS.greenSuccess} />
-                          <AppText style={styles.uploadedBadgeText}>Attached</AppText>
+                          <AppText style={styles.uploadedBadgeText}>
+                            Attached
+                          </AppText>
                         </View>
                       ) : (
                         <TouchableOpacity
                           style={styles.uploadQuickBtn}
                           onPress={() => onEditSection(3)}
                         >
-                          <AppText style={styles.uploadQuickText}>+ Upload</AppText>
+                          <AppText style={styles.uploadQuickText}>
+                            + Upload
+                          </AppText>
                         </TouchableOpacity>
                       )}
                     </View>
@@ -469,20 +546,26 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
         </View>
 
         {/* SECTION 4: NOTES & SPECIAL REQUIREMENTS CARD */}
-        {(Boolean(form.additionalInfo) || Boolean(form.hasSpecialRequirement) || Boolean(form.recipientEmail)) && (
+        {(Boolean(form.additionalInfo) ||
+          Boolean(form.hasSpecialRequirement) ||
+          Boolean(form.recipientEmail)) && (
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <View style={styles.cardHeaderLeft}>
                 <View style={styles.iconCircle}>
                   <Info size={16} color={COLORS.primary} />
                 </View>
-                <AppText style={styles.cardTitle}>NOTES & SPECIAL INSTRUCTIONS</AppText>
+                <AppText style={styles.cardTitle}>
+                  NOTES & SPECIAL INSTRUCTIONS
+                </AppText>
               </View>
             </View>
 
             {form.hasSpecialRequirement && (
               <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>Special Requirements:</AppText>
+                <AppText style={styles.notesLabel}>
+                  Special Requirements:
+                </AppText>
                 <AppText style={styles.notesValue}>
                   {form.specialRequirementDetails || 'None details provided.'}
                 </AppText>
@@ -491,15 +574,23 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
             {Boolean(form.additionalInfo) && (
               <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>General Shipment Notes:</AppText>
-                <AppText style={styles.notesValue}>{form.additionalInfo}</AppText>
+                <AppText style={styles.notesLabel}>
+                  General Shipment Notes:
+                </AppText>
+                <AppText style={styles.notesValue}>
+                  {form.additionalInfo}
+                </AppText>
               </View>
             )}
 
             {Boolean(form.recipientEmail) && (
               <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>Share Tracking Recipient Email:</AppText>
-                <AppText style={styles.notesValue}>{form.recipientEmail}</AppText>
+                <AppText style={styles.notesLabel}>
+                  Share Tracking Recipient Email:
+                </AppText>
+                <AppText style={styles.notesValue}>
+                  {form.recipientEmail}
+                </AppText>
               </View>
             )}
           </View>
@@ -518,7 +609,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  <Bookmark size={18} color={COLORS.grey700} style={{ marginRight: 6 }} />
+                  <Bookmark
+                    size={18}
+                    color={COLORS.grey700}
+                    style={{ marginRight: 6 }}
+                  />
                   <AppText style={styles.draftBtnText}>
                     {isEdit && isDraft ? 'Update Draft Data' : 'Save Draft'}
                   </AppText>
@@ -538,9 +633,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             ) : (
               <>
                 <AppText style={styles.publishBtnText}>
-                  {isEdit && !isDraft ? 'Update Shipment Details' : 'Save & Publish'}
+                  {isEdit && !isDraft
+                    ? 'Update Shipment Details'
+                    : 'Save & Publish'}
                 </AppText>
-                <ArrowRight size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+                <ArrowRight
+                  size={18}
+                  color={COLORS.white}
+                  style={{ marginLeft: 6 }}
+                />
               </>
             )}
           </TouchableOpacity>

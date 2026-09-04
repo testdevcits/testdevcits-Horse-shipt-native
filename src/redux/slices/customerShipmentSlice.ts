@@ -70,7 +70,12 @@ const customerShipmentSlice = createSlice({
   reducers: {
     updateLocalShipmentStatus: (
       state,
-      action: PayloadAction<{ shipmentId: string; status: string; isInProgress?: boolean; isCompleted?: boolean }>,
+      action: PayloadAction<{
+        shipmentId: string;
+        status: string;
+        isInProgress?: boolean;
+        isCompleted?: boolean;
+      }>,
     ) => {
       const target = state.shipments.find(
         item => item._id === action.payload.shipmentId,

@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../../constants';
 
 const styles = StyleSheet.create({
   tabSection: {
@@ -11,7 +17,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.xs,
     paddingHorizontal: SPACING.lg,
     alignItems: 'center',
-    alignSelf: "flex-end"
+    alignSelf: 'flex-end',
   },
   goldFilledBtnText: {
     color: COLORS.white,

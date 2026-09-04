@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from 'react-native';
+import { View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import {
   ImagePlus,
   FileText,
@@ -25,7 +19,10 @@ interface ShipmentInfoStepProps {
   updateForm: (updates: Partial<NewShipmentForm>) => void;
   onNext: () => void;
   onPrevious: () => void;
-  pickDocument: (index: number, type: 'coggins' | 'healthCert' | 'otherDocuments') => void;
+  pickDocument: (
+    index: number,
+    type: 'coggins' | 'healthCert' | 'otherDocuments',
+  ) => void;
   pickImage: (index: number) => void;
   removeFile: (
     index: number,
@@ -138,8 +135,9 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                 style={[
                   styles.uploadBox,
                   horse?.photo && styles.uploadBoxActive,
-                  (errors?.[`horses[${index}].photo`] || errors?.[`horses.${index}.photo`]) &&
-                  styles.uploadBoxError,
+                  (errors?.[`horses[${index}].photo`] ||
+                    errors?.[`horses.${index}.photo`]) &&
+                    styles.uploadBoxError,
                 ]}
                 onPress={() => pickImage(index)}
               >
@@ -163,11 +161,13 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                   </View>
                 )}
               </TouchableOpacity>
-              {(errors?.[`horses[${index}].photo`] || errors?.[`horses.${index}.photo`]) && (
+              {(errors?.[`horses[${index}].photo`] ||
+                errors?.[`horses.${index}.photo`]) && (
                 <View style={styles.errorContainer}>
                   <Info size={14} color={COLORS.error} />
                   <AppText style={styles.errorText}>
-                    {errors[`horses[${index}].photo`] || errors[`horses.${index}.photo`]}
+                    {errors[`horses[${index}].photo`] ||
+                      errors[`horses.${index}.photo`]}
                   </AppText>
                 </View>
               )}
@@ -214,7 +214,8 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             containerStyle={{ marginTop: SPACING.xs }}
           />
           <AppText style={styles.shareTrackingSubtext}>
-            If provided, the recipient will receive tracking information via email once the shipment is published.
+            If provided, the recipient will receive tracking information via
+            email once the shipment is published.
           </AppText>
         </View>
 
@@ -231,7 +232,5 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
     </View>
   );
 };
-
-
 
 export default ShipmentInfoStep;

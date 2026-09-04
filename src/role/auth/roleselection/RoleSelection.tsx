@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 import { User, Building2, Truck, ChevronRight } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // 1. Import AsyncStorage
-import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE } from '../../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  FONT_SIZE,
+} from '../../../constants';
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -26,7 +34,12 @@ const RoleSelection = ({ navigation }: any) => {
     const loadSavedRole = async () => {
       try {
         const savedRole = await AsyncStorage.getItem('@user_role');
-        if (savedRole && (savedRole === 'customer' || savedRole === 'shipper' || savedRole === 'driver')) {
+        if (
+          savedRole &&
+          (savedRole === 'customer' ||
+            savedRole === 'shipper' ||
+            savedRole === 'driver')
+        ) {
           setSelectedRole(savedRole as UserRole);
         }
       } catch (error) {
@@ -52,7 +65,7 @@ const RoleSelection = ({ navigation }: any) => {
       Toast.show({
         type: 'error',
         text1: 'Storage Error',
-        text2: 'Could not save your preference. Please try again.'
+        text2: 'Could not save your preference. Please try again.',
       });
     } finally {
       setIsStoring(false);
@@ -63,12 +76,12 @@ const RoleSelection = ({ navigation }: any) => {
     role,
     title,
     desc,
-    Icon
+    Icon,
   }: {
-    role: UserRole,
-    title: string,
-    desc: string,
-    Icon: any
+    role: UserRole;
+    title: string;
+    desc: string;
+    Icon: any;
   }) => {
     const isSelected = selectedRole === role;
 
@@ -76,10 +89,7 @@ const RoleSelection = ({ navigation }: any) => {
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => setSelectedRole(role)}
-        style={[
-          styles.roleCard,
-          isSelected && styles.roleCardActive
-        ]}
+        style={[styles.roleCard, isSelected && styles.roleCardActive]}
       >
         <View style={[styles.iconBox, isSelected && styles.iconBoxActive]}>
           <Icon
@@ -93,7 +103,9 @@ const RoleSelection = ({ navigation }: any) => {
           <AppText style={[styles.roleTitle, isSelected && styles.textWhite]}>
             {title}
           </AppText>
-          <AppText style={[styles.roleDesc, isSelected && styles.textLightGold]}>
+          <AppText
+            style={[styles.roleDesc, isSelected && styles.textLightGold]}
+          >
             {desc}
           </AppText>
         </View>
@@ -107,7 +119,11 @@ const RoleSelection = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
       <ImageBackground
         source={imageIndex.HorseBg}
@@ -118,16 +134,21 @@ const RoleSelection = ({ navigation }: any) => {
       </ImageBackground>
 
       <View style={styles.contentCard}>
+        <Image
+          source={imageIndex.Logo}
+          style={styles.logoIcon}
+          resizeMode="contain"
+        />
 
-
-        <Image source={imageIndex.Logo} style={styles.logoIcon} resizeMode="contain" />
-
-
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
           <View style={styles.headerTextSection}>
             <AppText style={styles.title}>Join the Network</AppText>
             <AppText style={styles.subtitle}>
-              Select your profile type to get started with HorseShipt transportation services.
+              Select your profile type to get started with HorseShipt
+              transportation services.
             </AppText>
           </View>
 
@@ -169,7 +190,10 @@ const RoleSelection = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
   headerImage: { width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.28 },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.2)' },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
 
   contentCard: {
     flex: 1,
@@ -181,12 +205,23 @@ const styles = StyleSheet.create({
   },
 
   // Logo Styles
-  logoIcon: { width: 80, height: 80, marginTop: -32, alignSelf: "center" },
+  logoIcon: { width: 80, height: 80, marginTop: -32, alignSelf: 'center' },
 
   scrollContent: { paddingTop: SPACING.md, paddingBottom: 40 },
   headerTextSection: { alignItems: 'center', marginBottom: SPACING.lg },
-  title: { fontSize: FONT_SIZE.heading, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  subtitle: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.medium, color: COLORS.textSecondary, textAlign: 'center', marginTop: 4, paddingHorizontal: 12 },
+  title: {
+    fontSize: FONT_SIZE.heading,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  subtitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    marginTop: 4,
+    paddingHorizontal: 12,
+  },
 
   // Card Styles
   cardsContainer: { gap: SPACING.sm, marginBottom: SPACING.lg },
@@ -210,23 +245,44 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   iconBox: {
-    width: 42, height: 42, borderRadius: RADIUS.sm,
+    width: 42,
+    height: 42,
+    borderRadius: RADIUS.sm,
     backgroundColor: COLORS.goldLightBg,
-    justifyContent: 'center', alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   iconBoxActive: { backgroundColor: 'rgba(255,255,255,0.2)' },
   roleTextContainer: { flex: 1, marginLeft: SPACING.md },
-  roleTitle: { fontSize: FONT_SIZE.md, fontFamily: FONTS.bold, color: COLORS.textPrimary },
-  roleDesc: { fontSize: FONT_SIZE.xs, fontFamily: FONTS.medium, color: COLORS.textSecondary, marginTop: 2 },
+  roleTitle: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+  },
+  roleDesc: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
 
   // Custom Radio UI
   radioCircle: {
-    width: 20, height: 20, borderRadius: 10,
-    borderWidth: 2, borderColor: COLORS.divider,
-    justifyContent: 'center', alignItems: 'center',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: COLORS.divider,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   radioActive: { borderColor: COLORS.white },
-  radioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: COLORS.white },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: COLORS.white,
+  },
 
   textWhite: { color: COLORS.white },
   textLightGold: { color: COLORS.goldLightBg },
@@ -236,11 +292,17 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: RADIUS.md,
     shadowColor: COLORS.primary,
-    shadowOpacity: 0.25, shadowRadius: 8, elevation: 4
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   footer: { marginTop: SPACING.lg, alignItems: 'center' },
-  footerText: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, fontFamily: FONTS.medium },
+  footerText: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.medium,
+  },
   contactLink: { color: COLORS.primary, fontFamily: FONTS.bold },
 });
 

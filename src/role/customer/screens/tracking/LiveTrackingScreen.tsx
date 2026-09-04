@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-
   ActivityIndicator,
   Linking,
   Share,
@@ -15,7 +14,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {
   X,
-
   Navigation,
   LocateFixed,
   Clock,
@@ -26,12 +24,18 @@ import {
   RefreshCw,
 } from 'lucide-react-native';
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SIZES, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SIZES,
+  SPACING,
+} from '../../../../constants';
 import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import imageIndex from '../../../../assets/images/imageIndex';
-
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
@@ -57,9 +61,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const driverLng = data?.driver?.lng;
 
   // Origin for route directions: Driver location if available, otherwise Pickup location
-
-
-
 
   // Auto-fit camera when coordinates change
   const handleRecenterMap = () => {
@@ -103,21 +104,51 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const getStatusDetails = (rawStatus: string) => {
     const s = (rawStatus || '').toLowerCase();
     if (s.includes('intransit') || s.includes('in_transit')) {
-      return { label: 'In Transit', badgeBg: 'rgba(59, 130, 246, 0.95)', isPickupDone: true, isDelivered: false };
+      return {
+        label: 'In Transit',
+        badgeBg: 'rgba(59, 130, 246, 0.95)',
+        isPickupDone: true,
+        isDelivered: false,
+      };
     }
     if (s.includes('near')) {
-      return { label: 'Near Destination', badgeBg: 'rgba(245, 158, 11, 0.95)', isPickupDone: true, isDelivered: false };
+      return {
+        label: 'Near Destination',
+        badgeBg: 'rgba(245, 158, 11, 0.95)',
+        isPickupDone: true,
+        isDelivered: false,
+      };
     }
     if (s.includes('delivered') || s.includes('complete')) {
-      return { label: 'Delivered', badgeBg: 'rgba(16, 185, 129, 0.95)', isPickupDone: true, isDelivered: true };
+      return {
+        label: 'Delivered',
+        badgeBg: 'rgba(16, 185, 129, 0.95)',
+        isPickupDone: true,
+        isDelivered: true,
+      };
     }
     if (s.includes('pickup')) {
-      return { label: 'Heading to Pickup', badgeBg: 'rgba(99, 102, 241, 0.95)', isPickupDone: false, isDelivered: false };
+      return {
+        label: 'Heading to Pickup',
+        badgeBg: 'rgba(99, 102, 241, 0.95)',
+        isPickupDone: false,
+        isDelivered: false,
+      };
     }
     if (s.includes('assign')) {
-      return { label: 'Driver Assigned', badgeBg: 'rgba(107, 114, 128, 0.95)', isPickupDone: false, isDelivered: false };
+      return {
+        label: 'Driver Assigned',
+        badgeBg: 'rgba(107, 114, 128, 0.95)',
+        isPickupDone: false,
+        isDelivered: false,
+      };
     }
-    return { label: 'Live Tracking', badgeBg: COLORS.primary, isPickupDone: false, isDelivered: false };
+    return {
+      label: 'Live Tracking',
+      badgeBg: COLORS.primary,
+      isPickupDone: false,
+      isDelivered: false,
+    };
   };
 
   const statusDetails = getStatusDetails(rawTripStatus);
@@ -134,15 +165,20 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const isHeadingToPickup = rawTripStatus.toLowerCase().includes('pickup');
   const targetTargetObj = isHeadingToPickup ? data?.pickup : data?.delivery;
 
-  const rawEtaMinutes = targetTargetObj?.etaMinutes || routeDirectionData.durationMins || 0;
-  const rawDistanceKm = targetTargetObj?.distanceKm || routeDirectionData.distanceKm || 0;
+  const rawEtaMinutes =
+    targetTargetObj?.etaMinutes || routeDirectionData.durationMins || 0;
+  const rawDistanceKm =
+    targetTargetObj?.distanceKm || routeDirectionData.distanceKm || 0;
 
   // Format ETA time (e.g. 127 mins -> 2h 7m & Clock e.g. 05:24 PM)
   const formatEtaString = (totalMins: number) => {
     if (!totalMins || totalMins <= 0) return 'Arriving Soon';
     const hours = Math.floor(totalMins / 60);
     const mins = Math.round(totalMins % 60);
-    const timeStr = formatDate(new Date(Date.now() + totalMins * 60000), 'hh:mm A');
+    const timeStr = formatDate(
+      new Date(Date.now() + totalMins * 60000),
+      'hh:mm A',
+    );
     if (hours > 0) {
       return `${timeStr} (${hours}h ${mins}m)`;
     }
@@ -150,14 +186,20 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   };
 
   const etaFormatted = formatEtaString(rawEtaMinutes);
-  const distanceKmText = rawDistanceKm > 0 ? `${rawDistanceKm.toFixed(1)} km away` : 'Calculating route...';
+  const distanceKmText =
+    rawDistanceKm > 0
+      ? `${rawDistanceKm.toFixed(1)} km away`
+      : 'Calculating route...';
 
   // Action handlers
   const handleCallDriver = () => {
     if (driverPhone) {
       Linking.openURL(`tel:${driverPhone}`);
     } else {
-      Alert.alert('Contact Driver', 'Driver phone number is not available yet.');
+      Alert.alert(
+        'Contact Driver',
+        'Driver phone number is not available yet.',
+      );
     }
   };
 
@@ -165,7 +207,10 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (driverPhone) {
       Linking.openURL(`sms:${driverPhone}`);
     } else {
-      Alert.alert('Contact Driver', 'Driver phone number is not available yet.');
+      Alert.alert(
+        'Contact Driver',
+        'Driver phone number is not available yet.',
+      );
     }
   };
 
@@ -285,7 +330,12 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           <X size={22} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
-        <View style={[styles.statusPill, { backgroundColor: statusDetails.badgeBg }]}>
+        <View
+          style={[
+            styles.statusPill,
+            { backgroundColor: statusDetails.badgeBg },
+          ]}
+        >
           <View style={styles.pulseDot} />
           <AppText style={styles.statusText}>
             {statusDetails.label.toUpperCase()}
@@ -316,10 +366,13 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
       <View style={styles.driverCard}>
         <View style={styles.driverInfo}>
           <Image
-            source={driverObj?.avatar ? {
-              uri:
-                driverObj?.avatar
-            } : imageIndex.AccountIcon}
+            source={
+              driverObj?.avatar
+                ? {
+                    uri: driverObj?.avatar,
+                  }
+                : imageIndex.AccountIcon
+            }
             style={styles.driverAvatar}
           />
           <View style={{ flex: 1 }}>
@@ -362,7 +415,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
         <View style={styles.etaContainer}>
           <View>
             <AppText style={styles.etaLabel}>
-              {isHeadingToPickup ? 'Estimated Pickup Time' : 'Estimated Arrival'}
+              {isHeadingToPickup
+                ? 'Estimated Pickup Time'
+                : 'Estimated Arrival'}
             </AppText>
             <AppText style={styles.etaTime}>{etaFormatted}</AppText>
           </View>
@@ -384,7 +439,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             >
               <CheckCircle2
                 size={16}
-                color={statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400}
+                color={
+                  statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
+                }
               />
             </View>
             <View style={styles.timelineContent}>
@@ -412,7 +469,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
               )}
             </View>
             <View style={styles.timelineContent}>
-              <AppText style={styles.locationTitle}>Delivery Destination</AppText>
+              <AppText style={styles.locationTitle}>
+                Delivery Destination
+              </AppText>
               <AppText numberOfLines={1} style={styles.locationSub}>
                 {data?.delivery?.location || 'Delivery Destination'}
               </AppText>

@@ -65,8 +65,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [profileData, setProfileData] = useState<any>(null);
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
 
-
-
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
   const [subscriptionStatusData, setSubscriptionStatusData] =
     useState<any>(null);

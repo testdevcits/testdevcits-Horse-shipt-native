@@ -27,9 +27,7 @@ export default {
   runningtruck: require('../images/runningtruck.gif'),
   success: require('../images/success.gif'),
 
-
   googlereview: require('../images/googlereview.png'),
   vehicles: require('../images/vehicles.png'),
   earnings: require('../images/earnings.png'),
-
 };

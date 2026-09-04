@@ -24,8 +24,6 @@ export type BottomTabParamList = {
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-
-
 const TabsNavigation = () => {
   // Initialize the 3-second active tracker at the tab entry root point [1]
   // useActiveLocationTracker();
@@ -41,23 +39,33 @@ const TabsNavigation = () => {
 
           switch (route.name) {
             case 'Home':
-              iconComponent = <Home size={iconSize} color={color} strokeWidth={2} />;
+              iconComponent = (
+                <Home size={iconSize} color={color} strokeWidth={2} />
+              );
               break;
             case 'Trips':
-              iconComponent = <List size={iconSize} color={color} strokeWidth={2} />;
+              iconComponent = (
+                <List size={iconSize} color={color} strokeWidth={2} />
+              );
               break;
             case 'Location':
-              iconComponent = <MapPin size={iconSize} color={color} strokeWidth={2} />;
+              iconComponent = (
+                <MapPin size={iconSize} color={color} strokeWidth={2} />
+              );
               break;
             case 'Profile':
-              iconComponent = <User size={iconSize} color={color} strokeWidth={2} />;
+              iconComponent = (
+                <User size={iconSize} color={color} strokeWidth={2} />
+              );
               break;
           }
 
           return (
             <View style={styles.iconContainer}>
               {iconComponent}
-              {focused && <View style={[styles.activeDot, { backgroundColor: color }]} />}
+              {focused && (
+                <View style={[styles.activeDot, { backgroundColor: color }]} />
+              )}
             </View>
           );
         },

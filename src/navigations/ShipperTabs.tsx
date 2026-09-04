@@ -154,7 +154,9 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
               >
                 {getTabIcon()}
                 {isFocused && (
-                  <AppText style={styles.tabLabelFocused}>{getTabLabel()}</AppText>
+                  <AppText style={styles.tabLabelFocused}>
+                    {getTabLabel()}
+                  </AppText>
                 )}
               </TouchableOpacity>
             );

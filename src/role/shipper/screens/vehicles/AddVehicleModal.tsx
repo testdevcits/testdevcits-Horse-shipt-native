@@ -517,8 +517,8 @@ const AddVehicleModal: React.FC<Props> = ({
               {activePicker === 'vehicleType'
                 ? 'Select Vehicle Type'
                 : activePicker === 'stallType'
-                  ? 'Select Stall Type'
-                  : 'Select Stall Size'}
+                ? 'Select Stall Type'
+                : 'Select Stall Size'}
             </AppText>
 
             {activePicker === 'vehicleType' &&

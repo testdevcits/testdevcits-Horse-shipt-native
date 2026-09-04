@@ -49,7 +49,7 @@ const formatDatePayload = (dateVal: any): string => {
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     }
-  } catch (e) { }
+  } catch (e) {}
   return String(dateVal || '');
 };
 
@@ -85,31 +85,61 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
     stallType: h.stallType || h.stallSize || 'Box',
     generalInfo: h.generalInfo || h.notes || '',
     photo: h.photo?.url
-      ? { uri: h.photo.url, type: h.photo.type || 'image/jpeg', name: h.photo.name || 'photo.jpg' }
-      : typeof h.photo === 'string'
-        ? { uri: h.photo, type: 'image/jpeg', name: 'photo.jpg' }
-        : h.photo || null,
-    coggins: h.coggins?.url
-      ? { uri: h.coggins.url, type: 'application/pdf', name: h.coggins.originalName || h.coggins.name || 'coggins.pdf' }
-      : h.documents?.coggins?.url
-        ? { uri: h.documents.coggins.url, type: 'application/pdf', name: h.documents.coggins.originalName || h.documents.coggins.name || 'coggins.pdf' }
-        : h.coggins || null,
-    healthCert: h.healthCert?.url
-      ? { uri: h.healthCert.url, type: 'application/pdf', name: h.healthCert.originalName || h.healthCert.name || 'health.pdf' }
-      : h.documents?.healthCertificate?.url
-        ? { uri: h.documents.healthCertificate.url, type: 'application/pdf', name: h.documents.healthCertificate.originalName || h.documents.healthCertificate.name || 'health.pdf' }
-        : h.healthCert || null,
-    otherDocuments: h.otherDocuments?.url || h.other?.url || h.documents?.other?.url || h.documents?.otherDocuments?.url
       ? {
-        uri:
-          h.otherDocuments?.url ||
-          h.other?.url ||
-          h.documents?.other?.url ||
-          h.documents?.otherDocuments?.url,
-        type: 'application/pdf',
-        name: 'other_document.pdf',
-      }
-      : h.otherDocuments || null,
+          uri: h.photo.url,
+          type: h.photo.type || 'image/jpeg',
+          name: h.photo.name || 'photo.jpg',
+        }
+      : typeof h.photo === 'string'
+      ? { uri: h.photo, type: 'image/jpeg', name: 'photo.jpg' }
+      : h.photo || null,
+    coggins: h.coggins?.url
+      ? {
+          uri: h.coggins.url,
+          type: 'application/pdf',
+          name: h.coggins.originalName || h.coggins.name || 'coggins.pdf',
+        }
+      : h.documents?.coggins?.url
+      ? {
+          uri: h.documents.coggins.url,
+          type: 'application/pdf',
+          name:
+            h.documents.coggins.originalName ||
+            h.documents.coggins.name ||
+            'coggins.pdf',
+        }
+      : h.coggins || null,
+    healthCert: h.healthCert?.url
+      ? {
+          uri: h.healthCert.url,
+          type: 'application/pdf',
+          name: h.healthCert.originalName || h.healthCert.name || 'health.pdf',
+        }
+      : h.documents?.healthCertificate?.url
+      ? {
+          uri: h.documents.healthCertificate.url,
+          type: 'application/pdf',
+          name:
+            h.documents.healthCertificate.originalName ||
+            h.documents.healthCertificate.name ||
+            'health.pdf',
+        }
+      : h.healthCert || null,
+    otherDocuments:
+      h.otherDocuments?.url ||
+      h.other?.url ||
+      h.documents?.other?.url ||
+      h.documents?.otherDocuments?.url
+        ? {
+            uri:
+              h.otherDocuments?.url ||
+              h.other?.url ||
+              h.documents?.other?.url ||
+              h.documents?.otherDocuments?.url,
+            type: 'application/pdf',
+            name: 'other_document.pdf',
+          }
+        : h.otherDocuments || null,
   }));
 
   return {
@@ -306,15 +336,24 @@ const useNewShipment = () => {
     formData?.append('pickupLat', form.pickupLat.toString());
     formData?.append('pickupLng', form.pickupLng.toString());
     formData?.append('pickupTimeOption', form.pickupTimeOption);
-    formData?.append('pickupStartDate', formatDatePayload(form.pickupStartDate));
+    formData?.append(
+      'pickupStartDate',
+      formatDatePayload(form.pickupStartDate),
+    );
     formData?.append('pickupEndDate', formatDatePayload(form.pickupEndDate));
 
     formData?.append('deliveryLocation', form.deliveryLocation);
     formData?.append('deliveryLat', form.deliveryLat.toString());
     formData?.append('deliveryLng', form.deliveryLng.toString());
     formData?.append('deliveryTimeOption', form.deliveryTimeOption);
-    formData?.append('deliveryStartDate', formatDatePayload(form.deliveryStartDate));
-    formData?.append('deliveryEndDate', formatDatePayload(form.deliveryEndDate));
+    formData?.append(
+      'deliveryStartDate',
+      formatDatePayload(form.deliveryStartDate),
+    );
+    formData?.append(
+      'deliveryEndDate',
+      formatDatePayload(form.deliveryEndDate),
+    );
 
     formData?.append('numberOfHorses', form.numberOfHorses.toString());
 
@@ -617,7 +656,7 @@ const useNewShipment = () => {
       Alert.alert(
         'Error',
         error?.response?.data?.message ||
-        'Failed to update or publish shipment',
+          'Failed to update or publish shipment',
       );
       return false;
     } finally {

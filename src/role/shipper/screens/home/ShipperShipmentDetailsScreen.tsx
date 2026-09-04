@@ -1,17 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Share,
-} from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image, Share } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import {
   MapPin,
-
   Compass,
   Box,
   ChevronDown,
@@ -31,9 +24,8 @@ import useStripeStatus from '../../../../hooks/useStripeStatus';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 import ConnectBankModal from './ConnectBankModal';
 
-
-const AskQuestionModal = lazy(() => import("./AskQuestionModal"))
-const SubmitOfferModal = lazy(() => import("./SubmitOfferModal"))
+const AskQuestionModal = lazy(() => import('./AskQuestionModal'));
+const SubmitOfferModal = lazy(() => import('./SubmitOfferModal'));
 
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();
@@ -41,15 +33,10 @@ const ShipperShipmentDetailsScreen = () => {
   const { isStripeReady, loading } = useStripeStatus();
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
-
   // console.log("======ShipmentDetails checkStripeStatus======", isStripeReady, loading)
-
 
   // Extract shipment from route params or fallback to default sample payload
   const shipment = route.params?.shipment || {};
-
-
-
 
   const [isMapVisible, setIsMapVisible] = useState(true);
 
@@ -60,7 +47,8 @@ const ShipperShipmentDetailsScreen = () => {
   const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   // Submit Offer Modal State
-  const [isSubmitOfferModalVisible, setIsSubmitOfferModalVisible] = useState(false);
+  const [isSubmitOfferModalVisible, setIsSubmitOfferModalVisible] =
+    useState(false);
 
   const fetchQuestions = async () => {
     if (!shipment?._id) return;
@@ -117,8 +105,12 @@ const ShipperShipmentDetailsScreen = () => {
   const breed = firstHorse?.breed || 'Not Available';
   const sex = firstHorse?.sex || 'Not Available';
   const colour = firstHorse?.colour || firstHorse?.color || 'Not Available';
-  const age = firstHorse?.age !== undefined && firstHorse?.age !== null ? firstHorse.age : 'Not Available';
-  const stallSize = firstHorse?.requestedStallSize || firstHorse?.stallSize || 'Not Available';
+  const age =
+    firstHorse?.age !== undefined && firstHorse?.age !== null
+      ? firstHorse.age
+      : 'Not Available';
+  const stallSize =
+    firstHorse?.requestedStallSize || firstHorse?.stallSize || 'Not Available';
 
   // Dates
   const pickupDateFormatted = shipment?.pickupDateRange?.start
@@ -140,10 +132,22 @@ const ShipperShipmentDetailsScreen = () => {
     : '4287.65';
 
   // Coords & Region
-  const pLat = shipment?.pickupCoords?.latitude || shipment?.pickupCoords?.lat || 25.2479758;
-  const pLng = shipment?.pickupCoords?.longitude || shipment?.pickupCoords?.lng || 55.3525527;
-  const dLat = shipment?.deliveryCoords?.latitude || shipment?.deliveryCoords?.lat || 56.879635;
-  const dLng = shipment?.deliveryCoords?.longitude || shipment?.deliveryCoords?.lng || 24.603189;
+  const pLat =
+    shipment?.pickupCoords?.latitude ||
+    shipment?.pickupCoords?.lat ||
+    25.2479758;
+  const pLng =
+    shipment?.pickupCoords?.longitude ||
+    shipment?.pickupCoords?.lng ||
+    55.3525527;
+  const dLat =
+    shipment?.deliveryCoords?.latitude ||
+    shipment?.deliveryCoords?.lat ||
+    56.879635;
+  const dLng =
+    shipment?.deliveryCoords?.longitude ||
+    shipment?.deliveryCoords?.lng ||
+    24.603189;
 
   const mapRegion = {
     latitude: (pLat + dLat) / 2,
@@ -231,25 +235,37 @@ const ShipperShipmentDetailsScreen = () => {
               {(shipment?.status || 'Not Available').replace(/_/g, ' ')}
             </AppText>
           </View>
-          <AppText style={styles.postedDateText}>Posted on {postedDateFormatted}</AppText>
+          <AppText style={styles.postedDateText}>
+            Posted on {postedDateFormatted}
+          </AppText>
         </View>
 
         {/* 1. Hero Horse Banner Card */}
         <View style={styles.heroCard}>
           <View style={styles.heroBannerContainer}>
             {horsePhoto ? (
-              <Image source={{ uri: horsePhoto }} style={styles.heroBannerImage} />
+              <Image
+                source={{ uri: horsePhoto }}
+                style={styles.heroBannerImage}
+              />
             ) : (
-              <Image source={imageIndex.Banner} style={styles.heroBannerImage} />
+              <Image
+                source={imageIndex.Banner}
+                style={styles.heroBannerImage}
+              />
             )}
             <View style={styles.heroBannerBadge}>
-              <AppText style={styles.heroBannerBadgeText}>{(shipment?.status || 'Not Available').replace(/_/g, ' ')}</AppText>
+              <AppText style={styles.heroBannerBadgeText}>
+                {(shipment?.status || 'Not Available').replace(/_/g, ' ')}
+              </AppText>
             </View>
           </View>
 
           <View style={styles.heroBody}>
             <View style={styles.horseCountTag}>
-              <AppText style={styles.horseCountTagText}>Horse {shipment?.horses?.length || "0"}</AppText>
+              <AppText style={styles.horseCountTagText}>
+                Horse {shipment?.horses?.length || '0'}
+              </AppText>
             </View>
 
             <AppText style={styles.heroTitle}>
@@ -258,7 +274,9 @@ const ShipperShipmentDetailsScreen = () => {
             <AppText style={styles.heroSubtitle}>
               {breed} • {age} yrs • {sex} • {colour}
             </AppText>
-            <AppText style={styles.shipmentCodeText}>{shipment?.shipmentCode}</AppText>
+            <AppText style={styles.shipmentCodeText}>
+              {shipment?.shipmentCode}
+            </AppText>
 
             <View style={styles.customerRow}>
               <AppText style={styles.customerNameText}>
@@ -273,12 +291,16 @@ const ShipperShipmentDetailsScreen = () => {
             <View style={styles.dateCardsRow}>
               <View style={styles.dateCard}>
                 <AppText style={styles.dateCardLabel}>PICKUP</AppText>
-                <AppText style={styles.dateCardValue}>{pickupDateFormatted}</AppText>
+                <AppText style={styles.dateCardValue}>
+                  {pickupDateFormatted}
+                </AppText>
               </View>
 
               <View style={styles.dateCard}>
                 <AppText style={styles.dateCardLabel}>DELIVERY</AppText>
-                <AppText style={styles.dateCardValue}>{deliveryDateFormatted}</AppText>
+                <AppText style={styles.dateCardValue}>
+                  {deliveryDateFormatted}
+                </AppText>
               </View>
             </View>
           </View>
@@ -288,7 +310,9 @@ const ShipperShipmentDetailsScreen = () => {
         {isMapVisible && (
           <View style={styles.routeMapCard}>
             <AppText style={styles.cardHeaderTitle}>Shipment Route Map</AppText>
-            <AppText style={styles.cardHeaderSub}>{shipment?.shipmentCode}</AppText>
+            <AppText style={styles.cardHeaderSub}>
+              {shipment?.shipmentCode}
+            </AppText>
 
             <View style={styles.mapWrapper}>
               <MapView
@@ -365,7 +389,9 @@ const ShipperShipmentDetailsScreen = () => {
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>HORSES</AppText>
-              <AppText style={styles.specStatValue}>{shipment?.numberOfHorses || 1}</AppText>
+              <AppText style={styles.specStatValue}>
+                {shipment?.numberOfHorses || 1}
+              </AppText>
             </View>
           </View>
 
@@ -422,7 +448,9 @@ const ShipperShipmentDetailsScreen = () => {
               </View>
 
               <View style={styles.timelineTextCol}>
-                <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
+                <AppText style={styles.timelineLabel}>
+                  DELIVERY LOCATION
+                </AppText>
                 <AppText style={styles.timelineAddress}>
                   {shipment?.deliveryLocation || 'Not Available'}
                 </AppText>
@@ -433,7 +461,10 @@ const ShipperShipmentDetailsScreen = () => {
           <View style={styles.totalDistanceContainer}>
             <AppText style={styles.totalDistanceLabel}>TOTAL DISTANCE</AppText>
             <AppText style={styles.totalDistanceValue}>
-              {distanceMiles} <AppText style={styles.totalDistanceSub}>miles ({distanceKm} km)</AppText>
+              {distanceMiles}{' '}
+              <AppText style={styles.totalDistanceSub}>
+                miles ({distanceKm} km)
+              </AppText>
             </AppText>
           </View>
         </View>
@@ -450,14 +481,19 @@ const ShipperShipmentDetailsScreen = () => {
           const breed = horse?.breed || 'Not Available';
           const sex = horse?.sex || 'Not Available';
           const colour = horse?.colour || horse?.color || 'Not Available';
-          const age = horse?.age !== undefined && horse?.age !== null ? `${horse.age}` : 'Not Available';
-          const stallSize = horse?.requestedStallSize || horse?.stallSize || 'Not Available';
+          const age =
+            horse?.age !== undefined && horse?.age !== null
+              ? `${horse.age}`
+              : 'Not Available';
+          const stallSize =
+            horse?.requestedStallSize || horse?.stallSize || 'Not Available';
           const notesText =
             horse?.notes ||
             horse?.generalInfo ||
             horse?.notesLog?.[0]?.note ||
             'Not Available';
-          const noteDate = horse?.notesLog?.[0]?.createdAt || shipment?.publishedAt;
+          const noteDate =
+            horse?.notesLog?.[0]?.createdAt || shipment?.publishedAt;
 
           return (
             <View key={horse?._id || index} style={styles.horseDetailsCard}>
@@ -485,9 +521,15 @@ const ShipperShipmentDetailsScreen = () => {
                   {/* Horse Thumbnail Row */}
                   <View style={styles.horseProfileRow}>
                     {hPhoto ? (
-                      <Image source={{ uri: hPhoto }} style={styles.horseThumb} />
+                      <Image
+                        source={{ uri: hPhoto }}
+                        style={styles.horseThumb}
+                      />
                     ) : (
-                      <Image source={imageIndex.Banner} style={styles.horseThumb} />
+                      <Image
+                        source={imageIndex.Banner}
+                        style={styles.horseThumb}
+                      />
                     )}
 
                     <View style={styles.horseProfileInfo}>
@@ -506,7 +548,10 @@ const ShipperShipmentDetailsScreen = () => {
                         </View>
                         <View style={styles.horseMiniPill}>
                           <AppText style={styles.horseMiniPillText}>
-                            AGE: {age} {typeof age === 'number' || !isNaN(Number(age)) ? 'YRS' : ''}
+                            AGE: {age}{' '}
+                            {typeof age === 'number' || !isNaN(Number(age))
+                              ? 'YRS'
+                              : ''}
                           </AppText>
                         </View>
                       </View>
@@ -533,25 +578,36 @@ const ShipperShipmentDetailsScreen = () => {
                     <View style={styles.horseSpecBox}>
                       <AppText style={styles.horseSpecLabel}>AGE</AppText>
                       <AppText style={styles.horseSpecValue}>
-                        {age} {typeof age === 'number' || !isNaN(Number(age)) ? 'Yrs' : ''}
+                        {age}{' '}
+                        {typeof age === 'number' || !isNaN(Number(age))
+                          ? 'Yrs'
+                          : ''}
                       </AppText>
                     </View>
 
                     <View style={[styles.horseSpecBox, { width: '100%' }]}>
-                      <AppText style={styles.horseSpecLabel}>REGISTERED NAME</AppText>
-                      <AppText style={styles.horseSpecValue}>{registeredName}</AppText>
+                      <AppText style={styles.horseSpecLabel}>
+                        REGISTERED NAME
+                      </AppText>
+                      <AppText style={styles.horseSpecValue}>
+                        {registeredName}
+                      </AppText>
                     </View>
                   </View>
 
                   {/* Chronological Notes */}
                   <View style={styles.notesBox}>
                     <View style={styles.notesHeaderRow}>
-                      <AppText style={styles.notesTitle}>Chronological Notes</AppText>
+                      <AppText style={styles.notesTitle}>
+                        Chronological Notes
+                      </AppText>
                       <AppText style={styles.notesDateText}>
                         {formatDate(noteDate, 'D MMM YYYY, h:mm A')}
                       </AppText>
                     </View>
-                    <AppText style={styles.notesBodyText}>"{notesText}"</AppText>
+                    <AppText style={styles.notesBodyText}>
+                      "{notesText}"
+                    </AppText>
                   </View>
                 </View>
               )}
@@ -563,13 +619,15 @@ const ShipperShipmentDetailsScreen = () => {
         <View style={styles.ctaCard}>
           <AppText style={styles.ctaTitle}>Ready to Respond</AppText>
           <AppText style={styles.ctaSub}>
-            Do you have questions about this shipment, or are you ready to submit a binding
-            proposal, providing your professional offer?
+            Do you have questions about this shipment, or are you ready to
+            submit a binding proposal, providing your professional offer?
           </AppText>
 
           <View style={styles.summaryCodeBox}>
             <AppText style={styles.summaryCodeLabel}>QUESTION SUMMARY</AppText>
-            <AppText style={styles.summaryCodeValue}>{shipment?.shipmentCode}</AppText>
+            <AppText style={styles.summaryCodeValue}>
+              {shipment?.shipmentCode}
+            </AppText>
           </View>
 
           <TouchableOpacity
@@ -615,17 +673,13 @@ const ShipperShipmentDetailsScreen = () => {
         />
       </Suspense>
 
-
-      {
-        !loading && !isStripeReady && (
-          <ConnectBankModal
-            isVisible={isBankModalVisible}
-            onClose={() => setIsBankModalVisible(false)}
-            navigation={navigation}
-          />
-        )
-
-      }
+      {!loading && !isStripeReady && (
+        <ConnectBankModal
+          isVisible={isBankModalVisible}
+          onClose={() => setIsBankModalVisible(false)}
+          navigation={navigation}
+        />
+      )}
     </View>
   );
 };

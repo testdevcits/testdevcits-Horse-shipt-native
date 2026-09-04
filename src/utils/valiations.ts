@@ -4,7 +4,6 @@ export const isValidVIN = (vin: string) => {
   return VIN_REGEX.test(vin.trim());
 };
 
-
 export const isValidVehicleNumber = (value: string) => {
   const vehicleNumber = value.trim().toUpperCase();
 

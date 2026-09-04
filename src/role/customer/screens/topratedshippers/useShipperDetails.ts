@@ -30,8 +30,8 @@ export const useShipperDetails = (shipperId: string) => {
         // Extract error message from API response or generic error
         setError(
           e?.response?.data?.message ||
-          e.message ||
-          'An unexpected error occurred',
+            e.message ||
+            'An unexpected error occurred',
         );
       } finally {
         setLoading(false);

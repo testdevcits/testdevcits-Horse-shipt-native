@@ -33,7 +33,9 @@ const App = () => {
             <SafeAreaView style={{ flex: 1 }}>
               <OfflineBanner />
               <ErrorBoundary>
-                <StripeProvider publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}>
+                <StripeProvider
+                  publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}
+                >
                   <AppNavigation />
                 </StripeProvider>
               </ErrorBoundary>
@@ -60,5 +62,4 @@ const styles = StyleSheet.create({
 
 export default App;
 
-
-//for testing  done 
+//for testing  done

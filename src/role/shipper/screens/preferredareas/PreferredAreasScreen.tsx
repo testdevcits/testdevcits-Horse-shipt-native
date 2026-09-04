@@ -1,10 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   Plus,
@@ -26,7 +21,6 @@ import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
 
-
 const MAX_AREAS = 4;
 
 const PreferredAreasScreen = () => {
@@ -36,14 +30,15 @@ const PreferredAreasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isViewAllModalVisible, setIsViewAllModalVisible] = useState(false);
   const [selectedAreaToEdit, setSelectedAreaToEdit] = useState<any>(null);
-  const AddEditAreaModal = lazy(() => import("./AddEditAreaModal"))
-  const ViewAllAreasMapModal = lazy(() => import("./ViewAllAreasMapModal"))
-
-
+  const AddEditAreaModal = lazy(() => import('./AddEditAreaModal'));
+  const ViewAllAreasMapModal = lazy(() => import('./ViewAllAreasMapModal'));
 
   // Delete Confirmation Modal State
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [areaToDelete, setAreaToDelete] = useState<{ id: string; name: string } | null>(null);
+  const [areaToDelete, setAreaToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchPreferredAreas = async () => {
@@ -133,7 +128,8 @@ const PreferredAreasScreen = () => {
         <AppText style={styles.headerTitle}>Preferred Areas</AppText>
       </View>
       <AppText style={styles.headerSubText}>
-        Add up to 4 service areas, edit them clearly, and adjust the exact pin on the map when you need better precision.
+        Add up to 4 service areas, edit them clearly, and adjust the exact pin
+        on the map when you need better precision.
       </AppText>
 
       {/* STEP / SLOT INDICATORS (1 FILLED, 2 OPEN, 3 OPEN, 4 OPEN) */}
@@ -169,7 +165,9 @@ const PreferredAreasScreen = () => {
       {/* PROGRESS BAR ROW */}
       <View style={styles.progressRow}>
         <View style={styles.progressBarBg}>
-          <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
+          <View
+            style={[styles.progressBarFill, { width: `${progressPercent}%` }]}
+          />
         </View>
         <AppText style={styles.areaCountText}>
           {filledCount} / {MAX_AREAS} areas added
@@ -186,19 +184,16 @@ const PreferredAreasScreen = () => {
           <Plus size={18} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add New Area</AppText>
         </TouchableOpacity>
-        {
-          areas.length > 0 && (
-
-            <TouchableOpacity
-              style={styles.seeAllBtn}
-              onPress={() => setIsViewAllModalVisible(true)}
-              activeOpacity={0.8}
-            >
-              <MapIcon size={16} color={COLORS.textPrimary} />
-              <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
-            </TouchableOpacity>
-          )
-        }
+        {areas.length > 0 && (
+          <TouchableOpacity
+            style={styles.seeAllBtn}
+            onPress={() => setIsViewAllModalVisible(true)}
+            activeOpacity={0.8}
+          >
+            <MapIcon size={16} color={COLORS.textPrimary} />
+            <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -223,7 +218,13 @@ const PreferredAreasScreen = () => {
     );
   };
 
-  const renderAreaItem = ({ item: area, index }: { item: any; index: number }) => {
+  const renderAreaItem = ({
+    item: area,
+    index,
+  }: {
+    item: any;
+    index: number;
+  }) => {
     let lat = 22.777927;
     let lng = 75.892304;
 
@@ -297,7 +298,10 @@ const PreferredAreasScreen = () => {
             pitchEnabled={false}
             rotateEnabled={false}
           >
-            <Marker coordinate={{ latitude: lat, longitude: lng }} title={area.locationName} />
+            <Marker
+              coordinate={{ latitude: lat, longitude: lng }}
+              title={area.locationName}
+            />
             <Circle
               center={{ latitude: lat, longitude: lng }}
               radius={radiusMeters}
@@ -385,7 +389,9 @@ const PreferredAreasScreen = () => {
         }}
         onConfirm={handleConfirmDelete}
         title="Delete Preferred Area"
-        description={`Are you sure you want to delete "${areaToDelete?.name || 'this preferred area'}"?`}
+        description={`Are you sure you want to delete "${
+          areaToDelete?.name || 'this preferred area'
+        }"?`}
         confirmText="Delete"
         cancelText="Cancel"
         type="danger"

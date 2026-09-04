@@ -54,11 +54,12 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
     try {
       const createRes = await shipperService.createStripeAccount();
       if (createRes?.success) {
-        const onboardRes = await shipperService.getStripeOnboarding().catch(() => null);
+        const onboardRes = await shipperService
+          .getStripeOnboarding()
+          .catch(() => null);
 
         const onboardingUrl =
-          onboardRes?.onboardingUrl ||
-          onboardRes?.data?.onboardingUrl;
+          onboardRes?.onboardingUrl || onboardRes?.data?.onboardingUrl;
         if (onboardingUrl) {
           onClose();
           setTimeout(() => {
@@ -77,7 +78,10 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
           Toast.show({
             type: 'success',
             text1: 'Stripe Payout Account',
-            text2: createRes.message || onboardRes?.message || 'Stripe account processed.',
+            text2:
+              createRes.message ||
+              onboardRes?.message ||
+              'Stripe account processed.',
           });
           onClose();
         }
@@ -85,7 +89,8 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
         Toast.show({
           type: 'error',
           text1: 'Setup Failed',
-          text2: createRes?.message || 'Failed to create Stripe payout account.',
+          text2:
+            createRes?.message || 'Failed to create Stripe payout account.',
         });
       }
     } catch (err: any) {
@@ -93,7 +98,9 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: err?.response?.data?.message || 'Something went wrong setting up payout account.',
+        text2:
+          err?.response?.data?.message ||
+          'Something went wrong setting up payout account.',
       });
     } finally {
       setInternalLoading(false);
@@ -146,7 +153,9 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               <View style={styles.infoIconWrapper}>
                 <Info size={16} color={COLORS.goldBrownText} />
               </View>
-              <AppText style={styles.sectionTitle}>Why is this required?</AppText>
+              <AppText style={styles.sectionTitle}>
+                Why is this required?
+              </AppText>
             </View>
 
             {/* Feature Cards Grid */}
@@ -178,7 +187,8 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
             <View style={styles.encryptionCard}>
               <Lock size={18} color={COLORS.grey700} style={{ marginTop: 2 }} />
               <AppText style={styles.encryptionText}>
-                Your banking information is encrypted and process only by stripe. We never store your bank details.
+                Your banking information is encrypted and process only by
+                stripe. We never store your bank details.
               </AppText>
             </View>
 

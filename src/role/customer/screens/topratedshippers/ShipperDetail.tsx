@@ -38,21 +38,29 @@ const ShipperDetail = () => {
   const dispatch = useAppDispatch();
   const { wishlistIds } = useAppSelector(state => state.wishlist);
 
-  const shipperId = route.params?.item?.id || route.params?.item?._id || route.params?.id;
+  const shipperId =
+    route.params?.item?.id || route.params?.item?._id || route.params?.id;
 
   const { shipper, loading, refreshing, error, refresh } =
     useShipperDetails(shipperId);
 
-  console.log("=================120", shipper)
+  console.log('=================120', shipper);
 
   const targetId = shipperId || shipper?._id || shipper?.id;
   const isFavorite = targetId
-    ? wishlistIds.includes(targetId) || !!shipper?.isWishlisted || !!shipper?.isFavorite
+    ? wishlistIds.includes(targetId) ||
+      !!shipper?.isWishlisted ||
+      !!shipper?.isFavorite
     : false;
 
   const handleToggleWishlist = () => {
     if (targetId) {
-      dispatch(toggleWishlistThunk({ shipperId: targetId, shipperItem: shipper || route.params?.item }));
+      dispatch(
+        toggleWishlistThunk({
+          shipperId: targetId,
+          shipperItem: shipper || route.params?.item,
+        }),
+      );
     }
   };
 
@@ -101,7 +109,9 @@ const ShipperDetail = () => {
           <AppText style={styles.reviewerName}>
             {item?.customerName || 'Not Available'}
           </AppText>
-          <AppText style={styles.reviewDate}>{formatDate(item?.createdAt)}</AppText>
+          <AppText style={styles.reviewDate}>
+            {formatDate(item?.createdAt)}
+          </AppText>
         </View>
       </View>
     </View>
@@ -144,12 +154,17 @@ const ShipperDetail = () => {
         {/* Banner and Profile Image */}
         <View style={styles.headerSection}>
           <Image
-            source={
+            source={{
+              uri: shipper?.bannerImage,
+            }}
+            style={[
+              styles.bannerImage,
               {
-                uri: shipper?.bannerImage,
-              }
-            }
-            style={[styles.bannerImage, { backgroundColor: shipper?.bannerImage ? COLORS.white : COLORS.background }]}
+                backgroundColor: shipper?.bannerImage
+                  ? COLORS.white
+                  : COLORS.background,
+              },
+            ]}
           />
           <View style={styles.profileImageContainer}>
             <Image
@@ -214,20 +229,31 @@ const ShipperDetail = () => {
         {/* Preferred Operating Areas Section */}
         {shipper?.preferredAreas && shipper.preferredAreas.length > 0 && (
           <View style={styles.section}>
-            <AppText style={styles.sectionTitle}>Preferred Operating Areas</AppText>
+            <AppText style={styles.sectionTitle}>
+              Preferred Operating Areas
+            </AppText>
             <View style={styles.contentPadding}>
               {shipper.preferredAreas.map((area: any, index: number) => {
                 const locationName =
-                  area?.locationName || area?.location || area?.address || 'Service Area';
+                  area?.locationName ||
+                  area?.location ||
+                  area?.address ||
+                  'Service Area';
                 const radius = area?.radiusKm || area?.radius || 0;
 
                 return (
-                  <View key={area?.id || area?._id || index} style={styles.areaCard}>
+                  <View
+                    key={area?.id || area?._id || index}
+                    style={styles.areaCard}
+                  >
                     <View style={styles.areaIconBox}>
                       <MapPin size={18} color={COLORS.primary} />
                     </View>
                     <View style={styles.areaContent}>
-                      <AppText style={styles.areaLocationName} numberOfLines={2}>
+                      <AppText
+                        style={styles.areaLocationName}
+                        numberOfLines={2}
+                      >
                         {locationName}
                       </AppText>
                       {radius > 0 && (

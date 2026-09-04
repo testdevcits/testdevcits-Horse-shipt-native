@@ -12,7 +12,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
-import { COLORS, SCREEN_HEIGHT, } from '../../../constants';
+import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import authService from '../../../api/services/authService';
@@ -31,11 +31,15 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
   const otpInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    const show = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    const hide = Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+    const show = Keyboard.addListener('keyboardDidShow', () =>
+      setIsKeyboardOpen(true),
+    );
+    const hide = Keyboard.addListener('keyboardDidHide', () =>
+      setIsKeyboardOpen(false),
+    );
 
     const interval = setInterval(() => {
-      setResendTimer((prev) => (prev > 0 ? prev - 1 : 0));
+      setResendTimer(prev => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => {
@@ -66,7 +70,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
         navigation.navigate('ResetPassword', { email, role, otp: finalOtp });
       }
     } catch (err: any) {
-      console.log("OTP Verification Error:", err?.response);
+      console.log('OTP Verification Error:', err?.response);
       setError(err?.response?.data?.message || 'Invalid or expired OTP');
       // REMOVED: setOtp(''); <- This was causing your 6th box to disappear
     } finally {
@@ -89,15 +93,29 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
       <ImageBackground
         source={imageIndex.HorseBg}
-        style={[styles.headerImage, { height: isKeyboardOpen ? SCREEN_HEIGHT * 0.18 : SCREEN_HEIGHT * 0.45 }]}
+        style={[
+          styles.headerImage,
+          {
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.18
+              : SCREEN_HEIGHT * 0.45,
+          },
+        ]}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backBtn}
+        >
           <ChevronLeft color={COLORS.white} size={28} />
         </TouchableOpacity>
       </ImageBackground>
@@ -109,7 +127,11 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
         <View style={styles.contentCard}>
           <View style={styles.logoOuterRing}>
             <View style={styles.logoInnerRing}>
-              <Image source={imageIndex.LogoIcon} style={styles.logoIcon} resizeMode="contain" />
+              <Image
+                source={imageIndex.LogoIcon}
+                style={styles.logoIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
 
@@ -133,7 +155,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
               <TextInput
                 ref={otpInputRef}
                 value={otp}
-                onChangeText={(t) => {
+                onChangeText={t => {
                   setOtp(t);
                   setError(''); // Clear error while user is typing
                   if (t.length === 6) {
@@ -147,14 +169,14 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
                 autoFocus={true}
               />
               <View style={styles.boxesRow}>
-                {[0, 1, 2, 3, 4, 5].map((idx) => (
+                {[0, 1, 2, 3, 4, 5].map(idx => (
                   <View
                     key={idx}
                     style={[
                       styles.otpBox,
                       otp.length === idx && styles.activeBox,
                       otp.length > idx && styles.filledBox,
-                      !!error && styles.errorBox
+                      !!error && styles.errorBox,
                     ]}
                   >
                     <AppText style={styles.otpText}>{otp[idx] || ''}</AppText>
@@ -167,9 +189,19 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
 
             <View style={styles.resendRow}>
               <AppText style={styles.resendLabel}>Didn't receive code?</AppText>
-              <TouchableOpacity onPress={handleResend} disabled={resendTimer > 0}>
-                <AppText style={[styles.resendLink, resendTimer > 0 && { color: COLORS.grey400 }]}>
-                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend Code'}
+              <TouchableOpacity
+                onPress={handleResend}
+                disabled={resendTimer > 0}
+              >
+                <AppText
+                  style={[
+                    styles.resendLink,
+                    resendTimer > 0 && { color: COLORS.grey400 },
+                  ]}
+                >
+                  {resendTimer > 0
+                    ? `Resend in ${resendTimer}s`
+                    : 'Resend Code'}
                 </AppText>
               </TouchableOpacity>
             </View>

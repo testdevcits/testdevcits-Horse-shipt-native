@@ -4,12 +4,10 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-
   KeyboardAvoidingView,
   Platform,
   Pressable,
   Alert,
-  
 } from 'react-native';
 import { X, Star, User } from 'lucide-react-native';
 import {
@@ -42,8 +40,6 @@ const RatingModal = ({
   shipmentId,
   onSuccess,
 }: Props) => {
-
-
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -77,7 +73,12 @@ const RatingModal = ({
         // Alert.alert('Error', res.message || 'Failed to submit review.');
       }
     } catch (error: any) {
-      Alert.alert('Error', error?.response?.data?.message || error?.message || 'Failed to submit review.');
+      Alert.alert(
+        'Error',
+        error?.response?.data?.message ||
+          error?.message ||
+          'Failed to submit review.',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -106,17 +107,16 @@ const RatingModal = ({
                 {shipmentTitle}?
               </AppText>
             </AppText>
-            {
-              shipperName !== null && shipperName !== '' && shipmentTitle !== undefined && (
+            {shipperName !== null &&
+              shipperName !== '' &&
+              shipmentTitle !== undefined && (
                 <View style={styles.shipperRow}>
                   <View style={styles.avatar}>
                     <User size={18} color={COLORS.primary} />
                   </View>
                   <AppText style={styles.shipperName}>{shipperName}</AppText>
-                </View>)
-            }
-
-
+                </View>
+              )}
 
             {/* Stars */}
             <View style={styles.starRow}>
@@ -140,9 +140,6 @@ const RatingModal = ({
               onChangeText={setReview}
               containerStyle={{ marginBottom: SPACING.xl }}
             />
-
-
-
 
             <Button
               title="Submit Review"

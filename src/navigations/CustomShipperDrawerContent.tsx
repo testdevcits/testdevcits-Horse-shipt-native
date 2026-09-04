@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-
-} from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
@@ -116,13 +110,17 @@ const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
     onPress={onPress}
     activeOpacity={0.7}
   >
-    <AppText style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}>
+    <AppText
+      style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
+    >
       {label}
     </AppText>
   </TouchableOpacity>
 );
 
-const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props => {
+const CustomShipperDrawerContent: React.FC<
+  DrawerContentComponentProps
+> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
   const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
@@ -205,17 +203,23 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
               <ShipperDrawerSubMenuItem
                 label="My Shipment"
                 isActive={isPostActive && activeSubTab === 'my_shipments'}
-                onPress={() => navigateToTab('Post', { initialTab: 'my_shipments' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'my_shipments' })
+                }
               />
               <ShipperDrawerSubMenuItem
                 label="Quote Received"
                 isActive={isPostActive && activeSubTab === 'quote_request'}
-                onPress={() => navigateToTab('Post', { initialTab: 'quote_request' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'quote_request' })
+                }
               />
               <ShipperDrawerSubMenuItem
                 label="All Shipments"
                 isActive={isPostActive && activeSubTab === 'all_shipment'}
-                onPress={() => navigateToTab('Post', { initialTab: 'all_shipment' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'all_shipment' })
+                }
               />
             </View>
           )}

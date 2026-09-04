@@ -1,5 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const { width } = Dimensions.get('window');
 
@@ -63,7 +69,7 @@ const styles = StyleSheet.create({
   heroBannerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: "stretch",
+    resizeMode: 'stretch',
   },
   heroBannerBadge: {
     position: 'absolute',

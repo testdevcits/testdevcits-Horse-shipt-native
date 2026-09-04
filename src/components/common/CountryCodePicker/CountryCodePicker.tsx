@@ -37,7 +37,8 @@ export const CountryCodePicker = ({
   showBorder = false,
 }: CountryCodePickerProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentCountry, setCurrentCountry] = useState<Country>(selectedCountry);
+  const [currentCountry, setCurrentCountry] =
+    useState<Country>(selectedCountry);
 
   const handleSelect = (country: Country) => {
     setCurrentCountry(country);
@@ -50,14 +51,15 @@ export const CountryCodePicker = ({
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => setModalVisible(true)}
-        style={[
-          styles.triggerBtn,
-          showBorder && styles.triggerBorder,
-        ]}
+        style={[styles.triggerBtn, showBorder && styles.triggerBorder]}
       >
         <AppText style={styles.flagText}>{currentCountry.flag}</AppText>
         <AppText style={styles.codeText}>{currentCountry.code}</AppText>
-        <ChevronDown size={14} color={COLORS.textSecondary} style={{ marginLeft: 2 }} />
+        <ChevronDown
+          size={14}
+          color={COLORS.textSecondary}
+          style={{ marginLeft: 2 }}
+        />
       </TouchableOpacity>
 
       <Modal
@@ -66,8 +68,14 @@ export const CountryCodePicker = ({
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <Pressable style={styles.overlay} onPress={() => setModalVisible(false)}>
-          <Pressable style={styles.modalContent} onPress={e => e.stopPropagation()}>
+        <Pressable
+          style={styles.overlay}
+          onPress={() => setModalVisible(false)}
+        >
+          <Pressable
+            style={styles.modalContent}
+            onPress={e => e.stopPropagation()}
+          >
             {/* Modal Header */}
             <View style={styles.modalHeader}>
               <AppText style={styles.modalTitle}>Select Country Code</AppText>
@@ -85,11 +93,16 @@ export const CountryCodePicker = ({
               keyExtractor={item => item.iso}
               contentContainerStyle={styles.listContainer}
               renderItem={({ item }) => {
-                const isSelected = item.code === currentCountry.code && item.iso === currentCountry.iso;
+                const isSelected =
+                  item.code === currentCountry.code &&
+                  item.iso === currentCountry.iso;
                 return (
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    style={[styles.countryRow, isSelected && styles.selectedRow]}
+                    style={[
+                      styles.countryRow,
+                      isSelected && styles.selectedRow,
+                    ]}
                     onPress={() => handleSelect(item)}
                   >
                     <View style={styles.countryLeft}>

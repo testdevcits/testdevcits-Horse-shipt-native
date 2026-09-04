@@ -3,17 +3,11 @@ import React, { useState } from 'react';
 import {
   View,
   ScrollView,
-
   ActivityIndicator,
   TouchableOpacity,
   RefreshControl,
-
 } from 'react-native';
-import {
-
-  RotateCw,
-
-} from 'lucide-react-native';
+import { RotateCw } from 'lucide-react-native';
 
 // Imported design systems & components
 import { useDriverMe } from '../../../../hooks/useDriverMe';
@@ -167,7 +161,8 @@ const HomeScreen = ({ navigation }: any) => {
             isLoading={startTripLoading}
             buttonStyle={{ margin: SPACING.md }}
           />
-        ) : activeShipment?.tripStatus === 'inTransit' || activeShipment?.tripStatus === 'started' ? (
+        ) : activeShipment?.tripStatus === 'inTransit' ||
+          activeShipment?.tripStatus === 'started' ? (
           <Button
             title="Complete Shipment"
             onPress={() =>

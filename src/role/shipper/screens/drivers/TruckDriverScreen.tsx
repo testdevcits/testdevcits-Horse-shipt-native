@@ -69,14 +69,22 @@ const TruckDriverScreen = () => {
     fetchDrivers();
   };
 
-  const handleToggleStatus = async (id: string, currentActiveStatus: boolean) => {
+  const handleToggleStatus = async (
+    id: string,
+    currentActiveStatus: boolean,
+  ) => {
     try {
-      const res = await shipperService.toggleDriverStatus(id, !currentActiveStatus);
+      const res = await shipperService.toggleDriverStatus(
+        id,
+        !currentActiveStatus,
+      );
       if (res?.success) {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: `Driver ${!currentActiveStatus ? 'activated' : 'deactivated'} successfully.`,
+          text2: `Driver ${
+            !currentActiveStatus ? 'activated' : 'deactivated'
+          } successfully.`,
         });
         fetchDrivers();
       }
@@ -84,7 +92,8 @@ const TruckDriverScreen = () => {
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: error?.response?.data?.message || 'Failed to update driver status.',
+        text2:
+          error?.response?.data?.message || 'Failed to update driver status.',
       });
     }
   };
@@ -149,8 +158,8 @@ const TruckDriverScreen = () => {
               selectedStatus === 'active'
                 ? 'Active'
                 : selectedStatus === 'inactive'
-                  ? 'Inactive'
-                  : 'All'
+                ? 'Inactive'
+                : 'All'
             }
             options={['All', 'Active', 'Inactive']}
             onSelect={(item: string) => {
@@ -162,7 +171,10 @@ const TruckDriverScreen = () => {
         </View>
 
         <TouchableOpacity
-          style={[styles.addDriverBtn, { height: 46, justifyContent: 'center' }]}
+          style={[
+            styles.addDriverBtn,
+            { height: 46, justifyContent: 'center' },
+          ]}
           onPress={() => {
             setSelectedDriverToEdit(null);
             setIsAddModalVisible(true);
@@ -186,7 +198,10 @@ const TruckDriverScreen = () => {
           message="Add drivers to your fleet to assign them to transport vehicles and trips."
         />
         <TouchableOpacity
-          style={[styles.addDriverBtn, { marginTop: SPACING.md, alignSelf: 'center' }]}
+          style={[
+            styles.addDriverBtn,
+            { marginTop: SPACING.md, alignSelf: 'center' },
+          ]}
           onPress={() => {
             setSelectedDriverToEdit(null);
             setIsAddModalVisible(true);
@@ -199,16 +214,22 @@ const TruckDriverScreen = () => {
     );
   };
 
-  const keyExtractor = useCallback((item: any, index: number) => item?._id || index.toString(), []);
+  const keyExtractor = useCallback(
+    (item: any, index: number) => item?._id || index.toString(),
+    [],
+  );
 
-  const renderDriverItem = useCallback(({ item }: { item: any }) => (
-    <TruckDriverCard
-      driver={item}
-      onToggleStatus={handleToggleStatus}
-      onEdit={handleEditDriver}
-      onDelete={handleDeleteDriverPrompt}
-    />
-  ), [handleToggleStatus, handleEditDriver, handleDeleteDriverPrompt]);
+  const renderDriverItem = useCallback(
+    ({ item }: { item: any }) => (
+      <TruckDriverCard
+        driver={item}
+        onToggleStatus={handleToggleStatus}
+        onEdit={handleEditDriver}
+        onDelete={handleDeleteDriverPrompt}
+      />
+    ),
+    [handleToggleStatus, handleEditDriver, handleDeleteDriverPrompt],
+  );
 
   return (
     <View style={styles.container}>
@@ -256,7 +277,9 @@ const TruckDriverScreen = () => {
         }}
         onConfirm={handleConfirmDelete}
         title="Delete Driver"
-        description={`Are you sure you want to delete driver ${selectedDriverToDelete?.name || ''}?`}
+        description={`Are you sure you want to delete driver ${
+          selectedDriverToDelete?.name || ''
+        }?`}
         confirmText="Delete"
         cancelText="Cancel"
         type="danger"

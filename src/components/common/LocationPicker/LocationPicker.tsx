@@ -18,7 +18,6 @@ import axios from 'axios';
 import {
   MapPin,
   Search,
-
   ArrowLeft,
   X,
   Map as MapIcon,
@@ -142,7 +141,10 @@ const LocationPickerCore: React.FC<{
   const shadowOpacity = useRef(new Animated.Value(0.3)).current;
 
   // Google Session Token
-  const sessionToken = useMemo(() => Math.random().toString(36).substring(2, 15), []);
+  const sessionToken = useMemo(
+    () => Math.random().toString(36).substring(2, 15),
+    [],
+  );
 
   useEffect(() => {
     handleGetCurrentLocation();
@@ -274,7 +276,10 @@ const LocationPickerCore: React.FC<{
           };
           mapRef.current?.animateToRegion(newRegion, 1000);
           setRegion(newRegion);
-          reverseGeocode(position?.coords?.latitude, position?.coords?.longitude);
+          reverseGeocode(
+            position?.coords?.latitude,
+            position?.coords?.longitude,
+          );
         },
         error => console.log('GPS Error', error),
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
@@ -288,16 +293,36 @@ const LocationPickerCore: React.FC<{
   const liftMarker = () => {
     Animated.parallel([
       Animated.spring(markerAnim, { toValue: -30, useNativeDriver: true }),
-      Animated.timing(shadowScale, { toValue: 0.5, duration: 200, useNativeDriver: true }),
-      Animated.timing(shadowOpacity, { toValue: 0.1, duration: 200, useNativeDriver: true }),
+      Animated.timing(shadowScale, {
+        toValue: 0.5,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shadowOpacity, {
+        toValue: 0.1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
 
   const dropMarker = () => {
     Animated.parallel([
-      Animated.spring(markerAnim, { toValue: 0, friction: 4, useNativeDriver: true }),
-      Animated.timing(shadowScale, { toValue: 1, duration: 200, useNativeDriver: true }),
-      Animated.timing(shadowOpacity, { toValue: 0.3, duration: 200, useNativeDriver: true }),
+      Animated.spring(markerAnim, {
+        toValue: 0,
+        friction: 4,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shadowScale, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shadowOpacity, {
+        toValue: 0.3,
+        duration: 200,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
 
@@ -315,7 +340,10 @@ const LocationPickerCore: React.FC<{
         onRegionChangeComplete={onRegionChangeComplete => {
           dropMarker();
           setRegion(onRegionChangeComplete);
-          reverseGeocode(onRegionChangeComplete.latitude, onRegionChangeComplete.longitude);
+          reverseGeocode(
+            onRegionChangeComplete.latitude,
+            onRegionChangeComplete.longitude,
+          );
         }}
         showsUserLocation
         showsMyLocationButton={false}
@@ -325,16 +353,25 @@ const LocationPickerCore: React.FC<{
       {/* CENTER PIN (UBER STYLE) */}
       {!isSearchFocused && (
         <View style={styles.markerFixed} pointerEvents="none">
-          <Animated.View style={{ transform: [{ translateY: markerAnim }], alignItems: 'center' }}>
+          <Animated.View
+            style={{
+              transform: [{ translateY: markerAnim }],
+              alignItems: 'center',
+            }}
+          >
             <View style={styles.pinBubble}>
               <AppText style={styles.pinBubbleText}>Set Point</AppText>
             </View>
-            <MapPin size={42} color={COLORS.textPrimary} fill={COLORS.primary} />
+            <MapPin
+              size={42}
+              color={COLORS.textPrimary}
+              fill={COLORS.primary}
+            />
           </Animated.View>
           <Animated.View
             style={[
               styles.markerShadow,
-              { transform: [{ scale: shadowScale }], opacity: shadowOpacity }
+              { transform: [{ scale: shadowScale }], opacity: shadowOpacity },
             ]}
           />
         </View>
@@ -342,12 +379,20 @@ const LocationPickerCore: React.FC<{
 
       {/* SEARCH HEADER */}
       <View style={styles.searchHeader}>
-        <View style={[styles.searchBox, isSearchFocused && styles.searchBoxActive]}>
+        <View
+          style={[styles.searchBox, isSearchFocused && styles.searchBoxActive]}
+        >
           <TouchableOpacity
-            onPress={isSearchFocused ? () => setIsSearchFocused(false) : onClose}
+            onPress={
+              isSearchFocused ? () => setIsSearchFocused(false) : onClose
+            }
             style={styles.searchIconBtn}
           >
-            {isSearchFocused ? <ArrowLeft size={ICON_SIZE.md} color={COLORS.textPrimary} /> : <X size={ICON_SIZE.md} color={COLORS.textPrimary} />}
+            {isSearchFocused ? (
+              <ArrowLeft size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            ) : (
+              <X size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            )}
           </TouchableOpacity>
 
           <TextInput
@@ -364,12 +409,18 @@ const LocationPickerCore: React.FC<{
           />
 
           {isSearchLoading ? (
-            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginRight: SPACING.sm + 2 }} />
+            <ActivityIndicator
+              size="small"
+              color={COLORS.primary}
+              style={{ marginRight: SPACING.sm + 2 }}
+            />
           ) : searchQuery.length > 0 ? (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
               <X size={ICON_SIZE.sm} color={COLORS.textSecondary} />
             </TouchableOpacity>
-          ) : <Search size={ICON_SIZE.sm} color={COLORS.textSecondary} />}
+          ) : (
+            <Search size={ICON_SIZE.sm} color={COLORS.textSecondary} />
+          )}
         </View>
 
         {/* RESULTS OVERLAY */}
@@ -382,18 +433,27 @@ const LocationPickerCore: React.FC<{
               ListEmptyComponent={
                 !isSearchLoading && searchQuery.length > 2 ? (
                   <View style={styles.emptyState}>
-                    <AppText style={styles.emptyText}>No locations found</AppText>
+                    <AppText style={styles.emptyText}>
+                      No locations found
+                    </AppText>
                   </View>
                 ) : null
               }
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.resultItem} onPress={() => getPlaceDetails(item?.place_id)}>
+                <TouchableOpacity
+                  style={styles.resultItem}
+                  onPress={() => getPlaceDetails(item?.place_id)}
+                >
                   <View style={styles.resultIcon}>
                     <MapIcon size={18} color={COLORS.textSecondary} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <AppText style={styles.resultMain} numberOfLines={1}>{item?.structured_formatting.main_text}</AppText>
-                    <AppText style={styles.resultSub} numberOfLines={1}>{item?.structured_formatting.secondary_text}</AppText>
+                    <AppText style={styles.resultMain} numberOfLines={1}>
+                      {item?.structured_formatting.main_text}
+                    </AppText>
+                    <AppText style={styles.resultSub} numberOfLines={1}>
+                      {item?.structured_formatting.secondary_text}
+                    </AppText>
                   </View>
                 </TouchableOpacity>
               )}
@@ -405,14 +465,19 @@ const LocationPickerCore: React.FC<{
       {/* CONTROLS */}
       {!isSearchFocused && (
         <>
-          <TouchableOpacity style={styles.fabLocation} onPress={handleGetCurrentLocation}>
+          <TouchableOpacity
+            style={styles.fabLocation}
+            onPress={handleGetCurrentLocation}
+          >
             <Navigation2 size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
           <View style={styles.bottomSheet}>
             <View style={styles.addressContainer}>
               <View style={styles.addressIndicator}>
-                <View style={styles.dotOuter}><View style={styles.dotInner} /></View>
+                <View style={styles.dotOuter}>
+                  <View style={styles.dotInner} />
+                </View>
                 <View style={styles.line} />
               </View>
 
@@ -436,11 +501,16 @@ const LocationPickerCore: React.FC<{
             >
               <AppText style={styles.confirmButtonText}>Confirm and Continue</AppText>
             </TouchableOpacity> */}
-            <Button title={"Confirm and Continue"} onPress={() => onConfirm({
-              address: displayAddress,
-              latitude: region.latitude,
-              longitude: region.longitude
-            })} />
+            <Button
+              title={'Confirm and Continue'}
+              onPress={() =>
+                onConfirm({
+                  address: displayAddress,
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                })
+              }
+            />
           </View>
         </>
       )}
@@ -469,7 +539,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  triggerText: { fontSize: FONT_SIZE.sm, color: COLORS.textPrimary, fontFamily: FONTS.semiBold },
+  triggerText: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.semiBold,
+  },
   placeholder: { color: COLORS.textSecondary, fontFamily: FONTS.regular },
 
   // Modal Content
@@ -506,7 +580,12 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
   searchIconBtn: { marginRight: 10, padding: SPACING.xs },
-  searchInput: { flex: 1, fontSize: FONT_SIZE.md, color: COLORS.textPrimary, fontFamily: FONTS.medium },
+  searchInput: {
+    flex: 1,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+  },
 
   resultsPanel: {
     backgroundColor: COLORS.white,
@@ -529,13 +608,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.md,
   },
-  resultMain: { fontSize: FONT_SIZE.md, fontFamily: FONTS.semiBold, color: COLORS.textPrimary },
+  resultMain: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+  },
   resultSub: {
     fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular, color: COLORS.textSecondary, marginTop: SPACING.xxs
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.xxs,
   },
   emptyState: { padding: SPACING.giant, alignItems: 'center' },
-  emptyText: { color: COLORS.textSecondary, fontSize: FONT_SIZE.lg, fontFamily: FONTS.regular },
+  emptyText: {
+    color: COLORS.textSecondary,
+    fontSize: FONT_SIZE.lg,
+    fontFamily: FONTS.regular,
+  },
 
   // Marker
   markerFixed: {
@@ -555,7 +644,12 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     marginBottom: 2,
   },
-  pinBubbleText: { color: COLORS.white, fontSize: FONT_SIZE.xs, fontFamily: FONTS.bold, textTransform: 'uppercase' },
+  pinBubbleText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    textTransform: 'uppercase',
+  },
   markerShadow: {
     width: 12,
     height: 6,
@@ -596,13 +690,51 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
   },
   addressContainer: { flexDirection: 'row', marginBottom: SPACING.xxl },
-  addressIndicator: { marginRight: SPACING.lg, alignItems: 'center', paddingTop: 6 },
-  dotOuter: { width: 14, height: 14, borderRadius: RADIUS.round, backgroundColor: COLORS.goldLightBg, justifyContent: 'center', alignItems: 'center' },
-  dotInner: { width: 6, height: 6, borderRadius: RADIUS.round, backgroundColor: COLORS.primary },
-  line: { flex: 1, width: 2, backgroundColor: COLORS.border, marginTop: SPACING.xs },
-  label: { fontSize: FONT_SIZE.sm, fontFamily: FONTS.bold, color: COLORS.textSecondary, letterSpacing: 1.5 },
-  addressText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textPrimary, marginTop: 6, lineHeight: 22 },
-  skeletonLine: { height: 20, width: '100%', backgroundColor: COLORS.grey50, borderRadius: RADIUS.xs, marginTop: 10 },
+  addressIndicator: {
+    marginRight: SPACING.lg,
+    alignItems: 'center',
+    paddingTop: 6,
+  },
+  dotOuter: {
+    width: 14,
+    height: 14,
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.goldLightBg,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dotInner: {
+    width: 6,
+    height: 6,
+    borderRadius: RADIUS.round,
+    backgroundColor: COLORS.primary,
+  },
+  line: {
+    flex: 1,
+    width: 2,
+    backgroundColor: COLORS.border,
+    marginTop: SPACING.xs,
+  },
+  label: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+    letterSpacing: 1.5,
+  },
+  addressText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textPrimary,
+    marginTop: 6,
+    lineHeight: 22,
+  },
+  skeletonLine: {
+    height: 20,
+    width: '100%',
+    backgroundColor: COLORS.grey50,
+    borderRadius: RADIUS.xs,
+    marginTop: 10,
+  },
   confirmButton: {
     backgroundColor: COLORS.primary,
     height: 58,
@@ -611,8 +743,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   confirmButtonText: {
-    color: COLORS.white, fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold
+    color: COLORS.white,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
   },
 });
 

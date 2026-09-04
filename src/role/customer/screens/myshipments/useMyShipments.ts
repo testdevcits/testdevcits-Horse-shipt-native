@@ -56,9 +56,11 @@ const useMyShipments = () => {
       case 'In Progress':
         return shipments.filter(
           item =>
-            item?.isInProgress && item?.deliveryOtpVerified === false ||
-            (item?.status || '').toLowerCase() === 'in_progress' && item?.deliveryOtpVerified === false ||
-            (item?.status || '').toLowerCase() === 'in_transit' && item?.deliveryOtpVerified === false,
+            (item?.isInProgress && item?.deliveryOtpVerified === false) ||
+            ((item?.status || '').toLowerCase() === 'in_progress' &&
+              item?.deliveryOtpVerified === false) ||
+            ((item?.status || '').toLowerCase() === 'in_transit' &&
+              item?.deliveryOtpVerified === false),
         );
 
       case 'Completed':
@@ -66,7 +68,8 @@ const useMyShipments = () => {
           item =>
             item?.isCompleted ||
             (item?.status || '').toLowerCase() === 'completed' ||
-            (item?.status || '').toLowerCase() === 'delivered' || (item?.deliveryOtpVerified === true),
+            (item?.status || '').toLowerCase() === 'delivered' ||
+            item?.deliveryOtpVerified === true,
         );
 
       case 'Cancelled':
@@ -96,16 +99,19 @@ const useMyShipments = () => {
 
       InProgress: shipments.filter(
         item =>
-          item?.isInProgress && item?.deliveryOtpVerified === false ||
-          (item?.status || '').toLowerCase() === 'in_progress' && item?.deliveryOtpVerified === false ||
-          (item?.status || '').toLowerCase() === 'in_transit' && item?.deliveryOtpVerified === false,
+          (item?.isInProgress && item?.deliveryOtpVerified === false) ||
+          ((item?.status || '').toLowerCase() === 'in_progress' &&
+            item?.deliveryOtpVerified === false) ||
+          ((item?.status || '').toLowerCase() === 'in_transit' &&
+            item?.deliveryOtpVerified === false),
       ).length,
 
       Completed: shipments.filter(
         item =>
           item?.isCompleted ||
           (item?.status || '').toLowerCase() === 'completed' ||
-          (item?.status || '').toLowerCase() === 'delivered' || (item?.deliveryOtpVerified === true)
+          (item?.status || '').toLowerCase() === 'delivered' ||
+          item?.deliveryOtpVerified === true,
       ).length,
 
       Cancelled: shipments.filter(

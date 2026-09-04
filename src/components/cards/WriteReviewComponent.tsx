@@ -5,9 +5,22 @@ import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from '../common/AppText';
 import Input from '../common/Input/Input';
 
-const FEEDBACK_CHIPS = ["On Time", "Safe Handling", "Professional", "Good Vehicle", "Great Chat"];
+const FEEDBACK_CHIPS = [
+  'On Time',
+  'Safe Handling',
+  'Professional',
+  'Good Vehicle',
+  'Great Chat',
+];
 
-const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, comment, setComment }: any) => {
+const WriteReviewComponent = ({
+  rating,
+  setRating,
+  selectedChips,
+  onChipPress,
+  comment,
+  setComment,
+}: any) => {
   const getEmoji = () => {
     if (rating >= 4) return <Smile size={48} color={COLORS.primary} />;
     if (rating >= 3) return <Meh size={48} color={COLORS.warning} />;
@@ -20,9 +33,17 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
       <AppText style={styles.question}>How was your experience?</AppText>
 
       <View style={styles.starRow}>
-        {[1, 2, 3, 4, 5].map((s) => (
-          <TouchableOpacity key={s} onPress={() => setRating(s)} activeOpacity={0.7}>
-            <Star size={40} color={s <= rating ? COLORS.primary : COLORS.grey200} fill={s <= rating ? COLORS.primary : 'transparent'} />
+        {[1, 2, 3, 4, 5].map(s => (
+          <TouchableOpacity
+            key={s}
+            onPress={() => setRating(s)}
+            activeOpacity={0.7}
+          >
+            <Star
+              size={40}
+              color={s <= rating ? COLORS.primary : COLORS.grey200}
+              fill={s <= rating ? COLORS.primary : 'transparent'}
+            />
           </TouchableOpacity>
         ))}
       </View>
@@ -32,9 +53,19 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
           <TouchableOpacity
             key={chip}
             onPress={() => onChipPress(chip)}
-            style={[styles.chip, selectedChips.includes(chip) && styles.activeChip]}
+            style={[
+              styles.chip,
+              selectedChips.includes(chip) && styles.activeChip,
+            ]}
           >
-            <AppText style={[styles.chipText, selectedChips.includes(chip) && styles.activeChipText]}>{chip}</AppText>
+            <AppText
+              style={[
+                styles.chipText,
+                selectedChips.includes(chip) && styles.activeChipText,
+              ]}
+            >
+              {chip}
+            </AppText>
           </TouchableOpacity>
         ))}
       </View>
@@ -58,18 +89,65 @@ const WriteReviewComponent = ({ rating, setRating, selectedChips, onChipPress, c
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: COLORS.white, borderRadius: RADIUS.xl, padding: SPACING.xl, alignItems: 'center' },
+  container: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.xl,
+    padding: SPACING.xl,
+    alignItems: 'center',
+  },
   emojiContainer: { marginBottom: SPACING.md },
-  question: { fontSize: FONT_SIZE.xl, fontFamily: FONTS.bold, color: COLORS.textPrimary, marginBottom: SPACING.lg },
+  question: {
+    fontSize: FONT_SIZE.xl,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.lg,
+  },
   starRow: { flexDirection: 'row', gap: SPACING.md, marginBottom: SPACING.xl },
-  chipGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: SPACING.sm2, marginBottom: SPACING.xl },
-  chip: { paddingHorizontal: SPACING.lg, paddingVertical: SPACING.sm, borderRadius: RADIUS.round, borderWidth: 1, borderColor: COLORS.divider },
+  chipGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: SPACING.sm2,
+    marginBottom: SPACING.xl,
+  },
+  chip: {
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    borderRadius: RADIUS.round,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
   activeChip: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-  chipText: { fontSize: FONT_SIZE.md, fontFamily: FONTS.medium, color: COLORS.textSecondary },
+  chipText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
   activeChipText: { color: COLORS.white },
-  input: { width: '100%', minHeight: 100, backgroundColor: COLORS.grey50, borderRadius: RADIUS.lg, padding: SPACING.md, fontFamily: FONTS.regular, color: COLORS.textPrimary, textAlignVertical: 'top', marginBottom: SPACING.md },
-  photoBtn: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, padding: SPACING.md, borderWidth: 1, borderStyle: 'dashed', borderColor: COLORS.primary, borderRadius: RADIUS.lg, width: '100%', justifyContent: 'center' },
-  photoBtnText: { color: COLORS.primary, fontFamily: FONTS.bold }
+  input: {
+    width: '100%',
+    minHeight: 100,
+    backgroundColor: COLORS.grey50,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    fontFamily: FONTS.regular,
+    color: COLORS.textPrimary,
+    textAlignVertical: 'top',
+    marginBottom: SPACING.md,
+  },
+  photoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    padding: SPACING.md,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: COLORS.primary,
+    borderRadius: RADIUS.lg,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  photoBtnText: { color: COLORS.primary, fontFamily: FONTS.bold },
 });
 
 export default WriteReviewComponent;

@@ -51,7 +51,8 @@ const NotificationTab: React.FC<Props> = ({
     <View style={styles.tabSection}>
       <AppText style={styles.sectionHeaderTitle}>Notifications</AppText>
       <AppText style={styles.sectionHeaderSub}>
-        Choose how and when you receive updates about your shipments and activity.
+        Choose how and when you receive updates about your shipments and
+        activity.
       </AppText>
 
       {/* Shipment Notifications Card */}
@@ -62,7 +63,9 @@ const NotificationTab: React.FC<Props> = ({
           </View>
 
           <View style={styles.subHeaderTextCol}>
-            <AppText style={styles.subHeaderTitle}>Shipment Notifications</AppText>
+            <AppText style={styles.subHeaderTitle}>
+              Shipment Notifications
+            </AppText>
           </View>
         </View>
 

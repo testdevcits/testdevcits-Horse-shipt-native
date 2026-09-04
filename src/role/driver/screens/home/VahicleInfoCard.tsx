@@ -1,8 +1,20 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { memo, useState } from 'react';
 import { AppText } from '../../../../components';
-import { ChevronDown, ChevronUp, Truck, FileText, CheckCircle2 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+import {
+  ChevronDown,
+  ChevronUp,
+  Truck,
+  FileText,
+  CheckCircle2,
+} from 'lucide-react-native';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const VahicleInfoCard = ({
   vehicle,
@@ -65,7 +77,8 @@ const VahicleInfoCard = ({
                 {vehicle?.vehicleNumber || 'No Number'}
               </AppText>
               <AppText style={styles.vehicleSubDetails}>
-                {vehicle?.transportType || 'Trucking'} • {vehicle?.trailerType || 'Trailer'}
+                {vehicle?.transportType || 'Trucking'} •{' '}
+                {vehicle?.trailerType || 'Trailer'}
               </AppText>
             </View>
             <View style={styles.readyBadge}>
@@ -85,7 +98,9 @@ const VahicleInfoCard = ({
             <View style={styles.vehicleGridCell}>
               <AppText style={styles.vLabel}>STALLS</AppText>
               <AppText style={styles.vValue}>
-                {vehicle?.numberOfStalls !== undefined ? String(vehicle.numberOfStalls).padStart(2, '0') : '01'}
+                {vehicle?.numberOfStalls !== undefined
+                  ? String(vehicle.numberOfStalls).padStart(2, '0')
+                  : '01'}
               </AppText>
             </View>
             <View style={styles.vehicleGridCell}>

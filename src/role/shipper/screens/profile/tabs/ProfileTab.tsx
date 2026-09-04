@@ -24,7 +24,6 @@ const ProfileTab: React.FC<Props> = ({
 }) => {
   const reviewsList = profileData?.reviews || [];
 
-
   return (
     <View style={styles.tabSection}>
       {/* Update Locations Button */}
@@ -85,9 +84,7 @@ const ProfileTab: React.FC<Props> = ({
         {profileData?.description ? (
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <AppText style={styles.infoLabel}>Description</AppText>
-            <AppText style={styles.infoVal}>
-              {profileData?.description}
-            </AppText>
+            <AppText style={styles.infoVal}>{profileData?.description}</AppText>
           </View>
         ) : null}
       </View>
@@ -111,7 +108,9 @@ const ProfileTab: React.FC<Props> = ({
                         key={s}
                         size={16}
                         color="#F59E0B"
-                        fill={s <= (rev.rating || 5) ? '#F59E0B' : 'transparent'}
+                        fill={
+                          s <= (rev.rating || 5) ? '#F59E0B' : 'transparent'
+                        }
                       />
                     ))}
                   </View>
@@ -150,7 +149,9 @@ const ProfileTab: React.FC<Props> = ({
               }
               activeOpacity={0.8}
             >
-              <AppText style={styles.showMoreBtnText}>Show more reviews</AppText>
+              <AppText style={styles.showMoreBtnText}>
+                Show more reviews
+              </AppText>
             </TouchableOpacity>
           </>
         ) : (
@@ -160,7 +161,8 @@ const ProfileTab: React.FC<Props> = ({
             </View>
             <AppText style={styles.emptyReviewsTitle}>No Reviews Yet</AppText>
             <AppText style={styles.emptyReviewsSubtitle}>
-              Customer ratings and reviews from completed shipments will appear here.
+              Customer ratings and reviews from completed shipments will appear
+              here.
             </AppText>
           </View>
         )}

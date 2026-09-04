@@ -14,7 +14,6 @@ import MapViewDirections from 'react-native-maps-directions';
 import {
   X,
   Navigation,
-
   MapPin,
   Clock,
   LocateFixed,
@@ -123,27 +122,33 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
     const handleZoomIn = useCallback(() => {
       if (mapRef.current) {
-        mapRef.current.getCamera().then(camera => {
-          if (camera) {
-            camera.zoom = (camera.zoom || 12) + 1.2;
-            mapRef.current?.animateCamera(camera, { duration: 300 });
-          }
-        }).catch(err => {
-          console.warn('Zoom In error:', err);
-        });
+        mapRef.current
+          .getCamera()
+          .then(camera => {
+            if (camera) {
+              camera.zoom = (camera.zoom || 12) + 1.2;
+              mapRef.current?.animateCamera(camera, { duration: 300 });
+            }
+          })
+          .catch(err => {
+            console.warn('Zoom In error:', err);
+          });
       }
     }, []);
 
     const handleZoomOut = useCallback(() => {
       if (mapRef.current) {
-        mapRef.current.getCamera().then(camera => {
-          if (camera) {
-            camera.zoom = Math.max((camera.zoom || 12) - 1.2, 1);
-            mapRef.current?.animateCamera(camera, { duration: 300 });
-          }
-        }).catch(err => {
-          console.warn('Zoom Out error:', err);
-        });
+        mapRef.current
+          .getCamera()
+          .then(camera => {
+            if (camera) {
+              camera.zoom = Math.max((camera.zoom || 12) - 1.2, 1);
+              mapRef.current?.animateCamera(camera, { duration: 300 });
+            }
+          })
+          .catch(err => {
+            console.warn('Zoom Out error:', err);
+          });
       }
     }, []);
 
@@ -273,13 +278,25 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
           {/* SIDE CONTROLS */}
           <View style={styles.sideControls}>
-            <TouchableOpacity style={styles.circleBtn} onPress={handleFitAll} activeOpacity={0.8}>
+            <TouchableOpacity
+              style={styles.circleBtn}
+              onPress={handleFitAll}
+              activeOpacity={0.8}
+            >
               <LocateFixed size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomIn} activeOpacity={0.8}>
+            <TouchableOpacity
+              style={[styles.circleBtn, { marginTop: 10 }]}
+              onPress={handleZoomIn}
+              activeOpacity={0.8}
+            >
               <Plus size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomOut} activeOpacity={0.8}>
+            <TouchableOpacity
+              style={[styles.circleBtn, { marginTop: 10 }]}
+              onPress={handleZoomOut}
+              activeOpacity={0.8}
+            >
               <Minus size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
@@ -332,7 +349,9 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           {loading && (
             <View style={styles.loader}>
               <ActivityIndicator size="large" color={COLORS.primary} />
-              <AppText style={styles.loadingText}>Finding the best route..</AppText>
+              <AppText style={styles.loadingText}>
+                Finding the best route..
+              </AppText>
             </View>
           )}
         </View>
@@ -456,8 +475,16 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  metricDivider: { width: SIZES.borderWidthThin, height: RADIUS.pill, backgroundColor: COLORS.divider },
-  divider: { height: SIZES.borderWidthThin, backgroundColor: COLORS.divider, marginVertical: SPACING.lg2 },
+  metricDivider: {
+    width: SIZES.borderWidthThin,
+    height: RADIUS.pill,
+    backgroundColor: COLORS.divider,
+  },
+  divider: {
+    height: SIZES.borderWidthThin,
+    backgroundColor: COLORS.divider,
+    marginVertical: SPACING.lg2,
+  },
   addressSection: { gap: 10 },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   dot: { width: SPACING.sm, height: SPACING.sm, borderRadius: RADIUS.xs },

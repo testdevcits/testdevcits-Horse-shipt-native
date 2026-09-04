@@ -10,7 +10,14 @@ import {
   Phone,
   Award,
 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, SIZES } from '../../constants';
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  SIZES,
+} from '../../constants';
 import AppText from '../common/AppText';
 import Toast from 'react-native-toast-message';
 
@@ -45,17 +52,14 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
       !driver?.assignedVehicles ||
       driver.assignedVehicles.length === 0 ||
       driver.assignedVehicles.every(
-        (vehicle: any) => vehicle.currentShipment === null
+        (vehicle: any) => vehicle.currentShipment === null,
       );
     const canToggleStatus =
       !driver?.assignedVehicles ||
       driver.assignedVehicles.length === 0 ||
       driver.assignedVehicles.every(
-        (vehicle: any) => vehicle.currentShipment === null
+        (vehicle: any) => vehicle.currentShipment === null,
       );
-
-
-
 
     return (
       <View style={styles.driverCard}>
@@ -94,7 +98,9 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           <TouchableOpacity
             style={styles.actionBtnPill}
             onPress={() => {
-              if (canToggleStatus) { onToggleStatus(driverId, isActive) } else {
+              if (canToggleStatus) {
+                onToggleStatus(driverId, isActive);
+              } else {
                 Toast.show({
                   type: 'info',
                   text1: 'Info',
@@ -118,8 +124,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             <Edit size={15} color={COLORS.textPrimary} />
             <AppText style={styles.actionBtnPillText}>Edit</AppText>
           </TouchableOpacity>
-          {
-            isDriverDeletable &&
+          {isDriverDeletable && (
             <TouchableOpacity
               style={styles.actionBtnPill}
               onPress={() => onDelete(driverId, driverName)}
@@ -127,13 +132,13 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               disabled={!isDriverDeletable}
             >
               <Trash2 size={15} color={COLORS.error} />
-              <AppText style={[styles.actionBtnPillText, { color: COLORS.error }]}>
+              <AppText
+                style={[styles.actionBtnPillText, { color: COLORS.error }]}
+              >
                 Delete
               </AppText>
             </TouchableOpacity>
-          }
-
-
+          )}
         </View>
 
         {/* Detail Specification Cards */}

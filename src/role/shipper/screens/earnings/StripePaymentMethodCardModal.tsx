@@ -1,14 +1,9 @@
 import React, { memo } from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { Modal, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { X, ShieldCheck, AlertCircle, User } from 'lucide-react-native';
 import { CardField } from '@stripe/stripe-react-native';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONT_SIZE, } from '../../../../constants';
+import { COLORS, FONT_SIZE } from '../../../../constants';
 import styles from './styles.earnings';
 
 interface StripePaymentMethodCardModalProps {
@@ -24,7 +19,9 @@ interface StripePaymentMethodCardModalProps {
   handleSavePaymentMethod: () => void;
 }
 
-const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> = ({
+const StripePaymentMethodCardModal: React.FC<
+  StripePaymentMethodCardModalProps
+> = ({
   isCardModalVisible,
   setIsCardModalVisible,
   cardStatus,
@@ -48,7 +45,9 @@ const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> 
           {/* Header */}
           <View style={styles.modalHeaderRow}>
             <AppText style={styles.modalTitle}>
-              {cardStatus.hasCard ? 'Update Payment Method' : 'Add Payment Method'}
+              {cardStatus.hasCard
+                ? 'Update Payment Method'
+                : 'Add Payment Method'}
             </AppText>
             <TouchableOpacity
               style={styles.closeBtn}

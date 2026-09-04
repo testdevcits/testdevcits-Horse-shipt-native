@@ -1,5 +1,11 @@
 import { StyleSheet, Platform } from 'react-native';
-import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  RADIUS,
+  SPACING,
+  FONTS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
@@ -16,10 +22,23 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.divider,
     ...Platform.select({ ios: { paddingTop: 50 } }),
   },
-  headerAvatar: { width: 36, height: 36, borderRadius: 18, marginLeft: SPACING.xs },
+  headerAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginLeft: SPACING.xs,
+  },
   headerInfo: { flex: 1, marginLeft: SPACING.sm },
-  headerTitle: { fontFamily: FONTS.bold, fontSize: FONT_SIZE.md, color: COLORS.textPrimary },
-  headerSubtitle: { fontSize: FONT_SIZE.xs, color: COLORS.textSecondary, fontFamily: FONTS.regular },
+  headerTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.textPrimary,
+  },
+  headerSubtitle: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
+  },
 
   // Message List
   listContent: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.md },
@@ -36,8 +55,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     paddingHorizontal: 4,
   },
-  senderName: { fontFamily: FONTS.bold, fontSize: FONT_SIZE.xs, color: COLORS.textPrimary },
-  timestamp: { fontSize: FONT_SIZE.xs, color: COLORS.textLight, fontFamily: FONTS.regular },
+  senderName: {
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textPrimary,
+  },
+  timestamp: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textLight,
+    fontFamily: FONTS.regular,
+  },
 
   bubble: {
     paddingHorizontal: SPACING.md,
@@ -54,7 +81,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: RADIUS.xs,
   },
 
-  messageText: { fontSize: FONT_SIZE.sm, lineHeight: 18, fontFamily: FONTS.regular },
+  messageText: {
+    fontSize: FONT_SIZE.sm,
+    lineHeight: 18,
+    fontFamily: FONTS.regular,
+  },
   myText: { color: COLORS.white },
   otherText: { color: COLORS.textPrimary },
 

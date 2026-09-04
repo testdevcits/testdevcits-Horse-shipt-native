@@ -58,10 +58,7 @@ const ChatItemCard = memo(
           )}
           {/* Online / Offline Dot */}
           <View
-            style={[
-              styles.onlineDot,
-              !item?.isOnline && styles.offlineDot,
-            ]}
+            style={[styles.onlineDot, !item?.isOnline && styles.offlineDot]}
           />
         </View>
 
@@ -129,7 +126,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
       navigation.navigate('ChatDetails', {
         shipmentId: item?.shipmentId,
         name: item?.name || 'Customer',
-        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
+        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon,
       });
     },
     [navigation],

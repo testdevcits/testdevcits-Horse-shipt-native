@@ -3,7 +3,6 @@
 // import { RFValue } from 'react-native-responsive-fontsize';
 // import { moderateScale } from 'react-native-size-matters';
 
-
 // const { width, height } = Dimensions.get('window');
 
 // export const SCREEN_WIDTH = width;
@@ -59,8 +58,6 @@
 // //   giant: 32,
 // // } as const;
 
-
-
 // export const FONT_SIZE = {
 //   xxs: moderateScale(8),
 //   mini: moderateScale(9),
@@ -76,9 +73,6 @@
 //   hero: moderateScale(30),
 //   giant: moderateScale(32),
 // } as const;
-
-
-
 
 // // export const FONT_SIZE = {
 // //   xxs: RFValue(8),
@@ -140,15 +134,9 @@
 //   SIZES,
 // };
 
-
-
 // dimensions.ts
 import { Dimensions } from 'react-native';
-import {
-  moderateScale,
-   
-  verticalScale,
-} from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 
 const { width, height } = Dimensions.get('window');
 
@@ -226,6 +214,7 @@ export const ICON_SIZE = {
   mini: moderateScale(12),
   xs: moderateScale(14),
   sm: moderateScale(18),
+  s20: moderateScale(20),
   md: moderateScale(22),
   lg: moderateScale(26),
   xl: moderateScale(32),

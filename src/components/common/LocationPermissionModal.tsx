@@ -1,12 +1,14 @@
 import React from 'react';
-import {
-  Modal,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { MapPin, ShieldCheck, Navigation, X } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 import { openDeviceSettings } from '../../utils/permissionHelper';
 
@@ -38,7 +40,11 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
       <View style={styles.overlay}>
         <View style={styles.container}>
           {/* Close Button */}
-          <TouchableOpacity style={styles.closeButton} onPress={onClose} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={onClose}
+            activeOpacity={0.7}
+          >
             <X size={20} color={COLORS.grey400} />
           </TouchableOpacity>
 
@@ -58,9 +64,17 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
             {/* Instruction Box */}
             <View style={styles.instructionBox}>
               <View style={styles.instructionRow}>
-                <Navigation size={16} color={COLORS.brandBrown} style={{ marginTop: 2 }} />
+                <Navigation
+                  size={16}
+                  color={COLORS.brandBrown}
+                  style={{ marginTop: 2 }}
+                />
                 <AppText style={styles.instructionText}>
-                  Set Location permission to <AppText style={styles.boldText}>"Allow all the time"</AppText> in device settings to start trip tracking.
+                  Set Location permission to{' '}
+                  <AppText style={styles.boldText}>
+                    "Allow all the time"
+                  </AppText>{' '}
+                  in device settings to start trip tracking.
                 </AppText>
               </View>
             </View>

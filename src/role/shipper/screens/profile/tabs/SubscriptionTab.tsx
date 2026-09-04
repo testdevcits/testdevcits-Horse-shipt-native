@@ -25,7 +25,9 @@ interface Props {
   billingHistoryData: any;
   subscriptionStatusData?: any;
   billingFilter: 'All' | 'Invoices' | 'Payments' | 'Payouts';
-  setBillingFilter: (filter: 'All' | 'Invoices' | 'Payments' | 'Payouts') => void;
+  setBillingFilter: (
+    filter: 'All' | 'Invoices' | 'Payments' | 'Payouts',
+  ) => void;
   onOpenSubscriptionModal?: () => void;
   subsciptionPlans?: any;
 }
@@ -37,13 +39,10 @@ const SubscriptionTab: React.FC<Props> = ({
   billingFilter,
   setBillingFilter,
   onOpenSubscriptionModal,
-  subsciptionPlans
+  subsciptionPlans,
 }) => {
-
-
   console.log('subsciptionPlans Data:', subsciptionPlans);
 
-  
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
   const [cancelingSub, setCancelingSub] = useState(false);
   const [cancellationResult, setCancellationResult] = useState<{
@@ -66,15 +65,22 @@ const SubscriptionTab: React.FC<Props> = ({
 
   // Latest subscription/invoice item for header summary fallback
   const latestSub = subscriptionsList[0] || null;
-  const isTrialInList = latestSub?.isTrialInvoice || latestSub?.displayType === 'trial';
+  const isTrialInList =
+    latestSub?.isTrialInvoice || latestSub?.displayType === 'trial';
 
   // Derived status values using GET /api/shipper/stripe/subscription/status
   const isSubActive = subscriptionStatusData
-    ? !!(subscriptionStatusData.isActive || (subscriptionStatusData.hasAccess && !subscriptionStatusData.needsSubscription))
+    ? !!(
+        subscriptionStatusData.isActive ||
+        (subscriptionStatusData.hasAccess &&
+          !subscriptionStatusData.needsSubscription)
+      )
     : true;
 
   const isSubTrial = subscriptionStatusData
-    ? !!(subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing)
+    ? !!(
+        subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing
+      )
     : isTrialInList;
 
   const isCancelScheduled =
@@ -128,7 +134,9 @@ const SubscriptionTab: React.FC<Props> = ({
         Toast.show({
           type: 'success',
           text1: 'Subscription Canceled',
-          text2: res?.message || 'Subscription will be canceled at the end of billing cycle.',
+          text2:
+            res?.message ||
+            'Subscription will be canceled at the end of billing cycle.',
         });
         setCancellationResult({
           cancelAtPeriodEnd: true,
@@ -147,9 +155,7 @@ const SubscriptionTab: React.FC<Props> = ({
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2:
-          err?.response?.data?.message ||
-          'Failed to cancel subscription.',
+        text2: err?.response?.data?.message || 'Failed to cancel subscription.',
       });
     } finally {
       setCancelingSub(false);
@@ -170,14 +176,18 @@ const SubscriptionTab: React.FC<Props> = ({
             <Crown size={26} color="#A06333" />
           </View>
           <AppText style={styles.emptySubTitle}>No active subscription</AppText>
-          <AppText style={styles.emptySubSub}>Subscribe to unlock all features.</AppText>
+          <AppText style={styles.emptySubSub}>
+            Subscribe to unlock all features.
+          </AppText>
           {onOpenSubscriptionModal && (
             <TouchableOpacity
               style={styles.subscribeNowBtn}
               onPress={onOpenSubscriptionModal}
               activeOpacity={0.85}
             >
-              <AppText style={styles.subscribeNowBtnText}>Subscribe Now</AppText>
+              <AppText style={styles.subscribeNowBtnText}>
+                Subscribe Now
+              </AppText>
             </TouchableOpacity>
           )}
         </View>
@@ -189,7 +199,9 @@ const SubscriptionTab: React.FC<Props> = ({
             </View>
 
             <View style={styles.subHeaderTextCol}>
-              <AppText style={styles.subHeaderTitle}>Subscription Status</AppText>
+              <AppText style={styles.subHeaderTitle}>
+                Subscription Status
+              </AppText>
               <AppText style={styles.subHeaderSub}>
                 Managed securely via Stripe Billing
               </AppText>
@@ -198,10 +210,16 @@ const SubscriptionTab: React.FC<Props> = ({
             <View
               style={[
                 styles.subActiveBadge,
-                !isSubActive && { backgroundColor: COLORS.redLightBg, borderColor: COLORS.redBorder },
+                !isSubActive && {
+                  backgroundColor: COLORS.redLightBg,
+                  borderColor: COLORS.redBorder,
+                },
               ]}
             >
-              <ShieldCheck size={14} color={isSubActive ? COLORS.emeraldPrimary : COLORS.redPrimary} />
+              <ShieldCheck
+                size={14}
+                color={isSubActive ? COLORS.emeraldPrimary : COLORS.redPrimary}
+              />
               <AppText
                 style={[
                   styles.subActiveBadgeText,
@@ -217,14 +235,22 @@ const SubscriptionTab: React.FC<Props> = ({
 
           {/* Status Pills */}
           <View style={styles.statusPillsRow}>
-            <View style={isSubTrial ? styles.blueOutlinePill : styles.greenOutlinePill}>
+            <View
+              style={
+                isSubTrial ? styles.blueOutlinePill : styles.greenOutlinePill
+              }
+            >
               <AppText
                 style={
-                  isSubTrial ? styles.blueOutlinePillText : styles.greenOutlinePillText
+                  isSubTrial
+                    ? styles.blueOutlinePillText
+                    : styles.greenOutlinePillText
                 }
               >
                 {isSubTrial
-                  ? `Free Trial Active (${subscriptionStatusData?.remainingTrialDays || 0}d left)`
+                  ? `Free Trial Active (${
+                      subscriptionStatusData?.remainingTrialDays || 0
+                    }d left)`
                   : 'Paid Subscription'}
               </AppText>
             </View>
@@ -245,10 +271,18 @@ const SubscriptionTab: React.FC<Props> = ({
               <View>
                 <AppText style={styles.planName}>{planName}</AppText>
                 {subscriptionStatusData?.currentPeriodStart &&
-                  subscriptionStatusData?.currentPeriodEnd ? (
+                subscriptionStatusData?.currentPeriodEnd ? (
                   <AppText style={styles.planPeriodText}>
-                    Cycle: {formatDate(subscriptionStatusData.currentPeriodStart, 'MMM DD, YYYY')} -{' '}
-                    {formatDate(subscriptionStatusData.currentPeriodEnd, 'MMM DD, YYYY')}
+                    Cycle:{' '}
+                    {formatDate(
+                      subscriptionStatusData.currentPeriodStart,
+                      'MMM DD, YYYY',
+                    )}{' '}
+                    -{' '}
+                    {formatDate(
+                      subscriptionStatusData.currentPeriodEnd,
+                      'MMM DD, YYYY',
+                    )}
                   </AppText>
                 ) : latestSub?.periodStart && latestSub?.periodEnd ? (
                   <AppText style={styles.planPeriodText}>
@@ -262,7 +296,11 @@ const SubscriptionTab: React.FC<Props> = ({
                 <AppText style={styles.planPrice}>
                   {isSubTrial
                     ? '$0.00 USD'
-                    : `$${latestSub?.amount ?? subscriptionData?.monthly?.amount ?? '00.00'} USD`}
+                    : `$${
+                        latestSub?.amount ??
+                        subscriptionData?.monthly?.amount ??
+                        '00.00'
+                      } USD`}
                 </AppText>
                 <AppText style={styles.planBillingFrequency}>
                   {isSubTrial ? 'Trial Period' : '/ billing cycle'}
@@ -386,10 +424,7 @@ const SubscriptionTab: React.FC<Props> = ({
                 item.invoicePdf || item.hostedInvoiceUrl || item.receiptUrl;
 
               const dateStr = formatDate(
-                item.createdAt ||
-                item.paidAt ||
-                item.periodStart ||
-                new Date(),
+                item.createdAt || item.paidAt || item.periodStart || new Date(),
                 'MMM DD, YYYY • hh:mm A',
               );
 
@@ -399,8 +434,8 @@ const SubscriptionTab: React.FC<Props> = ({
                 (isInvoice
                   ? 'Subscription Invoice'
                   : isPayment
-                    ? 'Card Payment Receipt'
-                    : 'Payout Transfer');
+                  ? 'Card Payment Receipt'
+                  : 'Payout Transfer');
 
               const statusStr = (item.status || 'paid').toLowerCase();
               const isSuccessStatus =
@@ -411,8 +446,7 @@ const SubscriptionTab: React.FC<Props> = ({
                   key={item.id || item._id || idx}
                   style={[
                     styles.historyCardItem,
-                    idx === filteredList.length - 1 &&
-                    { borderBottomWidth: 0 },
+                    idx === filteredList.length - 1 && { borderBottomWidth: 0 },
                   ]}
                 >
                   {/* Left Type Icon */}
@@ -436,8 +470,8 @@ const SubscriptionTab: React.FC<Props> = ({
                         {item.isNoChargeInvoice || item.amount === 0
                           ? 'Free'
                           : `$${Number(item.amount).toFixed(2)} ${(
-                            item.currency || 'USD'
-                          ).toUpperCase()}`}
+                              item.currency || 'USD'
+                            ).toUpperCase()}`}
                       </AppText>
                     </View>
 

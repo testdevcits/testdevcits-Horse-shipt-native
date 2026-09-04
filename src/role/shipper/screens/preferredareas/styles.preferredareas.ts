@@ -1,6 +1,11 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
-
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const { width } = Dimensions.get('window');
 
@@ -289,7 +294,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.xs,
     paddingVertical: SPACING.sm + 2,
-    borderRadius: RADIUS.xs
+    borderRadius: RADIUS.xs,
   },
   deleteCardBtnText: {
     fontSize: FONT_SIZE.sm,
