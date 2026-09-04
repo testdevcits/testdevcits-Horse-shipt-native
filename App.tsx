@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
 export default App;
 
 
-//for testing  done 
+// FOR TESTING PURPOSES ONLY: If you want to test the app without the splash screen, you can comment out the following line in your App.tsx file:
