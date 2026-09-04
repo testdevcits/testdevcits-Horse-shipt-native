@@ -2,6 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '../hooks/redux';
+import BootSplash from 'react-native-bootsplash';
+
 
 // Screens & Navigators
 import Splash from '../role/auth/splash/Splash';
@@ -17,7 +19,7 @@ import PasswordRecovery from '../role/auth/passwordrecovery/PasswordRecovery';
 import ResetPassword from '../role/auth/resetpassword/ResetPassword';
 import VerifyOtp from '../role/auth/verifyotp/VerifyOtp';
 
-export type RootStackParamList = {
+export type RootStackParamList = {  
   Splash: undefined;
   Welcome: undefined;
   RoleSelection: undefined;
@@ -45,7 +47,11 @@ const AppNavigation = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onReady={() => {
+    BootSplash.hide({fade: true});
+  }}
+    >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!token ? (
           // AUTH FLOW

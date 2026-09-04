@@ -99,7 +99,7 @@ const Login = () => {
         loginUser({
           credentials: {
             email: email.trim().toLowerCase(),
-            password,
+            password: password.trim(),
             role: userRole as any,
           },
           role: userRole as any,

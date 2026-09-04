@@ -151,11 +151,11 @@ const RatingModal = ({
               isLoading={submitting}
             />
 
-            <AppText style={styles.footerText}>
+            {/* <AppText style={styles.footerText}>
               If you need to report any issues or incidents{'\n'}
               related to this shipment{' '}
               <AppText style={styles.linkText}>contact us here.</AppText>
-            </AppText>
+            </AppText> */}
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
