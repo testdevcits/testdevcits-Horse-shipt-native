@@ -25,7 +25,7 @@ import {
   Flag,
   Truck,
 } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, ICON_SIZE, SIZES } from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING,   SIZES } from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
 

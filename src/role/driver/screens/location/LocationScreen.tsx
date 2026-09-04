@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
-  TouchableOpacity,
+  
   ActivityIndicator,
 } from 'react-native';
 import { Map, Compass, Zap } from 'lucide-react-native';

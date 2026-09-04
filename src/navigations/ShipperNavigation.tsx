@@ -14,7 +14,21 @@ import AccountSetupScreen from '../role/shipper/screens/payments/AccountSetupScr
 import EditProfileScreen from '../role/shipper/screens/profile/EditProfileScreen';
 import ShipmentMapDirection from '../role/shipper/screens/home/ShipmentMapDirection';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<{
+  ShipperDrawer: undefined;
+  ShipperShipmentDetails: undefined;
+  ShipmentDetails: undefined;
+  ChatDetails: undefined;
+  Notifications: undefined;
+  LiveTracking: undefined;
+  PreferredAreas: undefined;
+  ShipperReviews: undefined;
+  AddVehicle: undefined;
+  PdfViewer: undefined;
+  AccountSetup: undefined;
+  EditProfile: undefined;
+  ShipmentMapDirection: undefined;
+}>();
 
 const ShipperNavigation = () => {
   return (

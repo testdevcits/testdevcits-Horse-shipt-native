@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
-  TouchableOpacity,
+   
   RefreshControl,
   ScrollView,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import AskQuestionModal from '../home/AskQuestionModal';
 import SubmitOfferModal from '../home/SubmitOfferModal';

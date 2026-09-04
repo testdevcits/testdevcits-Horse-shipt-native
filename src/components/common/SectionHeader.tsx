@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 import {
     StyleSheet,
-    Text,
+  
     TouchableOpacity,
     View,
     ViewStyle,
 } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
-import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import {   ChevronRight } from 'lucide-react-native';
 import AppText from './AppText';
 
 

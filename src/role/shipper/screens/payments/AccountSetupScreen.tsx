@@ -4,13 +4,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  Platform,
+  
   StatusBar,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Lock, ArrowLeft, X } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, FONTS, FONT_SIZE, SPACING, RADIUS } from '../../../../constants';
+import { COLORS, FONTS, FONT_SIZE, SPACING,   } from '../../../../constants';
 import Toast from 'react-native-toast-message';
 
 const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {

@@ -9,7 +9,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import { Plus, PackageSearch, Award } from 'lucide-react-native';
+import {   PackageSearch, Award } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,

@@ -11,7 +11,15 @@ import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
 import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
 import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<{
+  MainTabs: undefined;
+  Settings: undefined;
+  Profile: undefined;
+  Reviews: undefined;
+  HelpCenter: undefined;
+  PrivacyPolicy: undefined;
+  TermsAndConditions: undefined;
+}>();
 
 const CustomerDrawer = () => {
   return (

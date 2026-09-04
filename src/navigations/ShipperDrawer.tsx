@@ -13,7 +13,17 @@ import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScre
 import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<{
+  MainTabs: undefined;
+  MyVehicles: undefined;
+  TruckDriver: undefined;
+  Earnings: undefined;
+  GoogleReview: undefined;
+  Settings: undefined;
+  PrivacyPolicy: undefined;
+  TermsAndConditions: undefined;
+  PreferredAreas: undefined;  
+}>();
 
 const ShipperDrawer = () => {
   return (

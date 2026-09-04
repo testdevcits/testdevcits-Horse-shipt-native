@@ -9,7 +9,12 @@ import AllTrips from '../role/driver/screens/trips/AllTrips';
 import LocationScreen from '../role/driver/screens/location/LocationScreen';
 import ProfileScreen from '../role/driver/screens/profile/Profile';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<{
+  Home: undefined;
+  Trips: undefined;
+  Location: undefined;
+  Profile: undefined;
+}>();
 
 const DriverTabs = () => (
   <Tab.Navigator

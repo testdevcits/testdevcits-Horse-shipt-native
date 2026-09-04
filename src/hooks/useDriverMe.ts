@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Alert } from 'react-native';
 import { MeResponse } from '../types/driver';
 import driverService from '../api/services/driverService';
 import { useAppDispatch } from './redux';
 import { updateUser } from '../redux/slices/authSlice';
-import { requestBackgroundLocationPermission, openDeviceSettings } from '../utils/permissionHelper';
+import { requestBackgroundLocationPermission } from '../utils/permissionHelper';
 
 export const useDriverMe = () => {
   const [data, setData] = useState<MeResponse | null>(null);

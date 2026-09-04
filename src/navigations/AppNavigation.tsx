@@ -1,10 +1,7 @@
-
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '../hooks/redux';
-import { View, ActivityIndicator } from 'react-native';
 
 // Screens & Navigators
 import Splash from '../role/auth/splash/Splash';

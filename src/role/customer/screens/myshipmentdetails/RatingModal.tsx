@@ -9,7 +9,7 @@ import {
   Platform,
   Pressable,
   Alert,
-  ActivityIndicator,
+  
 } from 'react-native';
 import { X, Star, User } from 'lucide-react-native';
 import {

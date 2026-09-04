@@ -21,7 +21,13 @@ import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
 import ShipperProfileScreen from '../role/shipper/screens/profile/ShipperProfileScreen';
 import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<{
+  Home: undefined;
+  MyQuotes: undefined;
+  Post: undefined;
+  Chats: undefined;
+  Profile: undefined;
+}>();
 const { width } = Dimensions.get('window');
 
 const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {

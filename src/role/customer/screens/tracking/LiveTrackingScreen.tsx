@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   loaderContainer: {
     flex: 1,
-    justify: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.white,
   },

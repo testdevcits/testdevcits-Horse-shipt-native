@@ -4,8 +4,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
-} from 'react-native';
+ } from 'react-native';
 import { MessageSquare, Send, HelpCircle, Bell } from 'lucide-react-native';
 import { AppText, Input } from '../../../../../components';
 import {

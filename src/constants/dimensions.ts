@@ -146,7 +146,7 @@
 import { Dimensions } from 'react-native';
 import {
   moderateScale,
-  scale,
+   
   verticalScale,
 } from 'react-native-size-matters';
 

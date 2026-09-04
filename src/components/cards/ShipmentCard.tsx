@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { User, Info, ChevronRight, MapPin } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
 import AppText from '../common/AppText';

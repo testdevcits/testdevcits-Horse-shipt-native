@@ -8,7 +8,6 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-import { Apple } from 'lucide-react-native'; // Standard icons
 import { COLORS, FONTS, RADIUS, SPACING, SCREEN_HEIGHT, SCREEN_WIDTH, FONT_SIZE } from '../../../constants';
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
@@ -25,12 +24,7 @@ const GoogleIcon = () => (
 
 
 
-const AppleIcon = () => (
-    <Image
-        source={imageIndex.Apple}
-        style={{ width: 18, height: 18, marginRight: 10, tintColor: COLORS.white }}
-    />
-);
+ 
 
 const RegisterScreen = ({ navigation }: any) => {
     return (
@@ -90,16 +84,7 @@ const RegisterScreen = ({ navigation }: any) => {
                         </View> */}
 
                         {/* Social Logins */}
-                        {/* {
-                            Platform.OS === "ios" &&
-                            <AppButton
-                                title="Continue with Apple"
-                                leftIcon={<AppleIcon />}
-                                buttonStyle={styles.appleBtn}
-                                textStyle={styles.whiteBtnText}
-                            />
-                        } */}
-
+                        
 
                         {/* <AppButton
                             title="Continue with Google"
@@ -107,13 +92,7 @@ const RegisterScreen = ({ navigation }: any) => {
                             buttonStyle={styles.googleBtn}
                             textStyle={styles.darkBtnText}
                         /> */}
-
-                        {/* <AppButton
-                            title="Continue with Facebook"
-                            leftIcon={<FacebookIcon />}
-                            buttonStyle={styles.facebookBtn}
-                            textStyle={styles.whiteBtnText}
-                        /> */}
+ 
                     </View>
 
                     {/* 5. Footer Link */}

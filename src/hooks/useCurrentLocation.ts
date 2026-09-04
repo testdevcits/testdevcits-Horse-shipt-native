@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState,   } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { LocationCoords } from '../components/common/LocationPicker/types';

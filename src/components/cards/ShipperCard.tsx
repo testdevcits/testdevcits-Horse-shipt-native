@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
-  Platform,
+  
 } from 'react-native';
 import { Star, MapPin, Heart, CheckCircle2 } from 'lucide-react-native';
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants'; // Adjust paths

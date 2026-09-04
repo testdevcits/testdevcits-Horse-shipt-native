@@ -28,6 +28,7 @@
     "country-state-city": "^3.2.1",
     "date-fns": "^4.4.0",
     "formik": "^2.4.9",
+    "knip": "^6.34.0",
     "lucide-react-native": "^1.24.0",
     "moment-timezone": "^0.6.3",
     "react": "19.2.3",

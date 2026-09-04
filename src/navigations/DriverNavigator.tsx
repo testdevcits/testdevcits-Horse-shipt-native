@@ -4,7 +4,10 @@ import DriverTabs from './DriverTabs';
 import DeliveryVerificationScreen from '../role/driver/screens/verification/DeliveryVerificationScreen';
 
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<{
+  DriverTabs: undefined;
+  DeliveryVerification: undefined;
+}>();
 
 const DriverNavigator = () => {
   return (

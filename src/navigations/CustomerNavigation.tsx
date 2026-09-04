@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomerDrawer from './CustomerDrawer'; // Import Drawer instead
@@ -19,7 +17,23 @@ import LiveTrackingScreen from '../role/customer/screens/tracking/LiveTrackingSc
 
 import NewShipment from '../role/customer/screens/newshipment/NewShipment';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<{
+  CustomerDrawer: undefined;
+  NewShipment: undefined;
+  AddEditHorse: undefined;
+  MyShipmentDetails: undefined;
+  ChatDetails: undefined;
+  Notifications: undefined;
+  Payments: undefined;
+  PaymentDetails: undefined;
+  ReviewsScreen: undefined;
+  TopShippers: undefined;
+  ShipperDetail: undefined;
+  MapScreen: undefined;
+  Profile: undefined;
+  PdfViewer: undefined;
+  LiveTracking: undefined;
+}>();
 
 const CustomerNavigation = () => {
   return (
