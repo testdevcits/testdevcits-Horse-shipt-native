@@ -1,17 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity, Linking } from 'react-native';
-import {
-  Crown,
-  CheckCircle,
-  Calendar,
-  FileText,
-  CreditCard,
-  ExternalLink,
-  Sparkles,
-  ArrowUpRight,
-  ShieldCheck,
-  AlertCircle,
-} from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import { formatDate } from '../../../../../utils/helpers';
 import { AppText } from '../../../../../components';
@@ -19,6 +8,7 @@ import { COLORS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.subscriptiontab';
 import CancelSubscriptionModal from './CancelSubscriptionModal';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
   subscriptionData: any;
@@ -173,7 +163,7 @@ const SubscriptionTab: React.FC<Props> = ({
       {!isSubActive ? (
         <View style={styles.emptySubCard}>
           <View style={styles.crownCircle}>
-            <Crown size={26} color="#A06333" />
+            <AppIcon name="Crown" size={26} color="#A06333" />
           </View>
           <AppText style={styles.emptySubTitle}>No active subscription</AppText>
           <AppText style={styles.emptySubSub}>
@@ -195,7 +185,7 @@ const SubscriptionTab: React.FC<Props> = ({
         <View style={styles.subCardContainer}>
           <View style={styles.subCardHeader}>
             <View style={styles.goldSquareIconBox}>
-              <Crown size={22} color="#A06333" />
+              <AppIcon name="Crown" size={22} color="#A06333" />
             </View>
 
             <View style={styles.subHeaderTextCol}>
@@ -216,7 +206,8 @@ const SubscriptionTab: React.FC<Props> = ({
                 },
               ]}
             >
-              <ShieldCheck
+              <AppIcon
+                name="ShieldCheck"
                 size={14}
                 color={isSubActive ? COLORS.emeraldPrimary : COLORS.redPrimary}
               />
@@ -263,7 +254,7 @@ const SubscriptionTab: React.FC<Props> = ({
           {/* Plan Card Box */}
           <View style={styles.planDetailsBox}>
             <View style={styles.planDetailsHeader}>
-              <Sparkles size={16} color="#A06333" />
+              <AppIcon name="Sparkles" size={16} color="#A06333" />
               <AppText style={styles.planLabel}>CURRENT PLAN</AppText>
             </View>
 
@@ -312,7 +303,7 @@ const SubscriptionTab: React.FC<Props> = ({
           {/* Active Banner & Cancel Button Row */}
           {isCancelScheduled ? (
             <View style={styles.subCancelingBanner}>
-              <AlertCircle size={18} color="#D97706" />
+              <AppIcon name="AlertCircle" size={18} color="#D97706" />
               <AppText style={styles.subCancelingBannerText}>
                 Subscription scheduled to cancel on{' '}
                 {cancelValidTillDate
@@ -323,7 +314,11 @@ const SubscriptionTab: React.FC<Props> = ({
           ) : (
             <View style={styles.subActiveBannerRow}>
               <View style={styles.subActiveBanner}>
-                <CheckCircle size={18} color={COLORS.emeraldPrimary} />
+                <AppIcon
+                  name="CheckCircle"
+                  size={18}
+                  color={COLORS.emeraldPrimary}
+                />
                 <AppText style={styles.subActiveBannerText}>
                   Subscription Active
                 </AppText>
@@ -347,7 +342,7 @@ const SubscriptionTab: React.FC<Props> = ({
       <View style={{ marginTop: SPACING.lg }}>
         <View style={styles.subCardHeader}>
           <View style={styles.goldSquareIconBox}>
-            <Calendar size={22} color={COLORS.brandBrown} />
+            <AppIcon name="Calendar" size={22} color={COLORS.brandBrown} />
           </View>
 
           <View style={styles.subHeaderTextCol}>
@@ -404,7 +399,7 @@ const SubscriptionTab: React.FC<Props> = ({
         <View style={styles.historyListContainer}>
           {filteredList.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <FileText size={32} color={COLORS.textLight} />
+              <AppIcon name="FileText" size={32} color={COLORS.textLight} />
               <AppText style={styles.emptyTitle}>No records found</AppText>
               <AppText style={styles.emptySub}>
                 No {billingFilter.toLowerCase()} available for this account.
@@ -452,11 +447,23 @@ const SubscriptionTab: React.FC<Props> = ({
                   {/* Left Type Icon */}
                   <View style={styles.itemIconBox}>
                     {isInvoice ? (
-                      <FileText size={18} color={COLORS.brandBrown} />
+                      <AppIcon
+                        name="FileText"
+                        size={18}
+                        color={COLORS.brandBrown}
+                      />
                     ) : isPayment ? (
-                      <CreditCard size={18} color={COLORS.bluePrimary} />
+                      <AppIcon
+                        name="CreditCard"
+                        size={18}
+                        color={COLORS.bluePrimary}
+                      />
                     ) : (
-                      <ArrowUpRight size={18} color={COLORS.emeraldPrimary} />
+                      <AppIcon
+                        name="ArrowUpRight"
+                        size={18}
+                        color={COLORS.emeraldPrimary}
+                      />
                     )}
                   </View>
 
@@ -515,7 +522,11 @@ const SubscriptionTab: React.FC<Props> = ({
                           onPress={() => handleOpenUrl(targetUrl)}
                           activeOpacity={0.7}
                         >
-                          <ExternalLink size={12} color="#A06333" />
+                          <AppIcon
+                            name="ExternalLink"
+                            size={12}
+                            color="#A06333"
+                          />
                           <AppText style={styles.viewPdfBtnText}>
                             {isInvoice ? 'View PDF' : 'Receipt'}
                           </AppText>

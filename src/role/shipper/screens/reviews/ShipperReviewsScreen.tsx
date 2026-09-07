@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, Image, RefreshControl } from 'react-native';
-import { Star, MessageSquare } from 'lucide-react-native';
 import {
   AppHeader,
   AppText,
@@ -11,6 +10,7 @@ import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperreviews';
+import AppIcon from '../../../../components/AppIcon';
 
 const ShipperReviewsScreen = ({ route }: any) => {
   const initialReviews = route?.params?.reviews || [];
@@ -69,8 +69,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
           </AppText>
           <View style={styles.starsRow}>
             {[1, 2, 3, 4, 5].map(s => (
-              <Star
+              <AppIcon
                 key={s}
+                name={'Star'}
                 size={22}
                 color="#F59E0B"
                 fill={
@@ -102,7 +103,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={MessageSquare}
+        icon={<AppIcon name={'MessageSquare'} size={64} color="#A1A1AA" />}
         title="No Reviews Received Yet"
         message="Reviews from customers will appear here once submitted."
       />
@@ -140,8 +141,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
 
           <View style={styles.starsRow}>
             {[1, 2, 3, 4, 5].map(s => (
-              <Star
+              <AppIcon
                 key={s}
+                name={'Star'}
                 size={14}
                 color="#F59E0B"
                 fill={s <= (item?.rating || 5) ? '#F59E0B' : 'transparent'}

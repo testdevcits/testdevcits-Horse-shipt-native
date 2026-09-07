@@ -12,16 +12,7 @@ import {
   useRoute,
   CommonActions,
 } from '@react-navigation/native';
-import {
-  ArrowLeft,
-  Check,
-  Smartphone,
-  Send,
-  Milestone,
-  CheckCircle2,
-  User,
-  Truck,
-} from 'lucide-react-native';
+
 import { OtpInput } from 'react-native-otp-entry';
 
 import { COLORS } from '../../../../constants';
@@ -29,6 +20,7 @@ import AppText from '../../../../components/common/AppText';
 import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.deliveryverification';
+import AppIcon from '../../../../components/AppIcon';
 
 const DeliveryVerificationScreen = () => {
   const navigation = useNavigation<any>();
@@ -136,7 +128,7 @@ const DeliveryVerificationScreen = () => {
           ]}
         >
           {step > 1 ? (
-            <Check size={14} color={COLORS.white} />
+            <AppIcon name="Check" size={14} color={COLORS.white} />
           ) : (
             <AppText
               style={[styles.stepNumber, step === 1 && styles.stepNumberActive]}
@@ -164,7 +156,7 @@ const DeliveryVerificationScreen = () => {
           ]}
         >
           {step > 2 ? (
-            <Check size={14} color={COLORS.white} />
+            <AppIcon name="Check" size={14} color={COLORS.white} />
           ) : (
             <AppText
               style={[styles.stepNumber, step === 2 && styles.stepNumberActive]}
@@ -215,7 +207,7 @@ const DeliveryVerificationScreen = () => {
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             >
-              <ArrowLeft size={22} color={COLORS.textPrimary} />
+              <AppIcon name="ArrowLeft" size={22} color={COLORS.textPrimary} />
             </TouchableOpacity>
           )}
           <View style={styles.navTitleContainer}>
@@ -270,7 +262,8 @@ const DeliveryVerificationScreen = () => {
 
             {/* Metadata Fields */}
             <View style={styles.metaRow}>
-              <User
+              <AppIcon
+                name="User"
                 size={16}
                 color={COLORS.textLight}
                 style={styles.metaIcon}
@@ -289,7 +282,8 @@ const DeliveryVerificationScreen = () => {
                 { borderBottomWidth: 0, paddingBottom: 0 },
               ]}
             >
-              <Truck
+              <AppIcon
+                name="Truck"
                 size={16}
                 color={COLORS.textLight}
                 style={styles.metaIcon}
@@ -309,7 +303,7 @@ const DeliveryVerificationScreen = () => {
           {step === 1 && (
             <View style={styles.centerSection}>
               <View style={styles.middleIconBox}>
-                <Milestone size={32} color={COLORS.primary} />
+                <AppIcon name="Milestone" size={32} color={COLORS.primary} />
               </View>
               <AppText style={styles.mainActionHeading}>
                 Ready to Deliver?
@@ -325,7 +319,7 @@ const DeliveryVerificationScreen = () => {
           {step === 2 && (
             <View style={styles.centerSection}>
               <View style={styles.middleIconBox}>
-                <Smartphone size={32} color={COLORS.primary} />
+                <AppIcon name="Smartphone" size={32} color={COLORS.primary} />
               </View>
               <AppText style={styles.mainActionHeading}>Enter OTP</AppText>
               <AppText style={styles.mainActionDescription}>
@@ -335,7 +329,7 @@ const DeliveryVerificationScreen = () => {
               {/* Success Send Banner Alert */}
               {otpSentSuccess && (
                 <View style={styles.successBanner}>
-                  <Check size={14} color={COLORS.greenSuccess} />
+                  <AppIcon name="Check" size={14} color={COLORS.greenSuccess} />
                   <AppText style={styles.successBannerText}>
                     OTP sent to customer successfully
                   </AppText>
@@ -386,7 +380,11 @@ const DeliveryVerificationScreen = () => {
                   },
                 ]}
               >
-                <CheckCircle2 size={32} color={COLORS.greenActive} />
+                <AppIcon
+                  name="CheckCircle2"
+                  size={32}
+                  color={COLORS.greenActive}
+                />
               </View>
               <AppText style={styles.mainActionHeading}>
                 Verified successfully
@@ -412,7 +410,8 @@ const DeliveryVerificationScreen = () => {
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
-                  <Send
+                  <AppIcon
+                    name="Send"
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
@@ -436,7 +435,8 @@ const DeliveryVerificationScreen = () => {
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
-                  <Check
+                  <AppIcon
+                    name="Check"
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
@@ -456,7 +456,8 @@ const DeliveryVerificationScreen = () => {
               onPress={handleDone}
               activeOpacity={0.8}
             >
-              <Check
+              <AppIcon
+                name="Check"
                 size={18}
                 color={COLORS.white}
                 style={styles.actionBtnIcon}

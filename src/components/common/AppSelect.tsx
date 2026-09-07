@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { ChevronDown, Search, X, Check } from 'lucide-react-native';
+
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -25,6 +25,7 @@ import {
   ICON_SIZE,
 } from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 export interface AppSelectRef {
   present: () => void;
@@ -132,7 +133,11 @@ const AppSelect = memo(
               >
                 {value || placeholder}
               </AppText>
-              <ChevronDown size={ICON_SIZE.sm} color={COLORS.textSecondary} />
+              <AppIcon
+                name="ChevronDown"
+                size={ICON_SIZE.sm}
+                color={COLORS.textSecondary}
+              />
             </TouchableOpacity>
           )}
 
@@ -159,14 +164,22 @@ const AppSelect = memo(
                   onPress={handleDismissModal}
                   style={styles.closeBtn}
                 >
-                  <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
+                  <AppIcon
+                    name="X"
+                    size={ICON_SIZE.sm}
+                    color={COLORS.textPrimary}
+                  />
                 </TouchableOpacity>
               </View>
 
               {/* Search Bar */}
               {searchable && (
                 <View style={styles.searchContainer}>
-                  <Search size={ICON_SIZE.xs} color={COLORS.textLight} />
+                  <AppIcon
+                    name="Search"
+                    size={ICON_SIZE.xs}
+                    color={COLORS.textLight}
+                  />
                   <BottomSheetTextInput
                     placeholder="Search..."
                     placeholderTextColor={COLORS.textLight}
@@ -177,7 +190,11 @@ const AppSelect = memo(
                   />
                   {searchQuery.length > 0 && (
                     <TouchableOpacity onPress={() => setSearchQuery('')}>
-                      <X size={ICON_SIZE.xs} color={COLORS.textLight} />
+                      <AppIcon
+                        name="X"
+                        size={ICON_SIZE.xs}
+                        color={COLORS.textLight}
+                      />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -207,7 +224,8 @@ const AppSelect = memo(
                         {item}
                       </AppText>
                       {isSelected && (
-                        <Check
+                        <AppIcon
+                          name="Check"
                           size={ICON_SIZE.xs}
                           color={COLORS.primary}
                           strokeWidth={3}

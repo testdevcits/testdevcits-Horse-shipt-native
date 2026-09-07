@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Truck, MapPin, ChevronRight } from 'lucide-react-native';
-import { AppText } from '../../../../../components';
+ import { AppText } from '../../../../../components';
 import styles from './styles.shipmenttab';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
   navigation: any;
@@ -18,7 +18,7 @@ const ShipmentTab: React.FC<Props> = ({ navigation }) => {
         activeOpacity={0.8}
       >
         <View style={styles.shipmentRowIconBox}>
-          <Truck size={20} color="#A06333" />
+          <AppIcon name="Truck" size={20} color="#A06333" />
         </View>
         <View style={styles.shipmentRowContent}>
           <AppText style={styles.shipmentRowTitle}>Vehicles & Capacity</AppText>
@@ -26,7 +26,7 @@ const ShipmentTab: React.FC<Props> = ({ navigation }) => {
             Manage your shipment capacity and vehicle information.
           </AppText>
         </View>
-        <ChevronRight size={18} color="#94A3B8" />
+        <AppIcon name="ChevronRight" size={18} color="#94A3B8" />
       </TouchableOpacity>
 
       {/* Preferred Areas Card */}
@@ -36,7 +36,7 @@ const ShipmentTab: React.FC<Props> = ({ navigation }) => {
         activeOpacity={0.8}
       >
         <View style={styles.shipmentRowIconBox}>
-          <MapPin size={20} color="#A06333" />
+          <AppIcon name="MapPin" size={20} color="#A06333" />
         </View>
         <View style={styles.shipmentRowContent}>
           <AppText style={styles.shipmentRowTitle}>Preferred Areas</AppText>
@@ -44,7 +44,7 @@ const ShipmentTab: React.FC<Props> = ({ navigation }) => {
             Set your working areas to get better shipment matches.
           </AppText>
         </View>
-        <ChevronRight size={18} color="#94A3B8" />
+        <AppIcon name="ChevronRight" size={18} color="#94A3B8" />
       </TouchableOpacity>
     </View>
   );

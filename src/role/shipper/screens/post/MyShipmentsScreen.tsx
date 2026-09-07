@@ -6,23 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {
-  Package,
-  MapPin,
-  Truck,
-  Check,
-  Clock,
-  AlertCircle,
-  FileText,
-  Star,
-  Navigation,
-  CreditCard,
-  ArrowRight,
-} from 'lucide-react-native';
+ 
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import styles from './styles.postload';
 import ReviewCustomerModal from './ReviewCustomerModal';
+import AppIcon from '../../../../components/AppIcon';
 
 export type StatusFilterType =
   | 'all'
@@ -174,7 +163,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: '#7DD3FC',
               text: '#0284C7',
               label: 'IN TRANSIT',
-              icon: <Truck size={12} color="#0284C7" />,
+              icon: <AppIcon name="Truck" size={12} color="#0284C7" />,
             };
           case 'completed':
             return {
@@ -182,7 +171,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.emeraldBorder,
               text: COLORS.emeraldPrimary,
               label: 'COMPLETED',
-              icon: <Check size={12} color={COLORS.emeraldPrimary} />,
+              icon: <AppIcon name="Check" size={12} color={COLORS.emeraldPrimary} />,
             };
           case 'cancelled':
             return {
@@ -190,7 +179,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.redBorder,
               text: COLORS.redPrimary,
               label: 'CANCELLED',
-              icon: <AlertCircle size={12} color={COLORS.redPrimary} />,
+              icon: <AppIcon name="AlertCircle" size={12} color={COLORS.redPrimary} />,
             };
           case 'upcoming':
           default:
@@ -199,7 +188,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.amberBorder,
               text: COLORS.amberWarning,
               label: 'UPCOMING',
-              icon: <Clock size={12} color={COLORS.amberWarning} />,
+              icon: <AppIcon name="Clock" size={12} color={COLORS.amberWarning} />,
             };
         }
       };
@@ -211,7 +200,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
           {/* Header Row: Code & Badges */}
           <View style={styles.myHeaderRow}>
             <View style={styles.codeBadge}>
-              <Package size={12} color={COLORS.textSecondary} />
+              <AppIcon name="Package" size={12} color={COLORS.textSecondary} />
               <AppText style={styles.myCodeText}>#{code}</AppText>
             </View>
           </View>
@@ -244,10 +233,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                     },
               ]}
             >
-              <CreditCard
-                size={11}
-                color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary}
-              />
+              <AppIcon name="CreditCard" size={11} color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary} />
               <AppText
                 style={[
                   styles.myBadgePillText,
@@ -277,7 +263,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
             <View style={styles.trackMiddle}>
               <View style={styles.trackLine} />
               <View style={styles.trackTruckBox}>
-                <ArrowRight size={12} color="#D97706" />
+                <AppIcon name="ArrowRight" size={12} color="#D97706" />
               </View>
             </View>
 
@@ -326,7 +312,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               onPress={() => onOpenContract(item)}
               activeOpacity={0.8}
             >
-              <FileText size={14} color="#A06333" />
+              <AppIcon name="FileText" size={14} color="#A06333" />
               <AppText style={styles.viewContractBtnText}>
                 View Contract
               </AppText>
@@ -337,7 +323,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                 onPress={() => handleReviewPress(item)}
                 activeOpacity={0.8}
               >
-                <Star size={14} color="#FFFFFF" fill="#FFFFFF" />
+                <AppIcon name="Star" size={14} color="#FFFFFF" fill="#FFFFFF" />
                 <AppText style={styles.reviewCustomerBtnText}>
                   Review Customer
                 </AppText>
@@ -349,7 +335,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                   onPress={() => onTrackShipment(item)}
                   activeOpacity={0.8}
                 >
-                  <Navigation size={14} color="#FFFFFF" />
+                  <AppIcon name="Navigation" size={14} color="#FFFFFF" />
                   <AppText style={styles.trackShipmentBtnText}>
                     Track Shipment
                   </AppText>
@@ -382,7 +368,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
 
     return (
       <View style={styles.emptyContainer}>
-        <Package size={48} color={COLORS.textLight} />
+        <AppIcon name="Package" size={48} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>
           No {labelMap[selectedStatus]} Found
         </AppText>

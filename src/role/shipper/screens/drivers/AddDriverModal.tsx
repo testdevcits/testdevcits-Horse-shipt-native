@@ -8,12 +8,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.adddriver';
+import AppIcon from '../../../../components/AppIcon';
 
 interface Props {
   visible: boolean;
@@ -174,7 +174,7 @@ const AddDriverModal = ({
                 </AppText>
               </View>
               <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-                <X size={20} color={COLORS.textPrimary} />
+                <AppIcon name="X" size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 

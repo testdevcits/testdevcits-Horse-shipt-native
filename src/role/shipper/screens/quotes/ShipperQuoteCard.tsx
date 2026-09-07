@@ -1,18 +1,12 @@
 import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import {
-  Truck,
-  CreditCard,
-  Box,
-  RefreshCw,
-  FileText,
-  Calendar,
-} from 'lucide-react-native';
+
 import { formatDate } from '../../../../utils/helpers';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
 import styles from './styles.myquotes';
 import { horsePlaceholderImage } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 interface ShipperQuoteCardProps {
   quote: any;
@@ -165,7 +159,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* 2x2 Specs Grid */}
         <View style={styles.specsGrid}>
           <View style={styles.specBox}>
-            <Truck size={18} color={COLORS.primary} />
+            <AppIcon name="Truck" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Transport</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -175,7 +169,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <CreditCard size={18} color={COLORS.primary} />
+            <AppIcon name="CreditCard" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Payment</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -185,7 +179,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <Box size={18} color={COLORS.primary} />
+            <AppIcon name="Box" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Stall</AppText>
               <AppText style={styles.specValue}>
@@ -197,7 +191,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <RefreshCw size={18} color={COLORS.primary} />
+            <AppIcon name="RefreshCw" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Refund</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -215,7 +209,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {vehicleObj ? (
           <View style={styles.assignedVehicleCard}>
             <View style={styles.vehicleHeaderRow}>
-              <Truck size={16} color={COLORS.primary} />
+              <AppIcon name="Truck" size={16} color={COLORS.primary} />
               <AppText style={styles.vehicleTitleText}>
                 Assigned Vehicle & Driver Details
               </AppText>
@@ -258,7 +252,12 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
         ) : vehicleName ? (
           <View style={styles.assignedVehicleContainer}>
-            <Truck size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
+            <AppIcon
+              name="Truck"
+              size={16}
+              color={COLORS.primary}
+              style={{ marginTop: 2 }}
+            />
             <AppText style={styles.assignedVehicleText}>
               <AppText style={{ fontFamily: FONTS.bold }}>
                 Assigned Vehicle :{' '}
@@ -271,7 +270,8 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* Notes Container */}
         {quote?.notes ? (
           <View style={styles.notesContainer}>
-            <FileText
+            <AppIcon
+              name="FileText"
               size={16}
               color={COLORS.primary}
               style={{ marginTop: 2 }}
@@ -285,7 +285,12 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
         {/* Cancel Notice Container */}
         <View style={styles.cancelNoticeContainer}>
-          <Calendar size={16} color="#EF4444" style={{ marginTop: 2 }} />
+          <AppIcon
+            name="Calendar"
+            size={16}
+            color="#EF4444"
+            style={{ marginTop: 2 }}
+          />
           <AppText style={styles.cancelNoticeText}>
             Cancel before :{' '}
             {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}

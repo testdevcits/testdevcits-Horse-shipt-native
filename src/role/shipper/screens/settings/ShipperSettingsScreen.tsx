@@ -6,12 +6,13 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { Bell, Check } from 'lucide-react-native';
+ 
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippersettings';
+import AppIcon from '../../../../components/AppIcon';
 
 const NOTIFICATION_ITEMS = [
   {
@@ -152,7 +153,7 @@ const ShipperSettingsScreen = () => {
             <View style={styles.notificationsCard}>
               <View style={styles.subCardHeader}>
                 <View style={styles.goldSquareIconBox}>
-                  <Bell size={22} color="#A06333" />
+                  <AppIcon name={'Bell'} size={22} color="#A06333" />
                 </View>
 
                 <View style={styles.subHeaderTextCol}>
@@ -208,7 +209,7 @@ const ShipperSettingsScreen = () => {
                         }
                         activeOpacity={0.8}
                       >
-                        {isEmailChecked && <Check size={14} color="#A06333" />}
+                        {isEmailChecked && <AppIcon name={'Check'} size={14} color="#A06333" />}
                       </TouchableOpacity>
 
                       {/* SMS Checkbox */}
@@ -222,7 +223,7 @@ const ShipperSettingsScreen = () => {
                         }
                         activeOpacity={0.8}
                       >
-                        {isSmsChecked && <Check size={14} color="#A06333" />}
+                        {isSmsChecked && <AppIcon name={'Check'} size={14} color="#A06333" />}
                       </TouchableOpacity>
                     </View>
                   </View>

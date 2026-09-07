@@ -6,7 +6,6 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import { Plus, User } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
@@ -22,6 +21,8 @@ import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import AddDriverModal from './AddDriverModal';
 import styles from './styles.truckdriver';
+import AppIcon from '../../../../components/AppIcon';
+import { User } from 'lucide-react-native';
 
 const TruckDriverScreen = () => {
   const [drivers, setDrivers] = useState<any[]>([]);
@@ -181,7 +182,12 @@ const TruckDriverScreen = () => {
           }}
           activeOpacity={0.8}
         >
-          <Plus size={18} color={COLORS.white} strokeWidth={2.5} />
+          <AppIcon
+            name="Plus"
+            size={18}
+            color={COLORS.white}
+            strokeWidth={2.5}
+          />
           <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
         </TouchableOpacity>
       </View>
@@ -207,7 +213,12 @@ const TruckDriverScreen = () => {
             setIsAddModalVisible(true);
           }}
         >
-          <Plus size={18} color={COLORS.white} />
+          <AppIcon
+            name="Plus"
+            size={18}
+            color={COLORS.white}
+            strokeWidth={2.5}
+          />
           <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
         </TouchableOpacity>
       </View>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Star, Smile, Meh, Frown, Camera } from 'lucide-react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants';
 import AppText from '../common/AppText';
 import Input from '../common/Input/Input';
+import AppIcon from '../AppIcon';
 
 const FEEDBACK_CHIPS = [
   'On Time',
@@ -22,9 +22,9 @@ const WriteReviewComponent = ({
   setComment,
 }: any) => {
   const getEmoji = () => {
-    if (rating >= 4) return <Smile size={48} color={COLORS.primary} />;
-    if (rating >= 3) return <Meh size={48} color={COLORS.warning} />;
-    return <Frown size={48} color={COLORS.error} />;
+    if (rating >= 4) return <AppIcon name="Smile" size={48} color={COLORS.primary} />;
+    if (rating >= 3) return <AppIcon name="Meh" size={48} color={COLORS.warning} />;
+    return <AppIcon name="Frown" size={48} color={COLORS.error} />;
   };
 
   return (
@@ -39,11 +39,7 @@ const WriteReviewComponent = ({
             onPress={() => setRating(s)}
             activeOpacity={0.7}
           >
-            <Star
-              size={40}
-              color={s <= rating ? COLORS.primary : COLORS.grey200}
-              fill={s <= rating ? COLORS.primary : 'transparent'}
-            />
+            <AppIcon name="Star" size={40} color={s <= rating ? COLORS.primary : COLORS.grey200} fill={s <= rating ? COLORS.primary : 'transparent'} />
           </TouchableOpacity>
         ))}
       </View>
@@ -81,7 +77,7 @@ const WriteReviewComponent = ({
       </View>
 
       <TouchableOpacity style={styles.photoBtn}>
-        <Camera size={20} color={COLORS.primary} />
+        <AppIcon name="Camera" size={20} color={COLORS.primary} />
         <AppText style={styles.photoBtnText}>Add Photos</AppText>
       </TouchableOpacity>
     </View>

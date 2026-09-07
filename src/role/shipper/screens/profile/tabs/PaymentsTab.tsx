@@ -9,15 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import {
-  Building2,
-  Check,
-  ArrowRight,
-  Shield,
-  Lock,
-  X,
-  ArrowLeft,
-} from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import { AppText } from '../../../../../components';
 import {
@@ -30,6 +22,7 @@ import {
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
   stripeStatus: any;
@@ -141,7 +134,7 @@ const PaymentsTab: React.FC<Props> = ({
         {/* Top Account Header */}
         <View style={styles.payoutAccountCard}>
           <View style={styles.goldHorseIconBox}>
-            <Building2 size={22} color="#A06333" />
+            <AppIcon name="Building2" size={22} color="#A06333" />
           </View>
           <View style={styles.payoutTextCol}>
             <AppText style={styles.payoutTitle}>
@@ -225,7 +218,7 @@ const PaymentsTab: React.FC<Props> = ({
                     <AppText style={styles.setupPayoutBtnText}>
                       Set up payout account
                     </AppText>
-                    <ArrowRight size={16} color="#FFFFFF" />
+                    <AppIcon name="ArrowRight" size={16} color="#FFFFFF" />
                   </>
                 )}
               </TouchableOpacity>
@@ -237,7 +230,7 @@ const PaymentsTab: React.FC<Props> = ({
             {/* Verified Payout Card */}
             <View style={styles.verifiedCard}>
               <View style={styles.checkSquare}>
-                <Check size={16} color="#A06333" />
+                <AppIcon name="Check" size={16} color="#A06333" />
               </View>
               <View style={styles.verifiedTextCol}>
                 <AppText style={styles.verifiedTitle}>
@@ -254,7 +247,7 @@ const PaymentsTab: React.FC<Props> = ({
 
         {/* Footer Encryption Bar */}
         <View style={styles.encryptionFooterBar}>
-          <Shield size={13} color="#A06333" />
+          <AppIcon name="Shield" size={13} color="#A06333" />
           <AppText style={styles.encryptionFooterText}>
             ALL TRANSACTIONS ARE ENCRYPTED AND SECURELY PROCESSED THROUGH YOUR
             PAYOUT ACCOUNT.
@@ -275,7 +268,7 @@ const PaymentsTab: React.FC<Props> = ({
               style={modalStyles.backBtn}
               onPress={() => setWebViewUrl(null)}
             >
-              <ArrowLeft size={22} color={COLORS.primary} />
+              <AppIcon name="ArrowLeft" size={22} color={COLORS.primary} />
             </TouchableOpacity>
 
             <AppText style={modalStyles.headerTitle}>Account Setup</AppText>
@@ -284,12 +277,12 @@ const PaymentsTab: React.FC<Props> = ({
               style={modalStyles.closeBtn}
               onPress={() => setWebViewUrl(null)}
             >
-              <X size={20} color={COLORS.textSecondary} />
+              <AppIcon name="X" size={20} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
           <View style={modalStyles.securityBanner}>
-            <Lock size={13} color="#A06333" />
+            <AppIcon name="Lock" size={13} color="#A06333" />
             <AppText style={modalStyles.securityBannerText}>
               Secured Connection • Stripe Encrypted Payout Verification
             </AppText>

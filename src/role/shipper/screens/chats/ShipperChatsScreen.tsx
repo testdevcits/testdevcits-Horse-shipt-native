@@ -7,7 +7,6 @@ import {
   RefreshControl,
   FlatList,
 } from 'react-native';
-import { MessageSquare, User } from 'lucide-react-native';
 import {
   AppHeader,
   AppText,
@@ -18,6 +17,7 @@ import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
 import imageIndex from '../../../../assets/images/imageIndex';
+import AppIcon from '../../../../components/AppIcon';
 
 const ChatItemCard = memo(
   ({
@@ -53,7 +53,7 @@ const ChatItemCard = memo(
             />
           ) : (
             <View style={styles.avatarPlaceholder}>
-              <User size={22} color={COLORS.primary} />
+              <AppIcon name="User" size={22} color={COLORS.primary} />
             </View>
           )}
           {/* Online / Offline Dot */}
@@ -178,7 +178,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
 
     return (
       <View style={styles.emptyContainer}>
-        <MessageSquare size={44} color={COLORS.textLight} />
+        <AppIcon name="MessageSquare" size={44} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>No Conversations</AppText>
         <AppText style={styles.emptySub}>
           Active shipment customer chats will appear here.

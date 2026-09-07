@@ -8,7 +8,6 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native';
-import { ShieldCheck, Radio } from 'lucide-react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -18,6 +17,7 @@ import {
   SIZES,
 } from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 interface DriverHeaderProps {
   name: string;
@@ -91,7 +91,8 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
             onPress={onStatusToggle}
             style={styles.statusBadge}
           >
-            <Radio
+            <AppIcon
+              name={'Radio'}
               size={12}
               color={isOnline ? COLORS.greenActive : COLORS.textLight}
             />
@@ -106,7 +107,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
           <View style={styles.rightContainer}>{rightComponent}</View>
         ) : (
           <View style={styles.captainShieldBox}>
-            <ShieldCheck size={20} color={COLORS.primary} />
+            <AppIcon name={'ShieldCheck'} size={20} color={COLORS.primary} />
             <AppText style={styles.verifiedCaptainTag}>VERIFIED</AppText>
           </View>
         )}

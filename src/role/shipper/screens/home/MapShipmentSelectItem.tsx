@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { MapPin, ArrowLeftRight, ArrowRight } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import styles from './styles.shipperhome';
+import AppIcon from '../../../../components/AppIcon';
 
 interface MapShipmentSelectItemProps {
   item: any;
@@ -44,7 +44,7 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
     >
       {/* Left Map Pin Icon Circle */}
       <View style={styles.mapPinCircle}>
-        <MapPin size={18} color="#A06333" />
+        <AppIcon name="MapPin" size={18} color="#A06333" />
       </View>
 
       {/* Center Info Col */}
@@ -66,14 +66,14 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
           style={styles.swapIconCircle}
           onPress={() => onNavigateDetails(item)}
         >
-          <ArrowLeftRight size={14} color={COLORS.white} />
+          <AppIcon name="ArrowLeftRight" size={14} color={COLORS.white} />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.arrowIconCircle}
           onPress={() => onNavigateDetails(item)}
         >
-          <ArrowRight size={14} color={COLORS.textPrimary} />
+          <AppIcon name="ArrowRight" size={14} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

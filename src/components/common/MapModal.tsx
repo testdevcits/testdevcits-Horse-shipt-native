@@ -12,17 +12,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {
-  X,
-  Navigation,
-  Clock,
-  Layers,
-  LocateFixed,
-  MapPin,
-  Package,
-  Flag,
-  Truck,
-} from 'lucide-react-native';
+ 
 import {
   COLORS,
   FONT_SIZE,
@@ -33,6 +23,7 @@ import {
 } from '../../constants';
 import AppText from './AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../config/constants';
+import AppIcon from '../AppIcon';
 
 const { height } = Dimensions.get('window');
 
@@ -225,13 +216,13 @@ const MapModal = ({
                     },
                   ]}
                 >
-                  <Truck size={12} color={COLORS.white} />
+                  <AppIcon name={'Truck'} size={12} color={COLORS.white} />
                   <AppText style={styles.markerBadgeText}>Driver</AppText>
                 </Animated.View>
                 <View
                   style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}
                 >
-                  <Truck size={18} color={COLORS.white} strokeWidth={2.5} />
+                  <AppIcon name={'Truck'} size={18} color={COLORS.white} strokeWidth={2.5} />
                 </View>
                 <View
                   style={[styles.markerPointer, { borderTopColor: '#3B82F6' }]}
@@ -254,13 +245,13 @@ const MapModal = ({
                   { backgroundColor: COLORS.primary },
                 ]}
               >
-                <Package size={12} color={COLORS.white} />
+                <AppIcon name={'Package'} size={12} color={COLORS.white} />
                 <AppText style={styles.markerBadgeText}>Pickup</AppText>
               </View>
               <View
                 style={[styles.markerPin, { backgroundColor: COLORS.primary }]}
               >
-                <Package size={18} color={COLORS.white} strokeWidth={2.5} />
+                <AppIcon name={'Package'} size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
               <View
                 style={[
@@ -282,13 +273,13 @@ const MapModal = ({
               <View
                 style={[styles.markerBadge, { backgroundColor: COLORS.error }]}
               >
-                <Flag size={12} color={COLORS.white} />
+                <AppIcon name={'Flag'} size={12} color={COLORS.white} />
                 <AppText style={styles.markerBadgeText}>Delivery</AppText>
               </View>
               <View
                 style={[styles.markerPin, { backgroundColor: COLORS.error }]}
               >
-                <Flag size={18} color={COLORS.white} strokeWidth={2.5} />
+                <AppIcon name={'Flag'} size={18} color={COLORS.white} strokeWidth={2.5} />
               </View>
               <View
                 style={[styles.markerPointer, { borderTopColor: COLORS.error }]}
@@ -313,7 +304,7 @@ const MapModal = ({
             onPress={onClose}
             activeOpacity={0.8}
           >
-            <X size={22} color={COLORS.textPrimary} />
+            <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
           <View style={styles.statusPill}>
@@ -332,7 +323,7 @@ const MapModal = ({
             onPress={toggleMapType}
             activeOpacity={0.8}
           >
-            <Layers size={20} color={COLORS.textPrimary} />
+            <AppIcon name={'Layers'} size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -340,7 +331,7 @@ const MapModal = ({
             onPress={centerMap}
             activeOpacity={0.8}
           >
-            <LocateFixed size={20} color={COLORS.textPrimary} />
+            <AppIcon name={'LocateFixed'} size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
         </View>
 
@@ -349,7 +340,7 @@ const MapModal = ({
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
               <View style={styles.statBox}>
-                <Navigation size={18} color={COLORS.primary} />
+                <AppIcon name={'Navigation'} size={18} color={COLORS.primary} />
                 <View>
                   <AppText style={styles.statLabel}>
                     {hasCurrentLocation ? 'Total Distance' : 'Road Distance'}
@@ -361,7 +352,7 @@ const MapModal = ({
               <View style={styles.statDivider} />
 
               <View style={styles.statBox}>
-                <Clock size={18} color={COLORS.primary} />
+                <AppIcon name={'Clock'} size={18} color={COLORS.primary} />
                 <View>
                   <AppText style={styles.statLabel}>Est. Travel</AppText>
                   <AppText style={styles.statValue}>{displayDuration}</AppText>
@@ -426,7 +417,7 @@ const MapModal = ({
 
               <View style={styles.addressRow}>
                 <View style={styles.addressIconCol}>
-                  <MapPin size={14} color={COLORS.error} />
+                  <AppIcon name={'MapPin'} size={14} color={COLORS.error} />
                 </View>
                 <View style={styles.addressTextCol}>
                   <AppText style={styles.addressSubLabel}>

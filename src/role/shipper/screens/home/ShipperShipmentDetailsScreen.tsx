@@ -3,15 +3,7 @@ import { View, ScrollView, TouchableOpacity, Image, Share } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
-import {
-  MapPin,
-  Compass,
-  Box,
-  ChevronDown,
-  ChevronUp,
-  Share2,
-  Flag,
-} from 'lucide-react-native';
+ 
 import { formatDate } from '../../../../utils/helpers';
 import Toast from 'react-native-toast-message';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -23,6 +15,7 @@ import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../hooks/useStripeStatus';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 import ConnectBankModal from './ConnectBankModal';
+import AppIcon from '../../../../components/AppIcon';
 
 const AskQuestionModal = lazy(() => import('./AskQuestionModal'));
 const SubmitOfferModal = lazy(() => import('./SubmitOfferModal'));
@@ -283,7 +276,7 @@ const ShipperShipmentDetailsScreen = () => {
                 Customer: {shipment?.customer?.name || 'Not Available'}
               </AppText>
               <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
-                <Share2 size={14} color={COLORS.textPrimary} />
+                <AppIcon name="Share2" size={14} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -326,7 +319,7 @@ const ShipperShipmentDetailsScreen = () => {
                   description={shipment?.pickupLocation}
                 >
                   <View style={styles.markerCircleGreen}>
-                    <MapPin size={14} color={COLORS.white} />
+                    <AppIcon name="MapPin" size={14} color={COLORS.white} />
                   </View>
                 </Marker>
 
@@ -336,7 +329,7 @@ const ShipperShipmentDetailsScreen = () => {
                   description={shipment?.deliveryLocation}
                 >
                   <View style={styles.markerCircleRed}>
-                    <MapPin size={14} color={COLORS.white} />
+                    <AppIcon name="MapPin" size={14} color={COLORS.white} />
                   </View>
                 </Marker>
 
@@ -375,7 +368,7 @@ const ShipperShipmentDetailsScreen = () => {
         <View style={styles.gridContainer}>
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <Compass size={18} color="#A06333" />
+              <AppIcon name="Compass" size={18} color="#A06333" />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>DISTANCE</AppText>
@@ -385,7 +378,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <Box size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color="#A06333" />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>HORSES</AppText>
@@ -397,7 +390,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <Box size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color="#A06333" />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
@@ -407,7 +400,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <Box size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color="#A06333" />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
@@ -419,7 +412,7 @@ const ShipperShipmentDetailsScreen = () => {
         {/* 4. Route Information Card */}
         <View style={styles.routeInfoCard}>
           <View style={styles.cardTitleRow}>
-            <Compass size={18} color="#A06333" />
+            <AppIcon name="Compass" size={18} color="#A06333" />
             <AppText style={styles.cardHeaderTitle}>Route Information</AppText>
           </View>
 
@@ -427,7 +420,7 @@ const ShipperShipmentDetailsScreen = () => {
             {/* Pickup Node */}
             <View style={styles.timelineRow}>
               <View style={styles.timelineIconBoxPickup}>
-                <MapPin size={16} color="#A06333" />
+                <AppIcon name="MapPin" size={16} color="#A06333" />
               </View>
 
               <View style={styles.timelineTextCol}>
@@ -444,7 +437,7 @@ const ShipperShipmentDetailsScreen = () => {
             {/* Delivery Node */}
             <View style={styles.timelineRow}>
               <View style={styles.timelineIconBoxDelivery}>
-                <Flag size={16} color="#A06333" />
+                <AppIcon name="Flag" size={16} color="#A06333" />
               </View>
 
               <View style={styles.timelineTextCol}>
@@ -503,16 +496,16 @@ const ShipperShipmentDetailsScreen = () => {
                 activeOpacity={0.8}
               >
                 <View style={styles.accordionTitleRow}>
-                  <Box size={18} color={COLORS.brandBrown} />
+                  <AppIcon name="Box" size={18} color={COLORS.brandBrown} />
                   <AppText style={styles.cardHeaderTitle}>
                     Horse Details {index + 1}/{horsesList.length}
                   </AppText>
                 </View>
 
                 {isExpanded ? (
-                  <ChevronUp size={20} color={COLORS.textSecondary} />
+                  <AppIcon name="ChevronUp" size={20} color={COLORS.textSecondary} />
                 ) : (
-                  <ChevronDown size={20} color={COLORS.textSecondary} />
+                  <AppIcon name="ChevronDown" size={20} color={COLORS.textSecondary} />
                 )}
               </TouchableOpacity>
 

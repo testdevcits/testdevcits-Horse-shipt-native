@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
-import { Star, MapPin, Heart, CheckCircle2 } from 'lucide-react-native';
-import {
+ import {
   COLORS,
   FONT_SIZE,
   FONTS,
@@ -17,6 +16,7 @@ import {
 } from '../../constants'; // Adjust paths
 import AppText from '../common/AppText';
 import imageIndex from '../../assets/images/imageIndex';
+import AppIcon from '../AppIcon';
 
 interface ShipperCardProps {
   item: {
@@ -50,8 +50,9 @@ const ShipperCard = memo(
 
     const renderStars = () => {
       return [1, 2, 3, 4, 5].map(index => (
-        <Star
+        <AppIcon
           key={index}
+          name="Star"
           size={14}
           color={
             index <= Math.round(ratingValue) ? COLORS.warning : COLORS.grey300
@@ -94,7 +95,8 @@ const ShipperCard = memo(
               );
             })()}
             <View style={styles.verifiedBadge}>
-              <CheckCircle2
+              <AppIcon
+                name="CheckCircle2"
                 size={12}
                 color={COLORS.white}
                 fill={COLORS.primary}
@@ -110,7 +112,8 @@ const ShipperCard = memo(
               onFavoritePress?.(item);
             }}
           >
-            <Heart
+            <AppIcon
+              name="Heart"
               size={20}
               color={item?.isFavorite ? COLORS.error : COLORS.grey400}
               fill={item?.isFavorite ? COLORS.error : 'transparent'}
@@ -142,7 +145,7 @@ const ShipperCard = memo(
         {/* Footer Section */}
         <View style={styles.footerRow}>
           <View style={styles.locationContainer}>
-            <MapPin size={14} color={COLORS.primary} />
+            <AppIcon name="MapPin" size={14} color={COLORS.primary} />
             <AppText style={styles.locationText} numberOfLines={1}>
               {formatLocation(item?.region)}
             </AppText>

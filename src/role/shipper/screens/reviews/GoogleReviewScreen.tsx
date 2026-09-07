@@ -6,12 +6,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { Link, Info, ExternalLink } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Input, Button } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.googlereview';
+import AppIcon from '../../../../components/AppIcon';
 
 const GoogleReviewScreen = () => {
   const [googleReviewLink, setGoogleReviewLink] = useState('');
@@ -143,7 +143,7 @@ const GoogleReviewScreen = () => {
             {/* Info Callout Box */}
             <View style={styles.infoCalloutBox}>
               <View style={styles.infoIconBox}>
-                <Info size={18} color="#A06333" />
+                <AppIcon name="Info" size={18} color="#A06333" />
               </View>
               <AppText style={styles.infoCalloutText}>
                 Add the direct Google review or Google Maps business link you
@@ -164,10 +164,14 @@ const GoogleReviewScreen = () => {
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="url"
-              leftIcon={<Link size={20} color="#A06333" />}
+              leftIcon={<AppIcon name="Link" size={20} color="#A06333" />}
               rightIcon={
                 isConnected ? (
-                  <ExternalLink size={18} color={COLORS.primary} />
+                  <AppIcon
+                    name="ExternalLink"
+                    size={18}
+                    color={COLORS.primary}
+                  />
                 ) : undefined
               }
               onRightIconPress={isConnected ? handleOpenLink : undefined}

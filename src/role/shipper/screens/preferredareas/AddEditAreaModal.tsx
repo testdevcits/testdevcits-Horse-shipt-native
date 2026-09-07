@@ -9,14 +9,14 @@ import {
   Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { X, MapPin, Compass, Navigation } from 'lucide-react-native';
-import { AppText, Input } from '../../../../components';
+ import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import LocationPicker, {
   LocationSelectResult,
 } from '../../../../components/common/LocationPicker/LocationPicker';
 import styles from './styles.preferredareas';
+import AppIcon from '../../../../components/AppIcon';
 
 interface Props {
   visible: boolean;
@@ -261,7 +261,7 @@ const AddEditAreaModal = ({
               style={styles.closeBtn}
               activeOpacity={0.7}
             >
-              <X size={18} color={COLORS.textPrimary} />
+              <AppIcon name="X" size={18} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -286,7 +286,7 @@ const AddEditAreaModal = ({
               value={locationName}
               onChangeText={handleLocationNameChange}
               placeholder="e.g. Indore, Madhya Pradesh, India"
-              leftIcon={<MapPin size={18} color={COLORS.primary} />}
+              leftIcon={<AppIcon name="MapPin" size={18} color={COLORS.primary} />}
               multiline
               inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
               error={errors.locationName}
@@ -302,7 +302,7 @@ const AddEditAreaModal = ({
                   placeholder="22.777927"
                   keyboardType="numeric"
                   maxLength={15}
-                  leftIcon={<Compass size={16} color={COLORS.textSecondary} />}
+                  leftIcon={<AppIcon name="Compass" size={16} color={COLORS.textSecondary} />}
                   error={errors.latitude}
                 />
               </View>
@@ -316,7 +316,7 @@ const AddEditAreaModal = ({
                   keyboardType="numeric"
                   maxLength={15}
                   leftIcon={
-                    <Navigation size={16} color={COLORS.textSecondary} />
+                    <AppIcon name="Navigation" size={16} color={COLORS.textSecondary} />
                   }
                   error={errors.longitude}
                 />

@@ -11,7 +11,6 @@ import {
   Platform,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { X, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONT_SIZE } from '../../../../constants';
@@ -22,6 +21,7 @@ import shipperService from '../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
 import styles from './styles.editprofilemodal';
+import AppIcon from '../../../../components/AppIcon';
 
 interface EditProfileModalProps {
   visible: boolean;
@@ -146,7 +146,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   style={styles.closeBtn}
                   activeOpacity={0.7}
                 >
-                  <X size={20} color={COLORS.textPrimary} />
+                  <AppIcon name="X" size={20} color={COLORS.textPrimary} />
                 </TouchableOpacity>
               </View>
 
@@ -260,7 +260,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   disabled={saving}
                   activeOpacity={0.8}
                 >
-                  <X size={16} color={COLORS.textPrimary} />
+                  <AppIcon name="X" size={16} color={COLORS.textPrimary} />
                   <AppText style={styles.cancelBtnText}>Cancel</AppText>
                 </TouchableOpacity>
 
@@ -274,7 +274,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     <ActivityIndicator size="small" color={COLORS.white} />
                   ) : (
                     <>
-                      <Check size={16} color={COLORS.white} />
+                      <AppIcon name="Check" size={16} color={COLORS.white} />
                       <AppText style={styles.saveBtnText}>Save</AppText>
                     </>
                   )}

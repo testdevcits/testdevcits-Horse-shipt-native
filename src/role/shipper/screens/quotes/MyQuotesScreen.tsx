@@ -12,7 +12,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import { FileText } from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -29,6 +29,7 @@ import shipperService from '../../../../api/services/shipperService';
 import ContractModal from './ContractModal';
 import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
+import { FileText } from 'lucide-react-native';
 
 const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();

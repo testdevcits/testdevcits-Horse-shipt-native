@@ -9,7 +9,6 @@ import {
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Plus } from 'lucide-react-native';
 import { AppText } from '../components';
 import { COLORS, FONT_SIZE, FONTS } from '../constants';
 import imageIndex from '../assets/images/imageIndex';
@@ -20,6 +19,7 @@ import MyQuotesScreen from '../role/shipper/screens/quotes/MyQuotesScreen';
 import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
 import ShipperProfileScreen from '../role/shipper/screens/profile/ShipperProfileScreen';
 import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
+import AppIcon from '../components/AppIcon';
 
 const Tab = createBottomTabNavigator<{
   Home: undefined;
@@ -85,7 +85,12 @@ const CustomShipperTabBar = ({ state, descriptors, navigation }: any) => {
                   activeOpacity={0.85}
                   style={styles.centerButton}
                 >
-                  <Plus size={28} color={COLORS.white} strokeWidth={2.5} />
+                  <AppIcon
+                    name={'Plus'}
+                    size={28}
+                    color={COLORS.white}
+                    strokeWidth={2.5}
+                  />
                 </TouchableOpacity>
               );
             }

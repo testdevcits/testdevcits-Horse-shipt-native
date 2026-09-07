@@ -7,9 +7,9 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import { ChevronDown, Check, X } from 'lucide-react-native';
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
 import AppText from '../AppText';
+import AppIcon from '../../AppIcon';
 
 export interface Country {
   code: string;
@@ -55,7 +55,8 @@ export const CountryCodePicker = ({
       >
         <AppText style={styles.flagText}>{currentCountry.flag}</AppText>
         <AppText style={styles.codeText}>{currentCountry.code}</AppText>
-        <ChevronDown
+        <AppIcon
+          name={'ChevronDown'}
           size={14}
           color={COLORS.textSecondary}
           style={{ marginLeft: 2 }}
@@ -83,7 +84,7 @@ export const CountryCodePicker = ({
                 onPress={() => setModalVisible(false)}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <X size={20} color={COLORS.textPrimary} />
+                <AppIcon name={'X'} size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -114,7 +115,11 @@ export const CountryCodePicker = ({
                       <AppText style={styles.countryCode}>{item.code}</AppText>
                       {isSelected ? (
                         <View style={styles.checkBadge}>
-                          <Check size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'Check'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       ) : null}
                     </View>

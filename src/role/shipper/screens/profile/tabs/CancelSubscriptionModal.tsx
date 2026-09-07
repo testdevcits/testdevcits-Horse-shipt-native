@@ -8,7 +8,6 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { AlertCircle, X, CheckSquare, Square } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import {
   COLORS,
@@ -17,6 +16,7 @@ import {
   SPACING,
   RADIUS,
 } from '../../../../../constants';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface CancelSubscriptionModalProps {
   visible: boolean;
@@ -80,7 +80,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
             {/* Header */}
             <View style={styles.header}>
               <View style={styles.alertIconBox}>
-                <AlertCircle size={22} color="#D97706" />
+                <AppIcon name="AlertCircle" size={22} color="#D97706" />
               </View>
 
               <View style={styles.headerTextCol}>
@@ -99,7 +99,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
                 disabled={submitting}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <X size={18} color={COLORS.textSecondary} />
+                <AppIcon name="X" size={18} color={COLORS.textSecondary} />
               </TouchableOpacity>
             </View>
 
@@ -176,9 +176,13 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
             >
               <View style={styles.checkboxBox}>
                 {isChecked ? (
-                  <CheckSquare size={20} color={COLORS.primary} />
+                  <AppIcon
+                    name="CheckSquare"
+                    size={20}
+                    color={COLORS.primary}
+                  />
                 ) : (
-                  <Square size={20} color={COLORS.textLight} />
+                  <AppIcon name="Square" size={20} color={COLORS.textLight} />
                 )}
               </View>
               <AppText style={styles.checkboxText}>

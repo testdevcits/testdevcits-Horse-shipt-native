@@ -6,14 +6,10 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import {
-  ArrowRight,
-  Truck,
-  ShieldCheck,
-  ChevronRight,
-} from 'lucide-react-native';
+ 
 import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
+import AppIcon from '../AppIcon';
 
 interface TripCardProps {
   item: any;
@@ -75,7 +71,7 @@ const TripCard: React.FC<TripCardProps> = ({
           </AppText>
         </View>
 
-        <ArrowRight size={14} color={COLORS.primary} style={styles.arrowIcon} />
+        <AppIcon name="ArrowRight" size={14} color={COLORS.primary} style={styles.arrowIcon} />
 
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />
@@ -88,7 +84,7 @@ const TripCard: React.FC<TripCardProps> = ({
       {/* Shipment Specs Grid */}
       <View style={styles.footerRow}>
         <View style={styles.infoBadge}>
-          <Truck size={14} color={COLORS.primary} />
+          <AppIcon name="Truck" size={14} color={COLORS.primary} />
           <AppText style={styles.infoText}>
             {shipmentData?.numberOfHorses || 1}{' '}
             {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
@@ -96,7 +92,7 @@ const TripCard: React.FC<TripCardProps> = ({
         </View>
 
         <View style={styles.infoBadge}>
-          <ShieldCheck size={14} color={COLORS.greenActive} />
+          <AppIcon name="ShieldCheck" size={14} color={COLORS.greenActive} />
           <AppText style={styles.infoText}>Verified Route</AppText>
         </View>
       </View>
@@ -111,7 +107,7 @@ const TripCard: React.FC<TripCardProps> = ({
           <AppText style={styles.actionButtonText}>
             Complete Delivery (OTP)
           </AppText>
-          <ChevronRight size={16} color={COLORS.white} />
+          <AppIcon name="ChevronRight" size={16} color={COLORS.white} />
         </TouchableOpacity>
       )}
     </View>

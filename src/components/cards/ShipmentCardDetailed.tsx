@@ -1,12 +1,6 @@
 import React, { memo, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import {
-  MapPin,
-  Calendar,
-  ExternalLink,
-  Truck,
-  Trash2,
-} from 'lucide-react-native';
+ 
 import {
   COLORS,
   FONTS,
@@ -17,6 +11,7 @@ import {
 } from '../../constants';
 import AppText from '../common/AppText';
 import { horsePlaceholderImage } from '../../config/constants';
+import AppIcon from '../AppIcon';
 
 // Helper to format date (e.g., "2026-07-27..." -> "July 27, 2026")
 const formatDate = (dateString: string) => {
@@ -113,11 +108,11 @@ const ShipmentHorizontalCard = memo(
                   }}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  <Trash2 size={ICON_SIZE.xs || 16} color={COLORS.error} />
+                  <AppIcon name="Trash2" size={ICON_SIZE.xs || 16} color={COLORS.error} />
                 </TouchableOpacity>
               )}
               <TouchableOpacity style={styles.exportBtn}>
-                <ExternalLink size={ICON_SIZE.xs} color={COLORS.white} />
+                <AppIcon name="ExternalLink" size={ICON_SIZE.xs} color={COLORS.white} />
               </TouchableOpacity>
             </View>
           </View>
@@ -154,7 +149,7 @@ const ShipmentHorizontalCard = memo(
 
           {/* Address Row (Pickup Location) */}
           <View style={styles.infoRow}>
-            <MapPin size={ICON_SIZE.xs} color={COLORS.grey500} />
+            <AppIcon name="MapPin" size={ICON_SIZE.xs} color={COLORS.grey500} />
             <AppText style={styles.infoText} numberOfLines={1}>
               {item?.pickupLocation}
             </AppText>
@@ -162,7 +157,7 @@ const ShipmentHorizontalCard = memo(
 
           {/* Date Row (Pickup Date) */}
           <View style={styles.infoRow}>
-            <Calendar size={ICON_SIZE.xs} color={COLORS.grey500} />
+            <AppIcon name="Calendar" size={ICON_SIZE.xs} color={COLORS.grey500} />
             <AppText style={styles.infoText}>{pickupDate}</AppText>
           </View>
         </View>
@@ -182,14 +177,11 @@ const ShipmentHorizontalCard = memo(
               },
             ]}
           >
-            <Truck
-              size={ICON_SIZE.xs}
-              color={
+            <AppIcon name="Truck" size={ICON_SIZE.xs} color={
                 item?.status === 'open_for_offers'
                   ? COLORS.grey400
                   : COLORS.greenPrimary
-              }
-              fill={
+              } fill={
                 item?.status === 'open_for_offers'
                   ? 'transparent'
                   : COLORS.greenPrimary

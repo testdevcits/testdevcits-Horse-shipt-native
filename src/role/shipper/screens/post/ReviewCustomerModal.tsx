@@ -10,7 +10,6 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import { X, Star, User } from 'lucide-react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -20,6 +19,7 @@ import {
 } from '../../../../constants';
 import { AppText, Button } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
+import AppIcon from '../../../../components/AppIcon';
 
 interface ReviewCustomerModalProps {
   visible: boolean;
@@ -160,7 +160,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
             <View style={styles.header}>
               <AppText style={styles.modalTitle}>Review Customer</AppText>
               <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-                <X size={20} color={COLORS.textPrimary} />
+                <AppIcon name="X" size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -177,7 +177,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
             {/* Customer Badge */}
             <View style={styles.customerRow}>
               <View style={styles.avatar}>
-                <User size={18} color="#D97706" />
+                <AppIcon name="User" size={18} color="#D97706" />
               </View>
               <AppText style={styles.customerName}>{customerName}</AppText>
             </View>
@@ -192,7 +192,8 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
                     activeOpacity={0.7}
                     style={{ padding: 4 }}
                   >
-                    <Star
+                    <AppIcon
+                      name="Star"
                       size={32}
                       color={s <= rating ? '#F59E0B' : '#CBD5E1'}
                       fill={s <= rating ? '#F59E0B' : 'transparent'}

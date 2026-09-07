@@ -10,14 +10,7 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import {
-  X,
-  Send,
-  MessageSquare,
-  Clock,
-  CheckCheck,
-  Check,
-} from 'lucide-react-native';
+
 import { formatDate } from '../../../../utils/helpers';
 import { AppText, Input } from '../../../../components';
 import {
@@ -27,6 +20,7 @@ import {
   RADIUS,
   FONT_SIZE,
 } from '../../../../constants';
+import AppIcon from '../../../../components/AppIcon';
 
 interface AskQuestionModalProps {
   isVisible: boolean;
@@ -169,7 +163,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
             </View>
 
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-              <X size={18} color={COLORS.white} />
+              <AppIcon name="X" size={18} color={COLORS.white} />
             </TouchableOpacity>
           </View>
 
@@ -190,7 +184,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.pendingQuestionCard}>
                   <View style={styles.pendingHeaderRow}>
                     <View style={styles.pendingIconSquare}>
-                      <MessageSquare size={16} color="#A06333" />
+                      <AppIcon name="MessageSquare" size={16} color="#A06333" />
                     </View>
                     <AppText style={styles.pendingHeaderLabel}>
                       YOUR QUESTION
@@ -217,7 +211,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                   <View style={styles.responseHeaderRow}>
                     <View style={styles.responseLeftHeader}>
                       <View style={styles.responseIconSquare}>
-                        <CheckCheck size={16} color={COLORS.emeraldPrimary} />
+                        <AppIcon
+                          name="CheckCheck"
+                          size={16}
+                          color={COLORS.emeraldPrimary}
+                        />
                       </View>
                       <AppText style={styles.responseHeaderLabel}>
                         CUSTOMER RESPONSE
@@ -225,7 +223,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     </View>
 
                     <View style={styles.answeredBadge}>
-                      <Check size={12} color={COLORS.emeraldDark} />
+                      <AppIcon
+                        name="Check"
+                        size={12}
+                        color={COLORS.emeraldDark}
+                      />
                       <AppText style={styles.answeredBadgeText}>
                         Answered
                       </AppText>
@@ -264,7 +266,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.pendingQuestionCard}>
                   <View style={styles.pendingHeaderRow}>
                     <View style={styles.pendingIconSquare}>
-                      <MessageSquare size={16} color="#A06333" />
+                      <AppIcon name="MessageSquare" size={16} color="#A06333" />
                     </View>
                     <AppText style={styles.pendingHeaderLabel}>
                       YOUR QUESTION
@@ -290,7 +292,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.statusCard}>
                   <View style={styles.statusHeaderRow}>
                     <View style={styles.statusIconSquare}>
-                      <Clock size={16} color="#B45309" />
+                      <AppIcon name="Clock" size={16} color="#B45309" />
                     </View>
                     <AppText style={styles.statusHeaderLabel}>STATUS</AppText>
                   </View>
@@ -385,7 +387,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     <ActivityIndicator color={COLORS.white} />
                   ) : (
                     <View style={styles.submitBtnContent}>
-                      <Send size={18} color={COLORS.white} />
+                      <AppIcon name="Send" size={18} color={COLORS.white} />
                       <AppText style={styles.submitBtnText}>Submit</AppText>
                     </View>
                   )}

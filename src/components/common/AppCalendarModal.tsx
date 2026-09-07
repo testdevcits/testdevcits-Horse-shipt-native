@@ -7,9 +7,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { X } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants'; // Adjust paths
+ import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants'; // Adjust paths
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 interface AppCalendarModalProps {
   visible: boolean;
@@ -47,7 +47,7 @@ const AppCalendarModal = memo(
                     onPress={onClose}
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
-                    <X size={24} color={COLORS.textPrimary} />
+                    <AppIcon name="X" size={24} color={COLORS.textPrimary} />
                   </TouchableOpacity>
                 </View>
 

@@ -7,8 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { Pencil, Camera } from 'lucide-react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+ import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
@@ -29,6 +28,7 @@ import NotificationTab from './tabs/NotificationTab';
 import ConnectBankModal from '../home/ConnectBankModal';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
+import AppIcon from '../../../../components/AppIcon';
 
 type TabType =
   | 'Profile'
@@ -455,7 +455,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   <ActivityIndicator size="small" color={COLORS.white} />
                 ) : (
                   <>
-                    <Camera size={14} color={COLORS.white} />
+                    <AppIcon name="Camera" size={14} color={COLORS.white} />
                     <AppText style={styles.editBannerText}>Edit banner</AppText>
                   </>
                 )}
@@ -502,7 +502,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   <ActivityIndicator size="small" color={COLORS.primary} />
                 ) : (
                   <>
-                    <Pencil size={16} color={COLORS.textPrimary} />
+                    <AppIcon name="Pencil" size={16} color={COLORS.textPrimary} />
                     <AppText style={styles.editPicText}>Edit picture</AppText>
                   </>
                 )}

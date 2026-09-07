@@ -9,7 +9,6 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { ChevronDown, ImagePlus, Compass, Check } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import {
@@ -23,6 +22,7 @@ import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { isValidVehicleNumber, isValidVIN } from '../../../../utils/valiations';
+import AppIcon from '../../../../components/AppIcon';
 
 interface Props {
   navigation?: any;
@@ -275,7 +275,7 @@ const AddVehicleModal: React.FC<Props> = ({
           {/* Vehicle Details Card Header */}
           <View style={styles.vehicleDetailsHeader}>
             <View style={styles.steeringIconBox}>
-              <Compass size={22} color="#A06333" />
+              <AppIcon name={'Compass'} size={22} color="#A06333" />
             </View>
             <View style={styles.headerTextCol}>
               <AppText style={styles.vehicleDetailsTitle}>
@@ -316,7 +316,11 @@ const AddVehicleModal: React.FC<Props> = ({
               >
                 {vehicleType || 'Select vehicle type'}
               </AppText>
-              <ChevronDown size={18} color={COLORS.textSecondary} />
+              <AppIcon
+                name={'ChevronDown'}
+                size={18}
+                color={COLORS.textSecondary}
+              />
             </TouchableOpacity>
             {!!errors.vehicleType && (
               <AppText style={styles.errorText}>{errors.vehicleType}</AppText>
@@ -394,7 +398,11 @@ const AddVehicleModal: React.FC<Props> = ({
               >
                 {stallType || 'Select Stall Type'}
               </AppText>
-              <ChevronDown size={18} color={COLORS.textSecondary} />
+              <AppIcon
+                name={'ChevronDown'}
+                size={18}
+                color={COLORS.textSecondary}
+              />
             </TouchableOpacity>
             {!!errors.stallType && (
               <AppText style={styles.errorText}>{errors.stallType}</AppText>
@@ -421,7 +429,11 @@ const AddVehicleModal: React.FC<Props> = ({
               >
                 {stallSize || 'Select Stall Size'}
               </AppText>
-              <ChevronDown size={18} color={COLORS.textSecondary} />
+              <AppIcon
+                name={'ChevronDown'}
+                size={18}
+                color={COLORS.textSecondary}
+              />
             </TouchableOpacity>
             {!!errors.stallSize && (
               <AppText style={styles.errorText}>{errors.stallSize}</AppText>
@@ -453,7 +465,11 @@ const AddVehicleModal: React.FC<Props> = ({
                 />
               ) : (
                 <View style={styles.uploadPlaceholder}>
-                  <ImagePlus size={36} color={COLORS.textSecondary} />
+                  <AppIcon
+                    name={'ImagePlus'}
+                    size={36}
+                    color={COLORS.textSecondary}
+                  />
                 </View>
               )}
             </TouchableOpacity>
@@ -542,7 +558,9 @@ const AddVehicleModal: React.FC<Props> = ({
                   >
                     {item}
                   </AppText>
-                  {vehicleType === item && <Check size={18} color="#A06333" />}
+                  {vehicleType === item && (
+                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                  )}
                 </TouchableOpacity>
               ))}
 
@@ -567,7 +585,9 @@ const AddVehicleModal: React.FC<Props> = ({
                   >
                     {item}
                   </AppText>
-                  {stallType === item && <Check size={18} color="#A06333" />}
+                  {stallType === item && (
+                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                  )}
                 </TouchableOpacity>
               ))}
 
@@ -592,7 +612,9 @@ const AddVehicleModal: React.FC<Props> = ({
                   >
                     {item}
                   </AppText>
-                  {stallSize === item && <Check size={18} color="#A06333" />}
+                  {stallSize === item && (
+                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                  )}
                 </TouchableOpacity>
               ))}
           </View>

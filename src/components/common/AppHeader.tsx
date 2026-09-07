@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
-import {
+ import {
   COLORS,
   FONTS,
   SPACING,
@@ -15,6 +14,7 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchNotificationsThunk } from '../../redux/slices/notificationSlice';
 import imageIndex from '../../assets/images/imageIndex';
+import AppIcon from '../AppIcon';
 
 interface HeaderProps {
   title?: string;
@@ -79,14 +79,14 @@ const AppHeader = memo(
               onPress={onBack ? onBack : () => navigation.goBack()}
               style={styles.iconBtn}
             >
-              <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon name="ChevronLeft" color={COLORS.textPrimary} size={ICON_SIZE.md} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={styles.iconBtn}
             >
-              <Menu color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon name="Menu" color={COLORS.textPrimary} size={ICON_SIZE.md} />
             </TouchableOpacity>
           )}
         </View>
@@ -110,7 +110,7 @@ const AppHeader = memo(
                 activeOpacity={0.7}
               >
                 <View style={styles.bellContainer}>
-                  <BellIcon color={COLORS.textPrimary} size={SPACING.xl} />
+                  <AppIcon name="BellIcon" color={COLORS.textPrimary} size={SPACING.xl} />
                   {unreadCount > 0 && (
                     <View style={styles.badge}>
                       <AppText style={styles.badgeText}>

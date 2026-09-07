@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Bell, Check } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
 import styles from './styles.notificationtab';
 import { COLORS } from '../../../../../constants';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
   notifications: any;
@@ -59,7 +59,7 @@ const NotificationTab: React.FC<Props> = ({
       <View style={styles.notificationsCard}>
         <View style={styles.subCardHeader}>
           <View style={styles.goldSquareIconBox}>
-            <Bell size={22} color="#A06333" />
+            <AppIcon name="Bell" size={22} color="#A06333" />
           </View>
 
           <View style={styles.subHeaderTextCol}>
@@ -98,7 +98,9 @@ const NotificationTab: React.FC<Props> = ({
                   ]}
                   onPress={() => handleToggleNotification(item?.key, 'email')}
                 >
-                  {isEmailChecked && <Check size={14} color={COLORS.white} />}
+                  {isEmailChecked && (
+                    <AppIcon name="Check" size={14} color={COLORS.white} />
+                  )}
                 </TouchableOpacity>
 
                 {/* SMS Checkbox */}
@@ -109,7 +111,9 @@ const NotificationTab: React.FC<Props> = ({
                   ]}
                   onPress={() => handleToggleNotification(item?.key, 'sms')}
                 >
-                  {isSmsChecked && <Check size={14} color={COLORS.white} />}
+                  {isSmsChecked && (
+                    <AppIcon name="Check" size={14} color={COLORS.white} />
+                  )}
                 </TouchableOpacity>
               </View>
             </View>

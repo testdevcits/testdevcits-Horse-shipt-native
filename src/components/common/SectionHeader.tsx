@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
-import { ChevronRight } from 'lucide-react-native';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 // 1. Define Props for reusability (The "Conditions")
 interface SectionHeaderProps {
@@ -36,7 +36,7 @@ const SectionHeader = ({
 
           {/* Simple Chevron Arrow */}
 
-          <ChevronRight size={FONT_SIZE.lg} style={styles?.chevron} />
+          <AppIcon name={'ChevronRight'}   size={FONT_SIZE.lg} style={styles?.chevron} />
         </TouchableOpacity>
       )}
     </View>

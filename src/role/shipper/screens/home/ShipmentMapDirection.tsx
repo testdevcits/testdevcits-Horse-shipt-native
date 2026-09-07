@@ -1,21 +1,7 @@
 import React, { useRef, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {
-  ChevronLeft,
-  MapPin,
-  Clock,
-  Route,
-  Target,
-  PackageCheck,
-} from 'lucide-react-native';
 
 // Import your constants
 import {
@@ -27,6 +13,7 @@ import {
 } from '../../../../constants';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 // Note: Replace with your actual Google Maps API Key
 
@@ -78,7 +65,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
               { backgroundColor: COLORS.greenSuccess },
             ]}
           >
-            <PackageCheck size={16} color={COLORS.white} />
+            <AppIcon name="PackageCheck" size={16} color={COLORS.white} />
           </View>
         </Marker>
 
@@ -90,7 +77,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
               { backgroundColor: COLORS.primary },
             ]}
           >
-            <MapPin size={16} color={COLORS.white} />
+            <AppIcon name="MapPin" size={16} color={COLORS.white} />
           </View>
         </Marker>
 
@@ -110,13 +97,13 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
       </MapView>
 
       {/* Floating Header */}
-      <SafeAreaView style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
         <View style={styles.headerContent}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation?.goBack()}
           >
-            <ChevronLeft size={24} color={COLORS.textPrimary} />
+            <AppIcon name="ChevronLeft" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
           <View style={styles.headerTextContainer}>
             <AppText style={styles.headerTitle}>
@@ -128,11 +115,11 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
             </View>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
 
       {/* Recenter Button */}
       <TouchableOpacity style={styles.recenterButton} onPress={fitToRoute}>
-        <Target size={24} color={COLORS.primary} />
+        <AppIcon name="Target" size={24} color={COLORS.primary} />
       </TouchableOpacity>
 
       {/* Bottom Info Card */}
@@ -142,7 +129,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
         {/* Stats Row */}
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
-            <Route size={20} color={COLORS.primary} />
+            <AppIcon name="Route" size={20} color={COLORS.primary} />
             <View style={styles.statTextContent}>
               <AppText style={styles.statLabel}>Distance</AppText>
               <AppText style={styles.statValue}>
@@ -152,7 +139,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statItem}>
-            <Clock size={20} color={COLORS.primary} />
+            <AppIcon name="Clock" size={20} color={COLORS.primary} />
             <View style={styles.statTextContent}>
               <AppText style={styles.statLabel}>Est. Time</AppText>
               <AppText style={styles.statValue}>
@@ -180,7 +167,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
 
           <View style={[styles.addressRow, { marginTop: 10 }]}>
             <View style={styles.dotContainer}>
-              <MapPin size={16} color={COLORS.primary} />
+              <AppIcon name="MapPin" size={16} color={COLORS.primary} />
             </View>
             <View style={styles.addressTextWrapper}>
               <AppText style={styles.addressLabel}>Delivery</AppText>

@@ -6,10 +6,10 @@ import {
   Animated,
   ActivityIndicator,
 } from 'react-native';
-import { WifiOff, Wifi, RefreshCw } from 'lucide-react-native';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 export const OfflineBanner: React.FC = () => {
   const { isOffline, refresh } = useNetworkStatus();
@@ -66,14 +66,24 @@ export const OfflineBanner: React.FC = () => {
       <View style={styles.content}>
         {isRestored ? (
           <>
-            <Wifi size={18} color={COLORS.white} style={styles.icon} />
+            <AppIcon
+              name={'Wifi'}
+              size={18}
+              color={COLORS.white}
+              style={styles.icon}
+            />
             <AppText style={styles.text}>
               Back online! Internet connection restored.
             </AppText>
           </>
         ) : (
           <>
-            <WifiOff size={18} color={COLORS.white} style={styles.icon} />
+            <AppIcon
+              name={'WifiOff'}
+              size={18}
+              color={COLORS.white}
+              style={styles.icon}
+            />
             <AppText style={styles.text}>
               No Internet Connection. Checking connection...
             </AppText>
@@ -86,7 +96,7 @@ export const OfflineBanner: React.FC = () => {
               {isRefreshing ? (
                 <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
-                <RefreshCw size={14} color={COLORS.white} />
+                <AppIcon name={'RefreshCw'} size={14} color={COLORS.white} />
               )}
             </TouchableOpacity>
           </>

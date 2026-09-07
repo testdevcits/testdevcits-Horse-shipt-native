@@ -14,17 +14,7 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import {
-  Plus,
-  Truck,
-  Box,
-  Layers,
-  FileText,
-  UserPlus,
-  UserCheck,
-  Edit,
-  Trash2,
-} from 'lucide-react-native';
+ 
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
@@ -37,6 +27,7 @@ import {
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
+import AppIcon from '../../../../components/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -78,7 +69,7 @@ const VehicleItemCard = React.memo(
             />
           ) : (
             <View style={styles.fallbackImage}>
-              <Truck size={44} color={COLORS.primary} />
+              <AppIcon name={'Truck'} size={44} color={COLORS.primary} />
             </View>
           )}
           {/* Status Badge */}
@@ -120,7 +111,7 @@ const VehicleItemCard = React.memo(
           {/* 2x2 Specs Grid */}
           <View style={styles.specsGrid}>
             <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.primary} />
+              <AppIcon name={'Truck'} size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>VIN</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -130,7 +121,7 @@ const VehicleItemCard = React.memo(
             </View>
 
             <View style={styles.specBox}>
-              <Box size={18} color={COLORS.primary} />
+              <AppIcon name={'Box'} size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Size</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -140,7 +131,7 @@ const VehicleItemCard = React.memo(
             </View>
 
             <View style={styles.specBox}>
-              <Layers size={18} color={COLORS.primary} />
+              <AppIcon name={'Layers'} size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Stalls</AppText>
                 <AppText style={styles.specValue}>
@@ -152,7 +143,7 @@ const VehicleItemCard = React.memo(
             </View>
 
             <View style={styles.specBox}>
-              <Truck size={18} color={COLORS.primary} />
+              <AppIcon name={'Truck'} size={18} color={COLORS.primary} />
               <View style={styles.specBoxTextCol}>
                 <AppText style={styles.specLabel}>Stall Type</AppText>
                 <AppText style={styles.specValue} numberOfLines={1}>
@@ -165,7 +156,7 @@ const VehicleItemCard = React.memo(
           {/* Notes / Spec Description */}
           {vehicle?.notes ? (
             <View style={styles.notesBox}>
-              <FileText size={18} color={COLORS.primary} />
+              <AppIcon name={'FileText'} size={18} color={COLORS.primary} />
               <View style={styles.notesTextCol}>
                 <AppText style={styles.notesTitle}>Notes</AppText>
                 <AppText style={styles.notesText}>{vehicle?.notes}</AppText>
@@ -180,9 +171,9 @@ const VehicleItemCard = React.memo(
               onPress={() => onAssignDriver(vehicle)}
             >
               {assignedDriverName ? (
-                <UserCheck size={15} color={COLORS.primary} />
+                <AppIcon name={'UserCheck'} size={15} color={COLORS.primary} />
               ) : (
-                <UserPlus size={15} color={COLORS.textPrimary} />
+                <AppIcon name={'UserPlus'} size={15} color={COLORS.textPrimary} />
               )}
               <AppText
                 style={[
@@ -202,7 +193,7 @@ const VehicleItemCard = React.memo(
               style={styles.actionPill}
               onPress={() => onEdit(vehicle)}
             >
-              <Edit size={15} color={COLORS.textPrimary} />
+              <AppIcon name={'Edit'} size={15} color={COLORS.textPrimary} />
               <AppText style={styles.actionPillText}>Edit</AppText>
             </TouchableOpacity>
             {vehicle?.currentShipment === null ? (
@@ -210,7 +201,7 @@ const VehicleItemCard = React.memo(
                 style={styles.actionPill}
                 onPress={() => onDelete(vehicle?._id, vehicle?.vehicleNumber)}
               >
-                <Trash2 size={15} color="#EF4444" />
+                <AppIcon name={'Trash2'} size={15} color="#EF4444" />
                 <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>
                   Delete
                 </AppText>
@@ -436,7 +427,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
         onPress={handleAddNewVehicle}
         activeOpacity={0.8}
       >
-        <Plus size={18} color={COLORS.white} strokeWidth={2.5} />
+        <AppIcon name={'Plus'} size={18} color={COLORS.white} strokeWidth={2.5} />
         <AppText style={styles.addBtnText}>Add Vehicle</AppText>
       </TouchableOpacity>
     </View>
@@ -447,7 +438,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     return (
       <View style={{ paddingVertical: SPACING.lg, alignItems: 'center' }}>
         <EmptyState
-          icon={Truck}
+          icon={<AppIcon name={'Truck'} size={18} color={COLORS.primary} />}
           title="No Vehicles Registered"
           message="Add your trucks and trailers to start offering horse transport quotes."
         />
@@ -458,7 +449,7 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           ]}
           onPress={handleAddNewVehicle}
         >
-          <Plus size={18} color={COLORS.white} />
+          <AppIcon name={'Plus'} size={18} color={COLORS.white} strokeWidth={2.5} />
           <AppText style={styles.addBtnText}>+ Add First Vehicle</AppText>
         </TouchableOpacity>
       </View>

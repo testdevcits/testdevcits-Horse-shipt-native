@@ -9,18 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {
-  X,
-  CreditCard,
-  Box,
-  DollarSign,
-  Info,
-  FileText,
-  Edit3,
-  RotateCcw,
-  CheckCircle2,
-  AlertCircle,
-} from 'lucide-react-native';
+ 
 import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
 import Toast from 'react-native-toast-message';
@@ -34,6 +23,7 @@ import {
 } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
+import AppIcon from '../../../../components/AppIcon';
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -240,7 +230,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           {/* Header */}
           <View style={styles.headerRow}>
             <View style={styles.headerIconBox}>
-              <FileText size={20} color={COLORS.brandBrown} />
+              <AppIcon name="FileText" size={20} color={COLORS.brandBrown} />
             </View>
 
             <View style={styles.headerTextCol}>
@@ -253,7 +243,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             </View>
 
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-              <X size={20} color={COLORS.textSecondary} />
+              <AppIcon name="X" size={20} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -261,7 +251,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           <View style={styles.paymentInfoRow}>
             <View style={styles.paymentInfoBox}>
               <View style={styles.paymentIconBox}>
-                <CreditCard size={18} color={COLORS.brandBrown} />
+                <AppIcon name="CreditCard" size={18} color={COLORS.brandBrown} />
               </View>
               <View style={styles.paymentTextCol}>
                 <AppText style={styles.paymentLabel}>PAYMENT METHOD</AppText>
@@ -271,7 +261,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
 
             <View style={styles.paymentInfoBox}>
               <View style={styles.paymentIconBox}>
-                <Box size={18} color={COLORS.brandBrown} />
+                <AppIcon name="Box" size={18} color={COLORS.brandBrown} />
               </View>
               <View style={styles.paymentTextCol}>
                 <AppText style={styles.paymentLabel}>PAYMENT DUE</AppText>
@@ -291,7 +281,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 1. Pricing Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <DollarSign size={18} color={COLORS.brandBrown} />
+                <AppIcon name="DollarSign" size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Pricing</AppText>
               </View>
 
@@ -312,7 +302,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 2. Cancellation Policy Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <Info size={18} color={COLORS.brandBrown} />
+                <AppIcon name="Info" size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>
                   Cancellation Policy
                 </AppText>
@@ -337,7 +327,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 3. Additional Notes Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <FileText size={18} color={COLORS.brandBrown} />
+                <AppIcon name="FileText" size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Additional Notes</AppText>
               </View>
 
@@ -352,7 +342,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 4. Shipper Contract Section (Optional File Upload) */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <FileText size={18} color={COLORS.brandBrown} />
+                <AppIcon name="FileText" size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>Shipper Contract</AppText>
               </View>
 
@@ -398,7 +388,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 5. Digital Signature Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <Edit3 size={18} color={COLORS.brandBrown} />
+                <AppIcon name="Edit3" size={18} color={COLORS.brandBrown} />
                 <AppText style={styles.sectionTitle}>
                   Digital Signature{' '}
                 </AppText>
@@ -442,13 +432,13 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   onPress={handleClearSignature}
                   activeOpacity={0.7}
                 >
-                  <RotateCcw size={14} color={COLORS.bluePrimary} />
+                  <AppIcon name="RotateCcw" size={14} color={COLORS.bluePrimary} />
                   <AppText style={styles.clearSigText}>Clear Signature</AppText>
                 </TouchableOpacity>
 
                 {signature ? (
                   <View style={styles.capturedRow}>
-                    <CheckCircle2 size={14} color={COLORS.greenActive} />
+                    <AppIcon name="CheckCircle2" size={14} color={COLORS.greenActive} />
                     <AppText style={styles.capturedText}>
                       Signature captured
                     </AppText>
@@ -457,13 +447,13 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
               </View>
               {Boolean(sigError) && (
                 <View style={styles.focusedErrorBox}>
-                  <AlertCircle size={15} color={COLORS.error} />
+                  <AppIcon name="AlertCircle" size={15} color={COLORS.error} />
                   <AppText style={styles.focusedErrorText}>{sigError}</AppText>
                 </View>
               )}
               {Boolean(submitError) && (
                 <View style={styles.focusedErrorBox}>
-                  <AlertCircle size={15} color={COLORS.error} />
+                  <AppIcon name="AlertCircle" size={15} color={COLORS.error} />
                   <AppText style={styles.focusedErrorText}>
                     {submitError}
                   </AppText>

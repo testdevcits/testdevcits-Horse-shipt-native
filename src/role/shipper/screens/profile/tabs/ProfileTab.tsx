@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { Pencil, Star, LogOut } from 'lucide-react-native';
 import { formatDate } from '../../../../../utils/helpers';
 import { AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import imageIndex from '../../../../../assets/images/imageIndex';
 import styles from './styles.profiletab';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
   profileData: any;
@@ -44,7 +44,7 @@ const ProfileTab: React.FC<Props> = ({
             onPress={onEditProfile}
             activeOpacity={0.7}
           >
-            <Pencil size={16} color={COLORS.textPrimary} />
+            <AppIcon name="Pencil" size={16} color={COLORS.textPrimary} />
           </TouchableOpacity>
         </View>
 
@@ -101,37 +101,38 @@ const ProfileTab: React.FC<Props> = ({
               contentContainerStyle={styles.reviewsScroll}
             >
               {reviewsList.map((rev: any, idx: number) => (
-                <View key={rev._id || idx} style={styles.reviewCard}>
+                <View key={rev?._id || idx} style={styles.reviewCard}>
                   <View style={styles.starsRow}>
                     {[1, 2, 3, 4, 5].map(s => (
-                      <Star
+                      <AppIcon
                         key={s}
+                        name="Star"
                         size={16}
                         color="#F59E0B"
                         fill={
-                          s <= (rev.rating || 5) ? '#F59E0B' : 'transparent'
+                          s <= (rev?.rating || 5) ? '#F59E0B' : 'transparent'
                         }
                       />
                     ))}
                   </View>
                   <AppText style={styles.reviewText}>
-                    {rev.reviewText || ''}
+                    {rev?.reviewText || ''}
                   </AppText>
                   <View style={styles.reviewerRow}>
                     <Image
                       source={
-                        rev.customerId?.profileImage?.url
-                          ? { uri: rev.customerId.profileImage.url }
+                        rev?.customerId?.profileImage?.url
+                          ? { uri: rev?.customerId.profileImage.url }
                           : imageIndex.AccountIcon
                       }
                       style={styles.reviewerAvatar}
                     />
                     <View>
                       <AppText style={styles.reviewerName}>
-                        {rev.customerName || rev.customerId?.name || 'Customer'}
+                        {rev?.customerName || rev?.customerId?.name || 'Customer'}
                       </AppText>
                       <AppText style={styles.reviewDate}>
-                        {formatDate(rev.createdAt || new Date(), 'MM/DD/YYYY')}
+                        {formatDate(rev?.createdAt || new Date(), 'MM/DD/YYYY')}
                       </AppText>
                     </View>
                   </View>
@@ -157,7 +158,7 @@ const ProfileTab: React.FC<Props> = ({
         ) : (
           <View style={styles.emptyReviewsCard}>
             <View style={styles.emptyIconCircle}>
-              <Star size={22} color={COLORS.primary} />
+              <AppIcon name="Star" size={22} color={COLORS.primary} />
             </View>
             <AppText style={styles.emptyReviewsTitle}>No Reviews Yet</AppText>
             <AppText style={styles.emptyReviewsSubtitle}>
@@ -175,7 +176,7 @@ const ProfileTab: React.FC<Props> = ({
           onPress={onLogout}
           activeOpacity={0.8}
         >
-          <LogOut size={18} color={COLORS.error} />
+          <AppIcon name="LogOut" size={18} color={COLORS.error} />
           <AppText style={styles.logoutBtnText}>Logout</AppText>
         </TouchableOpacity>
       )}

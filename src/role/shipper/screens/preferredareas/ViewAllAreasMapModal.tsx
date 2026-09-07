@@ -13,17 +13,7 @@ import MapView, {
   PROVIDER_GOOGLE,
   MapType,
 } from 'react-native-maps';
-import {
-  X,
-  Check,
-  MapPin,
-  Maximize2,
-  Eye,
-  EyeOff,
-  Layers,
-  Search,
-  Compass,
-} from 'lucide-react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, Input } from '../../../../components';
 import {
@@ -33,6 +23,7 @@ import {
   RADIUS,
   FONT_SIZE,
 } from '../../../../constants';
+import AppIcon from '../../../../components/AppIcon';
 
 const { height } = Dimensions.get('window');
 
@@ -196,7 +187,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
             style={styles.closeBtn}
             activeOpacity={0.7}
           >
-            <X size={20} color={COLORS.textPrimary} />
+            <AppIcon name="X" size={20} color={COLORS.textPrimary} />
           </TouchableOpacity>
         </View>
 
@@ -275,9 +266,9 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               activeOpacity={0.85}
             >
               {selectedIds.length === areas.length ? (
-                <EyeOff size={15} color={COLORS.textPrimary} />
+                <AppIcon name="EyeOff" size={15} color={COLORS.textPrimary} />
               ) : (
-                <Eye size={15} color={COLORS.primary} />
+                <AppIcon name="Eye" size={15} color={COLORS.primary} />
               )}
               <AppText style={styles.floatingBtnText}>
                 {selectedIds.length === areas.length ? 'Hide All' : 'Show All'}
@@ -289,7 +280,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               onPress={handleFitSelected}
               activeOpacity={0.85}
             >
-              <Maximize2 size={15} color={COLORS.primary} />
+              <AppIcon name="Maximize2" size={15} color={COLORS.primary} />
               <AppText style={styles.floatingBtnText}>Fit Bounds</AppText>
             </TouchableOpacity>
 
@@ -298,7 +289,8 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               onPress={toggleMapType}
               activeOpacity={0.85}
             >
-              <Layers
+              <AppIcon
+                name="Layers"
                 size={16}
                 color={
                   mapType === 'hybrid' ? COLORS.primary : COLORS.textPrimary
@@ -335,10 +327,16 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
                 placeholder="Search preferred locations..."
                 value={searchQuery}
                 onChangeText={setSearchQuery}
-                leftIcon={<Search size={16} color={COLORS.textSecondary} />}
+                leftIcon={
+                  <AppIcon
+                    name="Search"
+                    size={16}
+                    color={COLORS.textSecondary}
+                  />
+                }
                 rightIcon={
                   searchQuery.length > 0 ? (
-                    <X size={16} color={COLORS.textSecondary} />
+                    <AppIcon name="X" size={16} color={COLORS.textSecondary} />
                   ) : undefined
                 }
                 onRightIconPress={() => setSearchQuery('')}
@@ -382,7 +380,13 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
                           isChecked && styles.checkboxSquareChecked,
                         ]}
                       >
-                        {isChecked && <Check size={13} color={COLORS.white} />}
+                        {isChecked && (
+                          <AppIcon
+                            name="Check"
+                            size={13}
+                            color={COLORS.white}
+                          />
+                        )}
                       </View>
                     </TouchableOpacity>
 
@@ -411,7 +415,11 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
 
                       <View style={styles.metaRow}>
                         <View style={styles.radiusPill}>
-                          <MapPin size={11} color={COLORS.primary} />
+                          <AppIcon
+                            name="MapPin"
+                            size={11}
+                            color={COLORS.primary}
+                          />
                           <AppText style={styles.radiusPillText}>
                             {area.radiusKm || 50} km radius
                           </AppText>
@@ -427,7 +435,11 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
               })
             ) : (
               <View style={styles.emptyStateContainer}>
-                <Compass size={32} color={COLORS.textSecondary} />
+                <AppIcon
+                  name="Compass"
+                  size={32}
+                  color={COLORS.textSecondary}
+                />
                 <AppText style={styles.emptyStateText}>
                   No matching preferred areas found.
                 </AppText>

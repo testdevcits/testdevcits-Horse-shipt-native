@@ -8,9 +8,9 @@ import {
 import styles from './Input.styles';
 import { COLORS } from '../../../constants';
 import AppText from '../AppText';
-import { Eye, EyeOff } from 'lucide-react-native';
 
 import { StyleProp, ViewStyle } from 'react-native';
+import AppIcon from '../../AppIcon';
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -76,9 +76,9 @@ const Input = ({
           hitSlop={10}
         >
           {showPassword ? (
-            <EyeOff size={20} color={COLORS.textSecondary} />
+            <AppIcon name={'EyeOff'} size={20} color={COLORS.textSecondary} />
           ) : (
-            <Eye size={20} color={COLORS.textSecondary} />
+            <AppIcon name={'Eye'} size={20} color={COLORS.textSecondary} />
           )}
         </TouchableOpacity>
       );

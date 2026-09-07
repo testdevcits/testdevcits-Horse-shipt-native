@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { ViewStyle, StyleProp } from 'react-native';
-import { Search, XCircle } from 'lucide-react-native';
 import { COLORS, RADIUS, SPACING, ICON_SIZE } from '../../constants';
 import Input from './Input/Input';
+import AppIcon from '../AppIcon';
 
 interface SearchBarProps {
   value: string;
@@ -40,11 +40,17 @@ const SearchBarCompt: React.FC<SearchBarProps> = ({
       editable={editable}
       pointerEvents={pointerEvents}
       leftIcon={
-        <Search size={ICON_SIZE.sm} color={COLORS.grey400} strokeWidth={2} />
+        <AppIcon
+          name={'Search'}
+          size={ICON_SIZE.sm}
+          color={COLORS.grey400}
+          strokeWidth={2}
+        />
       }
       rightIcon={
         value.length > 0 ? (
-          <XCircle
+          <AppIcon
+            name={'XCircle'}
             size={ICON_SIZE.sm}
             color={COLORS.grey300}
             fill={COLORS.grey100}

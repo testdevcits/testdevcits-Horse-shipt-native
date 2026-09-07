@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
-import { MapPin, ShieldCheck, Navigation, X } from 'lucide-react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -11,6 +10,7 @@ import {
 } from '../../constants';
 import AppText from './AppText';
 import { openDeviceSettings } from '../../utils/permissionHelper';
+import AppIcon from '../AppIcon';
 
 interface LocationPermissionModalProps {
   isVisible: boolean;
@@ -45,14 +45,19 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
             onPress={onClose}
             activeOpacity={0.7}
           >
-            <X size={20} color={COLORS.grey400} />
+            <AppIcon name={'X'} size={20} color={COLORS.grey400} />
           </TouchableOpacity>
 
           {/* Icon Header */}
           <View style={styles.iconContainer}>
-            <MapPin size={32} color={COLORS.brandBrown} strokeWidth={2.2} />
+            <AppIcon
+              name={'MapPin'}
+              size={32}
+              color={COLORS.brandBrown}
+              strokeWidth={2.2}
+            />
             <View style={styles.badgeIcon}>
-              <ShieldCheck size={14} color={COLORS.white} />
+              <AppIcon name={'ShieldCheck'} size={14} color={COLORS.white} />
             </View>
           </View>
 
@@ -64,7 +69,8 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
             {/* Instruction Box */}
             <View style={styles.instructionBox}>
               <View style={styles.instructionRow}>
-                <Navigation
+                <AppIcon
+                  name={'Navigation'}
                   size={16}
                   color={COLORS.brandBrown}
                   style={{ marginTop: 2 }}
