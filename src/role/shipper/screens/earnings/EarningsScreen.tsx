@@ -7,18 +7,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import {
-  Wallet,
-  CreditCard,
-  CheckCircle,
-  CheckCircle2,
-  Edit,
-  ExternalLink,
-  Eye,
-  FileText,
-  Plus,
-  XCircle,
-} from 'lucide-react-native';
+
 import { formatDate } from '../../../../utils/helpers';
 import { useStripe } from '@stripe/stripe-react-native';
 import {
@@ -31,6 +20,8 @@ import {
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
+import AppIcon from '../../../../components/AppIcon';
+import { FileText } from 'lucide-react-native';
 
 const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
 const StripePaymentMethodCardModal = lazy(
@@ -327,7 +318,7 @@ const EarningsScreen = () => {
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <View style={styles.walletIconBox}>
-            <Wallet size={22} color="#A06333" />
+            <AppIcon name={'Wallet'} size={22} color="#A06333" />
           </View>
           <View style={styles.headerTextCol}>
             <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
@@ -348,7 +339,7 @@ const EarningsScreen = () => {
           <>
             <View style={styles.activeCardContainer}>
               <View style={styles.cardIconBox}>
-                <CreditCard size={18} color="#A06333" />
+                <AppIcon name={'CreditCard'} size={18} color="#A06333" />
               </View>
               <View style={styles.activeCardTextCol}>
                 <AppText style={styles.activeCardLabel}>Active Card</AppText>
@@ -357,7 +348,7 @@ const EarningsScreen = () => {
                   {cardStatus.cardLast4 || 'Not Available'}
                 </AppText>
               </View>
-              <CheckCircle size={22} color="#10B981" />
+              <AppIcon name={'CheckCircle'} size={22} color="#10B981" />
             </View>
 
             <TouchableOpacity
@@ -370,7 +361,7 @@ const EarningsScreen = () => {
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  <Edit size={16} color="#A06333" />
+                  <AppIcon name={'Edit'} size={16} color="#A06333" />
                   <AppText style={styles.updateCardBtnText}>
                     Update Card
                   </AppText>
@@ -393,7 +384,7 @@ const EarningsScreen = () => {
                 <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
                 <>
-                  <Plus size={16} color={COLORS.white} />
+                  <AppIcon name={'Plus'} size={16} color={COLORS.white} />
                   <AppText style={styles.addCardPrimaryBtnText}>
                     Add Payment Method
                   </AppText>
@@ -407,7 +398,7 @@ const EarningsScreen = () => {
       {/* Payout History Section */}
       <View style={styles.payoutHistoryHeaderRow}>
         <View style={styles.payoutIconBox}>
-          <ExternalLink size={20} color="#A06333" />
+          <AppIcon name={'ExternalLink'} size={20} color="#A06333" />
         </View>
         <View>
           <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
@@ -493,7 +484,7 @@ const EarningsScreen = () => {
           <AppText style={styles.idText} numberOfLines={1}>
             {formatTxId(tx.id)}
           </AppText>
-          <Eye size={13} color={COLORS.textSecondary} />
+          <AppIcon name={'Eye'} size={13} color={COLORS.textSecondary} />
         </TouchableOpacity>
 
         {/* Amount */}
@@ -581,11 +572,11 @@ const EarningsScreen = () => {
           <View style={styles.feedbackModalContent}>
             {feedbackModal.type === 'success' ? (
               <View style={styles.feedbackIconBoxSuccess}>
-                <CheckCircle2 size={36} color="#10B981" />
+                <AppIcon name={'CheckCircle2'} size={36} color="#10B981" />
               </View>
             ) : (
               <View style={styles.feedbackIconBoxError}>
-                <XCircle size={36} color="#EF4444" />
+                <AppIcon name={'XCircle'} size={36} color="#EF4444" />
               </View>
             )}
 

@@ -9,7 +9,6 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import { X, Star, User } from 'lucide-react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -20,6 +19,7 @@ import {
 } from '../../../../constants';
 import { AppText, Button, Input } from '../../../../components';
 import customerService from '../../../../api/services/customerService';
+import AppIcon from '../../../../components/AppIcon';
 
 interface Props {
   visible: boolean;
@@ -96,7 +96,7 @@ const RatingModal = ({
             <View style={styles.header}>
               <AppText style={styles.modalTitle}>Rate your shipment</AppText>
               <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-                <X size={20} color={COLORS.textPrimary} />
+                <AppIcon name={'X'} size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -112,7 +112,7 @@ const RatingModal = ({
               shipmentTitle !== undefined && (
                 <View style={styles.shipperRow}>
                   <View style={styles.avatar}>
-                    <User size={18} color={COLORS.primary} />
+                    <AppIcon name={'User'} size={18} color={COLORS.primary} />
                   </View>
                   <AppText style={styles.shipperName}>{shipperName}</AppText>
                 </View>
@@ -122,7 +122,8 @@ const RatingModal = ({
             <View style={styles.starRow}>
               {[1, 2, 3, 4, 5].map(s => (
                 <TouchableOpacity key={s} onPress={() => setRating(s)}>
-                  <Star
+                  <AppIcon
+                    name={'Star'}
                     size={32}
                     color={COLORS.primary}
                     fill={s <= rating ? COLORS.primary : 'transparent'}

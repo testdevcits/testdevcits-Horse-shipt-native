@@ -7,19 +7,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import {
-  MapPin,
-  Calendar,
-  Map as MapIcon,
-  ChevronDown,
-  ChevronUp,
-  FileText,
-  MessageSquare,
-  Edit3,
-  ExternalLink,
-  User,
-  Clock,
-} from 'lucide-react-native';
+
 import { formatDate } from '../../../../../utils/helpers';
 import { AppText, MapModal } from '../../../../../components';
 import {
@@ -34,6 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../api/services/customerService';
 import { fetchCustomerShipments } from '../../../../../redux/slices/customerShipmentSlice';
 import { useAppDispatch } from '../../../../../hooks/redux';
+import AppIcon from '../../../../../components/AppIcon';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
   const navigation = useNavigation<any>();
@@ -127,7 +116,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           {/* Pickup Block */}
           <View style={styles.timelineItem}>
             <View style={[styles.timelineDot, { backgroundColor: '#EF4444' }]}>
-              <MapPin size={12} color={COLORS.white} />
+              <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
@@ -135,7 +124,11 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                 {data?.pickupLocation || 'N/A'}
               </AppText>
               <View style={styles.dateChip}>
-                <Calendar size={12} color={COLORS.goldDarkText} />
+                <AppIcon
+                  name={'Calendar'}
+                  size={12}
+                  color={COLORS.goldDarkText}
+                />
                 <AppText style={styles.dateChipText}>
                   {formatDateRange(
                     data?.pickupDateRange?.start,
@@ -151,7 +144,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           {/* Delivery Block */}
           <View style={styles.timelineItem}>
             <View style={[styles.timelineDot, { backgroundColor: '#10B981' }]}>
-              <MapPin size={12} color={COLORS.white} />
+              <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
@@ -159,7 +152,11 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                 {data?.deliveryLocation || 'N/A'}
               </AppText>
               <View style={styles.dateChip}>
-                <Calendar size={12} color={COLORS.goldDarkText} />
+                <AppIcon
+                  name={'Calendar'}
+                  size={12}
+                  color={COLORS.goldDarkText}
+                />
                 <AppText style={styles.dateChipText}>
                   {formatDateRange(
                     data?.deliveryDateRange?.start,
@@ -179,7 +176,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               onPress={handleEditDocumentsNotes}
               activeOpacity={0.8}
             >
-              <Edit3 size={15} color={COLORS.white} />
+              <AppIcon name={'Edit3'} size={15} color={COLORS.white} />
               <AppText style={styles.primaryActionBtnText}>
                 Edit Documents & Notes
               </AppText>
@@ -205,7 +202,11 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               onPress={onReview}
               activeOpacity={0.8}
             >
-              <MessageSquare size={15} color={COLORS.primary} />
+              <AppIcon
+                name={'MessageSquare'}
+                size={15}
+                color={COLORS.primary}
+              />
               <AppText style={styles.chatActionBtnText}>
                 Review Shipment
               </AppText>
@@ -221,7 +222,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                 }}
                 activeOpacity={0.8}
               >
-                <MapIcon size={15} color={COLORS.textPrimary} />
+                <AppIcon name={'Map'} size={15} color={COLORS.textPrimary} />
                 <AppText style={styles.secondaryActionBtnText}>
                   View Map
                 </AppText>
@@ -239,9 +240,13 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
         >
           <AppText style={styles.detailsHeaderTitle}>Shipment Details</AppText>
           {isDetailsExpanded ? (
-            <ChevronUp size={20} color={COLORS.textPrimary} />
+            <AppIcon name={'ChevronUp'} size={20} color={COLORS.textPrimary} />
           ) : (
-            <ChevronDown size={20} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'ChevronDown'}
+              size={20}
+              color={COLORS.textPrimary}
+            />
           )}
         </TouchableOpacity>
 
@@ -344,30 +349,41 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   </View>
 
                   {/* Chronological Notes Log */}
-                  {horse.notesLog && horse.notesLog.length > 0 && (
+                  {horse.notesLog && horse.noteslog?.length > 0 && (
                     <View style={styles.logSection}>
                       <AppText style={styles.logSectionHeader}>
                         CHRONOLOGICAL NOTES
                       </AppText>
-                      {horse.notesLog.map((log: any, lIdx: number) => (
+                      {horse.noteslog?.map((log: any, lIdx: number) => (
                         <View key={lIdx} style={styles.logCardItem}>
                           <View style={styles.logCardItemHeader}>
                             <View style={styles.logUserRow}>
-                              <User size={12} color={COLORS.primary} />
+                              <AppIcon
+                                name={'User'}
+                                size={12}
+                                color={COLORS.primary}
+                              />
                               <AppText style={styles.logUserNameText}>
-                                {log.userName || 'User'} (
-                                {log.userRole || 'Customer'})
+                                {log?.userName || 'User'} (
+                                {log?.userRole || 'Customer'})
                               </AppText>
                             </View>
                             <View style={styles.logUserRow}>
-                              <Clock size={11} color={COLORS.textLight} />
+                              <AppIcon
+                                name={'Clock'}
+                                size={11}
+                                color={COLORS.textLight}
+                              />
                               <AppText style={styles.logTimeText}>
-                                {formatDate(log.createdAt, 'DD/MM/YYYY, HH:mm')}
+                                {formatDate(
+                                  log?.createdAt,
+                                  'DD/MM/YYYY, HH:mm',
+                                )}
                               </AppText>
                             </View>
                           </View>
                           <AppText style={styles.logBodyText}>
-                            {log.note}
+                            {log?.note}
                           </AppText>
                         </View>
                       ))}
@@ -396,7 +412,11 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           }}
                           onPress={handleEditDocumentsNotes}
                         >
-                          <Edit3 size={14} color={COLORS.primary} />
+                          <AppIcon
+                            name={'Edit3'}
+                            size={14}
+                            color={COLORS.primary}
+                          />
                           <AppText
                             style={{
                               color: COLORS.primary,
@@ -416,14 +436,19 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           onPress={() => openUrl(horse.documents.coggins.url)}
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.primary} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={16}
+                            color={COLORS.primary}
+                          />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Coggins Test
                             </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink
+                          <AppIcon
+                            name={'ExternalLink'}
                             size={13}
                             color={COLORS.textSecondary}
                           />
@@ -438,14 +463,19 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           }
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.primary} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={16}
+                            color={COLORS.primary}
+                          />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Health Certificate
                             </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink
+                          <AppIcon
+                            name={'ExternalLink'}
                             size={13}
                             color={COLORS.textSecondary}
                           />
@@ -458,14 +488,19 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           onPress={() => openUrl(horse.documents.other.url)}
                           activeOpacity={0.8}
                         >
-                          <FileText size={16} color={COLORS.primary} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={16}
+                            color={COLORS.primary}
+                          />
                           <View style={styles.docCardPillTextCol}>
                             <AppText style={styles.docTitle}>
                               Other Document
                             </AppText>
                             <AppText style={styles.docSub}>Tap to view</AppText>
                           </View>
-                          <ExternalLink
+                          <AppIcon
+                            name={'ExternalLink'}
                             size={13}
                             color={COLORS.textSecondary}
                           />
@@ -486,28 +521,36 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             ))}
 
             {/* Additional Info History Log */}
-            {data?.additionalInfoLog && data?.additionalInfoLog.length > 0 && (
+            {data?.additionalInfoLog && data?.additionalInfolog?.length > 0 && (
               <View style={styles.logSection}>
                 <AppText style={styles.logSectionHeader}>
                   ADDITIONAL INFO HISTORY
                 </AppText>
-                {data?.additionalInfoLog.map((log: any, idx: number) => (
+                {data?.additionalInfolog?.map((log: any, idx: number) => (
                   <View key={idx} style={styles.logCardItem}>
                     <View style={styles.logCardItemHeader}>
                       <View style={styles.logUserRow}>
-                        <User size={12} color={COLORS.primary} />
+                        <AppIcon
+                          name={'User'}
+                          size={12}
+                          color={COLORS.primary}
+                        />
                         <AppText style={styles.logUserNameText}>
-                          {log.userName || 'Customer'}
+                          {log?.userName || 'Customer'}
                         </AppText>
                       </View>
                       <View style={styles.logUserRow}>
-                        <Clock size={11} color={COLORS.textLight} />
+                        <AppIcon
+                          name={'Clock'}
+                          size={11}
+                          color={COLORS.textLight}
+                        />
                         <AppText style={styles.logTimeText}>
-                          {formatDate(log.createdAt, 'DD/MM/YYYY, HH:mm')}
+                          {formatDate(log?.createdAt, 'DD/MM/YYYY, HH:mm')}
                         </AppText>
                       </View>
                     </View>
-                    <AppText style={styles.logBodyText}>{log.note}</AppText>
+                    <AppText style={styles.logBodyText}>{log?.note}</AppText>
                   </View>
                 ))}
               </View>
@@ -537,7 +580,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                   style={styles.trackButton}
                   activeOpacity={0.8}
                 >
-                  <Truck size={16} color={COLORS.white} />
+                  <AppIcon name={"Truck"} size={16} color={COLORS.white} />
                   <AppText style={styles.trackButtonText}>Track Shipment</AppText>
                 </TouchableOpacity>
               )} */}

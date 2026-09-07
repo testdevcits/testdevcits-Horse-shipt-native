@@ -3,13 +3,12 @@ import {
   View,
   ScrollView,
   Switch,
-  ActivityIndicator,
-  Platform,
+  
 } from 'react-native';
 import styles from './NotificationSettings.styles';
 import { useNotificationSettings } from './useNotificationSettings';
 import { COLORS } from '../../../../constants';
-import { AppText } from '../../../../components';
+import { AppLoader, AppText } from '../../../../components';
 
 const NotificationSettings = () => {
   const { settings, loading, toggleSetting } = useNotificationSettings();
@@ -30,12 +29,7 @@ const NotificationSettings = () => {
     </View>
   );
 
-  if (loading)
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator color={COLORS.primary} size="large" />
-      </View>
-    );
+  if (loading) return <AppLoader visible={loading} />;
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

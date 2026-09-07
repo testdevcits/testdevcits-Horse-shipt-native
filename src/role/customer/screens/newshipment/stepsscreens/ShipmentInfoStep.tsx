@@ -1,18 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity, ScrollView, Image } from 'react-native';
-import {
-  ImagePlus,
-  FileText,
-  Package,
-  X,
-  Trash2,
-  FileCheck,
-  Info,
-} from 'lucide-react-native';
 import { COLORS, SPACING } from '../../../../../constants';
 import { AppText, Input } from '../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import styles from './ShipmentInfoStepstyles';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface ShipmentInfoStepProps {
   form: NewShipmentForm;
@@ -53,9 +45,13 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
         <View style={styles.docInfo}>
           <View style={[styles.docIconBox, file && styles.docIconBoxSuccess]}>
             {file ? (
-              <FileCheck size={20} color={COLORS.greenActive} />
+              <AppIcon
+                name={'FileCheck'}
+                size={20}
+                color={COLORS.greenActive}
+              />
             ) : (
-              <FileText size={20} color={COLORS.grey400} />
+              <AppIcon name={'FileText'} size={20} color={COLORS.grey400} />
             )}
           </View>
           <View style={{ flex: 1 }}>
@@ -75,7 +71,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
             onPress={() => removeFile(horseIndex, type)}
             style={styles.removeBtn}
           >
-            <Trash2 size={18} color={COLORS.error} />
+            <AppIcon name={'Trash2'} size={18} color={COLORS.error} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -104,7 +100,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
 
         <View style={styles.instructionCard}>
           <View style={styles.iconBox}>
-            <Package size={24} color={COLORS.primary} />
+            <AppIcon name={'Package'} size={24} color={COLORS.primary} />
           </View>
           <View style={styles.instructionTextContent}>
             <AppText style={styles.instructionTitle}>Documentation</AppText>
@@ -151,12 +147,16 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                       style={styles.closeImageBtn}
                       onPress={() => removeFile(index, 'photo')}
                     >
-                      <X size={16} color={COLORS.white} />
+                      <AppIcon name={'X'} size={16} color={COLORS.white} />
                     </TouchableOpacity>
                   </View>
                 ) : (
                   <View style={styles.uploadPlaceholder}>
-                    <ImagePlus size={32} color={COLORS.primary} />
+                    <AppIcon
+                      name={'ImagePlus'}
+                      size={32}
+                      color={COLORS.primary}
+                    />
                     <AppText style={styles.uploadBtnText}>Add Photo *</AppText>
                   </View>
                 )}
@@ -164,7 +164,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
               {(errors?.[`horses[${index}].photo`] ||
                 errors?.[`horses.${index}.photo`]) && (
                 <View style={styles.errorContainer}>
-                  <Info size={14} color={COLORS.error} />
+                  <AppIcon name={'Info'} size={14} color={COLORS.error} />
                   <AppText style={styles.errorText}>
                     {errors[`horses[${index}].photo`] ||
                       errors[`horses.${index}.photo`]}

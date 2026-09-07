@@ -15,7 +15,7 @@ import {
   X,
   Lock,
   Image as ImageIcon,
-  MapPin,
+  
 } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';

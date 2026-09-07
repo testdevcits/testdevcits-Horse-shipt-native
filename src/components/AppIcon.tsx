@@ -85,6 +85,22 @@ import {
   ArrowLeftRight,
   Smartphone,
   Milestone,
+  Navigation2,
+  Image,
+  Home,
+  List,
+  UserCog,
+  Circle,
+  HelpCircle,
+  Users,
+  Upload,
+  Paperclip,
+  PlusCircle,
+  Map,
+  PencilLine,
+  SlidersHorizontal,
+  Wallet,
+  FileCheck
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';
@@ -175,6 +191,22 @@ const ICONS = {
   ArrowLeftRight,
   Smartphone,
   Milestone,
+  Navigation2,
+  Image,
+  Home,
+  List,
+  UserCog,
+  Circle,
+  HelpCircle,
+  Users,
+  Upload,
+  Paperclip,
+  PlusCircle,
+  Map,
+  PencilLine,
+  SlidersHorizontal,
+  Wallet,
+  FileCheck
 } as const;
 
 export type IconName = keyof typeof ICONS;

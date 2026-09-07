@@ -11,13 +11,13 @@ import {
   ImageBackground,
   StatusBar,
 } from 'react-native';
-import { ChevronLeft } from 'lucide-react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import authService from '../../../api/services/authService';
 import Toast from 'react-native-toast-message';
 import styles from './styles.verifyotp';
+import AppIcon from '../../../components/AppIcon';
 
 const VerifyResetOtp = ({ navigation, route }: any) => {
   const { email, role = 'customer' } = route.params || {};
@@ -116,7 +116,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
           onPress={() => navigation.goBack()}
           style={styles.backBtn}
         >
-          <ChevronLeft color={COLORS.white} size={28} />
+          <AppIcon name={'ChevronLeft'} color={COLORS.white} size={28} />
         </TouchableOpacity>
       </ImageBackground>
 

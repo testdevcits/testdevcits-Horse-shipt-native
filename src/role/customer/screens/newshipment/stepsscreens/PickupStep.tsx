@@ -1,22 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import {
-  MapPin,
-  Calendar as CalendarIcon,
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle2,
-  Sparkles,
-  Clock,
-  ChevronRight,
-  Info,
-} from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
 import styles from './pickupstepstyles';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface PickupStepProps {
   form: NewShipmentForm;
@@ -164,14 +154,18 @@ const PickupStep: React.FC<PickupStepProps> = ({
             </View>
             {isLocationSelected && (
               <View style={styles.statusBadge}>
-                <CheckCircle2 size={13} color={COLORS.greenSuccess} />
+                <AppIcon
+                  name={'CheckCircle2'}
+                  size={13}
+                  color={COLORS.greenSuccess}
+                />
                 <AppText style={styles.statusBadgeText}>Address Set</AppText>
               </View>
             )}
           </View>
           <View style={styles.headerTitleRow}>
             <View style={styles.headerIconBox}>
-              <MapPin size={22} color={COLORS.primary} />
+              <AppIcon name={'MapPin'} size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
               <AppText style={styles.headerTitle}>
@@ -189,7 +183,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <MapPin size={16} color={COLORS.primary} />
+                <AppIcon name={'MapPin'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>PICKUP LOCATION</AppText>
             </View>
@@ -210,7 +204,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
 
           {errors.pickupLocation ? (
             <View style={styles.errorContainer}>
-              <Info size={14} color={COLORS.error} />
+              <AppIcon name={'Info'} size={14} color={COLORS.error} />
               <AppText style={styles.errorText}>
                 {errors.pickupLocation}
               </AppText>
@@ -227,12 +221,12 @@ const PickupStep: React.FC<PickupStepProps> = ({
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <CalendarIcon size={16} color={COLORS.primary} />
+                <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>PICKUP TIMEFRAME</AppText>
             </View>
             <View style={styles.infoTag}>
-              <Clock size={12} color={COLORS.primary} />
+              <AppIcon name={'Clock'} size={12} color={COLORS.primary} />
               <AppText style={styles.infoTagText}>Flexible Window</AppText>
             </View>
           </View>
@@ -256,7 +250,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
                 activeOpacity={0.85}
               >
                 <View style={styles.dateCardTop}>
-                  <CalendarIcon
+                  <AppIcon
+                    name={'Calendar'}
                     size={16}
                     color={
                       form.pickupStartDate ? COLORS.primary : COLORS.grey400
@@ -285,7 +280,11 @@ const PickupStep: React.FC<PickupStepProps> = ({
             <View style={styles.dateConnector}>
               <View style={styles.connectorLine} />
               <View style={styles.connectorIconBox}>
-                <ChevronRight size={14} color={COLORS.grey400} />
+                <AppIcon
+                  name={'ChevronRight'}
+                  size={14}
+                  color={COLORS.grey400}
+                />
               </View>
               <View style={styles.connectorLine} />
             </View>
@@ -303,7 +302,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
                 activeOpacity={0.85}
               >
                 <View style={styles.dateCardTop}>
-                  <CalendarIcon
+                  <AppIcon
+                    name={'Calendar'}
                     size={16}
                     color={form.pickupEndDate ? COLORS.primary : COLORS.grey400}
                   />
@@ -331,7 +331,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
         {/* PRO-TIP BANNER CARD */}
         <View style={styles.tipCard}>
           <View style={styles.tipIconBox}>
-            <Sparkles size={18} color={COLORS.goldDarkText} />
+            <AppIcon name={'Sparkles'} size={18} color={COLORS.goldDarkText} />
           </View>
           <View style={styles.tipTextContent}>
             <AppText style={styles.tipTitle}>Pro Tip for Faster Quotes</AppText>
@@ -345,7 +345,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.secondaryBtn} onPress={onPrevious}>
-            <ArrowLeft
+            <AppIcon
+              name={'ArrowLeft'}
               size={18}
               color={COLORS.grey700}
               style={{ marginRight: 6 }}
@@ -361,7 +362,8 @@ const PickupStep: React.FC<PickupStepProps> = ({
             <AppText style={styles.primaryBtnText}>
               Continue to Delivery
             </AppText>
-            <ArrowRight
+            <AppIcon
+              name={'ArrowRight'}
               size={18}
               color={COLORS.white}
               style={{ marginLeft: 6 }}

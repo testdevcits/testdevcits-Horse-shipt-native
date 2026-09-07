@@ -32,6 +32,7 @@ import {
 } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
+import AppIcon from '../../../../components/AppIcon';
 
 const ShipperDetail = () => {
   const route = useRoute<any>();
@@ -130,7 +131,8 @@ const ShipperDetail = () => {
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             style={{ padding: 6 }}
           >
-            <Heart
+            <AppIcon
+              name={'Heart'}
               size={22}
               color={isFavorite ? COLORS.error : COLORS.grey600}
               fill={isFavorite ? COLORS.error : 'transparent'}
@@ -247,7 +249,7 @@ const ShipperDetail = () => {
                     style={styles.areaCard}
                   >
                     <View style={styles.areaIconBox}>
-                      <MapPin size={18} color={COLORS.primary} />
+                      <AppIcon name={'MapPin'} size={18} color={COLORS.primary} />
                     </View>
                     <View style={styles.areaContent}>
                       <AppText
@@ -258,7 +260,7 @@ const ShipperDetail = () => {
                       </AppText>
                       {radius > 0 && (
                         <View style={styles.radiusBadge}>
-                          <Compass size={12} color={COLORS.primary} />
+                          <AppIcon name={'Compass'} size={12} color={COLORS.primary} />
                           <AppText style={styles.radiusText}>
                             {radius} km radius coverage
                           </AppText>

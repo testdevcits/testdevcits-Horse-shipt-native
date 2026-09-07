@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, List, MapPin, User } from 'lucide-react-native'; // Professional line-art icons
-
+ 
 // Import local screens
 
 // Import design systems
@@ -14,6 +13,7 @@ import HomeScreen from '../role/driver/screens/home/HomeScreen';
 import AllTrips from '../role/driver/screens/trips/AllTrips';
 import LocationScreen from '../role/driver/screens/location/LocationScreen';
 import Profile from '../role/driver/screens/profile/Profile';
+import AppIcon from '../components/AppIcon';
 
 export type BottomTabParamList = {
   Home: undefined;
@@ -40,22 +40,22 @@ const TabsNavigation = () => {
           switch (route.name) {
             case 'Home':
               iconComponent = (
-                <Home size={iconSize} color={color} strokeWidth={2} />
+                <AppIcon name={'Home'} size={iconSize} color={color} strokeWidth={2} />
               );
               break;
             case 'Trips':
               iconComponent = (
-                <List size={iconSize} color={color} strokeWidth={2} />
+                <AppIcon name={'List'} size={iconSize} color={color} strokeWidth={2} />
               );
               break;
             case 'Location':
               iconComponent = (
-                <MapPin size={iconSize} color={color} strokeWidth={2} />
+                <AppIcon name={'MapPin'} size={iconSize} color={color} strokeWidth={2} />
               );
               break;
             case 'Profile':
               iconComponent = (
-                <User size={iconSize} color={color} strokeWidth={2} />
+                <AppIcon name={'User'} size={iconSize} color={color} strokeWidth={2} />
               );
               break;
           }

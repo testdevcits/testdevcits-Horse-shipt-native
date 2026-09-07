@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { AppText } from '../../../../../components';
-import { ChevronRight, Star, FileText, Clock, Bell } from 'lucide-react-native';
 import {
   COLORS,
   FONTS,
@@ -11,6 +10,7 @@ import {
   ICON_SIZE,
 } from '../../../../../constants';
 import imageIndex from '../../../../../assets/images/imageIndex';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface QuotesTabProps {
   quotes?: any[];
@@ -33,7 +33,7 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
         /* Empty Condition UI */
         <View style={styles.emptyCardContainer}>
           <View style={styles.emptyIconCircle}>
-            <FileText size={32} color={COLORS.primary} />
+            <AppIcon name={'FileText'} size={32} color={COLORS.primary} />
           </View>
 
           <AppText style={styles.emptyTitle}>No Quotes Received Yet</AppText>
@@ -53,7 +53,7 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
           <View style={styles.infoCardsContainer}>
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <Clock size={16} color={COLORS.primary} />
+                <AppIcon name={'Clock'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>
@@ -67,7 +67,7 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
 
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <Bell size={16} color={COLORS.primary} />
+                <AppIcon name={'Bell'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>
@@ -115,8 +115,9 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                   </AppText>
                   <View style={styles.ratingRow}>
                     {[1, 2, 3, 4, 5].map(s => (
-                      <Star
+                      <AppIcon
                         key={s}
+                        name={'Star'}
                         size={ICON_SIZE.xs}
                         color="#FBBF24"
                         fill="#FBBF24"
@@ -131,7 +132,11 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                 <AppText style={styles.priceText}>
                   ${Number(q?.totalPrice || 0).toLocaleString()}
                 </AppText>
-                <ChevronRight size={ICON_SIZE.sm} color={COLORS.textPrimary} />
+                <AppIcon
+                  name={'ChevronRight'}
+                  size={ICON_SIZE.sm}
+                  color={COLORS.textPrimary}
+                />
               </View>
             </TouchableOpacity>
           ))}

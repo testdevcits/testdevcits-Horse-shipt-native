@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Trash2 } from 'lucide-react-native';
-import Toast from 'react-native-toast-message';
+ import Toast from 'react-native-toast-message';
 
 import styles from './styles.newshipment';
 import { COLORS } from '../../../../constants';
@@ -17,6 +16,7 @@ import ReviewStep from './stepsscreens/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
 import DraftSuccessModal from './DraftSuccessModal';
 import imageIndex from '../../../../assets/images/imageIndex';
+import AppIcon from '../../../../components/AppIcon';
 
 const NewShipment = () => {
   const dispatch = useAppDispatch();
@@ -131,7 +131,7 @@ const NewShipment = () => {
               onPress={() => setIsDeleteModalVisible(true)}
               style={{ padding: 6 }}
             >
-              <Trash2 size={20} color={COLORS.error} />
+              <AppIcon name={'Trash2'} size={20} color={COLORS.error} />
             </TouchableOpacity>
           ) : undefined
         }

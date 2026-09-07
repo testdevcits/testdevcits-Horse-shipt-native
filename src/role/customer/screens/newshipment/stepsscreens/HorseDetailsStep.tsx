@@ -6,7 +6,6 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import { PlusCircle } from 'lucide-react-native';
 import { useRoute } from '@react-navigation/native';
 import { COLORS } from '../../../../../constants';
 import { AppText, Input, AppSelect } from '../../../../../components';
@@ -16,6 +15,7 @@ import { breedsList, sexes, stallTypes } from '../../addedithorse/constants';
 import { NewShipmentForm, NewShipmentHorse } from '../interfaces';
 import { useNavigation } from '@react-navigation/native';
 import styles from './HorseDetailsStepstyles';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface HorseDetailsStepProps {
   form: NewShipmentForm;
@@ -183,7 +183,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
             onPress={() => navigation.navigate('AddEditHorse')}
             style={styles.noHorsesAlert}
           >
-            <PlusCircle size={20} color={COLORS.primary} />
+            <AppIcon name={'PlusCircle'} size={20} color={COLORS.primary} />
             <AppText style={styles.noHorsesText}>
               You don't have any saved horses. Tap here to add one, or enter
               details manually below.

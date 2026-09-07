@@ -1,21 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import {
-  MapPin,
-  Calendar as CalendarIcon,
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle2,
-  Clock,
-  ChevronRight,
-  Info,
-} from 'lucide-react-native';
 
 import { AppText, AppCalendarModal } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
 import styles from './DeliveryStepstyles';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface DeliveryStepProps {
   form: NewShipmentForm;
@@ -114,14 +105,18 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             </View>
             {isLocationSelected && (
               <View style={styles.statusBadge}>
-                <CheckCircle2 size={13} color={COLORS.greenSuccess} />
+                <AppIcon
+                  name={'CheckCircle2'}
+                  size={13}
+                  color={COLORS.greenSuccess}
+                />
                 <AppText style={styles.statusBadgeText}>Address Set</AppText>
               </View>
             )}
           </View>
           <View style={styles.headerTitleRow}>
             <View style={styles.headerIconBox}>
-              <MapPin size={22} color={COLORS.primary} />
+              <AppIcon name={'MapPin'} size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
               <AppText style={styles.headerTitle}>
@@ -142,7 +137,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <MapPin size={16} color={COLORS.primary} />
+                <AppIcon name={'MapPin'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>DELIVERY DESTINATION</AppText>
             </View>
@@ -163,7 +158,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
 
           {errors.deliveryLocation ? (
             <View style={styles.errorContainer}>
-              <Info size={14} color={COLORS.error} />
+              <AppIcon name={'Info'} size={14} color={COLORS.error} />
               <AppText style={styles.errorText}>
                 {errors.deliveryLocation}
               </AppText>
@@ -180,12 +175,12 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <CalendarIcon size={16} color={COLORS.primary} />
+                <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>DELIVERY TIMEFRAME</AppText>
             </View>
             <View style={styles.infoTag}>
-              <Clock size={12} color={COLORS.primary} />
+              <AppIcon name={'Clock'} size={12} color={COLORS.primary} />
               <AppText style={styles.infoTagText}>Drop-off Window</AppText>
             </View>
           </View>
@@ -209,12 +204,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 activeOpacity={0.85}
               >
                 <View style={styles.dateCardTop}>
-                  <CalendarIcon
-                    size={16}
-                    color={
-                      form.deliveryStartDate ? COLORS.primary : COLORS.grey400
-                    }
-                  />
+                  <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
                   <AppText style={styles.dateLabelBadge}>FROM</AppText>
                 </View>
                 <AppText
@@ -238,7 +228,11 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             <View style={styles.dateConnector}>
               <View style={styles.connectorLine} />
               <View style={styles.connectorIconBox}>
-                <ChevronRight size={14} color={COLORS.grey400} />
+                <AppIcon
+                  name={'ChevronRight'}
+                  size={14}
+                  color={COLORS.grey400}
+                />
               </View>
               <View style={styles.connectorLine} />
             </View>
@@ -256,12 +250,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
                 activeOpacity={0.85}
               >
                 <View style={styles.dateCardTop}>
-                  <CalendarIcon
-                    size={16}
-                    color={
-                      form.deliveryEndDate ? COLORS.primary : COLORS.grey400
-                    }
-                  />
+                  <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
                   <AppText style={styles.dateLabelBadge}>TO</AppText>
                 </View>
                 <AppText
@@ -286,7 +275,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         {/* INFO BANNER CARD */}
         <View style={styles.infoCard}>
           <View style={styles.infoIconBox}>
-            <Info size={18} color={COLORS.goldDarkText} />
+            <AppIcon name={'Info'} size={18} color={COLORS.goldDarkText} />
           </View>
           <View style={styles.infoTextContent}>
             <AppText style={styles.infoTitle}>Delivery Timing Note</AppText>
@@ -300,11 +289,7 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>
           <TouchableOpacity style={styles.secondaryBtn} onPress={onPrevious}>
-            <ArrowLeft
-              size={18}
-              color={COLORS.grey700}
-              style={{ marginRight: 6 }}
-            />
+            <AppIcon name={'ArrowLeft'} size={18} color={COLORS.grey700} />
             <AppText style={styles.secondaryBtnText}>Previous</AppText>
           </TouchableOpacity>
 
@@ -316,7 +301,8 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
             <AppText style={styles.primaryBtnText}>
               Continue to Horse Details
             </AppText>
-            <ArrowRight
+            <AppIcon
+              name={'ArrowRight'}
               size={18}
               color={COLORS.white}
               style={{ marginLeft: 6 }}

@@ -5,8 +5,7 @@ import {
   BottomSheetView,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
-import { Camera, Image as ImageIcon, Trash2 } from 'lucide-react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   COLORS,
   SPACING,
@@ -16,6 +15,7 @@ import {
   ICON_SIZE,
 } from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 // Using your provided constants
 
@@ -89,7 +89,7 @@ const PhotoSourceSheet = ({
             style={styles.option}
             onPress={() => handlePress(onCamera)}
           >
-            <Camera size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon name={'Camera'} size={ICON_SIZE.md} color={COLORS.textPrimary} />
             <AppText style={styles.optionText}>Take Photo</AppText>
           </TouchableOpacity>
 
@@ -100,7 +100,7 @@ const PhotoSourceSheet = ({
             style={styles.option}
             onPress={() => handlePress(onGallery)}
           >
-            <ImageIcon size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon name={'Image'} size={ICON_SIZE.md} color={COLORS.textPrimary} />
             <AppText style={styles.optionText}>Choose from Gallery</AppText>
           </TouchableOpacity>
 
@@ -112,7 +112,7 @@ const PhotoSourceSheet = ({
                 style={styles.option}
                 onPress={() => handlePress(onRemove)}
               >
-                <Trash2 size={ICON_SIZE.md} color={COLORS.error} />
+                <AppIcon name={'Trash2'} size={ICON_SIZE.md} color={COLORS.error} />
                 <AppText style={[styles.optionText, { color: COLORS.error }]}>
                   Remove Current Photo
                 </AppText>

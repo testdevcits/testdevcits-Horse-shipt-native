@@ -10,19 +10,14 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import {
-  Lock,
-  Eye,
-  EyeOff,
-  ChevronLeft,
-  ShieldCheck,
-} from 'lucide-react-native';
+
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import authService from '../../../api/services/authService';
 import styles from './reset.styles';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../../../components/AppIcon';
 
 const ResetPassword = ({ navigation, route }: any) => {
   // Data passed from VerifyResetOtp screen
@@ -133,7 +128,7 @@ const ResetPassword = ({ navigation, route }: any) => {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <ChevronLeft color="white" size={30} />
+          <AppIcon name={'ChevronLeft'} size={30} color="white" />
         </TouchableOpacity>
       </ImageBackground>
 
@@ -173,13 +168,27 @@ const ResetPassword = ({ navigation, route }: any) => {
                 secureTextEntry={!showPass}
                 value={form.newPassword}
                 onChangeText={t => handleInputChange('newPassword', t)}
-                leftIcon={<Lock size={20} color={COLORS.textSecondary} />}
+                leftIcon={
+                  <AppIcon
+                    name={'Lock'}
+                    size={20}
+                    color={COLORS.textSecondary}
+                  />
+                }
                 rightIcon={
                   <TouchableOpacity onPress={() => setShowPass(!showPass)}>
                     {showPass ? (
-                      <EyeOff size={20} color={COLORS.textSecondary} />
+                      <AppIcon
+                        name={'EyeOff'}
+                        size={20}
+                        color={COLORS.textSecondary}
+                      />
                     ) : (
-                      <Eye size={20} color={COLORS.textSecondary} />
+                      <AppIcon
+                        name={'Eye'}
+                        size={20}
+                        color={COLORS.textSecondary}
+                      />
                     )}
                   </TouchableOpacity>
                 }
@@ -193,7 +202,11 @@ const ResetPassword = ({ navigation, route }: any) => {
                 value={form.confirmPassword}
                 onChangeText={t => handleInputChange('confirmPassword', t)}
                 leftIcon={
-                  <ShieldCheck size={20} color={COLORS.textSecondary} />
+                  <AppIcon
+                    name={'ShieldCheck'}
+                    size={20}
+                    color={COLORS.textSecondary}
+                  />
                 }
                 error={errors.confirmPassword}
               />

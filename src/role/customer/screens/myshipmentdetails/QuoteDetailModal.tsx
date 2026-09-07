@@ -8,21 +8,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import {
-  X,
-  CreditCard,
-  Check,
-  CheckCircle2,
-  AlertCircle,
-  FileText,
-  ChevronRight,
-  ShieldCheck,
-  Trash2,
-  User,
-  Clock,
-  Calendar,
-  DollarSign,
-} from 'lucide-react-native';
+
 import { formatDate } from '../../../../utils/helpers';
 import SignatureScreen from 'react-native-signature-canvas';
 import {
@@ -38,6 +24,8 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../../../../components/AppIcon';
+import { Calendar, CreditCard, DollarSign, User } from 'lucide-react-native';
 
 const QuoteDetailModal = ({
   visible,
@@ -229,7 +217,11 @@ const QuoteDetailModal = ({
               style={styles.closeIcon}
               activeOpacity={0.7}
             >
-              <X size={ICON_SIZE.sm} color={COLORS.textPrimary} />
+              <AppIcon
+                name={'X'}
+                size={ICON_SIZE.sm}
+                color={COLORS.textPrimary}
+              />
             </TouchableOpacity>
           </View>
 
@@ -242,11 +234,13 @@ const QuoteDetailModal = ({
             {/* CANCELLATION TIMEFRAME BANNER */}
             {!isCancelled && !isRejected && quote?.cancellationLastDate && (
               <View style={styles.cancelBanner}>
-                <Clock
+                <AppIcon
+                  name={'Clock'}
                   size={ICON_SIZE.sm}
                   color={COLORS.amberWarning}
                   style={{ marginRight: SPACING.xs }}
                 />
+
                 <AppText style={styles.cancelText}>
                   Cancel Window:{' '}
                   <AppText
@@ -288,7 +282,7 @@ const QuoteDetailModal = ({
                       { color: statusStyle.text },
                     ]}
                   >
-                    {quote?.status?.toUpperCase() || 'PENDING'}
+                    {quote?.status?.toUpperCase() || 'Not Available'}
                   </AppText>
                 </View>
               </View>
@@ -354,7 +348,11 @@ const QuoteDetailModal = ({
                   >
                     <View style={styles.docLeftRow}>
                       <View style={styles.docIconBox}>
-                        <FileText size={ICON_SIZE.sm} color={COLORS.primary} />
+                        <AppIcon
+                          name={'FileText'}
+                          size={ICON_SIZE.sm}
+                          color={COLORS.primary}
+                        />
                       </View>
                       <View style={styles.docInfo}>
                         <AppText style={styles.docName}>
@@ -367,7 +365,8 @@ const QuoteDetailModal = ({
                     </View>
                     <View style={styles.docActionWrap}>
                       <AppText style={styles.docActionText}>View</AppText>
-                      <ChevronRight
+                      <AppIcon
+                        name={'ChevronRight'}
                         size={ICON_SIZE.xs}
                         color={COLORS.primary}
                       />
@@ -404,7 +403,11 @@ const QuoteDetailModal = ({
                   >
                     <View style={styles.docLeftRow}>
                       <View style={styles.docIconBox}>
-                        <FileText size={ICON_SIZE.sm} color={COLORS.primary} />
+                        <AppIcon
+                          name={'FileText'}
+                          size={ICON_SIZE.sm}
+                          color={COLORS.primary}
+                        />
                       </View>
                       <View style={styles.docInfo}>
                         <AppText style={styles.docName} numberOfLines={1}>
@@ -418,7 +421,8 @@ const QuoteDetailModal = ({
                     </View>
                     <View style={styles.docActionWrap}>
                       <AppText style={styles.docActionText}>View</AppText>
-                      <ChevronRight
+                      <AppIcon
+                        name={'ChevronRight'}
                         size={ICON_SIZE.xs}
                         color={COLORS.primary}
                       />
@@ -432,7 +436,11 @@ const QuoteDetailModal = ({
             {isPending && (
               <View style={[styles.cardContainer, styles.highlightCard]}>
                 <View style={styles.highlightHeader}>
-                  <ShieldCheck size={ICON_SIZE.sm} color={COLORS.primary} />
+                  <AppIcon
+                    name={'ShieldCheck'}
+                    size={ICON_SIZE.sm}
+                    color={COLORS.primary}
+                  />
                   <AppText style={styles.highlightTitle}>
                     Acceptance & Payment
                   </AppText>
@@ -443,7 +451,11 @@ const QuoteDetailModal = ({
 
                 {/* 1. STRIPE CARD FIELD */}
                 <View style={styles.inputLabelRow}>
-                  <CreditCard size={ICON_SIZE.sm} color={COLORS.grey700} />
+                  <AppIcon
+                    name={'CreditCard'}
+                    size={ICON_SIZE.sm}
+                    color={COLORS.grey700}
+                  />
                   <AppText style={styles.inputLabel}>Card Details</AppText>
                 </View>
                 <View style={styles.stripeCardContainer}>
@@ -451,7 +463,7 @@ const QuoteDetailModal = ({
                     postalCodeEnabled={true}
                     style={styles.stripeCardField}
                     cardStyle={{
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: COLORS.white,
                       textColor: COLORS.textPrimary,
                       fontSize: FONT_SIZE.md,
                     }}
@@ -464,7 +476,11 @@ const QuoteDetailModal = ({
                   <AppText style={styles.inputLabel}>Your Signature *</AppText>
                   {signature ? (
                     <View style={styles.capturedBadge}>
-                      <Check size={ICON_SIZE.xs} color={COLORS.white} />
+                      <AppIcon
+                        name={'Check'}
+                        size={ICON_SIZE.xs}
+                        color={COLORS.white}
+                      />
                       <AppText style={styles.capturedText}>Captured</AppText>
                     </View>
                   ) : (
@@ -493,7 +509,11 @@ const QuoteDetailModal = ({
                       setSignature(null);
                     }}
                   >
-                    <Trash2 size={ICON_SIZE.xs} color={COLORS.error} />
+                    <AppIcon
+                      name={'Trash2'}
+                      size={ICON_SIZE.xs}
+                      color={COLORS.error}
+                    />
                     <AppText style={styles.clearText}>Clear Signature</AppText>
                   </TouchableOpacity>
                 )}
@@ -511,7 +531,11 @@ const QuoteDetailModal = ({
                     ]}
                   >
                     {isAcceptedTerms && (
-                      <Check size={ICON_SIZE.xs} color={COLORS.white} />
+                      <AppIcon
+                        name={'Check'}
+                        size={ICON_SIZE.xs}
+                        color={COLORS.white}
+                      />
                     )}
                   </View>
                   <AppText style={styles.termsLabel}>
@@ -536,7 +560,8 @@ const QuoteDetailModal = ({
             {isAccepted && !quote?.isCancelled && (
               <View style={styles.acceptedContainer}>
                 <View style={styles.successMessageCard}>
-                  <CheckCircle2
+                  <AppIcon
+                    name={'CheckCircle2'}
                     size={ICON_SIZE.md}
                     color={COLORS.greenPrimary}
                   />
@@ -555,7 +580,11 @@ const QuoteDetailModal = ({
                     activeOpacity={0.8}
                     onPress={() => setIsCancelModalVisible(true)}
                   >
-                    <AlertCircle size={ICON_SIZE.sm} color={COLORS.error} />
+                    <AppIcon
+                      name={'AlertCircle'}
+                      size={ICON_SIZE.sm}
+                      color={COLORS.error}
+                    />
                     <AppText style={styles.cancelBookingText}>
                       Cancel Shipment
                     </AppText>
@@ -587,7 +616,11 @@ const QuoteDetailModal = ({
                   <ActivityIndicator color={COLORS.white} />
                 ) : (
                   <View style={styles.acceptBtnInner}>
-                    <ShieldCheck size={ICON_SIZE.sm} color={COLORS.white} />
+                    <AppIcon
+                      name={'ShieldCheck'}
+                      size={ICON_SIZE.sm}
+                      color={COLORS.white}
+                    />
                     <AppText style={styles.acceptBtnText}>
                       Pay & Accept Quote
                     </AppText>

@@ -1,13 +1,7 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { memo, useState } from 'react';
 import { AppText } from '../../../../components';
-import {
-  ChevronDown,
-  ChevronUp,
-  Truck,
-  FileText,
-  CheckCircle2,
-} from 'lucide-react-native';
+
 import {
   COLORS,
   FONTS,
@@ -15,6 +9,7 @@ import {
   SPACING,
   FONT_SIZE,
 } from '../../../../constants';
+import AppIcon from '../../../../components/AppIcon';
 
 const VahicleInfoCard = ({
   vehicle,
@@ -37,13 +32,13 @@ const VahicleInfoCard = ({
         onPress={() => setIsVehicleCollapsed(!isVehicleCollapsed)}
       >
         <View style={styles.headerLeftRow}>
-          <Truck size={20} color={COLORS.primary} />
+          <AppIcon name={'Truck'} size={20} color={COLORS.primary} />
           <AppText style={styles.cardHeaderTitle}>Assigned Vehicle</AppText>
         </View>
         {isVehicleCollapsed ? (
-          <ChevronDown size={20} color={COLORS.goldDarkText} />
+          <AppIcon name={'ChevronDown'} size={20} color={COLORS.goldDarkText} />
         ) : (
-          <ChevronUp size={20} color={COLORS.goldDarkText} />
+          <AppIcon name={'ChevronUp'} size={20} color={COLORS.goldDarkText} />
         )}
       </TouchableOpacity>
 
@@ -60,7 +55,7 @@ const VahicleInfoCard = ({
               />
             ) : (
               <View style={styles.vehicleImageFallback}>
-                <Truck size={44} color={COLORS.primary} />
+                <AppIcon name={'Truck'} size={44} color={COLORS.primary} />
               </View>
             )}
             <View style={styles.tagBadge}>
@@ -82,7 +77,7 @@ const VahicleInfoCard = ({
               </AppText>
             </View>
             <View style={styles.readyBadge}>
-              <CheckCircle2 size={13} color={COLORS.primary} />
+              <AppIcon name={'CheckCircle2'} size={13} color={COLORS.primary} />
               <AppText style={styles.readyBadgeText}>READY</AppText>
             </View>
           </View>
@@ -121,7 +116,7 @@ const VahicleInfoCard = ({
           {vehicle?.notes ? (
             <View style={styles.notesBox}>
               <View style={styles.notesHeaderRow}>
-                <FileText size={16} color={COLORS.primary} />
+                <AppIcon name={'FileText'} size={16} color={COLORS.primary} />
                 <AppText style={styles.notesBoxLabel}>VEHICLE NOTES</AppText>
               </View>
               <AppText style={styles.notesBoxText}>

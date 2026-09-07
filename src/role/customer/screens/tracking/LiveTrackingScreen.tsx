@@ -12,17 +12,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {
-  X,
-  Navigation,
-  LocateFixed,
-  Clock,
-  MapPin,
-  ChevronRight,
-  CheckCircle2,
-  Truck,
-  RefreshCw,
-} from 'lucide-react-native';
+ 
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
 import {
   COLORS,
@@ -36,6 +26,8 @@ import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import imageIndex from '../../../../assets/images/imageIndex';
+import AppIcon from '../../../../components/AppIcon';
+import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
@@ -299,7 +291,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             description={data?.delivery?.location}
           >
             <View style={styles.markerCircle}>
-              <MapPin size={18} color={COLORS.error} fill={COLORS.white} />
+              <AppIcon name={'MapPin'} size={18} color={COLORS.error} fill={COLORS.white} />
             </View>
           </Marker>
         )}
@@ -314,7 +306,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             description={`Updated ${driverUpdatedAt}`}
           >
             <View style={styles.truckMarkerContainer}>
-              <Truck size={22} color="#A06333" />
+              <AppIcon name={'Truck'} size={22} color="#A06333" />
             </View>
           </Marker>
         )}
@@ -327,7 +319,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={() => navigation.goBack()}
           activeOpacity={0.8}
         >
-          <X size={22} color={COLORS.textPrimary} />
+          <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
         <View
@@ -347,7 +339,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={refetch}
           activeOpacity={0.8}
         >
-          <RefreshCw size={18} color={COLORS.textPrimary} />
+          <AppIcon name={'RefreshCw'} size={18} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
 
@@ -358,7 +350,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={handleRecenterMap}
           activeOpacity={0.8}
         >
-          <LocateFixed size={20} color={COLORS.textPrimary} />
+          <AppIcon name={'LocateFixed'} size={20} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
 
@@ -388,7 +380,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             onPress={handleCallDriver}
             activeOpacity={0.7}
           >
-            <Phone size={18} color={COLORS.primary} />
+            <AppIcon name={'Phone'} size={18} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconAction}
@@ -422,7 +414,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             <AppText style={styles.etaTime}>{etaFormatted}</AppText>
           </View>
           <View style={styles.distanceBadge}>
-            <Navigation size={14} color={COLORS.white} />
+            <AppIcon name={'Navigation'} size={14} color={COLORS.white} />
             <AppText style={styles.distanceText}>{distanceKmText}</AppText>
           </View>
         </View>
@@ -437,12 +429,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
                 statusDetails.isPickupDone && styles.timelinePointActive,
               ]}
             >
-              <CheckCircle2
-                size={16}
-                color={
-                  statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
-                }
-              />
+              <AppIcon name={'CheckCircle2'} size={16} color={
+                statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
+              } />
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.locationTitle}>Pickup Point</AppText>
@@ -463,9 +452,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
               ]}
             >
               {statusDetails.isDelivered ? (
-                <CheckCircle2 size={16} color={COLORS.primary} />
+                <AppIcon name={'CheckCircle2'} size={16} color={COLORS.primary} />
               ) : (
-                <Clock size={16} color={COLORS.grey400} />
+                <AppIcon name={'Clock'} size={16} color={COLORS.grey400} />
               )}
             </View>
             <View style={styles.timelineContent}>
@@ -476,7 +465,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
                 {data?.delivery?.location || 'Delivery Destination'}
               </AppText>
             </View>
-            <ChevronRight size={18} color={COLORS.grey300} />
+            <AppIcon name={'ChevronRight'} size={18} color={COLORS.grey300} />
           </View>
         </View>
       </View>
@@ -484,293 +473,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-  },
-  loaderText: {
-    marginTop: SPACING.md,
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  map: { flex: 1 },
-
-  // Marker styles
-  markerCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-
-  // Truck Marker Container
-  truckMarkerContainer: {
-    padding: 6,
-    backgroundColor: COLORS.white,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#A06333',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
-  },
-
-  // Header styles
-  topHeader: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 54 : 24,
-    left: SPACING.md,
-    right: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    zIndex: 10,
-  },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: RADIUS.round,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  refreshBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: RADIUS.round,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  statusPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs + 2,
-    borderRadius: RADIUS.round,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  pulseDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.white,
-    marginRight: SPACING.xs,
-  },
-  statusText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.white,
-    letterSpacing: 0.5,
-  },
-
-  // Map Controls
-  mapControls: {
-    position: 'absolute',
-    right: SPACING.md,
-    top: Platform.OS === 'ios' ? 114 : 84,
-    zIndex: 10,
-  },
-  controlBtn: {
-    width: SIZES.controlBtn,
-    height: SIZES.controlBtn,
-    borderRadius: RADIUS.round,
-    backgroundColor: COLORS.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-
-  // Driver Card
-  driverCard: {
-    position: 'absolute',
-    bottom: 215,
-    left: SPACING.md,
-    right: SPACING.md,
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  driverInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-    flex: 1,
-    paddingRight: SPACING.xs,
-  },
-  driverAvatar: {
-    width: SIZES.avatarMd44,
-    height: SIZES.avatarMd44,
-    borderRadius: RADIUS.circle,
-    backgroundColor: COLORS.grey100,
-  },
-  driverName: {
-    fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  lastUpdated: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    gap: SPACING.xs,
-  },
-  iconAction: {
-    width: 36,
-    height: 36,
-    borderRadius: RADIUS.round,
-    backgroundColor: COLORS.goldLightBg,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // Bottom Sheet
-  bottomSheet: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: RADIUS.xl,
-    borderTopRightRadius: RADIUS.xl,
-    padding: SPACING.md,
-    paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.md,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: -6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 10,
-  },
-  sheetHandle: {
-    width: 36,
-    height: 4,
-    borderRadius: RADIUS.xxs,
-    backgroundColor: COLORS.grey200,
-    alignSelf: 'center',
-    marginBottom: SPACING.md,
-  },
-  etaContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  etaLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  etaTime: {
-    fontSize: FONT_SIZE.xl,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginTop: 2,
-  },
-  distanceBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.round,
-    gap: SPACING.xs,
-  },
-  distanceText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.white,
-  },
-
-  // Timeline
-  timeline: {
-    paddingLeft: SPACING.xs,
-  },
-  timelineItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-  timelinePointActive: {
-    backgroundColor: COLORS.goldLightBg,
-  },
-  timelinePoint: {
-    width: 24,
-    height: 24,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.grey100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  timelineContent: {
-    flex: 1,
-  },
-  locationTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  locationSub: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 1,
-  },
-  timelineLine: {
-    width: 2,
-    height: 18,
-    backgroundColor: COLORS.grey200,
-    marginLeft: 11,
-    marginVertical: 2,
-  },
-});
+ 
 
 export default LiveTrackingScreen;

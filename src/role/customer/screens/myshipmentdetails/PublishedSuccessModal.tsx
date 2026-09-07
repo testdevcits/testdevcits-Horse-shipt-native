@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Dimensions,
+   
 } from 'react-native';
 import {
   COLORS,
@@ -20,7 +20,7 @@ import imageIndex from '../../../../assets/images/imageIndex';
 interface PublishedSuccessModalProps {
   visible: boolean;
   onClose: () => void;
-  onViewShipment: () => void;
+  onViewShipment: () => void;  
 }
 
 const PublishedSuccessModal = ({

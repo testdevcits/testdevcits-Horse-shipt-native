@@ -4,7 +4,6 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  StyleSheet,
   Platform,
   SafeAreaView,
 } from 'react-native';
@@ -21,7 +20,7 @@ import {
   CheckCircle2,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../constants';
+import { COLORS } from '../../../constants';
 import useNotifications, { NotificationFilter } from './useNotifications';
 import {
   AppHeader,
@@ -246,7 +245,7 @@ const Notifications = () => {
         }
         showProfileImage={false}
         showNotificationIcon={false}
-       />
+      />
 
       <AppLoader visible={actionLoading} />
 
@@ -437,5 +436,3 @@ const Notifications = () => {
 };
 
 export default Notifications;
-
- 

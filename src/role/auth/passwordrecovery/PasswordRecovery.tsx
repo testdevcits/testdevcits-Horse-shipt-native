@@ -9,13 +9,13 @@ import {
   Keyboard,
   TouchableOpacity,
 } from 'react-native';
-import { Mail, ChevronLeft } from 'lucide-react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './recovery.styles';
 import authService from '../../../api/services/authService';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../../../components/AppIcon';
 
 const PasswordRecovery = ({ navigation }: any) => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -96,7 +96,7 @@ const PasswordRecovery = ({ navigation }: any) => {
           style={{ padding: 20, marginTop: 40 }}
           onPress={() => navigation.goBack()}
         >
-          <ChevronLeft color="white" size={30} />
+          <AppIcon name={'ChevronLeft'} color="white" size={30} />
         </TouchableOpacity>
       </ImageBackground>
 
@@ -126,7 +126,9 @@ const PasswordRecovery = ({ navigation }: any) => {
                 setError('');
               }}
               error={error}
-              leftIcon={<Mail size={20} color={COLORS.textSecondary} />}
+              leftIcon={
+                <AppIcon name={'Mail'} size={20} color={COLORS.textSecondary} />
+              }
             />
 
             <TouchableOpacity

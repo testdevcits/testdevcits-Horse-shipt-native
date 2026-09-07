@@ -6,15 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {
-  MapPin,
-  Mail,
-  Star,
-  Check,
-  Users,
-  Truck,
-  Calendar,
-} from 'lucide-react-native';
+ 
 import { AppText } from '../../../../../components';
 import {
   COLORS,
@@ -26,6 +18,7 @@ import {
 } from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
 import imageIndex from '../../../../../assets/images/imageIndex';
+import AppIcon from '../../../../../components/AppIcon';
 
 const ShipperProfileCard = ({
   profile,
@@ -70,11 +63,7 @@ const ShipperProfileCard = ({
           <View style={styles.nameRow}>
             <AppText style={styles.shipperName}>{profile?.name}</AppText>
             <View style={styles.ratingBadge}>
-              <Star
-                size={ICON_SIZE.xs}
-                color={COLORS.primary}
-                fill={COLORS.primary}
-              />
+              <AppIcon name={'Star'} size={ICON_SIZE.xs} color={COLORS.primary} fill={COLORS.primary} />
               <AppText style={styles.ratingText}>
                 {profile?.rating || 0}
               </AppText>
@@ -86,13 +75,13 @@ const ShipperProfileCard = ({
 
       <View style={styles.detailsSection}>
         <View style={styles.infoLine}>
-          <MapPin size={ICON_SIZE.xs} color={COLORS.primary} />
+          <AppIcon name={'MapPin'} size={ICON_SIZE.xs} color={COLORS.primary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.region || 'N/A'}
           </AppText>
         </View>
         <View style={styles.infoLine}>
-          <Mail size={ICON_SIZE.xs} color={COLORS.primary} />
+          <AppIcon name={'Mail'} size={ICON_SIZE.xs} color={COLORS.primary} />
           <AppText style={styles.infoText} numberOfLines={1}>
             {profile?.email || 'N/A'}
           </AppText>
@@ -116,7 +105,7 @@ const ShipperProfileCard = ({
 
       {isInvited ? (
         <View style={styles.requestedBtn}>
-          <Check size={ICON_SIZE.sm} color={COLORS.greenPrimary} />
+          <AppIcon name={'Check'} size={ICON_SIZE.sm} color={COLORS.greenPrimary} />
           <AppText style={styles.requestedText}>Quote Requested</AppText>
         </View>
       ) : (
@@ -209,7 +198,7 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
       {profiles.length === 0 && (
         <View style={styles.emptyCardContainer}>
           <View style={styles.emptyIconCircle}>
-            <Users size={32} color={COLORS.primary} />
+            <AppIcon name={'Users'} size={32} color={COLORS.primary} />
           </View>
 
           <AppText style={styles.emptyTitle}>
@@ -224,7 +213,7 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
           <View style={styles.infoCardsContainer}>
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <Truck size={16} color={COLORS.primary} />
+                <AppIcon name={'Truck'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>
@@ -238,7 +227,7 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
 
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <Calendar size={16} color={COLORS.primary} />
+                <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>Flexible Dates</AppText>

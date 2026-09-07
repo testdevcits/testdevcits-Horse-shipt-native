@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -12,15 +11,8 @@ import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { pick, types } from '@react-native-documents/picker';
-import { Camera, Trash2, Upload, Paperclip } from 'lucide-react-native';
 
-import {
-  COLORS,
-  SPACING,
-  RADIUS,
-  FONTS,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS } from '../../../../constants';
 
 import { HorseSchema } from './schema';
 import { AppHeader, AppLoader, Input, AppText } from '../../../../components';
@@ -33,6 +25,8 @@ import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';
 import HorseActionModal from './HorseActionModal';
 import { Horse } from '../../../../types/customer';
+import AppIcon from '../../../../components/AppIcon';
+import styles from './styles.AddEditHorses';
 
 const AppSelect = lazy(() =>
   import('../../../../components').then(module => ({
@@ -338,7 +332,11 @@ const AddEditHorse = () => {
                           onPress={() => setFieldValue('photo', null)}
                           activeOpacity={0.7}
                         >
-                          <Trash2 size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'Trash2'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </TouchableOpacity>
                       </View>
                     ) : (
@@ -348,7 +346,11 @@ const AddEditHorse = () => {
                         activeOpacity={0.7}
                         disabled={isPicking}
                       >
-                        <Camera size={26} color={COLORS.primary} />
+                        <AppIcon
+                          name={'Camera'}
+                          size={26}
+                          color={COLORS.primary}
+                        />
                         <AppText style={styles.uploadBoxText}>
                           Upload Photo
                         </AppText>
@@ -469,7 +471,11 @@ const AddEditHorse = () => {
                   {/* Coggins Row */}
                   <View style={styles.docRow}>
                     <View style={styles.docLeft}>
-                      <Paperclip size={18} color={COLORS.primary} />
+                      <AppIcon
+                        name={'Paperclip'}
+                        size={18}
+                        color={COLORS.primary}
+                      />
                       <View style={styles.docTextWrap}>
                         <AppText style={styles.docLabel}>Coggins Test</AppText>
                         <AppText style={styles.docSubtext} numberOfLines={1}>
@@ -485,7 +491,11 @@ const AddEditHorse = () => {
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('coggins', null)}
                       >
-                        <Trash2 size={16} color={COLORS.error} />
+                        <AppIcon
+                          name={'Trash2'}
+                          size={16}
+                          color={COLORS.error}
+                        />
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
@@ -495,7 +505,11 @@ const AddEditHorse = () => {
                           handlePickDocument('coggins', setFieldValue)
                         }
                       >
-                        <Upload size={14} color={COLORS.primary} />
+                        <AppIcon
+                          name={'Upload'}
+                          size={14}
+                          color={COLORS.primary}
+                        />
                         <AppText style={styles.docUploadBtnText}>
                           Upload
                         </AppText>
@@ -506,7 +520,11 @@ const AddEditHorse = () => {
                   {/* Health Certificate Row */}
                   <View style={[styles.docRow, { borderBottomWidth: 0 }]}>
                     <View style={styles.docLeft}>
-                      <Paperclip size={18} color={COLORS.primary} />
+                      <AppIcon
+                        name={'Paperclip'}
+                        size={18}
+                        color={COLORS.primary}
+                      />
                       <View style={styles.docTextWrap}>
                         <AppText style={styles.docLabel}>
                           Health Certificate
@@ -524,7 +542,11 @@ const AddEditHorse = () => {
                         style={styles.docDeleteBtn}
                         onPress={() => setFieldValue('healthCertificate', null)}
                       >
-                        <Trash2 size={16} color={COLORS.error} />
+                        <AppIcon
+                          name={'Trash2'}
+                          size={16}
+                          color={COLORS.error}
+                        />
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
@@ -534,7 +556,11 @@ const AddEditHorse = () => {
                           handlePickDocument('healthCertificate', setFieldValue)
                         }
                       >
-                        <Upload size={14} color={COLORS.primary} />
+                        <AppIcon
+                          name={'Upload'}
+                          size={14}
+                          color={COLORS.primary}
+                        />
                         <AppText style={styles.docUploadBtnText}>
                           Upload
                         </AppText>
@@ -567,188 +593,4 @@ const AddEditHorse = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
-  scroll: { padding: SPACING.md },
-  topHeader: { marginBottom: SPACING.sm },
-  mainTitle: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginBottom: 2,
-  },
-  subTitle: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    lineHeight: 16,
-  },
-
-  infoCard: {
-    flexDirection: 'row',
-    backgroundColor: '#FAF6EE',
-    padding: SPACING.sm,
-    borderRadius: RADIUS.md,
-    marginBottom: SPACING.md,
-    alignItems: 'center',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: RADIUS.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderIcon: {
-    width: 24,
-    height: 24,
-    tintColor: COLORS.primary,
-  },
-  infoTextContainer: { flex: 1, marginLeft: SPACING.sm },
-  infoTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  infoDesc: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    marginTop: 1,
-  },
-
-  form: { gap: SPACING.xs },
-
-  sectionCard: {
-    backgroundColor: '#F9FAFB',
-    borderRadius: RADIUS.md,
-    padding: SPACING.sm,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    marginVertical: SPACING.xs,
-  },
-  sectionTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
-  },
-  photoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: SPACING.xs,
-  },
-  uploadBox: {
-    width: 110,
-    height: 110,
-    borderRadius: RADIUS.md,
-    borderWidth: 1.5,
-    borderColor: COLORS.primary,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  uploadBoxText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.semiBold,
-    color: COLORS.primary,
-    marginTop: 4,
-  },
-  photoPreviewBox: {
-    position: 'relative',
-    width: 110,
-    height: 110,
-    borderRadius: RADIUS.md,
-    overflow: 'hidden',
-  },
-  photoPreviewImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  removePhotoBadge: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: 'rgba(239, 68, 68, 0.85)',
-    borderRadius: 12,
-    padding: 4,
-  },
-
-  docRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: SPACING.xs,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  docLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    marginRight: SPACING.xs,
-  },
-  docTextWrap: {
-    marginLeft: SPACING.xs,
-    flex: 1,
-  },
-  docLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  docSubtext: {
-    fontSize: FONT_SIZE.xs - 1,
-    color: COLORS.textSecondary,
-    marginTop: 1,
-  },
-  docUploadBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 6,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    backgroundColor: '#FFFFFF',
-  },
-  docUploadBtnText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.semiBold,
-    color: COLORS.primary,
-  },
-  docDeleteBtn: {
-    padding: 6,
-  },
-
-  btnContainer: {
-    marginTop: SPACING.md,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: SPACING.sm,
-    paddingBottom: SPACING.xxxl,
-  },
-  addBtn: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.sm,
-    height: 46,
-  },
-  cancelBtn: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.sm,
-    height: 46,
-  },
-  cancelBtnText: {
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-  },
-});
-
 export default AddEditHorse;

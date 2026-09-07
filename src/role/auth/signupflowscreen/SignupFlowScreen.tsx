@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import { CheckCircle2, Circle, ChevronLeft } from 'lucide-react-native';
+
 import { COLORS, FONTS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Input } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
@@ -24,6 +24,7 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
 import RoleSelectionModal from '../login/RoleSelectionModal';
+import AppIcon from '../../../components/AppIcon';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -228,7 +229,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
             onPress={() => (step === 1 ? navigation.goBack() : setStep(1))}
             style={styles.backBtn}
           >
-            <ChevronLeft color={COLORS.white} size={28} />
+            <AppIcon name={'ChevronLeft'} size={28} color={COLORS.white} />
           </TouchableOpacity>
         )}
       </ImageBackground>
@@ -472,9 +473,9 @@ const CheckListItem = ({
 }) => (
   <View style={styles.checkItem}>
     {status ? (
-      <CheckCircle2 size={14} color={COLORS.success} />
+      <AppIcon name={'CheckCircle2'} size={14} color={COLORS.success} />
     ) : (
-      <Circle size={14} color={COLORS.grey300} />
+      <AppIcon name={'Circle'} size={14} color={COLORS.grey300} />
     )}
     <AppText
       style={[styles.checkText, status && { color: COLORS.textPrimary }]}

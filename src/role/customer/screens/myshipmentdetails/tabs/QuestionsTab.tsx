@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { MessageSquare, Send, HelpCircle, Bell } from 'lucide-react-native';
 import { AppText, Input } from '../../../../../components';
 import {
   COLORS,
@@ -17,6 +16,7 @@ import {
 } from '../../../../../constants';
 import customerService from '../../../../../api/services/customerService';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../../../../../components/AppIcon';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
@@ -68,7 +68,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
         /* Empty Condition UI */
         <View style={styles.emptyCardContainer}>
           <View style={styles.emptyIconCircle}>
-            <MessageSquare size={32} color={COLORS.primary} />
+            <AppIcon name={'MessageSquare'} size={32} color={COLORS.primary} />
           </View>
 
           <AppText style={styles.emptyTitle}>No Questions Asked Yet</AppText>
@@ -81,7 +81,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
           <View style={styles.infoCardsContainer}>
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <HelpCircle size={16} color={COLORS.primary} />
+                <AppIcon name={'HelpCircle'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>
@@ -95,7 +95,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
 
             <View style={styles.infoCard}>
               <View style={styles.infoIconBox}>
-                <Bell size={16} color={COLORS.primary} />
+                <AppIcon name={'Bell'} size={16} color={COLORS.primary} />
               </View>
               <View style={styles.infoTextWrapper}>
                 <AppText style={styles.infoCardTitle}>
@@ -163,7 +163,11 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                             color={COLORS.white}
                           />
                         ) : (
-                          <Send size={ICON_SIZE.xs} color={COLORS.white} />
+                          <AppIcon
+                            name={'Send'}
+                            size={ICON_SIZE.xs}
+                            color={COLORS.white}
+                          />
                         )}
                       </TouchableOpacity>
                     }

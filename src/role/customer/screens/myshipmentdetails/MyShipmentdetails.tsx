@@ -22,13 +22,13 @@ import OverviewTab from './tabs/OverviewTab';
 import QuotesTab from './tabs/QuotesTab';
 import QuestionsTab from './tabs/QuestionsTab';
 import FindShipperTab from './tabs/FindShipperTab';
-import { Dot, Pencil, Trash2 } from 'lucide-react-native';
 import { getFormattedDate } from '../../../../utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 
 import customerService from '../../../../api/services/customerService';
+import AppIcon from '../../../../components/AppIcon';
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
@@ -178,7 +178,7 @@ const MyShipmentDetails = ({ route }: any) => {
                       padding: 4,
                     }}
                   >
-                    <Trash2 size={16} color={COLORS.error} />
+                    <AppIcon name={'Trash2'} size={16} color={COLORS.error} />
                     <AppText
                       style={{ color: COLORS.error, fontSize: FONT_SIZE.md }}
                     >
@@ -196,7 +196,7 @@ const MyShipmentDetails = ({ route }: any) => {
                       padding: 4,
                     }}
                   >
-                    <Pencil size={16} color={COLORS.primary} />
+                    <AppIcon name={'Pencil'} size={16} color={COLORS.primary} />
                     <AppText
                       style={{ color: COLORS.primary, fontSize: FONT_SIZE.md }}
                     >

@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { LogOut, PencilLine, User, X } from 'lucide-react-native';
 import {
   COLORS,
   FONTS,
@@ -33,6 +32,7 @@ import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';
+import AppIcon from '../../../../components/AppIcon';
 
 const Profile = ({}: any) => {
   const dispatch = useAppDispatch();
@@ -162,7 +162,7 @@ const Profile = ({}: any) => {
                   <Image source={{ uri: avatarUri }} style={styles.avatar} />
                 ) : (
                   <View style={[styles.avatar, styles.placeholderAvatar]}>
-                    <User size={40} color={COLORS.grey400} />
+                    <AppIcon name={'User'} size={40} color={COLORS.grey400} />
                   </View>
                 );
               })()}
@@ -186,7 +186,11 @@ const Profile = ({}: any) => {
                 <AppText style={styles.editPictureText}>Processing...</AppText>
               ) : (
                 <>
-                  <PencilLine size={16} color={COLORS.textPrimary} />
+                  <AppIcon
+                    name={'PencilLine'}
+                    size={16}
+                    color={COLORS.textPrimary}
+                  />
                   <AppText style={styles.editPictureText}>Edit picture</AppText>
                 </>
               )}
@@ -201,7 +205,11 @@ const Profile = ({}: any) => {
                 style={styles.editIconBtn}
                 onPress={() => setIsEditModalVisible(true)}
               >
-                <PencilLine size={18} color={COLORS.textPrimary} />
+                <AppIcon
+                  name={'PencilLine'}
+                  size={18}
+                  color={COLORS.textPrimary}
+                />
               </TouchableOpacity>
             </View>
             <View style={styles.infoList}>
@@ -227,7 +235,7 @@ const Profile = ({}: any) => {
             onPress={handleLogout}
             activeOpacity={0.8}
           >
-            <LogOut size={18} color={COLORS.error} />
+            <AppIcon name={'LogOut'} size={18} color={COLORS.error} />
             <AppText style={localStyles.logoutBtnText}>Logout</AppText>
           </TouchableOpacity>
         </ScrollView>
@@ -243,7 +251,7 @@ const Profile = ({}: any) => {
             <View style={localStyles.modalHeader}>
               <AppText style={localStyles.modalTitle}>Edit Profile</AppText>
               <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
-                <X size={24} color={COLORS.textPrimary} />
+                <AppIcon name={'X'} size={24} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
