@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
   stepItem: {
     flex: 1,
     alignItems: 'center',
+    
+  },
+  stepImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
   },
   stepBar: {
     width: '100%',

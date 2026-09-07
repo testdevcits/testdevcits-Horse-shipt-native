@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Trash2 } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
@@ -16,6 +16,7 @@ import HorseDetailsStep from './stepsscreens/HorseDetailsStep';
 import ReviewStep from './stepsscreens/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
 import DraftSuccessModal from './DraftSuccessModal';
+import imageIndex from '../../../../assets/images/imageIndex';
 
 const NewShipment = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,10 @@ const NewShipment = () => {
         const isCurrent = index === currentStep;
         return (
           <View key={index} style={styles.stepItem}>
+            {(isActive && isCurrent) ? (
+              <Image source={imageIndex.LogoIcon} style={styles.stepImage} resizeMode="contain" />
+            ): <View style={styles.stepImage} />}
+
             <View
               style={[
                 styles.stepBar,

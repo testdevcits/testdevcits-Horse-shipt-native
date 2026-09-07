@@ -134,7 +134,7 @@ const CustomShipperDrawerContent: React.FC<
     : 'Home';
 
   const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Post');
-  const activeSubTab = postRoute?.params?.initialTab || 'my_shipments';
+  const activeSubTab = (postRoute?.params as any)?.initialTab || 'my_shipments';
 
   const isTabActive = (tabName: string) => {
     return currentDrawerRoute === 'MainTabs' && currentActiveTab === tabName;

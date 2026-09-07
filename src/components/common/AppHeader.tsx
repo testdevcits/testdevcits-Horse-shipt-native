@@ -22,6 +22,7 @@ interface HeaderProps {
   onBack?: () => void;
   rightElement?: React.ReactNode;
   showProfileImage?: boolean;
+  showNotificationIcon?: boolean;
 }
 
 // 2. Wrap the component in memo
@@ -32,6 +33,7 @@ const AppHeader = memo(
     onBack,
     rightElement,
     showProfileImage = true,
+    showNotificationIcon = true,
   }: HeaderProps) => {
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
@@ -104,6 +106,7 @@ const AppHeader = memo(
             rightElement
           ) : (
             <>
+              {showNotificationIcon && (
               <TouchableOpacity
                 onPress={() => navigation.navigate('Notifications')}
                 style={styles.iconBtn}
@@ -120,6 +123,7 @@ const AppHeader = memo(
                   )}
                 </View>
               </TouchableOpacity>
+              )}
               {showProfileImage && (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Profile')}

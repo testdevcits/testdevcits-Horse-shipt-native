@@ -609,13 +609,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  <Bookmark
+                  {/* <Bookmark
                     size={18}
                     color={COLORS.grey700}
                     style={{ marginRight: 6 }}
-                  />
+                  /> */}
                   <AppText style={styles.draftBtnText}>
-                    {isEdit && isDraft ? 'Update Draft Data' : 'Save Draft'}
+                    {isEdit && isDraft ? 'Update Shipment' : 'Save Draft'}
                   </AppText>
                 </>
               )}

@@ -118,7 +118,10 @@ const MyShipmentDetails = ({ route }: any) => {
     }
   };
 
-  if (loading && !refreshing) return <AppLoader visible={true} />;
+  if (loading && !refreshing) return <View style={styles.container}>
+    <AppHeader showBack={true} title={data?.shipmentCode} />
+    <AppLoader visible={true} />
+  </View>;
 
   const renderTabContent = () => {
     switch (activeTab) {

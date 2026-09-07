@@ -58,7 +58,7 @@ const DraftSuccessModal = ({
               onPress={onDashboard}
               activeOpacity={0.8}
             >
-              <AppText style={styles.dashboardBtnText}>Go to Dashboard</AppText>
+              <AppText style={styles.dashboardBtnText}>Go to Home</AppText>
             </TouchableOpacity>
           </View>
         </View>

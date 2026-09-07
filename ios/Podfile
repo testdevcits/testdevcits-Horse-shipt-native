@@ -5,6 +5,8 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+require_relative '../node_modules/react-native-permissions/scripts/setup'
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -15,6 +17,14 @@ if linkage != nil
 end
 
 target 'HorseShipt' do
+  # Configure iOS handlers for react-native-permissions
+  setup_permissions([
+    'Camera',
+    'LocationAccuracy',
+    'LocationAlways',
+    'LocationWhenInUse',
+    'PhotoLibrary',
+  ])
 
  # === 1. Add these lines for React Native Google Maps on iOS ===
   rn_maps_path = '../node_modules/react-native-maps'

@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   draftBtnText: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
     color: COLORS.grey700,
   },
@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   publishBtnText: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.white,
   },

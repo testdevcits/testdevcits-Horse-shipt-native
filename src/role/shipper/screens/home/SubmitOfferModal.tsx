@@ -462,7 +462,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
               {submitError === 'subscription is required' && (
                 <TouchableOpacity
                   style={[styles.submitBtn, { marginVertical: SPACING.md }]}
-                  onPress={() => navigation.navigate('Profile')}
+                  onPress={() => (navigation as any).navigate('Profile')}
                 >
                   <AppText style={styles.submitBtnText}>
                     Go to Subscription Page

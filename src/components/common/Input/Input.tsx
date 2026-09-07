@@ -76,7 +76,7 @@ const Input = ({
           hitSlop={10}
         >
           {showPassword ? (
-            <AppIcon name={'EyeOff'} size={20} color={COLORS.textSecondary} />
+            <AppIcon name={'EyeOff'} size={20} color={COLORS.textSecondary}  />
           ) : (
             <AppIcon name={'Eye'} size={20} color={COLORS.textSecondary} />
           )}

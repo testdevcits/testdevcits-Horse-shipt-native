@@ -85,8 +85,6 @@ import {
   ArrowLeftRight,
   Smartphone,
   Milestone,
-
-  
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';
@@ -206,7 +204,7 @@ const AppIcon = ({
       color={color}
       strokeWidth={strokeWidth}
       style={style}
-      fill={fill}
+      fill={fill ? fill : 'none'}
     />
   );
 };
