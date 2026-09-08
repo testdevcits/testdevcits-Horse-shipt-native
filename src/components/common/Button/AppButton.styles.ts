@@ -4,7 +4,7 @@ import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 export default StyleSheet.create({
   button: {
     height: 46,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.round,
     backgroundColor: COLORS.primary,
     flexDirection: 'row',
     justifyContent: 'center',

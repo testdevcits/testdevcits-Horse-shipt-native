@@ -8,12 +8,7 @@ import {
 
 import Toast from 'react-native-toast-message';
 import { COLORS, FONT_SIZE } from '../../../../constants';
-import {
-  AppHeader,
-  AppText,
-  AppLoader,
-  ConfirmationModal,
-} from '../../../../components';
+import { AppHeader, AppText, AppLoader } from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
 // Modals & Tabs
@@ -29,6 +24,10 @@ import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmen
 
 import customerService from '../../../../api/services/customerService';
 import AppIcon from '../../../../components/AppIcon';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
@@ -118,10 +117,13 @@ const MyShipmentDetails = ({ route }: any) => {
     }
   };
 
-  if (loading && !refreshing) return <View style={styles.container}>
-    <AppHeader showBack={true} title={data?.shipmentCode} />
-    <AppLoader visible={true} />
-  </View>;
+  if (loading && !refreshing)
+    return (
+      <View style={styles.container}>
+        <AppHeader showBack={true} title={data?.shipmentCode} />
+        <AppLoader visible={true} />
+      </View>
+    );
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -309,21 +311,23 @@ const MyShipmentDetails = ({ route }: any) => {
           </Suspense>
 
           {/* DELETE CONFIRMATION MODAL */}
-          <ConfirmationModal
-            isVisible={isDeleteModalVisible}
-            type="danger"
-            title="Delete Draft Shipment?"
-            description="Are you sure you want to delete this draft shipment? This action cannot be undone."
-            confirmText="Delete"
-            cancelText="Cancel"
-            isLoading={isDeleting}
-            onClose={() => {
-              if (!isDeleting) {
-                setIsDeleteModalVisible(false);
-              }
-            }}
-            onConfirm={handleConfirmDelete}
-          />
+          <Suspense fallback={null}>
+            <ConfirmationModal
+              isVisible={isDeleteModalVisible}
+              type="danger"
+              title="Delete Draft Shipment?"
+              description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+              confirmText="Delete"
+              cancelText="Cancel"
+              isLoading={isDeleting}
+              onClose={() => {
+                if (!isDeleting) {
+                  setIsDeleteModalVisible(false);
+                }
+              }}
+              onConfirm={handleConfirmDelete}
+            />
+          </Suspense>
         </View>
       </ScrollView>
     </View>

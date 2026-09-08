@@ -5,7 +5,6 @@ import {
   FONTS,
   RADIUS,
   SPACING,
-  SIZES,
 } from '../../../../constants';
 
 const styles = StyleSheet.create({

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   TextInput,
@@ -15,7 +14,6 @@ import {
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import axios from 'axios';
-import { Map as MapIcon } from 'lucide-react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
@@ -448,7 +446,11 @@ const LocationPickerCore: React.FC<{
                   onPress={() => getPlaceDetails(item?.place_id)}
                 >
                   <View style={styles.resultIcon}>
-                    <MapIcon size={18} color={COLORS.textSecondary} />
+                    <AppIcon
+                      name={'Map'}
+                      size={18}
+                      color={COLORS.textSecondary}
+                    />
                   </View>
                   <View style={{ flex: 1 }}>
                     <AppText style={styles.resultMain} numberOfLines={1}>

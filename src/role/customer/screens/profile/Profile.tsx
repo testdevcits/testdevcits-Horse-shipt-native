@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   Image,
@@ -23,7 +23,6 @@ import {
   AppHeader,
   AppLoader,
   AppText,
-  ConfirmationModal,
   CountryCodePicker,
   COUNTRIES,
   Input,
@@ -35,6 +34,9 @@ import { useAppSelector } from '../../../../hooks/redux';
 import AppIcon from '../../../../components/AppIcon';
 
 const Profile = ({}: any) => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
@@ -291,17 +293,19 @@ const Profile = ({}: any) => {
       </Modal>
 
       {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleConfirmLogout}
-        title="Logout"
-        description="Are you sure you want to log out?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isLoggingOut}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleConfirmLogout}
+          title="Logout"
+          description="Are you sure you want to log out?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isLoggingOut}
+        />
+      </Suspense>
     </View>
   );
 };

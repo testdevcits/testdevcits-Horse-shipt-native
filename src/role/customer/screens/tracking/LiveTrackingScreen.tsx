@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
-  StyleSheet,
   TouchableOpacity,
   Image,
-  Platform,
   ActivityIndicator,
   Linking,
   Share,
@@ -12,16 +10,9 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
- 
+
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SIZES,
-  SPACING,
-} from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
@@ -291,7 +282,12 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             description={data?.delivery?.location}
           >
             <View style={styles.markerCircle}>
-              <AppIcon name={'MapPin'} size={18} color={COLORS.error} fill={COLORS.white} />
+              <AppIcon
+                name={'MapPin'}
+                size={18}
+                color={COLORS.error}
+                fill={COLORS.white}
+              />
             </View>
           </Marker>
         )}
@@ -429,9 +425,13 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
                 statusDetails.isPickupDone && styles.timelinePointActive,
               ]}
             >
-              <AppIcon name={'CheckCircle2'} size={16} color={
-                statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
-              } />
+              <AppIcon
+                name={'CheckCircle2'}
+                size={16}
+                color={
+                  statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
+                }
+              />
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.locationTitle}>Pickup Point</AppText>
@@ -452,7 +452,11 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
               ]}
             >
               {statusDetails.isDelivered ? (
-                <AppIcon name={'CheckCircle2'} size={16} color={COLORS.primary} />
+                <AppIcon
+                  name={'CheckCircle2'}
+                  size={16}
+                  color={COLORS.primary}
+                />
               ) : (
                 <AppIcon name={'Clock'} size={16} color={COLORS.grey400} />
               )}
@@ -472,7 +476,5 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     </View>
   );
 };
-
- 
 
 export default LiveTrackingScreen;

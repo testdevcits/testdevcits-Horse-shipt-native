@@ -1,13 +1,6 @@
 import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet } from 'react-native';
-import {
-  Calendar,
-  Hash,
-  X,
-  ShieldCheck,
-  CreditCard,
-  Package,
-} from 'lucide-react-native';
+import { Calendar, Hash, CreditCard, Package } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import {
   COLORS,
@@ -17,6 +10,7 @@ import {
   RADIUS,
 } from '../../../../constants';
 import { formatDate } from '../../../../utils/helpers';
+import AppIcon from '../../../../components/AppIcon';
 
 interface TransactionDetailsModalProps {
   selectedTx: any;
@@ -83,7 +77,7 @@ const TransactionDetailsModal = ({
               activeOpacity={0.7}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <X size={18} color={COLORS.textSecondary} />
+              <AppIcon name={'X'} size={18} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -108,7 +102,8 @@ const TransactionDetailsModal = ({
                 isSuccess ? styles.statusSuccess : styles.statusPending,
               ]}
             >
-              <ShieldCheck
+              <AppIcon
+                name={'ShieldCheck'}
                 size={13}
                 color={isSuccess ? COLORS.emeraldDark : COLORS.amberPrimary}
               />

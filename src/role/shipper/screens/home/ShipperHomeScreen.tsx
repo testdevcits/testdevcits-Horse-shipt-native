@@ -8,15 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Truck,
-  FileText,
-  Search,
-  List,
-  Map as MapIcon,
-  MapPin,
-  ChevronRight,
-} from 'lucide-react-native';
+import { Truck } from 'lucide-react-native';
 import {
   AppHeader,
   AppText,
@@ -42,6 +34,7 @@ import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
+import AppIcon from '../../../../components/AppIcon';
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -384,7 +377,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <Truck size={24} color="#A06333" />
+            <AppIcon name={'Truck'} size={24} color="#A06333" />
           </View>
         </TouchableOpacity>
 
@@ -400,7 +393,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <FileText size={24} color="#A06333" />
+            <AppIcon name={'FileText'} size={24} color="#A06333" />
           </View>
         </TouchableOpacity>
       </View>
@@ -414,7 +407,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('MyQuotes')}
           >
             <AppText style={styles.viewAllText}>View All</AppText>
-            <ChevronRight size={16} color="#A06333" />
+            <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
           </TouchableOpacity>
         </View>
         <AppText style={styles.sectionSub}>
@@ -426,7 +419,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           placeholder="Search by pickup or delivery location..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          leftIcon={<Search size={18} color={COLORS.textSecondary} />}
+          leftIcon={
+            <AppIcon name={'Search'} size={18} color={COLORS.textSecondary} />
+          }
           containerStyle={{ marginBottom: SPACING.md }}
         />
 
@@ -489,7 +484,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             ]}
             onPress={() => setViewMode('list')}
           >
-            <List
+            <AppIcon
+              name={'List'}
               size={16}
               color={viewMode === 'list' ? COLORS.white : '#A06333'}
             />
@@ -517,7 +513,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               }
             }}
           >
-            <MapIcon
+            <AppIcon
+              name={'Map'}
               size={16}
               color={viewMode === 'map' ? COLORS.white : '#A06333'}
             />
@@ -607,7 +604,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                 <View
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
                 >
-                  <List size={18} color="#A06333" />
+                  <AppIcon name={'List'} size={18} color="#A06333" />
                   <AppText style={styles.mapSectionTitle}>
                     Shipments ({filteredShipments.length})
                   </AppText>
@@ -615,7 +612,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
                 <TouchableOpacity style={styles.viewAllBtn}>
                   <AppText style={styles.viewAllText}>View All</AppText>
-                  <ChevronRight size={16} color="#A06333" />
+                  <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
                 </TouchableOpacity>
               </View>
 
@@ -695,7 +692,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                         description={selectedMapShipment?.pickupLocation}
                       >
                         <View style={styles.markerCircleGreen}>
-                          <MapPin size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'MapPin'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       </Marker>
                     )}
@@ -716,7 +717,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                         description={selectedMapShipment?.deliveryLocation}
                       >
                         <View style={styles.markerCircleRed}>
-                          <MapPin size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'MapPin'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       </Marker>
                     )}

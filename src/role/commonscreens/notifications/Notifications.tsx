@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   RefreshControl,
   Platform,
-  SafeAreaView,
 } from 'react-native';
 import {
   Bell,
@@ -28,10 +27,13 @@ import {
   AppText,
   EmptyState,
   ErrorView,
-  ConfirmationModal,
 } from '../../../components';
 import styles from './styles.notification';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+const ConfirmationModal = lazy(
+  () => import('../../../components/common/ConfirmationModal'),
+);
 // Helper to determine notification icon based on content
 const getNotificationIcon = (title: string = '', message: string = '') => {
   const content = (title + ' ' + message).toLowerCase();
@@ -411,26 +413,28 @@ const Notifications = () => {
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Notifications?"
-        description={
-          targetIdToDelete
-            ? 'Are you sure you want to delete this notification?'
-            : `Are you sure you want to delete ${selectedIds.length} selected notification(s)? This action cannot be undone.`
-        }
-        confirmText="Delete"
-        cancelText="Cancel"
-        isLoading={actionLoading}
-        onClose={() => {
-          if (!actionLoading) {
-            setIsDeleteModalVisible(false);
-            setTargetIdToDelete(null);
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Notifications?"
+          description={
+            targetIdToDelete
+              ? 'Are you sure you want to delete this notification?'
+              : `Are you sure you want to delete ${selectedIds.length} selected notification(s)? This action cannot be undone.`
           }
-        }}
-        onConfirm={handleConfirmDelete}
-      />
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={actionLoading}
+          onClose={() => {
+            if (!actionLoading) {
+              setIsDeleteModalVisible(false);
+              setTargetIdToDelete(null);
+            }
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      </Suspense>
     </SafeAreaView>
   );
 };

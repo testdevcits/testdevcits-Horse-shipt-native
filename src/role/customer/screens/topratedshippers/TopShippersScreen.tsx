@@ -2,22 +2,13 @@ import React, { useState } from 'react';
 import {
   View,
   FlatList,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
   Modal,
-  Platform,
 } from 'react-native';
 import { Award } from 'lucide-react-native';
-import {
-  COLORS,
-  SPACING,
-  FONTS,
-  RADIUS,
-  SCREEN_WIDTH,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS, SCREEN_WIDTH } from '../../../../constants';
 import { useShippers } from './useShippers';
 import {
   AppHeader,

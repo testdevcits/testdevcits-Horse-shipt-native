@@ -100,7 +100,8 @@ import {
   PencilLine,
   SlidersHorizontal,
   Wallet,
-  FileCheck
+  FileCheck,
+  RotateCw
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';
@@ -206,7 +207,8 @@ const ICONS = {
   PencilLine,
   SlidersHorizontal,
   Wallet,
-  FileCheck
+  FileCheck,
+  RotateCw
 } as const;
 
 export type IconName = keyof typeof ICONS;

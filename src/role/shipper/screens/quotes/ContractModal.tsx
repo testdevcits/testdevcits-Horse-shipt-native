@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Linking,
-  Dimensions,
   Image,
 } from 'react-native';
 import { WebView } from 'react-native-webview';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Mail, Phone, FileText, Box, LogOut } from 'lucide-react-native';
 
 // Custom Design Systems
 import { COLORS } from '../../../../constants'; // Adjust relative path as needed
@@ -14,24 +13,17 @@ import AppText from '../../../../components/common/AppText';
 import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
 import styles from './styles.profile';
 import DriverHeader from '../../../../components/common/DriverHeader';
-import { ConfirmationModal } from '../../../../components';
+import { Button } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
+import AppIcon from '../../../../components/AppIcon';
 
 // Profile Theme Colors mapped to match the gold/beige screenshot details
-const PROFILE_COLORS = {
-  primary: COLORS.primary,
-  goldPrimary: '#A37F3D',
-  goldLightBg: '#FAF6EE',
-  goldBorder: '#DCCEB2',
-  goldDarkText: '#5C441E',
-  greenPrimary: '#0F7643',
-  greenLightBg: '#E6F7F0',
-  greenBorder: '#A9E2CC',
-  background: '#FAF8F5',
-};
 
 const Profile = () => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
   const { driver, allShipments, loading, refresh } = useDriverMe();
   const dispatch = useAppDispatch();
 
@@ -45,25 +37,6 @@ const Profile = () => {
 
   // State to control your custom confirmation modal
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
-
-  // Execute the logout once confirmed in the modal
-  // const handleLogoutConfirm = async () => {
-  //   setIsLogoutModalVisible(false); // Close the modal
-  //   try {
-  //     // Clear token and profile from AsyncStorage
-  //     await AsyncStorage.multiRemove(['userToken', 'driverProfile']);
-
-  //     // Navigate to Login and clear history stack
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 0,
-  //         routes: [{ name: 'Login' }],
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.warn('Error during logout:', error);
-  //   }
-  // };
 
   const handleLogoutConfirm = async () => {
     setIsLogoutModalVisible(false); // 1. Close UI Modal
@@ -85,7 +58,7 @@ const Profile = () => {
   if (loading && !driver) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={PROFILE_COLORS.primary} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
@@ -160,7 +133,7 @@ const Profile = () => {
                     color:
                       driver?.isActive === false
                         ? COLORS.textSecondary
-                        : PROFILE_COLORS.greenPrimary,
+                        : COLORS.greenPrimary,
                   },
                 ]}
               >
@@ -173,7 +146,7 @@ const Profile = () => {
                     color:
                       driver?.isActive === false
                         ? COLORS.textSecondary
-                        : PROFILE_COLORS.greenPrimary,
+                        : COLORS.greenPrimary,
                   },
                 ]}
               >
@@ -193,9 +166,10 @@ const Profile = () => {
           <View style={styles.detailsBody}>
             {/* Email field */}
             <View style={styles.detailRow}>
-              <Mail
+              <AppIcon
+                name={'Mail'}
                 size={18}
-                color={PROFILE_COLORS.primary}
+                color={COLORS.primary}
                 style={styles.detailIcon}
               />
               <View>
@@ -208,9 +182,10 @@ const Profile = () => {
 
             {/* Phone field */}
             <View style={styles.detailRow}>
-              <Phone
+              <AppIcon
+                name={'Phone'}
                 size={18}
-                color={PROFILE_COLORS.primary}
+                color={COLORS.primary}
                 style={styles.detailIcon}
               />
               <View>
@@ -223,9 +198,10 @@ const Profile = () => {
 
             {/* License field */}
             <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-              <FileText
+              <AppIcon
+                name={'FileText'}
                 size={18}
-                color={PROFILE_COLORS.primary}
+                color={COLORS.primary}
                 style={styles.detailIcon}
               />
               <View>
@@ -256,7 +232,7 @@ const Profile = () => {
             {completedCount === 0 ? (
               <View style={styles.emptyContainer}>
                 <View style={styles.emptyIconBox}>
-                  <Box size={24} color={PROFILE_COLORS.primary} />
+                  <AppIcon name={'Box'} size={24} color={COLORS.primary} />
                 </View>
                 <AppText style={styles.emptyText}>
                   No completed shipments yet
@@ -265,7 +241,7 @@ const Profile = () => {
             ) : (
               completedShipments.map((shipment, index) => (
                 <View key={shipment._id} style={styles.completedShipmentRow}>
-                  <Box size={18} color={PROFILE_COLORS.primary} />
+                  <AppIcon name={'Box'} size={18} color={COLORS.primary} />
                   <AppText style={styles.completedShipmentText}>
                     {shipment.shipment.pickupLocation} ➔{' '}
                     {shipment.shipment.deliveryLocation}
@@ -277,27 +253,34 @@ const Profile = () => {
         </View>
 
         {/* Action Logout Button */}
-        <TouchableOpacity
-          style={styles.logoutButton}
+
+        <Button
+          leftIcon={
+            <AppIcon
+              name={'LogOut'}
+              size={18}
+              color={COLORS.white}
+              style={styles.logoutIcon}
+            />
+          }
+          title="Logout"
           onPress={() => setIsLogoutModalVisible(!isLogoutModalVisible)}
-          activeOpacity={0.8}
-        >
-          <LogOut size={18} color={COLORS.white} style={styles.logoutIcon} />
-          <AppText style={styles.logoutText}>Logout</AppText>
-        </TouchableOpacity>
+        />
       </ScrollView>
 
       {/* 3. Integrated Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleLogoutConfirm}
-        title="Logout"
-        description="Are you sure you want to log out of your driver session?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger" // Applies the red 'danger' layout styling from your stylesheet
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleLogoutConfirm}
+          title="Logout"
+          description="Are you sure you want to log out of your driver session?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger" // Applies the red 'danger' layout styling from your stylesheet
+        />
+      </Suspense>
     </View>
   );
 };

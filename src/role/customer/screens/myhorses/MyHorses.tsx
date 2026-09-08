@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { lazy, Suspense, useCallback } from 'react';
 import {
   View,
   FlatList,
@@ -14,11 +14,14 @@ import {
   AppHeader,
   AppLoader,
   AppText,
-  ConfirmationModal,
   EmptyState,
   HorseCard,
 } from '../../../../components';
 import styles from './style.myhorses';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const MyHorses = ({ navigation }: any) => {
   const {
@@ -101,18 +104,19 @@ const MyHorses = ({ navigation }: any) => {
           ) : null
         }
       />
-
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Horse"
-        description="Are you sure you want to remove this horse? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        onClose={handleCancelDelete}
-        onConfirm={handleConfirmDelete}
-        isLoading={loading}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Horse"
+          description="Are you sure you want to remove this horse? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          isLoading={loading}
+        />
+      </Suspense>
     </View>
   );
 };

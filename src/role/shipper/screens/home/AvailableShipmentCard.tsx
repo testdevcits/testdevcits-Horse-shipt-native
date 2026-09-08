@@ -6,6 +6,7 @@ import { COLORS } from '../../../../constants';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperhome';
 import { horsePlaceholderImage } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 interface AvailableShipmentCardProps {
   item: any;
@@ -105,14 +106,14 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
           onPress={() => onPress(item)}
           activeOpacity={0.8}
         >
-          <ExternalLink size={14} color={COLORS.white} />
+          <AppIcon name={'ExternalLink'} size={14} color={COLORS.white} />
         </TouchableOpacity>
 
         <View style={styles.timelineCol}>
           <View style={styles.timelineDot} />
           <View style={styles.timelineDashedLine} />
           <View style={styles.timelineTruckNode}>
-            <Truck size={12} color={COLORS.emeraldPrimary} />
+            <AppIcon name={'Truck'} size={12} color={COLORS.emeraldPrimary} />
           </View>
           <View style={styles.timelineDashedLine} />
           <View style={styles.timelineDot} />

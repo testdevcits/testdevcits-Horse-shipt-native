@@ -22,8 +22,7 @@ import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import RoleSelectionModal from './RoleSelectionModal';
-import { UserCog } from 'lucide-react-native';
+import RoleSelectionModal from './components/RoleSelectionModal';
 import AppIcon from '../../../components/AppIcon';
 
 const Login = () => {

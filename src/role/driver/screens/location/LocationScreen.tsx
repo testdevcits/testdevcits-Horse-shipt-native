@@ -1,13 +1,11 @@
 // src/screens/location/LocationScreen.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { Map, Compass, Zap } from 'lucide-react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 import { COLORS } from '../../../../constants';
-import AppText from '../../../../components/common/AppText';
-import DriverHeader from '../../../../components/common/DriverHeader';
-import ConfirmationModal from '../../../../components/common/ConfirmationModal';
+
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 
 // Import permission helper and auto location service
@@ -24,8 +22,12 @@ import {
 } from '../../../../services/autoLocationService';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
+import { AppText, Button, DriverHeader } from '../../../../components';
 import { RouteMapModal } from './RouteMapModal';
-import { Button } from '../../../../components';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const LocationScreen = () => {
   const { driver, activeShipment, loading } = useDriverMe();
@@ -308,17 +310,18 @@ const LocationScreen = () => {
           </View>
         </ScrollView>
       </View>
-
-      <ConfirmationModal
-        isVisible={modalConfig?.isVisible}
-        onClose={closeModal}
-        onConfirm={modalConfig?.onConfirm}
-        title={modalConfig?.title}
-        description={modalConfig?.description}
-        type={modalConfig?.type}
-        confirmText={modalConfig?.confirmText}
-        cancelText={modalConfig?.cancelText}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={modalConfig?.isVisible}
+          onClose={closeModal}
+          onConfirm={modalConfig?.onConfirm}
+          title={modalConfig?.title}
+          description={modalConfig?.description}
+          type={modalConfig?.type}
+          confirmText={modalConfig?.confirmText}
+          cancelText={modalConfig?.cancelText}
+        />
+      </Suspense>
 
       {/* Put the Modal instance directly at the root of the screen component */}
       <RouteMapModal

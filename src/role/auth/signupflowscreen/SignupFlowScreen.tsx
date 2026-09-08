@@ -23,7 +23,7 @@ import { setCredentials } from '../../../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
-import RoleSelectionModal from '../login/RoleSelectionModal';
+import RoleSelectionModal from '../login/components/RoleSelectionModal';
 import AppIcon from '../../../components/AppIcon';
 
 const SignupFlowScreen = ({ navigation }: any) => {

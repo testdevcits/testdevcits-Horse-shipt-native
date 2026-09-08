@@ -8,13 +8,11 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {
-  Star,
-  MapPin,
+   
   User,
   MessageSquare,
   Package,
-  Compass,
-  Heart,
+  
 } from 'lucide-react-native';
 
 // Constants & Hooks
@@ -90,7 +88,8 @@ const ShipperDetail = () => {
     <View key={index} style={styles.reviewCard}>
       <View style={styles.starRow}>
         {[1, 2, 3, 4, 5].map(s => (
-          <Star
+          <AppIcon
+            name={'Star'}
             key={s}
             size={ICON_SIZE.xs}
             color={COLORS.primary}
@@ -104,7 +103,7 @@ const ShipperDetail = () => {
       </AppText>
       <View style={styles.reviewFooter}>
         <View style={styles.avatarPlaceholder}>
-          <User size={ICON_SIZE.xs} color={COLORS.grey400} />
+          <AppIcon name={"User"} size={ICON_SIZE.xs} color={COLORS.grey400} />
         </View>
         <View>
           <AppText style={styles.reviewerName}>
@@ -196,7 +195,8 @@ const ShipperDetail = () => {
               <AppText style={styles.statValue}>
                 {shipper?.rating > 0 ? shipper?.rating.toFixed(1) : 'New'}
               </AppText>
-              <Star
+              <AppIcon
+                name={'Star'}
                 size={ICON_SIZE.xs}
                 color={COLORS.primary}
                 fill={COLORS.primary}
@@ -216,7 +216,7 @@ const ShipperDetail = () => {
         {/* Location & Description */}
         <View style={styles.contentPadding}>
           <View style={styles.locationContainer}>
-            <MapPin size={ICON_SIZE.sm} color={COLORS.primary} />
+            <AppIcon name={"MapPin"} size={ICON_SIZE.sm} color={COLORS.primary} />
             <AppText style={styles.locationLabel}>{shipper?.region}</AppText>
           </View>
 

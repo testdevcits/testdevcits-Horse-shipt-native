@@ -70,17 +70,11 @@ const styles = StyleSheet.create({
   refreshBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.sm2,
-    borderRadius: RADIUS.sm,
+    
   },
-  refreshBtnText: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.white,
-    marginLeft: SPACING.sm,
-  },
+  
 });
 
 export default styles;

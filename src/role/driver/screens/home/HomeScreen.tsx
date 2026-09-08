@@ -1,5 +1,5 @@
 // src/screens/home/HomeScreen.tsx
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -11,10 +11,7 @@ import { RotateCw } from 'lucide-react-native';
 
 // Imported design systems & components
 import { useDriverMe } from '../../../../hooks/useDriverMe';
-import AppText from '../../../../components/common/AppText';
-import DriverHeader from '../../../../components/common/DriverHeader';
-import ConfirmationModal from '../../../../components/common/ConfirmationModal';
-import { Button, LocationPermissionModal } from '../../../../components';
+import { AppText, Button, DriverHeader } from '../../../../components';
 import styles from './styles.home';
 import { COLORS, SPACING } from '../../../../constants';
 import Toast from 'react-native-toast-message';
@@ -22,8 +19,17 @@ import VahicleInfoCard from './VahicleInfoCard';
 import ActiveShipment from './ActiveShipment';
 import HorseInformation from './HorseInformation';
 import { RouteMapModal } from '../location/RouteMapModal';
+import AppButton from '../../../../components/common/Button/AppButton';
+import AppIcon from '../../../../components/AppIcon';
 
 const HomeScreen = ({ navigation }: any) => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
+  const LocationPermissionModal = lazy(
+    () => import('../../../../components/common/LocationPermissionModal'),
+  );
+
   const {
     driver,
     vehicle,
@@ -135,12 +141,15 @@ const HomeScreen = ({ navigation }: any) => {
               <AppText style={styles.emptyText}>
                 No active manifests or shipments assigned.
               </AppText>
-              <TouchableOpacity style={styles.refreshBtn} onPress={refresh}>
-                <RotateCw size={16} color={COLORS.white} />
-                <AppText style={styles.refreshBtnText}>
-                  Check for Dispatch
-                </AppText>
-              </TouchableOpacity>
+
+              <AppButton
+                leftIcon={
+                  <AppIcon name={'RotateCw'} size={16} color={COLORS.white} />
+                }
+                title="Check for Dispatch"
+                onPress={refresh}
+                buttonStyle={styles.refreshBtn}
+              />
             </View>
           )}
 
@@ -176,16 +185,18 @@ const HomeScreen = ({ navigation }: any) => {
       </View>
 
       {/* Confirmation Modal Slot */}
-      <ConfirmationModal
-        isVisible={isMapModalVisible}
-        onClose={() => setIsMapModalVisible(!isMapModalVisible)}
-        onConfirm={() => setMapVisible(!mapVisible)}
-        title="Routing Map"
-        description={`This command launches GPS navigation for your route:\n\n${activeShipment?.shipment?.pickupLocation} ➔ ${activeShipment?.shipment?.deliveryLocation}`}
-        confirmText="Start Nav"
-        cancelText="Close"
-        type="info"
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isMapModalVisible}
+          onClose={() => setIsMapModalVisible(!isMapModalVisible)}
+          onConfirm={() => setMapVisible(!mapVisible)}
+          title="Routing Map"
+          description={`This command launches GPS navigation for your route:\n\n${activeShipment?.shipment?.pickupLocation} ➔ ${activeShipment?.shipment?.deliveryLocation}`}
+          confirmText="Start Nav"
+          cancelText="Close"
+          type="info"
+        />
+      </Suspense>
 
       {mapVisible && (
         <RouteMapModal
@@ -201,12 +212,14 @@ const HomeScreen = ({ navigation }: any) => {
       )}
 
       {/* Custom Professional Location Permission Modal */}
-      <LocationPermissionModal
-        isVisible={isLocationPermissionModalVisible}
-        onClose={closeLocationPermissionModal}
-        title={locationModalTitle}
-        message={locationModalMessage}
-      />
+      <Suspense fallback={null}>
+        <LocationPermissionModal
+          isVisible={isLocationPermissionModalVisible}
+          onClose={closeLocationPermissionModal}
+          title={locationModalTitle}
+          message={locationModalMessage}
+        />
+      </Suspense>
     </View>
   );
 };

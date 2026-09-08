@@ -27,6 +27,9 @@ import CountryCodePicker, {
 import ShipmentLocationModal from './common/ShipmentLocationModal';
 import LocationPermissionModal from './common/LocationPermissionModal';
 
+//Driver
+import DriverHeader from './common/DriverHeader';
+
 export {
   AppHeader,
   SectionHeader,
@@ -55,6 +58,10 @@ export {
   ReviewCard,
   CountryCodePicker,
   COUNTRIES,
+
+
+  //Driver
+  DriverHeader,
 };
 
 export type { AppSelectRef } from './common/AppSelect';

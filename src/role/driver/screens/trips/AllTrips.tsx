@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader';
-import { AlertCircle } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import { AppText, TripCard } from '../../../../components';
 import styles from './styles.alltrips';
+import AppIcon from '../../../../components/AppIcon';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
 
@@ -145,7 +145,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
           renderItem={renderItem}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <AlertCircle size={ICON_SIZE.xl} color={COLORS.textLight} />
+              <AppIcon name={"AlertCircle"} size={ICON_SIZE.xl} color={COLORS.textLight} />
               <AppText style={styles.emptyText}>
                 No shipments found for this status.
               </AppText>

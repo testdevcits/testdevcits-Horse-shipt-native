@@ -1,14 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Plus,
-  MapPin,
-  Pencil,
-  Trash2,
-  Map as MapIcon,
-  Compass,
-} from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
@@ -20,6 +13,7 @@ import {
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
+import AppIcon from '../../../../components/AppIcon';
 
 const MAX_AREAS = 4;
 
@@ -181,7 +175,7 @@ const PreferredAreasScreen = () => {
           onPress={handleAddNewArea}
           activeOpacity={0.8}
         >
-          <Plus size={18} color={COLORS.white} />
+          <AppIcon name={'Plus'} size={18} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add New Area</AppText>
         </TouchableOpacity>
         {areas.length > 0 && (
@@ -190,7 +184,7 @@ const PreferredAreasScreen = () => {
             onPress={() => setIsViewAllModalVisible(true)}
             activeOpacity={0.8}
           >
-            <MapIcon size={16} color={COLORS.textPrimary} />
+            <AppIcon name={'Map'} size={16} color={COLORS.textPrimary} />
             <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
           </TouchableOpacity>
         )}
@@ -203,7 +197,9 @@ const PreferredAreasScreen = () => {
     return (
       <View style={{ alignItems: 'center', paddingVertical: 20 }}>
         <EmptyState
-          icon={MapPin}
+          icon={
+            <AppIcon name={'MapPin'} size={24} color={COLORS.textSecondary} />
+          }
           title="No Preferred Areas"
           message="Set up to 4 working areas to receive targeted shipment matches near you."
         />
@@ -211,7 +207,7 @@ const PreferredAreasScreen = () => {
           style={[styles.addAreaBtn, { marginTop: 16, alignSelf: 'center' }]}
           onPress={handleAddNewArea}
         >
-          <Plus size={16} color={COLORS.white} />
+          <AppIcon name={'Plus'} size={16} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add Preferred Area</AppText>
         </TouchableOpacity>
       </View>
@@ -276,7 +272,7 @@ const PreferredAreasScreen = () => {
 
         {/* Saved Point Note */}
         <View style={styles.exactPointNoteRow}>
-          <Compass size={12} color={COLORS.textSecondary} />
+          <AppIcon name={'Compass'} size={12} color={COLORS.textSecondary} />
           <AppText style={styles.exactPointNoteText}>
             Exact saved point for this preferred area
           </AppText>
@@ -319,7 +315,7 @@ const PreferredAreasScreen = () => {
             onPress={() => handleEditArea(area)}
             activeOpacity={0.8}
           >
-            <Pencil size={16} color={COLORS.white} />
+            <AppIcon name={'Pencil'} size={16} color={COLORS.white} />
             <AppText style={styles.editCardBtnText}>Edit Area</AppText>
           </TouchableOpacity>
 
@@ -328,7 +324,7 @@ const PreferredAreasScreen = () => {
             onPress={() => handleDeleteAreaPrompt(area._id, area.locationName)}
             activeOpacity={0.8}
           >
-            <Trash2 size={16} color="#DC2626" />
+            <AppIcon name={'Trash2'} size={16} color="#DC2626" />
             <AppText style={styles.deleteCardBtnText}>Delete</AppText>
           </TouchableOpacity>
         </View>

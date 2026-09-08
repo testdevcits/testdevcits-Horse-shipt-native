@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useState } from 'react';
 import {
   View,
   FlatList,
@@ -17,10 +17,13 @@ import {
   AppLoader,
   AppText,
   EmptyState,
-  ConfirmationModal,
 } from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 import styles from './styles.myshipments';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const MyShipments = ({ navigation }: { navigation?: any }) => {
   const dispatch = useAppDispatch();
@@ -177,22 +180,24 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
       />
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Draft Shipment?"
-        description="Are you sure you want to delete this draft shipment? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        isLoading={isDeleting}
-        onClose={() => {
-          if (!isDeleting) {
-            setIsDeleteModalVisible(false);
-            setShipmentToDelete(null);
-          }
-        }}
-        onConfirm={handleConfirmDelete}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Draft Shipment?"
+          description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={isDeleting}
+          onClose={() => {
+            if (!isDeleting) {
+              setIsDeleteModalVisible(false);
+              setShipmentToDelete(null);
+            }
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      </Suspense>
     </View>
   );
 };

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, TouchableOpacity, Pressable } from 'react-native';
-import {
-  User,
-  Building2,
-  Truck,
-  Check,
-  X,
-  ShieldCheck,
-} from 'lucide-react-native';
+import { User, Building2, Truck } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { COLORS } from '../../../constants';
-import AppText from '../../../components/common/AppText';
-import AppButton from '../../../components/common/Button/AppButton';
+import { COLORS } from '../../../../constants';
+import AppText from '../../../../components/common/AppText';
+import AppButton from '../../../../components/common/Button/AppButton';
 import styles from './styles.RoleSelection';
+import AppIcon from '../../../../components/AppIcon';
 
 export type UserRole = 'customer' | 'shipper' | 'driver';
 
@@ -76,7 +70,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
   useEffect(() => {
     if (
       currentRole &&
-      availableRoles.some(roleItem => roleItem.id === currentRole)
+      availableRoles.some(roleItem => roleItem?.id === currentRole)
     ) {
       setSelected(currentRole as UserRole);
     } else if (availableRoles.length > 0) {
@@ -113,7 +107,11 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
           <View style={styles.headerRow}>
             <View style={styles.headerTextGroup}>
               <View style={styles.titleWithBadge}>
-                <ShieldCheck size={20} color={COLORS.primary} />
+                <AppIcon
+                  name={'ShieldCheck'}
+                  size={20}
+                  color={COLORS.primary}
+                />
                 <AppText style={styles.modalTitle}>Select Account Role</AppText>
               </View>
               <AppText style={styles.modalSubtitle}>
@@ -125,21 +123,21 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
               style={styles.closeBtn}
               activeOpacity={0.7}
             >
-              <X size={18} color={COLORS.textSecondary} />
+              <AppIcon name={'X'} size={18} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
           {/* Role Cards List */}
           <View style={styles.rolesList}>
             {availableRoles.map(roleItem => {
-              const isSelected = selected === roleItem.id;
-              const RoleIcon = roleItem.Icon;
+              const isSelected = selected === roleItem?.id;
+              const RoleIcon = roleItem?.Icon;
 
               return (
                 <TouchableOpacity
-                  key={roleItem.id}
+                  key={roleItem?.id}
                   activeOpacity={0.85}
-                  onPress={() => setSelected(roleItem.id)}
+                  onPress={() => setSelected(roleItem?.id)}
                   style={[styles.roleCard, isSelected && styles.roleCardActive]}
                 >
                   {/* Left Icon Badge */}
@@ -164,7 +162,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
                           isSelected && styles.cardTitleActive,
                         ]}
                       >
-                        {roleItem.title}
+                        {roleItem?.title}
                       </AppText>
                       <View
                         style={[
@@ -178,7 +176,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
                             isSelected && styles.tagTextActive,
                           ]}
                         >
-                          {roleItem.tag}
+                          {roleItem?.tag}
                         </AppText>
                       </View>
                     </View>
@@ -188,7 +186,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
                         isSelected && styles.cardSubtitleActive,
                       ]}
                     >
-                      {roleItem.subtitle}
+                      {roleItem?.subtitle}
                     </AppText>
                   </View>
 
@@ -200,7 +198,12 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
                     ]}
                   >
                     {isSelected && (
-                      <Check size={14} color={COLORS.white} strokeWidth={3} />
+                      <AppIcon
+                        name={'Check'}
+                        size={14}
+                        color={COLORS.white}
+                        strokeWidth={3}
+                      />
                     )}
                   </View>
                 </TouchableOpacity>

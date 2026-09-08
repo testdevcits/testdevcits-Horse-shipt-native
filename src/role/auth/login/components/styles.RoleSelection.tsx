@@ -6,7 +6,7 @@ import {
   RADIUS,
   SIZES,
   SPACING,
-} from '../../../constants';
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   backdrop: {

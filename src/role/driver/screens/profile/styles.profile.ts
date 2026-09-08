@@ -237,15 +237,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     marginLeft: SPACING.md,
   },
-  logoutButton: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.primary,
-    height: 44,
-    borderRadius: RADIUS.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: SPACING.xs,
-  },
+  
   logoutIcon: {
     marginRight: SPACING.sm,
   },

@@ -14,7 +14,7 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
- 
+
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
@@ -24,7 +24,7 @@ import {
   AppSelect,
   AppSelectRef,
 } from '../../../../components';
-import { COLORS, SPACING } from '../../../../constants';
+import { COLORS, FONTS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
 import AppIcon from '../../../../components/AppIcon';
@@ -173,14 +173,18 @@ const VehicleItemCard = React.memo(
               {assignedDriverName ? (
                 <AppIcon name={'UserCheck'} size={15} color={COLORS.primary} />
               ) : (
-                <AppIcon name={'UserPlus'} size={15} color={COLORS.textPrimary} />
+                <AppIcon
+                  name={'UserPlus'}
+                  size={15}
+                  color={COLORS.textPrimary}
+                />
               )}
               <AppText
                 style={[
                   styles.actionPillText,
                   assignedDriverName && {
                     color: COLORS.primary,
-                    fontFamily: 'PlusJakartaSans-Bold',
+                    fontFamily: FONTS.bold,
                   },
                 ]}
                 numberOfLines={1}
@@ -427,7 +431,12 @@ const MyVehiclesScreen = ({ navigation }: any) => {
         onPress={handleAddNewVehicle}
         activeOpacity={0.8}
       >
-        <AppIcon name={'Plus'} size={18} color={COLORS.white} strokeWidth={2.5} />
+        <AppIcon
+          name={'Plus'}
+          size={18}
+          color={COLORS.white}
+          strokeWidth={2.5}
+        />
         <AppText style={styles.addBtnText}>Add Vehicle</AppText>
       </TouchableOpacity>
     </View>
@@ -449,7 +458,12 @@ const MyVehiclesScreen = ({ navigation }: any) => {
           ]}
           onPress={handleAddNewVehicle}
         >
-          <AppIcon name={'Plus'} size={18} color={COLORS.white} strokeWidth={2.5} />
+          <AppIcon
+            name={'Plus'}
+            size={18}
+            color={COLORS.white}
+            strokeWidth={2.5}
+          />
           <AppText style={styles.addBtnText}>+ Add First Vehicle</AppText>
         </TouchableOpacity>
       </View>

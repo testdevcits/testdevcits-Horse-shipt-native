@@ -1,21 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Truck,
-  Compass,
-  ShieldCheck,
-} from 'lucide-react-native';
+
 import { AppText, Button } from '../../../../components';
-import {
-  COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS, SPACING } from '../../../../constants';
+import AppIcon from '../../../../components/AppIcon';
+import styles from './styles.ActiveShipment';
 
 const ActiveShipment = ({
   activeShipment,
@@ -45,7 +34,7 @@ const ActiveShipment = ({
       {/* Header Bar */}
       <View style={styles.cardHeader}>
         <View style={styles.headerLeftRow}>
-          <Compass size={20} color={COLORS.primary} />
+          <AppIcon name={'Compass'} size={20} color={COLORS.primary} />
           <AppText style={styles.cardHeaderTitle}>
             Active Dispatch Manifest
           </AppText>
@@ -86,13 +75,17 @@ const ActiveShipment = ({
           {/* Quick Metrics Bar */}
           <View style={styles.metricsRow}>
             <View style={styles.metricChip}>
-              <Truck size={14} color={COLORS.primary} />
+              <AppIcon name={'Truck'} size={14} color={COLORS.primary} />
               <AppText style={styles.metricChipText}>
                 {activeShipment?.shipment?.numberOfHorses || 1} Horse(s)
               </AppText>
             </View>
             <View style={styles.metricChip}>
-              <ShieldCheck size={14} color={COLORS.greenActive} />
+              <AppIcon
+                name={'ShieldCheck'}
+                size={14}
+                color={COLORS.greenActive}
+              />
               <AppText style={styles.metricChipText}>Insured Load</AppText>
             </View>
           </View>
@@ -105,13 +98,17 @@ const ActiveShipment = ({
             <View
               style={[styles.nodeIconCircle, { backgroundColor: '#10B981' }]}
             >
-              <MapPin size={16} color={COLORS.white} />
+              <AppIcon name={'MapPin'} size={16} color={COLORS.white} />
             </View>
             <View style={styles.stopDetails}>
               <AppText style={styles.stopLabel}>PICKUP LOCATION</AppText>
               <AppText style={styles.stopLocation}>{pickupLoc}</AppText>
               <View style={styles.stopMetaRow}>
-                <Calendar size={13} color={COLORS.textSecondary} />
+                <AppIcon
+                  name={'Calendar'}
+                  size={13}
+                  color={COLORS.textSecondary}
+                />
                 <AppText style={styles.stopMetaText}>Scheduled Load</AppText>
               </View>
             </View>
@@ -127,13 +124,17 @@ const ActiveShipment = ({
             <View
               style={[styles.nodeIconCircle, { backgroundColor: '#EF4444' }]}
             >
-              <MapPin size={16} color={COLORS.white} />
+              <AppIcon name={'MapPin'} size={16} color={COLORS.white} />
             </View>
             <View style={styles.stopDetails}>
               <AppText style={styles.stopLabel}>DROP-OFF LOCATION</AppText>
               <AppText style={styles.stopLocation}>{deliveryLoc}</AppText>
               <View style={styles.stopMetaRow}>
-                <Clock size={13} color={COLORS.textSecondary} />
+                <AppIcon
+                  name={'Clock'}
+                  size={13}
+                  color={COLORS.textSecondary}
+                />
                 <AppText style={styles.stopMetaText}>Target Delivery</AppText>
               </View>
             </View>
@@ -152,174 +153,3 @@ const ActiveShipment = ({
 };
 
 export default ActiveShipment;
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.md,
-    marginBottom: SPACING.md,
-    overflow: 'hidden',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.goldLightBg,
-    borderBottomWidth: 1,
-    borderColor: COLORS.goldBorder,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  headerLeftRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  cardHeaderTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.goldDarkText,
-  },
-  statusBadgePill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: RADIUS.round,
-  },
-  transitPill: {
-    backgroundColor: '#DCFCE7',
-    borderWidth: 1,
-    borderColor: '#86EFAC',
-  },
-  pendingPill: {
-    backgroundColor: '#FEF3C7',
-    borderWidth: 1,
-    borderColor: '#FDE68A',
-  },
-  statusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  greenDot: { backgroundColor: '#16A34A' },
-  amberDot: { backgroundColor: '#D97706' },
-  statusPillText: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    letterSpacing: 0.5,
-  },
-  greenPillText: { color: '#15803D' },
-  amberPillText: { color: '#B45309' },
-  cardBody: {
-    padding: 16,
-  },
-  routeHeaderBox: {
-    backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.sm,
-    padding: 16,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  routeLabel: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.primary,
-    letterSpacing: 1.2,
-    marginBottom: 4,
-  },
-  routePlaces: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-    marginBottom: 10,
-  },
-  metricsRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  metricChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: RADIUS.xs,
-  },
-  metricChipText: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.goldDarkText,
-  },
-  timelineContainer: {
-    marginVertical: 4,
-  },
-  stopCard: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.grey50,
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-    borderRadius: RADIUS.sm,
-    padding: 12,
-    alignItems: 'center',
-  },
-  nodeIconCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  stopDetails: {
-    flex: 1,
-  },
-  stopLabel: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.mini,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.6,
-    marginBottom: 2,
-  },
-  stopLocation: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-    marginBottom: 4,
-    lineHeight: 18,
-  },
-  stopMetaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  stopMetaText: {
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-  connectorWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 20,
-    marginVertical: 2,
-  },
-  verticalTrackLine: {
-    width: 2,
-    height: '100%',
-    backgroundColor: COLORS.goldBorder,
-  },
-});
