@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+  lazy,
+  Suspense,
+} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,17 +14,14 @@ import {
   RefreshControl,
   FlatList,
 } from 'react-native';
-import {
-  AppHeader,
-  AppText,
-  SearchBarCompt,
-  AppSelect,
-} from '../../../../components';
+import { AppHeader, AppText, SearchBarCompt } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
 import imageIndex from '../../../../assets/images/imageIndex';
 import AppIcon from '../../../../components/AppIcon';
+
+const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 
 const ChatItemCard = memo(
   ({
@@ -207,12 +211,14 @@ const ShipperChatsScreen = ({ navigation }: any) => {
             />
 
             {/* Filter Dropdown Select Component */}
-            <AppSelect
-              value={selectedFilter}
-              options={['All', 'Active', 'InActive']}
-              placeholder="Filter messages"
-              onSelect={(item: string) => setSelectedFilter(item as any)}
-            />
+            <Suspense fallback={null}>
+              <AppSelect
+                value={selectedFilter}
+                options={['All', 'Active', 'InActive']}
+                placeholder="Filter messages"
+                onSelect={(item: string) => setSelectedFilter(item as any)}
+              />
+            </Suspense>
           </View>
         }
         ListEmptyComponent={renderEmptyComponent}

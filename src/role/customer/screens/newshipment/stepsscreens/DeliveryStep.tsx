@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 
-import { AppText, AppCalendarModal } from '../../../../../components';
+import { AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
@@ -16,6 +16,9 @@ interface DeliveryStepProps {
   errors: any;
 }
 
+const AppCalendarModal = lazy(
+  () => import('../../../../../components/common/AppCalendarModal'),
+);
 const DeliveryStep: React.FC<DeliveryStepProps> = ({
   form,
   updateForm,
@@ -312,28 +315,30 @@ const DeliveryStep: React.FC<DeliveryStepProps> = ({
       </ScrollView>
 
       {/* CALENDAR MODAL */}
-      <AppCalendarModal
-        visible={activeDateType !== null}
-        onClose={handleCloseCalendar}
-        onSelect={handleDateSelect}
-        title={
-          activeDateType === 'start'
-            ? 'Delivery Start Date'
-            : 'Delivery End Date'
-        }
-        initialDate={
-          activeDateType === 'start'
-            ? getSafeDateStr(form.deliveryStartDate)
-            : getSafeDateStr(form.deliveryEndDate)
-        }
-        minDate={
-          activeDateType === 'start'
-            ? getMinDeliveryStartStr()
-            : form.deliveryStartDate
-            ? getSafeDateStr(form.deliveryStartDate)
-            : getMinDeliveryStartStr()
-        }
-      />
+      <Suspense fallback={null}>
+        <AppCalendarModal
+          visible={activeDateType !== null}
+          onClose={handleCloseCalendar}
+          onSelect={handleDateSelect}
+          title={
+            activeDateType === 'start'
+              ? 'Delivery Start Date'
+              : 'Delivery End Date'
+          }
+          initialDate={
+            activeDateType === 'start'
+              ? getSafeDateStr(form.deliveryStartDate)
+              : getSafeDateStr(form.deliveryEndDate)
+          }
+          minDate={
+            activeDateType === 'start'
+              ? getMinDeliveryStartStr()
+              : form.deliveryStartDate
+              ? getSafeDateStr(form.deliveryStartDate)
+              : getMinDeliveryStartStr()
+          }
+        />
+      </Suspense>
     </View>
   );
 };

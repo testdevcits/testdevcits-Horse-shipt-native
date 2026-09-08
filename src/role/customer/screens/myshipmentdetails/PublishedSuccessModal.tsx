@@ -69,7 +69,7 @@ const PublishedSuccessModal = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.secondaryBtn}
+              style={styles.secondaryBtn} 
               onPress={onClose}
               activeOpacity={0.8}
             >

@@ -12,17 +12,20 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   goldFilledBtn: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: RADIUS.round,
     paddingVertical: SPACING.xs,
     paddingHorizontal: SPACING.lg,
     alignItems: 'center',
     alignSelf: 'flex-end',
+    borderWidth:0.3,
+    borderColor:COLORS.grey400
   },
   goldFilledBtnText: {
-    color: COLORS.white,
+    color: COLORS.black,
     fontSize: FONT_SIZE.md,
-    fontFamily: FONTS.bold,
+    fontFamily: FONTS.semiBold,
+    opacity:0.8
   },
   infoCard: {
     backgroundColor: COLORS.white,

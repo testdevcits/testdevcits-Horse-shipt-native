@@ -12,9 +12,9 @@ import {
   COLORS,
   FONT_SIZE,
   FONTS,
-  RADIUS,
+  
   SPACING,
-  SIZES,
+  
 } from '../../constants';
 import AppText from './AppText';
 import AppIcon from '../AppIcon';
@@ -80,23 +80,32 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
             <AppText style={styles.driverName} numberOfLines={1}>
               Captain {name || 'Driver'}
             </AppText>
-            {/* <View style={styles.ratingBadge}>
-                            <Star size={12} color={COLORS.warning} fill={COLORS.warning} />
-                            <AppText style={styles.ratingText}>{rating.toFixed(1)}</AppText>
-                        </View> */}
           </View>
 
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={onStatusToggle}
-            style={styles.statusBadge}
+            style={[
+              styles.statusBadge,
+              isOnline ? styles.statusBadgeOnline : styles.statusBadgeOffline,
+            ]}
           >
-            <AppIcon
-              name={'Radio'}
-              size={12}
-              color={isOnline ? COLORS.greenActive : COLORS.textLight}
+            <View
+              style={[
+                styles.statusDot,
+                {
+                  backgroundColor: isOnline
+                    ? COLORS.greenActive
+                    : COLORS.grey400,
+                },
+              ]}
             />
-            <AppText style={styles.statusBadgeText}>
+            <AppText
+              style={[
+                styles.statusBadgeText,
+                { color: isOnline ? COLORS.greenSuccess : COLORS.slate600 },
+              ]}
+            >
               {isOnline ? statusText.toUpperCase() : 'OFFLINE'}
             </AppText>
           </TouchableOpacity>
@@ -107,7 +116,7 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
           <View style={styles.rightContainer}>{rightComponent}</View>
         ) : (
           <View style={styles.captainShieldBox}>
-            <AppIcon name={'ShieldCheck'} size={20} color={COLORS.primary} />
+            <AppIcon name={'ShieldCheck'} size={18} color={COLORS.primary} />
             <AppText style={styles.verifiedCaptainTag}>VERIFIED</AppText>
           </View>
         )}
@@ -120,35 +129,41 @@ export default DriverHeader;
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: COLORS.goldLightBg,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.goldBorder,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
+    // shadowColor: COLORS.black,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.04,
+    // shadowRadius: 8,
+    elevation: 3,
+    margin: 16,
+    borderRadius: 20,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs2,
+    paddingVertical: SPACING.sm,
     backgroundColor: COLORS.white,
-    borderBottomWidth: SIZES.borderWidthThin,
-    borderBottomColor: COLORS.grey200,
     ...Platform.select({
       android: {
-        paddingTop: SPACING.md2,
+        paddingTop: SPACING.md,
       },
     }),
+    borderRadius: 20,
   },
   leftContainer: {
     position: 'relative',
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm2,
   },
   avatarWrapper: {
-    width: RADIUS.circle,
-    height: RADIUS.circle,
-    borderWidth: SIZES.borderWidthThick,
+    width: 48,
+    height: 48,
+    borderWidth: 2,
     borderColor: COLORS.primary,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldLightBg,
+    borderRadius: 14,
+    backgroundColor: COLORS.goldCreamBg,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -159,16 +174,16 @@ const styles = StyleSheet.create({
   },
   monogramText: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.title,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.primary,
   },
   indicatorDot: {
-    width: SPACING.md,
-    height: SPACING.md,
-    borderRadius: RADIUS.xs2,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     backgroundColor: COLORS.greenActive,
-    borderWidth: SIZES.borderWidthThick,
-    borderColor: COLORS.goldLightBg,
+    borderWidth: 2,
+    borderColor: COLORS.white,
     position: 'absolute',
     bottom: -2,
     right: -2,
@@ -185,42 +200,38 @@ const styles = StyleSheet.create({
   },
   driverName: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.slate900,
     flexShrink: 1,
-  },
-  ratingBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    backgroundColor: COLORS.amberLightBg,
-    paddingHorizontal: SPACING.xs2,
-    paddingVertical: SPACING.xxs,
-    borderRadius: RADIUS.sm2,
-  },
-  ratingText: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.amberWarning,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    borderWidth: SIZES.borderWidthThin,
-    borderColor: COLORS.goldBorder,
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.md,
-    paddingVertical: 3,
-    paddingHorizontal: SPACING.sm2,
-    marginTop: SPACING.xs,
+    gap: 6,
+    borderRadius: 20,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    marginTop: 4,
     alignSelf: 'flex-start',
+    borderWidth: 1,
+  },
+  statusBadgeOnline: {
+    backgroundColor: COLORS.greenLightBg,
+    borderColor: COLORS.greenBorder,
+  },
+  statusBadgeOffline: {
+    backgroundColor: COLORS.grey100,
+    borderColor: COLORS.grey200,
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   statusBadgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldDarkText,
-    letterSpacing: 0.4,
+    letterSpacing: 0.5,
   },
   rightContainer: {
     justifyContent: 'center',
@@ -228,20 +239,20 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.sm,
   },
   captainShieldBox: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: SPACING.xs,
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.sm,
-    borderWidth: SIZES.borderWidthThin,
+    gap: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: COLORS.goldLightBg,
+    borderRadius: 12,
+    borderWidth: 1,
     borderColor: COLORS.goldBorder,
   },
   verifiedCaptainTag: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xxs,
-    color: COLORS.primary,
-    marginTop: SPACING.xxs,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.goldDarkText,
     letterSpacing: 0.5,
   },
 });

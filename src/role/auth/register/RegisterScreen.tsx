@@ -8,15 +8,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  FONT_SIZE,
-} from '../../../constants';
+ 
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';

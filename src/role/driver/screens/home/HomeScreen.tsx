@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
-  TouchableOpacity,
   RefreshControl,
 } from 'react-native';
 import { RotateCw } from 'lucide-react-native';
@@ -138,8 +137,15 @@ const HomeScreen = ({ navigation }: any) => {
             </>
           ) : (
             <View style={styles.emptyCard}>
+              <View style={styles.emptyIconBox}>
+                <AppIcon name={'Radio'} size={24} color={COLORS.primary} />
+              </View>
+              <AppText style={styles.emptyTitle}>
+                No active manifests assigned
+              </AppText>
               <AppText style={styles.emptyText}>
-                No active manifests or shipments assigned.
+                You are currently on standby for dispatch assignments. Tap below
+                to check for new trip manifests.
               </AppText>
 
               <AppButton

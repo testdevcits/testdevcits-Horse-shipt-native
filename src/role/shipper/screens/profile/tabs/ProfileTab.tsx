@@ -24,7 +24,7 @@ const ProfileTab: React.FC<Props> = ({
 }) => {
   const reviewsList = profileData?.reviews || [];
 
-  return (
+  return (  
     <View style={styles.tabSection}>
       {/* Update Locations Button */}
       <TouchableOpacity
@@ -129,7 +129,9 @@ const ProfileTab: React.FC<Props> = ({
                     />
                     <View>
                       <AppText style={styles.reviewerName}>
-                        {rev?.customerName || rev?.customerId?.name || 'Customer'}
+                        {rev?.customerName ||
+                          rev?.customerId?.name ||
+                          'Customer'}
                       </AppText>
                       <AppText style={styles.reviewDate}>
                         {formatDate(rev?.createdAt || new Date(), 'MM/DD/YYYY')}

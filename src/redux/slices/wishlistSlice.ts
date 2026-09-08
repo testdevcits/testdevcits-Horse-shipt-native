@@ -28,7 +28,7 @@ export const fetchWishlistThunk = createAsyncThunk(
         const ids =
           Array.isArray(response?.shipperIds) && response.shipperIds.length > 0
             ? response.shipperIds
-            : data.map((item: any) => item.id || item._id);
+            : data.map((item: any) => item?.id || item?._id);
         return { data, ids };
       }
       return rejectWithValue(response?.message || 'Failed to fetch wishlist');
@@ -111,7 +111,7 @@ const wishlistSlice = createSlice({
         // Currently in wishlist -> Remove it
         state.wishlistIds.splice(index, 1);
         state.wishlist = state.wishlist.filter(
-          item => (item.id || item._id) !== shipperId,
+          item => (item?.id || item?._id) !== shipperId,
         );
       } else {
         // Not in wishlist -> Add it

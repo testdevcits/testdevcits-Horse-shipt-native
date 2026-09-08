@@ -312,9 +312,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
+    textAlign: 'center',
   },
   deleteBtn: {
-    flex: 1,
+    flex: 1,  
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.divider,

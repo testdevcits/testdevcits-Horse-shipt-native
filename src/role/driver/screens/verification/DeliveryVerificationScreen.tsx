@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -17,12 +17,14 @@ import { OtpInput } from 'react-native-otp-entry';
 
 import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
-import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.deliveryverification';
 import AppIcon from '../../../../components/AppIcon';
 
 const DeliveryVerificationScreen = () => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
@@ -468,20 +470,22 @@ const DeliveryVerificationScreen = () => {
         </View>
 
         {/* Alert Dialog confirmation slot */}
-        <ConfirmationModal
-          isVisible={modalConfig.isVisible}
-          onClose={() =>
-            setModalConfig(prev => ({ ...prev, isVisible: false }))
-          }
-          onConfirm={() =>
-            setModalConfig(prev => ({ ...prev, isVisible: false }))
-          }
-          title={modalConfig.title}
-          description={modalConfig.description}
-          type={modalConfig.type}
-          confirmText="Got It"
-          cancelText="Close"
-        />
+        <Suspense fallback={null}>
+          <ConfirmationModal
+            isVisible={modalConfig.isVisible}
+            onClose={() =>
+              setModalConfig(prev => ({ ...prev, isVisible: false }))
+            }
+            onConfirm={() =>
+              setModalConfig(prev => ({ ...prev, isVisible: false }))
+            }
+            title={modalConfig.title}
+            description={modalConfig.description}
+            type={modalConfig.type}
+            confirmText="Got It"
+            cancelText="Close"
+          />
+        </Suspense>
       </KeyboardAvoidingView>
     </View>
   );

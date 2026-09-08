@@ -148,7 +148,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             </View>
             <View style={styles.timelineContent}>
               <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
-              <AppText style={styles.timelineAddress} numberOfLines={2}>
+              <AppText style={styles.timelineAddress} numberOfLines={3}>
                 {data?.deliveryLocation || 'N/A'}
               </AppText>
               <View style={styles.dateChip}>

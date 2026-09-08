@@ -8,7 +8,6 @@ import {
   AppText,
   AppLoader,
   EmptyState,
-  ConfirmationModal,
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -16,6 +15,9 @@ import styles from './styles.preferredareas';
 import AppIcon from '../../../../components/AppIcon';
 
 const MAX_AREAS = 4;
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const PreferredAreasScreen = () => {
   const [areas, setAreas] = useState<any[]>([]);
@@ -377,22 +379,24 @@ const PreferredAreasScreen = () => {
       </Suspense>
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={deleteModalVisible}
-        onClose={() => {
-          setDeleteModalVisible(false);
-          setAreaToDelete(null);
-        }}
-        onConfirm={handleConfirmDelete}
-        title="Delete Preferred Area"
-        description={`Are you sure you want to delete "${
-          areaToDelete?.name || 'this preferred area'
-        }"?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isDeleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={deleteModalVisible}
+          onClose={() => {
+            setDeleteModalVisible(false);
+            setAreaToDelete(null);
+          }}
+          onConfirm={handleConfirmDelete}
+          title="Delete Preferred Area"
+          description={`Are you sure you want to delete "${
+            areaToDelete?.name || 'this preferred area'
+          }"?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
+      </Suspense>
     </View>
   );
 };

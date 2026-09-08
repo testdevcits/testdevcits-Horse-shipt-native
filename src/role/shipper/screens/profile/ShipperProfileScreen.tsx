@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -7,13 +7,13 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
- import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../redux/slices/authSlice';
-import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
+import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -25,8 +25,6 @@ import ShipmentTab from './tabs/ShipmentTab';
 import PaymentsTab from './tabs/PaymentsTab';
 import SubscriptionTab from './tabs/SubscriptionTab';
 import NotificationTab from './tabs/NotificationTab';
-import ConnectBankModal from '../home/ConnectBankModal';
-import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../components/AppIcon';
 
@@ -38,6 +36,14 @@ type TabType =
   | 'Notification';
 
 const ShipperProfileScreen = ({ navigation }: any) => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
+  const ConnectBankModal = lazy(() => import('../home/ConnectBankModal'));
+  const SubscriptionRequiredModal = lazy(
+    () => import('../../components/SubscriptionRequiredModal'),
+  );
+
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const [activeTab, setActiveTab] = useState<TabType>('Profile');
@@ -502,7 +508,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   <ActivityIndicator size="small" color={COLORS.primary} />
                 ) : (
                   <>
-                    <AppIcon name="Pencil" size={16} color={COLORS.textPrimary} />
+                    <AppIcon
+                      name="Pencil"
+                      size={16}
+                      color={COLORS.textPrimary}
+                    />
                     <AppText style={styles.editPicText}>Edit picture</AppText>
                   </>
                 )}
@@ -576,33 +586,36 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           />
         )}
       </ScrollView>
-
-      <ConnectBankModal
-        isVisible={isBankModalVisible}
-        onClose={() => setIsBankModalVisible(false)}
-        navigation={navigation}
-      />
-
-      <SubscriptionRequiredModal
-        visible={isSubModalVisible}
-        onClose={closeSubModal}
-        shipperStatus={shipperStatus}
-        subscriptionStatus={subscriptionStatus}
-        plansData={plansData}
-        onSubscriptionSuccess={refreshSubStatus}
-      />
-
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleConfirmLogout}
-        title="Logout"
-        description="Are you sure you want to log out?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isLoggingOut}
-      />
+      <Suspense fallback={null}>
+        <ConnectBankModal
+          isVisible={isBankModalVisible}
+          onClose={() => setIsBankModalVisible(false)}
+          navigation={navigation}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubModalVisible}
+          onClose={closeSubModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onSubscriptionSuccess={refreshSubStatus}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleConfirmLogout}
+          title="Logout"
+          description="Are you sure you want to log out?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isLoggingOut}
+        />
+      </Suspense>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { View, ScrollView, TouchableOpacity, Image, Share } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
- 
+
 import { formatDate } from '../../../../utils/helpers';
 import Toast from 'react-native-toast-message';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -16,6 +16,8 @@ import useStripeStatus from '../../../../hooks/useStripeStatus';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 import ConnectBankModal from './ConnectBankModal';
 import AppIcon from '../../../../components/AppIcon';
+import AppButton from '../../../../components/common/Button/AppButton';
+import { isVisible } from 'react-native-bootsplash';
 
 const AskQuestionModal = lazy(() => import('./AskQuestionModal'));
 const SubmitOfferModal = lazy(() => import('./SubmitOfferModal'));
@@ -462,6 +464,10 @@ const ShipperShipmentDetailsScreen = () => {
           </View>
         </View>
 
+        {isMapVisible === false && (
+          <AppButton title="Open Map" onPress={() => setIsMapVisible(true)} />
+        )}
+
         {/* 5. Horse Details Accordion Cards for All Horses */}
         {horsesList.map((horse: any, index: number) => {
           const isExpanded = expandedHorseIndices.includes(index);
@@ -476,7 +482,7 @@ const ShipperShipmentDetailsScreen = () => {
           const colour = horse?.colour || horse?.color || 'Not Available';
           const age =
             horse?.age !== undefined && horse?.age !== null
-              ? `${horse.age}`
+              ? `${horse?.age}`
               : 'Not Available';
           const stallSize =
             horse?.requestedStallSize || horse?.stallSize || 'Not Available';
@@ -498,14 +504,22 @@ const ShipperShipmentDetailsScreen = () => {
                 <View style={styles.accordionTitleRow}>
                   <AppIcon name="Box" size={18} color={COLORS.brandBrown} />
                   <AppText style={styles.cardHeaderTitle}>
-                    Horse Details {index + 1}/{horsesList.length}
+                    Horse Details {index + 1}/{horsesList?.length}
                   </AppText>
                 </View>
 
                 {isExpanded ? (
-                  <AppIcon name="ChevronUp" size={20} color={COLORS.textSecondary} />
+                  <AppIcon
+                    name="ChevronUp"
+                    size={20}
+                    color={COLORS.textSecondary}
+                  />
                 ) : (
-                  <AppIcon name="ChevronDown" size={20} color={COLORS.textSecondary} />
+                  <AppIcon
+                    name="ChevronDown"
+                    size={20}
+                    color={COLORS.textSecondary}
+                  />
                 )}
               </TouchableOpacity>
 

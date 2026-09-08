@@ -4,6 +4,8 @@ import React, {
   useRef,
   useCallback,
   useMemo,
+  lazy,
+  Suspense,
 } from 'react';
 import {
   View,
@@ -21,15 +23,18 @@ import {
   AppLoader,
   EmptyState,
   SearchBarCompt,
-  ConfirmationModal,
-  AppSelect,
   AppSelectRef,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
-import ContractModal from './ContractModal';
 import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
 import { FileText } from 'lucide-react-native';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
+const ContractModal = lazy(() => import('./ContractModal'));
+const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 
 const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
@@ -563,42 +568,48 @@ const MyQuotesScreen = () => {
       />
 
       {/* Contract Detail Modal */}
-      <ContractModal
-        visible={isContractModalVisible}
-        onClose={() => setIsContractModalVisible(false)}
-        contractUrl={selectedContractData?.url}
-        shipmentCode={selectedContractData?.code}
-        quoteData={selectedContractData?.quote}
-      />
+      <Suspense fallback={null}>
+        <ContractModal
+          visible={isContractModalVisible}
+          onClose={() => setIsContractModalVisible(false)}
+          contractUrl={selectedContractData?.url}
+          shipmentCode={selectedContractData?.code}
+          quoteData={selectedContractData?.quote}
+        />
+      </Suspense>
 
       {/* Quote Delete Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={Boolean(quoteToDelete)}
-        onClose={() => setQuoteToDelete(null)}
-        onConfirm={handleConfirmDelete}
-        title="Delete Quote"
-        description="Are you sure you want to remove this quote? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isDeleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={Boolean(quoteToDelete)}
+          onClose={() => setQuoteToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          title="Delete Quote"
+          description="Are you sure you want to remove this quote? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
+      </Suspense>
 
       {/* Vehicle Selection AppSelect Sheet */}
-      <AppSelect
-        ref={vehicleSelectRef}
-        hideSelector
-        label="Select Vehicle to Assign"
-        placeholder="Select Vehicle"
-        value=""
-        options={vehicles?.map(v =>
-          `${v.make || ''} ${v.model || ''} (${
-            v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
-          })`.trim(),
-        )}
-        onSelect={handleSelectVehicle}
-        searchable
-      />
+      <Suspense fallback={null}>
+        <AppSelect
+          ref={vehicleSelectRef}
+          hideSelector
+          label="Select Vehicle to Assign"
+          placeholder="Select Vehicle"
+          value=""
+          options={vehicles?.map(v =>
+            `${v.make || ''} ${v.model || ''} (${
+              v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+            })`.trim(),
+          )}
+          onSelect={handleSelectVehicle}
+          searchable
+        />
+      </Suspense>
     </View>
   );
 };

@@ -4,7 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
-  StyleSheet,
+    
   Share,
   Platform,
 } from 'react-native';

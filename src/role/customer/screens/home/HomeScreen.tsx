@@ -101,24 +101,26 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           keyExtractor={item => item?._id}
           scrollEnabled={false}
           ListHeaderComponent={
-            <>
-              <Pressable onPress={() => navigation.navigate('New')}>
-                <Image
-                  source={imageIndex.Banner}
-                  style={{
-                    width: SCREEN_WIDTH - 16,
-                    height: 216,
-                    alignSelf: 'center',
-                    borderRadius: 20,
-                  }}
-                  resizeMode="stretch"
+            !loading ? (
+              <>
+                <Pressable onPress={() => navigation.navigate('New')}>
+                  <Image
+                    source={imageIndex.Banner}
+                    style={{
+                      width: SCREEN_WIDTH - 16,
+                      height: 216,
+                      alignSelf: 'center',
+                      borderRadius: 20,
+                    }}
+                    resizeMode="stretch"
+                  />
+                </Pressable>
+                <SectionHeader
+                  title="Current Shipments"
+                  onPress={() => navigation.navigate('Shipments')}
                 />
-              </Pressable>
-              <SectionHeader
-                title="Current Shipments"
-                onPress={() => navigation.navigate('Shipments')}
-              />
-            </>
+              </>
+            ) : null
           }
           renderItem={({ item }) => (
             <ShipmentCardDetailed

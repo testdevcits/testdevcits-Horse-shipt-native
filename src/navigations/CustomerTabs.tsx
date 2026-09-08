@@ -24,7 +24,7 @@ import AppIcon from '../components/AppIcon';
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
 
-const CustomTabBar = ({ state,   navigation }: any) => {
+const CustomTabBar = ({ state, navigation }: any) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {

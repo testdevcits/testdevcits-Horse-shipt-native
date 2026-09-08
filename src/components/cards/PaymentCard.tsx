@@ -23,19 +23,19 @@ const PaymentCard = memo(({ item, onPress }: PaymentCardProps) => {
     item?.paymentMethod ||
     'Not Available'
   ).toUpperCase();
-  const last4 = item?.last4 ? `•••• ${item.last4}` : '';
+  const last4 = item?.last4 ? `•••• ${item?.last4}` : '';
   const title = last4 ? `${brand} ${last4}` : brand;
   const dateStr =
     item?.paymentDateTime ||
     (item?.createdAt
-      ? new Date(item.createdAt).toLocaleDateString('en-US')
+      ? new Date(item?.createdAt).toLocaleDateString('en-US')
       : '');
 
   const amountStr =
     typeof item?.amount === 'number'
-      ? `$${item.amount.toFixed(2)}`
+      ? `$${item?.amount.toFixed(2)}`
       : item?.amount
-      ? `$${item.amount}`
+      ? `$${item?.amount}`
       : '$0.00';
 
   const pickup = item?.pickupLocation || item?.shipment?.pickupLocation || '';

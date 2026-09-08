@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
@@ -13,7 +13,6 @@ import {
   AppLoader,
   EmptyState,
   TruckDriverCard,
-  ConfirmationModal,
   SearchBarCompt,
   AppSelect,
 } from '../../../../components';
@@ -23,6 +22,10 @@ import AddDriverModal from './AddDriverModal';
 import styles from './styles.truckdriver';
 import AppIcon from '../../../../components/AppIcon';
 import { User } from 'lucide-react-native';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const TruckDriverScreen = () => {
   const [drivers, setDrivers] = useState<any[]>([]);
@@ -280,22 +283,24 @@ const TruckDriverScreen = () => {
       />
 
       {/* Delete Driver Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={deleteModalVisible}
-        onClose={() => {
-          setDeleteModalVisible(false);
-          setSelectedDriverToDelete(null);
-        }}
-        onConfirm={handleConfirmDelete}
-        title="Delete Driver"
-        description={`Are you sure you want to delete driver ${
-          selectedDriverToDelete?.name || ''
-        }?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isDeleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={deleteModalVisible}
+          onClose={() => {
+            setDeleteModalVisible(false);
+            setSelectedDriverToDelete(null);
+          }}
+          onConfirm={handleConfirmDelete}
+          title="Delete Driver"
+          description={`Are you sure you want to delete driver ${
+            selectedDriverToDelete?.name || ''
+          }?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
+      </Suspense>
     </View>
   );
 };

@@ -17,7 +17,7 @@ import {
   FONTS,
   FONT_SIZE,
   SPACING,
-  RADIUS,
+  
 } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';

@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 
-import { AppText, AppCalendarModal } from '../../../../../components';
+import { AppText,   } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
@@ -15,6 +15,8 @@ interface PickupStepProps {
   onPrevious: () => void;
   errors: any;
 }
+
+const AppCalendarModal=lazy(()=>import("../../../../../components/common/AppCalendarModal"))
 
 const PickupStep: React.FC<PickupStepProps> = ({
   form,
@@ -373,6 +375,9 @@ const PickupStep: React.FC<PickupStepProps> = ({
       </ScrollView>
 
       {/* CALENDAR MODAL */}
+      <Suspense fallback={null}>
+
+       
       <AppCalendarModal
         visible={activeDateType !== null}
         onClose={handleCloseCalendar}
@@ -393,6 +398,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
             : getTomorrowStr()
         }
       />
+      </Suspense>
     </View>
   );
 };

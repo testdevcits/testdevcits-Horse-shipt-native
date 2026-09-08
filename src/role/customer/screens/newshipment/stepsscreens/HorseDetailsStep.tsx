@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { COLORS } from '../../../../../constants';
-import { AppText, Input, AppSelect } from '../../../../../components';
+import { AppText, Input } from '../../../../../components';
 import useMyHorses from '../../myhorses/usemyhorses';
 import { Horse } from '../../../../../types/customer';
 import { breedsList, sexes, stallTypes } from '../../addedithorse/constants';
@@ -24,6 +24,10 @@ interface HorseDetailsStepProps {
   onPrevious: () => void;
   errors: any;
 }
+
+const AppSelect = lazy(
+  () => import('../../../../../components/common/AppSelect'),
+);
 
 const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   form,
@@ -57,11 +61,11 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
   };
 
   const horseOptions = useMemo(() => {
-    return savedHorses.map((h: Horse) => h.registeredName);
+    return savedHorses?.map((h: Horse) => h.registeredName);
   }, [savedHorses]);
 
   const handleHorseSelect = (index: number, selectedName: string) => {
-    const selectedHorse = savedHorses.find(
+    const selectedHorse = savedHorses?.find(
       (h: Horse) => h.registeredName === selectedName,
     );
 
@@ -156,7 +160,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
 
   const isFormValid = useMemo(() => {
     if (!form.numberOfHorses || form.numberOfHorses < 1) return false;
-    return form.horses.every(
+    return form?.horses?.every(
       (h: NewShipmentHorse) =>
         h.registeredName?.trim() !== '' &&
         h.breed?.trim() !== '' &&
@@ -178,7 +182,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           </TouchableOpacity>
         </View>
 
-        {!loading && savedHorses.length === 0 && (
+        {!loading && savedHorses?.length === 0 && (
           <Pressable
             onPress={() => navigation.navigate('AddEditHorse')}
             style={styles.noHorsesAlert}
@@ -201,53 +205,57 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
           editable={!isEdit}
         />
 
-        {form.horses.map((horse: NewShipmentHorse, index: number) => (
+        {form?.horses?.map((horse: NewShipmentHorse, index: number) => (
           <View key={index} style={styles.horseSection}>
             <View style={styles.dividerRow}>
               <View style={styles.line} />
               <AppText style={styles.sectionLabel}>HORSE {index + 1}</AppText>
               <View style={styles.line} />
             </View>
-
-            <AppSelect
-              label="Registered Name"
-              placeholder={
-                loading ? 'Loading...' : 'Select saved horse or type'
-              }
-              value={horse.registeredName}
-              options={horseOptions}
-              onSelect={val => handleHorseSelect(index, val)}
-              searchable
-            />
+            <Suspense fallback={null}>
+              <AppSelect
+                label="Registered Name"
+                placeholder={
+                  loading ? 'Loading...' : 'Select saved horse or type'
+                }
+                value={horse?.registeredName}
+                options={horseOptions}
+                onSelect={val => handleHorseSelect(index, val)}
+                searchable
+              />
+            </Suspense>
 
             <View style={styles.row}>
               <View style={{ flex: 1 }}>
                 <Input
                   label="Barn Name"
                   placeholder="e.g. Thunder"
-                  value={horse.barnName}
+                  value={horse?.barnName}
                   onChangeText={v => updateHorseField(index, 'barnName', v)}
                 />
               </View>
               <View style={{ flex: 1, marginLeft: 10 }}>
-                <AppSelect
-                  label="Sex"
-                  placeholder="Select"
-                  value={horse.sex}
-                  options={sexes}
-                  onSelect={v => updateHorseField(index, 'sex', v)}
-                />
+                <Suspense fallback={null}>
+                  <AppSelect
+                    label="Sex"
+                    placeholder="Select"
+                    value={horse?.sex}
+                    options={sexes}
+                    onSelect={v => updateHorseField(index, 'sex', v)}
+                  />
+                </Suspense>
               </View>
             </View>
-
-            <AppSelect
-              label="Breed"
-              placeholder="Select breed"
-              value={horse.breed}
-              options={breedsList}
-              onSelect={v => updateHorseField(index, 'breed', v)}
-              searchable
-            />
+            <Suspense fallback={null}>
+              <AppSelect
+                label="Breed"
+                placeholder="Select breed"
+                value={horse?.breed}
+                options={breedsList}
+                onSelect={v => updateHorseField(index, 'breed', v)}
+                searchable
+              />
+            </Suspense>
 
             <View style={styles.row}>
               <View style={{ flex: 1 }}>
@@ -255,7 +263,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
                   label="Age"
                   placeholder="Age"
                   keyboardType="numeric"
-                  value={horse.age}
+                  value={horse?.age}
                   onChangeText={v => updateHorseField(index, 'age', v)}
                 />
               </View>
@@ -263,23 +271,24 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
                 <Input
                   label="Colour"
                   placeholder="e.g. Bay"
-                  value={horse.colour}
+                  value={horse?.colour}
                   onChangeText={v => updateHorseField(index, 'colour', v)}
                 />
               </View>
             </View>
-
-            <AppSelect
-              label="Request Stall Size"
-              placeholder="Select Stall"
-              value={horse.requestedStallSize || 'Box'}
-              options={stallTypes}
-              onSelect={v => updateHorseField(index, 'requestedStallSize', v)}
-            />
+            <Suspense fallback={null}>
+              <AppSelect
+                label="Request Stall Size"
+                placeholder="Select Stall"
+                value={horse?.requestedStallSize || 'Box'}
+                options={stallTypes}
+                onSelect={v => updateHorseField(index, 'requestedStallSize', v)}
+              />
+            </Suspense>
           </View>
         ))}
 
-        {form.horses.length > 0 && (
+        {form?.horses?.length > 0 && (
           <>
             <AppText style={styles.radioLabel}>
               Does this shipment have special requirements?

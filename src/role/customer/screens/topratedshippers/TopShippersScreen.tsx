@@ -22,6 +22,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../components/AppIcon';
 import styles from './styles.Topshippers';
+import AppButton from '../../../../components/common/Button/AppButton';
 
 const QUICK_FILTERS = ['All', 'Verified', 'Top Rated', 'Nearest'];
 
@@ -242,14 +243,10 @@ const TopShippersScreen = () => {
             </ScrollView>
 
             <View style={styles.modalFooter}>
-              <TouchableOpacity
-                style={styles.applyBtn}
+              <AppButton
+                title={`Show ${shippers.length} Shippers`}
                 onPress={() => setIsFilterVisible(false)}
-              >
-                <AppText style={styles.applyBtnText}>
-                  Show {shippers.length} Shippers
-                </AppText>
-              </TouchableOpacity>
+              />
             </View>
           </View>
         </View>

@@ -30,7 +30,7 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
   const deliveryLoc =
     shipmentObj?.deliveryLocation || item?.deliveryLocation || '';
   const createdAt = item?.createdAt
-    ? new Date(item.createdAt).toLocaleDateString('en-US', {
+    ? new Date(item?.createdAt).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric',

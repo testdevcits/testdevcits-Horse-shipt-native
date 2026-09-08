@@ -91,12 +91,12 @@ export const CountryCodePicker = ({
             {/* Country List */}
             <FlatList
               data={COUNTRIES}
-              keyExtractor={item => item.iso}
+              keyExtractor={item => item?.iso}
               contentContainerStyle={styles.listContainer}
               renderItem={({ item }) => {
                 const isSelected =
-                  item.code === currentCountry.code &&
-                  item.iso === currentCountry.iso;
+                  item?.code === currentCountry.code &&
+                  item?.iso === currentCountry.iso;
                 return (
                   <TouchableOpacity
                     activeOpacity={0.7}
@@ -107,12 +107,12 @@ export const CountryCodePicker = ({
                     onPress={() => handleSelect(item)}
                   >
                     <View style={styles.countryLeft}>
-                      <AppText style={styles.modalFlag}>{item.flag}</AppText>
-                      <AppText style={styles.countryName}>{item.name}</AppText>
+                      <AppText style={styles.modalFlag}>{item?.flag}</AppText>
+                      <AppText style={styles.countryName}>{item?.name}</AppText>
                     </View>
 
                     <View style={styles.countryRight}>
-                      <AppText style={styles.countryCode}>{item.code}</AppText>
+                      <AppText style={styles.countryCode}>{item?.code}</AppText>
                       {isSelected ? (
                         <View style={styles.checkBadge}>
                           <AppIcon

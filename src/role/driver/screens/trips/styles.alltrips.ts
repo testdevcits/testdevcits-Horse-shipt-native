@@ -3,7 +3,7 @@ import {
   COLORS,
   FONT_SIZE,
   FONTS,
-  RADIUS,
+  
   SPACING,
 } from '../../../../constants';
 
@@ -31,47 +31,50 @@ const styles = StyleSheet.create({
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    paddingVertical: SPACING.sm,
-    paddingHorizontal: SPACING.md,
-    borderRadius: RADIUS.round, // Perfect rounded pill shape
+    backgroundColor: COLORS.white,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    gap: SPACING.xs, // Space between chip label and count badge
+    borderColor: COLORS.grey200,
+    gap: 6,
   },
   chipActive: {
     backgroundColor: COLORS.primary,
     borderColor: COLORS.primary,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
   chipText: {
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.goldDarkText,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.slate600,
   },
   chipTextActive: {
-    fontFamily: FONTS.semiBold,
     color: COLORS.white,
   },
-  // Inner numerical count badge inside the chip
   badge: {
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.round,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 1,
-    minWidth: 20,
+    backgroundColor: COLORS.slate100,
+    borderRadius: 10,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    minWidth: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
   badgeActive: {
-    backgroundColor: COLORS.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
   },
   badgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.primary,
+    color: COLORS.slate600,
   },
   badgeTextActive: {
-    color: COLORS.primary,
+    color: COLORS.white,
   },
   cardSpacing: {
     marginHorizontal: SPACING.lg,

@@ -3,7 +3,7 @@ import {
   View,
   ScrollView,
   Image,
-  TouchableOpacity,
+  
   ActivityIndicator,
 } from 'react-native';
 
@@ -166,12 +166,13 @@ const Profile = () => {
           <View style={styles.detailsBody}>
             {/* Email field */}
             <View style={styles.detailRow}>
-              <AppIcon
-                name={'Mail'}
-                size={18}
-                color={COLORS.primary}
-                style={styles.detailIcon}
-              />
+              <View style={styles.detailIconTile}>
+                <AppIcon
+                  name={'Mail'}
+                  size={16}
+                  color={COLORS.primary}
+                />
+              </View>
               <View>
                 <AppText style={styles.detailLabel}>EMAIL</AppText>
                 <AppText style={styles.detailValue}>
@@ -182,12 +183,13 @@ const Profile = () => {
 
             {/* Phone field */}
             <View style={styles.detailRow}>
-              <AppIcon
-                name={'Phone'}
-                size={18}
-                color={COLORS.primary}
-                style={styles.detailIcon}
-              />
+              <View style={styles.detailIconTile}>
+                <AppIcon
+                  name={'Phone'}
+                  size={16}
+                  color={COLORS.primary}
+                />
+              </View>
               <View>
                 <AppText style={styles.detailLabel}>PHONE</AppText>
                 <AppText style={styles.detailValue}>
@@ -198,12 +200,13 @@ const Profile = () => {
 
             {/* License field */}
             <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-              <AppIcon
-                name={'FileText'}
-                size={18}
-                color={COLORS.primary}
-                style={styles.detailIcon}
-              />
+              <View style={styles.detailIconTile}>
+                <AppIcon
+                  name={'FileText'}
+                  size={16}
+                  color={COLORS.primary}
+                />
+              </View>
               <View>
                 <AppText style={styles.detailLabel}>LICENSE</AppText>
                 <AppText style={styles.detailValue}>
@@ -255,6 +258,7 @@ const Profile = () => {
         {/* Action Logout Button */}
 
         <Button
+          buttonStyle={styles.logoutBtn}
           leftIcon={
             <AppIcon
               name={'LogOut'}

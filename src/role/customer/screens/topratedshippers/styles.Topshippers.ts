@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
   },
   title: {
-    fontSize: FONT_SIZE.display,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   chipText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.grey600,
   },
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   modalSectionTitle: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
     color: COLORS.textLight,
     textTransform: 'uppercase',
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   modalChipText: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.textSecondary,
   },
@@ -150,22 +150,6 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.divider,
     backgroundColor: COLORS.white,
     paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.lg,
-  },
-  applyBtn: {
-    backgroundColor: COLORS.primary,
-    height: 56,
-    borderRadius: RADIUS.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: COLORS.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  applyBtnText: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
   },
 });
 

@@ -58,7 +58,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           </AppText>
           {item?.barnName ? (
             <AppText style={styles.barnNameText} numberOfLines={1}>
-              Barn: {item.barnName}
+              Barn: {item?.barnName}
             </AppText>
           ) : null}
           {breedText ? (
@@ -108,7 +108,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Sex</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.sex}
+              {item?.sex}
             </AppText>
           </View>
         ) : null}
@@ -117,7 +117,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Age</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.age} Yrs
+              {item?.age} Yrs
             </AppText>
           </View>
         ) : null}
@@ -126,7 +126,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Color</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.colour}
+              {item?.colour}
             </AppText>
           </View>
         ) : null}
@@ -135,7 +135,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Stall</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.defaultStallSize}
+              {item?.defaultStallSize}
             </AppText>
           </View>
         ) : null}
@@ -181,7 +181,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           />
           <View style={styles.notesContent}>
             <AppText style={styles.notesHeading}>Notes</AppText>
-            <AppText style={styles.notesBody}>{item.notes}</AppText>
+            <AppText style={styles.notesBody}>{item?.notes}</AppText>
           </View>
         </View>
       ) : null}

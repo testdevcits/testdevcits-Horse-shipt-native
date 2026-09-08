@@ -19,12 +19,19 @@ import {
   Edit3,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
+import {
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+  RADIUS,
+  SIZES,
+} from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
+import AppIcon from '../components/AppIcon';
 
 interface DrawerItemProps {
   label: string;
@@ -117,7 +124,7 @@ const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
     <AppText
       style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
     >
-      {label}
+      {isActive && '•'} {label}
     </AppText>
   </TouchableOpacity>
 );
@@ -399,6 +406,9 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm + 2,
     paddingLeft: SPACING.xl + 24,
     paddingRight: SPACING.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   subMenuItemActive: {
     // backgroundColor: COLORS.goldLightBg,

@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { Truck, MapPin, Calendar, ExternalLink } from 'lucide-react-native';
+import { MapPin, Calendar } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import { formatDate } from '../../../../utils/helpers';
@@ -69,7 +69,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
         <AppText style={styles.horseTitle}>{horseName}</AppText>
         <AppText style={styles.horseSpecs}>{horseSpecs}</AppText>
         <View style={styles.shipmentHeader}>
-          <AppText style={styles.shipmentCode}>
+          <AppText style={styles.shipmentCode} numberOfLines={1}>
             {item?.shipmentCode || ''}
           </AppText>
 

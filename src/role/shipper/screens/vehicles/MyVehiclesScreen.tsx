@@ -21,7 +21,6 @@ import {
   AppText,
   AppLoader,
   EmptyState,
-  AppSelect,
   AppSelectRef,
 } from '../../../../components';
 import { COLORS, FONTS, SPACING } from '../../../../constants';
@@ -32,6 +31,7 @@ import AppIcon from '../../../../components/AppIcon';
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
 );
+const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 
 interface VehicleItemCardProps {
   vehicle: any;
@@ -538,16 +538,18 @@ const MyVehiclesScreen = ({ navigation }: any) => {
       </Suspense>
 
       {/* AppSelect BottomSheet Modal for Driver Assignment */}
-      <AppSelect
-        ref={driverSelectRef}
-        hideSelector
-        label="Select Driver to Assign"
-        placeholder="Select Driver"
-        value={selectedVehicleForDriver?.driver?.name || 'Not Available'}
-        options={drivers.map(d => d.name || d.email || 'Not Available')}
-        onSelect={handleSelectDriver}
-        searchable
-      />
+      <Suspense fallback={null}>
+        <AppSelect
+          ref={driverSelectRef}
+          hideSelector
+          label="Select Driver to Assign"
+          placeholder="Select Driver"
+          value={selectedVehicleForDriver?.driver?.name || 'Not Available'}
+          options={drivers.map(d => d.name || d.email || 'Not Available')}
+          onSelect={handleSelectDriver}
+          searchable
+        />
+      </Suspense>
     </View>
   );
 };
