@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { RotateCw } from 'lucide-react-native';
+ 
 
 // Imported design systems & components
 import { useDriverMe } from '../../../../hooks/useDriverMe';

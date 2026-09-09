@@ -1,7 +1,7 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
-import { Map, Compass, Zap } from 'lucide-react-native';
+
 import Geolocation from 'react-native-geolocation-service';
 
 import { COLORS } from '../../../../constants';
@@ -24,6 +24,7 @@ import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
 import { AppText, Button, DriverHeader } from '../../../../components';
 import { RouteMapModal } from './RouteMapModal';
+import AppIcon from '../../../../components/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -261,7 +262,7 @@ const LocationScreen = () => {
           <View style={styles.trackingCard}>
             <View style={styles.cardHeaderRow}>
               <View style={styles.mapIconContainer}>
-                <Map size={22} color={COLORS.white} />
+                <AppIcon name={'Map'} size={22} color={COLORS.white} />
               </View>
               <View style={styles.headerTextWrapper}>
                 <AppText style={styles.cardHeaderTitle}>
@@ -288,7 +289,9 @@ const LocationScreen = () => {
               onPress={handleUpdateLocation}
               disabled={isUpdating}
               isLoading={isUpdating}
-              leftIcon={<Compass size={18} color={COLORS.white} />}
+              leftIcon={
+                <AppIcon name={'Compass'} size={18} color={COLORS.white} />
+              }
             />
 
             <Button
@@ -298,7 +301,7 @@ const LocationScreen = () => {
               ]}
               onPress={handleToggleAutoTrack}
               title={isAutoTracking ? 'Stop Auto-Track' : 'Start Auto-Track'}
-              leftIcon={<Zap size={18} color={COLORS.white} />}
+              leftIcon={<AppIcon name={'Zap'} size={18} color={COLORS.white} />}
             />
           </View>
 

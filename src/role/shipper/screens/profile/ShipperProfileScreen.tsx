@@ -20,11 +20,11 @@ import imageIndex from '../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
 
 // Import modular tab components
-import ProfileTab from './tabs/ProfileTab';
-import ShipmentTab from './tabs/ShipmentTab';
-import PaymentsTab from './tabs/PaymentsTab';
-import SubscriptionTab from './tabs/SubscriptionTab';
-import NotificationTab from './tabs/NotificationTab';
+import ProfileTab from './tabs/profile/ProfileTab';
+import ShipmentTab from './tabs/shipments/ShipmentTab';
+import PaymentsTab from './tabs/payments/PaymentsTab';
+import SubscriptionTab from './tabs/subscription/SubscriptionTab';
+import NotificationTab from './tabs/notifications/NotificationTab';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../components/AppIcon';
 
@@ -39,9 +39,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
   );
-  const ConnectBankModal = lazy(() => import('../home/ConnectBankModal'));
+  const ConnectBankModal = lazy(() => import('../home/components/ConnectBankModal'));
   const SubscriptionRequiredModal = lazy(
-    () => import('../../components/SubscriptionRequiredModal'),
+    () => import('../../components/subscription_required_modal/SubscriptionRequiredModal'),
   );
 
   const dispatch = useAppDispatch();

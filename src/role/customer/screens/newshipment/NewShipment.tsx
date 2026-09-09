@@ -9,11 +9,11 @@ import { AppHeader, AppText } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import useNewShipment, { STEPS } from './useNewShipment';
-import PickupStep from './stepsscreens/PickupStep';
-import DeliveryStep from './stepsscreens/DeliveryStep';
-import HorseDetailsStep from './stepsscreens/HorseDetailsStep';
-import ReviewStep from './stepsscreens/ReviewStep';
-import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
+import PickupStep from './stepsscreens/pickup/PickupStep';
+import DeliveryStep from './stepsscreens/delivery/DeliveryStep';
+import HorseDetailsStep from './stepsscreens/horsedetails/HorseDetailsStep';
+import ReviewStep from './stepsscreens/review/ReviewStep';
+import ShipmentInfoStep from './stepsscreens/shipmentinfo/ShipmentInfoStep';
 import imageIndex from '../../../../assets/images/imageIndex';
 import AppIcon from '../../../../components/AppIcon';
 

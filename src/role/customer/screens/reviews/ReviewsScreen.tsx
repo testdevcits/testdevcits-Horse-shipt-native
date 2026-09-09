@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { View, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { MessageCircle } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
   FONTS,
   RADIUS,
   FONT_SIZE,
+  ICON_SIZE,
 } from '../../../../constants';
 import { useReviews } from './useReviews';
 import {
@@ -15,8 +15,10 @@ import {
   AppText,
   EmptyState,
   ReviewCard,
+  ReviewsSkeleton,
 } from '../../../../components';
 import AppIcon from '../../../../components/AppIcon';
+import styles from './styles.reviews';
 
 const ReviewsScreen = () => {
   const { reviews, loading, fetchReviews } = useReviews();
@@ -48,7 +50,13 @@ const ReviewsScreen = () => {
     </View>
   );
 
-  if (loading) return <AppLoader visible={true} />;
+  if (loading)
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Reviews & Ratings" />
+        <ReviewsSkeleton />
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -69,7 +77,15 @@ const ReviewsScreen = () => {
         }
         ListEmptyComponent={
           <EmptyState
-            icon={MessageCircle}
+            // icon={MessageCircle}
+            icon={
+              <AppIcon
+                name={'Package'}
+                size={ICON_SIZE.xl}
+                color={COLORS.lightGrey}
+                strokeWidth={1.5}
+              />
+            }
             title="No Reviews Yet"
             message="Your shipment feedback from shippers will appear here."
           />
@@ -79,52 +95,6 @@ const ReviewsScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
-  header: {
-    padding: SPACING.lg,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  title: {
-    fontSize: FONT_SIZE.heading,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  list: { padding: SPACING.lg },
-  summaryCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.xl,
-  },
-  ratingCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  ratingNum: {
-    fontSize: FONT_SIZE.title,
-    fontFamily: FONTS.bold,
-    color: COLORS.white,
-  },
-  summaryText: { marginLeft: SPACING.lg },
-  summaryTitle: {
-    fontSize: FONT_SIZE.xl,
-    fontFamily: FONTS.bold,
-    color: COLORS.white,
-  },
-  summarySub: {
-    fontSize: FONT_SIZE.sm,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 2,
-  },
-});
+ 
 
 export default ReviewsScreen;

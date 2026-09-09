@@ -183,9 +183,9 @@ const PaymentDetails = () => {
                 {payment?.shipper?.email}
               </AppText>
             </View>
-            <TouchableOpacity style={styles.phoneBtn}>
+            {/* <TouchableOpacity style={styles.phoneBtn}>
               <AppIcon name={'Phone'} size={18} color={COLORS.white} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 

@@ -7,16 +7,22 @@ import {
   Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { WalletCards } from 'lucide-react-native';
-import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../../constants';
+ import {
+  COLORS,
+  SPACING,
+  FONTS,
+  FONT_SIZE,
+  ICON_SIZE,
+} from '../../../../constants';
 import {
-  AppLoader,
   AppText,
   EmptyState,
   ErrorView,
   PaymentCard,
+  PaymentsSkeleton,
 } from '../../../../components';
 import { usePayments } from './usePayments';
+import AppIcon from '../../../../components/AppIcon';
 
 const Payments = () => {
   const { payments, loading, refreshing, error, fetchPayments } = usePayments();
@@ -41,7 +47,12 @@ const Payments = () => {
     [handlePaymentPress],
   );
 
-  if (loading && !refreshing) return <AppLoader visible={true} />;
+  if (loading && !refreshing)
+    return (
+      <View style={styles.container}>
+        <PaymentsSkeleton />
+      </View>
+    );
   if (error)
     return <ErrorView message={error} onRetry={() => fetchPayments()} />;
 
@@ -73,7 +84,15 @@ const Payments = () => {
         }
         ListEmptyComponent={
           <EmptyState
-            icon={WalletCards}
+            // icon={WalletCards}
+            icon={
+              <AppIcon
+                name={'WalletCards'}
+                size={ICON_SIZE.xl}
+                color={COLORS.lightGrey}
+                strokeWidth={1.5}
+              />
+            }
             title="No Payments Found"
             message="Your payment history will appear here once you book a shipment."
           />

@@ -1,7 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { AppText, Button } from '../../../../components';
-import { FileText, Award } from 'lucide-react-native';
+
 import {
   COLORS,
   FONTS,
@@ -10,6 +10,7 @@ import {
   FONT_SIZE,
 } from '../../../../constants';
 import { horsePlaceholderImage } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 const HorseInformation = ({
   activeShipment,
@@ -29,7 +30,7 @@ const HorseInformation = ({
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <Award size={20} color={COLORS.primary} />
+        <AppIcon name={'Award'} size={20} color={COLORS.primary} />
         <AppText style={styles.cardHeaderTitle}>
           Horses ({horses.length})
         </AppText>
@@ -101,7 +102,7 @@ const HorseInformation = ({
         {activeShipment?.notes ? (
           <View style={styles.notesBox}>
             <View style={styles.notesHeaderRow}>
-              <FileText size={16} color={COLORS.primary} />
+              <AppIcon name={'FileText'} size={16} color={COLORS.primary} />
               <AppText style={styles.notesBoxLabel}>SHIPMENT NOTES</AppText>
             </View>
             <AppText style={styles.notesBoxText}>

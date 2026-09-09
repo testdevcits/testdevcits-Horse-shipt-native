@@ -15,7 +15,7 @@ import { pick, types } from '@react-native-documents/picker';
 import { COLORS } from '../../../../constants';
 
 import { HorseSchema } from './schema';
-import { AppHeader, AppLoader, Input, AppText } from '../../../../components';
+import { AppHeader, AppLoader, Input, AppText, LazyFallback } from '../../../../components';
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
 import { breedsList, sexes, stallTypes, defaultColors } from './constants';
@@ -379,7 +379,7 @@ const AddEditHorse = () => {
                   error={touched.barnName ? (errors.barnName as string) : ''}
                 />
 
-                <Suspense fallback={null}>
+                <Suspense fallback={<LazyFallback />}>
                   <AppSelect
                     label={'Color'}
                     placeholder="Select Color"
@@ -401,7 +401,7 @@ const AddEditHorse = () => {
                   error={touched.age ? (errors.age as string) : ''}
                 />
 
-                <Suspense fallback={null}>
+                <Suspense fallback={<LazyFallback />}>
                   <AppSelect
                     label={'Breed'}
                     placeholder="Select Breed"
@@ -426,7 +426,7 @@ const AddEditHorse = () => {
                   />
                 )}
 
-                <Suspense fallback={null}>
+                <Suspense fallback={<LazyFallback />}>
                   <AppSelect
                     label={'Sex'}
                     placeholder="Select Sex"
@@ -437,7 +437,7 @@ const AddEditHorse = () => {
                   />
                 </Suspense>
 
-                <Suspense fallback={null}>
+                <Suspense fallback={<LazyFallback />}>
                   <AppSelect
                     label={'Stall Type'}
                     placeholder="Select Stall Type"

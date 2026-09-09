@@ -3,7 +3,7 @@ import { View, ScrollView, Switch } from 'react-native';
 import styles from './NotificationSettings.styles';
 import { useNotificationSettings } from './useNotificationSettings';
 import { COLORS } from '../../../../constants';
-import { AppLoader, AppText } from '../../../../components';
+import { AppText, SettingsSkeleton } from '../../../../components';
 
 const NotificationSettings = () => {
   const { settings, loading, toggleSetting } = useNotificationSettings();
@@ -24,7 +24,7 @@ const NotificationSettings = () => {
     </View>
   );
 
-  if (loading) return <AppLoader visible={loading} />;
+  if (loading) return <SettingsSkeleton />;
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

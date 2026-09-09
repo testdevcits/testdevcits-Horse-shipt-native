@@ -103,6 +103,10 @@ import {
   FileCheck,
   RotateCw,
   Dot,
+  Hash,
+  Minus,
+  Zap,
+  WalletCards
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';
@@ -211,6 +215,10 @@ const ICONS = {
   FileCheck,
   RotateCw,
   Dot,
+  Hash,
+  Minus,
+  Zap,
+  WalletCards
 } as const;
 
 export type IconName = keyof typeof ICONS;

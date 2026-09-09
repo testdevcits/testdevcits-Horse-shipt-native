@@ -7,19 +7,20 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import { Truck } from 'lucide-react-native';
-import Toast from 'react-native-toast-message';
+ import Toast from 'react-native-toast-message';
 import useMyShipments, { ShipmentTab } from './useMyShipments';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import {
   AppHeader,
-  AppLoader,
   AppText,
   EmptyState,
+  ShipmentsSkeleton,
 } from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 import styles from './styles.myshipments';
+import AppIcon from '../../../../components/AppIcon';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -139,6 +140,15 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="My Shipments" />
+        <ShipmentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="My Shipments" />
@@ -152,8 +162,6 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
           {tabs.map(renderTab)}
         </ScrollView>
       </View>
-
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={filteredData}
@@ -171,7 +179,15 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
         ListEmptyComponent={
           !loading ? (
             <EmptyState
-              icon={Truck}
+              // icon={Truck}
+              icon={
+                <AppIcon
+                  name={'Truck'}
+                  size={ICON_SIZE.xl}
+                  color={COLORS.lightGrey}
+                  strokeWidth={1.5}
+                />
+              }
               title={`No ${activeTab} Shipments`}
               message="Your shipments will appear here once they reach this stage."
             />

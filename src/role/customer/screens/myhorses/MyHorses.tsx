@@ -12,10 +12,10 @@ import { COLORS } from '../../../../constants';
 import useMyHorses from './usemyhorses';
 import {
   AppHeader,
-  AppLoader,
   AppText,
   EmptyState,
   HorseCard,
+  MyHorsesSkeleton,
 } from '../../../../components';
 import styles from './style.myhorses';
 
@@ -53,10 +53,18 @@ const MyHorses = ({ navigation }: any) => {
     [handleDelete, handleEdit],
   );
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader />
+        <MyHorsesSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={horses}

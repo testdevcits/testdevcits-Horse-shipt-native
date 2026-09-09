@@ -21,13 +21,14 @@ import {
   AppLoader,
   AppText,
   EmptyState,
+  HomeSkeleton,
   SectionHeader,
   ShipperCard,
 } from '../../../../components';
 import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetailed';
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
-import { useShippers } from '../topratedshippers/useShippers';
+import { useShippers } from '../topratedshippers/shipperlist/useShippers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
@@ -74,6 +75,18 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
 
   const { user } = useSelector((state: any) => state.auth || {});
   const userName = user?.name || user?.firstName || 'Not available';
+
+  const isInitialLoading =
+    (loading || shipperloading) && !isRefreshing && !refreshing;
+
+  if (isInitialLoading) {
+    return (
+      <View style={styles.container}>
+        <AppHeader />
+        <HomeSkeleton />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

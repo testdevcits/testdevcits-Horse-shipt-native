@@ -26,6 +26,7 @@ import {
   CountryCodePicker,
   COUNTRIES,
   Input,
+  ProfileSkeleton,
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
@@ -73,6 +74,19 @@ const Profile = ({}: any) => {
       });
     }
   }, [profile, isEditModalVisible]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <AppHeader
+          showBack={true}
+          title="Profile Details"
+          showProfileImage={false}
+        />
+        <ProfileSkeleton />
+      </View>
+    );
+  }
 
   const handleSave = async () => {
     const res = await updateProfile(formData);

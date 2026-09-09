@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
-import AvailableShipmentCard from '../home/AvailableShipmentCard';
+import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
 import styles from './styles.postload';
 import AppIcon from '../../../../components/AppIcon';
 

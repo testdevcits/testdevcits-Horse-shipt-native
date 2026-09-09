@@ -16,12 +16,11 @@ import {
   AppLoader,
   EmptyState,
 } from '../../../../components';
-import { COLORS, SPACING } from '../../../../constants';
+import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/AppIcon';
-import { FileText } from 'lucide-react-native';
-
+ 
 const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
 const StripePaymentMethodCardModal = lazy(
   () => import('./StripePaymentMethodCardModal'),
@@ -453,7 +452,15 @@ const EarningsScreen = () => {
         ]}
       >
         <EmptyState
-          icon={FileText}
+          // icon={FileText}
+          icon={
+            <AppIcon
+              name={'FileText'}
+              size={ICON_SIZE.xl}
+              color={COLORS.lightGrey}
+              strokeWidth={1.5}
+            />
+          }
           title="No Transactions"
           message="Your payout transactions will appear here."
         />

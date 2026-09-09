@@ -8,15 +8,19 @@ import {
 
 import Toast from 'react-native-toast-message';
 import { COLORS, FONT_SIZE } from '../../../../constants';
-import { AppHeader, AppText, AppLoader } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  ShipmentDetailSkeleton,
+} from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
 // Modals & Tabs
 import styles from './style.myshipments';
-import OverviewTab from './tabs/OverviewTab';
-import QuotesTab from './tabs/QuotesTab';
-import QuestionsTab from './tabs/QuestionsTab';
-import FindShipperTab from './tabs/FindShipperTab';
+import OverviewTab from './tabs/overview/OverviewTab';
+import QuotesTab from './tabs/quotes/QuotesTab';
+import QuestionsTab from './tabs/questions/QuestionsTab';
+import FindShipperTab from './tabs/find_shippers/FindShipperTab';
 import { getFormattedDate } from '../../../../utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../../hooks/redux';
@@ -31,11 +35,11 @@ const ConfirmationModal = lazy(
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
-const QuoteDetailModal = lazy(() => import('./QuoteDetailModal'));
+const QuoteDetailModal = lazy(() => import('./components/quote_detail_modal/QuoteDetailModal'));
 
-const RatingModal = lazy(() => import('./RatingModal'));
+const RatingModal = lazy(() => import('./components/rating_modal/RatingModal'));
 
-const DeliveredSuccessModal = lazy(() => import('./DeliveredSuccessModal'));
+const DeliveredSuccessModal = lazy(() => import('./components/delivered_success_modal/DeliveredSuccessModal'));
 
 const MyShipmentDetails = ({ route }: any) => {
   const dispatch = useAppDispatch();
@@ -121,7 +125,7 @@ const MyShipmentDetails = ({ route }: any) => {
     return (
       <View style={styles.container}>
         <AppHeader showBack={true} title={data?.shipmentCode} />
-        <AppLoader visible={true} />
+        <ShipmentDetailSkeleton />
       </View>
     );
 

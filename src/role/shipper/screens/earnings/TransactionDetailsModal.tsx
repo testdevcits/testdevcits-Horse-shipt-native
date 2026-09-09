@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Calendar, Hash, CreditCard, Package } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import {
   COLORS,
@@ -10,7 +9,7 @@ import {
   RADIUS,
 } from '../../../../constants';
 import { formatDate } from '../../../../utils/helpers';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon, { IconName } from '../../../../components/AppIcon';
 
 interface TransactionDetailsModalProps {
   selectedTx: any;
@@ -24,14 +23,14 @@ const DetailRow = memo(
     value,
     valueColor,
   }: {
-    icon: any;
+    icon: IconName;
     label: string;
     value: string;
     valueColor?: string;
   }) => (
     <View style={styles.detailRow}>
       <View style={styles.iconBox}>
-        <Icon size={16} color={COLORS.primary} />
+        <AppIcon name={Icon} size={16} color={COLORS.primary} />
       </View>
       <View style={styles.rowTextWrap}>
         <AppText style={styles.rowLabel}>{label}</AppText>
@@ -53,8 +52,8 @@ const TransactionDetailsModal = ({
   if (!selectedTx) return null;
 
   const isSuccess =
-    (selectedTx.status || 'paid').toLowerCase() === 'paid' ||
-    (selectedTx.status || '').toLowerCase() === 'completed';
+    (selectedTx?.status || 'paid').toLowerCase() === 'paid' ||
+    (selectedTx?.status || '').toLowerCase() === 'completed';
 
   return (
     <Modal
@@ -86,12 +85,12 @@ const TransactionDetailsModal = ({
             <AppText style={styles.heroLabel}>TOTAL PAYOUT</AppText>
             <AppText style={styles.heroAmount}>
               $
-              {selectedTx.amount
-                ? Number(selectedTx.amount).toFixed(2)
+              {selectedTx?.amount
+                ? Number(selectedTx?.amount).toFixed(2)
                 : '0.00'}{' '}
               <AppText style={styles.currencyText}>
-                {selectedTx.currency
-                  ? selectedTx.currency.toUpperCase()
+                {selectedTx?.currency
+                  ? selectedTx?.currency.toUpperCase()
                   : 'USD'}
               </AppText>
             </AppText>
@@ -117,7 +116,7 @@ const TransactionDetailsModal = ({
               >
                 {isSuccess
                   ? 'Payout Completed'
-                  : (selectedTx.status || 'Pending').toUpperCase()}
+                  : (selectedTx?.status || 'Pending').toUpperCase()}
               </AppText>
             </View>
           </View>
@@ -125,27 +124,27 @@ const TransactionDetailsModal = ({
           {/* Details Card */}
           <View style={styles.detailsCard}>
             <DetailRow
-              icon={Hash}
+              icon={'Hash'}
               label="Payout Reference ID"
-              value={selectedTx.id || 'N/A'}
+              value={selectedTx?.id || 'N/A'}
             />
 
             <View style={styles.rowDivider} />
 
             <DetailRow
-              icon={Package}
+              icon={'Package'}
               label="Shipment Code"
-              value={selectedTx.shipmentCode || 'N/A'}
+              value={selectedTx?.shipmentCode || 'N/A'}
             />
 
             <View style={styles.rowDivider} />
 
             <DetailRow
-              icon={Calendar}
+              icon={'Calendar'}
               label="Date & Time"
               value={
-                selectedTx.createdAt
-                  ? formatDate(selectedTx.createdAt, 'MMMM DD, YYYY')
+                selectedTx?.createdAt
+                  ? formatDate(selectedTx?.createdAt, 'MMMM DD, YYYY')
                   : 'N/A'
               }
             />
@@ -153,7 +152,7 @@ const TransactionDetailsModal = ({
             <View style={styles.rowDivider} />
 
             <DetailRow
-              icon={CreditCard}
+              icon={'CreditCard'}
               label="Payout Method"
               value="Stripe Express Direct Transfer"
             />

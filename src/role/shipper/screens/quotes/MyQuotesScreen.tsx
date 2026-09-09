@@ -28,7 +28,8 @@ import {
 import shipperService from '../../../../api/services/shipperService';
 import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
-import { FileText } from 'lucide-react-native';
+import AppIcon from '../../../../components/AppIcon';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -377,7 +378,14 @@ const MyQuotesScreen = () => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={FileText}
+        icon={
+          <AppIcon
+            name={'FileText'}
+            size={ICON_SIZE.xl}
+            color={COLORS.lightGrey}
+            strokeWidth={1.5}
+          />
+        }
         title="No Quotes Found"
         message="You haven't submitted any quotes for this filter tab yet."
       />

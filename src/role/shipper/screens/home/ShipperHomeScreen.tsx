@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Truck } from 'lucide-react-native';
+
 import {
   AppHeader,
   AppText,
@@ -17,7 +17,7 @@ import {
   Input,
   SectionHeader,
 } from '../../../../components';
-import { COLORS, SPACING } from '../../../../constants';
+import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -25,14 +25,14 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
-import AvailableShipmentCard from './AvailableShipmentCard';
-import MapShipmentSelectItem from './MapShipmentSelectItem';
-import ConnectBankModal from './ConnectBankModal';
+import AvailableShipmentCard from './components/AvailableShipmentCard';
+import MapShipmentSelectItem from './components/MapShipmentSelectItem';
+import ConnectBankModal from './components/ConnectBankModal';
 import styles from './styles.shipperhome';
 import Toast from 'react-native-toast-message';
 import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
-import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
+import SubscriptionRequiredModal from '../../components/subscription_required_modal/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 import AppIcon from '../../../../components/AppIcon';
 
@@ -548,7 +548,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={Truck}
+        // icon={Truck}
+        icon={
+          <AppIcon
+            name={'Truck'}
+            size={ICON_SIZE.xl}
+            color={COLORS.lightGrey}
+            strokeWidth={1.5}
+          />
+        }
         title="No Active Shipments"
         message="Available shipments for bidding will appear here."
       />

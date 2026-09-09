@@ -4,8 +4,8 @@ import ShipperTabs from './ShipperTabs';
 import CustomShipperDrawerContent from './CustomShipperDrawerContent';
 
 // Additional Drawer Screens
-import MyVehiclesScreen from '../role/shipper/screens/vehicles/MyVehiclesScreen';
-import TruckDriverScreen from '../role/shipper/screens/drivers/TruckDriverScreen';
+import MyVehiclesScreen from '../role/shipper/screens/vehicles/vehicle_list/MyVehiclesScreen';
+import TruckDriverScreen from '../role/shipper/screens/drivers/drivers_list/TruckDriverScreen';
 import EarningsScreen from '../role/shipper/screens/earnings/EarningsScreen';
 import ShipperSettingsScreen from '../role/shipper/screens/settings/ShipperSettingsScreen';
 import GoogleReviewScreen from '../role/shipper/screens/reviews/GoogleReviewScreen';
