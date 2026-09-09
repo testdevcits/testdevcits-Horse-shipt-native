@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
- import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants'; // Adjust paths
+import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../constants'; // Adjust paths
 import AppText from './AppText';
 import AppIcon from '../AppIcon';
 

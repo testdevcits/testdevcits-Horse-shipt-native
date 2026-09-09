@@ -1,5 +1,13 @@
-import { Platform, StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SCREEN_HEIGHT, SIZES, SPACING } from "../../../constants";
+import { Platform, StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SCREEN_HEIGHT,
+  SIZES,
+  SPACING,
+} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: { width: '100%', marginVertical: SPACING.sm },

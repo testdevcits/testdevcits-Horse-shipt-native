@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     alignItems: 'center',
     alignSelf: 'flex-end',
-    borderWidth:0.3,
-    borderColor:COLORS.grey400
+    borderWidth: 0.3,
+    borderColor: COLORS.grey400,
   },
   goldFilledBtnText: {
     color: COLORS.black,
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
-    opacity:0.8
+    opacity: 0.8,
   },
   infoCard: {
     backgroundColor: COLORS.white,

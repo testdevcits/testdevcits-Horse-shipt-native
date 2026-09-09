@@ -5,7 +5,7 @@ import {
   BottomSheetView,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
- import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   COLORS,
   SPACING,
@@ -89,7 +89,11 @@ const PhotoSourceSheet = ({
             style={styles.option}
             onPress={() => handlePress(onCamera)}
           >
-            <AppIcon name={'Camera'} size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'Camera'}
+              size={ICON_SIZE.md}
+              color={COLORS.textPrimary}
+            />
             <AppText style={styles.optionText}>Take Photo</AppText>
           </TouchableOpacity>
 
@@ -100,7 +104,11 @@ const PhotoSourceSheet = ({
             style={styles.option}
             onPress={() => handlePress(onGallery)}
           >
-            <AppIcon name={'Image'} size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'Image'}
+              size={ICON_SIZE.md}
+              color={COLORS.textPrimary}
+            />
             <AppText style={styles.optionText}>Choose from Gallery</AppText>
           </TouchableOpacity>
 
@@ -112,7 +120,11 @@ const PhotoSourceSheet = ({
                 style={styles.option}
                 onPress={() => handlePress(onRemove)}
               >
-                <AppIcon name={'Trash2'} size={ICON_SIZE.md} color={COLORS.error} />
+                <AppIcon
+                  name={'Trash2'}
+                  size={ICON_SIZE.md}
+                  color={COLORS.error}
+                />
                 <AppText style={[styles.optionText, { color: COLORS.error }]}>
                   Remove Current Photo
                 </AppText>

@@ -7,7 +7,6 @@ import {
   FONT_SIZE,
 } from '../../../../constants';
 
- 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

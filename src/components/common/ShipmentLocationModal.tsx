@@ -8,7 +8,7 @@ import {
   Linking,
   Platform,
 } from 'react-native';
- 
+
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -216,7 +216,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.iconCircle}>
-                <AppIcon name={'Package'} size={20} color={COLORS.primary} strokeWidth={2.2} />
+                <AppIcon
+                  name={'Package'}
+                  size={20}
+                  color={COLORS.primary}
+                  strokeWidth={2.2}
+                />
               </View>
               <View style={{ flex: 1, marginLeft: SPACING.xs }}>
                 <AppText style={styles.headerTitle}>Shipment Details</AppText>
@@ -229,7 +234,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                   accessibilityHint="Tap to copy shipment code to clipboard"
                 >
                   <AppText style={styles.headerSubtitle}>{code}</AppText>
-                  <AppIcon name={'Copy'} size={12} color={COLORS.textLight} style={{ marginLeft: 4 }} />
+                  <AppIcon
+                    name={'Copy'}
+                    size={12}
+                    color={COLORS.textLight}
+                    style={{ marginLeft: 4 }}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -240,7 +250,7 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               accessibilityRole="button"
               accessibilityLabel="Close modal"
             >
-              <AppIcon name={"X"} size={ICON_SIZE.md} color={COLORS.grey600} />
+              <AppIcon name={'X'} size={ICON_SIZE.md} color={COLORS.grey600} />
             </TouchableOpacity>
           </View>
 
@@ -270,12 +280,22 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
 
             {isChatLocked ? (
               <View style={styles.lockedBadge}>
-                <AppIcon name={'Lock'} size={12} color={COLORS.grey600} style={{ marginRight: 4 }} />
+                <AppIcon
+                  name={'Lock'}
+                  size={12}
+                  color={COLORS.grey600}
+                  style={{ marginRight: 4 }}
+                />
                 <AppText style={styles.lockedBadgeText}>Chat Locked</AppText>
               </View>
             ) : (
               <View style={styles.activeBadge}>
-                <AppIcon name={'MessageSquare'} size={12} color={COLORS.greenSuccess} style={{ marginRight: 4 }} />
+                <AppIcon
+                  name={'MessageSquare'}
+                  size={12}
+                  color={COLORS.greenSuccess}
+                  style={{ marginRight: 4 }}
+                />
                 <AppText style={styles.activeBadgeText}>Chat Active</AppText>
               </View>
             )}
@@ -295,7 +315,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                   <View
                     style={[styles.pinBadge, { backgroundColor: '#E6F7F0' }]}
                   >
-                    <AppIcon name={'MapPin'} size={16} color={COLORS.greenPrimary} strokeWidth={2.5} />
+                    <AppIcon
+                      name={'MapPin'}
+                      size={16}
+                      color={COLORS.greenPrimary}
+                      strokeWidth={2.5}
+                    />
                   </View>
                   <AppText
                     style={[styles.locationTag, { color: COLORS.greenPrimary }]}
@@ -325,7 +350,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                 <View style={styles.verticalLineContainer}>
                   <View style={styles.verticalLine} />
                   <View style={styles.connectorIconCircle}>
-                    <AppIcon name={'ArrowDown'} size={14} color={COLORS.primary} strokeWidth={2.5} />
+                    <AppIcon
+                      name={'ArrowDown'}
+                      size={14}
+                      color={COLORS.primary}
+                      strokeWidth={2.5}
+                    />
                   </View>
                   <View style={styles.verticalLine} />
                 </View>
@@ -340,7 +370,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                       { backgroundColor: COLORS.redLightBg },
                     ]}
                   >
-                    <AppIcon name={'MapPin'} size={16} color={COLORS.redPrimary} strokeWidth={2.5} />
+                    <AppIcon
+                      name={'MapPin'}
+                      size={16}
+                      color={COLORS.redPrimary}
+                      strokeWidth={2.5}
+                    />
                   </View>
                   <AppText
                     style={[styles.locationTag, { color: COLORS.redPrimary }]}
@@ -377,7 +412,13 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               accessibilityLabel="Get Directions"
               accessibilityHint="Opens external map application for directions"
             >
-              <AppIcon name={'Navigation'} size={18} color={COLORS.primary} strokeWidth={2.2} style={{ marginRight: 8 }} />
+              <AppIcon
+                name={'Navigation'}
+                size={18}
+                color={COLORS.primary}
+                strokeWidth={2.2}
+                style={{ marginRight: 8 }}
+              />
               <AppText style={styles.mapButtonText}>Get Directions</AppText>
             </TouchableOpacity>
 

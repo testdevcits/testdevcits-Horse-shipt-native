@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
- import SkeletonText from './SkeletonText';
+import SkeletonText from './SkeletonText';
 import SkeletonCircle from './SkeletonCircle';
 
 const SkeletonCard = () => {

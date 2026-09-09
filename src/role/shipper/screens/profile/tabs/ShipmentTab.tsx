@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
- import { AppText } from '../../../../../components';
+import { AppText } from '../../../../../components';
 import styles from './styles.shipmenttab';
 import AppIcon from '../../../../../components/AppIcon';
 

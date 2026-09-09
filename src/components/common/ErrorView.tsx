@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { memo } from 'react';
- import AppText from './AppText';
+import AppText from './AppText';
 import {
   COLORS,
   FONT_SIZE,
@@ -23,7 +23,9 @@ const ErrorView = ({
     <AppText style={styles.errorTitle}>Oops! Something went wrong</AppText>
     <AppText style={styles.errorMessage}>{message}</AppText>
     <TouchableOpacity style={styles.retryBtn} onPress={onRetry}>
-      <AppIcon name={'RefreshCcw'} size={ICON_SIZE.xs} 
+      <AppIcon
+        name={'RefreshCcw'}
+        size={ICON_SIZE.xs}
         color={COLORS.white}
         style={{ marginRight: SPACING.sm }}
       />

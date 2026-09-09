@@ -1,11 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
-import {
-  View,
-  ScrollView,
-  Image,
-  
-  ActivityIndicator,
-} from 'react-native';
+import { View, ScrollView, Image, ActivityIndicator } from 'react-native';
 
 // Custom Design Systems
 import { COLORS } from '../../../../constants'; // Adjust relative path as needed
@@ -167,11 +161,7 @@ const Profile = () => {
             {/* Email field */}
             <View style={styles.detailRow}>
               <View style={styles.detailIconTile}>
-                <AppIcon
-                  name={'Mail'}
-                  size={16}
-                  color={COLORS.primary}
-                />
+                <AppIcon name={'Mail'} size={16} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.detailLabel}>EMAIL</AppText>
@@ -184,11 +174,7 @@ const Profile = () => {
             {/* Phone field */}
             <View style={styles.detailRow}>
               <View style={styles.detailIconTile}>
-                <AppIcon
-                  name={'Phone'}
-                  size={16}
-                  color={COLORS.primary}
-                />
+                <AppIcon name={'Phone'} size={16} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.detailLabel}>PHONE</AppText>
@@ -201,11 +187,7 @@ const Profile = () => {
             {/* License field */}
             <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
               <View style={styles.detailIconTile}>
-                <AppIcon
-                  name={'FileText'}
-                  size={16}
-                  color={COLORS.primary}
-                />
+                <AppIcon name={'FileText'} size={16} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.detailLabel}>LICENSE</AppText>

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import {  MessageCircle } from 'lucide-react-native';
+import { MessageCircle } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
@@ -31,7 +31,12 @@ const ReviewsScreen = () => {
     <View style={styles.summaryCard}>
       <View style={styles.ratingCircle}>
         <AppText style={styles.ratingNum}>{avgRating}</AppText>
-        <AppIcon name={'Star'} size={16} color={COLORS.white} fill={COLORS.white} />
+        <AppIcon
+          name={'Star'}
+          size={16}
+          color={COLORS.white}
+          fill={COLORS.white}
+        />
       </View>
       <View style={styles.summaryText}>
         <AppText style={styles.summaryTitle}>Customer Reviews</AppText>

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
- import {
+import {
   COLORS,
   FONTS,
   SPACING,
@@ -81,14 +81,22 @@ const AppHeader = memo(
               onPress={onBack ? onBack : () => navigation.goBack()}
               style={styles.iconBtn}
             >
-              <AppIcon name="ChevronLeft" color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon
+                name="ChevronLeft"
+                color={COLORS.textPrimary}
+                size={ICON_SIZE.md}
+              />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={styles.iconBtn}
             >
-              <AppIcon name="Menu" color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon
+                name="Menu"
+                color={COLORS.textPrimary}
+                size={ICON_SIZE.md}
+              />
             </TouchableOpacity>
           )}
         </View>
@@ -107,22 +115,26 @@ const AppHeader = memo(
           ) : (
             <>
               {showNotificationIcon && (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Notifications')}
-                style={styles.iconBtn}
-                activeOpacity={0.7}
-              >
-                <View style={styles.bellContainer}>
-                  <AppIcon name="BellIcon" color={COLORS.textPrimary} size={SPACING.xl} />
-                  {unreadCount > 0 && (
-                    <View style={styles.badge}>
-                      <AppText style={styles.badgeText}>
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </AppText>
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Notifications')}
+                  style={styles.iconBtn}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.bellContainer}>
+                    <AppIcon
+                      name="BellIcon"
+                      color={COLORS.textPrimary}
+                      size={SPACING.xl}
+                    />
+                    {unreadCount > 0 && (
+                      <View style={styles.badge}>
+                        <AppText style={styles.badgeText}>
+                          {unreadCount > 99 ? '99+' : unreadCount}
+                        </AppText>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
               )}
               {showProfileImage && (
                 <TouchableOpacity

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
- import { COLORS, FONTS } from '../constants';
+import { COLORS, FONTS } from '../constants';
 
 // Screens
 import DriverHomeScreen from '../role/driver/screens/home/HomeScreen';
@@ -31,28 +31,36 @@ const DriverTabs = () => (
       name="Home"
       component={DriverHomeScreen}
       options={{
-        tabBarIcon: ({ color }) => <AppIcon name={'Home'} size={22} color={color} />,
+        tabBarIcon: ({ color }) => (
+          <AppIcon name={'Home'} size={22} color={color} />
+        ),
       }}
     />
     <Tab.Screen
       name="Trips"
       component={AllTrips}
       options={{
-        tabBarIcon: ({ color }) => <AppIcon name={'List'} size={22} color={color} />,
+        tabBarIcon: ({ color }) => (
+          <AppIcon name={'List'} size={22} color={color} />
+        ),
       }}
     />
     <Tab.Screen
       name="Location"
       component={LocationScreen}
       options={{
-        tabBarIcon: ({ color }) => <AppIcon name={'MapPin'} size={22} color={color} />,
+        tabBarIcon: ({ color }) => (
+          <AppIcon name={'MapPin'} size={22} color={color} />
+        ),
       }}
     />
     <Tab.Screen
       name="Profile"
       component={ProfileScreen}
       options={{
-        tabBarIcon: ({ color }) => <AppIcon name={'User'} size={22} color={color} />,
+        tabBarIcon: ({ color }) => (
+          <AppIcon name={'User'} size={22} color={color} />
+        ),
       }}
     />
   </Tab.Navigator>

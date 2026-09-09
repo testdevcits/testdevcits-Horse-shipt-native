@@ -22,8 +22,10 @@ const WriteReviewComponent = ({
   setComment,
 }: any) => {
   const getEmoji = () => {
-    if (rating >= 4) return <AppIcon name="Smile" size={48} color={COLORS.primary} />;
-    if (rating >= 3) return <AppIcon name="Meh" size={48} color={COLORS.warning} />;
+    if (rating >= 4)
+      return <AppIcon name="Smile" size={48} color={COLORS.primary} />;
+    if (rating >= 3)
+      return <AppIcon name="Meh" size={48} color={COLORS.warning} />;
     return <AppIcon name="Frown" size={48} color={COLORS.error} />;
   };
 
@@ -39,7 +41,12 @@ const WriteReviewComponent = ({
             onPress={() => setRating(s)}
             activeOpacity={0.7}
           >
-            <AppIcon name="Star" size={40} color={s <= rating ? COLORS.primary : COLORS.grey200} fill={s <= rating ? COLORS.primary : 'transparent'} />
+            <AppIcon
+              name="Star"
+              size={40}
+              color={s <= rating ? COLORS.primary : COLORS.grey200}
+              fill={s <= rating ? COLORS.primary : 'transparent'}
+            />
           </TouchableOpacity>
         ))}
       </View>

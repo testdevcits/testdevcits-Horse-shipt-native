@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
- 
+
 import {
   COLORS,
   FONTS,
@@ -102,7 +102,11 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             }}
             activeOpacity={0.7}
           >
-            <AppIcon name="Power" size={15} color={isActive ? '#D97706' : '#10B981'} />
+            <AppIcon
+              name="Power"
+              size={15}
+              color={isActive ? '#D97706' : '#10B981'}
+            />
             <AppText style={styles.actionBtnPillText}>
               {isActive ? 'Deactivate' : 'Activate'}
             </AppText>

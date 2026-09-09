@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
- 
+
 import {
   COLORS,
   FONT_SIZE,
@@ -222,7 +222,12 @@ const MapModal = ({
                 <View
                   style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}
                 >
-                  <AppIcon name={'Truck'} size={18} color={COLORS.white} strokeWidth={2.5} />
+                  <AppIcon
+                    name={'Truck'}
+                    size={18}
+                    color={COLORS.white}
+                    strokeWidth={2.5}
+                  />
                 </View>
                 <View
                   style={[styles.markerPointer, { borderTopColor: '#3B82F6' }]}
@@ -251,7 +256,12 @@ const MapModal = ({
               <View
                 style={[styles.markerPin, { backgroundColor: COLORS.primary }]}
               >
-                <AppIcon name={'Package'} size={18} color={COLORS.white} strokeWidth={2.5} />
+                <AppIcon
+                  name={'Package'}
+                  size={18}
+                  color={COLORS.white}
+                  strokeWidth={2.5}
+                />
               </View>
               <View
                 style={[
@@ -279,7 +289,12 @@ const MapModal = ({
               <View
                 style={[styles.markerPin, { backgroundColor: COLORS.error }]}
               >
-                <AppIcon name={'Flag'} size={18} color={COLORS.white} strokeWidth={2.5} />
+                <AppIcon
+                  name={'Flag'}
+                  size={18}
+                  color={COLORS.white}
+                  strokeWidth={2.5}
+                />
               </View>
               <View
                 style={[styles.markerPointer, { borderTopColor: COLORS.error }]}
@@ -331,7 +346,11 @@ const MapModal = ({
             onPress={centerMap}
             activeOpacity={0.8}
           >
-            <AppIcon name={'LocateFixed'} size={20} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'LocateFixed'}
+              size={20}
+              color={COLORS.textPrimary}
+            />
           </TouchableOpacity>
         </View>
 

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
- 
+
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import styles from './styles.postload';
@@ -171,7 +171,9 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.emeraldBorder,
               text: COLORS.emeraldPrimary,
               label: 'COMPLETED',
-              icon: <AppIcon name="Check" size={12} color={COLORS.emeraldPrimary} />,
+              icon: (
+                <AppIcon name="Check" size={12} color={COLORS.emeraldPrimary} />
+              ),
             };
           case 'cancelled':
             return {
@@ -179,7 +181,13 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.redBorder,
               text: COLORS.redPrimary,
               label: 'CANCELLED',
-              icon: <AppIcon name="AlertCircle" size={12} color={COLORS.redPrimary} />,
+              icon: (
+                <AppIcon
+                  name="AlertCircle"
+                  size={12}
+                  color={COLORS.redPrimary}
+                />
+              ),
             };
           case 'upcoming':
           default:
@@ -188,7 +196,9 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               border: COLORS.amberBorder,
               text: COLORS.amberWarning,
               label: 'UPCOMING',
-              icon: <AppIcon name="Clock" size={12} color={COLORS.amberWarning} />,
+              icon: (
+                <AppIcon name="Clock" size={12} color={COLORS.amberWarning} />
+              ),
             };
         }
       };
@@ -233,7 +243,11 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                     },
               ]}
             >
-              <AppIcon name="CreditCard" size={11} color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary} />
+              <AppIcon
+                name="CreditCard"
+                size={11}
+                color={isPaid ? COLORS.emeraldPrimary : COLORS.textSecondary}
+              />
               <AppText
                 style={[
                   styles.myBadgePillText,

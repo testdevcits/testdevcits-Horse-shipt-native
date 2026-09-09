@@ -1,4 +1,3 @@
- 
 // dimensions.ts
 import { Dimensions } from 'react-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters';

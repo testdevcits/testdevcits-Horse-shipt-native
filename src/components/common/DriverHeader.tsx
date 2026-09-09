@@ -8,14 +8,7 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  
-  SPACING,
-  
-} from '../../constants';
+import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import AppText from './AppText';
 import AppIcon from '../AppIcon';
 

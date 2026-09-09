@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
- 
+
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';

@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   deleteBtn: {
-    flex: 1,  
+    flex: 1,
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.divider,

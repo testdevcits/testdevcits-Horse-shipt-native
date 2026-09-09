@@ -30,7 +30,7 @@ const Tab = createBottomTabNavigator<{
 }>();
 const { width } = Dimensions.get('window');
 
-const CustomShipperTabBar = ({ state,   navigation }: any) => {
+const CustomShipperTabBar = ({ state, navigation }: any) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {

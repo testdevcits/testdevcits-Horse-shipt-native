@@ -6,13 +6,7 @@ interface SkeletonCircleProps {
 }
 
 const SkeletonCircle = ({ size = 48 }: SkeletonCircleProps) => {
-  return (
-    <Skeleton
-      width={size}
-      height={size}
-      borderRadius={size / 2}
-    />
-  );
+  return <Skeleton width={size} height={size} borderRadius={size / 2} />;
 };
 
 export default SkeletonCircle;

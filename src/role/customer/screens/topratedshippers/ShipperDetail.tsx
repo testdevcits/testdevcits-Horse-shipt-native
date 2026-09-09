@@ -7,13 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import {
-   
-  User,
-  MessageSquare,
-  Package,
-  
-} from 'lucide-react-native';
+import { User, MessageSquare, Package } from 'lucide-react-native';
 
 // Constants & Hooks
 import { COLORS, ICON_SIZE } from '../../../../constants';
@@ -103,7 +97,7 @@ const ShipperDetail = () => {
       </AppText>
       <View style={styles.reviewFooter}>
         <View style={styles.avatarPlaceholder}>
-          <AppIcon name={"User"} size={ICON_SIZE.xs} color={COLORS.grey400} />
+          <AppIcon name={'User'} size={ICON_SIZE.xs} color={COLORS.grey400} />
         </View>
         <View>
           <AppText style={styles.reviewerName}>
@@ -216,7 +210,11 @@ const ShipperDetail = () => {
         {/* Location & Description */}
         <View style={styles.contentPadding}>
           <View style={styles.locationContainer}>
-            <AppIcon name={"MapPin"} size={ICON_SIZE.sm} color={COLORS.primary} />
+            <AppIcon
+              name={'MapPin'}
+              size={ICON_SIZE.sm}
+              color={COLORS.primary}
+            />
             <AppText style={styles.locationLabel}>{shipper?.region}</AppText>
           </View>
 
@@ -249,7 +247,11 @@ const ShipperDetail = () => {
                     style={styles.areaCard}
                   >
                     <View style={styles.areaIconBox}>
-                      <AppIcon name={'MapPin'} size={18} color={COLORS.primary} />
+                      <AppIcon
+                        name={'MapPin'}
+                        size={18}
+                        color={COLORS.primary}
+                      />
                     </View>
                     <View style={styles.areaContent}>
                       <AppText
@@ -260,7 +262,11 @@ const ShipperDetail = () => {
                       </AppText>
                       {radius > 0 && (
                         <View style={styles.radiusBadge}>
-                          <AppIcon name={'Compass'} size={12} color={COLORS.primary} />
+                          <AppIcon
+                            name={'Compass'}
+                            size={12}
+                            color={COLORS.primary}
+                          />
                           <AppText style={styles.radiusText}>
                             {radius} km radius coverage
                           </AppText>

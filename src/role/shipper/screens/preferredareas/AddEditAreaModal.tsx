@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
- import { AppText, Input } from '../../../../components';
+import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import LocationPicker, {
@@ -286,7 +286,9 @@ const AddEditAreaModal = ({
               value={locationName}
               onChangeText={handleLocationNameChange}
               placeholder="e.g. Indore, Madhya Pradesh, India"
-              leftIcon={<AppIcon name="MapPin" size={18} color={COLORS.primary} />}
+              leftIcon={
+                <AppIcon name="MapPin" size={18} color={COLORS.primary} />
+              }
               multiline
               inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
               error={errors.locationName}
@@ -302,7 +304,13 @@ const AddEditAreaModal = ({
                   placeholder="22.777927"
                   keyboardType="numeric"
                   maxLength={15}
-                  leftIcon={<AppIcon name="Compass" size={16} color={COLORS.textSecondary} />}
+                  leftIcon={
+                    <AppIcon
+                      name="Compass"
+                      size={16}
+                      color={COLORS.textSecondary}
+                    />
+                  }
                   error={errors.latitude}
                 />
               </View>
@@ -316,7 +324,11 @@ const AddEditAreaModal = ({
                   keyboardType="numeric"
                   maxLength={15}
                   leftIcon={
-                    <AppIcon name="Navigation" size={16} color={COLORS.textSecondary} />
+                    <AppIcon
+                      name="Navigation"
+                      size={16}
+                      color={COLORS.textSecondary}
+                    />
                   }
                   error={errors.longitude}
                 />

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, ActivityIndicator } from 'react-native';
- import { CardField } from '@stripe/stripe-react-native';
+import { CardField } from '@stripe/stripe-react-native';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONT_SIZE } from '../../../../constants';
 import styles from './styles.earnings';
@@ -77,7 +77,9 @@ const StripePaymentMethodCardModal: React.FC<
             value={cardholderName}
             onChangeText={setCardholderName}
             editable={!submittingCard}
-            leftIcon={<AppIcon name={'User'} size={16} color={COLORS.textSecondary} />}
+            leftIcon={
+              <AppIcon name={'User'} size={16} color={COLORS.textSecondary} />
+            }
           />
 
           {/* Stripe Card Field Component */}
@@ -100,7 +102,11 @@ const StripePaymentMethodCardModal: React.FC<
 
           {/* Security Row */}
           <View style={styles.securityRow}>
-            <AppIcon name={'ShieldCheck'} size={14} color={COLORS.greenSuccess} />
+            <AppIcon
+              name={'ShieldCheck'}
+              size={14}
+              color={COLORS.greenSuccess}
+            />
             <AppText style={styles.securityText}>
               Secured & encrypted via Stripe 256-bit SSL
             </AppText>

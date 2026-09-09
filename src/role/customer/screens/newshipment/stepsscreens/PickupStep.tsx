@@ -1,7 +1,7 @@
 import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 
-import { AppText,   } from '../../../../../components';
+import { AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import LocationPicker from '../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../interfaces';
@@ -16,7 +16,9 @@ interface PickupStepProps {
   errors: any;
 }
 
-const AppCalendarModal=lazy(()=>import("../../../../../components/common/AppCalendarModal"))
+const AppCalendarModal = lazy(
+  () => import('../../../../../components/common/AppCalendarModal'),
+);
 
 const PickupStep: React.FC<PickupStepProps> = ({
   form,
@@ -376,28 +378,26 @@ const PickupStep: React.FC<PickupStepProps> = ({
 
       {/* CALENDAR MODAL */}
       <Suspense fallback={null}>
-
-       
-      <AppCalendarModal
-        visible={activeDateType !== null}
-        onClose={handleCloseCalendar}
-        onSelect={handleDateSelect}
-        title={
-          activeDateType === 'start' ? 'Pickup Start Date' : 'Pickup End Date'
-        }
-        initialDate={
-          activeDateType === 'start'
-            ? getSafeDateStr(form.pickupStartDate)
-            : getSafeDateStr(form.pickupEndDate)
-        }
-        minDate={
-          activeDateType === 'start'
-            ? getTomorrowStr()
-            : form.pickupStartDate
-            ? getSafeDateStr(form.pickupStartDate)
-            : getTomorrowStr()
-        }
-      />
+        <AppCalendarModal
+          visible={activeDateType !== null}
+          onClose={handleCloseCalendar}
+          onSelect={handleDateSelect}
+          title={
+            activeDateType === 'start' ? 'Pickup Start Date' : 'Pickup End Date'
+          }
+          initialDate={
+            activeDateType === 'start'
+              ? getSafeDateStr(form.pickupStartDate)
+              : getSafeDateStr(form.pickupEndDate)
+          }
+          minDate={
+            activeDateType === 'start'
+              ? getTomorrowStr()
+              : form.pickupStartDate
+              ? getSafeDateStr(form.pickupStartDate)
+              : getTomorrowStr()
+          }
+        />
       </Suspense>
     </View>
   );

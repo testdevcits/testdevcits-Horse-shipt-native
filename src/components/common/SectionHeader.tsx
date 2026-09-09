@@ -36,7 +36,11 @@ const SectionHeader = ({
 
           {/* Simple Chevron Arrow */}
 
-          <AppIcon name={'ChevronRight'}   size={FONT_SIZE.lg} style={styles?.chevron} />
+          <AppIcon
+            name={'ChevronRight'}
+            size={FONT_SIZE.lg}
+            style={styles?.chevron}
+          />
         </TouchableOpacity>
       )}
     </View>

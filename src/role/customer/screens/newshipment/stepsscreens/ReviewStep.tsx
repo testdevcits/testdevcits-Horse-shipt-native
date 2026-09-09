@@ -6,7 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
- 
+
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../../../../constants';
 import { AppText } from '../../../../../components';
@@ -98,7 +98,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               <AppText style={styles.stepChipText}>STEP 5 OF 5</AppText>
             </View>
             <View style={styles.statusBadge}>
-              <AppIcon name={"CheckCircle2"} size={13} color={COLORS.greenSuccess} />
+              <AppIcon
+                name={'CheckCircle2'}
+                size={13}
+                color={COLORS.greenSuccess}
+              />
               <AppText style={styles.statusBadgeText}>
                 {isEdit && isDraft
                   ? 'Ready to Update Draft'
@@ -110,7 +114,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           </View>
           <View style={styles.headerTitleRow}>
             <View style={styles.headerIconBox}>
-              <AppIcon name={"ShieldCheck"} size={22} color={COLORS.primary} />
+              <AppIcon name={'ShieldCheck'} size={22} color={COLORS.primary} />
             </View>
             <View style={styles.headerTextGroup}>
               <AppText style={styles.headerTitle}>
@@ -152,7 +156,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <AppIcon name={"MapPin"} size={16} color={COLORS.primary} />
+                <AppIcon name={'MapPin'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>ROUTE & SCHEDULE</AppText>
             </View>
@@ -161,7 +165,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
               onPress={() => onEditSection(0)}
               activeOpacity={0.8}
             >
-              <AppIcon name={"Edit3"} size={13} color={COLORS.primary} />
+              <AppIcon name={'Edit3'} size={13} color={COLORS.primary} />
               <AppText style={styles.miniEditText}>Edit Route</AppText>
             </TouchableOpacity>
           </View>
@@ -179,7 +183,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                   {form?.pickupLocation || 'Pickup location not specified'}
                 </AppText>
                 <View style={styles.routeDateBadge}>
-                  <AppIcon name={"Calendar"} size={13} color={COLORS.primary} />
+                  <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
                   <AppText style={styles.routeDateText}>
                     {formatDateDisplay(form?.pickupStartDate)} —{' '}
                     {formatDateDisplay(form?.pickupEndDate)}
@@ -206,7 +210,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                   {form?.deliveryLocation || 'Delivery location not specified'}
                 </AppText>
                 <View style={styles.routeDateBadge}>
-                  <AppIcon name={"Calendar"} size={13} color={COLORS.primary} />
+                  <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
                   <AppText style={styles.routeDateText}>
                     {formatDateDisplay(form?.deliveryStartDate)} —{' '}
                     {formatDateDisplay(form?.deliveryEndDate)}
@@ -226,7 +230,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           >
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <AppIcon name={"ShieldCheck"} size={16} color={COLORS.primary} />
+                <AppIcon
+                  name={'ShieldCheck'}
+                  size={16}
+                  color={COLORS.primary}
+                />
               </View>
               <AppText style={styles.cardTitle}>HORSE DETAILS</AppText>
             </View>
@@ -238,13 +246,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 onPress={() => onEditSection(2)}
                 activeOpacity={0.8}
               >
-                <AppIcon name={"Edit3"} size={13} color={COLORS.primary} />
+                <AppIcon name={'Edit3'} size={13} color={COLORS.primary} />
                 <AppText style={styles.miniEditText}>Edit</AppText>
               </TouchableOpacity>
               {isHorseExpanded ? (
-                <AppIcon name={"ChevronUp"} size={18} color={COLORS.grey600} />
+                <AppIcon name={'ChevronUp'} size={18} color={COLORS.grey600} />
               ) : (
-                <AppIcon name={"ChevronDown"} size={18} color={COLORS.grey600} />
+                <AppIcon
+                  name={'ChevronDown'}
+                  size={18}
+                  color={COLORS.grey600}
+                />
               )}
             </View>
           </TouchableOpacity>
@@ -307,7 +319,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                             resizeMode="contain"
                           />
                           <View style={styles.photoOverlayBadge}>
-                            <AppIcon name={"CheckCircle2"} size={12} color={COLORS.white} />
+                            <AppIcon
+                              name={'CheckCircle2'}
+                              size={12}
+                              color={COLORS.white}
+                            />
                             <AppText style={styles.photoOverlayText}>
                               Photo Attached
                             </AppText>
@@ -315,7 +331,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                         </View>
                       ) : (
                         <View style={styles.noPhotoBox}>
-                          <AppIcon name={"Image"} size={20} color={COLORS.grey400} />
+                          <AppIcon
+                            name={'Image'}
+                            size={20}
+                            color={COLORS.grey400}
+                          />
                           <AppText style={styles.noPhotoText}>
                             No photo attached
                           </AppText>
@@ -338,7 +358,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           >
             <View style={styles.cardHeaderLeft}>
               <View style={styles.iconCircle}>
-                <AppIcon name={"Paperclip"} size={16} color={COLORS.primary} />
+                <AppIcon name={'Paperclip'} size={16} color={COLORS.primary} />
               </View>
               <AppText style={styles.cardTitle}>ATTACHED DOCUMENTS</AppText>
             </View>
@@ -350,13 +370,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 onPress={() => onEditSection(3)}
                 activeOpacity={0.8}
               >
-                <AppIcon name={"Upload"} size={13} color={COLORS.primary} />
+                <AppIcon name={'Upload'} size={13} color={COLORS.primary} />
                 <AppText style={styles.miniEditText}>Upload / Edit</AppText>
               </TouchableOpacity>
               {isDocsExpanded ? (
-                <AppIcon name={"ChevronUp"} size={18} color={COLORS.grey600} />
+                <AppIcon name={'ChevronUp'} size={18} color={COLORS.grey600} />
               ) : (
-                <AppIcon name={"ChevronDown"} size={18} color={COLORS.grey600} />
+                <AppIcon
+                  name={'ChevronDown'}
+                  size={18}
+                  color={COLORS.grey600}
+                />
               )}
             </View>
           </TouchableOpacity>
@@ -397,9 +421,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                         ]}
                       >
                         {horse?.coggins ? (
-                          <AppIcon name={"FileCheck"} size={18} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'FileCheck'}
+                            size={18}
+                            color={COLORS.greenSuccess}
+                          />
                         ) : (
-                          <AppIcon name={"FileText"} size={18} color={COLORS.grey400} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={18}
+                            color={COLORS.grey400}
+                          />
                         )}
                       </View>
 
@@ -414,7 +446,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
                       {horse?.coggins ? (
                         <View style={styles.uploadedBadge}>
-                          <AppIcon name={"CheckCircle2"} size={12} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'CheckCircle2'}
+                            size={12}
+                            color={COLORS.greenSuccess}
+                          />
                           <AppText style={styles.uploadedBadgeText}>
                             Attached
                           </AppText>
@@ -442,9 +478,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                         ]}
                       >
                         {horse?.healthCert ? (
-                          <AppIcon name={"FileCheck"} size={18} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'FileCheck'}
+                            size={18}
+                            color={COLORS.greenSuccess}
+                          />
                         ) : (
-                          <AppIcon name={"FileText"} size={18} color={COLORS.grey400} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={18}
+                            color={COLORS.grey400}
+                          />
                         )}
                       </View>
 
@@ -459,7 +503,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
                       {horse?.healthCert ? (
                         <View style={styles.uploadedBadge}>
-                          <AppIcon name={"CheckCircle2"} size={12} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'CheckCircle2'}
+                            size={12}
+                            color={COLORS.greenSuccess}
+                          />
                           <AppText style={styles.uploadedBadgeText}>
                             Attached
                           </AppText>
@@ -487,9 +535,17 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                         ]}
                       >
                         {horse?.otherDocuments ? (
-                          <AppIcon name={"FileCheck"} size={18} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'FileCheck'}
+                            size={18}
+                            color={COLORS.greenSuccess}
+                          />
                         ) : (
-                          <AppIcon name={"FileText"} size={18} color={COLORS.grey400} />
+                          <AppIcon
+                            name={'FileText'}
+                            size={18}
+                            color={COLORS.grey400}
+                          />
                         )}
                       </View>
 
@@ -507,7 +563,11 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
 
                       {horse?.otherDocuments ? (
                         <View style={styles.uploadedBadge}>
-                          <AppIcon name={"CheckCircle2"} size={12} color={COLORS.greenSuccess} />
+                          <AppIcon
+                            name={'CheckCircle2'}
+                            size={12}
+                            color={COLORS.greenSuccess}
+                          />
                           <AppText style={styles.uploadedBadgeText}>
                             Attached
                           </AppText>
@@ -538,7 +598,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             <View style={styles.cardHeader}>
               <View style={styles.cardHeaderLeft}>
                 <View style={styles.iconCircle}>
-                  <AppIcon name={"Info"} size={16} color={COLORS.primary} />
+                  <AppIcon name={'Info'} size={16} color={COLORS.primary} />
                 </View>
                 <AppText style={styles.cardTitle}>
                   NOTES & SPECIAL INSTRUCTIONS
@@ -594,7 +654,6 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  
                   <AppText style={styles.draftBtnText}>
                     {isEdit && isDraft ? 'Update Shipment' : 'Save Draft'}
                   </AppText>
@@ -618,7 +677,12 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                     ? 'Update Shipment Details'
                     : 'Save & Publish'}
                 </AppText>
-                <AppIcon name={"ArrowRight"} size={18} color={COLORS.white} style={{ marginLeft: 6 }} />
+                <AppIcon
+                  name={'ArrowRight'}
+                  size={18}
+                  color={COLORS.white}
+                  style={{ marginLeft: 6 }}
+                />
               </>
             )}
           </TouchableOpacity>

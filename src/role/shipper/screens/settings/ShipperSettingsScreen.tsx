@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
- 
+
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
@@ -209,7 +209,9 @@ const ShipperSettingsScreen = () => {
                         }
                         activeOpacity={0.8}
                       >
-                        {isEmailChecked && <AppIcon name={'Check'} size={14} color="#A06333" />}
+                        {isEmailChecked && (
+                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                        )}
                       </TouchableOpacity>
 
                       {/* SMS Checkbox */}
@@ -223,7 +225,9 @@ const ShipperSettingsScreen = () => {
                         }
                         activeOpacity={0.8}
                       >
-                        {isSmsChecked && <AppIcon name={'Check'} size={14} color="#A06333" />}
+                        {isSmsChecked && (
+                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                        )}
                       </TouchableOpacity>
                     </View>
                   </View>

@@ -24,7 +24,7 @@ const ProfileTab: React.FC<Props> = ({
 }) => {
   const reviewsList = profileData?.reviews || [];
 
-  return (  
+  return (
     <View style={styles.tabSection}>
       {/* Update Locations Button */}
       <TouchableOpacity

@@ -1,11 +1,5 @@
 import { StyleSheet } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  FONT_SIZE,
-  
-  SPACING,
-} from '../../../../constants';
+import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -271,7 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 14,
   },
-  
+
   logoutIcon: {
     marginRight: SPACING.sm,
   },

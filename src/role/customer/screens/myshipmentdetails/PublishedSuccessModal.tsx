@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-   
-} from 'react-native';
+import { Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import {
   COLORS,
   FONTS,
@@ -20,7 +13,7 @@ import imageIndex from '../../../../assets/images/imageIndex';
 interface PublishedSuccessModalProps {
   visible: boolean;
   onClose: () => void;
-  onViewShipment: () => void;  
+  onViewShipment: () => void;
 }
 
 const PublishedSuccessModal = ({
@@ -69,7 +62,7 @@ const PublishedSuccessModal = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.secondaryBtn} 
+              style={styles.secondaryBtn}
               onPress={onClose}
               activeOpacity={0.8}
             >

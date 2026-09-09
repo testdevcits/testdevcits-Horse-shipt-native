@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
- import {
+import {
   COLORS,
   FONT_SIZE,
   FONTS,

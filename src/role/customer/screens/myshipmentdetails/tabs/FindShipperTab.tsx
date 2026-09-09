@@ -6,7 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
- 
+
 import { AppText } from '../../../../../components';
 import {
   COLORS,
@@ -63,7 +63,12 @@ const ShipperProfileCard = ({
           <View style={styles.nameRow}>
             <AppText style={styles.shipperName}>{profile?.name}</AppText>
             <View style={styles.ratingBadge}>
-              <AppIcon name={'Star'} size={ICON_SIZE.xs} color={COLORS.primary} fill={COLORS.primary} />
+              <AppIcon
+                name={'Star'}
+                size={ICON_SIZE.xs}
+                color={COLORS.primary}
+                fill={COLORS.primary}
+              />
               <AppText style={styles.ratingText}>
                 {profile?.rating || 0}
               </AppText>
@@ -105,7 +110,11 @@ const ShipperProfileCard = ({
 
       {isInvited ? (
         <View style={styles.requestedBtn}>
-          <AppIcon name={'Check'} size={ICON_SIZE.sm} color={COLORS.greenPrimary} />
+          <AppIcon
+            name={'Check'}
+            size={ICON_SIZE.sm}
+            color={COLORS.greenPrimary}
+          />
           <AppText style={styles.requestedText}>Quote Requested</AppText>
         </View>
       ) : (

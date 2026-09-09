@@ -6,8 +6,8 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
- 
-import { COLORS, FONT_SIZE, FONTS,   SPACING } from '../../constants';
+
+import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
 import AppIcon from '../AppIcon';
 
@@ -70,7 +70,11 @@ const TripCard: React.FC<TripCardProps> = ({
                 : styles.statusPendingText,
             ]}
           >
-            {isTransit ? 'In Transit' : isCompleted ? 'Completed' : status || 'Pending'}
+            {isTransit
+              ? 'In Transit'
+              : isCompleted
+              ? 'Completed'
+              : status || 'Pending'}
           </AppText>
         </View>
       </View>
@@ -84,7 +88,12 @@ const TripCard: React.FC<TripCardProps> = ({
           </AppText>
         </View>
 
-        <AppIcon name="ArrowRight" size={16} color={COLORS.primary} style={styles.arrowIcon} />
+        <AppIcon
+          name="ArrowRight"
+          size={16}
+          color={COLORS.primary}
+          style={styles.arrowIcon}
+        />
 
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />

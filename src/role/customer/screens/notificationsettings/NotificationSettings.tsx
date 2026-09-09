@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  Switch,
-  
-} from 'react-native';
+import { View, ScrollView, Switch } from 'react-native';
 import styles from './NotificationSettings.styles';
 import { useNotificationSettings } from './useNotificationSettings';
 import { COLORS } from '../../../../constants';

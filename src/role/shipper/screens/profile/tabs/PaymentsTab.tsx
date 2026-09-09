@@ -12,13 +12,7 @@ import { WebView } from 'react-native-webview';
 
 import Toast from 'react-native-toast-message';
 import { AppText } from '../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  FONT_SIZE,
-  SPACING,
-  
-} from '../../../../../constants';
+import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
 import { SafeAreaView } from 'react-native-safe-area-context';

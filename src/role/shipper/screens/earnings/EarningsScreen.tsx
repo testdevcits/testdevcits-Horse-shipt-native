@@ -15,7 +15,6 @@ import {
   AppText,
   AppLoader,
   EmptyState,
-  
 } from '../../../../components';
 import { COLORS, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';

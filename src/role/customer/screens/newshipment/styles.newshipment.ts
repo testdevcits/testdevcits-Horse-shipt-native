@@ -7,7 +7,6 @@ import {
   FONT_SIZE,
 } from '../../../../constants';
 
- 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
 
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
   stepItem: {
     flex: 1,
     alignItems: 'center',
-    
   },
   stepImage: {
     width: 40,

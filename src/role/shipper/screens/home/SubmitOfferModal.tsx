@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
- 
+
 import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
 import Toast from 'react-native-toast-message';
@@ -251,7 +251,11 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           <View style={styles.paymentInfoRow}>
             <View style={styles.paymentInfoBox}>
               <View style={styles.paymentIconBox}>
-                <AppIcon name="CreditCard" size={18} color={COLORS.brandBrown} />
+                <AppIcon
+                  name="CreditCard"
+                  size={18}
+                  color={COLORS.brandBrown}
+                />
               </View>
               <View style={styles.paymentTextCol}>
                 <AppText style={styles.paymentLabel}>PAYMENT METHOD</AppText>
@@ -281,7 +285,11 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             {/* 1. Pricing Section */}
             <View style={styles.sectionContainer}>
               <View style={styles.sectionTitleRow}>
-                <AppIcon name="DollarSign" size={18} color={COLORS.brandBrown} />
+                <AppIcon
+                  name="DollarSign"
+                  size={18}
+                  color={COLORS.brandBrown}
+                />
                 <AppText style={styles.sectionTitle}>Pricing</AppText>
               </View>
 
@@ -432,13 +440,21 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
                   onPress={handleClearSignature}
                   activeOpacity={0.7}
                 >
-                  <AppIcon name="RotateCcw" size={14} color={COLORS.bluePrimary} />
+                  <AppIcon
+                    name="RotateCcw"
+                    size={14}
+                    color={COLORS.bluePrimary}
+                  />
                   <AppText style={styles.clearSigText}>Clear Signature</AppText>
                 </TouchableOpacity>
 
                 {signature ? (
                   <View style={styles.capturedRow}>
-                    <AppIcon name="CheckCircle2" size={14} color={COLORS.greenActive} />
+                    <AppIcon
+                      name="CheckCircle2"
+                      size={14}
+                      color={COLORS.greenActive}
+                    />
                     <AppText style={styles.capturedText}>
                       Signature captured
                     </AppText>

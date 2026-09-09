@@ -41,19 +41,9 @@
 //   },
 // });
 
-
-
-
-
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  FONT_SIZE,
-  ICON_SIZE,
-  SPACING,
-} from '../../constants';
+import { COLORS, FONTS, FONT_SIZE, ICON_SIZE, SPACING } from '../../constants';
 import AppText from './AppText';
 
 interface EmptyStateProps {
@@ -62,11 +52,7 @@ interface EmptyStateProps {
   icon?: React.ElementType | React.ReactNode;
 }
 
-export const EmptyState = ({
-  title,
-  message,
-  icon,
-}: EmptyStateProps) => {
+export const EmptyState = ({ title, message, icon }: EmptyStateProps) => {
   const renderIcon = () => {
     if (!icon) return null;
 
@@ -93,9 +79,7 @@ export const EmptyState = ({
 
       <AppText style={styles.title}>{title}</AppText>
 
-      {message ? (
-        <AppText style={styles.message}>{message}</AppText>
-      ) : null}
+      {message ? <AppText style={styles.message}>{message}</AppText> : null}
     </View>
   );
 };
@@ -123,4 +107,3 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
 });
-

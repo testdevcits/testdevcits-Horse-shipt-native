@@ -1,5 +1,13 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SCREEN_HEIGHT, SCREEN_WIDTH, SPACING } from "../../../constants";
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  SPACING,
+} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.black },
@@ -119,6 +127,5 @@ const styles = StyleSheet.create({
   },
   contactLink: { color: COLORS.primary, fontFamily: FONTS.bold },
 });
-
 
 export default styles;
