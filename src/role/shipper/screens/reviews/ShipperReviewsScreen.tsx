@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { View, FlatList, Image, RefreshControl } from 'react-native';
 import {
-  View,
-  FlatList,
-  Image,
-  RefreshControl,
-} from 'react-native';
-import { Star, MessageSquare } from 'lucide-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState } from '../../../../components';
+  AppHeader,
+  AppText,
+  AppLoader,
+  EmptyState,
+} from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperreviews';
+import AppIcon from '../../../../components/AppIcon';
 
 const ShipperReviewsScreen = ({ route }: any) => {
   const initialReviews = route?.params?.reviews || [];
@@ -18,7 +18,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
 
   const [reviews, setReviews] = useState<any[]>(initialReviews);
   const [profileData, setProfileData] = useState<any>(initialProfile);
-  const [loading, setLoading] = useState(!initialReviews.length && !initialProfile);
+  const [loading, setLoading] = useState(
+    !initialReviews.length && !initialProfile,
+  );
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchProfileData = useCallback(async () => {
@@ -47,9 +49,14 @@ const ShipperReviewsScreen = ({ route }: any) => {
     fetchProfileData();
   };
 
-  const avgRating = profileData?.rating || (reviews.length > 0
-    ? (reviews.reduce((acc: number, r: any) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)
-    : 5.0);
+  const avgRating =
+    profileData?.rating ||
+    (reviews.length > 0
+      ? (
+          reviews.reduce((acc: number, r: any) => acc + (r.rating || 5), 0) /
+          reviews.length
+        ).toFixed(1)
+      : 5.0);
   const totalReviewsCount = profileData?.totalReviews || reviews.length;
 
   const renderHeader = () => (
@@ -62,17 +69,21 @@ const ShipperReviewsScreen = ({ route }: any) => {
           </AppText>
           <View style={styles.starsRow}>
             {[1, 2, 3, 4, 5].map(s => (
-              <Star
+              <AppIcon
                 key={s}
+                name={'Star'}
                 size={22}
                 color="#F59E0B"
-                fill={s <= Math.round(Number(avgRating)) ? '#F59E0B' : 'transparent'}
+                fill={
+                  s <= Math.round(Number(avgRating)) ? '#F59E0B' : 'transparent'
+                }
               />
             ))}
           </View>
         </View>
         <AppText style={styles.summarySubText}>
-          Based on {totalReviewsCount} customer {totalReviewsCount === 1 ? 'review' : 'reviews'}
+          Based on {totalReviewsCount} customer{' '}
+          {totalReviewsCount === 1 ? 'review' : 'reviews'}
         </AppText>
       </View>
 
@@ -92,7 +103,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={MessageSquare}
+        icon={<AppIcon name={'MessageSquare'} size={64} color="#A1A1AA" />}
         title="No Reviews Received Yet"
         message="Reviews from customers will appear here once submitted."
       />
@@ -100,8 +111,10 @@ const ShipperReviewsScreen = ({ route }: any) => {
   };
 
   const renderReviewItem = ({ item, index }: { item: any; index: number }) => {
-    const customerName = item?.customerName || item?.customerId?.name || 'Customer';
-    const avatarUri = item?.customerId?.profileImage?.url || item?.customerId?.profileImage;
+    const customerName =
+      item?.customerName || item?.customerId?.name || 'Customer';
+    const avatarUri =
+      item?.customerId?.profileImage?.url || item?.customerId?.profileImage;
     const dateFormatted = item?.createdAt
       ? formatDate(item?.createdAt, 'MMM DD, YYYY')
       : 'Recent';
@@ -112,7 +125,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
           <View style={styles.reviewerRow}>
             <Image
               source={
-                avatarUri && typeof avatarUri === 'string' && avatarUri.trim() !== ''
+                avatarUri &&
+                typeof avatarUri === 'string' &&
+                avatarUri.trim() !== ''
                   ? { uri: avatarUri }
                   : imageIndex.AccountIcon
               }
@@ -126,8 +141,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
 
           <View style={styles.starsRow}>
             {[1, 2, 3, 4, 5].map(s => (
-              <Star
+              <AppIcon
                 key={s}
+                name={'Star'}
                 size={14}
                 color="#F59E0B"
                 fill={s <= (item?.rating || 5) ? '#F59E0B' : 'transparent'}

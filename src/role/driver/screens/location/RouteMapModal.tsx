@@ -11,17 +11,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {
-  X,
-  Navigation,
-
-  MapPin,
-  Clock,
-  LocateFixed,
-  Map as MapIcon,
-  Plus,
-  Minus,
-} from 'lucide-react-native';
+import { Navigation, MapPin } from 'lucide-react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -33,6 +23,7 @@ import {
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import { AppText } from '../../../../components';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
+import AppIcon from '../../../../components/AppIcon';
 
 const { height } = Dimensions.get('window');
 
@@ -123,27 +114,33 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
     const handleZoomIn = useCallback(() => {
       if (mapRef.current) {
-        mapRef.current.getCamera().then(camera => {
-          if (camera) {
-            camera.zoom = (camera.zoom || 12) + 1.2;
-            mapRef.current?.animateCamera(camera, { duration: 300 });
-          }
-        }).catch(err => {
-          console.warn('Zoom In error:', err);
-        });
+        mapRef.current
+          .getCamera()
+          .then(camera => {
+            if (camera) {
+              camera.zoom = (camera.zoom || 12) + 1.2;
+              mapRef.current?.animateCamera(camera, { duration: 300 });
+            }
+          })
+          .catch(err => {
+            console.warn('Zoom In error:', err);
+          });
       }
     }, []);
 
     const handleZoomOut = useCallback(() => {
       if (mapRef.current) {
-        mapRef.current.getCamera().then(camera => {
-          if (camera) {
-            camera.zoom = Math.max((camera.zoom || 12) - 1.2, 1);
-            mapRef.current?.animateCamera(camera, { duration: 300 });
-          }
-        }).catch(err => {
-          console.warn('Zoom Out error:', err);
-        });
+        mapRef.current
+          .getCamera()
+          .then(camera => {
+            if (camera) {
+              camera.zoom = Math.max((camera.zoom || 12) - 1.2, 1);
+              mapRef.current?.animateCamera(camera, { duration: 300 });
+            }
+          })
+          .catch(err => {
+            console.warn('Zoom Out error:', err);
+          });
       }
     }, []);
 
@@ -250,7 +247,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           {/* HEADER OVERLAY */}
           <View style={styles.headerOverlay}>
             <TouchableOpacity style={styles.circleBtn} onPress={onClose}>
-              <X size={22} color={COLORS.textPrimary} />
+              <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
             </TouchableOpacity>
 
             <View style={styles.routeHeaderInfo}>
@@ -267,20 +264,36 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 setMapType(mapType === 'standard' ? 'satellite' : 'standard')
               }
             >
-              <MapIcon size={20} color={COLORS.textPrimary} />
+              <AppIcon name={'Map'} size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
           {/* SIDE CONTROLS */}
           <View style={styles.sideControls}>
-            <TouchableOpacity style={styles.circleBtn} onPress={handleFitAll} activeOpacity={0.8}>
-              <LocateFixed size={20} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              style={styles.circleBtn}
+              onPress={handleFitAll}
+              activeOpacity={0.8}
+            >
+              <AppIcon
+                name={'LocateFixed'}
+                size={20}
+                color={COLORS.textPrimary}
+              />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomIn} activeOpacity={0.8}>
-              <Plus size={20} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              style={[styles.circleBtn, { marginTop: 10 }]}
+              onPress={handleZoomIn}
+              activeOpacity={0.8}
+            >
+              <AppIcon name={'Plus'} size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleBtn, { marginTop: 10 }]} onPress={handleZoomOut} activeOpacity={0.8}>
-              <Minus size={20} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              style={[styles.circleBtn, { marginTop: 10 }]}
+              onPress={handleZoomOut}
+              activeOpacity={0.8}
+            >
+              <AppIcon name={'Minus'} size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -289,7 +302,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             <View style={styles.tripCard}>
               <View style={styles.metricRow}>
                 <View style={styles.metricItem}>
-                  <Navigation size={18} color="#3B82F6" />
+                  <AppIcon name={'Navigation'} size={18} color="#3B82F6" />
                   <View style={styles.metricTextContent}>
                     <AppText style={styles.metricLabel}>Total Distance</AppText>
                     <AppText style={styles.metricValue}>
@@ -299,7 +312,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 </View>
                 <View style={styles.metricDivider} />
                 <View style={styles.metricItem}>
-                  <Clock size={18} color="#10B981" />
+                  <AppIcon name={'Clock'} size={18} color="#10B981" />
                   <View style={styles.metricTextContent}>
                     <AppText style={styles.metricLabel}>Total ETA</AppText>
                     <AppText style={styles.metricValue}>
@@ -332,7 +345,9 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           {loading && (
             <View style={styles.loader}>
               <ActivityIndicator size="large" color={COLORS.primary} />
-              <AppText style={styles.loadingText}>Finding the best route..</AppText>
+              <AppText style={styles.loadingText}>
+                Finding the best route..
+              </AppText>
             </View>
           )}
         </View>
@@ -456,8 +471,16 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  metricDivider: { width: SIZES.borderWidthThin, height: RADIUS.pill, backgroundColor: COLORS.divider },
-  divider: { height: SIZES.borderWidthThin, backgroundColor: COLORS.divider, marginVertical: SPACING.lg2 },
+  metricDivider: {
+    width: SIZES.borderWidthThin,
+    height: RADIUS.pill,
+    backgroundColor: COLORS.divider,
+  },
+  divider: {
+    height: SIZES.borderWidthThin,
+    backgroundColor: COLORS.divider,
+    marginVertical: SPACING.lg2,
+  },
   addressSection: { gap: 10 },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   dot: { width: SPACING.sm, height: SPACING.sm, borderRadius: RADIUS.xs },

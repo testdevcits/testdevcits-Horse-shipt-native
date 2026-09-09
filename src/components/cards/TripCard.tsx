@@ -1,8 +1,15 @@
 import React, { memo } from 'react';
-import { StyleSheet, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { ArrowRight, Truck, ShieldCheck, ChevronRight } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../constants';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+
+import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import AppText from '../common/AppText';
+import AppIcon from '../AppIcon';
 
 interface TripCardProps {
   item: any;
@@ -10,10 +17,15 @@ interface TripCardProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerStyle }) => {
+const TripCard: React.FC<TripCardProps> = ({
+  item,
+  onCompletePress,
+  containerStyle,
+}) => {
   const shipmentData = item?.shipment || {};
   const status = item?.tripStatus;
   const isTransit = status === 'inTransit' || status === 'started';
+  const isCompleted = status === 'completed' || status === 'delivered';
 
   return (
     <View style={[styles.card, containerStyle]}>
@@ -22,20 +34,47 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
         <View style={styles.headerTitleRow}>
           <AppText style={styles.routeHeader}>DISPATCH MANIFEST</AppText>
           {shipmentData?.shipmentCode && (
-            <AppText style={styles.shipmentCodeTag}>#{shipmentData?.shipmentCode}</AppText>
+            <AppText style={styles.shipmentCodeTag}>
+              #{shipmentData?.shipmentCode}
+            </AppText>
           )}
         </View>
 
-        <View style={[
-          styles.statusBadge,
-          isTransit ? styles.statusBadgeActive : styles.statusBadgePending
-        ]}>
-          <View style={[styles.statusDot, isTransit ? styles.activeDot : styles.pendingDot]} />
-          <AppText style={[
-            styles.statusBadgeText,
-            isTransit ? styles.statusActiveText : styles.statusPendingText
-          ]}>
-            {isTransit ? 'In Transit' : status || 'Pending'}
+        <View
+          style={[
+            styles.statusBadge,
+            isTransit
+              ? styles.statusBadgeActive
+              : isCompleted
+              ? styles.statusBadgeCompleted
+              : styles.statusBadgePending,
+          ]}
+        >
+          <View
+            style={[
+              styles.statusDot,
+              isTransit
+                ? styles.activeDot
+                : isCompleted
+                ? styles.completedDot
+                : styles.pendingDot,
+            ]}
+          />
+          <AppText
+            style={[
+              styles.statusBadgeText,
+              isTransit
+                ? styles.statusActiveText
+                : isCompleted
+                ? styles.statusCompletedText
+                : styles.statusPendingText,
+            ]}
+          >
+            {isTransit
+              ? 'In Transit'
+              : isCompleted
+              ? 'Completed'
+              : status || 'Pending'}
           </AppText>
         </View>
       </View>
@@ -49,7 +88,12 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
           </AppText>
         </View>
 
-        <ArrowRight size={14} color={COLORS.primary} style={styles.arrowIcon} />
+        <AppIcon
+          name="ArrowRight"
+          size={16}
+          color={COLORS.primary}
+          style={styles.arrowIcon}
+        />
 
         <View style={styles.locationWrapper}>
           <View style={styles.nodeDotRed} />
@@ -62,14 +106,15 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
       {/* Shipment Specs Grid */}
       <View style={styles.footerRow}>
         <View style={styles.infoBadge}>
-          <Truck size={14} color={COLORS.primary} />
+          <AppIcon name="Truck" size={14} color={COLORS.primary} />
           <AppText style={styles.infoText}>
-            {shipmentData?.numberOfHorses || 1} {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
+            {shipmentData?.numberOfHorses || 1}{' '}
+            {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
           </AppText>
         </View>
 
         <View style={styles.infoBadge}>
-          <ShieldCheck size={14} color={COLORS.greenActive} />
+          <AppIcon name="ShieldCheck" size={14} color={COLORS.greenActive} />
           <AppText style={styles.infoText}>Verified Route</AppText>
         </View>
       </View>
@@ -81,8 +126,10 @@ const TripCard: React.FC<TripCardProps> = ({ item, onCompletePress, containerSty
           activeOpacity={0.85}
           onPress={() => onCompletePress(item?._id)}
         >
-          <AppText style={styles.actionButtonText}>Complete Delivery (OTP)</AppText>
-          <ChevronRight size={16} color={COLORS.white} />
+          <AppText style={styles.actionButtonText}>
+            Complete Delivery (OTP)
+          </AppText>
+          <AppIcon name="ChevronRight" size={16} color={COLORS.white} />
         </TouchableOpacity>
       )}
     </View>
@@ -94,21 +141,21 @@ export default memo(TripCard);
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
-    borderWidth: 1.5,
-    borderColor: COLORS.goldBorder,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
     padding: SPACING.md,
     shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm2,
   },
   headerTitleRow: {
     flexDirection: 'row',
@@ -119,29 +166,32 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
     color: COLORS.primary,
-    letterSpacing: 1,
+    letterSpacing: 0.8,
   },
   shipmentCodeTag: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textSecondary,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.slate400,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-    borderRadius: 12,
+    gap: 5,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    borderWidth: 1,
   },
   statusBadgeActive: {
     backgroundColor: COLORS.greenBadgeBg,
-    borderWidth: 1,
     borderColor: COLORS.greenBadgeBorder,
+  },
+  statusBadgeCompleted: {
+    backgroundColor: COLORS.goldCreamBg,
+    borderColor: COLORS.goldBorder,
   },
   statusBadgePending: {
     backgroundColor: COLORS.amberLightBg,
-    borderWidth: 1,
     borderColor: COLORS.amberBorder,
   },
   statusDot: {
@@ -150,14 +200,18 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   activeDot: { backgroundColor: COLORS.greenBadgeText },
+  completedDot: { backgroundColor: COLORS.primary },
   pendingDot: { backgroundColor: COLORS.amberPrimary },
   statusBadgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    textTransform: 'uppercase',
+    letterSpacing: 0.4,
   },
   statusActiveText: {
     color: COLORS.greenBadgeText,
+  },
+  statusCompletedText: {
+    color: COLORS.goldDarkText,
   },
   statusPendingText: {
     color: COLORS.amberWarning,
@@ -166,10 +220,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.grey50,
-    padding: SPACING.sm,
-    borderRadius: RADIUS.xs,
-    marginBottom: SPACING.md,
+    backgroundColor: COLORS.slate50,
+    borderColor: COLORS.grey200,
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 14,
+    marginBottom: SPACING.sm2,
   },
   locationWrapper: {
     flex: 1,
@@ -190,9 +246,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.error,
   },
   locationText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.textPrimary,
+    color: COLORS.slate900,
     flexShrink: 1,
   },
   arrowIcon: {
@@ -200,30 +256,34 @@ const styles = StyleSheet.create({
   },
   footerRow: {
     flexDirection: 'row',
-    gap: SPACING.lg,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
-    paddingTop: SPACING.sm,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: SPACING.xs,
   },
   infoBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 5,
   },
   infoText: {
     fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textSecondary,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.slate600,
   },
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
+    gap: 6,
     backgroundColor: COLORS.primary,
-    paddingVertical: 10,
-    borderRadius: RADIUS.xs,
-    marginTop: SPACING.md,
+    paddingVertical: 12,
+    borderRadius: 14,
+    marginTop: SPACING.sm2,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 3,
   },
   actionButtonText: {
     fontFamily: FONTS.bold,

@@ -70,10 +70,15 @@ const customerShipmentSlice = createSlice({
   reducers: {
     updateLocalShipmentStatus: (
       state,
-      action: PayloadAction<{ shipmentId: string; status: string; isInProgress?: boolean; isCompleted?: boolean }>,
+      action: PayloadAction<{
+        shipmentId: string;
+        status: string;
+        isInProgress?: boolean;
+        isCompleted?: boolean;
+      }>,
     ) => {
       const target = state.shipments.find(
-        item => item._id === action.payload.shipmentId,
+        item => item?._id === action.payload.shipmentId,
       );
       if (target) {
         target.status = action.payload.status;
@@ -87,7 +92,7 @@ const customerShipmentSlice = createSlice({
     },
     removeShipmentFromState: (state, action: PayloadAction<string>) => {
       state.shipments = state.shipments.filter(
-        item => item._id !== action.payload,
+        item => item?._id !== action.payload,
       );
     },
     clearCustomerShipmentState: state => {

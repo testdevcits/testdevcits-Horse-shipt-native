@@ -114,7 +114,8 @@ const useNotifications = () => {
   };
 
   const handleDeleteNotifications = async (targetIds?: string[]) => {
-    const idsToDelete = targetIds && targetIds.length > 0 ? targetIds : selectedIds;
+    const idsToDelete =
+      targetIds && targetIds.length > 0 ? targetIds : selectedIds;
     if (idsToDelete.length === 0) return;
     try {
       await dispatch(deleteNotificationsThunk(idsToDelete)).unwrap();

@@ -1,6 +1,3 @@
-
-
-
 export const FONTS = {
   regular: 'Montserrat-Regular',
   medium: 'Montserrat-Medium',
@@ -12,6 +9,4 @@ export const FONTS = {
   boldItalic: 'Montserrat-BoldItalic',
 } as const;
 
-export default FONTS;// fonts.ts
-
-
+export default FONTS; // fonts.ts

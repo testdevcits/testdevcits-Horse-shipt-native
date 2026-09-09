@@ -8,21 +8,21 @@ import {
   Linking,
   Platform,
 } from 'react-native';
-import {
-  MapPin,
-  X,
-  Copy,
-  Navigation,
-  Lock,
-  MessageSquare,
-  Package,
-  ArrowDown,
-} from 'lucide-react-native';
+
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { COLORS, FONT_SIZE, FONTS, ICON_SIZE, RADIUS, SIZES, SPACING } from '../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  ICON_SIZE,
+  RADIUS,
+  SIZES,
+  SPACING,
+} from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 export interface ShipmentData {
   _id?: string;
@@ -60,8 +60,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
   const insets = useSafeAreaInsets();
 
   // Extract values with fallbacks
-  const pickup = propPickup || shipment?.pickupLocation || 'Pickup location not specified';
-  const delivery = propDelivery || shipment?.deliveryLocation || 'Delivery location not specified';
+  const pickup =
+    propPickup || shipment?.pickupLocation || 'Pickup location not specified';
+  const delivery =
+    propDelivery ||
+    shipment?.deliveryLocation ||
+    'Delivery location not specified';
   const code = propCode || shipment?.shipmentCode || 'N/A';
   const status = (propStatus || shipment?.status || 'in_transit').toLowerCase();
   const isChatLocked = shipment?.isChatLocked || status === 'completed';
@@ -147,11 +151,17 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
       return;
     }
 
-    if (!pickup || pickup.includes('not specified') || !delivery || delivery.includes('not specified')) {
+    if (
+      !pickup ||
+      pickup.includes('not specified') ||
+      !delivery ||
+      delivery.includes('not specified')
+    ) {
       Toast.show({
         type: 'error',
         text1: 'Invalid Location',
-        text2: 'Complete pickup and delivery locations are required for navigation.',
+        text2:
+          'Complete pickup and delivery locations are required for navigation.',
       });
       return;
     }
@@ -159,10 +169,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
     const encodedPickup = encodeURIComponent(pickup);
     const encodedDelivery = encodeURIComponent(delivery);
 
-    const mapUrl = Platform.select({
-      ios: `https://maps.apple.com/?saddr=${encodedPickup}&daddr=${encodedDelivery}&dirflg=d`,
-      android: `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}&travelmode=driving`,
-    }) || `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}`;
+    const mapUrl =
+      Platform.select({
+        ios: `https://maps.apple.com/?saddr=${encodedPickup}&daddr=${encodedDelivery}&dirflg=d`,
+        android: `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}&travelmode=driving`,
+      }) ||
+      `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDelivery}`;
 
     Linking.openURL(mapUrl).catch(err => {
       console.error('An error occurred opening map', err);
@@ -204,7 +216,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.iconCircle}>
-                <Package size={20} color={COLORS.primary} strokeWidth={2.2} />
+                <AppIcon
+                  name={'Package'}
+                  size={20}
+                  color={COLORS.primary}
+                  strokeWidth={2.2}
+                />
               </View>
               <View style={{ flex: 1, marginLeft: SPACING.xs }}>
                 <AppText style={styles.headerTitle}>Shipment Details</AppText>
@@ -217,7 +234,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                   accessibilityHint="Tap to copy shipment code to clipboard"
                 >
                   <AppText style={styles.headerSubtitle}>{code}</AppText>
-                  <Copy size={12} color={COLORS.textLight} style={{ marginLeft: 4 }} />
+                  <AppIcon
+                    name={'Copy'}
+                    size={12}
+                    color={COLORS.textLight}
+                    style={{ marginLeft: 4 }}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -228,7 +250,7 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               accessibilityRole="button"
               accessibilityLabel="Close modal"
             >
-              <X size={ICON_SIZE.md} color={COLORS.grey600} />
+              <AppIcon name={'X'} size={ICON_SIZE.md} color={COLORS.grey600} />
             </TouchableOpacity>
           </View>
 
@@ -237,23 +259,43 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
             <View
               style={[
                 styles.statusBadge,
-                { backgroundColor: statusStyle.bg, borderColor: statusStyle.borderColor },
+                {
+                  backgroundColor: statusStyle.bg,
+                  borderColor: statusStyle.borderColor,
+                },
               ]}
             >
-              <View style={[styles.statusDot, { backgroundColor: statusStyle.color }]} />
-              <AppText style={[styles.statusText, { color: statusStyle.color }]}>
+              <View
+                style={[
+                  styles.statusDot,
+                  { backgroundColor: statusStyle.color },
+                ]}
+              />
+              <AppText
+                style={[styles.statusText, { color: statusStyle.color }]}
+              >
                 {statusStyle.label}
               </AppText>
             </View>
 
             {isChatLocked ? (
               <View style={styles.lockedBadge}>
-                <Lock size={12} color={COLORS.grey600} style={{ marginRight: 4 }} />
+                <AppIcon
+                  name={'Lock'}
+                  size={12}
+                  color={COLORS.grey600}
+                  style={{ marginRight: 4 }}
+                />
                 <AppText style={styles.lockedBadgeText}>Chat Locked</AppText>
               </View>
             ) : (
               <View style={styles.activeBadge}>
-                <MessageSquare size={12} color={COLORS.greenSuccess} style={{ marginRight: 4 }} />
+                <AppIcon
+                  name={'MessageSquare'}
+                  size={12}
+                  color={COLORS.greenSuccess}
+                  style={{ marginRight: 4 }}
+                />
                 <AppText style={styles.activeBadgeText}>Chat Active</AppText>
               </View>
             )}
@@ -267,14 +309,22 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
           >
             {/* Route Timeline Container */}
             <View style={styles.routeBox}>
-
               {/* PICKUP SECTION */}
               <View style={styles.locationSection}>
                 <View style={styles.locationHeader}>
-                  <View style={[styles.pinBadge, { backgroundColor: '#E6F7F0' }]}>
-                    <MapPin size={16} color={COLORS.greenPrimary} strokeWidth={2.5} />
+                  <View
+                    style={[styles.pinBadge, { backgroundColor: '#E6F7F0' }]}
+                  >
+                    <AppIcon
+                      name={'MapPin'}
+                      size={16}
+                      color={COLORS.greenPrimary}
+                      strokeWidth={2.5}
+                    />
                   </View>
-                  <AppText style={[styles.locationTag, { color: COLORS.greenPrimary }]}>
+                  <AppText
+                    style={[styles.locationTag, { color: COLORS.greenPrimary }]}
+                  >
                     PICKUP LOCATION
                   </AppText>
                   <TouchableOpacity
@@ -285,7 +335,7 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                     accessibilityLabel="Copy pickup location"
                     accessibilityHint="Copies pickup address to clipboard"
                   >
-                    <Copy size={14} color={COLORS.grey500} />
+                    <AppIcon name={'Copy'} size={14} color={COLORS.grey500} />
                     <AppText style={styles.copyBtnText}>Copy</AppText>
                   </TouchableOpacity>
                 </View>
@@ -300,7 +350,12 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                 <View style={styles.verticalLineContainer}>
                   <View style={styles.verticalLine} />
                   <View style={styles.connectorIconCircle}>
-                    <ArrowDown size={14} color={COLORS.primary} strokeWidth={2.5} />
+                    <AppIcon
+                      name={'ArrowDown'}
+                      size={14}
+                      color={COLORS.primary}
+                      strokeWidth={2.5}
+                    />
                   </View>
                   <View style={styles.verticalLine} />
                 </View>
@@ -309,10 +364,22 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               {/* DELIVERY SECTION */}
               <View style={styles.locationSection}>
                 <View style={styles.locationHeader}>
-                  <View style={[styles.pinBadge, { backgroundColor: COLORS.redLightBg }]}>
-                    <MapPin size={16} color={COLORS.redPrimary} strokeWidth={2.5} />
+                  <View
+                    style={[
+                      styles.pinBadge,
+                      { backgroundColor: COLORS.redLightBg },
+                    ]}
+                  >
+                    <AppIcon
+                      name={'MapPin'}
+                      size={16}
+                      color={COLORS.redPrimary}
+                      strokeWidth={2.5}
+                    />
                   </View>
-                  <AppText style={[styles.locationTag, { color: COLORS.redPrimary }]}>
+                  <AppText
+                    style={[styles.locationTag, { color: COLORS.redPrimary }]}
+                  >
                     DELIVERY LOCATION
                   </AppText>
                   <TouchableOpacity
@@ -323,7 +390,7 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                     accessibilityLabel="Copy delivery location"
                     accessibilityHint="Copies delivery address to clipboard"
                   >
-                    <Copy size={14} color={COLORS.grey500} />
+                    <AppIcon name={'Copy'} size={14} color={COLORS.grey500} />
                     <AppText style={styles.copyBtnText}>Copy</AppText>
                   </TouchableOpacity>
                 </View>
@@ -332,7 +399,6 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
                   <AppText style={styles.addressText}>{delivery}</AppText>
                 </View>
               </View>
-
             </View>
           </ScrollView>
 
@@ -346,7 +412,13 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               accessibilityLabel="Get Directions"
               accessibilityHint="Opens external map application for directions"
             >
-              <Navigation size={18} color={COLORS.primary} strokeWidth={2.2} style={{ marginRight: 8 }} />
+              <AppIcon
+                name={'Navigation'}
+                size={18}
+                color={COLORS.primary}
+                strokeWidth={2.2}
+                style={{ marginRight: 8 }}
+              />
               <AppText style={styles.mapButtonText}>Get Directions</AppText>
             </TouchableOpacity>
 

@@ -4,15 +4,15 @@ import ShipperDrawer from './ShipperDrawer';
 import ChatDetails from '../role/customer/screens/chatdetails/ChatDetails';
 import Notifications from '../role/commonscreens/notifications/Notifications';
 
-import ShipperShipmentDetailsScreen from '../role/shipper/screens/home/ShipperShipmentDetailsScreen';
+import ShipperShipmentDetailsScreen from '../role/shipper/screens/home/shipment_details/ShipperShipmentDetailsScreen';
 import LiveTrackingScreen from '../role/customer/screens/tracking/LiveTrackingScreen';
 import PreferredAreasScreen from '../role/shipper/screens/preferredareas/PreferredAreasScreen';
 import ShipperReviewsScreen from '../role/shipper/screens/reviews/ShipperReviewsScreen';
-import AddVehicleScreen from '../role/shipper/screens/vehicles/AddVehicleModal';
+import AddVehicleScreen from '../role/shipper/screens/vehicles/add_edit_vehicle/AddVehicleModal';
 import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
 import AccountSetupScreen from '../role/shipper/screens/payments/AccountSetupScreen';
-import EditProfileScreen from '../role/shipper/screens/profile/EditProfileScreen';
-import ShipmentMapDirection from '../role/shipper/screens/home/ShipmentMapDirection';
+import EditProfileScreen from '../role/shipper/screens/profile/edit_profile/EditProfileScreen';
+import ShipmentMapDirection from '../role/shipper/screens/home/components/ShipmentMapDirection';
 
 const Stack = createNativeStackNavigator<{
   ShipperDrawer: undefined;
@@ -34,8 +34,14 @@ const ShipperNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ShipperDrawer" component={ShipperDrawer} />
-      <Stack.Screen name="ShipperShipmentDetails" component={ShipperShipmentDetailsScreen} />
-      <Stack.Screen name="ShipmentDetails" component={ShipperShipmentDetailsScreen} />
+      <Stack.Screen
+        name="ShipperShipmentDetails"
+        component={ShipperShipmentDetailsScreen}
+      />
+      <Stack.Screen
+        name="ShipmentDetails"
+        component={ShipperShipmentDetailsScreen}
+      />
       <Stack.Screen name="ChatDetails" component={ChatDetails} />
       <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="LiveTracking" component={LiveTrackingScreen} />
@@ -46,11 +52,12 @@ const ShipperNavigation = () => {
       <Stack.Screen name="AccountSetup" component={AccountSetupScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
 
-      <Stack.Screen name="ShipmentMapDirection" component={ShipmentMapDirection} />
-
+      <Stack.Screen
+        name="ShipmentMapDirection"
+        component={ShipmentMapDirection}
+      />
     </Stack.Navigator>
   );
 };
-
 
 export default ShipperNavigation;

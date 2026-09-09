@@ -19,12 +19,14 @@ class PermissionService {
     if (Platform.OS === 'android') {
       return this.handleAndroidPermission(type);
     }
-    // iOS standard check (usually handled by the picker library, 
+    // iOS standard check (usually handled by the picker library,
     // but logic should be here if you use manual camera layers)
-    return true; 
+    return true;
   }
 
-  private async handleAndroidPermission(type: PermissionType): Promise<boolean> {
+  private async handleAndroidPermission(
+    type: PermissionType,
+  ): Promise<boolean> {
     try {
       const permission = this.getAndroidPermissionString(type);
       if (!permission) return true;
@@ -56,7 +58,7 @@ class PermissionService {
 
   private getAndroidPermissionString(type: PermissionType) {
     if (type === 'camera') return PermissionsAndroid.PERMISSIONS.CAMERA;
-    
+
     if (type === 'gallery') {
       // Android 13+ (API 33) uses granular media permissions
       return Number(Platform.Version) >= 33
@@ -73,7 +75,7 @@ class PermissionService {
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Open Settings', onPress: () => Linking.openSettings() },
-      ]
+      ],
     );
   }
 }

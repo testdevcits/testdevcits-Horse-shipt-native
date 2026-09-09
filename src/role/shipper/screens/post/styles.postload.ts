@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -469,7 +475,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.semiBold,
     color: COLORS.goldDarkText,
-    textTransform: "capitalize"
+    textTransform: 'capitalize',
   },
   priceValue: {
     fontSize: FONT_SIZE.sm,

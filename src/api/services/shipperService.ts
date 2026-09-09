@@ -164,7 +164,9 @@ const shipperService = {
   },
 
   // Submit a shipping offer / quote (POST /api/shipper/quotes/add)
-  addQuote: async (formData: FormData): Promise<{
+  addQuote: async (
+    formData: FormData,
+  ): Promise<{
     success: boolean;
     message?: string;
     quote?: any;
@@ -177,7 +179,9 @@ const shipperService = {
   },
 
   // Delete a shipper quote (/api/shipper/delete/:id)
-  deleteQuote: async (id: string): Promise<{
+  deleteQuote: async (
+    id: string,
+  ): Promise<{
     success: boolean;
     message?: string;
   }> => {
@@ -197,7 +201,9 @@ const shipperService = {
   },
 
   // Fetch shipment questions (GET /api/questions/:shipmentId)
-  getShipmentQuestions: async (shipmentId: string): Promise<{
+  getShipmentQuestions: async (
+    shipmentId: string,
+  ): Promise<{
     success: boolean;
     data?: {
       answered: any[];
@@ -208,7 +214,9 @@ const shipperService = {
   },
 
   // Update Google review link (PUT /api/shipper/reviews/google-link)
-  updateGoogleReviewLink: async (googleReviewLink: string): Promise<{
+  updateGoogleReviewLink: async (
+    googleReviewLink: string,
+  ): Promise<{
     success: boolean;
     message?: string;
     data?: any;
@@ -268,7 +276,9 @@ const shipperService = {
   },
 
   // Get or create chat room for shipment (/api/shipper/chat/room)
-  getOrCreateChatRoom: async (shipmentId: string): Promise<{
+  getOrCreateChatRoom: async (
+    shipmentId: string,
+  ): Promise<{
     success: boolean;
     roomId: string;
     room: any;
@@ -278,7 +288,9 @@ const shipperService = {
   },
 
   // Get chat room messages (/api/shipper/chat/rooms/:roomId/messages)
-  getChatRoomMessages: async (roomId: string): Promise<{
+  getChatRoomMessages: async (
+    roomId: string,
+  ): Promise<{
     success: boolean;
     messages: any[];
   }> => {
@@ -295,13 +307,20 @@ const shipperService = {
     message?: any;
   }> => {
     if (formDataOrPayload instanceof FormData) {
-      return axiosClient.post(`/api/shipper/chat/rooms/${roomId}/messages`, formDataOrPayload, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      return axiosClient.post(
+        `/api/shipper/chat/rooms/${roomId}/messages`,
+        formDataOrPayload,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
     }
-    return axiosClient.post(`/api/shipper/chat/rooms/${roomId}/messages`, formDataOrPayload);
+    return axiosClient.post(
+      `/api/shipper/chat/rooms/${roomId}/messages`,
+      formDataOrPayload,
+    );
   },
 
   // Get Stripe Subscription Plan (/api/shipper/stripe/subscription-plan)
@@ -331,7 +350,9 @@ const shipperService = {
   },
 
   // Update Shipper Settings (/api/shipper/settings)
-  updateSettings: async (settingsData: any): Promise<{
+  updateSettings: async (
+    settingsData: any,
+  ): Promise<{
     success: boolean;
     message?: string;
     data: any;
@@ -340,7 +361,9 @@ const shipperService = {
   },
 
   // Update Notification Settings (/api/shipper/settings/update-notifications)
-  updateNotifications: async (notifications: any): Promise<{
+  updateNotifications: async (
+    notifications: any,
+  ): Promise<{
     success: boolean;
     message?: string;
     data: any;
@@ -553,7 +576,9 @@ const shipperService = {
   // Update Banner Image (/api/shipper/update-banner-image)
 
   // Update Banner Image (/api/shipper/update-banner-image)
-  updateBannerImage: async (formData: FormData): Promise<{
+  updateBannerImage: async (
+    formData: FormData,
+  ): Promise<{
     success: boolean;
     message?: string;
     bannerImage?: {
@@ -566,12 +591,14 @@ const shipperService = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      transformRequest: [(data) => data],
+      transformRequest: [data => data],
     });
   },
 
   // Update Profile Image (/api/shipper/update-profile-image)
-  updateProfileImage: async (formData: FormData): Promise<{
+  updateProfileImage: async (
+    formData: FormData,
+  ): Promise<{
     success: boolean;
     message?: string;
     profileImage?: {
@@ -584,7 +611,7 @@ const shipperService = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      transformRequest: [(data) => data],
+      transformRequest: [data => data],
     });
   },
 
@@ -645,9 +672,9 @@ const shipperService = {
     return axiosClient.put(`/api/shipper/preferred-areas/${id}`, payload);
   },
 
-
-
-  deletePreferredArea: async (id: string): Promise<{
+  deletePreferredArea: async (
+    id: string,
+  ): Promise<{
     success: boolean;
     message?: string;
     data?: any;
@@ -671,5 +698,3 @@ const shipperService = {
 };
 
 export default shipperService;
-
-

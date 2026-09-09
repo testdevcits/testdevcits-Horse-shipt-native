@@ -1,6 +1,9 @@
 // screens/tracking/useTracking.ts
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { getLiveTracking, TrackingResponse } from '../../../../api/services/trackingService';
+import {
+  getLiveTracking,
+  TrackingResponse,
+} from '../../../../api/services/trackingService';
 
 export const useTracking = (shipmentId: string) => {
   const [data, setData] = useState<TrackingResponse | null>(null);
@@ -8,21 +11,24 @@ export const useTracking = (shipmentId: string) => {
   const [refreshing, setRefreshing] = useState(false);
   const pollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const fetchData = useCallback(async (isManualRefresh = false) => {
-    if (!shipmentId) return;
-    if (isManualRefresh) setRefreshing(true);
-    try {
-      const res = await getLiveTracking(shipmentId);
-      if (res) {
-        setData(res);
+  const fetchData = useCallback(
+    async (isManualRefresh = false) => {
+      if (!shipmentId) return;
+      if (isManualRefresh) setRefreshing(true);
+      try {
+        const res = await getLiveTracking(shipmentId);
+        if (res) {
+          setData(res);
+        }
+      } catch (err) {
+        console.error('Live Tracking API Error:', err);
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
       }
-    } catch (err) {
-      console.error("Live Tracking API Error:", err);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, [shipmentId]);
+    },
+    [shipmentId],
+  );
 
   useEffect(() => {
     fetchData();

@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import { Package } from 'lucide-react-native';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
-import AvailableShipmentCard from '../home/AvailableShipmentCard';
+import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
 import styles from './styles.postload';
+import AppIcon from '../../../../components/AppIcon';
 
 interface QuoteRequestScreenProps {
   data: any[];
@@ -43,10 +43,11 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
 
     return (
       <View style={styles.emptyContainer}>
-        <Package size={48} color={COLORS.textLight} />
+        <AppIcon name="Package" size={48} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>No Quote Requests Found</AppText>
         <AppText style={styles.emptySub}>
-          There are currently no customer quote invitations or requests available.
+          There are currently no customer quote invitations or requests
+          available.
         </AppText>
       </View>
     );

@@ -1,11 +1,5 @@
-import React from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-
-} from 'react-native';
+import React, { lazy, Suspense } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
@@ -25,12 +19,19 @@ import {
   Edit3,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
+import {
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+  RADIUS,
+  SIZES,
+} from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
-import { AppText, ConfirmationModal } from '../components';
+import { AppText } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
+import AppIcon from '../components/AppIcon';
 
 interface DrawerItemProps {
   label: string;
@@ -41,6 +42,10 @@ interface DrawerItemProps {
   hasChevron?: boolean;
   isExpanded?: boolean;
 }
+
+const ConfirmationModal = lazy(
+  () => import('../components/common/ConfirmationModal'),
+);
 
 const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
   label,
@@ -116,13 +121,17 @@ const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
     onPress={onPress}
     activeOpacity={0.7}
   >
-    <AppText style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}>
-      {label}
+    <AppText
+      style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
+    >
+      {isActive && '•'} {label}
     </AppText>
   </TouchableOpacity>
 );
 
-const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props => {
+const CustomShipperDrawerContent: React.FC<
+  DrawerContentComponentProps
+> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
   const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
@@ -136,7 +145,7 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
     : 'Home';
 
   const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Post');
-  const activeSubTab = postRoute?.params?.initialTab || 'my_shipments';
+  const activeSubTab = (postRoute?.params as any)?.initialTab || 'my_shipments';
 
   const isTabActive = (tabName: string) => {
     return currentDrawerRoute === 'MainTabs' && currentActiveTab === tabName;
@@ -205,17 +214,23 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
               <ShipperDrawerSubMenuItem
                 label="My Shipment"
                 isActive={isPostActive && activeSubTab === 'my_shipments'}
-                onPress={() => navigateToTab('Post', { initialTab: 'my_shipments' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'my_shipments' })
+                }
               />
               <ShipperDrawerSubMenuItem
                 label="Quote Received"
                 isActive={isPostActive && activeSubTab === 'quote_request'}
-                onPress={() => navigateToTab('Post', { initialTab: 'quote_request' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'quote_request' })
+                }
               />
               <ShipperDrawerSubMenuItem
                 label="All Shipments"
                 isActive={isPostActive && activeSubTab === 'all_shipment'}
-                onPress={() => navigateToTab('Post', { initialTab: 'all_shipment' })}
+                onPress={() =>
+                  navigateToTab('Post', { initialTab: 'all_shipment' })
+                }
               />
             </View>
           )}
@@ -300,16 +315,18 @@ const CustomShipperDrawerContent: React.FC<DrawerContentComponentProps> = props 
       </View>
 
       {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleLogoutConfirm}
-        title="Logout"
-        description="Are you sure you want to log out of your shipper account?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleLogoutConfirm}
+          title="Logout"
+          description="Are you sure you want to log out of your shipper account?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+        />
+      </Suspense>
     </View>
   );
 };
@@ -389,6 +406,9 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm + 2,
     paddingLeft: SPACING.xl + 24,
     paddingRight: SPACING.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   subMenuItemActive: {
     // backgroundColor: COLORS.goldLightBg,

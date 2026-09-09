@@ -29,7 +29,10 @@ export const useProfile = () => {
         setProfile(response.data);
         dispatch(
           updateUser({
-            name: `${response.data?.firstName || ''} ${response.data?.lastName || ''}`.trim() || response.data?.name,
+            name:
+              `${response.data?.firstName || ''} ${
+                response.data?.lastName || ''
+              }`.trim() || response.data?.name,
             email: response.data?.email,
             profileImage: fetchedImg as any,
             phoneNumber: response.data?.phone,
@@ -131,7 +134,7 @@ export const useProfile = () => {
       return { success: false };
     } finally {
       setUploading(false);
-      setPicking(false)
+      setPicking(false);
     }
   };
 
@@ -148,6 +151,6 @@ export const useProfile = () => {
     uploadAvatar,
     refetch: fetchProfile,
     updateProfile: handleUpdateProfile,
-    picking
+    picking,
   };
 };

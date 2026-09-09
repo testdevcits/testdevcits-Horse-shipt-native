@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -306,6 +312,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
+    textAlign: 'center',
   },
   deleteBtn: {
     flex: 1,

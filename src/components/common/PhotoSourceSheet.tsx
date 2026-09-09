@@ -1,14 +1,21 @@
 import React, { useCallback, useMemo, useRef, useEffect, memo } from 'react';
-import { StyleSheet, View, TouchableOpacity,   } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
-import { Camera, Image as ImageIcon, Trash2 } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS, SPACING, RADIUS, FONT_SIZE, FONTS, ICON_SIZE } from '../../constants';
+import {
+  COLORS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  FONTS,
+  ICON_SIZE,
+} from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 // Using your provided constants
 
@@ -21,7 +28,14 @@ interface Props {
   hasImage?: boolean;
 }
 
-const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, hasImage }: Props) => {
+const PhotoSourceSheet = ({
+  visible,
+  onClose,
+  onCamera,
+  onGallery,
+  onRemove,
+  hasImage,
+}: Props) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const insets = useSafeAreaInsets();
 
@@ -39,7 +53,12 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
 
   const renderBackdrop = useCallback(
     (props: any) => (
-      <BottomSheetBackdrop {...props} disappearsAtIndex={-1} appearsAtIndex={0} opacity={0.5} />
+      <BottomSheetBackdrop
+        {...props}
+        disappearsAtIndex={-1}
+        appearsAtIndex={0}
+        opacity={0.5}
+      />
     ),
     [],
   );
@@ -50,7 +69,6 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
   };
 
   return (
-
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
@@ -60,7 +78,9 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
       handleIndicatorStyle={styles.indicator}
       backgroundStyle={styles.sheetBackground}
     >
-      <BottomSheetView style={[styles.content, { paddingBottom: insets.bottom + SPACING.md }]}>
+      <BottomSheetView
+        style={[styles.content, { paddingBottom: insets.bottom + SPACING.md }]}
+      >
         <AppText style={styles.title}>Profile Photo</AppText>
 
         <View style={styles.optionsContainer}>
@@ -69,7 +89,11 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
             style={styles.option}
             onPress={() => handlePress(onCamera)}
           >
-            <Camera size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'Camera'}
+              size={ICON_SIZE.md}
+              color={COLORS.textPrimary}
+            />
             <AppText style={styles.optionText}>Take Photo</AppText>
           </TouchableOpacity>
 
@@ -80,7 +104,11 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
             style={styles.option}
             onPress={() => handlePress(onGallery)}
           >
-            <ImageIcon size={ICON_SIZE.md} color={COLORS.textPrimary} />
+            <AppIcon
+              name={'Image'}
+              size={ICON_SIZE.md}
+              color={COLORS.textPrimary}
+            />
             <AppText style={styles.optionText}>Choose from Gallery</AppText>
           </TouchableOpacity>
 
@@ -92,8 +120,14 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
                 style={styles.option}
                 onPress={() => handlePress(onRemove)}
               >
-                <Trash2 size={ICON_SIZE.md} color={COLORS.error} />
-                <AppText style={[styles.optionText, { color: COLORS.error }]}>Remove Current Photo</AppText>
+                <AppIcon
+                  name={'Trash2'}
+                  size={ICON_SIZE.md}
+                  color={COLORS.error}
+                />
+                <AppText style={[styles.optionText, { color: COLORS.error }]}>
+                  Remove Current Photo
+                </AppText>
               </TouchableOpacity>
             </>
           )}
@@ -105,7 +139,6 @@ const PhotoSourceSheet = ({ visible, onClose, onCamera, onGallery, onRemove, has
         </TouchableOpacity>
       </BottomSheetView>
     </BottomSheetModal>
-
   );
 };
 

@@ -50,7 +50,12 @@ const customerService = {
   getColors: async (): Promise<{
     success: boolean;
     count?: number;
-    data: Array<{ _id: string; name: string; isActive?: boolean; isOther?: boolean }>;
+    data: Array<{
+      _id: string;
+      name: string;
+      isActive?: boolean;
+      isOther?: boolean;
+    }>;
   }> => {
     return axiosClient.get('/api/admin/colors/all');
   },
@@ -68,7 +73,8 @@ const customerService = {
   addHorse: async (
     payload: CreateHorsePayload | FormData,
   ): Promise<{ success: boolean; horse: Horse }> => {
-    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    const isFormData =
+      typeof FormData !== 'undefined' && payload instanceof FormData;
     return axiosClient.post('/api/customer/horses', payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
@@ -81,7 +87,8 @@ const customerService = {
     horseId: string,
     payload: Partial<CreateHorsePayload> | FormData,
   ): Promise<{ success: boolean; horse: Horse }> => {
-    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    const isFormData =
+      typeof FormData !== 'undefined' && payload instanceof FormData;
     return axiosClient.put(`/api/customer/horses/${horseId}`, payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
@@ -95,7 +102,6 @@ const customerService = {
   ): Promise<{ success: boolean; message: string }> => {
     return axiosClient.delete(`/api/customer/horses/${horseId}`);
   },
-
 
   getMyShipments: async (): Promise<GetShipmentsResponse> => {
     // Based on the JSON you provided, the endpoint is:
@@ -116,19 +122,27 @@ const customerService = {
     });
   },
 
-  publishShipment: async (shipmentId: string): Promise<PublishShipmentResponse> => {
+  publishShipment: async (
+    shipmentId: string,
+  ): Promise<PublishShipmentResponse> => {
     return axiosClient.patch(`/api/customer/shipments/${shipmentId}/publish`);
   },
 
   updateShipmentMetadata: async (shipmentId: string, payload: any) => {
-    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-    return axiosClient.patch(`/api/customer/shipments/${shipmentId}/metadata`, payload, {
-      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
-    });
+    const isFormData =
+      typeof FormData !== 'undefined' && payload instanceof FormData;
+    return axiosClient.patch(
+      `/api/customer/shipments/${shipmentId}/metadata`,
+      payload,
+      {
+        headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+      },
+    );
   },
 
   updateShipment: async (shipmentId: string, payload: any) => {
-    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
+    const isFormData =
+      typeof FormData !== 'undefined' && payload instanceof FormData;
     return axiosClient.put(`/api/customer/shipments/${shipmentId}`, payload, {
       headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
     });
@@ -196,10 +210,10 @@ const customerService = {
       payload,
       payload instanceof FormData
         ? {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         : undefined,
     );
   },

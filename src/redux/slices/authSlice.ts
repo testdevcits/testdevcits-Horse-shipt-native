@@ -1,5 +1,3 @@
-
-
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import authService from '../../api/services/authService';
@@ -11,8 +9,6 @@ const STORAGE_KEYS = {
   USER: '@user_data',
   ROLE: '@user_role',
 };
-
-
 
 export const loginUser = createAsyncThunk(
   'auth/login',
@@ -51,7 +47,6 @@ export const loginUser = createAsyncThunk(
 /**
  * Thunk to handle App Initialization (Rehydration)
  */
-
 
 export const rehydrateAuth = createAsyncThunk('auth/rehydrate', async () => {
   const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);

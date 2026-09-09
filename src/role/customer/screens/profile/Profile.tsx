@@ -1,19 +1,21 @@
-
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   Image,
   TouchableOpacity,
   ScrollView,
-
   Modal,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { LogOut, PencilLine, User, X } from 'lucide-react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+} from '../../../../constants';
 import { useProfile } from './useProfile';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
@@ -21,24 +23,25 @@ import {
   AppHeader,
   AppLoader,
   AppText,
-  ConfirmationModal,
   CountryCodePicker,
   COUNTRIES,
-
   Input,
-
+  ProfileSkeleton,
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';
+import AppIcon from '../../../../components/AppIcon';
 
-const Profile = ({ }: any) => {
+const Profile = ({}: any) => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
-  console.log("user from profile screen", JSON.stringify(user, null, 2))
-
+  console.log('user from profile screen', JSON.stringify(user, null, 2));
 
   const {
     profile,
@@ -47,7 +50,7 @@ const Profile = ({ }: any) => {
     updateProfile,
     uploading,
     uploadAvatar,
-    picking
+    picking,
   } = useProfile();
   const [activeTab, setActiveTab] = useState('Profile');
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -71,6 +74,19 @@ const Profile = ({ }: any) => {
       });
     }
   }, [profile, isEditModalVisible]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <AppHeader
+          showBack={true}
+          title="Profile Details"
+          showProfileImage={false}
+        />
+        <ProfileSkeleton />
+      </View>
+    );
+  }
 
   const handleSave = async () => {
     const res = await updateProfile(formData);
@@ -108,7 +124,11 @@ const Profile = ({ }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Profile Details" showProfileImage={false} />
+      <AppHeader
+        showBack={true}
+        title="Profile Details"
+        showProfileImage={false}
+      />
       <AppLoader visible={loading || isUpdating} />
 
       {/* Tabs */}
@@ -141,7 +161,8 @@ const Profile = ({ }: any) => {
             <View style={styles.imageWrapper}>
               {/* Profile Image Logic - Safely extracts string URL */}
               {(() => {
-                const rawAvatar = (user?.profileImage || profile?.profileImage) as any;
+                const rawAvatar = (user?.profileImage ||
+                  profile?.profileImage) as any;
                 const avatarUri =
                   typeof rawAvatar === 'string'
                     ? rawAvatar
@@ -157,7 +178,7 @@ const Profile = ({ }: any) => {
                   <Image source={{ uri: avatarUri }} style={styles.avatar} />
                 ) : (
                   <View style={[styles.avatar, styles.placeholderAvatar]}>
-                    <User size={40} color={COLORS.grey400} />
+                    <AppIcon name={'User'} size={40} color={COLORS.grey400} />
                   </View>
                 );
               })()}
@@ -181,7 +202,11 @@ const Profile = ({ }: any) => {
                 <AppText style={styles.editPictureText}>Processing...</AppText>
               ) : (
                 <>
-                  <PencilLine size={16} color={COLORS.textPrimary} />
+                  <AppIcon
+                    name={'PencilLine'}
+                    size={16}
+                    color={COLORS.textPrimary}
+                  />
                   <AppText style={styles.editPictureText}>Edit picture</AppText>
                 </>
               )}
@@ -196,20 +221,27 @@ const Profile = ({ }: any) => {
                 style={styles.editIconBtn}
                 onPress={() => setIsEditModalVisible(true)}
               >
-                <PencilLine size={18} color={COLORS.textPrimary} />
+                <AppIcon
+                  name={'PencilLine'}
+                  size={18}
+                  color={COLORS.textPrimary}
+                />
               </TouchableOpacity>
             </View>
             <View style={styles.infoList}>
-              {
-                profile?.firstName && profile?.lastName && <InfoRow
+              {profile?.firstName && profile?.lastName && (
+                <InfoRow
                   label="Name"
                   value={`${profile?.firstName} ${profile?.lastName}`}
                 />
-              }
-              <InfoRow label="Email" value={profile?.email || 'Not Available'} />
-              {
-                profile?.phone && <InfoRow label="Phone" value={profile?.phone} isLast />
-              }
+              )}
+              <InfoRow
+                label="Email"
+                value={profile?.email || 'Not Available'}
+              />
+              {profile?.phone && (
+                <InfoRow label="Phone" value={profile?.phone} isLast />
+              )}
             </View>
           </View>
 
@@ -219,7 +251,7 @@ const Profile = ({ }: any) => {
             onPress={handleLogout}
             activeOpacity={0.8}
           >
-            <LogOut size={18} color={COLORS.error} />
+            <AppIcon name={'LogOut'} size={18} color={COLORS.error} />
             <AppText style={localStyles.logoutBtnText}>Logout</AppText>
           </TouchableOpacity>
         </ScrollView>
@@ -235,7 +267,7 @@ const Profile = ({ }: any) => {
             <View style={localStyles.modalHeader}>
               <AppText style={localStyles.modalTitle}>Edit Profile</AppText>
               <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
-                <X size={24} color={COLORS.textPrimary} />
+                <AppIcon name={'X'} size={24} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -275,17 +307,19 @@ const Profile = ({ }: any) => {
       </Modal>
 
       {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleConfirmLogout}
-        title="Logout"
-        description="Are you sure you want to log out?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isLoggingOut}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleConfirmLogout}
+          title="Logout"
+          description="Are you sure you want to log out?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isLoggingOut}
+        />
+      </Suspense>
     </View>
   );
 };
@@ -344,7 +378,11 @@ const localStyles = StyleSheet.create({
     borderRadius: RADIUS.md,
     alignItems: 'center',
   },
-  saveBtnText: { color: COLORS.white, fontFamily: FONTS.bold, fontSize: FONT_SIZE.sm },
+  saveBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
+  },
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',

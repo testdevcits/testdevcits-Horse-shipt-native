@@ -52,16 +52,19 @@ export const useShipperSubscription = () => {
     cardBrand: null,
   });
 
-  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>({
-    success: true,
-    hasSubscription: false,
-    status: 'none',
-    planType: null,
-    hasAccess: false,
-    needsSubscription: true,
-  });
+  const [subscriptionStatus, setSubscriptionStatus] =
+    useState<SubscriptionStatus>({
+      success: true,
+      hasSubscription: false,
+      status: 'none',
+      planType: null,
+      hasAccess: false,
+      needsSubscription: true,
+    });
 
-  const [plansData, setPlansData] = useState<SubscriptionPlansData | null>(null);
+  const [plansData, setPlansData] = useState<SubscriptionPlansData | null>(
+    null,
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -89,7 +92,8 @@ export const useShipperSubscription = () => {
           hasSubscription: !!subStatusRes.hasSubscription,
           status: subStatusRes.status || 'none',
           planType: subStatusRes.planType || null,
-          hasAccess: subStatusRes.hasAccess !== false && !subStatusRes.needsSubscription,
+          hasAccess:
+            subStatusRes.hasAccess !== false && !subStatusRes.needsSubscription,
           needsSubscription: !!subStatusRes.needsSubscription,
           trialActive: !!subStatusRes.trialActive,
           remainingTrialDays: subStatusRes.remainingTrialDays || 0,

@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+import React, { lazy, Suspense, useState } from 'react';
+import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Trash2 } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 
 import styles from './styles.newshipment';
 import { COLORS } from '../../../../constants';
-import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
+import { AppHeader, AppText } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import useNewShipment, { STEPS } from './useNewShipment';
-import PickupStep from './stepsscreens/PickupStep';
-import DeliveryStep from './stepsscreens/DeliveryStep';
-import HorseDetailsStep from './stepsscreens/HorseDetailsStep';
-import ReviewStep from './stepsscreens/ReviewStep';
-import ShipmentInfoStep from './stepsscreens/ShipmentInfoStep';
-import DraftSuccessModal from './DraftSuccessModal';
+import PickupStep from './stepsscreens/pickup/PickupStep';
+import DeliveryStep from './stepsscreens/delivery/DeliveryStep';
+import HorseDetailsStep from './stepsscreens/horsedetails/HorseDetailsStep';
+import ReviewStep from './stepsscreens/review/ReviewStep';
+import ShipmentInfoStep from './stepsscreens/shipmentinfo/ShipmentInfoStep';
+import imageIndex from '../../../../assets/images/imageIndex';
+import AppIcon from '../../../../components/AppIcon';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
+const DraftSuccessModal = lazy(() => import('./DraftSuccessModal'));
 
 const NewShipment = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +87,16 @@ const NewShipment = () => {
         const isCurrent = index === currentStep;
         return (
           <View key={index} style={styles.stepItem}>
+            {isActive && isCurrent ? (
+              <Image
+                source={imageIndex.LogoIcon}
+                style={styles.stepImage}
+                resizeMode="contain"
+              />
+            ) : (
+              <View style={styles.stepImage} />
+            )}
+
             <View
               style={[
                 styles.stepBar,
@@ -113,22 +128,29 @@ const NewShipment = () => {
           resetAllData();
           navigation.goBack();
         }}
-        title={isEdit && !isDraft ? 'Edit Shipment' : isDraft ? 'Edit Draft Shipment' : 'New Shipment'}
+        title={
+          isEdit && !isDraft
+            ? 'Edit Shipment'
+            : isDraft
+            ? 'Edit Draft Shipment'
+            : 'New Shipment'
+        }
         rightElement={
           isEdit && shipmentData?._id ? (
             <TouchableOpacity
               onPress={() => setIsDeleteModalVisible(true)}
               style={{ padding: 6 }}
             >
-              <Trash2 size={20} color={COLORS.error} />
+              <AppIcon name={'Trash2'} size={20} color={COLORS.error} />
             </TouchableOpacity>
           ) : undefined
         }
       />
       {renderStepper()}
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
-
-
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ flex: 1 }}>
           {currentStep === 0 && (
             <PickupStep
@@ -187,49 +209,58 @@ const NewShipment = () => {
           )}
         </View>
       </ScrollView>
-
-      <ConfirmationModal
-        isVisible={isPublishModalVisible}
-        onClose={() => setIsPublishModalVisible(false)}
-        onConfirm={handlePublish}
-        title={isEdit && !isDraft ? 'Update Shipment Details?' : 'Publish Shipment?'}
-        description={
-          isEdit && !isDraft
-            ? 'Are you sure you want to update this shipment details?'
-            : 'Are you sure you want to save and publish this shipment? Shippers will be able to view and submit quotes.'
-        }
-        confirmText={isEdit && !isDraft ? 'Update Details' : 'Save & Publish'}
-        isLoading={loading}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isPublishModalVisible}
+          onClose={() => setIsPublishModalVisible(false)}
+          onConfirm={handlePublish}
+          title={
+            isEdit && !isDraft
+              ? 'Update Shipment Details?'
+              : 'Publish Shipment?'
+          }
+          description={
+            isEdit && !isDraft
+              ? 'Are you sure you want to update this shipment details?'
+              : 'Are you sure you want to save and publish this shipment? Shippers will be able to view and submit quotes.'
+          }
+          confirmText={isEdit && !isDraft ? 'Update Details' : 'Save & Publish'}
+          isLoading={loading}
+        />
+      </Suspense>
 
       {/* DRAFT DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Draft Shipment?"
-        description="Are you sure you want to delete this draft shipment? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        isLoading={isDeleting}
-        onClose={() => {
-          if (!isDeleting) {
-            setIsDeleteModalVisible(false);
-          }
-        }}
-        onConfirm={handleConfirmDelete}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Draft Shipment?"
+          description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={isDeleting}
+          onClose={() => {
+            if (!isDeleting) {
+              setIsDeleteModalVisible(false);
+            }
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      </Suspense>
 
-      <DraftSuccessModal
-        visible={isDraftModalVisible}
-        onReview={() => {
-          setIsDraftModalVisible(false);
-          setIsPublishModalVisible(true);
-        }}
-        onDashboard={() => {
-          setIsDraftModalVisible(false);
-          navigation.goBack();
-        }}
-      />
+      <Suspense fallback={null}>
+        <DraftSuccessModal
+          visible={isDraftModalVisible}
+          onReview={() => {
+            setIsDraftModalVisible(false);
+            setIsPublishModalVisible(true);
+          }}
+          onDashboard={() => {
+            setIsDraftModalVisible(false);
+            navigation.goBack();
+          }}
+        />
+      </Suspense>
     </View>
   );
 };

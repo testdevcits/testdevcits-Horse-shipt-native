@@ -9,12 +9,14 @@ import {
   Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { X, MapPin, Compass, Navigation } from 'lucide-react-native';
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
-import LocationPicker, { LocationSelectResult } from '../../../../components/common/LocationPicker/LocationPicker';
+import LocationPicker, {
+  LocationSelectResult,
+} from '../../../../components/common/LocationPicker/LocationPicker';
 import styles from './styles.preferredareas';
+import AppIcon from '../../../../components/AppIcon';
 
 interface Props {
   visible: boolean;
@@ -25,7 +27,12 @@ interface Props {
 
 const RADIUS_PRESETS = [25, 50, 75, 100];
 
-const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) => {
+const AddEditAreaModal = ({
+  visible,
+  onClose,
+  onSuccess,
+  areaToEdit,
+}: Props) => {
   const [locationName, setLocationName] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -65,7 +72,9 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
     setErrors({});
   };
 
-  const validate = (fields = { locationName, latitude, longitude, radiusKm }) => {
+  const validate = (
+    fields = { locationName, latitude, longitude, radiusKm },
+  ) => {
     const newErrors: Record<string, string> = {};
 
     if (!fields.locationName.trim()) {
@@ -113,8 +122,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Latitude is required.'
         : isNaN(lat) || lat < -90 || lat > 90
-          ? 'Invalid (-90 to 90).'
-          : undefined;
+        ? 'Invalid (-90 to 90).'
+        : undefined;
       setErrors(prev => ({ ...prev, latitude: err }));
     }
   };
@@ -126,8 +135,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Longitude is required.'
         : isNaN(lng) || lng < -180 || lng > 180
-          ? 'Invalid (-180 to 180).'
-          : undefined;
+        ? 'Invalid (-180 to 180).'
+        : undefined;
       setErrors(prev => ({ ...prev, longitude: err }));
     }
   };
@@ -139,8 +148,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       const err = !val.trim()
         ? 'Radius is required.'
         : isNaN(rad) || rad <= 0
-          ? 'Radius must be > 0 km.'
-          : undefined;
+        ? 'Radius must be > 0 km.'
+        : undefined;
       setErrors(prev => ({ ...prev, radiusKm: err }));
     }
   };
@@ -217,7 +226,8 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: error?.response?.data?.message || 'Failed to save preferred area.',
+        text2:
+          error?.response?.data?.message || 'Failed to save preferred area.',
       });
     } finally {
       setLoading(false);
@@ -246,8 +256,12 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
             <AppText style={styles.modalTitle}>
               {areaToEdit ? 'Edit Preferred Area' : 'Add New Preferred Area'}
             </AppText>
-            <TouchableOpacity onPress={onClose} style={styles.closeBtn} activeOpacity={0.7}>
-              <X size={18} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.closeBtn}
+              activeOpacity={0.7}
+            >
+              <AppIcon name="X" size={18} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -272,7 +286,9 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               value={locationName}
               onChangeText={handleLocationNameChange}
               placeholder="e.g. Indore, Madhya Pradesh, India"
-              leftIcon={<MapPin size={18} color={COLORS.primary} />}
+              leftIcon={
+                <AppIcon name="MapPin" size={18} color={COLORS.primary} />
+              }
               multiline
               inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
               error={errors.locationName}
@@ -288,7 +304,13 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
                   placeholder="22.777927"
                   keyboardType="numeric"
                   maxLength={15}
-                  leftIcon={<Compass size={16} color={COLORS.textSecondary} />}
+                  leftIcon={
+                    <AppIcon
+                      name="Compass"
+                      size={16}
+                      color={COLORS.textSecondary}
+                    />
+                  }
                   error={errors.latitude}
                 />
               </View>
@@ -301,7 +323,13 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
                   placeholder="75.892304"
                   keyboardType="numeric"
                   maxLength={15}
-                  leftIcon={<Navigation size={16} color={COLORS.textSecondary} />}
+                  leftIcon={
+                    <AppIcon
+                      name="Navigation"
+                      size={16}
+                      color={COLORS.textSecondary}
+                    />
+                  }
                   error={errors.longitude}
                 />
               </View>
@@ -315,7 +343,13 @@ const AddEditAreaModal = ({ visible, onClose, onSuccess, areaToEdit }: Props) =>
               placeholder="50"
               keyboardType="numeric"
               rightIcon={
-                <AppText style={{ fontSize: FONT_SIZE.md, color: COLORS.textSecondary, fontFamily: FONTS.medium }}>
+                <AppText
+                  style={{
+                    fontSize: FONT_SIZE.md,
+                    color: COLORS.textSecondary,
+                    fontFamily: FONTS.medium,
+                  }}
+                >
                   km
                 </AppText>
               }

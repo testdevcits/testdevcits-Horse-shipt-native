@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, SIZES } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  SIZES,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -273,7 +280,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-
   },
   cardInfoCol: {
     flex: 1,
@@ -294,12 +300,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flex: 1,
   },
   shipmentCode: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
     marginVertical: SPACING.xxs,
+    flex: 1,
   },
   shipmentStatus: {
     color: COLORS.emeraldPrimary,
@@ -311,6 +319,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xxs,
+    flex: 1,
   },
   infoMetaRow: {
     flexDirection: 'row',

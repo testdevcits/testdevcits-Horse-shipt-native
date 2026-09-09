@@ -1,11 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Plus } from 'lucide-react-native';
-import { COLORS, } from '../../constants';
+import { COLORS } from '../../constants';
+import AppIcon from '../AppIcon';
 
 export const FloatingButton = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={onPress}>
-    <Plus color={COLORS.white} size={28} />
+    <AppIcon name={'Plus'} color={COLORS.white} size={28} />
   </TouchableOpacity>
 );
 

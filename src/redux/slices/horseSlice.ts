@@ -37,7 +37,7 @@ const horseSlice = createSlice({
       state.loading = false;
     },
 
-    clearHorseState: (state) => {
+    clearHorseState: state => {
       state.horses = [];
       state.selectedHorse = null;
       state.loading = false;

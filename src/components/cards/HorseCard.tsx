@@ -1,16 +1,18 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+
 import {
-  Pencil,
-  Trash2,
-  ShieldCheck,
-  FileText,
-} from 'lucide-react-native';
-import { SPACING, RADIUS, FONT_SIZE, SIZES, ICON_SIZE } from '../../constants/dimensions';
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  SIZES,
+  ICON_SIZE,
+} from '../../constants/dimensions';
 import { COLORS, FONTS } from '../../constants';
 import AppText from '../common/AppText';
 import { Horse } from '../../types/customer';
 import imageIndex from '../../assets/images/imageIndex';
+import AppIcon from '../AppIcon';
 
 interface HorseCardProps {
   item: Horse;
@@ -56,7 +58,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           </AppText>
           {item?.barnName ? (
             <AppText style={styles.barnNameText} numberOfLines={1}>
-              Barn: {item.barnName}
+              Barn: {item?.barnName}
             </AppText>
           ) : null}
           {breedText ? (
@@ -76,7 +78,12 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
             style={styles.editActionBtn}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Pencil size={15} color={COLORS.primary} strokeWidth={2.2} />
+            <AppIcon
+              name={'Pencil'}
+              size={15}
+              color={COLORS.primary}
+              strokeWidth={2.2}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -85,7 +92,12 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
             style={styles.deleteActionBtn}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Trash2 size={15} color={COLORS.error} strokeWidth={2.2} />
+            <AppIcon
+              name={'Trash2'}
+              size={15}
+              color={COLORS.error}
+              strokeWidth={2.2}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -96,7 +108,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Sex</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.sex}
+              {item?.sex}
             </AppText>
           </View>
         ) : null}
@@ -105,7 +117,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Age</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.age} Yrs
+              {item?.age} Yrs
             </AppText>
           </View>
         ) : null}
@@ -114,7 +126,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Color</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.colour}
+              {item?.colour}
             </AppText>
           </View>
         ) : null}
@@ -123,7 +135,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           <View style={styles.pillItem}>
             <AppText style={styles.pillLabel}>Stall</AppText>
             <AppText style={styles.pillValue} numberOfLines={1}>
-              {item.defaultStallSize}
+              {item?.defaultStallSize}
             </AppText>
           </View>
         ) : null}
@@ -134,15 +146,25 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
         <View style={styles.docsBadgesRow}>
           {hasCoggins ? (
             <View style={styles.docBadgeSuccess}>
-              <ShieldCheck size={13} color={COLORS.emeraldPrimary} />
+              <AppIcon
+                name={'ShieldCheck'}
+                size={13}
+                color={COLORS.emeraldPrimary}
+              />
               <AppText style={styles.docBadgeTextSuccess}>Coggins PDF</AppText>
             </View>
           ) : null}
 
           {hasHealthCert ? (
             <View style={styles.docBadgeSuccess}>
-              <ShieldCheck size={13} color={COLORS.emeraldPrimary} />
-              <AppText style={styles.docBadgeTextSuccess}>Health Cert PDF</AppText>
+              <AppIcon
+                name={'ShieldCheck'}
+                size={13}
+                color={COLORS.emeraldPrimary}
+              />
+              <AppText style={styles.docBadgeTextSuccess}>
+                Health Cert PDF
+              </AppText>
             </View>
           ) : null}
         </View>
@@ -151,10 +173,15 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
       {/* Notes Box */}
       {item?.notes ? (
         <View style={styles.notesBox}>
-          <FileText size={14} color={COLORS.primary} style={{ marginTop: 2 }} />
+          <AppIcon
+            name={'FileText'}
+            size={14}
+            color={COLORS.primary}
+            style={{ marginTop: 2 }}
+          />
           <View style={styles.notesContent}>
             <AppText style={styles.notesHeading}>Notes</AppText>
-            <AppText style={styles.notesBody}>{item.notes}</AppText>
+            <AppText style={styles.notesBody}>{item?.notes}</AppText>
           </View>
         </View>
       ) : null}

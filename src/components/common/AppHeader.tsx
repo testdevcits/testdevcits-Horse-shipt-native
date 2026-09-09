@@ -1,29 +1,45 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { BellIcon, ChevronLeft, Menu } from 'lucide-react-native';
-import { COLORS, FONTS, SPACING, FONT_SIZE, ICON_SIZE, RADIUS, SIZES } from '../../constants';
+import {
+  COLORS,
+  FONTS,
+  SPACING,
+  FONT_SIZE,
+  ICON_SIZE,
+  RADIUS,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchNotificationsThunk } from '../../redux/slices/notificationSlice';
 import imageIndex from '../../assets/images/imageIndex';
+import AppIcon from '../AppIcon';
 
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
   onBack?: () => void;
   rightElement?: React.ReactNode;
-  showProfileImage?: boolean
+  showProfileImage?: boolean;
+  showNotificationIcon?: boolean;
 }
 
 // 2. Wrap the component in memo
 const AppHeader = memo(
-  ({ title, showBack, onBack, rightElement, showProfileImage = true }: HeaderProps) => {
+  ({
+    title,
+    showBack,
+    onBack,
+    rightElement,
+    showProfileImage = true,
+    showNotificationIcon = true,
+  }: HeaderProps) => {
     const navigation = useNavigation<any>();
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.auth);
     const { unreadCount } = useAppSelector(state => state.notification);
-    const [imageError, setImageError] = useState(false)
+    const [imageError, setImageError] = useState(false);
 
     const userId = (user as any)?._id || user?.id;
 
@@ -65,14 +81,22 @@ const AppHeader = memo(
               onPress={onBack ? onBack : () => navigation.goBack()}
               style={styles.iconBtn}
             >
-              <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon
+                name="ChevronLeft"
+                color={COLORS.textPrimary}
+                size={ICON_SIZE.md}
+              />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={styles.iconBtn}
             >
-              <Menu color={COLORS.textPrimary} size={ICON_SIZE.md} />
+              <AppIcon
+                name="Menu"
+                color={COLORS.textPrimary}
+                size={ICON_SIZE.md}
+              />
             </TouchableOpacity>
           )}
         </View>
@@ -90,61 +114,59 @@ const AppHeader = memo(
             rightElement
           ) : (
             <>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Notifications')}
-                style={styles.iconBtn}
-                activeOpacity={0.7}
-              >
-                <View style={styles.bellContainer}>
-                  <BellIcon color={COLORS.textPrimary} size={SPACING.xl} />
-                  {unreadCount > 0 && (
-                    <View style={styles.badge}>
-                      <AppText style={styles.badgeText}>
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </AppText>
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-              {
-
-                showProfileImage &&
+              {showNotificationIcon && (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Notifications')}
+                  style={styles.iconBtn}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.bellContainer}>
+                    <AppIcon
+                      name="BellIcon"
+                      color={COLORS.textPrimary}
+                      size={SPACING.xl}
+                    />
+                    {unreadCount > 0 && (
+                      <View style={styles.badge}>
+                        <AppText style={styles.badgeText}>
+                          {unreadCount > 99 ? '99+' : unreadCount}
+                        </AppText>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              )}
+              {showProfileImage && (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Profile')}
                   style={styles.profileBtn}
                 >
-                  {
-                    imageError ?
-                      <Image
-                        source={
-                          imageIndex.AccountIcon
-                        }
-                        style={{
-                          width: SIZES.avatarSm,
-                          height: SIZES.avatarSm,
-                          borderRadius: RADIUS.lg,
-                          // backgroundColor: COLORS.grey200,
-                        }}
-
-                      /> :
-                      <Image
-                        source={
-                          avatarUri
-                            ? { uri: avatarUri }
-                            : imageIndex.AccountIcon
-                        }
-                        style={{
-                          width: SIZES.avatarSm,
-                          height: SIZES.avatarSm,
-                          borderRadius: RADIUS.lg,
-                          backgroundColor: COLORS.grey200,
-                        }}
-                        onError={() => setImageError(true)}
-                      />}
+                  {imageError ? (
+                    <Image
+                      source={imageIndex.AccountIcon}
+                      style={{
+                        width: SIZES.avatarSm,
+                        height: SIZES.avatarSm,
+                        borderRadius: RADIUS.lg,
+                        // backgroundColor: COLORS.grey200,
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      source={
+                        avatarUri ? { uri: avatarUri } : imageIndex.AccountIcon
+                      }
+                      style={{
+                        width: SIZES.avatarSm,
+                        height: SIZES.avatarSm,
+                        borderRadius: RADIUS.lg,
+                        backgroundColor: COLORS.grey200,
+                      }}
+                      onError={() => setImageError(true)}
+                    />
+                  )}
                 </TouchableOpacity>
-              }
-
-
+              )}
             </>
           )}
         </View>

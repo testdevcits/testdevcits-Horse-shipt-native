@@ -7,9 +7,9 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import { ChevronDown, Check, X } from 'lucide-react-native';
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
 import AppText from '../AppText';
+import AppIcon from '../../AppIcon';
 
 export interface Country {
   code: string;
@@ -37,7 +37,8 @@ export const CountryCodePicker = ({
   showBorder = false,
 }: CountryCodePickerProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentCountry, setCurrentCountry] = useState<Country>(selectedCountry);
+  const [currentCountry, setCurrentCountry] =
+    useState<Country>(selectedCountry);
 
   const handleSelect = (country: Country) => {
     setCurrentCountry(country);
@@ -50,14 +51,16 @@ export const CountryCodePicker = ({
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => setModalVisible(true)}
-        style={[
-          styles.triggerBtn,
-          showBorder && styles.triggerBorder,
-        ]}
+        style={[styles.triggerBtn, showBorder && styles.triggerBorder]}
       >
         <AppText style={styles.flagText}>{currentCountry.flag}</AppText>
         <AppText style={styles.codeText}>{currentCountry.code}</AppText>
-        <ChevronDown size={14} color={COLORS.textSecondary} style={{ marginLeft: 2 }} />
+        <AppIcon
+          name={'ChevronDown'}
+          size={14}
+          color={COLORS.textSecondary}
+          style={{ marginLeft: 2 }}
+        />
       </TouchableOpacity>
 
       <Modal
@@ -66,8 +69,14 @@ export const CountryCodePicker = ({
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <Pressable style={styles.overlay} onPress={() => setModalVisible(false)}>
-          <Pressable style={styles.modalContent} onPress={e => e.stopPropagation()}>
+        <Pressable
+          style={styles.overlay}
+          onPress={() => setModalVisible(false)}
+        >
+          <Pressable
+            style={styles.modalContent}
+            onPress={e => e.stopPropagation()}
+          >
             {/* Modal Header */}
             <View style={styles.modalHeader}>
               <AppText style={styles.modalTitle}>Select Country Code</AppText>
@@ -75,33 +84,42 @@ export const CountryCodePicker = ({
                 onPress={() => setModalVisible(false)}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <X size={20} color={COLORS.textPrimary} />
+                <AppIcon name={'X'} size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
             </View>
 
             {/* Country List */}
             <FlatList
               data={COUNTRIES}
-              keyExtractor={item => item.iso}
+              keyExtractor={item => item?.iso}
               contentContainerStyle={styles.listContainer}
               renderItem={({ item }) => {
-                const isSelected = item.code === currentCountry.code && item.iso === currentCountry.iso;
+                const isSelected =
+                  item?.code === currentCountry.code &&
+                  item?.iso === currentCountry.iso;
                 return (
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    style={[styles.countryRow, isSelected && styles.selectedRow]}
+                    style={[
+                      styles.countryRow,
+                      isSelected && styles.selectedRow,
+                    ]}
                     onPress={() => handleSelect(item)}
                   >
                     <View style={styles.countryLeft}>
-                      <AppText style={styles.modalFlag}>{item.flag}</AppText>
-                      <AppText style={styles.countryName}>{item.name}</AppText>
+                      <AppText style={styles.modalFlag}>{item?.flag}</AppText>
+                      <AppText style={styles.countryName}>{item?.name}</AppText>
                     </View>
 
                     <View style={styles.countryRight}>
-                      <AppText style={styles.countryCode}>{item.code}</AppText>
+                      <AppText style={styles.countryCode}>{item?.code}</AppText>
                       {isSelected ? (
                         <View style={styles.checkBadge}>
-                          <Check size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'Check'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       ) : null}
                     </View>

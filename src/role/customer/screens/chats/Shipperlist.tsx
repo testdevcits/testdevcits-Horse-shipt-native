@@ -6,12 +6,12 @@ import styles from './styles.shipperlist';
 import {
   AppHeader,
   AppText,
+  ChatListSkeleton,
   ChatlistCard,
   EmptyState,
   ErrorView,
   SearchBarCompt,
-  AppSelect, // Make sure to add 'customSelectorStyle' prop support in AppSelect.tsx
-  AppLoader,
+  AppSelect,
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -28,12 +28,18 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
     refresh,
   } = useShipperList();
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <AppHeader />
+        <ChatListSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader />
-      <AppLoader visible={loading} />
-
-      {/* Header with Search and Filter Dropdown */}
 
       {error ? (
         <ErrorView message={error} onRetry={refresh} />
@@ -71,7 +77,9 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
                 navigation.navigate('ChatDetails', {
                   shipmentId: item?.shipmentId,
                   isChatLocked: item?.isChatLocked,
-                  avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
+                  avatar: item?.avatar
+                    ? { uri: item?.avatar }
+                    : imageIndex.AccountIcon,
                 })
               }
             />

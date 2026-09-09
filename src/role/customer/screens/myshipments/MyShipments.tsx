@@ -1,27 +1,30 @@
-import React, { useCallback, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useState } from 'react';
 import {
   View,
-
   FlatList,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
   Platform,
 } from 'react-native';
-import { Truck } from 'lucide-react-native';
-import Toast from 'react-native-toast-message';
+ import Toast from 'react-native-toast-message';
 import useMyShipments, { ShipmentTab } from './useMyShipments';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 import {
   AppHeader,
-  AppLoader,
   AppText,
   EmptyState,
-  ConfirmationModal,
+  ShipmentsSkeleton,
 } from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
 import styles from './styles.myshipments';
+import AppIcon from '../../../../components/AppIcon';
+import { COLORS, ICON_SIZE } from '../../../../constants';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const MyShipments = ({ navigation }: { navigation?: any }) => {
   const dispatch = useAppDispatch();
@@ -47,20 +50,25 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     'Cancelled',
   ];
 
-  const handleShipmentPress = useCallback((item: any) => {
-    const isDraftItem = item?.publish === false || (item?.status || '').toLowerCase() === 'draft';
-    if (isDraftItem) {
-      navigation?.navigate('NewShipment', {
-        isEdit: true,
-        shipmentData: item,
-      });
-    } else {
-      navigation?.navigate('MyShipmentDetails', {
-        item: item,
-        quoteId: item?.quoteId,
-      });
-    }
-  }, [navigation]);
+  const handleShipmentPress = useCallback(
+    (item: any) => {
+      const isDraftItem =
+        item?.publish === false ||
+        (item?.status || '').toLowerCase() === 'draft';
+      if (isDraftItem) {
+        navigation?.navigate('NewShipment', {
+          isEdit: true,
+          shipmentData: item,
+        });
+      } else {
+        navigation?.navigate('MyShipmentDetails', {
+          item: item,
+          quoteId: item?.quoteId,
+        });
+      }
+    },
+    [navigation],
+  );
 
   const handleInitiateDelete = useCallback((item: any) => {
     setShipmentToDelete(item);
@@ -90,15 +98,21 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     }
   };
 
-  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+  const keyExtractor = useCallback(
+    (item: any) => item?._id || String(Math.random()),
+    [],
+  );
 
-  const renderItem = useCallback(({ item }: { item: any }) => (
-    <ShipmentHorizontalCard
-      item={item}
-      onPress={() => handleShipmentPress(item)}
-      onDelete={handleInitiateDelete}
-    />
-  ), [handleShipmentPress, handleInitiateDelete]);
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <ShipmentHorizontalCard
+        item={item}
+        onPress={() => handleShipmentPress(item)}
+        onDelete={handleInitiateDelete}
+      />
+    ),
+    [handleShipmentPress, handleInitiateDelete],
+  );
 
   const renderTab = (tab: ShipmentTab) => {
     const isActive = activeTab === tab;
@@ -126,6 +140,15 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="My Shipments" />
+        <ShipmentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="My Shipments" />
@@ -139,8 +162,6 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
           {tabs.map(renderTab)}
         </ScrollView>
       </View>
-
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={filteredData}
@@ -158,7 +179,15 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
         ListEmptyComponent={
           !loading ? (
             <EmptyState
-              icon={Truck}
+              // icon={Truck}
+              icon={
+                <AppIcon
+                  name={'Truck'}
+                  size={ICON_SIZE.xl}
+                  color={COLORS.lightGrey}
+                  strokeWidth={1.5}
+                />
+              }
               title={`No ${activeTab} Shipments`}
               message="Your shipments will appear here once they reach this stage."
             />
@@ -167,22 +196,24 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
       />
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Draft Shipment?"
-        description="Are you sure you want to delete this draft shipment? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        isLoading={isDeleting}
-        onClose={() => {
-          if (!isDeleting) {
-            setIsDeleteModalVisible(false);
-            setShipmentToDelete(null);
-          }
-        }}
-        onConfirm={handleConfirmDelete}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Draft Shipment?"
+          description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={isDeleting}
+          onClose={() => {
+            if (!isDeleting) {
+              setIsDeleteModalVisible(false);
+              setShipmentToDelete(null);
+            }
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      </Suspense>
     </View>
   );
 };

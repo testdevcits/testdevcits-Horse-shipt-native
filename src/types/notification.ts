@@ -21,5 +21,3 @@ export interface GetNotificationsResponse {
     totalPages: number;
   };
 }
-
- 

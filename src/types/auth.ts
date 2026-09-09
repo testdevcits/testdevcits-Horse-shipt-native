@@ -8,7 +8,7 @@ export interface AppUser {
   profileImage?: string;
   phoneNumber?: string;
   // Metadata stores role-specific data (e.g., license for driver, uniqueId for others)
-  metadata: any; 
+  metadata: any;
 }
 
 export interface AuthState {
@@ -17,4 +17,3 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
 }
-

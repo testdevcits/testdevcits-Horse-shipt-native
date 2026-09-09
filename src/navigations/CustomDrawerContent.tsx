@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import {
   View,
   Image,
@@ -10,14 +10,20 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { ShieldCheck, LogOut, FileText, ChevronRight, Star } from 'lucide-react-native';
+import {
+  ShieldCheck,
+  LogOut,
+  FileText,
+  ChevronRight,
+  Star,
+} from 'lucide-react-native';
 
 // Import constants
 import { COLORS } from '../constants/colors';
 import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
-import { AppText, ConfirmationModal } from '../components';
+import { AppText } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
 
@@ -31,6 +37,10 @@ interface DrawerMenuItemProps {
   isLast?: boolean;
   hasChevron?: boolean;
 }
+
+const ConfirmationModal = lazy(
+  () => import('../components/common/ConfirmationModal'),
+);
 
 const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
   label,
@@ -55,7 +65,9 @@ const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
       {IconComponent ? (
         <IconComponent
           size={18}
-          color={iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)}
+          color={
+            iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)
+          }
           strokeWidth={1.8}
         />
       ) : iconSource ? (
@@ -215,16 +227,18 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
       </View>
 
       {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleLogoutConfirm}
-        title="Logout"
-        description="Are you sure you want to log out of your account?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleLogoutConfirm}
+          title="Logout"
+          description="Are you sure you want to log out of your account?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+        />
+      </Suspense>
     </View>
   );
 };

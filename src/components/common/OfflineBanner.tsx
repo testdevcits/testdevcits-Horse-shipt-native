@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-
   StyleSheet,
   TouchableOpacity,
   Animated,
   ActivityIndicator,
 } from 'react-native';
-import { WifiOff, Wifi, RefreshCw } from 'lucide-react-native';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
+import AppIcon from '../AppIcon';
 
 export const OfflineBanner: React.FC = () => {
   const { isOffline, refresh } = useNetworkStatus();
@@ -62,26 +61,42 @@ export const OfflineBanner: React.FC = () => {
         styles.container,
         isRestored ? styles.restoredContainer : styles.offlineContainer,
         { transform: [{ translateY: slideAnim }] },
-      ]}>
+      ]}
+    >
       <View style={styles.content}>
         {isRestored ? (
           <>
-            <Wifi size={18} color={COLORS.white} style={styles.icon} />
-            <AppText style={styles.text}>Back online! Internet connection restored.</AppText>
+            <AppIcon
+              name={'Wifi'}
+              size={18}
+              color={COLORS.white}
+              style={styles.icon}
+            />
+            <AppText style={styles.text}>
+              Back online! Internet connection restored.
+            </AppText>
           </>
         ) : (
           <>
-            <WifiOff size={18} color={COLORS.white} style={styles.icon} />
-            <AppText style={styles.text}>No Internet Connection. Checking connection...</AppText>
+            <AppIcon
+              name={'WifiOff'}
+              size={18}
+              color={COLORS.white}
+              style={styles.icon}
+            />
+            <AppText style={styles.text}>
+              No Internet Connection. Checking connection...
+            </AppText>
             <TouchableOpacity
               style={styles.retryButton}
               onPress={handleRefresh}
               disabled={isRefreshing}
-              activeOpacity={0.8}>
+              activeOpacity={0.8}
+            >
               {isRefreshing ? (
                 <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
-                <RefreshCw size={14} color={COLORS.white} />
+                <AppIcon name={'RefreshCw'} size={14} color={COLORS.white} />
               )}
             </TouchableOpacity>
           </>

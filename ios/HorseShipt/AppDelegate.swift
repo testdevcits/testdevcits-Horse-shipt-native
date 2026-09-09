@@ -3,6 +3,7 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import GoogleMaps // 1. Add this import statement
+import RNBootSplash
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,4 +52,9 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
     Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
   }
+
+  override func customize(_ rootView: RCTRootView) {
+    RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView)
+  }
 }
+

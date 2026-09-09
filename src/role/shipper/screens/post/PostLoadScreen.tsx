@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-   
-  RefreshControl,
-  ScrollView,
-} from 'react-native';
+import { View, RefreshControl, ScrollView } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { AppHeader } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
-import AskQuestionModal from '../home/AskQuestionModal';
-import SubmitOfferModal from '../home/SubmitOfferModal';
+import AskQuestionModal from '../home/components/AskQuestionModal';
+import SubmitOfferModal from '../home/shipment_details/SubmitOfferModal';
 import ContractModal from '../quotes/ContractModal';
 import MyShipmentsScreen from './MyShipmentsScreen';
 import QuoteRequestScreen from './QuoteRequestScreen';
@@ -28,7 +23,7 @@ const ShipmentsScreen = ({ route }: { route?: any }) => {
       if (route?.params?.initialTab) {
         setActiveTab(route.params.initialTab);
       }
-    }, [route?.params?.initialTab])
+    }, [route?.params?.initialTab]),
   );
   const [allShipments, setAllShipments] = useState<any[]>([]);
   const [myQuotes, setMyQuotes] = useState<any[]>([]);
@@ -89,7 +84,7 @@ const ShipmentsScreen = ({ route }: { route?: any }) => {
     // if (shipmentId) {
     //   navigation.navigate('AvailableShipmentDetails', { shipmentId });
     // }
-    navigation.navigate('ShipperShipmentDetails', { shipment: item })
+    navigation.navigate('ShipperShipmentDetails', { shipment: item });
   };
 
   const handleOpenContract = (item: any) => {

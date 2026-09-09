@@ -42,7 +42,10 @@ const CustomerDrawer = () => {
       <Drawer.Screen name="Reviews" component={ReviewsScreen} />
       <Drawer.Screen name="HelpCenter" component={HelpCenter} />
       <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
-      <Drawer.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
+      <Drawer.Screen
+        name="TermsAndConditions"
+        component={TermsAndConditionsScreen}
+      />
     </Drawer.Navigator>
   );
 };

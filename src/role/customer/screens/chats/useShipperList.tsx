@@ -6,7 +6,9 @@ const useShipperList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<'All' | 'Online' | 'Offline'>('All');
+  const [activeFilter, setActiveFilter] = useState<
+    'All' | 'Online' | 'Offline'
+  >('All');
 
   const fetchShippers = useCallback(async () => {
     try {
@@ -15,13 +17,15 @@ const useShipperList = () => {
       const res = await customerService.getChatShippers();
       if (res?.success) setShippers(res?.data);
     } catch (err: any) {
-      setError(err.message || "Failed to load chats");
+      setError(err.message || 'Failed to load chats');
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchShippers(); }, [fetchShippers]);
+  useEffect(() => {
+    fetchShippers();
+  }, [fetchShippers]);
 
   const filteredShippers = useMemo(() => {
     return shippers.filter(s => {
@@ -32,8 +36,11 @@ const useShipperList = () => {
 
       // Filter matches Online/Offline status
       const matchesStatus =
-        activeFilter === 'All' ? true :
-          activeFilter === 'Online' ? s.isOnline : !s.isOnline;
+        activeFilter === 'All'
+          ? true
+          : activeFilter === 'Online'
+          ? s.isOnline
+          : !s.isOnline;
 
       return matchesSearch && matchesStatus;
     });
@@ -47,7 +54,7 @@ const useShipperList = () => {
     setSearchQuery,
     activeFilter,
     setActiveFilter,
-    refresh: fetchShippers
+    refresh: fetchShippers,
   };
 };
 

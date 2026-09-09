@@ -21,20 +21,27 @@ const syncLocationNow = () => {
             speed: speed ?? 0,
             heading: heading ?? 0,
           });
-          console.log('[AutoLocationService] Live location synced:', latitude, longitude);
+          console.log(
+            '[AutoLocationService] Live location synced:',
+            latitude,
+            longitude,
+          );
         }
       } catch (err) {
         console.warn('[AutoLocationService] Location API update error:', err);
       }
     },
     error => {
-      console.warn('[AutoLocationService] GPS lock error:', error?.message || error);
+      console.warn(
+        '[AutoLocationService] GPS lock error:',
+        error?.message || error,
+      );
     },
     {
       enableHighAccuracy: true,
       timeout: 10000,
       maximumAge: 5000,
-    }
+    },
   );
 };
 
@@ -60,14 +67,21 @@ export const startAutoTracking = async (): Promise<boolean> => {
               speed: speed ?? 0,
               heading: heading ?? 0,
             });
-            console.log('[AutoLocationService] Watch location synced:', latitude, longitude);
+            console.log(
+              '[AutoLocationService] Watch location synced:',
+              latitude,
+              longitude,
+            );
           }
         } catch (err) {
           console.warn('[AutoLocationService] Watch update error:', err);
         }
       },
       error => {
-        console.warn('[AutoLocationService] Watch error:', error?.message || error);
+        console.warn(
+          '[AutoLocationService] Watch error:',
+          error?.message || error,
+        );
       },
       {
         enableHighAccuracy: true,
@@ -75,7 +89,7 @@ export const startAutoTracking = async (): Promise<boolean> => {
         interval: 10000,
         fastestInterval: 5000,
         showsBackgroundLocationIndicator: true,
-      }
+      },
     );
 
     // Fallback interval sync every 10 seconds

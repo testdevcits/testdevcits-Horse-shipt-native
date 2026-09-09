@@ -1,18 +1,17 @@
 import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+
 import {
-  User,
-  Power,
-  Edit,
-  Trash2,
-  FileText,
-  Mail,
-  Phone,
-  Award,
-} from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE, SIZES } from '../../constants';
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+  SIZES,
+} from '../../constants';
 import AppText from '../common/AppText';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../AppIcon';
 
 export interface TruckDriverCardProps {
   driver: {
@@ -45,17 +44,14 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
       !driver?.assignedVehicles ||
       driver.assignedVehicles.length === 0 ||
       driver.assignedVehicles.every(
-        (vehicle: any) => vehicle.currentShipment === null
+        (vehicle: any) => vehicle.currentShipment === null,
       );
     const canToggleStatus =
       !driver?.assignedVehicles ||
       driver.assignedVehicles.length === 0 ||
       driver.assignedVehicles.every(
-        (vehicle: any) => vehicle.currentShipment === null
+        (vehicle: any) => vehicle.currentShipment === null,
       );
-
-
-
 
     return (
       <View style={styles.driverCard}>
@@ -65,7 +61,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             {profileUrl ? (
               <Image source={{ uri: profileUrl }} style={styles.avatarImg} />
             ) : (
-              <User size={24} color={COLORS.primary} />
+              <AppIcon name="User" size={24} color={COLORS.primary} />
             )}
           </View>
 
@@ -94,7 +90,9 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           <TouchableOpacity
             style={styles.actionBtnPill}
             onPress={() => {
-              if (canToggleStatus) { onToggleStatus(driverId, isActive) } else {
+              if (canToggleStatus) {
+                onToggleStatus(driverId, isActive);
+              } else {
                 Toast.show({
                   type: 'info',
                   text1: 'Info',
@@ -104,7 +102,11 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             }}
             activeOpacity={0.7}
           >
-            <Power size={15} color={isActive ? '#D97706' : '#10B981'} />
+            <AppIcon
+              name="Power"
+              size={15}
+              color={isActive ? '#D97706' : '#10B981'}
+            />
             <AppText style={styles.actionBtnPillText}>
               {isActive ? 'Deactivate' : 'Activate'}
             </AppText>
@@ -115,25 +117,24 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             onPress={() => onEdit(driver)}
             activeOpacity={0.7}
           >
-            <Edit size={15} color={COLORS.textPrimary} />
+            <AppIcon name="Edit" size={15} color={COLORS.textPrimary} />
             <AppText style={styles.actionBtnPillText}>Edit</AppText>
           </TouchableOpacity>
-          {
-            isDriverDeletable &&
+          {isDriverDeletable && (
             <TouchableOpacity
               style={styles.actionBtnPill}
               onPress={() => onDelete(driverId, driverName)}
               activeOpacity={0.7}
               disabled={!isDriverDeletable}
             >
-              <Trash2 size={15} color={COLORS.error} />
-              <AppText style={[styles.actionBtnPillText, { color: COLORS.error }]}>
+              <AppIcon name="Trash2" size={15} color={COLORS.error} />
+              <AppText
+                style={[styles.actionBtnPillText, { color: COLORS.error }]}
+              >
                 Delete
               </AppText>
             </TouchableOpacity>
-          }
-
-
+          )}
         </View>
 
         {/* Detail Specification Cards */}
@@ -141,7 +142,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Name Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <User size={18} color={COLORS.primary} />
+              <AppIcon name="User" size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Name</AppText>
@@ -154,7 +155,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* License Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Award size={18} color={COLORS.primary} />
+              <AppIcon name="Award" size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>License</AppText>
@@ -167,7 +168,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Email Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Mail size={18} color={COLORS.primary} />
+              <AppIcon name="Mail" size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Email</AppText>
@@ -180,7 +181,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {/* Phone Card */}
           <View style={styles.specDetailCard}>
             <View style={styles.specIconBox}>
-              <Phone size={18} color={COLORS.primary} />
+              <AppIcon name="Phone" size={18} color={COLORS.primary} />
             </View>
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabelTitle}>Phone</AppText>
@@ -194,7 +195,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {driver.notes ? (
             <View style={styles.specDetailCard}>
               <View style={styles.specIconBox}>
-                <FileText size={18} color={COLORS.primary} />
+                <AppIcon name="FileText" size={18} color={COLORS.primary} />
               </View>
               <View style={styles.specTextCol}>
                 <AppText style={styles.specLabelTitle}>Notes</AppText>

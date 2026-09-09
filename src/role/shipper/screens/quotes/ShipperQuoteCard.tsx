@@ -1,19 +1,12 @@
 import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import {
-  Truck,
-  CreditCard,
-  Box,
-  RefreshCw,
-  FileText,
-  Calendar,
 
-} from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS } from '../../../../constants';
 import styles from './styles.myquotes';
 import { horsePlaceholderImage } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 interface ShipperQuoteCardProps {
   quote: any;
@@ -104,20 +97,22 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
   const vehicleObj =
     typeof quote?.vehicle === 'object' && quote?.vehicle !== null
       ? quote?.vehicle
-      : typeof quote?.assignedVehicle === 'object' && quote?.assignedVehicle !== null
-        ? quote?.assignedVehicle
-        : null;
+      : typeof quote?.assignedVehicle === 'object' &&
+        quote?.assignedVehicle !== null
+      ? quote?.assignedVehicle
+      : null;
 
   const driverObj = vehicleObj?.driver;
 
-  const vehicleName =
-    vehicleObj
-      ? `${vehicleObj?.vehicleType || vehicleObj?.make || 'Vehicle'} (${vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || ''})`.trim()
-      : typeof quote?.vehicle === 'string'
-        ? quote?.vehicle
-        : typeof quote?.assignedVehicle === 'string'
-          ? quote?.assignedVehicle
-          : null;
+  const vehicleName = vehicleObj
+    ? `${vehicleObj?.vehicleType || vehicleObj?.make || 'Vehicle'} (${
+        vehicleObj?.vehicleNumber || vehicleObj?.licensePlate || ''
+      })`.trim()
+    : typeof quote?.vehicle === 'string'
+    ? quote?.vehicle
+    : typeof quote?.assignedVehicle === 'string'
+    ? quote?.assignedVehicle
+    : null;
 
   return (
     <View style={styles.quoteCard}>
@@ -131,7 +126,10 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             resizeMode="cover"
           />
         ) : (
-          <Image source={{ uri: horsePlaceholderImage }} style={styles.horseBanner} />
+          <Image
+            source={{ uri: horsePlaceholderImage }}
+            style={styles.horseBanner}
+          />
         )}
         {/* Status Badge */}
         <View style={[styles.statusPill, statusBadgeStyle]}>
@@ -161,7 +159,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* 2x2 Specs Grid */}
         <View style={styles.specsGrid}>
           <View style={styles.specBox}>
-            <Truck size={18} color={COLORS.primary} />
+            <AppIcon name="Truck" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Transport</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -171,7 +169,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <CreditCard size={18} color={COLORS.primary} />
+            <AppIcon name="CreditCard" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Payment</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
@@ -181,21 +179,27 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
 
           <View style={styles.specBox}>
-            <Box size={18} color={COLORS.primary} />
+            <AppIcon name="Box" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Stall</AppText>
               <AppText style={styles.specValue}>
-                {quote?.stallsRequired ? String(quote?.stallsRequired).padStart(2, '0') : '01'}
+                {quote?.stallsRequired
+                  ? String(quote?.stallsRequired).padStart(2, '0')
+                  : '01'}
               </AppText>
             </View>
           </View>
 
           <View style={styles.specBox}>
-            <RefreshCw size={18} color={COLORS.primary} />
+            <AppIcon name="RefreshCw" size={18} color={COLORS.primary} />
             <View style={styles.specTextCol}>
               <AppText style={styles.specLabel}>Refund</AppText>
               <AppText style={styles.specValue} numberOfLines={1}>
-                {(quote?.payoutStatus || quote?.paymentStatus || 'Pending').toUpperCase()}
+                {(
+                  quote?.payoutStatus ||
+                  quote?.paymentStatus ||
+                  'Pending'
+                ).toUpperCase()}
               </AppText>
             </View>
           </View>
@@ -205,7 +209,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {vehicleObj ? (
           <View style={styles.assignedVehicleCard}>
             <View style={styles.vehicleHeaderRow}>
-              <Truck size={16} color={COLORS.primary} />
+              <AppIcon name="Truck" size={16} color={COLORS.primary} />
               <AppText style={styles.vehicleTitleText}>
                 Assigned Vehicle & Driver Details
               </AppText>
@@ -219,12 +223,13 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
                 <AppText style={styles.boldLabel}>Vehicle Number: </AppText>
                 {vehicleObj?.vehicleNumber || 'N/A'}
               </AppText>
-              {vehicleObj?.numberOfStalls !== undefined && vehicleObj?.numberOfStalls !== null && (
-                <AppText style={styles.vehicleDetailText}>
-                  <AppText style={styles.boldLabel}>Stalls: </AppText>
-                  {vehicleObj?.numberOfStalls}
-                </AppText>
-              )}
+              {vehicleObj?.numberOfStalls !== undefined &&
+                vehicleObj?.numberOfStalls !== null && (
+                  <AppText style={styles.vehicleDetailText}>
+                    <AppText style={styles.boldLabel}>Stalls: </AppText>
+                    {vehicleObj?.numberOfStalls}
+                  </AppText>
+                )}
               {driverObj?.name ? (
                 <AppText style={styles.vehicleDetailText}>
                   <AppText style={styles.boldLabel}>Driver: </AppText>
@@ -247,9 +252,16 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           </View>
         ) : vehicleName ? (
           <View style={styles.assignedVehicleContainer}>
-            <Truck size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
+            <AppIcon
+              name="Truck"
+              size={16}
+              color={COLORS.primary}
+              style={{ marginTop: 2 }}
+            />
             <AppText style={styles.assignedVehicleText}>
-              <AppText style={{ fontFamily: FONTS.bold }}>Assigned Vehicle : </AppText>
+              <AppText style={{ fontFamily: FONTS.bold }}>
+                Assigned Vehicle :{' '}
+              </AppText>
               {vehicleName}
             </AppText>
           </View>
@@ -258,7 +270,12 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         {/* Notes Container */}
         {quote?.notes ? (
           <View style={styles.notesContainer}>
-            <FileText size={16} color={COLORS.primary} style={{ marginTop: 2 }} />
+            <AppIcon
+              name="FileText"
+              size={16}
+              color={COLORS.primary}
+              style={{ marginTop: 2 }}
+            />
             <AppText style={styles.notesText}>
               <AppText style={{ fontFamily: FONTS.bold }}>Notes : </AppText>
               {quote?.notes.trim()}
@@ -268,24 +285,36 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
         {/* Cancel Notice Container */}
         <View style={styles.cancelNoticeContainer}>
-          <Calendar size={16} color="#EF4444" style={{ marginTop: 2 }} />
+          <AppIcon
+            name="Calendar"
+            size={16}
+            color="#EF4444"
+            style={{ marginTop: 2 }}
+          />
           <AppText style={styles.cancelNoticeText}>
-            Cancel before : {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
+            Cancel before :{' '}
+            {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
           </AppText>
         </View>
 
         {/* Action Buttons Row */}
         <View style={styles.actionsRow}>
-          {onAssignVehicle && !vehicleObj && quote?.contractAccepted && cat !== 'completed' && cat !== 'delivered' && (
-            <TouchableOpacity
-              style={styles.assignVehicleBtn}
-              onPress={() => onAssignVehicle(quote)}
-              activeOpacity={0.8}
-            >
-              {/* <Truck size={16} color={COLORS.primary} /> */}
-              <AppText style={styles.assignVehicleBtnText}>Assign Vehicle</AppText>
-            </TouchableOpacity>
-          )}
+          {onAssignVehicle &&
+            !vehicleObj &&
+            quote?.contractAccepted &&
+            cat !== 'completed' &&
+            cat !== 'delivered' && (
+              <TouchableOpacity
+                style={styles.assignVehicleBtn}
+                onPress={() => onAssignVehicle(quote)}
+                activeOpacity={0.8}
+              >
+                {/* <Truck size={16} color={COLORS.primary} /> */}
+                <AppText style={styles.assignVehicleBtnText}>
+                  Assign Vehicle
+                </AppText>
+              </TouchableOpacity>
+            )}
 
           <TouchableOpacity
             style={[styles.viewContractBtn]}
@@ -296,7 +325,6 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             <AppText style={styles.viewContractBtnText}>Contract</AppText>
           </TouchableOpacity>
 
-
           {
             <TouchableOpacity
               style={[styles.viewContractBtn]}
@@ -304,20 +332,24 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
               activeOpacity={0.8}
             >
               {/* <FileCheck size={16} color={COLORS.white} /> */}
-              <AppText style={styles.viewContractBtnText}>View Shipper Contract</AppText>
+              <AppText style={styles.viewContractBtnText}>
+                View Shipper Contract
+              </AppText>
             </TouchableOpacity>
           }
 
-          {!isAssignedOrAccepted && shipment?.status !== 'delivered' && shipment?.status !== 'completed' && (
-            <TouchableOpacity
-              style={styles.deleteBtn}
-              onPress={() => onDelete(quoteId)}
-              activeOpacity={0.8}
-            >
-              {/* <Trash2 size={16} color={COLORS.textPrimary} /> */}
-              <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
-            </TouchableOpacity>
-          )}
+          {!isAssignedOrAccepted &&
+            shipment?.status !== 'delivered' &&
+            shipment?.status !== 'completed' && (
+              <TouchableOpacity
+                style={styles.deleteBtn}
+                onPress={() => onDelete(quoteId)}
+                activeOpacity={0.8}
+              >
+                {/* <Trash2 size={16} color={COLORS.textPrimary} /> */}
+                <AppText style={styles.deleteBtnText}>Cancel Quote</AppText>
+              </TouchableOpacity>
+            )}
         </View>
       </View>
     </View>

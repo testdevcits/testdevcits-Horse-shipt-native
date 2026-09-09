@@ -1,13 +1,5 @@
-
-
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Animated,
-  Easing,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
+import { View, Animated, Easing, ActivityIndicator, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
 
 import { COLORS } from '../../../constants';
@@ -62,7 +54,6 @@ const Splash = ({ navigation }: any) => {
    *    a. If Role NOT exists -> Go to RoleSelection (First time user)
    *    b. If Role exists -> Go to Welcome/Login (Returning but not logged in)
    */
-
 
   const handleNavigation = (savedRole: string | null) => {
     console.log('Checking Navigation. Token:', token, 'SavedRole:', savedRole);

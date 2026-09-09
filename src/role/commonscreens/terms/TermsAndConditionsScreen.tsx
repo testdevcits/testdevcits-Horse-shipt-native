@@ -85,12 +85,18 @@ const TermsAndConditionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Terms & Conditions" showProfileImage={false} />
+      <AppHeader
+        showBack={true}
+        title="Terms & Conditions"
+        showProfileImage={false}
+      />
 
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <AppText style={styles.loadingText}>Loading Terms & Conditions...</AppText>
+          <AppText style={styles.loadingText}>
+            Loading Terms & Conditions...
+          </AppText>
         </View>
       ) : (
         <WebView

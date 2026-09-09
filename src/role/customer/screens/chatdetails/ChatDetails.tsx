@@ -15,7 +15,6 @@ import {
   X,
   Lock,
   Image as ImageIcon,
-  MapPin,
 } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -72,8 +71,6 @@ const ChatDetails = () => {
 
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
-
-
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
   const isLocked = Boolean(

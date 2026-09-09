@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  StyleSheet,
   Platform,
-  SafeAreaView,
 } from 'react-native';
 import {
   Bell,
@@ -14,7 +12,6 @@ import {
   Check,
   CheckCheck,
   Trash2,
-
   Truck,
   MessageSquare,
   FileText,
@@ -22,7 +19,7 @@ import {
   CheckCircle2,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
-import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE, } from '../../../constants';
+import { COLORS } from '../../../constants';
 import useNotifications, { NotificationFilter } from './useNotifications';
 import {
   AppHeader,
@@ -30,17 +27,39 @@ import {
   AppText,
   EmptyState,
   ErrorView,
-  ConfirmationModal,
 } from '../../../components';
+import styles from './styles.notification';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+const ConfirmationModal = lazy(
+  () => import('../../../components/common/ConfirmationModal'),
+);
 // Helper to determine notification icon based on content
 const getNotificationIcon = (title: string = '', message: string = '') => {
   const content = (title + ' ' + message).toLowerCase();
-  if (content.includes('quote') || content.includes('offer') || content.includes('bid')) {
-    return { Icon: FileText, color: COLORS.emeraldPrimary, bg: COLORS.emeraldLightBg, border: COLORS.emeraldBorder };
+  if (
+    content.includes('quote') ||
+    content.includes('offer') ||
+    content.includes('bid')
+  ) {
+    return {
+      Icon: FileText,
+      color: COLORS.emeraldPrimary,
+      bg: COLORS.emeraldLightBg,
+      border: COLORS.emeraldBorder,
+    };
   }
-  if (content.includes('chat') || content.includes('message') || content.includes('question')) {
-    return { Icon: MessageSquare, color: COLORS.bluePrimary, bg: COLORS.blueLightBg, border: COLORS.blueBorder };
+  if (
+    content.includes('chat') ||
+    content.includes('message') ||
+    content.includes('question')
+  ) {
+    return {
+      Icon: MessageSquare,
+      color: COLORS.bluePrimary,
+      bg: COLORS.blueLightBg,
+      border: COLORS.blueBorder,
+    };
   }
   if (
     content.includes('shipment') ||
@@ -48,9 +67,19 @@ const getNotificationIcon = (title: string = '', message: string = '') => {
     content.includes('pickup') ||
     content.includes('transit')
   ) {
-    return { Icon: Truck, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
+    return {
+      Icon: Truck,
+      color: COLORS.brandBrown,
+      bg: COLORS.goldLightBg,
+      border: COLORS.goldBorder,
+    };
   }
-  return { Icon: Bell, color: COLORS.brandBrown, bg: COLORS.goldLightBg, border: COLORS.goldBorder };
+  return {
+    Icon: Bell,
+    color: COLORS.brandBrown,
+    bg: COLORS.goldLightBg,
+    border: COLORS.goldBorder,
+  };
 };
 
 const Notifications = () => {
@@ -207,11 +236,17 @@ const Notifications = () => {
               onPress={handleMarkAllRead}
               activeOpacity={0.8}
             >
-              <CheckCheck size={18} color={COLORS.brandBrown} style={{ marginRight: 4 }} />
+              <CheckCheck
+                size={18}
+                color={COLORS.brandBrown}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.headerMarkReadText}>Mark all read</AppText>
             </TouchableOpacity>
           ) : undefined
         }
+        showProfileImage={false}
+        showNotificationIcon={false}
       />
 
       <AppLoader visible={actionLoading} />
@@ -223,7 +258,10 @@ const Notifications = () => {
           <AppText style={styles.summaryText}>
             {unreadCount > 0 ? (
               <>
-                You have <AppText style={styles.summaryHighlight}>{unreadCount} unread</AppText>{' '}
+                You have{' '}
+                <AppText style={styles.summaryHighlight}>
+                  {unreadCount} unread
+                </AppText>{' '}
                 notification{unreadCount > 1 ? 's' : ''}
               </>
             ) : (
@@ -234,34 +272,48 @@ const Notifications = () => {
 
         {/* Filter Tabs */}
         <View style={styles.tabsWrapper}>
-          {(['all', 'unread', 'read'] as const).map((filter: NotificationFilter) => {
-            const isActive = activeFilter === filter;
-            const count =
-              filter === 'all'
-                ? allCount
-                : filter === 'unread'
+          {(['all', 'unread', 'read'] as const).map(
+            (filter: NotificationFilter) => {
+              const isActive = activeFilter === filter;
+              const count =
+                filter === 'all'
+                  ? allCount
+                  : filter === 'unread'
                   ? unreadCount
                   : readCount;
 
-            return (
-              <TouchableOpacity
-                key={filter}
-                style={[styles.tabPill, isActive && styles.tabPillActive]}
-                onPress={() => setActiveFilter(filter)}
-                activeOpacity={0.8}
-              >
-                <AppText style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-                  {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                </AppText>
-
-                <View style={[styles.countBadge, isActive && styles.countBadgeActive]}>
-                  <AppText style={[styles.countText, isActive && styles.countTextActive]}>
-                    {count}
+              return (
+                <TouchableOpacity
+                  key={filter}
+                  style={[styles.tabPill, isActive && styles.tabPillActive]}
+                  onPress={() => setActiveFilter(filter)}
+                  activeOpacity={0.8}
+                >
+                  <AppText
+                    style={[styles.tabLabel, isActive && styles.tabLabelActive]}
+                  >
+                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
                   </AppText>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+
+                  <View
+                    style={[
+                      styles.countBadge,
+                      isActive && styles.countBadgeActive,
+                    ]}
+                  >
+                    <AppText
+                      style={[
+                        styles.countText,
+                        isActive && styles.countTextActive,
+                      ]}
+                    >
+                      {count}
+                    </AppText>
+                  </View>
+                </TouchableOpacity>
+              );
+            },
+          )}
         </View>
       </View>
 
@@ -295,8 +347,8 @@ const Notifications = () => {
                 activeFilter === 'all'
                   ? "You're all caught up! No notifications to show right now."
                   : activeFilter === 'unread'
-                    ? 'No unread notifications.'
-                    : 'No read notifications found.'
+                  ? 'No unread notifications.'
+                  : 'No read notifications found.'
               }
             />
           ) : null
@@ -310,9 +362,14 @@ const Notifications = () => {
             <AppText style={styles.selectedCountText}>
               {selectedIds.length} Selected
             </AppText>
-            <TouchableOpacity onPress={selectAll} style={styles.selectAllToggle}>
+            <TouchableOpacity
+              onPress={selectAll}
+              style={styles.selectAllToggle}
+            >
               <AppText style={styles.selectAllToggleText}>
-                {selectedIds.length === notifications.length ? 'Deselect All' : 'Select All'}
+                {selectedIds.length === notifications.length
+                  ? 'Deselect All'
+                  : 'Select All'}
               </AppText>
             </TouchableOpacity>
           </View>
@@ -323,7 +380,11 @@ const Notifications = () => {
               onPress={handleMarkSelectedRead}
               activeOpacity={0.8}
             >
-              <Check size={16} color={COLORS.emeraldPrimary} style={{ marginRight: 4 }} />
+              <Check
+                size={16}
+                color={COLORS.emeraldPrimary}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.batchMarkReadText}>Mark Read</AppText>
             </TouchableOpacity>
 
@@ -332,7 +393,11 @@ const Notifications = () => {
               onPress={handleInitiateDeleteSelected}
               activeOpacity={0.8}
             >
-              <Trash2 size={16} color={COLORS.error} style={{ marginRight: 4 }} />
+              <Trash2
+                size={16}
+                color={COLORS.error}
+                style={{ marginRight: 4 }}
+              />
               <AppText style={styles.batchDeleteText}>Delete</AppText>
             </TouchableOpacity>
 
@@ -348,320 +413,30 @@ const Notifications = () => {
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Notifications?"
-        description={
-          targetIdToDelete
-            ? 'Are you sure you want to delete this notification?'
-            : `Are you sure you want to delete ${selectedIds.length} selected notification(s)? This action cannot be undone.`
-        }
-        confirmText="Delete"
-        cancelText="Cancel"
-        isLoading={actionLoading}
-        onClose={() => {
-          if (!actionLoading) {
-            setIsDeleteModalVisible(false);
-            setTargetIdToDelete(null);
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Notifications?"
+          description={
+            targetIdToDelete
+              ? 'Are you sure you want to delete this notification?'
+              : `Are you sure you want to delete ${selectedIds.length} selected notification(s)? This action cannot be undone.`
           }
-        }}
-        onConfirm={handleConfirmDelete}
-      />
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={actionLoading}
+          onClose={() => {
+            if (!actionLoading) {
+              setIsDeleteModalVisible(false);
+              setTargetIdToDelete(null);
+            }
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      </Suspense>
     </SafeAreaView>
   );
 };
 
 export default Notifications;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.slate50,
-  },
-
-  // HEADER RIGHT ACTION
-  headerMarkReadBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-  },
-  headerMarkReadText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.brandBrown,
-  },
-
-  // TOP FILTER & SUMMARY BAR
-  filterBarContainer: {
-    backgroundColor: COLORS.white,
-    paddingHorizontal: SPACING.md,
-    paddingTop: SPACING.sm,
-    paddingBottom: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.slate200,
-    elevation: 2,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 3,
-  },
-  summaryRow: {
-    marginBottom: SPACING.sm,
-  },
-  summaryText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.grey600,
-  },
-  summaryHighlight: {
-    fontFamily: FONTS.bold,
-    color: COLORS.brandBrown,
-  },
-
-  tabsWrapper: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.divider,
-    borderRadius: RADIUS.md,
-    padding: 3,
-    gap: 4,
-  },
-  tabPill: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 8,
-    borderRadius: RADIUS.sm,
-    gap: 6,
-  },
-  tabPillActive: {
-    backgroundColor: COLORS.brandBrown,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  tabLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.grey700,
-  },
-  tabLabelActive: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-  },
-  countBadge: {
-    backgroundColor: COLORS.slate200,
-    paddingHorizontal: 7,
-    paddingVertical: 1,
-    borderRadius: 10,
-  },
-  countBadgeActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-  },
-  countText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.grey700,
-  },
-  countTextActive: {
-    color: COLORS.white,
-  },
-
-  // LIST CONTAINER
-  listContainer: {
-    padding: SPACING.md,
-    gap: SPACING.sm,
-  },
-
-  // NOTIFICATION CARDS
-  notifCard: {
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    padding: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-    position: 'relative',
-    overflow: 'hidden',
-    marginBottom: 2,
-    elevation: 1,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.03,
-    shadowRadius: 3,
-  },
-  notifCardUnread: {
-    backgroundColor: COLORS.goldLightBg,
-    borderColor: COLORS.goldBorder,
-  },
-  notifCardRead: {
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.slate200,
-  },
-  notifCardSelected: {
-    backgroundColor: COLORS.amberLightBg,
-    borderColor: COLORS.brandBrown,
-    borderWidth: 1.5,
-  },
-
-  unreadAccentBar: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    width: 4,
-    backgroundColor: COLORS.brandBrown,
-  },
-
-  checkbox: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkboxSelected: {},
-  checkboxUncheckedCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: COLORS.slate300,
-    backgroundColor: COLORS.white,
-  },
-
-  iconContainer: {
-    width: 42,
-    height: 42,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  notifTextCol: {
-    flex: 1,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 2,
-  },
-  notifTitle: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-    color: COLORS.grey800,
-    flex: 1,
-  },
-  notifTitleUnread: {
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.brandBrown,
-  },
-  notifMsg: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.regular,
-    color: COLORS.grey600,
-    lineHeight: 18,
-  },
-  notifTime: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular,
-    color: COLORS.grey400,
-    marginTop: 6,
-  },
-
-  deleteIconButton: {
-    padding: 6,
-    borderRadius: RADIUS.xs,
-  },
-
-  // FLOATING BATCH ACTION BAR
-  floatingActionBar: {
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 24 : 16,
-    left: SPACING.md,
-    right: SPACING.md,
-    backgroundColor: COLORS.slate900,
-    borderRadius: RADIUS.lg,
-    paddingVertical: SPACING.sm,
-    paddingHorizontal: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
-    elevation: 10,
-  },
-  actionInfoCol: {
-    flexDirection: 'column',
-  },
-  selectedCountText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.white,
-  },
-  selectAllToggle: {
-    marginTop: 2,
-  },
-  selectAllToggleText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.slate400,
-    textDecorationLine: 'underline',
-  },
-
-  batchActionsGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  batchMarkReadBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.emeraldDark,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.emeraldPrimary,
-  },
-  batchMarkReadText: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.emeraldBorder,
-  },
-  batchDeleteBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.redPrimary,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.redPrimary,
-  },
-  batchDeleteText: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-    color: COLORS.redBorder,
-  },
-  batchCloseBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: COLORS.slate700,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 4,
-  },
-});

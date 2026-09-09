@@ -3,50 +3,49 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-
   RefreshControl,
 } from 'react-native';
 
 import Toast from 'react-native-toast-message';
 import { COLORS, FONT_SIZE } from '../../../../constants';
-import { AppHeader, AppText, AppLoader, ConfirmationModal } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  ShipmentDetailSkeleton,
+} from '../../../../components';
 import useShipmentDetails from './useShipementDetails';
 
 // Modals & Tabs
 import styles from './style.myshipments';
-import OverviewTab from './tabs/OverviewTab';
-import QuotesTab from './tabs/QuotesTab';
-import QuestionsTab from './tabs/QuestionsTab';
-import FindShipperTab from './tabs/FindShipperTab';
-import { Dot, Pencil, Trash2 } from 'lucide-react-native';
+import OverviewTab from './tabs/overview/OverviewTab';
+import QuotesTab from './tabs/quotes/QuotesTab';
+import QuestionsTab from './tabs/questions/QuestionsTab';
+import FindShipperTab from './tabs/find_shippers/FindShipperTab';
 import { getFormattedDate } from '../../../../utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 
 import customerService from '../../../../api/services/customerService';
+import AppIcon from '../../../../components/AppIcon';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
-const QuoteDetailModal = lazy(
-  () => import('./QuoteDetailModal'),
-);
+const QuoteDetailModal = lazy(() => import('./components/quote_detail_modal/QuoteDetailModal'));
 
-const RatingModal = lazy(
-  () => import('./RatingModal'),
-);
+const RatingModal = lazy(() => import('./components/rating_modal/RatingModal'));
 
-const DeliveredSuccessModal = lazy(
-  () => import('./DeliveredSuccessModal'),
-);
+const DeliveredSuccessModal = lazy(() => import('./components/delivered_success_modal/DeliveredSuccessModal'));
 
-
-const MyShipmentDetails = ({ route, }: any) => {
+const MyShipmentDetails = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const { item, quoteId } = route.params;
 
-  console.log("=========quoteId===============", quoteId)
-
+  console.log('=========quoteId===============', quoteId);
 
   const [activeTab, setActiveTab] = useState('Overview');
   const [isRatingVisible, setIsRatingVisible] = useState(false);
@@ -85,7 +84,8 @@ const MyShipmentDetails = ({ route, }: any) => {
     if (!data?._id) return;
     try {
       const res: any = await customerService.getShipmentById(data._id);
-      const fetchedShipment = res?.shipment || res?.data?.shipment || res?.data || data;
+      const fetchedShipment =
+        res?.shipment || res?.data?.shipment || res?.data || data;
       (navigation as any).navigate('NewShipment', {
         isEdit: true,
         shipmentData: fetchedShipment,
@@ -121,7 +121,13 @@ const MyShipmentDetails = ({ route, }: any) => {
     }
   };
 
-  if (loading && !refreshing) return <AppLoader visible={true} />;
+  if (loading && !refreshing)
+    return (
+      <View style={styles.container}>
+        <AppHeader showBack={true} title={data?.shipmentCode} />
+        <ShipmentDetailSkeleton />
+      </View>
+    );
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -165,7 +171,9 @@ const MyShipmentDetails = ({ route, }: any) => {
             <View style={styles.titleRow}>
               <AppText style={styles.shipmentTitle}>Shipment Title</AppText>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              <View
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
+              >
                 {isDraft && (
                   <TouchableOpacity
                     onPress={() => setIsDeleteModalVisible(true)}
@@ -176,8 +184,10 @@ const MyShipmentDetails = ({ route, }: any) => {
                       padding: 4,
                     }}
                   >
-                    <Trash2 size={16} color={COLORS.error} />
-                    <AppText style={{ color: COLORS.error, fontSize: FONT_SIZE.md }}>
+                    <AppIcon name={'Trash2'} size={16} color={COLORS.error} />
+                    <AppText
+                      style={{ color: COLORS.error, fontSize: FONT_SIZE.md }}
+                    >
                       Delete
                     </AppText>
                   </TouchableOpacity>
@@ -192,8 +202,10 @@ const MyShipmentDetails = ({ route, }: any) => {
                       padding: 4,
                     }}
                   >
-                    <Pencil size={16} color={COLORS.primary} />
-                    <AppText style={{ color: COLORS.primary, fontSize: FONT_SIZE.md }}>
+                    <AppIcon name={'Pencil'} size={16} color={COLORS.primary} />
+                    <AppText
+                      style={{ color: COLORS.primary, fontSize: FONT_SIZE.md }}
+                    >
                       Edit
                     </AppText>
                   </TouchableOpacity>
@@ -218,43 +230,46 @@ const MyShipmentDetails = ({ route, }: any) => {
           {/* TABS BAR - REFINED STYLING */}
           <View style={styles.tabContainer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {TABS.filter(tab => !(isDelivered && tab === 'Find Shipper')).map(tab => {
-                const isActive = activeTab === tab;
-                let badgeCount = 0;
-                if (tab === 'Quotes') badgeCount = quotes.length || 0; // Placeholder 3 to match image
-                if (tab === 'Questions') {
-                  badgeCount = Array.isArray(questions)
-                    ? questions.length
-                    : ((questions as any)?.pending?.length || 0) + ((questions as any)?.answered?.length || 0);
-                }
+              {TABS.filter(tab => !(isDelivered && tab === 'Find Shipper')).map(
+                tab => {
+                  const isActive = activeTab === tab;
+                  let badgeCount = 0;
+                  if (tab === 'Quotes') badgeCount = quotes.length || 0; // Placeholder 3 to match image
+                  if (tab === 'Questions') {
+                    badgeCount = Array.isArray(questions)
+                      ? questions.length
+                      : ((questions as any)?.pending?.length || 0) +
+                        ((questions as any)?.answered?.length || 0);
+                  }
 
-                return (
-                  <TouchableOpacity
-                    key={tab}
-                    onPress={() => setActiveTab(tab)}
-                    style={[
-                      styles.tabButton,
-                      isActive && styles.tabButtonActive,
-                    ]}
-                  >
-                    <AppText
+                  return (
+                    <TouchableOpacity
+                      key={tab}
+                      onPress={() => setActiveTab(tab)}
                       style={[
-                        styles.tabLabel,
-                        isActive && styles.tabLabelActive,
+                        styles.tabButton,
+                        isActive && styles.tabButtonActive,
                       ]}
                     >
-                      {tab}
-                    </AppText>
-                    {badgeCount > 0 && (
-                      <View style={styles.tabBadge}>
-                        <AppText style={styles.tabBadgeText}>
-                          {badgeCount}
-                        </AppText>
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
+                      <AppText
+                        style={[
+                          styles.tabLabel,
+                          isActive && styles.tabLabelActive,
+                        ]}
+                      >
+                        {tab}
+                      </AppText>
+                      {badgeCount > 0 && (
+                        <View style={styles.tabBadge}>
+                          <AppText style={styles.tabBadgeText}>
+                            {badgeCount}
+                          </AppText>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  );
+                },
+              )}
             </ScrollView>
           </View>
 
@@ -300,21 +315,23 @@ const MyShipmentDetails = ({ route, }: any) => {
           </Suspense>
 
           {/* DELETE CONFIRMATION MODAL */}
-          <ConfirmationModal
-            isVisible={isDeleteModalVisible}
-            type="danger"
-            title="Delete Draft Shipment?"
-            description="Are you sure you want to delete this draft shipment? This action cannot be undone."
-            confirmText="Delete"
-            cancelText="Cancel"
-            isLoading={isDeleting}
-            onClose={() => {
-              if (!isDeleting) {
-                setIsDeleteModalVisible(false);
-              }
-            }}
-            onConfirm={handleConfirmDelete}
-          />
+          <Suspense fallback={null}>
+            <ConfirmationModal
+              isVisible={isDeleteModalVisible}
+              type="danger"
+              title="Delete Draft Shipment?"
+              description="Are you sure you want to delete this draft shipment? This action cannot be undone."
+              confirmText="Delete"
+              cancelText="Cancel"
+              isLoading={isDeleting}
+              onClose={() => {
+                if (!isDeleting) {
+                  setIsDeleteModalVisible(false);
+                }
+              }}
+              onConfirm={handleConfirmDelete}
+            />
+          </Suspense>
         </View>
       </ScrollView>
     </View>

@@ -1,9 +1,16 @@
 import { Image, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { AppText, Button } from '../../../../components';
-import { FileText, Award } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 import { horsePlaceholderImage } from '../../../../config/constants';
+import AppIcon from '../../../../components/AppIcon';
 
 const HorseInformation = ({
   activeShipment,
@@ -23,7 +30,7 @@ const HorseInformation = ({
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <Award size={20} color={COLORS.primary} />
+        <AppIcon name={'Award'} size={20} color={COLORS.primary} />
         <AppText style={styles.cardHeaderTitle}>
           Horses ({horses.length})
         </AppText>
@@ -32,7 +39,10 @@ const HorseInformation = ({
       <View style={styles.cardBody}>
         {horses.map((horse: any, idx: number) => {
           const hasError = imageErrors[idx];
-          const photoUrl = !hasError && horse?.photo?.url ? horse.photo.url : horsePlaceholderImage;
+          const photoUrl =
+            !hasError && horse?.photo?.url
+              ? horse.photo.url
+              : horsePlaceholderImage;
 
           return (
             <View key={idx} style={styles.horseCard}>
@@ -46,7 +56,10 @@ const HorseInformation = ({
                 />
                 {horse?.registeredName ? (
                   <View style={styles.horseNameBadge}>
-                    <AppText style={styles.horseNameBadgeText} numberOfLines={1}>
+                    <AppText
+                      style={styles.horseNameBadgeText}
+                      numberOfLines={1}
+                    >
                       {horse.registeredName}
                     </AppText>
                   </View>
@@ -76,7 +89,8 @@ const HorseInformation = ({
                 <View style={styles.gridCell}>
                   <AppText style={styles.gridLabel}>SEX / AGE</AppText>
                   <AppText style={styles.gridValue} numberOfLines={1}>
-                    {horse?.sex || 'N/A'} {horse?.age ? `• ${horse.age} yrs` : ''}
+                    {horse?.sex || 'N/A'}{' '}
+                    {horse?.age ? `• ${horse.age} yrs` : ''}
                   </AppText>
                 </View>
               </View>
@@ -88,7 +102,7 @@ const HorseInformation = ({
         {activeShipment?.notes ? (
           <View style={styles.notesBox}>
             <View style={styles.notesHeaderRow}>
-              <FileText size={16} color={COLORS.primary} />
+              <AppIcon name={'FileText'} size={16} color={COLORS.primary} />
               <AppText style={styles.notesBoxLabel}>SHIPMENT NOTES</AppText>
             </View>
             <AppText style={styles.notesBoxText}>

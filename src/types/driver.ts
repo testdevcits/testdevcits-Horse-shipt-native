@@ -128,7 +128,6 @@ export interface MeResponse {
   allShipments: ActiveShipment[];
 }
 
-
 // src/types/driver.ts
 
 export interface LocationUpdatePayload {

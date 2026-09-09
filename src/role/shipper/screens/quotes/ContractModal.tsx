@@ -2,18 +2,16 @@ import React from 'react';
 import {
   Modal,
   View,
-
   TouchableOpacity,
   ActivityIndicator,
   Linking,
-  Dimensions,
   Image,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Download, FileText } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, } from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import styles from './styles.contractmodal';
+import AppIcon from '../../../../components/AppIcon';
 
 interface ContractModalProps {
   visible: boolean;
@@ -22,7 +20,6 @@ interface ContractModalProps {
   shipmentCode?: string;
   quoteData?: any;
 }
-
 
 const ContractModal: React.FC<ContractModalProps> = ({
   visible,
@@ -103,7 +100,7 @@ const ContractModal: React.FC<ContractModalProps> = ({
               )
             ) : (
               <View style={styles.loader}>
-                <FileText size={40} color={COLORS.textLight} />
+                <AppIcon name="FileText" size={40} color={COLORS.textLight} />
                 <AppText style={styles.noContractText}>
                   Contract preview unavailable
                 </AppText>
@@ -118,8 +115,10 @@ const ContractModal: React.FC<ContractModalProps> = ({
               onPress={handleDownload}
               activeOpacity={0.8}
             >
-              <Download size={18} color={COLORS.white} />
-              <AppText style={styles.downloadBtnText}>Download Contract</AppText>
+              <AppIcon name="Download" size={18} color={COLORS.white} />
+              <AppText style={styles.downloadBtnText}>
+                Download Contract
+              </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity

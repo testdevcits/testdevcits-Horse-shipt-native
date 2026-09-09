@@ -6,19 +6,21 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { Link, Info, ExternalLink } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Input, Button } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.googlereview';
+import AppIcon from '../../../../components/AppIcon';
 
 const GoogleReviewScreen = () => {
   const [googleReviewLink, setGoogleReviewLink] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const isConnected = Boolean(googleReviewLink && googleReviewLink.trim().length > 0);
+  const isConnected = Boolean(
+    googleReviewLink && googleReviewLink.trim().length > 0,
+  );
 
   const handleInputChange = (text: string) => {
     setGoogleReviewLink(text);
@@ -43,11 +45,14 @@ const GoogleReviewScreen = () => {
       !lower.includes('maps') &&
       !lower.includes('g.page')
     ) {
-      setError('Please make sure this is a valid Google Maps or Google Business link.');
+      setError(
+        'Please make sure this is a valid Google Maps or Google Business link.',
+      );
       Toast.show({
         type: 'error',
         text1: 'Invalid Link',
-        text2: 'Please make sure this is a valid Google Maps or Google Business link.',
+        text2:
+          'Please make sure this is a valid Google Maps or Google Business link.',
       });
       return;
     }
@@ -73,7 +78,8 @@ const GoogleReviewScreen = () => {
       }
     } catch (err: any) {
       console.error('Update Google Review Link Error:', err);
-      const msg = err?.response?.data?.message || 'Failed to update Google Review link.';
+      const msg =
+        err?.response?.data?.message || 'Failed to update Google Review link.';
       setError(msg);
       Toast.show({
         type: 'error',
@@ -111,13 +117,17 @@ const GoogleReviewScreen = () => {
               <View
                 style={[
                   styles.statusBadge,
-                  isConnected ? styles.badgeConnectedBg : styles.badgeNotConnectedBg,
+                  isConnected
+                    ? styles.badgeConnectedBg
+                    : styles.badgeNotConnectedBg,
                 ]}
               >
                 <AppText
                   style={[
                     styles.statusBadgeText,
-                    isConnected ? styles.badgeConnectedText : styles.badgeNotConnectedText,
+                    isConnected
+                      ? styles.badgeConnectedText
+                      : styles.badgeNotConnectedText,
                   ]}
                 >
                   {isConnected ? 'Connected' : 'Not Connected'}
@@ -126,18 +136,19 @@ const GoogleReviewScreen = () => {
             </View>
 
             <AppText style={styles.cardSub}>
-              Connect your Google Business review link so horse owners can quickly verify your
-              reputation before choosing you for transport.
+              Connect your Google Business review link so horse owners can
+              quickly verify your reputation before choosing you for transport.
             </AppText>
 
             {/* Info Callout Box */}
             <View style={styles.infoCalloutBox}>
               <View style={styles.infoIconBox}>
-                <Info size={18} color="#A06333" />
+                <AppIcon name="Info" size={18} color="#A06333" />
               </View>
               <AppText style={styles.infoCalloutText}>
-                Add the direct Google review or Google Maps business link you want customers to visit.
-                This link appears on your public shipper profile.
+                Add the direct Google review or Google Maps business link you
+                want customers to visit. This link appears on your public
+                shipper profile.
               </AppText>
             </View>
           </View>
@@ -153,10 +164,14 @@ const GoogleReviewScreen = () => {
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="url"
-              leftIcon={<Link size={20} color="#A06333" />}
+              leftIcon={<AppIcon name="Link" size={20} color="#A06333" />}
               rightIcon={
                 isConnected ? (
-                  <ExternalLink size={18} color={COLORS.primary} />
+                  <AppIcon
+                    name="ExternalLink"
+                    size={18}
+                    color={COLORS.primary}
+                  />
                 ) : undefined
               }
               onRightIconPress={isConnected ? handleOpenLink : undefined}

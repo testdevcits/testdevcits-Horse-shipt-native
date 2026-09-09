@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import { Search, Package } from 'lucide-react-native';
 import { AppText, Input } from '../../../../components';
 import { COLORS } from '../../../../constants';
-import AvailableShipmentCard from '../home/AvailableShipmentCard';
+import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
 import styles from './styles.postload';
+import AppIcon from '../../../../components/AppIcon';
 
 interface AllShipmentScreenProps {
   data: any[];
@@ -72,7 +72,7 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
 
     return (
       <View style={styles.emptyContainer}>
-        <Package size={48} color={COLORS.textLight} />
+        <AppIcon name="Package" size={48} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>No Shipments Found</AppText>
         <AppText style={styles.emptySub}>
           {searchQuery.trim()
@@ -91,7 +91,9 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
           placeholder="Search pickup, delivery, or code..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          leftIcon={<Search size={18} color={COLORS.textSecondary} />}
+          leftIcon={
+            <AppIcon name="Search" size={18} color={COLORS.textSecondary} />
+          }
           containerStyle={{ marginBottom: 0 }}
         />
       </View>
@@ -101,7 +103,11 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
         keyExtractor={(item, index) => item?._id || item?.id || String(index)}
         renderItem={renderCard}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 16, paddingTop: 10 }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          paddingHorizontal: 16,
+          paddingTop: 10,
+        }}
         scrollEnabled={false}
       />
     </View>

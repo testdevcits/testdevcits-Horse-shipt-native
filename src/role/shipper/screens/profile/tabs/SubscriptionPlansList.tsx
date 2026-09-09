@@ -1,8 +1,14 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { CheckCircle, Sparkles, ChevronRight } from 'lucide-react-native';
 import { AppText } from '../../../../../components';
-import { COLORS, SPACING, RADIUS, FONT_SIZE, FONTS } from '../../../../../constants';
+import {
+  COLORS,
+  SPACING,
+  RADIUS,
+  FONT_SIZE,
+  FONTS,
+} from '../../../../../constants';
+import AppIcon from '../../../../../components/AppIcon';
 
 interface Plan {
   priceId: string;
@@ -35,20 +41,17 @@ const SubscriptionPlansList: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Sparkles size={18} color={COLORS.primary} />
+        <AppIcon name="Sparkles" size={18} color={COLORS.primary} />
         <AppText style={styles.title}>Available Plans</AppText>
       </View>
 
-      {plans.map((plan) => {
+      {plans.map(plan => {
         const isCurrentPlan = plan.priceId === currentPriceId;
 
         return (
           <TouchableOpacity
             key={plan.priceId}
-            style={[
-              styles.planCard,
-              isCurrentPlan && styles.activePlanCard
-            ]}
+            style={[styles.planCard, isCurrentPlan && styles.activePlanCard]}
             onPress={() => !isCurrentPlan && onSelectPlan(plan)}
             disabled={isCurrentPlan || isLoading}
             activeOpacity={0.7}
@@ -58,7 +61,11 @@ const SubscriptionPlansList: React.FC<Props> = ({
                 <AppText style={styles.planLabel}>{plan.label}</AppText>
                 {isCurrentPlan && (
                   <View style={styles.currentBadge}>
-                    <CheckCircle size={10} color={COLORS.white} />
+                    <AppIcon
+                      name="CheckCircle"
+                      size={10}
+                      color={COLORS.white}
+                    />
                     <AppText style={styles.currentBadgeText}>Current</AppText>
                   </View>
                 )}
@@ -77,7 +84,11 @@ const SubscriptionPlansList: React.FC<Props> = ({
                 <AppText style={styles.selectText}>
                   {isSubscribed ? 'Switch' : 'Select'}
                 </AppText>
-                <ChevronRight size={16} color={COLORS.brandBrown} />
+                <AppIcon
+                  name="ChevronRight"
+                  size={16}
+                  color={COLORS.brandBrown}
+                />
               </View>
             )}
           </TouchableOpacity>

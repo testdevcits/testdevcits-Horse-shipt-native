@@ -1,28 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
-
   ScrollView,
   TouchableOpacity,
-
   RefreshControl,
-
   FlatList,
   Pressable,
 } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Truck,
-  FileText,
-  Search,
 
-  List,
-  Map as MapIcon,
-  MapPin,
-
-  ChevronRight,
-
-} from 'lucide-react-native';
 import {
   AppHeader,
   AppText,
@@ -31,10 +17,7 @@ import {
   Input,
   SectionHeader,
 } from '../../../../components';
-import {
-  COLORS,
-  SPACING,
-} from '../../../../constants';
+import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -42,16 +25,16 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
-import AvailableShipmentCard from './AvailableShipmentCard';
-import MapShipmentSelectItem from './MapShipmentSelectItem';
-import ConnectBankModal from './ConnectBankModal';
+import AvailableShipmentCard from './components/AvailableShipmentCard';
+import MapShipmentSelectItem from './components/MapShipmentSelectItem';
+import ConnectBankModal from './components/ConnectBankModal';
 import styles from './styles.shipperhome';
 import Toast from 'react-native-toast-message';
 import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
-import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
+import SubscriptionRequiredModal from '../../components/subscription_required_modal/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
-
+import AppIcon from '../../../../components/AppIcon';
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -95,19 +78,26 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       setSubmittingCard(true);
       let paymentMethodId = '';
-      const setupIntentRes = await shipperService.getSetupIntent().catch(() => null);
+      const setupIntentRes = await shipperService
+        .getSetupIntent()
+        .catch(() => null);
       const clientSecret = setupIntentRes?.clientSecret;
 
       if (clientSecret && clientSecret.includes('_secret_')) {
-        const { setupIntent, error: stripeError } = await confirmSetupIntent(clientSecret, {
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: { name: cardholderName.trim() || undefined },
+        const { setupIntent, error: stripeError } = await confirmSetupIntent(
+          clientSecret,
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: { name: cardholderName.trim() || undefined },
+            },
           },
-        });
+        );
         if (stripeError) {
           setSubmittingCard(false);
-          setCardFormError(stripeError.message || 'Failed to confirm card setup.');
+          setCardFormError(
+            stripeError.message || 'Failed to confirm card setup.',
+          );
           return;
         }
         paymentMethodId =
@@ -117,31 +107,43 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       }
 
       if (!paymentMethodId) {
-        const { paymentMethod, error: stripeError } = await createPaymentMethod({
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: { name: cardholderName.trim() || undefined },
+        const { paymentMethod, error: stripeError } = await createPaymentMethod(
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: { name: cardholderName.trim() || undefined },
+            },
           },
-        });
+        );
         if (stripeError) {
           setSubmittingCard(false);
-          setCardFormError(stripeError.message || 'Failed to process card details.');
+          setCardFormError(
+            stripeError.message || 'Failed to process card details.',
+          );
           return;
         }
         paymentMethodId = paymentMethod?.id || '';
       }
 
       if (paymentMethodId) {
-        const saveRes = await shipperService.savePaymentMethod({ paymentMethodId });
+        const saveRes = await shipperService.savePaymentMethod({
+          paymentMethodId,
+        });
         if (saveRes?.success) {
           setIsCardModalVisible(false);
-          Toast.show({ type: 'success', text1: 'Card Saved', text2: 'Payment method saved successfully.' });
+          Toast.show({
+            type: 'success',
+            text1: 'Card Saved',
+            text2: 'Payment method saved successfully.',
+          });
           refreshSubStatus();
         }
       }
     } catch (e: any) {
       console.error('Save Card Error:', e);
-      setCardFormError(e?.response?.data?.message || 'Failed to save payment method.');
+      setCardFormError(
+        e?.response?.data?.message || 'Failed to save payment method.',
+      );
     } finally {
       setSubmittingCard(false);
     }
@@ -223,8 +225,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getStripeStatus();
       if (res && res.success) {
-
-        console.log("======checkStripeStatus==========", res)
+        console.log('======checkStripeStatus==========', res);
         const needsModal =
           res.needsVerification === true ||
           res.onboardingCompleted === false ||
@@ -376,7 +377,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <Truck size={24} color="#A06333" />
+            <AppIcon name={'Truck'} size={24} color="#A06333" />
           </View>
         </TouchableOpacity>
 
@@ -392,7 +393,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <FileText size={24} color="#A06333" />
+            <AppIcon name={'FileText'} size={24} color="#A06333" />
           </View>
         </TouchableOpacity>
       </View>
@@ -406,7 +407,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('MyQuotes')}
           >
             <AppText style={styles.viewAllText}>View All</AppText>
-            <ChevronRight size={16} color="#A06333" />
+            <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
           </TouchableOpacity>
         </View>
         <AppText style={styles.sectionSub}>
@@ -418,7 +419,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           placeholder="Search by pickup or delivery location..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          leftIcon={<Search size={18} color={COLORS.textSecondary} />}
+          leftIcon={
+            <AppIcon name={'Search'} size={18} color={COLORS.textSecondary} />
+          }
           containerStyle={{ marginBottom: SPACING.md }}
         />
 
@@ -481,7 +484,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             ]}
             onPress={() => setViewMode('list')}
           >
-            <List
+            <AppIcon
+              name={'List'}
               size={16}
               color={viewMode === 'list' ? COLORS.white : '#A06333'}
             />
@@ -509,7 +513,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               }
             }}
           >
-            <MapIcon
+            <AppIcon
+              name={'Map'}
               size={16}
               color={viewMode === 'map' ? COLORS.white : '#A06333'}
             />
@@ -543,7 +548,15 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={Truck}
+        // icon={Truck}
+        icon={
+          <AppIcon
+            name={'Truck'}
+            size={ICON_SIZE.xl}
+            color={COLORS.lightGrey}
+            strokeWidth={1.5}
+          />
+        }
         title="No Active Shipments"
         message="Available shipments for bidding will appear here."
       />
@@ -599,7 +612,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                 <View
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
                 >
-                  <List size={18} color="#A06333" />
+                  <AppIcon name={'List'} size={18} color="#A06333" />
                   <AppText style={styles.mapSectionTitle}>
                     Shipments ({filteredShipments.length})
                   </AppText>
@@ -607,7 +620,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
                 <TouchableOpacity style={styles.viewAllBtn}>
                   <AppText style={styles.viewAllText}>View All</AppText>
-                  <ChevronRight size={16} color="#A06333" />
+                  <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
                 </TouchableOpacity>
               </View>
 
@@ -649,12 +662,17 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                       {selectedMapShipment?.shipmentCode}
                     </AppText>
                   </View>
-                  <Pressable onPress={() => {
-                    navigation.navigate('ShipmentMapDirection', {
-                      shipmentData: selectedMapShipment,
-                    });
-                  }} style={styles.viewInFullScreenBtn}>
-                    <AppText style={styles.viewInFullScreenBtnText}>View in Full Map</AppText>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('ShipmentMapDirection', {
+                        shipmentData: selectedMapShipment,
+                      });
+                    }}
+                    style={styles.viewInFullScreenBtn}
+                  >
+                    <AppText style={styles.viewInFullScreenBtnText}>
+                      View in Full Map
+                    </AppText>
                   </Pressable>
                 </View>
 
@@ -682,7 +700,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                         description={selectedMapShipment?.pickupLocation}
                       >
                         <View style={styles.markerCircleGreen}>
-                          <MapPin size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'MapPin'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       </Marker>
                     )}
@@ -703,7 +725,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                         description={selectedMapShipment?.deliveryLocation}
                       >
                         <View style={styles.markerCircleRed}>
-                          <MapPin size={14} color={COLORS.white} />
+                          <AppIcon
+                            name={'MapPin'}
+                            size={14}
+                            color={COLORS.white}
+                          />
                         </View>
                       </Marker>
                     )}
@@ -735,9 +761,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                             }}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={4}
-                            strokeColor={
-                              COLORS.brandBrown || COLORS.primary
-                            }
+                            strokeColor={COLORS.brandBrown || COLORS.primary}
                             lineDashPattern={[0]}
                             onError={err =>
                               console.log('MapViewDirections Error:', err)

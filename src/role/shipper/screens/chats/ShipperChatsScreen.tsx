@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+  lazy,
+  Suspense,
+} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,17 +14,14 @@ import {
   RefreshControl,
   FlatList,
 } from 'react-native';
-import { MessageSquare, User } from 'lucide-react-native';
-import {
-  AppHeader,
-  AppText,
-  SearchBarCompt,
-  AppSelect,
-} from '../../../../components';
+import { AppHeader, AppText, SearchBarCompt } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
 import imageIndex from '../../../../assets/images/imageIndex';
+import AppIcon from '../../../../components/AppIcon';
+
+const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 
 const ChatItemCard = memo(
   ({
@@ -53,15 +57,12 @@ const ChatItemCard = memo(
             />
           ) : (
             <View style={styles.avatarPlaceholder}>
-              <User size={22} color={COLORS.primary} />
+              <AppIcon name="User" size={22} color={COLORS.primary} />
             </View>
           )}
           {/* Online / Offline Dot */}
           <View
-            style={[
-              styles.onlineDot,
-              !item?.isOnline && styles.offlineDot,
-            ]}
+            style={[styles.onlineDot, !item?.isOnline && styles.offlineDot]}
           />
         </View>
 
@@ -129,7 +130,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
       navigation.navigate('ChatDetails', {
         shipmentId: item?.shipmentId,
         name: item?.name || 'Customer',
-        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon
+        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon,
       });
     },
     [navigation],
@@ -181,7 +182,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
 
     return (
       <View style={styles.emptyContainer}>
-        <MessageSquare size={44} color={COLORS.textLight} />
+        <AppIcon name="MessageSquare" size={44} color={COLORS.textLight} />
         <AppText style={styles.emptyTitle}>No Conversations</AppText>
         <AppText style={styles.emptySub}>
           Active shipment customer chats will appear here.
@@ -210,12 +211,14 @@ const ShipperChatsScreen = ({ navigation }: any) => {
             />
 
             {/* Filter Dropdown Select Component */}
-            <AppSelect
-              value={selectedFilter}
-              options={['All', 'Active', 'InActive']}
-              placeholder="Filter messages"
-              onSelect={(item: string) => setSelectedFilter(item as any)}
-            />
+            <Suspense fallback={null}>
+              <AppSelect
+                value={selectedFilter}
+                options={['All', 'Active', 'InActive']}
+                placeholder="Filter messages"
+                onSelect={(item: string) => setSelectedFilter(item as any)}
+              />
+            </Suspense>
           </View>
         }
         ListEmptyComponent={renderEmptyComponent}

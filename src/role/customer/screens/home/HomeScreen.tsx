@@ -3,20 +3,17 @@ import {
   View,
   FlatList,
   StyleSheet,
-
   RefreshControl,
   Image,
   Pressable,
   ScrollView,
 } from 'react-native';
-import {   PackageSearch, Award } from 'lucide-react-native';
+import { PackageSearch, Award } from 'lucide-react-native';
 import {
   COLORS,
   SPACING,
   FONTS,
-
   SCREEN_WIDTH,
-
   FONT_SIZE,
 } from '../../../../constants';
 import {
@@ -24,13 +21,14 @@ import {
   AppLoader,
   AppText,
   EmptyState,
+  HomeSkeleton,
   SectionHeader,
   ShipperCard,
 } from '../../../../components';
 import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetailed';
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
-import { useShippers } from '../topratedshippers/useShippers';
+import { useShippers } from '../topratedshippers/shipperlist/useShippers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
@@ -57,7 +55,9 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     try {
       await Promise.all([
         refresh(true),
-        dispatch(fetchWishlistThunk(true)).unwrap().catch(() => null),
+        dispatch(fetchWishlistThunk(true))
+          .unwrap()
+          .catch(() => null),
         shipperRefresh ? shipperRefresh() : Promise.resolve(),
       ]);
     } catch (error) {
@@ -76,6 +76,17 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const { user } = useSelector((state: any) => state.auth || {});
   const userName = user?.name || user?.firstName || 'Not available';
 
+  const isInitialLoading =
+    (loading || shipperloading) && !isRefreshing && !refreshing;
+
+  if (isInitialLoading) {
+    return (
+      <View style={styles.container}>
+        <AppHeader />
+        <HomeSkeleton />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -103,24 +114,26 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           keyExtractor={item => item?._id}
           scrollEnabled={false}
           ListHeaderComponent={
-            <>
-              <Pressable onPress={() => navigation.navigate('New')}>
-                <Image
-                  source={imageIndex.Banner}
-                  style={{
-                    width: SCREEN_WIDTH - 16,
-                    height: 216,
-                    alignSelf: 'center',
-                    borderRadius: 20,
-                  }}
-                  resizeMode="stretch"
+            !loading ? (
+              <>
+                <Pressable onPress={() => navigation.navigate('New')}>
+                  <Image
+                    source={imageIndex.Banner}
+                    style={{
+                      width: SCREEN_WIDTH - 16,
+                      height: 216,
+                      alignSelf: 'center',
+                      borderRadius: 20,
+                    }}
+                    resizeMode="stretch"
+                  />
+                </Pressable>
+                <SectionHeader
+                  title="Current Shipments"
+                  onPress={() => navigation.navigate('Shipments')}
                 />
-              </Pressable>
-              <SectionHeader
-                title="Current Shipments"
-                onPress={() => navigation.navigate('Shipments')}
-              />
-            </>
+              </>
+            ) : null
           }
           renderItem={({ item }) => (
             <ShipmentCardDetailed
@@ -157,8 +170,9 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         {displayedShippers && !shipperloading && !loading && (
           <FlatList
             data={displayedShippers}
-
-            keyExtractor={(item, index) => item?.id || item?._id || index.toString()}
+            keyExtractor={(item, index) =>
+              item?.id || item?._id || index.toString()
+            }
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <ShipperCard
@@ -209,7 +223,6 @@ const styles = StyleSheet.create({
   welcomeHeader: {
     marginBottom: SPACING.md,
     paddingHorizontal: SPACING.lg,
-
   },
   welcomeTitle: {
     fontSize: FONT_SIZE.xl,
@@ -225,4 +238,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-

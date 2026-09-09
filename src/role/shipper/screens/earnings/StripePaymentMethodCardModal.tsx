@@ -1,15 +1,10 @@
 import React, { memo } from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { X, ShieldCheck, AlertCircle, User } from 'lucide-react-native';
+import { Modal, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { CardField } from '@stripe/stripe-react-native';
 import { AppText, Input } from '../../../../components';
-import { COLORS, FONT_SIZE, } from '../../../../constants';
+import { COLORS, FONT_SIZE } from '../../../../constants';
 import styles from './styles.earnings';
+import AppIcon from '../../../../components/AppIcon';
 
 interface StripePaymentMethodCardModalProps {
   isCardModalVisible: boolean;
@@ -24,7 +19,9 @@ interface StripePaymentMethodCardModalProps {
   handleSavePaymentMethod: () => void;
 }
 
-const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> = ({
+const StripePaymentMethodCardModal: React.FC<
+  StripePaymentMethodCardModalProps
+> = ({
   isCardModalVisible,
   setIsCardModalVisible,
   cardStatus,
@@ -48,14 +45,16 @@ const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> 
           {/* Header */}
           <View style={styles.modalHeaderRow}>
             <AppText style={styles.modalTitle}>
-              {cardStatus.hasCard ? 'Update Payment Method' : 'Add Payment Method'}
+              {cardStatus.hasCard
+                ? 'Update Payment Method'
+                : 'Add Payment Method'}
             </AppText>
             <TouchableOpacity
               style={styles.closeBtn}
               onPress={() => setIsCardModalVisible(false)}
               disabled={submittingCard}
             >
-              <X size={20} color={COLORS.textSecondary} />
+              <AppIcon name={'X'} size={20} color={COLORS.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -66,7 +65,7 @@ const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> 
           {/* Error Banner */}
           {!!formError && (
             <View style={styles.errorBanner}>
-              <AlertCircle size={16} color="#DC2626" />
+              <AppIcon name={'AlertCircle'} size={16} color="#DC2626" />
               <AppText style={styles.errorBannerText}>{formError}</AppText>
             </View>
           )}
@@ -78,7 +77,9 @@ const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> 
             value={cardholderName}
             onChangeText={setCardholderName}
             editable={!submittingCard}
-            leftIcon={<User size={16} color={COLORS.textSecondary} />}
+            leftIcon={
+              <AppIcon name={'User'} size={16} color={COLORS.textSecondary} />
+            }
           />
 
           {/* Stripe Card Field Component */}
@@ -101,7 +102,11 @@ const StripePaymentMethodCardModal: React.FC<StripePaymentMethodCardModalProps> 
 
           {/* Security Row */}
           <View style={styles.securityRow}>
-            <ShieldCheck size={14} color={COLORS.greenSuccess} />
+            <AppIcon
+              name={'ShieldCheck'}
+              size={14}
+              color={COLORS.greenSuccess}
+            />
             <AppText style={styles.securityText}>
               Secured & encrypted via Stripe 256-bit SSL
             </AppText>

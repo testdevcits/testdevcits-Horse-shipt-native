@@ -1,17 +1,25 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { User, Info, ChevronRight, MapPin } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants';
 import AppText from '../common/AppText';
 import { formatDate } from '../../utils/helpers';
-
+import AppIcon from '../AppIcon';
 
 const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
   const horsePhoto = item?.horses[0]?.photo?.url;
 
   // Dynamic Status Colors
   const statusColor = item?.isInProgress ? COLORS.info : COLORS.success;
-  const statusBg = item?.isInProgress ? COLORS.blueLightBg : COLORS.greenBadgeBg;
+  const statusBg = item?.isInProgress
+    ? COLORS.blueLightBg
+    : COLORS.greenBadgeBg;
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onView} style={styles.card}>
@@ -38,13 +46,17 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
           <View style={styles.routeLineContainer}>
             <View style={[styles.routeDot, { borderColor: COLORS.primary }]} />
             <View style={styles.line} />
-            <MapPin size={14} color={COLORS.error} />
+            <AppIcon name={'MapPin'} size={14} color={COLORS.error} />
           </View>
 
           <View style={styles.locations}>
-            <AppText numberOfLines={1} style={styles.locationTitle}>{item?.pickupLocation}</AppText>
+            <AppText numberOfLines={1} style={styles.locationTitle}>
+              {item?.pickupLocation}
+            </AppText>
             <View style={{ height: 20 }} /> {/* Spacing for the line */}
-            <AppText numberOfLines={1} style={styles.locationTitle}>{item?.deliveryLocation}</AppText>
+            <AppText numberOfLines={1} style={styles.locationTitle}>
+              {item?.deliveryLocation}
+            </AppText>
           </View>
         </View>
 
@@ -58,18 +70,20 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
       <View style={styles.footer}>
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
-            <User size={14} color={COLORS.textLight} />
+            <AppIcon name="User" size={14} color={COLORS.textLight} />
             <AppText style={styles.metaValue}>{item?.shipper?.name}</AppText>
           </View>
           <View style={styles.divider} />
           <View style={styles.metaItem}>
-            <Info size={14} color={COLORS.textLight} />
-            <AppText style={styles.metaValue}>{item?.numberOfHorses} Horses</AppText>
+            <AppIcon name="Info" size={14} color={COLORS.textLight} />
+            <AppText style={styles.metaValue}>
+              {item?.numberOfHorses} Horses
+            </AppText>
           </View>
         </View>
 
         <View style={styles.chevronCircle}>
-          <ChevronRight size={18} color={COLORS.white} />
+          <AppIcon name="ChevronRight" size={18} color={COLORS.white} />
         </View>
       </View>
     </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -7,28 +7,26 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { Pencil, Camera } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../redux/slices/authSlice';
-import { AppHeader, AppText, ConfirmationModal } from '../../../../components';
+import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
 
 // Import modular tab components
-import ProfileTab from './tabs/ProfileTab';
-import ShipmentTab from './tabs/ShipmentTab';
-import PaymentsTab from './tabs/PaymentsTab';
-import SubscriptionTab from './tabs/SubscriptionTab';
-import NotificationTab from './tabs/NotificationTab';
-import ConnectBankModal from '../home/ConnectBankModal';
-import SubscriptionRequiredModal from '../../components/SubscriptionRequiredModal';
+import ProfileTab from './tabs/profile/ProfileTab';
+import ShipmentTab from './tabs/shipments/ShipmentTab';
+import PaymentsTab from './tabs/payments/PaymentsTab';
+import SubscriptionTab from './tabs/subscription/SubscriptionTab';
+import NotificationTab from './tabs/notifications/NotificationTab';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
+import AppIcon from '../../../../components/AppIcon';
 
 type TabType =
   | 'Profile'
@@ -38,6 +36,14 @@ type TabType =
   | 'Notification';
 
 const ShipperProfileScreen = ({ navigation }: any) => {
+  const ConfirmationModal = lazy(
+    () => import('../../../../components/common/ConfirmationModal'),
+  );
+  const ConnectBankModal = lazy(() => import('../home/components/ConnectBankModal'));
+  const SubscriptionRequiredModal = lazy(
+    () => import('../../components/subscription_required_modal/SubscriptionRequiredModal'),
+  );
+
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const [activeTab, setActiveTab] = useState<TabType>('Profile');
@@ -64,8 +70,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   // Data states
   const [profileData, setProfileData] = useState<any>(null);
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
-
-
 
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
   const [subscriptionStatusData, setSubscriptionStatusData] =
@@ -457,7 +461,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   <ActivityIndicator size="small" color={COLORS.white} />
                 ) : (
                   <>
-                    <Camera size={14} color={COLORS.white} />
+                    <AppIcon name="Camera" size={14} color={COLORS.white} />
                     <AppText style={styles.editBannerText}>Edit banner</AppText>
                   </>
                 )}
@@ -504,7 +508,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   <ActivityIndicator size="small" color={COLORS.primary} />
                 ) : (
                   <>
-                    <Pencil size={16} color={COLORS.textPrimary} />
+                    <AppIcon
+                      name="Pencil"
+                      size={16}
+                      color={COLORS.textPrimary}
+                    />
                     <AppText style={styles.editPicText}>Edit picture</AppText>
                   </>
                 )}
@@ -578,33 +586,36 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           />
         )}
       </ScrollView>
-
-      <ConnectBankModal
-        isVisible={isBankModalVisible}
-        onClose={() => setIsBankModalVisible(false)}
-        navigation={navigation}
-      />
-
-      <SubscriptionRequiredModal
-        visible={isSubModalVisible}
-        onClose={closeSubModal}
-        shipperStatus={shipperStatus}
-        subscriptionStatus={subscriptionStatus}
-        plansData={plansData}
-        onSubscriptionSuccess={refreshSubStatus}
-      />
-
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={() => setIsLogoutModalVisible(false)}
-        onConfirm={handleConfirmLogout}
-        title="Logout"
-        description="Are you sure you want to log out?"
-        confirmText="Logout"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isLoggingOut}
-      />
+      <Suspense fallback={null}>
+        <ConnectBankModal
+          isVisible={isBankModalVisible}
+          onClose={() => setIsBankModalVisible(false)}
+          navigation={navigation}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubModalVisible}
+          onClose={closeSubModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onSubscriptionSuccess={refreshSubStatus}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={() => setIsLogoutModalVisible(false)}
+          onConfirm={handleConfirmLogout}
+          title="Logout"
+          description="Are you sure you want to log out?"
+          confirmText="Logout"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isLoggingOut}
+        />
+      </Suspense>
     </View>
   );
 };

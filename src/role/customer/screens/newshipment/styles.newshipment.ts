@@ -1,11 +1,14 @@
-import { StyleSheet, Dimensions } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from "../../../../constants";
-
-const { width } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  RADIUS,
+  SPACING,
+  FONTS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-
 
   // Stepper
   stepperContainer: {
@@ -16,11 +19,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
-    gap: 6
+    gap: 6,
   },
   stepItem: {
     flex: 1,
     alignItems: 'center',
+  },
+  stepImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
   },
   stepBar: {
     width: '100%',
@@ -55,13 +63,13 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
     borderWidth: 1,
     borderColor: COLORS.divider,
-    marginBottom: SPACING.xl
+    marginBottom: SPACING.xl,
   },
   label: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.md,
     color: COLORS.goldDarkText,
-    marginBottom: SPACING.sm
+    marginBottom: SPACING.sm,
   },
   input: {
     borderWidth: 1,
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.md
+    marginBottom: SPACING.md,
   },
   mapPlaceholder: {
     width: '100%',
@@ -80,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
 
   footer: {
@@ -89,14 +97,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
-    gap: SPACING.md
+    gap: SPACING.md,
   },
   btn: {
     flex: 1,
     height: 50,
     borderRadius: RADIUS.sm,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   btnPrev: { backgroundColor: COLORS.grey100 },
   btnNext: { backgroundColor: COLORS.primary },
@@ -111,8 +119,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.divider,
     paddingBottom: SPACING.sm,
-    marginBottom: SPACING.md
-  }
+    marginBottom: SPACING.md,
+  },
 });
 
 export default styles;

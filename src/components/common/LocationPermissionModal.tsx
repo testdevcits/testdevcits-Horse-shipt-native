@@ -1,14 +1,16 @@
 import React from 'react';
+import { Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
 import {
-  Modal,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import { MapPin, ShieldCheck, Navigation, X } from 'lucide-react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../../constants';
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+  SIZES,
+} from '../../constants';
 import AppText from './AppText';
 import { openDeviceSettings } from '../../utils/permissionHelper';
+import AppIcon from '../AppIcon';
 
 interface LocationPermissionModalProps {
   isVisible: boolean;
@@ -38,15 +40,24 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
       <View style={styles.overlay}>
         <View style={styles.container}>
           {/* Close Button */}
-          <TouchableOpacity style={styles.closeButton} onPress={onClose} activeOpacity={0.7}>
-            <X size={20} color={COLORS.grey400} />
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={onClose}
+            activeOpacity={0.7}
+          >
+            <AppIcon name={'X'} size={20} color={COLORS.grey400} />
           </TouchableOpacity>
 
           {/* Icon Header */}
           <View style={styles.iconContainer}>
-            <MapPin size={32} color={COLORS.brandBrown} strokeWidth={2.2} />
+            <AppIcon
+              name={'MapPin'}
+              size={32}
+              color={COLORS.brandBrown}
+              strokeWidth={2.2}
+            />
             <View style={styles.badgeIcon}>
-              <ShieldCheck size={14} color={COLORS.white} />
+              <AppIcon name={'ShieldCheck'} size={14} color={COLORS.white} />
             </View>
           </View>
 
@@ -58,9 +69,18 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
             {/* Instruction Box */}
             <View style={styles.instructionBox}>
               <View style={styles.instructionRow}>
-                <Navigation size={16} color={COLORS.brandBrown} style={{ marginTop: 2 }} />
+                <AppIcon
+                  name={'Navigation'}
+                  size={16}
+                  color={COLORS.brandBrown}
+                  style={{ marginTop: 2 }}
+                />
                 <AppText style={styles.instructionText}>
-                  Set Location permission to <AppText style={styles.boldText}>"Allow all the time"</AppText> in device settings to start trip tracking.
+                  Set Location permission to{' '}
+                  <AppText style={styles.boldText}>
+                    "Allow all the time"
+                  </AppText>{' '}
+                  in device settings to start trip tracking.
                 </AppText>
               </View>
             </View>

@@ -2,11 +2,11 @@ import { format, formatDistanceToNow } from 'date-fns';
 // import moment from 'moment';
 import moment from 'moment-timezone';
 
-
-
 export const generateSessionToken = () => {
-  return Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15);
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 };
 
 export const getFormattedDate = (dateString: string) => {
@@ -18,7 +18,6 @@ export const getFormattedDate = (dateString: string) => {
 
   return `Listed on ${formattedDate} - ${relativeTime}`;
 };
-
 
 // export const formatDate = (
 //   date?: any,

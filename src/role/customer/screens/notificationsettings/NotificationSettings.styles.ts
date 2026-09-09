@@ -1,10 +1,15 @@
-import { StyleSheet, Platform } from "react-native";
-import { COLORS, RADIUS, SPACING, FONTS, FONT_SIZE } from "../../../../constants";
+import { StyleSheet, Platform } from 'react-native';
+import {
+  COLORS,
+  RADIUS,
+  SPACING,
+  FONTS,
+  FONT_SIZE,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background, 
   },
   loadingContainer: {
     flex: 1,
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.xs,
     color: COLORS.textLight,
     fontFamily: FONTS.regular,
-  }
+  },
 });
 
 export default styles;

@@ -7,32 +7,24 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import {
-  Wallet,
-  CreditCard,
-  CheckCircle,
-  CheckCircle2,
-  Edit,
-  ExternalLink,
-  Eye,
-  FileText,
-  Plus,
 
-  XCircle,
-
-} from 'lucide-react-native';
 import { formatDate } from '../../../../utils/helpers';
 import { useStripe } from '@stripe/stripe-react-native';
-import { AppHeader, AppText, AppLoader, EmptyState, Input } from '../../../../components';
-import { COLORS, SPACING, } from '../../../../constants';
+import {
+  AppHeader,
+  AppText,
+  AppLoader,
+  EmptyState,
+} from '../../../../components';
+import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
-
-
-
-
-const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'))
-const StripePaymentMethodCardModal = lazy(() => import('./StripePaymentMethodCardModal'))
+import AppIcon from '../../../../components/AppIcon';
+ 
+const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
+const StripePaymentMethodCardModal = lazy(
+  () => import('./StripePaymentMethodCardModal'),
+);
 
 interface CardStatusState {
   hasCard: boolean;
@@ -82,7 +74,11 @@ const EarningsScreen = () => {
     message: '',
   });
 
-  const showFeedback = (type: 'success' | 'error', title: string, message: string) => {
+  const showFeedback = (
+    type: 'success' | 'error',
+    title: string,
+    message: string,
+  ) => {
     setFeedbackModal({
       visible: true,
       type,
@@ -151,7 +147,11 @@ const EarningsScreen = () => {
       const custRes = await shipperService.createCustomer();
       if (!custRes?.success) {
         setInitializingCard(false);
-        showFeedback('error', 'Initialization Failed', custRes?.message || 'Failed to initialize customer account.');
+        showFeedback(
+          'error',
+          'Initialization Failed',
+          custRes?.message || 'Failed to initialize customer account.',
+        );
         return;
       }
 
@@ -169,7 +169,13 @@ const EarningsScreen = () => {
       setIsCardModalVisible(true);
     } catch (error: any) {
       console.error('Initialize Card Setup Error:', error);
-      showFeedback('error', 'Setup Error', error?.response?.data?.message || error?.message || 'Unable to prepare card update.');
+      showFeedback(
+        'error',
+        'Setup Error',
+        error?.response?.data?.message ||
+          error?.message ||
+          'Unable to prepare card update.',
+      );
     } finally {
       setInitializingCard(false);
     }
@@ -189,18 +195,25 @@ const EarningsScreen = () => {
 
       // Confirm Setup Intent via Stripe SDK if clientSecret is available
       if (clientSecret && clientSecret.includes('_secret_')) {
-        const { setupIntent, error: stripeError } = await confirmSetupIntent(clientSecret, {
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: {
-              name: cardholderName.trim() || undefined,
+        const { setupIntent, error: stripeError } = await confirmSetupIntent(
+          clientSecret,
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: {
+                name: cardholderName.trim() || undefined,
+              },
             },
           },
-        });
+        );
 
         if (stripeError) {
           setSubmittingCard(false);
-          showFeedback('error', 'Stripe Error', stripeError.message || 'Failed to confirm setup intent.');
+          showFeedback(
+            'error',
+            'Stripe Error',
+            stripeError.message || 'Failed to confirm setup intent.',
+          );
           return;
         }
 
@@ -212,18 +225,24 @@ const EarningsScreen = () => {
 
       // Fallback: Create Payment Method via Stripe SDK if setup intent wasn't returned
       if (!paymentMethodId) {
-        const { paymentMethod, error: stripeError } = await createPaymentMethod({
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails: {
-              name: cardholderName.trim() || undefined,
+        const { paymentMethod, error: stripeError } = await createPaymentMethod(
+          {
+            paymentMethodType: 'Card',
+            paymentMethodData: {
+              billingDetails: {
+                name: cardholderName.trim() || undefined,
+              },
             },
           },
-        });
+        );
 
         if (stripeError) {
           setSubmittingCard(false);
-          showFeedback('error', 'Stripe Error', stripeError.message || 'Failed to process card details.');
+          showFeedback(
+            'error',
+            'Stripe Error',
+            stripeError.message || 'Failed to process card details.',
+          );
           return;
         }
 
@@ -232,36 +251,51 @@ const EarningsScreen = () => {
 
       if (!paymentMethodId) {
         setSubmittingCard(false);
-        showFeedback('error', 'Token Error', 'Unable to retrieve Stripe payment method token.');
+        showFeedback(
+          'error',
+          'Token Error',
+          'Unable to retrieve Stripe payment method token.',
+        );
         return;
       }
 
       // Save Payment Method on backend (/api/shipper/save-payment-method)
-      const saveRes = await shipperService.savePaymentMethod({ paymentMethodId });
+      const saveRes = await shipperService.savePaymentMethod({
+        paymentMethodId,
+      });
 
       if (saveRes?.success) {
         setCardStatus({
           hasCard: true,
           cardBrand: saveRes.cardBrand || cardDetails?.brand || 'Not Available',
           cardLast4: saveRes.cardLast4 || cardDetails?.last4 || 'Not Available',
-          cardExpMonth: saveRes.cardExpMonth || cardDetails?.expiryMonth || 'Not Available',
-          cardExpYear: saveRes.cardExpYear || cardDetails?.expiryYear || 'Not Available',
+          cardExpMonth:
+            saveRes.cardExpMonth || cardDetails?.expiryMonth || 'Not Available',
+          cardExpYear:
+            saveRes.cardExpYear || cardDetails?.expiryYear || 'Not Available',
         });
         setIsCardModalVisible(false);
         showFeedback(
           'success',
           'Card Saved Successfully',
-          saveRes.message || 'Card saved successfully. Account activated if previously restricted.',
+          saveRes.message ||
+            'Card saved successfully. Account activated if previously restricted.',
         );
       } else {
-        showFeedback('error', 'Save Error', saveRes?.message || 'Failed to save payment method.');
+        showFeedback(
+          'error',
+          'Save Error',
+          saveRes?.message || 'Failed to save payment method.',
+        );
       }
     } catch (error: any) {
       console.error('Save Payment Method Error:', error);
       showFeedback(
         'error',
         'Process Error',
-        error?.response?.data?.message || error?.message || 'Failed to save payment method.',
+        error?.response?.data?.message ||
+          error?.message ||
+          'Failed to save payment method.',
       );
     } finally {
       setSubmittingCard(false);
@@ -282,7 +316,7 @@ const EarningsScreen = () => {
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <View style={styles.walletIconBox}>
-            <Wallet size={22} color="#A06333" />
+            <AppIcon name={'Wallet'} size={22} color="#A06333" />
           </View>
           <View style={styles.headerTextCol}>
             <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
@@ -303,15 +337,16 @@ const EarningsScreen = () => {
           <>
             <View style={styles.activeCardContainer}>
               <View style={styles.cardIconBox}>
-                <CreditCard size={18} color="#A06333" />
+                <AppIcon name={'CreditCard'} size={18} color="#A06333" />
               </View>
               <View style={styles.activeCardTextCol}>
                 <AppText style={styles.activeCardLabel}>Active Card</AppText>
                 <AppText style={styles.activeCardNumber}>
-                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....{cardStatus.cardLast4 || 'Not Available'}
+                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....
+                  {cardStatus.cardLast4 || 'Not Available'}
                 </AppText>
               </View>
-              <CheckCircle size={22} color="#10B981" />
+              <AppIcon name={'CheckCircle'} size={22} color="#10B981" />
             </View>
 
             <TouchableOpacity
@@ -324,15 +359,19 @@ const EarningsScreen = () => {
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  <Edit size={16} color="#A06333" />
-                  <AppText style={styles.updateCardBtnText}>Update Card</AppText>
+                  <AppIcon name={'Edit'} size={16} color="#A06333" />
+                  <AppText style={styles.updateCardBtnText}>
+                    Update Card
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
           </>
         ) : (
           <View style={styles.noCardContainer}>
-            <AppText style={styles.noCardText}>No payment method currently attached.</AppText>
+            <AppText style={styles.noCardText}>
+              No payment method currently attached.
+            </AppText>
             <TouchableOpacity
               style={styles.addCardPrimaryBtn}
               onPress={handleOpenCardModal}
@@ -343,8 +382,10 @@ const EarningsScreen = () => {
                 <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
                 <>
-                  <Plus size={16} color={COLORS.white} />
-                  <AppText style={styles.addCardPrimaryBtnText}>Add Payment Method</AppText>
+                  <AppIcon name={'Plus'} size={16} color={COLORS.white} />
+                  <AppText style={styles.addCardPrimaryBtnText}>
+                    Add Payment Method
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
@@ -355,12 +396,13 @@ const EarningsScreen = () => {
       {/* Payout History Section */}
       <View style={styles.payoutHistoryHeaderRow}>
         <View style={styles.payoutIconBox}>
-          <ExternalLink size={20} color="#A06333" />
+          <AppIcon name={'ExternalLink'} size={20} color="#A06333" />
         </View>
         <View>
           <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
           <AppText style={styles.payoutSectionSub}>
-            {totalTransactionsCount} {totalTransactionsCount === 1 ? 'transaction' : 'transactions'}
+            {totalTransactionsCount}{' '}
+            {totalTransactionsCount === 1 ? 'transaction' : 'transactions'}
           </AppText>
         </View>
       </View>
@@ -368,16 +410,31 @@ const EarningsScreen = () => {
       <View style={styles.divider} />
 
       {/* Table Column Headers */}
-      <View style={[styles.tableCard, { marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }]}>
+      <View
+        style={[
+          styles.tableCard,
+          {
+            marginBottom: 0,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        ]}
+      >
         <View style={styles.tableHeaderRow}>
           <AppText style={[styles.columnHeader, { flex: 2.2 }]}>ID</AppText>
-          <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'center' }]}>
+          <AppText
+            style={[styles.columnHeader, { flex: 1.5, textAlign: 'center' }]}
+          >
             Amount
           </AppText>
-          <AppText style={[styles.columnHeader, { flex: 1.8, textAlign: 'center' }]}>
+          <AppText
+            style={[styles.columnHeader, { flex: 1.8, textAlign: 'center' }]}
+          >
             Date
           </AppText>
-          <AppText style={[styles.columnHeader, { flex: 1.5, textAlign: 'right' }]}>
+          <AppText
+            style={[styles.columnHeader, { flex: 1.5, textAlign: 'right' }]}
+          >
             Status
           </AppText>
         </View>
@@ -388,9 +445,22 @@ const EarningsScreen = () => {
   const renderEmpty = () => {
     if (loading) return null;
     return (
-      <View style={[styles.tableCard, { marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }]}>
+      <View
+        style={[
+          styles.tableCard,
+          { marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 },
+        ]}
+      >
         <EmptyState
-          icon={FileText}
+          // icon={FileText}
+          icon={
+            <AppIcon
+              name={'FileText'}
+              size={ICON_SIZE.xl}
+              color={COLORS.lightGrey}
+              strokeWidth={1.5}
+            />
+          }
           title="No Transactions"
           message="Your payout transactions will appear here."
         />
@@ -420,12 +490,17 @@ const EarningsScreen = () => {
           <AppText style={styles.idText} numberOfLines={1}>
             {formatTxId(tx.id)}
           </AppText>
-          <Eye size={13} color={COLORS.textSecondary} />
+          <AppIcon name={'Eye'} size={13} color={COLORS.textSecondary} />
         </TouchableOpacity>
 
         {/* Amount */}
         <AppText style={styles.amountText}>
-          ${tx.amount ? (tx.amount % 1 === 0 ? tx.amount.toFixed(2) : tx.amount) : '829.92'}
+          $
+          {tx.amount
+            ? tx.amount % 1 === 0
+              ? tx.amount.toFixed(2)
+              : tx.amount
+            : '829.92'}
         </AppText>
 
         {/* Date */}
@@ -484,7 +559,10 @@ const EarningsScreen = () => {
 
       {/* Transaction Details Modal */}
       <Suspense fallback={null}>
-        <TransactionDetailsModal selectedTx={selectedTx} setSelectedTx={setSelectedTx} />
+        <TransactionDetailsModal
+          selectedTx={selectedTx}
+          setSelectedTx={setSelectedTx}
+        />
       </Suspense>
 
       {/* Professional Feedback Modal (Replaces Native Alert) */}
@@ -492,26 +570,34 @@ const EarningsScreen = () => {
         visible={feedbackModal.visible}
         transparent
         animationType="fade"
-        onRequestClose={() => setFeedbackModal(prev => ({ ...prev, visible: false }))}
+        onRequestClose={() =>
+          setFeedbackModal(prev => ({ ...prev, visible: false }))
+        }
       >
         <View style={styles.modalOverlay}>
           <View style={styles.feedbackModalContent}>
             {feedbackModal.type === 'success' ? (
               <View style={styles.feedbackIconBoxSuccess}>
-                <CheckCircle2 size={36} color="#10B981" />
+                <AppIcon name={'CheckCircle2'} size={36} color="#10B981" />
               </View>
             ) : (
               <View style={styles.feedbackIconBoxError}>
-                <XCircle size={36} color="#EF4444" />
+                <AppIcon name={'XCircle'} size={36} color="#EF4444" />
               </View>
             )}
 
-            <AppText style={styles.feedbackTitle}>{feedbackModal.title}</AppText>
-            <AppText style={styles.feedbackSub}>{feedbackModal.message}</AppText>
+            <AppText style={styles.feedbackTitle}>
+              {feedbackModal.title}
+            </AppText>
+            <AppText style={styles.feedbackSub}>
+              {feedbackModal.message}
+            </AppText>
 
             <TouchableOpacity
               style={styles.feedbackBtn}
-              onPress={() => setFeedbackModal(prev => ({ ...prev, visible: false }))}
+              onPress={() =>
+                setFeedbackModal(prev => ({ ...prev, visible: false }))
+              }
               activeOpacity={0.85}
             >
               <AppText style={styles.feedbackBtnText}>Got it</AppText>

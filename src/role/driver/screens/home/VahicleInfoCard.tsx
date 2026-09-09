@@ -1,8 +1,15 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { memo, useState } from 'react';
 import { AppText } from '../../../../components';
-import { ChevronDown, ChevronUp, Truck, FileText, CheckCircle2 } from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+
+import {
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
+import AppIcon from '../../../../components/AppIcon';
 
 const VahicleInfoCard = ({
   vehicle,
@@ -25,13 +32,13 @@ const VahicleInfoCard = ({
         onPress={() => setIsVehicleCollapsed(!isVehicleCollapsed)}
       >
         <View style={styles.headerLeftRow}>
-          <Truck size={20} color={COLORS.primary} />
+          <AppIcon name={'Truck'} size={20} color={COLORS.primary} />
           <AppText style={styles.cardHeaderTitle}>Assigned Vehicle</AppText>
         </View>
         {isVehicleCollapsed ? (
-          <ChevronDown size={20} color={COLORS.goldDarkText} />
+          <AppIcon name={'ChevronDown'} size={20} color={COLORS.goldDarkText} />
         ) : (
-          <ChevronUp size={20} color={COLORS.goldDarkText} />
+          <AppIcon name={'ChevronUp'} size={20} color={COLORS.goldDarkText} />
         )}
       </TouchableOpacity>
 
@@ -48,7 +55,7 @@ const VahicleInfoCard = ({
               />
             ) : (
               <View style={styles.vehicleImageFallback}>
-                <Truck size={44} color={COLORS.primary} />
+                <AppIcon name={'Truck'} size={44} color={COLORS.primary} />
               </View>
             )}
             <View style={styles.tagBadge}>
@@ -65,11 +72,12 @@ const VahicleInfoCard = ({
                 {vehicle?.vehicleNumber || 'No Number'}
               </AppText>
               <AppText style={styles.vehicleSubDetails}>
-                {vehicle?.transportType || 'Trucking'} • {vehicle?.trailerType || 'Trailer'}
+                {vehicle?.transportType || 'Trucking'} •{' '}
+                {vehicle?.trailerType || 'Trailer'}
               </AppText>
             </View>
             <View style={styles.readyBadge}>
-              <CheckCircle2 size={13} color={COLORS.primary} />
+              <AppIcon name={'CheckCircle2'} size={13} color={COLORS.primary} />
               <AppText style={styles.readyBadgeText}>READY</AppText>
             </View>
           </View>
@@ -85,7 +93,9 @@ const VahicleInfoCard = ({
             <View style={styles.vehicleGridCell}>
               <AppText style={styles.vLabel}>STALLS</AppText>
               <AppText style={styles.vValue}>
-                {vehicle?.numberOfStalls !== undefined ? String(vehicle.numberOfStalls).padStart(2, '0') : '01'}
+                {vehicle?.numberOfStalls !== undefined
+                  ? String(vehicle.numberOfStalls).padStart(2, '0')
+                  : '01'}
               </AppText>
             </View>
             <View style={styles.vehicleGridCell}>
@@ -106,7 +116,7 @@ const VahicleInfoCard = ({
           {vehicle?.notes ? (
             <View style={styles.notesBox}>
               <View style={styles.notesHeaderRow}>
-                <FileText size={16} color={COLORS.primary} />
+                <AppIcon name={'FileText'} size={16} color={COLORS.primary} />
                 <AppText style={styles.notesBoxLabel}>VEHICLE NOTES</AppText>
               </View>
               <AppText style={styles.notesBoxText}>
@@ -126,48 +136,48 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.md,
+    borderColor: COLORS.grey200,
+    borderRadius: 20,
     marginBottom: SPACING.md,
-    overflow: 'hidden',
     shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   accordionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.goldLightBg,
+    backgroundColor: COLORS.white,
     borderBottomWidth: 1,
-    borderColor: COLORS.goldBorder,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    borderColor: COLORS.grey200,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   headerLeftRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   cardHeaderTitle: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.md,
-    color: COLORS.goldDarkText,
+    color: COLORS.slate900,
   },
   cardBody: {
     padding: 16,
   },
   vehicleImageContainer: {
     width: '100%',
-    // height: 250,
     aspectRatio: 16 / 9,
-    borderRadius: RADIUS.sm,
+    borderRadius: 16,
     overflow: 'hidden',
     position: 'relative',
     marginBottom: 16,
-    backgroundColor: COLORS.grey100,
+    backgroundColor: COLORS.slate100,
   },
   vehicleImage: {
     width: '100%',
@@ -176,7 +186,7 @@ const styles = StyleSheet.create({
   vehicleImageFallback: {
     width: '100%',
     height: '100%',
-    backgroundColor: COLORS.goldLightBg,
+    backgroundColor: COLORS.goldCreamBg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -184,20 +194,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 12,
     top: 12,
-    backgroundColor: COLORS.white,
-    borderRadius: RADIUS.xs,
+    backgroundColor: 'rgba(15, 23, 42, 0.85)',
+    borderRadius: 8,
     paddingVertical: 4,
     paddingHorizontal: 10,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
   },
   tagBadgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldDarkText,
+    color: COLORS.goldLightText,
+    letterSpacing: 0.5,
   },
   vehicleMetaRow: {
     flexDirection: 'row',
@@ -211,61 +217,62 @@ const styles = StyleSheet.create({
   vehicleNum: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
+    color: COLORS.slate900,
   },
   vehicleSubDetails: {
     fontFamily: FONTS.regular,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
+    color: COLORS.slate500,
     marginTop: 2,
   },
   readyBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 5,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.goldLightBg,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    borderColor: COLORS.greenBorder,
+    borderRadius: 20,
+    backgroundColor: COLORS.greenLightBg,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
   },
   readyBadgeText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.primary,
+    color: COLORS.greenSuccess,
+    letterSpacing: 0.5,
   },
   vehicleGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 16,
-    gap: 8,
+    gap: 10,
   },
   vehicleGridCell: {
     width: '48%',
     borderWidth: 1,
-    borderColor: COLORS.divider,
-    backgroundColor: COLORS.grey50,
-    borderRadius: RADIUS.xs,
+    borderColor: COLORS.grey200,
+    backgroundColor: COLORS.slate50,
+    borderRadius: 14,
     padding: 12,
   },
   vLabel: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.mini,
-    color: COLORS.textSecondary,
+    fontSize: 10,
+    color: COLORS.slate400,
     letterSpacing: 0.5,
     marginBottom: 4,
   },
   vValue: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textPrimary,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.slate900,
   },
   notesBox: {
-    backgroundColor: COLORS.goldLightBg,
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.sm,
+    borderRadius: 14,
     padding: 14,
   },
   notesHeaderRow: {

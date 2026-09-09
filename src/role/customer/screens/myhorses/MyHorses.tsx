@@ -1,21 +1,27 @@
-import React, { useCallback } from 'react';
-import { View, FlatList, RefreshControl, TouchableOpacity, Platform } from 'react-native';
-import { Wind } from 'lucide-react-native';
+import React, { lazy, Suspense, useCallback } from 'react';
 import {
-  COLORS,
-
-} from '../../../../constants';
+  View,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import { Wind } from 'lucide-react-native';
+import { COLORS } from '../../../../constants';
 
 import useMyHorses from './usemyhorses';
 import {
   AppHeader,
-  AppLoader,
   AppText,
-  ConfirmationModal,
   EmptyState,
   HorseCard,
+  MyHorsesSkeleton,
 } from '../../../../components';
 import styles from './style.myhorses';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const MyHorses = ({ navigation }: any) => {
   const {
@@ -31,20 +37,34 @@ const MyHorses = ({ navigation }: any) => {
     setRefreshing,
   } = useMyHorses();
 
-  const keyExtractor = useCallback((item: any) => item?._id || String(Math.random()), []);
+  const keyExtractor = useCallback(
+    (item: any) => item?._id || String(Math.random()),
+    [],
+  );
 
-  const renderItem = useCallback(({ item }: { item: any }) => (
-    <HorseCard
-      item={item}
-      onDelete={() => handleDelete(item?._id)}
-      onEdit={() => handleEdit(item)}
-    />
-  ), [handleDelete, handleEdit]);
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <HorseCard
+        item={item}
+        onDelete={() => handleDelete(item?._id)}
+        onEdit={() => handleEdit(item)}
+      />
+    ),
+    [handleDelete, handleEdit],
+  );
+
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader />
+        <MyHorsesSkeleton />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <AppHeader />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={horses}
@@ -92,22 +112,21 @@ const MyHorses = ({ navigation }: any) => {
           ) : null
         }
       />
-
-      <ConfirmationModal
-        isVisible={isDeleteModalVisible}
-        type="danger"
-        title="Delete Horse"
-        description="Are you sure you want to remove this horse? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        onClose={handleCancelDelete}
-        onConfirm={handleConfirmDelete}
-        isLoading={loading}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          type="danger"
+          title="Delete Horse"
+          description="Are you sure you want to remove this horse? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          isLoading={loading}
+        />
+      </Suspense>
     </View>
   );
 };
-
-
 
 export default MyHorses;

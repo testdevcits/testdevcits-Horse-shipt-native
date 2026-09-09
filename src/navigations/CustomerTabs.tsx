@@ -9,7 +9,6 @@ import {
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Plus } from 'lucide-react-native';
 
 // Import screens and components
 import HomeScreen from '../role/customer/screens/home/HomeScreen';
@@ -20,11 +19,12 @@ import ShipperList from '../role/customer/screens/chats/Shipperlist';
 import { AppText } from '../components';
 import { COLORS, FONT_SIZE, FONTS } from '../constants';
 import imageIndex from '../assets/images/imageIndex';
+import AppIcon from '../components/AppIcon';
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
 
-const CustomTabBar = ({ state, descriptors, navigation }: any) => {
+const CustomTabBar = ({ state, navigation }: any) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -134,7 +134,12 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
                   activeOpacity={0.85}
                   style={styles.centerButton}
                 >
-                  <Plus size={26} color={COLORS.white} strokeWidth={2.5} />
+                  <AppIcon
+                    name={'Plus'}
+                    size={26}
+                    color={COLORS.white}
+                    strokeWidth={2.5}
+                  />
                 </TouchableOpacity>
               );
             }
@@ -148,7 +153,9 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
               >
                 {renderIcon(isFocused ? activeColor : inactiveColor)}
                 {isFocused && (
-                  <AppText style={styles.tabLabelFocused}>{getTabLabel()}</AppText>
+                  <AppText style={styles.tabLabelFocused}>
+                    {getTabLabel()}
+                  </AppText>
                 )}
               </TouchableOpacity>
             );
@@ -245,4 +252,3 @@ const styles = StyleSheet.create({
 });
 
 export default CustomerTabs;
-

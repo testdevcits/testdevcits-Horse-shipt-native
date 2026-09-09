@@ -1,6 +1,11 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from "../../../../constants";
-
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
@@ -19,7 +24,11 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   activeTabText: { color: COLORS.primary, fontFamily: FONTS.semiBold },
-  scrollContent: { paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md, paddingBottom: 40 },
+  scrollContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    paddingBottom: 40,
+  },
   avatarSection: { alignItems: 'center', marginVertical: SPACING.md },
   imageWrapper: {
     width: 80,
@@ -107,7 +116,12 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: FONT_SIZE.xs,
   },
-  infoValue: { flex: 1, color: COLORS.textPrimary, fontFamily: FONTS.medium, fontSize: FONT_SIZE.sm },
+  infoValue: {
+    flex: 1,
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
+  },
   reviewList: { flexDirection: 'row' },
 
   showMoreBtn: {
@@ -119,7 +133,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
   },
-  showMoreText: { color: COLORS.textPrimary, fontFamily: FONTS.medium, fontSize: FONT_SIZE.sm },
+  showMoreText: {
+    color: COLORS.textPrimary,
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZE.sm,
+  },
   uploadOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -130,5 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default styles
+export default styles;

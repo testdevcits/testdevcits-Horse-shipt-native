@@ -7,14 +7,14 @@ import {
   Linking,
 } from 'react-native';
 import {
-  HelpCircle,
-  Mail,
-
-  ChevronRight,
-
-} from 'lucide-react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../../constants';
+  COLORS,
+  FONTS,
+  RADIUS,
+  SPACING,
+  FONT_SIZE,
+} from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';
+import AppIcon from '../../../../components/AppIcon';
 
 const HelpCenter = ({ navigation }: any) => {
   const handleEmailPress = () => {
@@ -32,7 +32,7 @@ const HelpCenter = ({ navigation }: any) => {
           <View style={styles.cardHeader}>
             <View style={styles.headerLeft}>
               <View style={styles.questionIconBox}>
-                <HelpCircle size={20} color={COLORS.primary} />
+                <AppIcon name={'HelpCircle'} size={20} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.cardTitle}>Customer Help</AppText>
@@ -59,7 +59,7 @@ const HelpCenter = ({ navigation }: any) => {
               onPress={handleEmailPress}
             >
               <View style={styles.mailIconBox}>
-                <Mail size={18} color={COLORS.primary} />
+                <AppIcon name={'Mail'} size={18} color={COLORS.primary} />
               </View>
               <View>
                 <AppText style={styles.emailLabel}>HELP EMAIL</AppText>
@@ -92,7 +92,7 @@ const FaqItem = ({ title, isLast }: { title: string; isLast?: boolean }) => (
     style={[styles.faqItem, isLast && { borderBottomWidth: 0 }]}
   >
     <AppText style={styles.faqText}>{title}</AppText>
-    <ChevronRight size={16} color={COLORS.grey400} />
+    <AppIcon name={'ChevronRight'} size={16} color={COLORS.grey400} />
   </TouchableOpacity>
 );
 

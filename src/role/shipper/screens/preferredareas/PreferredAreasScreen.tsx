@@ -1,33 +1,23 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
-import {
-  Plus,
-  MapPin,
-  Pencil,
-  Trash2,
-  Map as MapIcon,
-  Compass,
-} from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
   AppLoader,
   EmptyState,
-  ConfirmationModal,
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
-
+import AppIcon from '../../../../components/AppIcon';
 
 const MAX_AREAS = 4;
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
 
 const PreferredAreasScreen = () => {
   const [areas, setAreas] = useState<any[]>([]);
@@ -36,14 +26,15 @@ const PreferredAreasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isViewAllModalVisible, setIsViewAllModalVisible] = useState(false);
   const [selectedAreaToEdit, setSelectedAreaToEdit] = useState<any>(null);
-  const AddEditAreaModal = lazy(() => import("./AddEditAreaModal"))
-  const ViewAllAreasMapModal = lazy(() => import("./ViewAllAreasMapModal"))
-
-
+  const AddEditAreaModal = lazy(() => import('./AddEditAreaModal'));
+  const ViewAllAreasMapModal = lazy(() => import('./ViewAllAreasMapModal'));
 
   // Delete Confirmation Modal State
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [areaToDelete, setAreaToDelete] = useState<{ id: string; name: string } | null>(null);
+  const [areaToDelete, setAreaToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchPreferredAreas = async () => {
@@ -133,7 +124,8 @@ const PreferredAreasScreen = () => {
         <AppText style={styles.headerTitle}>Preferred Areas</AppText>
       </View>
       <AppText style={styles.headerSubText}>
-        Add up to 4 service areas, edit them clearly, and adjust the exact pin on the map when you need better precision.
+        Add up to 4 service areas, edit them clearly, and adjust the exact pin
+        on the map when you need better precision.
       </AppText>
 
       {/* STEP / SLOT INDICATORS (1 FILLED, 2 OPEN, 3 OPEN, 4 OPEN) */}
@@ -169,7 +161,9 @@ const PreferredAreasScreen = () => {
       {/* PROGRESS BAR ROW */}
       <View style={styles.progressRow}>
         <View style={styles.progressBarBg}>
-          <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
+          <View
+            style={[styles.progressBarFill, { width: `${progressPercent}%` }]}
+          />
         </View>
         <AppText style={styles.areaCountText}>
           {filledCount} / {MAX_AREAS} areas added
@@ -183,22 +177,19 @@ const PreferredAreasScreen = () => {
           onPress={handleAddNewArea}
           activeOpacity={0.8}
         >
-          <Plus size={18} color={COLORS.white} />
+          <AppIcon name={'Plus'} size={18} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add New Area</AppText>
         </TouchableOpacity>
-        {
-          areas.length > 0 && (
-
-            <TouchableOpacity
-              style={styles.seeAllBtn}
-              onPress={() => setIsViewAllModalVisible(true)}
-              activeOpacity={0.8}
-            >
-              <MapIcon size={16} color={COLORS.textPrimary} />
-              <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
-            </TouchableOpacity>
-          )
-        }
+        {areas.length > 0 && (
+          <TouchableOpacity
+            style={styles.seeAllBtn}
+            onPress={() => setIsViewAllModalVisible(true)}
+            activeOpacity={0.8}
+          >
+            <AppIcon name={'Map'} size={16} color={COLORS.textPrimary} />
+            <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -208,7 +199,9 @@ const PreferredAreasScreen = () => {
     return (
       <View style={{ alignItems: 'center', paddingVertical: 20 }}>
         <EmptyState
-          icon={MapPin}
+          icon={
+            <AppIcon name={'MapPin'} size={24} color={COLORS.textSecondary} />
+          }
           title="No Preferred Areas"
           message="Set up to 4 working areas to receive targeted shipment matches near you."
         />
@@ -216,14 +209,20 @@ const PreferredAreasScreen = () => {
           style={[styles.addAreaBtn, { marginTop: 16, alignSelf: 'center' }]}
           onPress={handleAddNewArea}
         >
-          <Plus size={16} color={COLORS.white} />
+          <AppIcon name={'Plus'} size={16} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add Preferred Area</AppText>
         </TouchableOpacity>
       </View>
     );
   };
 
-  const renderAreaItem = ({ item: area, index }: { item: any; index: number }) => {
+  const renderAreaItem = ({
+    item: area,
+    index,
+  }: {
+    item: any;
+    index: number;
+  }) => {
     let lat = 22.777927;
     let lng = 75.892304;
 
@@ -275,7 +274,7 @@ const PreferredAreasScreen = () => {
 
         {/* Saved Point Note */}
         <View style={styles.exactPointNoteRow}>
-          <Compass size={12} color={COLORS.textSecondary} />
+          <AppIcon name={'Compass'} size={12} color={COLORS.textSecondary} />
           <AppText style={styles.exactPointNoteText}>
             Exact saved point for this preferred area
           </AppText>
@@ -297,7 +296,10 @@ const PreferredAreasScreen = () => {
             pitchEnabled={false}
             rotateEnabled={false}
           >
-            <Marker coordinate={{ latitude: lat, longitude: lng }} title={area.locationName} />
+            <Marker
+              coordinate={{ latitude: lat, longitude: lng }}
+              title={area.locationName}
+            />
             <Circle
               center={{ latitude: lat, longitude: lng }}
               radius={radiusMeters}
@@ -315,7 +317,7 @@ const PreferredAreasScreen = () => {
             onPress={() => handleEditArea(area)}
             activeOpacity={0.8}
           >
-            <Pencil size={16} color={COLORS.white} />
+            <AppIcon name={'Pencil'} size={16} color={COLORS.white} />
             <AppText style={styles.editCardBtnText}>Edit Area</AppText>
           </TouchableOpacity>
 
@@ -324,7 +326,7 @@ const PreferredAreasScreen = () => {
             onPress={() => handleDeleteAreaPrompt(area._id, area.locationName)}
             activeOpacity={0.8}
           >
-            <Trash2 size={16} color="#DC2626" />
+            <AppIcon name={'Trash2'} size={16} color="#DC2626" />
             <AppText style={styles.deleteCardBtnText}>Delete</AppText>
           </TouchableOpacity>
         </View>
@@ -377,20 +379,24 @@ const PreferredAreasScreen = () => {
       </Suspense>
 
       {/* DELETE CONFIRMATION MODAL */}
-      <ConfirmationModal
-        isVisible={deleteModalVisible}
-        onClose={() => {
-          setDeleteModalVisible(false);
-          setAreaToDelete(null);
-        }}
-        onConfirm={handleConfirmDelete}
-        title="Delete Preferred Area"
-        description={`Are you sure you want to delete "${areaToDelete?.name || 'this preferred area'}"?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isDeleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={deleteModalVisible}
+          onClose={() => {
+            setDeleteModalVisible(false);
+            setAreaToDelete(null);
+          }}
+          onConfirm={handleConfirmDelete}
+          title="Delete Preferred Area"
+          description={`Are you sure you want to delete "${
+            areaToDelete?.name || 'this preferred area'
+          }"?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
+      </Suspense>
     </View>
   );
 };

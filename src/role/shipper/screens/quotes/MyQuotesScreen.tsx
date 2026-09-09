@@ -1,4 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  lazy,
+  Suspense,
+} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,7 +14,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import { FileText } from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -15,26 +23,31 @@ import {
   AppLoader,
   EmptyState,
   SearchBarCompt,
-  ConfirmationModal,
-  AppSelect,
   AppSelectRef,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
-import ContractModal from './ContractModal';
 import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
+import AppIcon from '../../../../components/AppIcon';
+import { COLORS, ICON_SIZE } from '../../../../constants';
+
+const ConfirmationModal = lazy(
+  () => import('../../../../components/common/ConfirmationModal'),
+);
+const ContractModal = lazy(() => import('./ContractModal'));
+const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 
 const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();
   const [quotes, setQuotes] = useState<any[]>([]);
 
-
-
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed'
+  >('all');
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
   const [selectedContractData, setSelectedContractData] = useState<{
     url?: string;
@@ -48,7 +61,8 @@ const MyQuotesScreen = () => {
 
   // Vehicle Assignment State
   const vehicleSelectRef = useRef<AppSelectRef>(null);
-  const [selectedQuoteForVehicle, setSelectedQuoteForVehicle] = useState<any>(null);
+  const [selectedQuoteForVehicle, setSelectedQuoteForVehicle] =
+    useState<any>(null);
 
   const fetchVehicles = async () => {
     try {
@@ -99,12 +113,13 @@ const MyQuotesScreen = () => {
   };
 
   const handleOpenShipperContractModal = (quote: any) => {
-
     const url =
       quote?.contract?.url ||
       quote?.shipperContract?.url ||
       (typeof quote?.contract === 'string' ? quote?.contract : null) ||
-      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+      (typeof quote?.shipperContract === 'string'
+        ? quote?.shipperContract
+        : null);
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
@@ -131,17 +146,22 @@ const MyQuotesScreen = () => {
       setSelectedContractData({ url, code, quote });
       setIsContractModalVisible(true);
     }
-
-
-  }
+  };
 
   const handleSelectVehicle = async (selectedLabel: string) => {
     if (!selectedQuoteForVehicle) return;
 
-    const foundVehicle = vehicles.find(v => {
-      const label = `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim();
-      return label === selectedLabel || v.vehicleNumber === selectedLabel || v._id === selectedLabel;
-    }) || vehicles[0];
+    const foundVehicle =
+      vehicles.find(v => {
+        const label = `${v.make || ''} ${v.model || ''} (${
+          v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+        })`.trim();
+        return (
+          label === selectedLabel ||
+          v.vehicleNumber === selectedLabel ||
+          v._id === selectedLabel
+        );
+      }) || vehicles[0];
 
     if (!foundVehicle) {
       Toast.show({
@@ -156,7 +176,10 @@ const MyQuotesScreen = () => {
     const vehicleId = foundVehicle._id || foundVehicle.id;
 
     try {
-      const res = await shipperService.assignVehicleToQuote({ quoteId, vehicleId });
+      const res = await shipperService.assignVehicleToQuote({
+        quoteId,
+        vehicleId,
+      });
       if (res?.success) {
         Toast.show({
           type: 'success',
@@ -192,7 +215,9 @@ const MyQuotesScreen = () => {
       quote?.contract?.url ||
       quote?.shipperContract?.url ||
       (typeof quote?.contract === 'string' ? quote?.contract : null) ||
-      (typeof quote?.shipperContract === 'string' ? quote?.shipperContract : null);
+      (typeof quote?.shipperContract === 'string'
+        ? quote?.shipperContract
+        : null);
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
@@ -232,7 +257,9 @@ const MyQuotesScreen = () => {
           text1: 'Success',
           text2: res.message || 'Quote deleted successfully',
         });
-        setQuotes(prev => prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete));
+        setQuotes(prev =>
+          prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete),
+        );
       } else {
         Toast.show({
           type: 'error',
@@ -351,7 +378,14 @@ const MyQuotesScreen = () => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={FileText}
+        icon={
+          <AppIcon
+            name={'FileText'}
+            size={ICON_SIZE.xl}
+            color={COLORS.lightGrey}
+            strokeWidth={1.5}
+          />
+        }
         title="No Quotes Found"
         message="You haven't submitted any quotes for this filter tab yet."
       />
@@ -542,40 +576,48 @@ const MyQuotesScreen = () => {
       />
 
       {/* Contract Detail Modal */}
-      <ContractModal
-        visible={isContractModalVisible}
-        onClose={() => setIsContractModalVisible(false)}
-        contractUrl={selectedContractData?.url}
-        shipmentCode={selectedContractData?.code}
-        quoteData={selectedContractData?.quote}
-      />
+      <Suspense fallback={null}>
+        <ContractModal
+          visible={isContractModalVisible}
+          onClose={() => setIsContractModalVisible(false)}
+          contractUrl={selectedContractData?.url}
+          shipmentCode={selectedContractData?.code}
+          quoteData={selectedContractData?.quote}
+        />
+      </Suspense>
 
       {/* Quote Delete Confirmation Modal */}
-      <ConfirmationModal
-        isVisible={Boolean(quoteToDelete)}
-        onClose={() => setQuoteToDelete(null)}
-        onConfirm={handleConfirmDelete}
-        title="Delete Quote"
-        description="Are you sure you want to remove this quote? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        type="danger"
-        isLoading={isDeleting}
-      />
+      <Suspense fallback={null}>
+        <ConfirmationModal
+          isVisible={Boolean(quoteToDelete)}
+          onClose={() => setQuoteToDelete(null)}
+          onConfirm={handleConfirmDelete}
+          title="Delete Quote"
+          description="Are you sure you want to remove this quote? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
+      </Suspense>
 
       {/* Vehicle Selection AppSelect Sheet */}
-      <AppSelect
-        ref={vehicleSelectRef}
-        hideSelector
-        label="Select Vehicle to Assign"
-        placeholder="Select Vehicle"
-        value=""
-        options={vehicles?.map(v =>
-          `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'})`.trim(),
-        )}
-        onSelect={handleSelectVehicle}
-        searchable
-      />
+      <Suspense fallback={null}>
+        <AppSelect
+          ref={vehicleSelectRef}
+          hideSelector
+          label="Select Vehicle to Assign"
+          placeholder="Select Vehicle"
+          value=""
+          options={vehicles?.map(v =>
+            `${v.make || ''} ${v.model || ''} (${
+              v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+            })`.trim(),
+          )}
+          onSelect={handleSelectVehicle}
+          searchable
+        />
+      </Suspense>
     </View>
   );
 };

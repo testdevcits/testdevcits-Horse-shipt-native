@@ -1,6 +1,12 @@
 import React from 'react';
 import { Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 import { AppText } from '../../../../components';
 import imageIndex from '../../../../assets/images/imageIndex';
 
@@ -52,7 +58,7 @@ const DraftSuccessModal = ({
               onPress={onDashboard}
               activeOpacity={0.8}
             >
-              <AppText style={styles.dashboardBtnText}>Go to Dashboard</AppText>
+              <AppText style={styles.dashboardBtnText}>Go to Home</AppText>
             </TouchableOpacity>
           </View>
         </View>

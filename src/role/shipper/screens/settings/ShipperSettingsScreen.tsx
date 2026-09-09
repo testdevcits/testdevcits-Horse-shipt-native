@@ -6,12 +6,13 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import { Bell, Check } from 'lucide-react-native';
+
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippersettings';
+import AppIcon from '../../../../components/AppIcon';
 
 const NOTIFICATION_ITEMS = [
   {
@@ -83,7 +84,10 @@ const ShipperSettingsScreen = () => {
     fetchSettings();
   };
 
-  const handleToggleNotification = async (key: string, channel: 'email' | 'sms') => {
+  const handleToggleNotification = async (
+    key: string,
+    channel: 'email' | 'sms',
+  ) => {
     const currentVal = notifications[key]?.[channel] ?? true;
     const updated = {
       ...notifications,
@@ -111,7 +115,9 @@ const ShipperSettingsScreen = () => {
       Toast.show({
         type: 'error',
         text1: 'Update Failed',
-        text2: error?.response?.data?.message || 'Failed to update notification settings.',
+        text2:
+          error?.response?.data?.message ||
+          'Failed to update notification settings.',
       });
     }
   };
@@ -133,7 +139,8 @@ const ShipperSettingsScreen = () => {
       >
         <AppText style={styles.sectionHeaderTitle}>Notifications</AppText>
         <AppText style={styles.sectionHeaderSub}>
-          Choose how and when you receive updates about your shipments and activity.
+          Choose how and when you receive updates about your shipments and
+          activity.
         </AppText>
 
         {loading ? (
@@ -146,11 +153,13 @@ const ShipperSettingsScreen = () => {
             <View style={styles.notificationsCard}>
               <View style={styles.subCardHeader}>
                 <View style={styles.goldSquareIconBox}>
-                  <Bell size={22} color="#A06333" />
+                  <AppIcon name={'Bell'} size={22} color="#A06333" />
                 </View>
 
                 <View style={styles.subHeaderTextCol}>
-                  <AppText style={styles.subHeaderTitle}>Shipment Notifications</AppText>
+                  <AppText style={styles.subHeaderTitle}>
+                    Shipment Notifications
+                  </AppText>
                   <AppText style={styles.subHeaderSub}>
                     Configure email & SMS alerts for carrier activity
                   </AppText>
@@ -174,11 +183,18 @@ const ShipperSettingsScreen = () => {
                 return (
                   <View
                     key={item?.key}
-                    style={[styles.notifItemRow, isLast && { borderBottomWidth: 0 }]}
+                    style={[
+                      styles.notifItemRow,
+                      isLast && { borderBottomWidth: 0 },
+                    ]}
                   >
                     <View style={styles.notifTextCol}>
-                      <AppText style={styles.notifItemTitle}>{item?.title}</AppText>
-                      <AppText style={styles.notifItemDesc}>{item?.desc}</AppText>
+                      <AppText style={styles.notifItemTitle}>
+                        {item?.title}
+                      </AppText>
+                      <AppText style={styles.notifItemDesc}>
+                        {item?.desc}
+                      </AppText>
                     </View>
 
                     <View style={styles.notifCheckboxesCol}>
@@ -188,10 +204,14 @@ const ShipperSettingsScreen = () => {
                           styles.notifCheckbox,
                           isEmailChecked && styles.notifCheckboxActive,
                         ]}
-                        onPress={() => handleToggleNotification(item?.key, 'email')}
+                        onPress={() =>
+                          handleToggleNotification(item?.key, 'email')
+                        }
                         activeOpacity={0.8}
                       >
-                        {isEmailChecked && <Check size={14} color="#A06333" />}
+                        {isEmailChecked && (
+                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                        )}
                       </TouchableOpacity>
 
                       {/* SMS Checkbox */}
@@ -200,10 +220,14 @@ const ShipperSettingsScreen = () => {
                           styles.notifCheckbox,
                           isSmsChecked && styles.notifCheckboxActive,
                         ]}
-                        onPress={() => handleToggleNotification(item?.key, 'sms')}
+                        onPress={() =>
+                          handleToggleNotification(item?.key, 'sms')
+                        }
                         activeOpacity={0.8}
                       >
-                        {isSmsChecked && <Check size={14} color="#A06333" />}
+                        {isSmsChecked && (
+                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                        )}
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -214,7 +238,8 @@ const ShipperSettingsScreen = () => {
             {/* Bottom Callout Banner */}
             <View style={styles.calloutBanner}>
               <AppText style={styles.calloutText}>
-                SMS notifications may incur carrier charges depending on your plan.
+                SMS notifications may incur carrier charges depending on your
+                plan.
               </AppText>
             </View>
           </>

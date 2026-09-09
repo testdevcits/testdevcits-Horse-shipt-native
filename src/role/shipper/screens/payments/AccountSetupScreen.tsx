@@ -4,14 +4,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  
   StatusBar,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Lock, ArrowLeft, X } from 'lucide-react-native';
 import { AppText } from '../../../../components';
-import { COLORS, FONTS, FONT_SIZE, SPACING,   } from '../../../../constants';
+import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../constants';
 import Toast from 'react-native-toast-message';
+import AppIcon from '../../../../components/AppIcon';
 
 const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
   const { url, title = 'Account Setup' } = route?.params || {};
@@ -48,7 +47,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <ArrowLeft size={22} color={COLORS.textPrimary} />
+          <AppIcon name="ArrowLeft" size={22} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
         <AppText style={styles.headerTitle}>{title}</AppText>
@@ -58,13 +57,13 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <X size={20} color={COLORS.textSecondary} />
+          <AppIcon name="X" size={20} color={COLORS.textSecondary} />
         </TouchableOpacity>
       </View>
 
       {/* SECURE SUB-HEADER BANNER */}
       <View style={styles.securityBanner}>
-        <Lock size={13} color="#A06333" />
+        <AppIcon name="Lock" size={13} color="#A06333" />
         <AppText style={styles.securityBannerText}>
           Secured Connection • Stripe Encrypted Payout Verification
         </AppText>
@@ -83,13 +82,17 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
             renderLoading={() => (
               <View style={styles.loaderOverlay}>
                 <ActivityIndicator size="large" color="#A06333" />
-                <AppText style={styles.loaderText}>Loading Stripe Verification...</AppText>
+                <AppText style={styles.loaderText}>
+                  Loading Stripe Verification...
+                </AppText>
               </View>
             )}
           />
         ) : (
           <View style={styles.emptyContainer}>
-            <AppText style={styles.emptyText}>Invalid or missing onboarding URL.</AppText>
+            <AppText style={styles.emptyText}>
+              Invalid or missing onboarding URL.
+            </AppText>
           </View>
         )}
       </View>
