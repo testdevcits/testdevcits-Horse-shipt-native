@@ -319,7 +319,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         }
       }
       if (subRes?.data) {
-        console.log('Subscription Data:4444444444444444', subRes);
+        // console.log('Subscription Data:4444444444444444', subRes);
         setSubscriptionData(subRes.data);
       }
       if (billRes) {

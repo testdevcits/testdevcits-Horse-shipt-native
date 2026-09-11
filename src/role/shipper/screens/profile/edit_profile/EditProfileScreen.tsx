@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Button, Input } from '../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  FONT_SIZE,
-  RADIUS,
-  SPACING,
-} from '../../../../../constants';
+import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../constants';
 import LocationPicker, {
   LocationSelectResult,
 } from '../../../../../components/common/LocationPicker/LocationPicker';
 import shipperService from '../../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser } from '../../../../../redux/slices/authSlice';
+import styles from './styles.Editprofilescreen';
 
 interface EditProfileScreenProps {
   navigation: any;
@@ -232,62 +221,5 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
-  },
-  scrollContent: {
-    padding: SPACING.md,
-    paddingBottom: 40,
-  },
-  fieldContainer: {
-    marginBottom: SPACING.md,
-  },
-  fieldLabel: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
-  },
-  mapContainer: {
-    height: 160,
-    borderRadius: RADIUS.md,
-    overflow: 'hidden',
-    marginTop: SPACING.sm,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  phonePrefix: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginRight: 4,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: SPACING.md,
-    marginBottom: SPACING.md,
-  },
-  col: {
-    flex: 1,
-  },
-  charCounter: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-  footer: {
-    padding: SPACING.md,
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
-  },
-});
 
 export default EditProfileScreen;

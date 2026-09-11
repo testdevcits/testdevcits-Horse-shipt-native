@@ -32,6 +32,7 @@ import { useShippers } from '../topratedshippers/shipperlist/useShippers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
+import styles from './styles.home';
 
 const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const dispatch = useAppDispatch();
@@ -200,41 +201,5 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  headerContainer: {
-    backgroundColor: COLORS.white,
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.lg,
-    paddingBottom: SPACING.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-    marginBottom: SPACING.md,
-  },
-
-  list: {
-    paddingBottom: SPACING.sm, // Extra space for FAB
-  },
-  // Welcome Header
-  welcomeHeader: {
-    marginBottom: SPACING.md,
-    paddingHorizontal: SPACING.lg,
-  },
-  welcomeTitle: {
-    fontSize: FONT_SIZE.xl,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  welcomeSub: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.regular,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-});
 
 export default HomeScreen;

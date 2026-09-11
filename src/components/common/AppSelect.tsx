@@ -22,7 +22,7 @@ import {
 
 import {
   BottomSheetModal,
-  BottomSheetView,
+  
   BottomSheetBackdrop,
   BottomSheetFlatList,
   BottomSheetTextInput,

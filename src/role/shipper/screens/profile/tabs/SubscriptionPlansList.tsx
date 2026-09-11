@@ -46,11 +46,11 @@ const SubscriptionPlansList: React.FC<Props> = ({
       </View>
 
       {plans.map(plan => {
-        const isCurrentPlan = plan.priceId === currentPriceId;
+        const isCurrentPlan = plan?.priceId === currentPriceId;
 
         return (
           <TouchableOpacity
-            key={plan.priceId}
+            key={plan?.priceId}
             style={[styles.planCard, isCurrentPlan && styles.activePlanCard]}
             onPress={() => !isCurrentPlan && onSelectPlan(plan)}
             disabled={isCurrentPlan || isLoading}
@@ -58,7 +58,7 @@ const SubscriptionPlansList: React.FC<Props> = ({
           >
             <View style={styles.planInfo}>
               <View style={styles.labelRow}>
-                <AppText style={styles.planLabel}>{plan.label}</AppText>
+                <AppText style={styles.planLabel}>{plan?.label}</AppText>
                 {isCurrentPlan && (
                   <View style={styles.currentBadge}>
                     <AppIcon
@@ -72,9 +72,9 @@ const SubscriptionPlansList: React.FC<Props> = ({
               </View>
 
               <AppText style={styles.planPrice}>
-                ${plan.amount.toFixed(2)}{' '}
+                ${plan?.amount.toFixed(2)}{' '}
                 <AppText style={styles.planInterval}>
-                  {plan.currency.toUpperCase()} / {plan.interval}
+                  {plan?.currency.toUpperCase()} / {plan?.interval}
                 </AppText>
               </AppText>
             </View>

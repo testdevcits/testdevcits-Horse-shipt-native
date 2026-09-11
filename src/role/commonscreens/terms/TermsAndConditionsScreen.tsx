@@ -5,27 +5,10 @@ import { AppHeader, AppText } from '../../../components';
 import { COLORS } from '../../../constants';
 import customerService from '../../../api/services/customerService';
 import styles from './styles.termsandconditions';
+import useTermsandCondition from './useTermsandCondition';
 
 const TermsAndConditionsScreen = () => {
-  const [loading, setLoading] = useState(true);
-  const [termsData, setTermsData] = useState<any>(null);
-
-  const fetchTermsAndConditions = async () => {
-    try {
-      const res = await customerService.getTermsAndConditions();
-      if (res?.success && res.data && res.data?.length > 0) {
-        setTermsData(res?.data[0]);
-      }
-    } catch (error) {
-      console.error('Fetch Terms & Conditions Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTermsAndConditions();
-  }, []);
+  const { loading, termsData } = useTermsandCondition();
 
   const htmlContent =
     termsData?.content ||

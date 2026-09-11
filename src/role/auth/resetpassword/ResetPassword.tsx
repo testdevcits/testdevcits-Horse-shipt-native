@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -6,7 +6,6 @@ import {
   Image,
   ImageBackground,
   StatusBar,
-  Keyboard,
   TouchableOpacity,
   Platform,
 } from 'react-native';
@@ -14,9 +13,7 @@ import {
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
-import authService from '../../../api/services/authService';
 import styles from './reset.styles';
-import Toast from 'react-native-toast-message';
 import AppIcon from '../../../components/AppIcon';
 import useResetPassword from './useResetPassword';
 

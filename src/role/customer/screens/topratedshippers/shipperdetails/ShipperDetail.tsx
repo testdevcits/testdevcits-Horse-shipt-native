@@ -37,7 +37,7 @@ const ShipperDetail = () => {
   const { shipper, loading, refreshing, error, refresh } =
     useShipperDetails(shipperId);
 
-  console.log('=================120', shipper);
+  // console.log('=================120', shipper);
 
   const targetId = shipperId || shipper?._id || shipper?.id;
   const isFavorite = targetId

@@ -225,7 +225,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.getStripeStatus();
       if (res && res.success) {
-        console.log('======checkStripeStatus==========', res);
+        // console.log('======checkStripeStatus==========', res);
         const needsModal =
           res.needsVerification === true ||
           res.onboardingCompleted === false ||

@@ -1,19 +1,7 @@
 import React, { useCallback } from 'react';
-import {
-  View,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-  Platform,
-} from 'react-native';
+import { View, FlatList, RefreshControl, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
- import {
-  COLORS,
-  SPACING,
-  FONTS,
-  FONT_SIZE,
-  ICON_SIZE,
-} from '../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 import {
   AppText,
   EmptyState,
@@ -23,6 +11,7 @@ import {
 } from '../../../../components';
 import { usePayments } from './usePayments';
 import AppIcon from '../../../../components/AppIcon';
+import styles from './styles.payments';
 
 const Payments = () => {
   const { payments, loading, refreshing, error, fetchPayments } = usePayments();
@@ -101,27 +90,5 @@ const Payments = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  title: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  subtitle: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  list: { padding: SPACING.md, paddingBottom: 100 },
-});
 
 export default Payments;

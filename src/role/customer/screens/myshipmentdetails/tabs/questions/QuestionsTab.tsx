@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
+   
   View,
   TouchableOpacity,
   ActivityIndicator,
@@ -8,10 +8,7 @@ import {
 import { AppText, Input } from '../../../../../../components';
 import {
   COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
+   
   ICON_SIZE,
 } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';

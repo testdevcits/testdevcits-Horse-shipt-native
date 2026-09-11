@@ -24,15 +24,14 @@ import {
   FONT_SIZE,
   ICON_SIZE,
   RADIUS,
-  SIZES,
+  
 } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
-import AppIcon from '../components/AppIcon';
-
+ 
 interface DrawerItemProps {
   label: string;
   IconComponent?: React.ElementType;

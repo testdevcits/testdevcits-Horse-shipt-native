@@ -5,7 +5,7 @@ import { AppText } from '../../../../components';
 import {
   COLORS,
   FONTS,
-  RADIUS,
+  
   SPACING,
   FONT_SIZE,
 } from '../../../../constants';

@@ -88,20 +88,20 @@ axiosClient.interceptors.request.use(
 );
 
 // 2. Response Interceptor
-axiosClient.interceptors.response.use(
+axiosClient.interceptors.response?.use(
   (response: AxiosResponse) => {
     // --- LOGGING SUCCESS ---
     if (__DEV__) {
       console.log(' ');
       console.log(
-        `✅ ╔═══════════ AXIOS RESPONSE [${response.status}] ═══════════╗`,
+        `✅ ╔═══════════ AXIOS RESPONSE [${response?.status}] ═══════════╗`,
       );
-      console.log(`   ║ 🔗 URL:  ${response.config.url}`);
-      console.log('   ║ 📄 DATA:', JSON.stringify(response.data, null, 2));
+      console.log(`   ║ 🔗 URL:  ${response?.config.url}`);
+      console.log('   ║ 📄 DATA:', JSON.stringify(response?.data, null, 2));
       console.log('   ╚════════════════════════════════════════════╝');
     }
 
-    return response.data;
+    return response?.data;
   },
   async (error: AxiosError) => {
     const status = error.response?.status;

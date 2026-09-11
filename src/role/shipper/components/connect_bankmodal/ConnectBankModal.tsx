@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Modal,
-  StyleSheet,
+ 
   View,
   TouchableOpacity,
   ScrollView,
@@ -17,7 +17,7 @@ import {
   Lock,
   Link as LinkIcon,
 } from 'lucide-react-native';
-import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../../constants';
+import { COLORS,  } from '../../../../constants';
 import { AppText } from '../../../../components';
 
 import Toast from 'react-native-toast-message';

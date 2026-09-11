@@ -16,6 +16,7 @@ import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import { useNavigation } from '@react-navigation/native';
 import styles from './HorseDetailsStepstyles';
 import AppIcon from '../../../../../../components/AppIcon';
+import Toast from 'react-native-toast-message';
 
 interface HorseDetailsStepProps {
   form: NewShipmentForm;
@@ -44,7 +45,12 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
     if (isEdit) return;
     const num = Math.max(1, parseInt(val) || 1);
     if (num > 10) {
-      Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
+      // Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
+      Toast.show({
+        type: 'info',
+        text1: 'Limit Exceeded',
+        text2: 'Maximum 10 horses per shipment.',
+      });
       return;
     }
     updateForm({ numberOfHorses: num });

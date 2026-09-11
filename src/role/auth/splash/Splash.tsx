@@ -31,7 +31,7 @@ const Splash = ({ navigation }: any) => {
       // 2. Check if a role was ever selected
       const savedRole = await AsyncStorage.getItem('@user_role');
 
-      console.log('===savedRole=', savedRole);
+      // console.log('===savedRole=', savedRole);
 
       const endTime = Date.now();
       const duration = endTime - startTime;

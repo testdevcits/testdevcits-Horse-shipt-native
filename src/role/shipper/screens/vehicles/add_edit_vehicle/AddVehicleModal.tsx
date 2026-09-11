@@ -46,7 +46,7 @@ const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
   route,
-  visible,
+  
   onClose,
   onSuccess,
   vehicleToEdit: propVehicleToEdit,

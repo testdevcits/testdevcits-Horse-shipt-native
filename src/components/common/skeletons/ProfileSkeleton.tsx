@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import Skeleton from './Skeleton';
 import SkeletonText from './SkeletonText';
 import SkeletonCircle from './SkeletonCircle';
-import { COLORS, RADIUS, SPACING } from '../../../constants';
+import {   RADIUS, SPACING } from '../../../constants';
 
 const ProfileSkeleton = () => {
   return (

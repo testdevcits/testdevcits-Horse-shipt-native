@@ -8,14 +8,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {
-  ChevronLeft,
-  Send,
-  Upload,
-  X,
-  Lock,
-  Image as ImageIcon,
-} from 'lucide-react-native';
+
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
@@ -27,6 +20,7 @@ import ImagePicker, {
 } from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
+import AppIcon from '../../../../components/AppIcon';
 
 const PhotoSourceSheet = lazy(
   () => import('../../../../components/common/PhotoSourceSheet'),
@@ -38,7 +32,7 @@ const ChatMessageImage = ({ uri }: { uri?: string }) => {
   if (!uri || hasError) {
     return (
       <View style={styles.mediaImageFallback}>
-        <ImageIcon size={22} color={COLORS.grey400} />
+        <AppIcon name={'Image'} size={22} color={COLORS.grey400} />
         <AppText style={styles.mediaImageErrorText}>
           {!uri ? 'No image' : 'Image unavailable'}
         </AppText>
@@ -219,7 +213,11 @@ const ChatDetails = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ChevronLeft color={COLORS.textPrimary} size={ICON_SIZE.md} />
+          <AppIcon
+            name={'ChevronLeft'}
+            color={COLORS.textPrimary}
+            size={ICON_SIZE.md}
+          />
         </TouchableOpacity>
         <Image source={avatar} style={styles.headerAvatar} />
         <TouchableOpacity
@@ -265,7 +263,12 @@ const ChatDetails = () => {
               style={styles.cancelDraftBtn}
               onPress={() => setSelectedImage(null)}
             >
-              <X size={ICON_SIZE.xs} color={COLORS.white} strokeWidth={2.5} />
+              <AppIcon
+                name={'X'}
+                size={ICON_SIZE.xs}
+                color={COLORS.white}
+                strokeWidth={2.5}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -274,7 +277,12 @@ const ChatDetails = () => {
       {/* Bottom Area: Input Bar or Locked Notice */}
       {isLocked ? (
         <View style={styles.lockedContainer}>
-          <Lock size={18} color={COLORS.grey500} style={{ marginRight: 8 }} />
+          <AppIcon
+            name={'Lock'}
+            size={18}
+            color={COLORS.grey500}
+            style={{ marginRight: 8 }}
+          />
           <AppText style={styles.lockedText}>
             Chat is locked because this shipment is completed.
           </AppText>
@@ -296,7 +304,11 @@ const ChatDetails = () => {
             style={styles.squareActionBtn}
             activeOpacity={0.7}
           >
-            <Upload size={ICON_SIZE.sm} color={COLORS.textSecondary} />
+            <AppIcon
+              name={'Upload'}
+              size={ICON_SIZE.sm}
+              color={COLORS.textSecondary}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -312,7 +324,7 @@ const ChatDetails = () => {
             {sending ? (
               <ActivityIndicator color={COLORS.white} size="small" />
             ) : (
-              <Send size={ICON_SIZE.sm} color={COLORS.white} />
+              <AppIcon name={'Send'} size={ICON_SIZE.sm} color={COLORS.white} />
             )}
           </TouchableOpacity>
         </View>

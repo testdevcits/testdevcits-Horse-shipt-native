@@ -3,10 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { AppText } from '../../../../../../components';
 import {
   COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
+ 
   ICON_SIZE,
 } from '../../../../../../constants';
 import imageIndex from '../../../../../../assets/images/imageIndex';

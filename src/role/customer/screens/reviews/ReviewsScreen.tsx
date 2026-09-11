@@ -1,17 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, FlatList, RefreshControl, StyleSheet } from 'react-native';
-import {
-  COLORS,
-  SPACING,
-  FONTS,
-  RADIUS,
-  FONT_SIZE,
-  ICON_SIZE,
-} from '../../../../constants';
+import { View, FlatList, RefreshControl } from 'react-native';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 import { useReviews } from './useReviews';
 import {
   AppHeader,
-  AppLoader,
   AppText,
   EmptyState,
   ReviewCard,
@@ -94,7 +86,5 @@ const ReviewsScreen = () => {
     </View>
   );
 };
-
- 
 
 export default ReviewsScreen;

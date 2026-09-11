@@ -20,6 +20,7 @@ import AppText from '../../../../components/common/AppText';
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.deliveryverification';
 import AppIcon from '../../../../components/AppIcon';
+import useDeliveryVerification from './useDeliveryVerification';
 
 const DeliveryVerificationScreen = () => {
   const ConfirmationModal = lazy(
@@ -31,91 +32,104 @@ const DeliveryVerificationScreen = () => {
   // Extract shipment details from navigation parameters (fallback to mock structure if params are empty)
   const shipment = route.params?.shipment || {};
 
-  // State Management
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [otpSentSuccess, setOtpSentSuccess] = useState(false);
+  const {
+    step,
+    isLoading,
+    otpSentSuccess,
+    setOtp,
+    modalConfig,
+    handleVerifyOtp,
+    handleSendOtp,
+    handleDone,
+    otp,
+    setModalConfig,
+  } = useDeliveryVerification({ shipment, navigation });
 
-  // 6-Digit OTP Box state
-  const [otp, setOtp] = useState<string>('');
+  // // State Management
+  // const [step, setStep] = useState<1 | 2 | 3>(1);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [otpSentSuccess, setOtpSentSuccess] = useState(false);
 
-  // Confirmation modal states
-  const [modalConfig, setModalConfig] = useState({
-    isVisible: false,
-    title: '',
-    description: '',
-    type: 'success' as 'success' | 'danger' | 'info' | 'warning',
-  });
+  // // 6-Digit OTP Box state
+  // const [otp, setOtp] = useState<string>('');
 
-  // 1. Trigger API to Send OTP
-  const handleSendOtp = async () => {
-    setIsLoading(true);
-    try {
-      const response = await driverService.sendDeliveryOtp(
-        shipment?.shipment?._id,
-      );
-      if (response.success) {
-        setOtpSentSuccess(true);
-        setStep(2); // Progress to Verify Step
-      }
-    } catch (error: any) {
-      setModalConfig({
-        isVisible: true,
-        title: 'OTP Failed',
-        description:
-          error?.message ||
-          'Could not securely dispatch verification PIN code.',
-        type: 'danger',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // // Confirmation modal states
+  // const [modalConfig, setModalConfig] = useState({
+  //   isVisible: false,
+  //   title: '',
+  //   description: '',
+  //   type: 'success' as 'success' | 'danger' | 'info' | 'warning',
+  // });
 
-  // 2. Trigger API to Verify OTP
-  const handleVerifyOtp = async () => {
-    const otpCodeString = typeof otp === 'string' ? otp : (otp as any).join('');
-    if (otpCodeString.length < 6) {
-      setModalConfig({
-        isVisible: true,
-        title: 'Incomplete PIN',
-        description: 'Please enter all 6 verification digits.',
-        type: 'warning',
-      });
-      return;
-    }
+  // // 1. Trigger API to Send OTP
+  // const handleSendOtp = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await driverService.sendDeliveryOtp(
+  //       shipment?.shipment?._id,
+  //     );
+  //     if (response.success) {
+  //       setOtpSentSuccess(true);
+  //       setStep(2); // Progress to Verify Step
+  //     }
+  //   } catch (error: any) {
+  //     setModalConfig({
+  //       isVisible: true,
+  //       title: 'OTP Failed',
+  //       description:
+  //         error?.message ||
+  //         'Could not securely dispatch verification PIN code.',
+  //       type: 'danger',
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-    setIsLoading(true);
-    try {
-      const response = await driverService.verifyDeliveryOtp(
-        shipment?.shipment?._id,
-        otpCodeString,
-      );
-      if (response.success) {
-        setStep(3); // Progress to Complete screen
-      }
-    } catch (error: any) {
-      setModalConfig({
-        isVisible: true,
-        title: 'Verification Failed',
-        description:
-          error?.message || 'The verification code entered was incorrect.',
-        type: 'danger',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // // 2. Trigger API to Verify OTP
+  // const handleVerifyOtp = async () => {
+  //   const otpCodeString = typeof otp === 'string' ? otp : (otp as any).join('');
+  //   if (otpCodeString.length < 6) {
+  //     setModalConfig({
+  //       isVisible: true,
+  //       title: 'Incomplete PIN',
+  //       description: 'Please enter all 6 verification digits.',
+  //       type: 'warning',
+  //     });
+  //     return;
+  //   }
 
-  // Return back to tabs/dashboard
-  const handleDone = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'DriverTabs' }],
-      }),
-    );
-  };
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await driverService.verifyDeliveryOtp(
+  //       shipment?.shipment?._id,
+  //       otpCodeString,
+  //     );
+  //     if (response.success) {
+  //       setStep(3); // Progress to Complete screen
+  //     }
+  //   } catch (error: any) {
+  //     setModalConfig({
+  //       isVisible: true,
+  //       title: 'Verification Failed',
+  //       description:
+  //         error?.message || 'The verification code entered was incorrect.',
+  //       type: 'danger',
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // // Return back to tabs/dashboard
+  // const handleDone = () => {
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index: 0,
+  //       routes: [{ name: 'DriverTabs' }],
+  //     }),
+  //   );
+  // };
 
   // Stepper view subcomponent
   const ProgressStepper = () => (
@@ -235,13 +249,13 @@ const DeliveryVerificationScreen = () => {
 
             <View style={styles.shipmentTitleRow}>
               <AppText style={styles.shipmentTitle}>
-                {shipment.shipment.horses?.[0]?.registeredName ||
+                {shipment?.shipment?.horses?.[0]?.registeredName ||
                   'Not Available'}
               </AppText>
               <View style={styles.passengerCountBadge}>
                 <AppText style={styles.badgeText}>
-                  {shipment.shipment.numberOfHorses}{' '}
-                  {shipment.shipment.numberOfHorses > 1 ? 'Horses' : 'Horse'}
+                  {shipment?.shipment?.numberOfHorses}{' '}
+                  {shipment?.shipment?.numberOfHorses > 1 ? 'Horses' : 'Horse'}
                 </AppText>
               </View>
             </View>
@@ -250,7 +264,7 @@ const DeliveryVerificationScreen = () => {
             <View style={styles.stopBox}>
               <AppText style={styles.stopHeaderLabel}>PICKUP</AppText>
               <AppText style={styles.stopName}>
-                {shipment.shipment.pickupLocation}
+                {shipment?.shipment?.pickupLocation}
               </AppText>
             </View>
 
@@ -258,7 +272,7 @@ const DeliveryVerificationScreen = () => {
             <View style={styles.stopBox}>
               <AppText style={styles.stopHeaderLabel}>DELIVERY</AppText>
               <AppText style={styles.stopName}>
-                {shipment.shipment.deliveryLocation}
+                {shipment?.shipment?.deliveryLocation}
               </AppText>
             </View>
 
@@ -293,7 +307,7 @@ const DeliveryVerificationScreen = () => {
               <View>
                 <AppText style={styles.metaLabel}>VEHICLE</AppText>
                 <AppText style={styles.metaValue}>
-                  {shipment.vehicle?.vehicleNumber || 'Not Available'}
+                  {shipment?.vehicle?.vehicleNumber || 'Not Available'}
                 </AppText>
               </View>
             </View>
@@ -358,7 +372,7 @@ const DeliveryVerificationScreen = () => {
                 />
               </View>
               <AppText style={styles.otpLabelDigits}>
-                {otp.length}/6 digits
+                {otp?.length}/6 digits
               </AppText>
 
               {/* Resend Action Trigger */}

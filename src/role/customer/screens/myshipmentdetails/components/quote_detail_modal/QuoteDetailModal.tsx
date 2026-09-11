@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Modal,
-   
   View,
   TouchableOpacity,
   ScrollView,
@@ -26,7 +25,7 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
 import AppIcon, { IconName } from '../../../../../../components/AppIcon';
 import styles from './styles.QuoteDetailModal';
- 
+
 const QuoteDetailModal = ({
   visible,
   quote,
@@ -165,7 +164,11 @@ const QuoteDetailModal = ({
         reason: cancelReason.trim(),
       });
       if (res?.success) {
-        Alert.alert('Success', 'Shipment has been cancelled.');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Shipment has been cancelled.',
+        });
         setIsCancelModalVisible(false);
         onClose();
         if (onRefresh) onRefresh();
@@ -295,22 +298,22 @@ const QuoteDetailModal = ({
               </AppText>
               <View style={styles.summaryGrid}>
                 <SummaryBox
-                  icon={"User"}
+                  icon={'User'}
                   label="SHIPPER"
                   value={quote?.shipper?.name}
                 />
                 <SummaryBox
-                  icon={"CreditCard"}
+                  icon={'CreditCard'}
                   label="METHOD"
                   value={quote?.paymentMethod}
                 />
                 <SummaryBox
-                  icon={"Calendar"}
+                  icon={'Calendar'}
                   label="DUE"
                   value={quote?.paymentDue}
                 />
                 <SummaryBox
-                  icon={"DollarSign"}
+                  icon={'DollarSign'}
                   label="STATUS"
                   value={quote?.paymentStatus}
                 />
@@ -685,7 +688,5 @@ const QuoteDetailModal = ({
     </Modal>
   );
 };
-
- 
 
 export default QuoteDetailModal;

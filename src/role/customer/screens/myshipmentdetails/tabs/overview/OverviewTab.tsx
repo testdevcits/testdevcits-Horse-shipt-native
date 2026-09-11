@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
-  StyleSheet,
+  
   Linking,
   Alert,
   ActivityIndicator,
@@ -13,7 +13,7 @@ import { AppText, MapModal } from '../../../../../../components';
 import {
   COLORS,
   FONTS,
-  RADIUS,
+   
   SPACING,
   FONT_SIZE,
 } from '../../../../../../constants';

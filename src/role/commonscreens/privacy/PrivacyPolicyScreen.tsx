@@ -5,27 +5,10 @@ import { AppHeader, AppText } from '../../../components';
 import { COLORS } from '../../../constants';
 import shipperService from '../../../api/services/shipperService';
 import styles from './styles.privacypolicy';
+import usePrivacyPolicy from './usePrivacyPolicy';
 
 const PrivacyPolicyScreen = () => {
-  const [loading, setLoading] = useState(true);
-  const [policyData, setPolicyData] = useState<any>(null);
-
-  const fetchPrivacyPolicy = async () => {
-    try {
-      const res = await shipperService.getPrivacyPolicy();
-      if (res?.success && res.data && res.data?.length > 0) {
-        setPolicyData(res?.data[0]);
-      }
-    } catch (error) {
-      console.error('Fetch Privacy Policy Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPrivacyPolicy();
-  }, []);
+  const { loading, policyData } = usePrivacyPolicy();
 
   const htmlContent =
     policyData?.content ||
