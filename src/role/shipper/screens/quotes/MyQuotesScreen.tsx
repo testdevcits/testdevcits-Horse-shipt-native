@@ -24,6 +24,7 @@ import {
   EmptyState,
   SearchBarCompt,
   AppSelectRef,
+  ShipmentsSkeleton,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import ShipperQuoteCard from './ShipperQuoteCard';
@@ -392,10 +393,18 @@ const MyQuotesScreen = () => {
     );
   }, [loading]);
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="My Quotes" />
+        <ShipmentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="My Quotes" />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={filteredQuotes}

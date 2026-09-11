@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import Toast from 'react-native-toast-message';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader, AppText, SettingsSkeleton } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippersettings';
@@ -143,10 +143,8 @@ const ShipperSettingsScreen = () => {
           activity.
         </AppText>
 
-        {loading ? (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
+        {loading && !refreshing ? (
+          <SettingsSkeleton />
         ) : (
           <>
             {/* Shipment Notifications Card */}

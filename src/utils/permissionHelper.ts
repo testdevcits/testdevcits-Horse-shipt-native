@@ -22,7 +22,7 @@ export const requestLocationPermission = async (
         onShowSettingsPrompt(
           'Location Services Required',
           'GPS access is restricted. Please open system settings and enable Location permissions manually to sync active route coordinates.',
-        );
+        );  
       }
       return false;
     } catch (error) {

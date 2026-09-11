@@ -15,6 +15,7 @@ import {
   AppText,
   AppLoader,
   EmptyState,
+  PaymentsSkeleton,
 } from '../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -519,10 +520,18 @@ const EarningsScreen = () => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Earnings & Payouts" showProfileImage={false} />
+        <PaymentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="Earnings & Payouts" showProfileImage={false} />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={transactions}

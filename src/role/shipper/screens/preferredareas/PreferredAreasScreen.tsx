@@ -8,6 +8,7 @@ import {
   AppText,
   AppLoader,
   EmptyState,
+  ShipmentsSkeleton,
 } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -334,10 +335,18 @@ const PreferredAreasScreen = () => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Preferred Areas" showBack showProfileImage={false} />
+        <ShipmentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="Preferred Areas" showBack showProfileImage={false} />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={areas}

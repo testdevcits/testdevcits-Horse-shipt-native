@@ -15,6 +15,7 @@ import {
   TruckDriverCard,
   SearchBarCompt,
   AppSelect,
+  ShippersListSkeleton,
 } from '../../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
@@ -252,10 +253,18 @@ const TruckDriverScreen = () => {
     [handleToggleStatus, handleEditDriver, handleDeleteDriverPrompt],
   );
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Truck Driver Management" showProfileImage={false} />
+        <ShippersListSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="Truck Driver Management" showProfileImage={false} />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={drivers}

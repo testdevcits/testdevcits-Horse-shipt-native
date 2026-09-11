@@ -5,6 +5,7 @@ import {
   AppText,
   AppLoader,
   EmptyState,
+  ReviewsSkeleton,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -165,10 +166,18 @@ const ShipperReviewsScreen = ({ route }: any) => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader showBack title="Shipper Reviews" />
+        <ReviewsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader showBack title="Shipper Reviews" />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={reviews}

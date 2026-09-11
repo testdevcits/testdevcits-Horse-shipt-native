@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../redux/slices/authSlice';
-import { AppHeader, AppText } from '../../../../components';
+import { AppHeader, AppText, ProfileSkeleton } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -381,6 +381,15 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     profileData?.shipmentsCount ??
     profileData?.shipmentCount ??
     (Array.isArray(profileData?.shipments) ? profileData.shipments.length : 0);
+
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Profile" showProfileImage={false} />
+        <ProfileSkeleton />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

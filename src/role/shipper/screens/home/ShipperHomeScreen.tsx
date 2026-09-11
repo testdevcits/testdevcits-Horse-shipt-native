@@ -16,6 +16,7 @@ import {
   EmptyState,
   Input,
   SectionHeader,
+  ShipperHomeSkeleton,
 } from '../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import MapViewDirections from 'react-native-maps-directions';
@@ -563,10 +564,18 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     );
   };
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="" />
+        <ShipperHomeSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="" />
-      <AppLoader visible={loading && !refreshing} />
 
       {viewMode === 'list' ? (
         <FlatList

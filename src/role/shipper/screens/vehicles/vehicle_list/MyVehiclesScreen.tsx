@@ -22,6 +22,7 @@ import {
   AppLoader,
   EmptyState,
   AppSelectRef,
+  ShipmentsSkeleton,
 } from '../../../../../components';
 import { COLORS, FONTS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
@@ -486,10 +487,18 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     [handleOpenAssignDriver, handleEdit, handleDeleteVehicle],
   );
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="My Vehicles" showProfileImage={false} />
+        <ShipmentsSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="My Vehicles" showProfileImage={false} />
-      <AppLoader visible={loading && !refreshing} />
 
       <FlatList
         data={vehicles}

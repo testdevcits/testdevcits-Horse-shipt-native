@@ -30,6 +30,7 @@ import LazyFallback from './common/LazyFallback';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './common/skeletons/HomeSkeleton';
+import ShipperHomeSkeleton from './common/skeletons/ShipperHomeSkeleton';
 import ShipmentsSkeleton from './common/skeletons/ShipmentsSkeleton';
 import MyHorsesSkeleton, {
   MyHorsesSkelatons,
@@ -83,6 +84,7 @@ export {
   // Skeletons
   HomeSkeleton,
   HomeSkelaton,
+  ShipperHomeSkeleton,
   ShipmentsSkeleton,
   MyHorsesSkeleton,
   MyHorsesSkelatons,

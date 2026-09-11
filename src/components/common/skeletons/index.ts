@@ -13,6 +13,7 @@ import ReviewsSkeleton from './ReviewsSkeleton';
 import ChatListSkeleton from './ChatListSkeleton';
 import ProfileSkeleton from './ProfileSkeleton';
 import SettingsSkeleton from './SettingsSkeleton';
+import ShipperHomeSkeleton from './ShipperHomeSkeleton';
 
 export {
   Skeleton,
@@ -21,6 +22,7 @@ export {
   SkeletonText,
   HomeSkeleton,
   HomeSkelaton,
+  ShipperHomeSkeleton,
   ShipmentsSkeleton,
   MyHorsesSkeleton,
   MyHorsesSkelatons,
