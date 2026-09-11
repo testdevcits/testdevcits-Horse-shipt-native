@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import {
   COLORS,
-  FONT_SIZE,
+   
   FONTS,
-  RADIUS,
+  
   SPACING,
-  SIZES,
+  
 } from '../../../../../../constants';
 import { AppText, Button, Input } from '../../../../../../components';
 import customerService from '../../../../../../api/services/customerService';

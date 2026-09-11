@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { AppHeader, AppText } from '../../../components';
 import { COLORS } from '../../../constants';
-import customerService from '../../../api/services/customerService';
 import styles from './styles.termsandconditions';
 import useTermsandCondition from './useTermsandCondition';
 

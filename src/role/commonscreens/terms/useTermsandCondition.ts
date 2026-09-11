@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import customerService from '../../../api/services/customerService';
 

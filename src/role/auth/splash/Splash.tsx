@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Animated, Easing, ActivityIndicator, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BootSplash from 'react-native-bootsplash';
 
 import { COLORS } from '../../../constants';
 import styles from './styles.splash';
@@ -22,26 +23,18 @@ const Splash = ({ navigation }: any) => {
   useEffect(() => {
     startAnimations();
 
-    const initApp = async () => {
-      const startTime = Date.now();
+    // Immediately hide native BootSplash window so UI displays without 50s freeze
+    BootSplash.hide({ fade: true }).catch(() => {});
 
+    const initApp = async () => {
       // 1. Try to restore user session (token/user data)
       await dispatch(rehydrateAuth());
 
       // 2. Check if a role was ever selected
       const savedRole = await AsyncStorage.getItem('@user_role');
 
-      // console.log('===savedRole=', savedRole);
-
-      const endTime = Date.now();
-      const duration = endTime - startTime;
-      const minimumDisplayTime = 2500;
-
-      const waitTime = Math.max(0, minimumDisplayTime - duration);
-
-      setTimeout(() => {
-        handleNavigation(savedRole);
-      }, waitTime);
+      // Instantly navigate without artificial delay
+      handleNavigation(savedRole);
     };
 
     initApp();

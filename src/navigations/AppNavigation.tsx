@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { rehydrateAuth } from '../redux/slices/authSlice';
 import BootSplash from 'react-native-bootsplash';
 
 // Screens & Navigators
@@ -38,7 +39,14 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
+  const dispatch = useAppDispatch();
   const { user, token, isLoading } = useAppSelector(state => state.auth);
+
+  React.useEffect(() => {
+    dispatch(rehydrateAuth()).finally(() => {
+      BootSplash.hide({ fade: true }).catch(() => {});
+    });
+  }, [dispatch]);
 
   // Initial session rehydration loading
   if (isLoading) {
@@ -48,7 +56,7 @@ const AppNavigation = () => {
   return (
     <NavigationContainer
       onReady={() => {
-        BootSplash.hide({ fade: true });
+        BootSplash.hide({ fade: true }).catch(() => {});
       }}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>

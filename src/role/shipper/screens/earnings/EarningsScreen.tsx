@@ -13,7 +13,7 @@ import { useStripe } from '@stripe/stripe-react-native';
 import {
   AppHeader,
   AppText,
-  AppLoader,
+ 
   EmptyState,
   PaymentsSkeleton,
 } from '../../../../components';

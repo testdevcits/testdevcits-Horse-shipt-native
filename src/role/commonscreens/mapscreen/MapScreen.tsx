@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Geolocation from 'react-native-geolocation-service';
 
 // Constants
-import { SPACING, RADIUS, COLORS, FONTS, FONT_SIZE } from '../../../constants';
+import {  RADIUS, COLORS, FONTS, FONT_SIZE } from '../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
 import { AppText } from '../../../components';
 import styles from './styles.mapscreen';

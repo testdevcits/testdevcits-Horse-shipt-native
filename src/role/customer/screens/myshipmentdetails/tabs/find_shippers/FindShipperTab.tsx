@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  StyleSheet,
+  
   TouchableOpacity,
   View,
   Image,
@@ -10,10 +10,7 @@ import {
 import { AppText } from '../../../../../../components';
 import {
   COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
+  
   ICON_SIZE,
 } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';

@@ -288,6 +288,11 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
     gap: 4,
   },
+  actionPillExtraStyles: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   actionPillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,

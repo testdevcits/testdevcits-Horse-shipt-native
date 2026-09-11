@@ -4,17 +4,14 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
-  AppLoader,
   EmptyState,
   TruckDriverCard,
   SearchBarCompt,
-  AppSelect,
   ShippersListSkeleton,
 } from '../../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../../constants';
@@ -138,60 +135,121 @@ const TruckDriverScreen = () => {
     setIsAddModalVisible(true);
   };
 
+  const totalCount = drivers.length;
+  const activeCount = drivers.filter(d => d?.isActive ?? true).length;
+  const inactiveCount = totalCount - activeCount;
+
   const renderHeader = () => (
     <View style={styles.topCard}>
-      <AppText style={styles.topTitle}>Truck Driver Management</AppText>
-      <AppText style={styles.topSub}>
-        Manage driver profiles, contact details, and license verification.
-      </AppText>
+      {/* Header Banner Card with Metrics */}
+      <View style={styles.headerBannerCard}>
+        <View style={styles.topTitleRow}>
+          <AppText style={styles.topTitle}>Truck Driver Management</AppText>
+          <TouchableOpacity
+            style={styles.addDriverBtn}
+            onPress={() => {
+              setSelectedDriverToEdit(null);
+              setIsAddModalVisible(true);
+            }}
+            activeOpacity={0.85}
+          >
+            <AppIcon
+              name="Plus"
+              size={16}
+              color={COLORS.white}
+              strokeWidth={2.5}
+            />
+            <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
+          </TouchableOpacity>
+        </View>
+        <AppText style={styles.topSub}>
+          Manage your fleet drivers, licenses, and availability status.
+        </AppText>
 
-      {/* Search Bar Component */}
+        <View style={styles.statsSummaryRow}>
+          <View style={styles.statBox}>
+            <AppText style={styles.statNumber}>{totalCount}</AppText>
+            <AppText style={styles.statLabel}>Total Fleet</AppText>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statBox}>
+            <AppText style={[styles.statNumber, { color: '#10B981' }]}>
+              {activeCount}
+            </AppText>
+            <AppText style={styles.statLabel}>Active</AppText>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statBox}>
+            <AppText style={[styles.statNumber, { color: '#64748B' }]}>
+              {inactiveCount}
+            </AppText>
+            <AppText style={styles.statLabel}>Inactive</AppText>
+          </View>
+        </View>
+      </View>
+
+      {/* Search Input Bar */}
       <SearchBarCompt
         value={searchQuery}
         onChangeText={setSearchQuery}
-        placeholder="Search by driver name or email..."
-        containerStyle={{ marginBottom: SPACING.md }}
+        placeholder="Search by driver name, email or license..."
+        containerStyle={{ marginBottom: SPACING.sm }}
       />
 
-      {/* Filters & Add Driver Row */}
-      <View style={styles.filtersRow}>
-        <View style={{ flex: 1, marginRight: SPACING.xs }}>
-          <AppSelect
-            placeholder="Filter Status"
-            value={
-              selectedStatus === 'active'
-                ? 'Active'
-                : selectedStatus === 'inactive'
-                ? 'Inactive'
-                : 'All'
-            }
-            options={['All', 'Active', 'Inactive']}
-            onSelect={(item: string) => {
-              if (item === 'Active') setSelectedStatus('active');
-              else if (item === 'Inactive') setSelectedStatus('inactive');
-              else setSelectedStatus('');
-            }}
-          />
-        </View>
+      {/* Status Filter Pills Row */}
+      <View style={styles.filterPillsRow}>
+        <TouchableOpacity
+          style={[
+            styles.filterPill,
+            selectedStatus === '' && styles.filterPillActive,
+          ]}
+          onPress={() => setSelectedStatus('')}
+          activeOpacity={0.7}
+        >
+          <AppText
+            style={[
+              styles.filterPillText,
+              selectedStatus === '' && styles.filterPillTextActive,
+            ]}
+          >
+            All Drivers ({totalCount})
+          </AppText>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[
-            styles.addDriverBtn,
-            { height: 46, justifyContent: 'center' },
+            styles.filterPill,
+            selectedStatus === 'active' && styles.filterPillActive,
           ]}
-          onPress={() => {
-            setSelectedDriverToEdit(null);
-            setIsAddModalVisible(true);
-          }}
-          activeOpacity={0.8}
+          onPress={() => setSelectedStatus('active')}
+          activeOpacity={0.7}
         >
-          <AppIcon
-            name="Plus"
-            size={18}
-            color={COLORS.white}
-            strokeWidth={2.5}
-          />
-          <AppText style={styles.addDriverBtnText}>Add Driver</AppText>
+          <AppText
+            style={[
+              styles.filterPillText,
+              selectedStatus === 'active' && styles.filterPillTextActive,
+            ]}
+          >
+            Active ({activeCount})
+          </AppText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.filterPill,
+            selectedStatus === 'inactive' && styles.filterPillActive,
+          ]}
+          onPress={() => setSelectedStatus('inactive')}
+          activeOpacity={0.7}
+        >
+          <AppText
+            style={[
+              styles.filterPillText,
+              selectedStatus === 'inactive' && styles.filterPillTextActive,
+            ]}
+          >
+            Inactive ({inactiveCount})
+          </AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -202,17 +260,16 @@ const TruckDriverScreen = () => {
     return (
       <View style={styles.emptyWrap}>
         <EmptyState
-          // icon={User}
           icon={
             <AppIcon
-              name={'FileText'}
+              name={'User'}
               size={ICON_SIZE.xl}
               color={COLORS.lightGrey}
               strokeWidth={1.5}
             />
           }
           title="No Drivers Found"
-          message="Add drivers to your fleet to assign them to transport vehicles and trips."
+          message="Add drivers to your fleet to assign them to transport vehicles and active trips."
         />
         <TouchableOpacity
           style={[
@@ -223,6 +280,7 @@ const TruckDriverScreen = () => {
             setSelectedDriverToEdit(null);
             setIsAddModalVisible(true);
           }}
+          activeOpacity={0.85}
         >
           <AppIcon
             name="Plus"
@@ -272,15 +330,8 @@ const TruckDriverScreen = () => {
         renderItem={renderDriverItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={[
-          styles.scrollContent,
-          drivers.length === 0 && { flexGrow: 1 },
-        ]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        windowSize={5}
-        removeClippedSubviews={Platform.OS === 'android'}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -293,7 +344,10 @@ const TruckDriverScreen = () => {
       {/* Add / Edit Driver Modal */}
       <AddDriverModal
         visible={isAddModalVisible}
-        onClose={() => setIsAddModalVisible(false)}
+        onClose={() => {
+          setIsAddModalVisible(false);
+          setSelectedDriverToEdit(null);
+        }}
         onSuccess={fetchDrivers}
         driverToEdit={selectedDriverToEdit}
       />

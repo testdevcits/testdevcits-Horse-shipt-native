@@ -14,7 +14,12 @@ import {
   RefreshControl,
   FlatList,
 } from 'react-native';
-import { AppHeader, AppText, SearchBarCompt } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  SearchBarCompt,
+  ChatListSkeleton,
+} from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
@@ -191,12 +196,21 @@ const ShipperChatsScreen = ({ navigation }: any) => {
     );
   }, [loading]);
 
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.container}>
+        <AppHeader title="Messages" />
+        <ChatListSkeleton />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="Messages" />
 
       <FlatList
-        data={loading ? [] : filteredCustomers}
+        data={filteredCustomers}
         keyExtractor={(item, index) =>
           item?.shipmentId || item?._id || index.toString()
         }

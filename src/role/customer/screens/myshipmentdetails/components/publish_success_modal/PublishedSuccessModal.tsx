@@ -1,12 +1,6 @@
 import React from 'react';
-import { Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
-} from '../../../../../../constants';
+import { Modal, View, TouchableOpacity, Image } from 'react-native';
+ 
 import { AppText } from '../../../../../../components';
 import imageIndex from '../../../../../../assets/images/imageIndex';
 import styles from './styles.PublicSuccessModal';

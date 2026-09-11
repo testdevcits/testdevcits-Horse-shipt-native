@@ -1,13 +1,11 @@
 import React, { memo } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-
 import {
   COLORS,
   FONTS,
   RADIUS,
   SPACING,
   FONT_SIZE,
-  SIZES,
 } from '../../constants';
 import AppText from '../common/AppText';
 import Toast from 'react-native-toast-message';
@@ -36,67 +34,128 @@ export interface TruckDriverCardProps {
 
 const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
   ({ driver, onToggleStatus, onEdit, onDelete }) => {
-    const isActive = driver.isActive ?? true;
-    const profileUrl = driver.profileImage?.url || null;
-    const driverId = driver._id || '';
-    const driverName = driver.name || 'Unnamed Driver';
+    const isActive = driver?.isActive ?? true;
+    const profileUrl = driver?.profileImage?.url || null;
+    const driverId = driver?._id || '';
+    const driverName = driver?.name || 'Driver';
+
     const isDriverDeletable =
       !driver?.assignedVehicles ||
-      driver.assignedVehicles.length === 0 ||
-      driver.assignedVehicles.every(
+      driver?.assignedVehicles.length === 0 ||
+      driver?.assignedVehicles.every(
         (vehicle: any) => vehicle.currentShipment === null,
       );
     const canToggleStatus =
       !driver?.assignedVehicles ||
-      driver.assignedVehicles.length === 0 ||
-      driver.assignedVehicles.every(
+      driver?.assignedVehicles.length === 0 ||
+      driver?.assignedVehicles.every(
         (vehicle: any) => vehicle.currentShipment === null,
       );
 
     return (
-      <View style={styles.driverCard}>
-        {/* Driver Top Profile Bar */}
-        <View style={styles.driverHeaderRow}>
-          <View style={styles.avatarContainer}>
+      <View style={styles.cardContainer}>
+        {/* Card Header */}
+        <View style={styles.cardHeader}>
+          <View style={styles.avatarWrapper}>
             {profileUrl ? (
               <Image source={{ uri: profileUrl }} style={styles.avatarImg} />
             ) : (
-              <AppIcon name="User" size={24} color={COLORS.primary} />
+              <View style={styles.avatarPlaceholder}>
+                <AppIcon name="User" size={24} color="#A06333" />
+              </View>
             )}
-          </View>
-
-          <View style={styles.driverNameCol}>
-            <AppText style={styles.driverName}>{driverName}</AppText>
             <View
               style={[
-                styles.activeBadge,
-                isActive ? styles.badgeActiveBg : styles.badgeInactiveBg,
+                styles.statusDot,
+                { backgroundColor: isActive ? '#10B981' : '#94A3B8' },
               ]}
-            >
-              <AppText
+            />
+          </View>
+
+          <View style={styles.headerInfoCol}>
+            <View style={styles.nameRow}>
+              <AppText style={styles.driverName} numberOfLines={1}>
+                {driverName}
+              </AppText>
+              <View
                 style={[
-                  styles.activeBadgeText,
-                  isActive ? styles.badgeActiveText : styles.badgeInactiveText,
+                  styles.statusBadge,
+                  isActive ? styles.badgeActive : styles.badgeInactive,
                 ]}
               >
-                {isActive ? 'Active' : 'Inactive'}
-              </AppText>
+                <AppText
+                  style={[
+                    styles.statusBadgeText,
+                    isActive ? styles.textActive : styles.textInactive,
+                  ]}
+                >
+                  {isActive ? 'Active' : 'Inactive'}
+                </AppText>
+              </View>
             </View>
+
+            {driver?.licenseNumber ? (
+              <View style={styles.licensePill}>
+                <AppIcon name="Award" size={12} color="#A06333" />
+                <AppText style={styles.licenseText} numberOfLines={1}>
+                  Lic: {driver?.licenseNumber}
+                </AppText>
+              </View>
+            ) : (
+              <AppText style={styles.noLicenseText}>No License Info</AppText>
+            )}
           </View>
         </View>
 
-        {/* Top Action Pills (Activate/Deactivate, Edit, Delete) */}
-        <View style={styles.actionPillsRow}>
+        {/* Contact Information Details */}
+        <View style={styles.infoGrid}>
+          {driver?.phone ? (
+            <View style={styles.infoRow}>
+              <View style={styles.iconCircle}>
+                <AppIcon name="Phone" size={14} color="#A06333" />
+              </View>
+              <AppText style={styles.infoText} numberOfLines={1}>
+                {driver?.phone}
+              </AppText>
+            </View>
+          ) : null}
+
+          {driver?.email ? (
+            <View style={styles.infoRow}>
+              <View style={styles.iconCircle}>
+                <AppIcon name="Mail" size={14} color="#A06333" />
+              </View>
+              <AppText style={styles.infoText} numberOfLines={1}>
+                {driver?.email}
+              </AppText>
+            </View>
+          ) : null}
+
+          {driver?.notes ? (
+            <View style={styles.notesBox}>
+              <AppIcon name="FileText" size={13} color="#64748B" />
+              <AppText style={styles.notesText} numberOfLines={2}>
+                {driver?.notes}
+              </AppText>
+            </View>
+          ) : null}
+        </View>
+
+        {/* Action Buttons Footer */}
+        <View style={styles.actionFooter}>
           <TouchableOpacity
-            style={styles.actionBtnPill}
+            style={[
+              styles.actionButton,
+              isActive ? styles.btnDeactivate : styles.btnActivate,
+            ]}
             onPress={() => {
               if (canToggleStatus) {
                 onToggleStatus(driverId, isActive);
               } else {
                 Toast.show({
                   type: 'info',
-                  text1: 'Info',
-                  text2: `Driver ${driverName} is assigned to a vehicle.`,
+                  text1: 'Driver Busy',
+                  text2: `Driver ${driverName} is currently assigned to an active trip.`,
                 });
               }
             }}
@@ -104,105 +163,42 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           >
             <AppIcon
               name="Power"
-              size={15}
+              size={14}
               color={isActive ? '#D97706' : '#10B981'}
             />
-            <AppText style={styles.actionBtnPillText}>
+            <AppText
+              style={[
+                styles.actionBtnText,
+                { color: isActive ? '#D97706' : '#10B981' },
+              ]}
+            >
               {isActive ? 'Deactivate' : 'Activate'}
             </AppText>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.actionBtnPill}
+            style={[styles.actionButton, styles.btnEdit]}
             onPress={() => onEdit(driver)}
             activeOpacity={0.7}
           >
-            <AppIcon name="Edit" size={15} color={COLORS.textPrimary} />
-            <AppText style={styles.actionBtnPillText}>Edit</AppText>
+            <AppIcon name="Edit" size={14} color="#334155" />
+            <AppText style={[styles.actionBtnText, { color: '#334155' }]}>
+              Edit Profile
+            </AppText>
           </TouchableOpacity>
+
           {isDriverDeletable && (
             <TouchableOpacity
-              style={styles.actionBtnPill}
+              style={[styles.actionButton, styles.btnDelete]}
               onPress={() => onDelete(driverId, driverName)}
               activeOpacity={0.7}
-              disabled={!isDriverDeletable}
             >
-              <AppIcon name="Trash2" size={15} color={COLORS.error} />
-              <AppText
-                style={[styles.actionBtnPillText, { color: COLORS.error }]}
-              >
+              <AppIcon name="Trash2" size={14} color="#EF4444" />
+              <AppText style={[styles.actionBtnText, { color: '#EF4444' }]}>
                 Delete
               </AppText>
             </TouchableOpacity>
           )}
-        </View>
-
-        {/* Detail Specification Cards */}
-        <View style={styles.specCardsContainer}>
-          {/* Name Card */}
-          <View style={styles.specDetailCard}>
-            <View style={styles.specIconBox}>
-              <AppIcon name="User" size={18} color={COLORS.primary} />
-            </View>
-            <View style={styles.specTextCol}>
-              <AppText style={styles.specLabelTitle}>Name</AppText>
-              <AppText style={styles.specLabelVal}>
-                {driver.name || 'N/A'}
-              </AppText>
-            </View>
-          </View>
-
-          {/* License Card */}
-          <View style={styles.specDetailCard}>
-            <View style={styles.specIconBox}>
-              <AppIcon name="Award" size={18} color={COLORS.primary} />
-            </View>
-            <View style={styles.specTextCol}>
-              <AppText style={styles.specLabelTitle}>License</AppText>
-              <AppText style={styles.specLabelVal}>
-                {driver.licenseNumber || 'N/A'}
-              </AppText>
-            </View>
-          </View>
-
-          {/* Email Card */}
-          <View style={styles.specDetailCard}>
-            <View style={styles.specIconBox}>
-              <AppIcon name="Mail" size={18} color={COLORS.primary} />
-            </View>
-            <View style={styles.specTextCol}>
-              <AppText style={styles.specLabelTitle}>Email</AppText>
-              <AppText style={styles.specLabelVal}>
-                {driver.email || 'N/A'}
-              </AppText>
-            </View>
-          </View>
-
-          {/* Phone Card */}
-          <View style={styles.specDetailCard}>
-            <View style={styles.specIconBox}>
-              <AppIcon name="Phone" size={18} color={COLORS.primary} />
-            </View>
-            <View style={styles.specTextCol}>
-              <AppText style={styles.specLabelTitle}>Phone</AppText>
-              <AppText style={styles.specLabelVal}>
-                {driver.phone || 'N/A'}
-              </AppText>
-            </View>
-          </View>
-
-          {/* Notes Card */}
-          {driver.notes ? (
-            <View style={styles.specDetailCard}>
-              <View style={styles.specIconBox}>
-                <AppIcon name="FileText" size={18} color={COLORS.primary} />
-              </View>
-              <View style={styles.specTextCol}>
-                <AppText style={styles.specLabelTitle}>Notes</AppText>
-                <AppText style={styles.specLabelVal}>{driver.notes}</AppText>
-              </View>
-            </View>
-          ) : null}
         </View>
       </View>
     );
@@ -210,132 +206,198 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
 );
 
 const styles = StyleSheet.create({
-  driverCard: {
+  cardContainer: {
     backgroundColor: COLORS.white,
     marginHorizontal: SPACING.md,
-    marginTop: SPACING.md,
-    borderRadius: RADIUS.md,
+    marginBottom: SPACING.md,
+    borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder,
+    borderColor: '#E2E8F0',
     padding: SPACING.md,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 10,
+    elevation: 3,
   },
-  driverHeaderRow: {
+  cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    paddingBottom: SPACING.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
   },
-  avatarContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-    justifyContent: 'center',
-    alignItems: 'center',
+  avatarWrapper: {
+    position: 'relative',
     marginRight: SPACING.sm,
-    overflow: 'hidden',
   },
   avatarImg: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    borderWidth: 2,
+    borderColor: '#F0E4D4',
   },
-  driverNameCol: {
+  avatarPlaceholder: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#FFFBF5',
+    borderWidth: 1.5,
+    borderColor: '#F0E4D4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statusDot: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 13,
+    height: 13,
+    borderRadius: 6.5,
+    borderWidth: 2,
+    borderColor: COLORS.white,
+  },
+  headerInfoCol: {
     flex: 1,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   driverName: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
+    color: '#0F172A',
+    flex: 1,
+    marginRight: SPACING.xs,
   },
-  activeBadge: {
+  statusBadge: {
+    paddingHorizontal: SPACING.xs + 2,
+    paddingVertical: 3,
+    borderRadius: RADIUS.round,
+  },
+  badgeActive: {
+    backgroundColor: '#ECFDF5',
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+  },
+  badgeInactive: {
+    backgroundColor: '#F1F5F9',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  statusBadgeText: {
+    fontSize: FONT_SIZE.xs - 1,
+    fontFamily: FONTS.bold,
+  },
+  textActive: {
+    color: '#059669',
+  },
+  textInactive: {
+    color: '#64748B',
+  },
+  licensePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFBF5',
     alignSelf: 'flex-start',
-    paddingHorizontal: SPACING.sm2,
-    paddingVertical: SPACING.xxs,
-    borderRadius: RADIUS.round,
-    marginTop: SPACING.xs,
-    borderWidth: SIZES.borderWidthThin,
-  },
-  badgeActiveBg: {
-    backgroundColor: COLORS.greenLightBg,
-    borderColor: COLORS.greenBorder,
-  },
-  badgeActiveText: {
-    color: COLORS.greenSuccess,
-  },
-  badgeInactiveBg: {
-    backgroundColor: COLORS.grey100,
-    borderColor: COLORS.grey200,
-  },
-  badgeInactiveText: {
-    color: COLORS.grey600,
-  },
-  activeBadgeText: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-  },
-  actionPillsRow: {
-    flexDirection: 'row',
-    gap: SPACING.xs,
-    marginBottom: SPACING.md,
-  },
-  actionBtnPill: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
-    borderWidth: SIZES.borderWidthThin,
-    borderColor: COLORS.divider,
-    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.xs + 2,
+    paddingVertical: 2,
     borderRadius: RADIUS.xs,
-    gap: SPACING.xs2,
+    marginTop: 4,
+    borderWidth: 1,
+    borderColor: '#F0E4D4',
   },
-  actionBtnPillText: {
-    fontSize: FONT_SIZE.xs,
+  licenseText: {
+    fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
+    color: '#A06333',
+    marginLeft: 4,
   },
-  specCardsContainer: {
-    gap: SPACING.xs,
+  noLicenseText: {
+    fontSize: FONT_SIZE.xs - 1,
+    fontFamily: FONTS.regular,
+    color: '#94A3B8',
+    marginTop: 2,
   },
-  specDetailCard: {
+  infoGrid: {
+    paddingVertical: SPACING.sm,
+    gap: 8,
+  },
+  infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderWidth: SIZES.borderWidthThin,
-    borderColor: COLORS.goldBorder,
-    borderRadius: RADIUS.sm,
-    padding: SPACING.sm,
-    gap: SPACING.sm,
   },
-  specIconBox: {
-    width: SIZES.iconActionBtn,
-    height: SIZES.iconActionBtn,
-    borderRadius: RADIUS.round,
-    backgroundColor: COLORS.goldLightBg,
+  iconCircle: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#FFFBF5',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: SPACING.xs,
+    borderWidth: 1,
+    borderColor: '#F0E4D4',
   },
-  specTextCol: {
+  infoText: {
+    fontSize: FONT_SIZE.xs + 1,
+    fontFamily: FONTS.regular,
+    color: '#334155',
     flex: 1,
   },
-  specLabelTitle: {
-    fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.medium,
-    color: COLORS.primary,
+  notesBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#F8FAFC',
+    padding: SPACING.xs + 2,
+    borderRadius: RADIUS.xs,
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
+    marginTop: 2,
+    gap: 6,
   },
-  specLabelVal: {
+  notesText: {
     fontSize: FONT_SIZE.xs,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginTop: 1,
+    fontFamily: FONTS.regular,
+    color: '#64748B',
+    flex: 1,
+  },
+  actionFooter: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    paddingTop: SPACING.xs,
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 9,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    gap: 6,
+  },
+  btnActivate: {
+    backgroundColor: '#ECFDF5',
+    borderColor: '#A7F3D0',
+  },
+  btnDeactivate: {
+    backgroundColor: '#FEF3C7',
+    borderColor: '#FDE68A',
+  },
+  btnEdit: {
+    backgroundColor: '#F8FAFC',
+    borderColor: '#E2E8F0',
+  },
+  btnDelete: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FCA5A5',
+  },
+  actionBtnText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.semiBold,
   },
 });
 

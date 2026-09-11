@@ -19,7 +19,6 @@ import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
-  AppLoader,
   EmptyState,
   AppSelectRef,
   ShipmentsSkeleton,
@@ -32,7 +31,9 @@ import AppIcon from '../../../../../components/AppIcon';
 const ConfirmationModal = lazy(
   () => import('../../../../../components/common/ConfirmationModal'),
 );
-const AppSelect = lazy(() => import('../../../../../components/common/AppSelect'));
+const AppSelect = lazy(
+  () => import('../../../../../components/common/AppSelect'),
+);
 
 interface VehicleItemCardProps {
   vehicle: any;
@@ -206,8 +207,10 @@ const VehicleItemCard = React.memo(
                 style={styles.actionPill}
                 onPress={() => onDelete(vehicle?._id, vehicle?.vehicleNumber)}
               >
-                <AppIcon name={'Trash2'} size={15} color="#EF4444" />
-                <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>
+                <AppIcon name={'Trash2'} size={15} color={COLORS.error} />
+                <AppText
+                  style={[styles.actionPillText, { color: COLORS.error }]}
+                >
                   Delete
                 </AppText>
               </TouchableOpacity>
@@ -215,10 +218,12 @@ const VehicleItemCard = React.memo(
               <View
                 style={[
                   styles.actionPill,
-                  { flex: 1, justifyContent: 'center', alignItems: 'center' },
+                  styles.actionPillExtraStyles,
                 ]}
               >
-                <AppText style={[styles.actionPillText, { color: '#EF4444' }]}>
+                <AppText
+                  style={[styles.actionPillText, { color: COLORS.error }]}
+                >
                   In-Use
                 </AppText>
               </View>

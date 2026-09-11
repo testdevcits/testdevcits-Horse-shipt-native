@@ -3,7 +3,7 @@ import { View, FlatList, Image, RefreshControl } from 'react-native';
 import {
   AppHeader,
   AppText,
-  AppLoader,
+ 
   EmptyState,
   ReviewsSkeleton,
 } from '../../../../components';

@@ -13,7 +13,7 @@ import SignatureScreen from 'react-native-signature-canvas';
 import {
   COLORS,
   FONTS,
-  RADIUS,
+  
   SPACING,
   FONT_SIZE,
   ICON_SIZE,

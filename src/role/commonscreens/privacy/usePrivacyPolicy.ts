@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+ import React, { useEffect, useState } from 'react';
 import shipperService from '../../../api/services/shipperService';
 
 const usePrivacyPolicy = () => {

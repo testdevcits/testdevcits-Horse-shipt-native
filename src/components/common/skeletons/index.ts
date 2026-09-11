@@ -14,6 +14,7 @@ import ChatListSkeleton from './ChatListSkeleton';
 import ProfileSkeleton from './ProfileSkeleton';
 import SettingsSkeleton from './SettingsSkeleton';
 import ShipperHomeSkeleton from './ShipperHomeSkeleton';
+import ChatDetailsSkeleton from './ChatDetailsSkeleton';
 
 export {
   Skeleton,
@@ -32,6 +33,7 @@ export {
   PaymentsSkeleton,
   ReviewsSkeleton,
   ChatListSkeleton,
+  ChatDetailsSkeleton,
   ProfileSkeleton,
   SettingsSkeleton,
 };

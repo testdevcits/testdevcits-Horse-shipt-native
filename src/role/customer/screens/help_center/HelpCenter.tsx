@@ -16,7 +16,7 @@ import {
 import { AppHeader, AppText } from '../../../../components';
 import AppIcon from '../../../../components/AppIcon';
 
-const HelpCenter = ({ navigation }: any) => {
+const HelpCenter = ({   }: any) => {
   const handleEmailPress = () => {
     Linking.openURL('mailto:noreply.horseshipt2026@gmail.com');
   };

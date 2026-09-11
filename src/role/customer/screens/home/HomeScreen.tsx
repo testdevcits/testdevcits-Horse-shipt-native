@@ -2,20 +2,13 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   FlatList,
-  StyleSheet,
   RefreshControl,
   Image,
   Pressable,
   ScrollView,
 } from 'react-native';
 import { PackageSearch, Award } from 'lucide-react-native';
-import {
-  COLORS,
-  SPACING,
-  FONTS,
-  SCREEN_WIDTH,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS, SCREEN_WIDTH } from '../../../../constants';
 import {
   AppHeader,
   AppLoader,

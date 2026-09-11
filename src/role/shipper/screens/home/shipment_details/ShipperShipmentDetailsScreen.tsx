@@ -17,7 +17,6 @@ import StripePaymentMethodCardModal from '../../earnings/StripePaymentMethodCard
 import ConnectBankModal from '../components/ConnectBankModal';
 import AppIcon from '../../../../../components/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
-import { isVisible } from 'react-native-bootsplash';
 
 const AskQuestionModal = lazy(() => import('../components/AskQuestionModal'));
 const SubmitOfferModal = lazy(() => import('./SubmitOfferModal'));

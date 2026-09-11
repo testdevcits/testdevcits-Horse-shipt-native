@@ -41,6 +41,7 @@ import ShipmentDetailSkeleton from './common/skeletons/ShipmentDetailSkeleton';
 import PaymentsSkeleton from './common/skeletons/PaymentsSkeleton';
 import ReviewsSkeleton from './common/skeletons/ReviewsSkeleton';
 import ChatListSkeleton from './common/skeletons/ChatListSkeleton';
+import ChatDetailsSkeleton from './common/skeletons/ChatDetailsSkeleton';
 import ProfileSkeleton from './common/skeletons/ProfileSkeleton';
 import SettingsSkeleton from './common/skeletons/SettingsSkeleton';
 import Skeleton from './common/skeletons/Skeleton';
@@ -94,6 +95,7 @@ export {
   PaymentsSkeleton,
   ReviewsSkeleton,
   ChatListSkeleton,
+  ChatDetailsSkeleton,
   ProfileSkeleton,
   SettingsSkeleton,
   Skeleton,

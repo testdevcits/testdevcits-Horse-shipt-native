@@ -14,7 +14,12 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, Input, ShipmentLocationModal } from '../../../../components';
+import {
+  AppText,
+  Input,
+  ShipmentLocationModal,
+  ChatDetailsSkeleton,
+} from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -196,12 +201,7 @@ const ChatDetails = () => {
     }
   };
 
-  if (loading)
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator color={COLORS.primary} size="large" />
-      </View>
-    );
+  if (loading) return <ChatDetailsSkeleton />;
 
   const canSend = !!inputText.trim() || !!selectedImage;
 
