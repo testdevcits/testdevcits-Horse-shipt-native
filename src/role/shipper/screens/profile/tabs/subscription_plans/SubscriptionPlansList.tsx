@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { AppText } from '../../../../../components';
+import { AppText } from '../../../../../../components';
 import {
   COLORS,
   SPACING,
   RADIUS,
   FONT_SIZE,
   FONTS,
-} from '../../../../../constants';
-import AppIcon from '../../../../../components/AppIcon';
+} from '../../../../../../constants';
+import AppIcon from '../../../../../../components/AppIcon';
 
 interface Plan {
   priceId: string;

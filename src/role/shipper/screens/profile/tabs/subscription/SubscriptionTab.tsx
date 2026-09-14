@@ -7,7 +7,7 @@ import { AppText } from '../../../../../../components';
 import { COLORS, SPACING } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import styles from './styles.subscriptiontab';
-import CancelSubscriptionModal from '../CancelSubscriptionModal';
+import CancelSubscriptionModal from '../cancel_subscription/CancelSubscriptionModal';
 import AppIcon from '../../../../../../components/AppIcon';
 
 interface Props {

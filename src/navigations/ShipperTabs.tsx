@@ -17,7 +17,7 @@ import imageIndex from '../assets/images/imageIndex';
 import ShipperHomeScreen from '../role/shipper/screens/home/ShipperHomeScreen';
 import MyQuotesScreen from '../role/shipper/screens/quotes/MyQuotesScreen';
 import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
-import ShipperProfileScreen from '../role/shipper/screens/profile/ShipperProfileScreen';
+import ShipperProfileScreen from '../role/shipper/screens/profile/shipper_profile/ShipperProfileScreen';
 import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
 import AppIcon from '../components/AppIcon';
 

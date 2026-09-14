@@ -8,15 +8,15 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { AppText } from '../../../../../components';
+import { AppText } from '../../../../../../components';
 import {
   COLORS,
   FONT_SIZE,
   FONTS,
   SPACING,
   RADIUS,
-} from '../../../../../constants';
-import AppIcon from '../../../../../components/AppIcon';
+} from '../../../../../../constants';
+import AppIcon from '../../../../../../components/AppIcon';
 
 interface CancelSubscriptionModalProps {
   visible: boolean;

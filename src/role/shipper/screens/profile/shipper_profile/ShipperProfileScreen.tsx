@@ -11,22 +11,22 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../../../hooks/redux';
-import { updateUser, logoutUser } from '../../../../redux/slices/authSlice';
-import { AppHeader, AppText, ProfileSkeleton } from '../../../../components';
-import { COLORS } from '../../../../constants';
-import shipperService from '../../../../api/services/shipperService';
-import imageIndex from '../../../../assets/images/imageIndex';
+import { useAppDispatch } from '../../../../../hooks/redux';
+import { updateUser, logoutUser } from '../../../../../redux/slices/authSlice';
+import { AppHeader, AppText, ProfileSkeleton } from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import shipperService from '../../../../../api/services/shipperService';
+import imageIndex from '../../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
 
 // Import modular tab components
-import ProfileTab from './tabs/profile/ProfileTab';
-import ShipmentTab from './tabs/shipments/ShipmentTab';
-import PaymentsTab from './tabs/payments/PaymentsTab';
-import SubscriptionTab from './tabs/subscription/SubscriptionTab';
-import NotificationTab from './tabs/notifications/NotificationTab';
-import useShipperSubscription from '../../../../hooks/useShipperSubscription';
-import AppIcon from '../../../../components/AppIcon';
+import ProfileTab from '../tabs/profile/ProfileTab';
+import ShipmentTab from '../tabs/shipments/ShipmentTab';
+import PaymentsTab from '../tabs/payments/PaymentsTab';
+import SubscriptionTab from '../tabs/subscription/SubscriptionTab';
+import NotificationTab from '../tabs/notifications/NotificationTab';
+import useShipperSubscription from '../../../../../hooks/useShipperSubscription';
+import AppIcon from '../../../../../components/AppIcon';
 
 type TabType =
   | 'Profile'
@@ -37,15 +37,15 @@ type TabType =
 
 const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
-    () => import('../../../../components/common/ConfirmationModal'),
+    () => import('../../../../../components/common/ConfirmationModal'),
   );
   const ConnectBankModal = lazy(
-    () => import('../home/components/ConnectBankModal'),
+    () => import('../../home/components/ConnectBankModal'),
   );
   const SubscriptionRequiredModal = lazy(
     () =>
       import(
-        '../../components/subscription_required_modal/SubscriptionRequiredModal'
+        '../../../components/subscription_required_modal/SubscriptionRequiredModal'
       ),
   );
 
