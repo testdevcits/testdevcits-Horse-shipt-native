@@ -38,6 +38,8 @@ const ChatItemCard = memo(
     isLast: boolean;
     handleOpenChat: (item: any) => void;
   }) => {
+
+    // console.log("-----item--item---------",item)
     const [avatarError, setAvatarError] = useState(false);
     const pickupShort = item?.pickupLocation
       ? item?.pickupLocation.split(',')[0]
@@ -78,7 +80,7 @@ const ChatItemCard = memo(
             <AppText style={styles.customerName}>
               {item?.name || 'Customer'}
             </AppText>
-            <AppText style={styles.timeAgoText}>5min ago</AppText>
+            <AppText style={styles.timeAgoText}>{item?.shipmentStatus?.replace(/_/g, '')}</AppText>
           </View>
 
           {/* Shipment Code Subtitle */}

@@ -13,6 +13,7 @@ import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
 import AccountSetupScreen from '../role/shipper/screens/payments/AccountSetupScreen';
 import EditProfileScreen from '../role/shipper/screens/profile/edit_profile/EditProfileScreen';
 import ShipmentMapDirection from '../role/shipper/screens/home/components/ShipmentMapDirection';
+import QuoteReceivedDetail from '../role/shipper/screens/post/QuoteReceivedDetail';
 
 const Stack = createNativeStackNavigator<{
   ShipperDrawer: undefined;
@@ -28,6 +29,7 @@ const Stack = createNativeStackNavigator<{
   AccountSetup: undefined;
   EditProfile: undefined;
   ShipmentMapDirection: undefined;
+  QuoteReceivedDetail:undefined
 }>();
 
 const ShipperNavigation = () => {
@@ -51,6 +53,7 @@ const ShipperNavigation = () => {
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       <Stack.Screen name="AccountSetup" component={AccountSetupScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="QuoteReceivedDetail" component={QuoteReceivedDetail}/>
 
       <Stack.Screen
         name="ShipmentMapDirection"

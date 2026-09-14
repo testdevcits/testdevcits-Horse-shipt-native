@@ -80,11 +80,9 @@ const ShipmentsScreen = ({ route }: { route?: any }) => {
   };
 
   const handleCardPress = (item: any) => {
-    // const shipmentId = item?.shipment?._id || item?._id || item?.id;
-    // if (shipmentId) {
-    //   navigation.navigate('AvailableShipmentDetails', { shipmentId });
-    // }
-    navigation.navigate('ShipperShipmentDetails', { shipment: item });
+    navigation.navigate('QuoteReceivedDetail', {
+      data: item,
+    });
   };
 
   const handleOpenContract = (item: any) => {
@@ -114,7 +112,7 @@ const ShipmentsScreen = ({ route }: { route?: any }) => {
       case 'my_shipments':
         return 'My Shipments';
       case 'quote_request':
-        return 'Quote Requests';
+        return 'Quote Requests Received';
       case 'all_shipment':
         return 'All Shipments';
       default:
