@@ -30,7 +30,7 @@ const PdfViewerScreen: React.FC<any> = ({ route }) => {
   const { url, title } = route.params;
   const [useWebViewFallback, setUseWebViewFallback] = useState(false);
 
-  console.log('========================', url);
+  // console.log('========================', url);
 
   const isImg = isImageUrl(url);
 

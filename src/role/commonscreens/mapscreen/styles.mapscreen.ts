@@ -1,6 +1,5 @@
-import { Platform, StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from "../../../constants";
-
+import { Platform, StyleSheet } from 'react-native';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
@@ -106,4 +105,4 @@ const styles = StyleSheet.create({
   },
   primaryTool: { backgroundColor: COLORS.grey900 },
 });
-export default styles
+export default styles;

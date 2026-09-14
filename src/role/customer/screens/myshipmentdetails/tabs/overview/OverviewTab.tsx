@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
-  
   Linking,
   Alert,
   ActivityIndicator,
@@ -10,13 +9,7 @@ import {
 
 import { formatDate } from '../../../../../../utils/helpers';
 import { AppText, MapModal } from '../../../../../../components';
-import {
-  COLORS,
-  FONTS,
-   
-  SPACING,
-  FONT_SIZE,
-} from '../../../../../../constants';
+import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../../../constants';
 import PublishedSuccessModal from '../../components/publish_success_modal/PublishedSuccessModal';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
@@ -618,7 +611,5 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     </View>
   );
 };
-
- 
 
 export default OverviewTab;

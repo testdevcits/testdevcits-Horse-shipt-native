@@ -22,7 +22,6 @@ import {
 
 import {
   BottomSheetModal,
-  
   BottomSheetBackdrop,
   BottomSheetFlatList,
   BottomSheetTextInput,
@@ -172,17 +171,18 @@ const AppSelect = memo(
         return (
           <TouchableOpacity
             key={String(item.value)}
-            style={[
-              styles.optionItem,
-              isSelected && styles.selectedOptionItem,
-            ]}
+            style={[styles.optionItem, isSelected && styles.selectedOptionItem]}
             onPress={() => handleSelect(item)}
             activeOpacity={0.7}
           >
             <View style={styles.optionLeft}>
               {item.icon && (
                 <View style={styles.optionIconBox}>
-                  <AppIcon name={item.icon as any} size={18} color={COLORS.primary} />
+                  <AppIcon
+                    name={item.icon as any}
+                    size={18}
+                    color={COLORS.primary}
+                  />
                 </View>
               )}
               <View style={styles.optionTextWrap}>
@@ -402,7 +402,9 @@ const AppSelect = memo(
 
                 <FlatList
                   data={filteredOptions}
-                  keyExtractor={(item, index) => `${String(item.value)}-${index}`}
+                  keyExtractor={(item, index) =>
+                    `${String(item.value)}-${index}`
+                  }
                   contentContainerStyle={styles.listContent}
                   showsVerticalScrollIndicator={true}
                   ListEmptyComponent={

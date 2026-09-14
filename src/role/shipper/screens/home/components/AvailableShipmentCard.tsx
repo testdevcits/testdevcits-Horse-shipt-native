@@ -82,14 +82,14 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
         </View>
 
         <View style={styles.infoMetaRow}>
-          <AppIcon name={"MapPin"} size={14} color={COLORS.textSecondary} />
+          <AppIcon name={'MapPin'} size={14} color={COLORS.textSecondary} />
           <AppText style={styles.infoMetaText} numberOfLines={1}>
             {locationText}
           </AppText>
         </View>
 
         <View style={styles.infoMetaRow}>
-          <AppIcon name={"Calendar"} size={14} color={COLORS.textSecondary} />
+          <AppIcon name={'Calendar'} size={14} color={COLORS.textSecondary} />
           <AppText style={styles.infoMetaText}>
             {item?.pickupDateRange?.start
               ? `Pickup ${formatDate(item?.pickupDateRange.start, 'MMM DD')}`

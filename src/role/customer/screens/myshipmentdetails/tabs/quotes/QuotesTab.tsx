@@ -1,11 +1,7 @@
 import React from 'react';
-import {   TouchableOpacity, View, Image } from 'react-native';
+import { TouchableOpacity, View, Image } from 'react-native';
 import { AppText } from '../../../../../../components';
-import {
-  COLORS,
- 
-  ICON_SIZE,
-} from '../../../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import imageIndex from '../../../../../../assets/images/imageIndex';
 import AppIcon from '../../../../../../components/AppIcon';
 import styles from './styles.QuotesTab';
@@ -145,5 +141,3 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
 };
 
 export default QuotesTab;
-
- 

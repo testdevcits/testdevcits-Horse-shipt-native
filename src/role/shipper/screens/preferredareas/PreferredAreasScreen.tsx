@@ -6,7 +6,6 @@ import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
-  
   EmptyState,
   ShipmentsSkeleton,
 } from '../../../../components';

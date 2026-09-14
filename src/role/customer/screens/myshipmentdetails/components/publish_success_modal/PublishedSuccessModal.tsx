@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View, TouchableOpacity, Image } from 'react-native';
- 
+
 import { AppText } from '../../../../../../components';
 import imageIndex from '../../../../../../assets/images/imageIndex';
 import styles from './styles.PublicSuccessModal';
@@ -69,7 +69,5 @@ const PublishedSuccessModal = ({
     </Modal>
   );
 };
-
- 
 
 export default PublishedSuccessModal;

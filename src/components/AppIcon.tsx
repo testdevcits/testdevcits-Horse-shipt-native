@@ -106,7 +106,7 @@ import {
   Hash,
   Minus,
   Zap,
-  WalletCards
+  WalletCards,
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';
@@ -218,7 +218,7 @@ const ICONS = {
   Hash,
   Minus,
   Zap,
-  WalletCards
+  WalletCards,
 } as const;
 
 export type IconName = keyof typeof ICONS;

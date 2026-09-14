@@ -175,37 +175,37 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
       : 'Calculating route...';
 
   // Action handlers
-  const handleCallDriver = () => {
-    if (driverPhone) {
-      Linking.openURL(`tel:${driverPhone}`);
-    } else {
-      Alert.alert(
-        'Contact Driver',
-        'Driver phone number is not available yet.',
-      );
-    }
-  };
+  // const handleCallDriver = () => {
+  //   if (driverPhone) {
+  //     Linking.openURL(`tel:${driverPhone}`);
+  //   } else {
+  //     Alert.alert(
+  //       'Contact Driver',
+  //       'Driver phone number is not available yet.',
+  //     );
+  //   }
+  // };
 
-  const handleMessageDriver = () => {
-    if (driverPhone) {
-      Linking.openURL(`sms:${driverPhone}`);
-    } else {
-      Alert.alert(
-        'Contact Driver',
-        'Driver phone number is not available yet.',
-      );
-    }
-  };
+  // const handleMessageDriver = () => {
+  //   if (driverPhone) {
+  //     Linking.openURL(`sms:${driverPhone}`);
+  //   } else {
+  //     Alert.alert(
+  //       'Contact Driver',
+  //       'Driver phone number is not available yet.',
+  //     );
+  //   }
+  // };
 
-  const handleShareTracking = async () => {
-    try {
-      await Share.share({
-        message: `Track shipment live on Horse Shipt: ${statusDetails.label}. ETA: ${etaFormatted}.`,
-      });
-    } catch (e) {
-      console.warn('Share error:', e);
-    }
-  };
+  // const handleShareTracking = async () => {
+  //   try {
+  //     await Share.share({
+  //       message: `Track shipment live on Horse Shipt: ${statusDetails.label}. ETA: ${etaFormatted}.`,
+  //     });
+  //   } catch (e) {
+  //     console.warn('Share error:', e);
+  //   }
+  // };
 
   if (loading && !data) {
     return (

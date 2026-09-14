@@ -20,7 +20,6 @@ import { useNavigation } from '@react-navigation/native';
 import {
   AppHeader,
   AppText,
- 
   EmptyState,
   SearchBarCompt,
   AppSelectRef,

@@ -93,5 +93,4 @@ const styles = StyleSheet.create({
   closeBtn: { padding: 4 },
 });
 
-
-export default styles
+export default styles;

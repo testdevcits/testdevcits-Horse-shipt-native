@@ -35,11 +35,15 @@ const ConfirmationModal = lazy(
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];
 
-const QuoteDetailModal = lazy(() => import('./components/quote_detail_modal/QuoteDetailModal'));
+const QuoteDetailModal = lazy(
+  () => import('./components/quote_detail_modal/QuoteDetailModal'),
+);
 
 const RatingModal = lazy(() => import('./components/rating_modal/RatingModal'));
 
-const DeliveredSuccessModal = lazy(() => import('./components/delivered_success_modal/DeliveredSuccessModal'));
+const DeliveredSuccessModal = lazy(
+  () => import('./components/delivered_success_modal/DeliveredSuccessModal'),
+);
 
 const MyShipmentDetails = ({ route }: any) => {
   const dispatch = useAppDispatch();

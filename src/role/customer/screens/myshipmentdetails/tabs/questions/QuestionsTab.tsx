@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-   
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { AppText, Input } from '../../../../../../components';
-import {
-  COLORS,
-   
-  ICON_SIZE,
-} from '../../../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';
 import Toast from 'react-native-toast-message';
 import AppIcon from '../../../../../../components/AppIcon';
@@ -181,5 +172,3 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
 };
 
 export default QuestionsTab;
-
- 

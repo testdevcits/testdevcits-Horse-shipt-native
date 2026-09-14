@@ -21,7 +21,10 @@ import { COLORS } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
 import imageIndex from '../../../../../assets/images/imageIndex';
-import { isValidVehicleNumber, isValidVIN } from '../../../../../utils/valiations';
+import {
+  isValidVehicleNumber,
+  isValidVIN,
+} from '../../../../../utils/valiations';
 import AppIcon from '../../../../../components/AppIcon';
 
 interface Props {
@@ -46,7 +49,7 @@ const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
   route,
-  
+
   onClose,
   onSuccess,
   vehicleToEdit: propVehicleToEdit,

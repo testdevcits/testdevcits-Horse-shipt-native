@@ -7,7 +7,7 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
- import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 import useMyShipments, { ShipmentTab } from './useMyShipments';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';

@@ -5,7 +5,7 @@ import { COLORS } from '../../constants';
 const LazyFallback = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large"  color={COLORS.primary}/>
+      <ActivityIndicator size="large" color={COLORS.primary} />
     </View>
   );
 };

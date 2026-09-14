@@ -98,9 +98,8 @@ const useDeliveryVerification = ({ navigation, shipment }: any) => {
     handleVerifyOtp,
     handleSendOtp,
     handleDone,
-otp,
-setModalConfig
-
+    otp,
+    setModalConfig,
   };
 };
 

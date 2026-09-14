@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Modal,
-  StyleSheet,
   View,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -9,14 +8,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import {
-  COLORS,
-   
-  FONTS,
-  
-  SPACING,
-  
-} from '../../../../../../constants';
+import { COLORS, FONTS, SPACING } from '../../../../../../constants';
 import { AppText, Button, Input } from '../../../../../../components';
 import customerService from '../../../../../../api/services/customerService';
 import AppIcon from '../../../../../../components/AppIcon';

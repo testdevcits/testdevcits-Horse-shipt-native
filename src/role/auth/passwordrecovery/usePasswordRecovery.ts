@@ -68,7 +68,7 @@ const usePasswordRecovery = ({ navigation }: any) => {
     setIsNotRobot,
     isLoading,
     handleSendLink,
-    setError
+    setError,
   };
 };
 

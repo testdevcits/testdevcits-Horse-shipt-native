@@ -1,5 +1,11 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, SPACING,RADIUS } from "../../../../../../constants";
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  FONT_SIZE,
+  FONTS,
+  SPACING,
+  RADIUS,
+} from '../../../../../../constants';
 
 const styles = StyleSheet.create({
   tabContainer: { paddingBottom: SPACING.xl },
@@ -214,4 +220,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles
+export default styles;

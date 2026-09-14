@@ -1,4 +1,4 @@
-import {  TextInput, Keyboard } from 'react-native';
+import { TextInput, Keyboard } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import authService from '../../../api/services/authService';
 import Toast from 'react-native-toast-message';

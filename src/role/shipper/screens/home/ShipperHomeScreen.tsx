@@ -12,7 +12,6 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   AppHeader,
   AppText,
- 
   EmptyState,
   Input,
   SectionHeader,

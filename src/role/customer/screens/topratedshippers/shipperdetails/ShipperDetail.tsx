@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
- 
+
 // Constants & Hooks
 import { COLORS, ICON_SIZE } from '../../../../../constants';
 import styles from './shipperDetail.styles';

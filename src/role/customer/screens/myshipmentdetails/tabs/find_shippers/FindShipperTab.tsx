@@ -1,18 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  
-  TouchableOpacity,
-  View,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
 
 import { AppText } from '../../../../../../components';
-import {
-  COLORS,
-  
-  ICON_SIZE,
-} from '../../../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';
 import imageIndex from '../../../../../../assets/images/imageIndex';
 import AppIcon from '../../../../../../components/AppIcon';
@@ -252,5 +242,3 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
 };
 
 export default FindShipperTab;
-
- 

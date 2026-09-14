@@ -21,11 +21,7 @@ const HomeSkeleton = () => {
 
       {/* Banner Skeleton */}
       <View style={styles.bannerContainer}>
-        <Skeleton
-          width={SCREEN_WIDTH - 16}
-          height={216}
-          borderRadius={20}
-        />
+        <Skeleton width={SCREEN_WIDTH - 16} height={216} borderRadius={20} />
       </View>
 
       {/* Section Header: Current Shipments */}

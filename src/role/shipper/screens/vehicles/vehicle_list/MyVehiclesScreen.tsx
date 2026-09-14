@@ -215,12 +215,7 @@ const VehicleItemCard = React.memo(
                 </AppText>
               </TouchableOpacity>
             ) : (
-              <View
-                style={[
-                  styles.actionPill,
-                  styles.actionPillExtraStyles,
-                ]}
-              >
+              <View style={[styles.actionPill, styles.actionPillExtraStyles]}>
                 <AppText
                   style={[styles.actionPillText, { color: COLORS.error }]}
                 >

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Modal,
- 
   View,
   TouchableOpacity,
   ScrollView,
@@ -17,7 +16,7 @@ import {
   Lock,
   Link as LinkIcon,
 } from 'lucide-react-native';
-import { COLORS,  } from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import { AppText } from '../../../../components';
 
 import Toast from 'react-native-toast-message';
@@ -259,5 +258,3 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
 };
 
 export default ConnectBankModal;
-
- 

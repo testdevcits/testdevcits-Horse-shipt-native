@@ -5,16 +5,11 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-   
 } from 'react-native';
- 
+
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import { AppText } from '../../../../components';
-import {
-  COLORS,
-   
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS, FONT_SIZE } from '../../../../constants';
 import {
   ShipperStatus,
   SubscriptionStatus,
@@ -236,7 +231,12 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
             <View style={styles.headerTopRow}>
               {/* Top Left Badge */}
               <View style={styles.requiredBadge}>
-                <AppIcon name={"Zap"} size={13} color={COLORS.white} fill={COLORS.white} />
+                <AppIcon
+                  name={'Zap'}
+                  size={13}
+                  color={COLORS.white}
+                  fill={COLORS.white}
+                />
                 <AppText style={styles.requiredBadgeText}>
                   SUBSCRIPTION REQUIRED
                 </AppText>
@@ -248,7 +248,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 onPress={onClose}
                 disabled={isSubmitting || isSavingCard}
               >
-                <AppIcon name={"X"} size={18} color={COLORS.white} />
+                <AppIcon name={'X'} size={18} color={COLORS.white} />
               </TouchableOpacity>
             </View>
 
@@ -260,7 +260,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {/* Sub Trial Pill */}
                 <View style={styles.trialPillRow}>
                   <View style={styles.trialPill}>
-                    <AppIcon name={"ShieldCheck"} size={13} color={COLORS.amberLightBg} />
+                    <AppIcon
+                      name={'ShieldCheck'}
+                      size={13}
+                      color={COLORS.amberLightBg}
+                    />
                     <AppText style={styles.trialPillText}>
                       {trialDays}-day free trial
                     </AppText>
@@ -294,7 +298,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
               <View style={{ width: '100%' }}>
                 {/* Header Title Row */}
                 <View style={styles.addCardHeaderRow}>
-                  <AppIcon name={"CreditCard"} size={20} color={COLORS.textPrimary} />
+                  <AppIcon
+                    name={'CreditCard'}
+                    size={20}
+                    color={COLORS.textPrimary}
+                  />
                   <AppText style={styles.addCardHeaderTitle}>
                     Add Payment Method
                   </AppText>
@@ -306,7 +314,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {/* Card Input Error Banner */}
                 {!!cardError && (
                   <View style={styles.errorBanner}>
-                    <AppIcon name={"AlertCircle"} size={15} color={COLORS.redPrimary} />
+                    <AppIcon
+                      name={'AlertCircle'}
+                      size={15}
+                      color={COLORS.redPrimary}
+                    />
                     <AppText style={styles.errorBannerText}>
                       {cardError}
                     </AppText>
@@ -346,7 +358,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     <ActivityIndicator color={COLORS.white} />
                   ) : (
                     <View style={styles.actionBtnContent}>
-                      <AppIcon name={"Check"} size={18} color={COLORS.white} />
+                      <AppIcon name={'Check'} size={18} color={COLORS.white} />
                       <AppText style={styles.actionBtnText}>
                         Save Card & Continue
                       </AppText>
@@ -382,7 +394,8 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                     ].map((item, idx) => (
                       <View key={idx} style={styles.checkItemRow}>
                         <View style={styles.checkIconSquare}>
-                          <AppIcon name={"CheckCircle2"}
+                          <AppIcon
+                            name={'CheckCircle2'}
                             size={16}
                             color={COLORS.brandBrown}
                             fill={COLORS.goldLightBg}
@@ -492,7 +505,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                 {!shipperStatus.hasCard && (
                   <View style={styles.cardWarningBox}>
                     <View style={styles.cardWarningIconBox}>
-                      <AppIcon name={"AlertCircle"} size={18} color={COLORS.amberWarning} />
+                      <AppIcon
+                        name={'AlertCircle'}
+                        size={18}
+                        color={COLORS.amberWarning}
+                      />
                     </View>
                     <View style={styles.cardWarningTextCol}>
                       <AppText style={styles.cardWarningTitle}>
@@ -529,7 +546,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
                   ) : (
                     <View style={styles.actionBtnContent}>
                       {!shipperStatus.hasCard && (
-                        <AppIcon name={"CreditCard"} size={18} color={COLORS.white} />
+                        <AppIcon
+                          name={'CreditCard'}
+                          size={18}
+                          color={COLORS.white}
+                        />
                       )}
                       <AppText style={styles.actionBtnText}>
                         {!shipperStatus.hasCard

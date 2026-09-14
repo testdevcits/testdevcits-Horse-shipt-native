@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   CheckCircle2,
   Info,
-  
 } from 'lucide-react-native';
 import {
   COLORS,
@@ -85,7 +84,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         <View style={styles.container}>
           {/* Close Button */}
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <AppIcon name={"X"} size={ICON_SIZE.md} color={COLORS.grey400} />
+            <AppIcon name={'X'} size={ICON_SIZE.md} color={COLORS.grey400} />
           </TouchableOpacity>
 
           {/* Icon Header */}

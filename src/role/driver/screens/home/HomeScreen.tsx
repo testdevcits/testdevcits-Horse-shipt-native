@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
- 
 
 // Imported design systems & components
 import { useDriverMe } from '../../../../hooks/useDriverMe';

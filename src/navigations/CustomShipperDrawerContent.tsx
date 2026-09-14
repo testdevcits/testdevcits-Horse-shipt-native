@@ -19,19 +19,13 @@ import {
   Edit3,
 } from 'lucide-react-native';
 import { COLORS } from '../constants/colors';
-import {
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-  RADIUS,
-  
-} from '../constants/dimensions';
+import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
 import { FONTS } from '../constants/fonts';
 import imageIndex from '../assets/images/imageIndex';
 import { AppText } from '../components';
 import { useAppDispatch } from '../hooks/redux';
 import { logoutUser } from '../redux/slices/authSlice';
- 
+
 interface DrawerItemProps {
   label: string;
   IconComponent?: React.ElementType;

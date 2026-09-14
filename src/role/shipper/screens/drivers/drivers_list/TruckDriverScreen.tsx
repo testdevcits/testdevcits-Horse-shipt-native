@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import Toast from 'react-native-toast-message';
 import {
   AppHeader,

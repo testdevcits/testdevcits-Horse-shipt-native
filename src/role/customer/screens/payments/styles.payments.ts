@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, FONTS, SPACING } from "../../../../constants";
+import { StyleSheet } from 'react-native';
+import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../../constants';
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   list: { padding: SPACING.md, paddingBottom: 100 },
 });
 
-export default styles
+export default styles;

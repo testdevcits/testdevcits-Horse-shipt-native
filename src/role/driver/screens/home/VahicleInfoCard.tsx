@@ -2,13 +2,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { memo, useState } from 'react';
 import { AppText } from '../../../../components';
 
-import {
-  COLORS,
-  FONTS,
-  
-  SPACING,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../constants';
 import AppIcon from '../../../../components/AppIcon';
 
 const VahicleInfoCard = ({

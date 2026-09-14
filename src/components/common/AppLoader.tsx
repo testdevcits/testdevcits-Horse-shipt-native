@@ -2,7 +2,13 @@ import { ActivityIndicator, StyleSheet, View, ViewStyle } from 'react-native';
 import { COLORS } from '../../constants';
 
 // AppLoader.tsx
-export const AppLoader = ({ visible,style }: { visible: boolean,style?:ViewStyle }) => {
+export const AppLoader = ({
+  visible,
+  style,
+}: {
+  visible: boolean;
+  style?: ViewStyle;
+}) => {
   if (!visible) return null;
   return (
     <View
@@ -14,10 +20,10 @@ export const AppLoader = ({ visible,style }: { visible: boolean,style?:ViewStyle
           alignItems: 'center',
           zIndex: 999,
         },
-        style
+        style,
       ]}
     >
-      <ActivityIndicator size="large" color={COLORS.primary}   />
+      <ActivityIndicator size="large" color={COLORS.primary} />
     </View>
   );
 };

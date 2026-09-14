@@ -15,7 +15,13 @@ import { pick, types } from '@react-native-documents/picker';
 import { COLORS } from '../../../../constants';
 
 import { HorseSchema } from './schema';
-import { AppHeader, AppLoader, Input, AppText, LazyFallback } from '../../../../components';
+import {
+  AppHeader,
+  AppLoader,
+  Input,
+  AppText,
+  LazyFallback,
+} from '../../../../components';
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
 import { breedsList, sexes, stallTypes, defaultColors } from './constants';

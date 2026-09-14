@@ -39,9 +39,14 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
   );
-  const ConnectBankModal = lazy(() => import('../home/components/ConnectBankModal'));
+  const ConnectBankModal = lazy(
+    () => import('../home/components/ConnectBankModal'),
+  );
   const SubscriptionRequiredModal = lazy(
-    () => import('../../components/subscription_required_modal/SubscriptionRequiredModal'),
+    () =>
+      import(
+        '../../components/subscription_required_modal/SubscriptionRequiredModal'
+      ),
   );
 
   const dispatch = useAppDispatch();

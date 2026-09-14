@@ -78,7 +78,10 @@ const ShipperHomeSkeleton = () => {
 
       {/* Available Shipment Cards Skeleton */}
       {[1, 2, 3].map((_, index) => (
-        <View key={`shipper-shipment-skel-${index}`} style={styles.shipmentCard}>
+        <View
+          key={`shipper-shipment-skel-${index}`}
+          style={styles.shipmentCard}
+        >
           {/* Left horse image placeholder */}
           <Skeleton width={75} height={75} borderRadius={RADIUS.md} />
 

@@ -13,7 +13,6 @@ import { useStripe } from '@stripe/stripe-react-native';
 import {
   AppHeader,
   AppText,
- 
   EmptyState,
   PaymentsSkeleton,
 } from '../../../../components';
@@ -21,7 +20,7 @@ import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/AppIcon';
- 
+
 const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
 const StripePaymentMethodCardModal = lazy(
   () => import('./StripePaymentMethodCardModal'),
