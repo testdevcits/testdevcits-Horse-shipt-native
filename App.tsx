@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, Platform, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // CRITICAL for Map & BottomSheet
@@ -15,6 +15,55 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
+import { checkInitialNotification, createNotificationChannel, getFCMToken, listenToTokenRefresh, requestNotificationPermission, setupForegroundNotifications, setupNotificationOpenedApp } from './src/api/services/notificationService';
+
+ const initializeNotifications = async () => {
+  await createNotificationChannel();
+
+  const permission =
+    await requestNotificationPermission();
+
+  if (!permission) {
+    console.log('Notification permission denied');
+    return;
+  }
+
+  const token = await getFCMToken();
+
+  console.log('FCM Token:', token);
+
+  const unsubscribeForeground =
+    setupForegroundNotifications();
+
+  const unsubscribeOpened =
+    setupNotificationOpenedApp();
+
+  await checkInitialNotification();
+
+  const unsubscribeTokenRefresh =
+    listenToTokenRefresh();
+
+  return () => {
+    unsubscribeForeground?.();
+    unsubscribeOpened?.();
+    unsubscribeTokenRefresh?.();
+  };
+};
+
+
+// useEffect(() => {
+//   let cleanup: (() => void) | undefined;
+
+//   initializeNotifications().then(unsubscribe => {
+//     cleanup = unsubscribe;
+//   });
+
+//   return () => {
+//     cleanup?.();
+//   };
+// }, []);
+
+ 
 
 const App = () => {
   return (
