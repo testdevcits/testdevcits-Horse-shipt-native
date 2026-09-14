@@ -23,7 +23,6 @@ const axiosClient: AxiosInstance = axios.create({
 // 1. Request Interceptor
 axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // Check network connectivity before making request
     const netState = await NetInfo.fetch();
     if (
       netState.isConnected === false ||
@@ -122,10 +121,10 @@ axiosClient.interceptors.response?.use(
 
     const errorMessage: string = String(
       errorBody?.errors?.[0] ||
-        errorBody?.message ||
-        errorBody?.error ||
-        error.message ||
-        'An error occurred',
+      errorBody?.message ||
+      errorBody?.error ||
+      error.message ||
+      'An error occurred',
     );
 
     Toast.show({

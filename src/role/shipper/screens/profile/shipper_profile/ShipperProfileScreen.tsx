@@ -14,12 +14,12 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../../redux/slices/authSlice';
 import { AppHeader, AppText, ProfileSkeleton } from '../../../../../components';
-import { COLORS } from '../../../../../constants';
+import { COLORS, FONTS } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import imageIndex from '../../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
 
-// Import modular tab components
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProfileTab from '../tabs/profile/ProfileTab';
 import ShipmentTab from '../tabs/shipments/ShipmentTab';
 import PaymentsTab from '../tabs/payments/PaymentsTab';
@@ -28,12 +28,7 @@ import NotificationTab from '../tabs/notifications/NotificationTab';
 import useShipperSubscription from '../../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../../components/AppIcon';
 
-type TabType =
-  | 'Profile'
-  | 'Shipment'
-  | 'Payments'
-  | 'Subscription'
-  | 'Notification';
+const Tab = createMaterialTopTabNavigator();
 
 const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
@@ -51,8 +46,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
-  const [activeTab, setActiveTab] = useState<TabType>('Profile');
-
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -400,206 +393,246 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     <View style={styles.container}>
       <AppHeader title="Profile" showProfileImage={false} />
 
-      {/* TOP HORIZONTAL SCROLLABLE TAB BAR */}
-      <View style={styles.tabBarWrapper}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabBarScroll}
-        >
-          {(
-            [
-              'Profile',
-              'Shipment',
-              'Payments',
-              'Subscription',
-              'Notification',
-            ] as TabType[]
-          ).map(tab => {
-            const isActive = activeTab === tab;
-            return (
-              <TouchableOpacity
-                key={tab}
-                style={[styles.tabItem, isActive && styles.tabItemActive]}
-                onPress={() => setActiveTab(tab)}
-              >
-                <AppText
-                  style={[styles.tabText, isActive && styles.tabTextActive]}
-                >
-                  {tab}
-                </AppText>
-                {isActive && <View style={styles.activeTabIndicator} />}
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </View>
-
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={COLORS.primary}
-          />
-        }
+      <Tab.Navigator
+        screenOptions={{
+          tabBarScrollEnabled: true,
+          tabBarIndicatorStyle: {
+            backgroundColor: COLORS.primary,
+            height: 3,
+            borderRadius: 2,
+          },
+          tabBarActiveTintColor: COLORS.primary,
+          tabBarInactiveTintColor: COLORS.textSecondary,
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontFamily: FONTS.bold,
+            textTransform: 'none',
+          },
+          tabBarItemStyle: {
+            width: 'auto',
+            paddingHorizontal: 16,
+          },
+          tabBarStyle: {
+            backgroundColor: COLORS.white,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 1,
+            borderBottomColor: COLORS.divider,
+          },
+          swipeEnabled: true,
+        }}
       >
-        {/* ONLY SHOW BANNER, AVATAR, & STATS CARD IN PROFILE TAB */}
-        {activeTab === 'Profile' && (
-          <>
-            {/* TOP SECTION: BANNER IMAGE */}
-            <View style={styles.bannerWrapper}>
-              {(() => {
-                const displayBanner =
-                  bannerUrl ||
-                  (typeof profileData?.bannerImage === 'string'
-                    ? profileData?.bannerImage
-                    : profileData?.bannerImage?.url);
-                return displayBanner ? (
-                  <Image
-                    source={{ uri: displayBanner }}
-                    style={styles.bannerImg}
-                    resizeMode="cover"
-                  />
-                ) : null;
-              })()}
-              <TouchableOpacity
-                style={styles.editBannerBtn}
-                onPress={handleUploadBannerImage}
-                disabled={bannerUploading}
-                activeOpacity={0.8}
-              >
-                {bannerUploading ? (
-                  <ActivityIndicator size="small" color={COLORS.white} />
-                ) : (
-                  <>
-                    <AppIcon name="Camera" size={14} color={COLORS.white} />
-                    <AppText style={styles.editBannerText}>Edit banner</AppText>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            {/* AVATAR & EDIT PICTURE */}
-            <View style={styles.avatarSection}>
-              <View style={styles.avatarCircleWrapper}>
+        <Tab.Screen name="Profile">
+          {() => (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={COLORS.primary}
+                />
+              }
+            >
+              {/* TOP SECTION: BANNER IMAGE */}
+              <View style={styles.bannerWrapper}>
                 {(() => {
-                  const displayAvatar =
-                    avatarUrl ||
-                    (typeof profileData?.profileImage === 'string'
-                      ? profileData?.profileImage
-                      : profileData?.profileImage?.url) ||
-                    (typeof user?.profileImage === 'string'
-                      ? user.profileImage
-                      : user?.profileImage?.url);
-                  const isValidAvatar =
-                    displayAvatar &&
-                    displayAvatar !== '/images/default_profile.png' &&
-                    displayAvatar !== '/default-avatar.png';
-
-                  return isValidAvatar ? (
+                  const displayBanner =
+                    bannerUrl ||
+                    (typeof profileData?.bannerImage === 'string'
+                      ? profileData?.bannerImage
+                      : profileData?.bannerImage?.url);
+                  return displayBanner ? (
                     <Image
-                      source={{ uri: displayAvatar }}
-                      style={styles.avatarImg}
+                      source={{ uri: displayBanner }}
+                      style={styles.bannerImg}
+                      resizeMode="cover"
                     />
-                  ) : (
-                    <Image
-                      source={imageIndex.AccountIcon}
-                      style={styles.avatarImg}
-                    />
-                  );
+                  ) : null;
                 })()}
+                <TouchableOpacity
+                  style={styles.editBannerBtn}
+                  onPress={handleUploadBannerImage}
+                  disabled={bannerUploading}
+                  activeOpacity={0.8}
+                >
+                  {bannerUploading ? (
+                    <ActivityIndicator size="small" color={COLORS.white} />
+                  ) : (
+                    <>
+                      <AppIcon name="Camera" size={14} color={COLORS.white} />
+                      <AppText style={styles.editBannerText}>
+                        Edit banner
+                      </AppText>
+                    </>
+                  )}
+                </TouchableOpacity>
               </View>
 
-              <TouchableOpacity
-                style={styles.editPicBtn}
-                onPress={handleUploadProfileImage}
-                disabled={profileUploading}
-              >
-                {profileUploading ? (
-                  <ActivityIndicator size="small" color={COLORS.primary} />
-                ) : (
-                  <>
-                    <AppIcon
-                      name="Pencil"
-                      size={16}
-                      color={COLORS.textPrimary}
-                    />
-                    <AppText style={styles.editPicText}>Edit picture</AppText>
-                  </>
-                )}
-              </TouchableOpacity>
+              {/* AVATAR & EDIT PICTURE */}
+              <View style={styles.avatarSection}>
+                <View style={styles.avatarCircleWrapper}>
+                  {(() => {
+                    const displayAvatar =
+                      avatarUrl ||
+                      (typeof profileData?.profileImage === 'string'
+                        ? profileData?.profileImage
+                        : profileData?.profileImage?.url) ||
+                      (typeof user?.profileImage === 'string'
+                        ? user.profileImage
+                        : user?.profileImage?.url);
+                    const isValidAvatar =
+                      displayAvatar &&
+                      displayAvatar !== '/images/default_profile.png' &&
+                      displayAvatar !== '/default-avatar.png';
 
-              {/* COMMON STATS CARD CONTAINER */}
-              {/* <View style={styles.statsCard}>
-                <View style={styles.statCol}>
-                  <AppText style={styles.statVal}>{shipmentCount}</AppText>
-                  <AppText style={styles.statSub}>Shipment</AppText>
+                    return isValidAvatar ? (
+                      <Image
+                        source={{ uri: displayAvatar }}
+                        style={styles.avatarImg}
+                      />
+                    ) : (
+                      <Image
+                        source={imageIndex.AccountIcon}
+                        style={styles.avatarImg}
+                      />
+                    );
+                  })()}
                 </View>
-                <View style={styles.statDivider} />
-                <View style={styles.statCol}>
-                  <View style={styles.ratingValRow}>
-                    <AppText style={styles.statVal}>{ratingVal.toFixed(1)}</AppText>
-                    <Star size={16} color="#F59E0B" fill="#F59E0B" style={{ marginLeft: 4 }} />
-                  </View>
-                  <AppText style={styles.statSub}>Rating</AppText>
-                </View>
-              </View> */}
-            </View>
 
-            {/* PROFILE TAB CONTENT */}
-            <ProfileTab
-              profileData={profileData}
-              user={user}
-              navigation={navigation}
-              onEditProfile={() =>
-                navigation.navigate('EditProfile', {
-                  profileData,
-                  user,
-                  onSuccess: (updatedData: any) => {
-                    setProfileData((prev: any) => ({
-                      ...prev,
-                      ...updatedData,
-                    }));
-                  },
-                })
+                <TouchableOpacity
+                  style={styles.editPicBtn}
+                  onPress={handleUploadProfileImage}
+                  disabled={profileUploading}
+                >
+                  {profileUploading ? (
+                    <ActivityIndicator size="small" color={COLORS.primary} />
+                  ) : (
+                    <>
+                      <AppIcon
+                        name="Pencil"
+                        size={16}
+                        color={COLORS.textPrimary}
+                      />
+                      <AppText style={styles.editPicText}>
+                        Edit picture
+                      </AppText>
+                    </>
+                  )}
+                </TouchableOpacity>
+              </View>
+
+              {/* PROFILE TAB CONTENT */}
+              <ProfileTab
+                profileData={profileData}
+                user={user}
+                navigation={navigation}
+                onEditProfile={() =>
+                  navigation.navigate('EditProfile', {
+                    profileData,
+                    user,
+                    onSuccess: (updatedData: any) => {
+                      setProfileData((prev: any) => ({
+                        ...prev,
+                        ...updatedData,
+                      }));
+                    },
+                  })
+                }
+                onLogout={handleLogout}
+              />
+            </ScrollView>
+          )}
+        </Tab.Screen>
+
+        <Tab.Screen name="Shipment">
+          {() => (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={COLORS.primary}
+                />
               }
-              onLogout={handleLogout}
-            />
-          </>
-        )}
+            >
+              <ShipmentTab navigation={navigation} />
+            </ScrollView>
+          )}
+        </Tab.Screen>
 
-        {activeTab === 'Shipment' && <ShipmentTab navigation={navigation} />}
+        <Tab.Screen name="Payments">
+          {() => (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={COLORS.primary}
+                />
+              }
+            >
+              <PaymentsTab
+                stripeStatus={stripeStatus}
+                navigation={navigation}
+                onRefreshStripeStatus={fetchAllProfileData}
+              />
+            </ScrollView>
+          )}
+        </Tab.Screen>
 
-        {activeTab === 'Payments' && (
-          <PaymentsTab
-            stripeStatus={stripeStatus}
-            navigation={navigation}
-            onRefreshStripeStatus={fetchAllProfileData}
-          />
-        )}
+        <Tab.Screen name="Subscription">
+          {() => (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={COLORS.primary}
+                />
+              }
+            >
+              <SubscriptionTab
+                subscriptionData={subscriptionData}
+                billingHistoryData={billingHistoryData}
+                subscriptionStatusData={subscriptionStatusData}
+                billingFilter={billingFilter}
+                setBillingFilter={setBillingFilter}
+                onOpenSubscriptionModal={openSubModal}
+                subsciptionPlans={subscriptionData?.plans || []}
+              />
+            </ScrollView>
+          )}
+        </Tab.Screen>
 
-        {activeTab === 'Subscription' && (
-          <SubscriptionTab
-            subscriptionData={subscriptionData}
-            billingHistoryData={billingHistoryData}
-            subscriptionStatusData={subscriptionStatusData}
-            billingFilter={billingFilter}
-            setBillingFilter={setBillingFilter}
-            onOpenSubscriptionModal={openSubModal}
-            subsciptionPlans={subscriptionData?.plans || []}
-          />
-        )}
-
-        {activeTab === 'Notification' && (
-          <NotificationTab
-            notifications={notifications}
-            handleToggleNotification={handleToggleNotification}
-          />
-        )}
-      </ScrollView>
+        <Tab.Screen name="Notification">
+          {() => (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={COLORS.primary}
+                />
+              }
+            >
+              <NotificationTab
+                notifications={notifications}
+                handleToggleNotification={handleToggleNotification}
+              />
+            </ScrollView>
+          )}
+        </Tab.Screen>
+      </Tab.Navigator>
       <Suspense fallback={null}>
         <ConnectBankModal
           isVisible={isBankModalVisible}
