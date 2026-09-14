@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -70,16 +70,27 @@ const HelpCenter = ({}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-
         {/* Additional FAQ Section */}
         <AppText style={styles.sectionLabel}>
           Frequently Asked Questions
         </AppText>
 
         <View style={styles.faqContainer}>
-          <FaqItem title="How to track my shipment?" />
-          <FaqItem title="How do I pay my quote?" />
-          <FaqItem title="Cancellation policy details" isLast />
+          <FaqItem
+            title="How to track my shipment?"
+            description="You can track your shipment from the My Shipments section. Open the shipment you want to track to view its current status, pickup details, delivery information, and updates."
+          />
+
+          <FaqItem
+            title="How do I pay my quote?"
+            description="Open your shipment and review the available quote. Once you accept the quote, you can proceed with the available payment option to complete your payment."
+          />
+
+          <FaqItem
+            title="Cancellation policy details"
+            description="Cancellation availability may depend on the current status of your shipment. Please review the shipment details or contact our support team for assistance with cancellation requests."
+            isLast
+          />
         </View>
       </ScrollView>
     </View>
@@ -87,14 +98,50 @@ const HelpCenter = ({}: any) => {
 };
 
 // Sub-component for FAQ List
-const FaqItem = ({ title, isLast }: { title: string; isLast?: boolean }) => (
-  <TouchableOpacity
-    style={[styles.faqItem, isLast && { borderBottomWidth: 0 }]}
-  >
-    <AppText style={styles.faqText}>{title}</AppText>
-    <AppIcon name={'ChevronRight'} size={16} color={COLORS.grey400} />
-  </TouchableOpacity>
-);
+// const FaqItem = ({ title, isLast }: { title: string; isLast?: boolean }) => (
+//   <TouchableOpacity
+//     style={[styles.faqItem, isLast && { borderBottomWidth: 0 }]}
+//   >
+//     <AppText style={styles.faqText}>{title}</AppText>
+//     <AppIcon name={'ChevronRight'} size={16} color={COLORS.grey400} />
+//   </TouchableOpacity>
+// );
+
+const FaqItem = ({
+  title,
+  description,
+  isLast,
+}: {
+  title: string;
+  description: string;
+  isLast?: boolean;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => setExpanded(prev => !prev)}
+      style={[styles.faqItem, isLast && !expanded && { borderBottomWidth: 0 }]}
+    >
+      <View style={styles.faqContent}>
+        <View style={styles.faqHeader}>
+          <AppText style={styles.faqText}>{title}</AppText>
+
+          <AppIcon
+            name={expanded ? 'ChevronUp' : 'ChevronDown'}
+            size={16}
+            color={COLORS.grey400}
+          />
+        </View>
+
+        {expanded && (
+          <AppText style={styles.faqDescription}>{description}</AppText>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -217,6 +264,24 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
+  },
+  faqContent: {
+    flex: 1,
+  },
+
+  faqHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  faqDescription: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+    lineHeight: 18,
+    marginTop: SPACING.sm,
+    paddingRight: SPACING.md,
   },
 });
 
