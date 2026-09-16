@@ -29,25 +29,25 @@ import LocationPermissionModal from './common/LocationPermissionModal';
 import LazyFallback from './common/LazyFallback';
 
 // Skeletons
-import HomeSkeleton, { HomeSkelaton } from './common/skeletons/HomeSkeleton';
-import ShipperHomeSkeleton from './common/skeletons/ShipperHomeSkeleton';
-import ShipmentsSkeleton from './common/skeletons/ShipmentsSkeleton';
+import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
+import ShipperHomeSkeleton from './skeletons/ShipperHomeSkeleton';
+import ShipmentsSkeleton from './skeletons/ShipmentsSkeleton';
 import MyHorsesSkeleton, {
   MyHorsesSkelatons,
-} from './common/skeletons/MyHorsesSkeleton';
-import ShippersListSkeleton from './common/skeletons/ShippersListSkeleton';
-import ShipperDetailSkeleton from './common/skeletons/ShipperDetailSkeleton';
-import ShipmentDetailSkeleton from './common/skeletons/ShipmentDetailSkeleton';
-import PaymentsSkeleton from './common/skeletons/PaymentsSkeleton';
-import ReviewsSkeleton from './common/skeletons/ReviewsSkeleton';
-import ChatListSkeleton from './common/skeletons/ChatListSkeleton';
-import ChatDetailsSkeleton from './common/skeletons/ChatDetailsSkeleton';
-import ProfileSkeleton from './common/skeletons/ProfileSkeleton';
-import SettingsSkeleton from './common/skeletons/SettingsSkeleton';
-import Skeleton from './common/skeletons/Skeleton';
-import SkeletonCard from './common/skeletons/SkeletonCard';
-import SkeletonCircle from './common/skeletons/SkeletonCircle';
-import SkeletonText from './common/skeletons/SkeletonText';
+} from './skeletons/MyHorsesSkeleton';
+import ShippersListSkeleton from './skeletons/ShippersListSkeleton';
+import ShipperDetailSkeleton from './skeletons/ShipperDetailSkeleton';
+import ShipmentDetailSkeleton from './skeletons/ShipmentDetailSkeleton';
+import PaymentsSkeleton from './skeletons/PaymentsSkeleton';
+import ReviewsSkeleton from './skeletons/ReviewsSkeleton';
+import ChatListSkeleton from './skeletons/ChatListSkeleton';
+import ChatDetailsSkeleton from './skeletons/ChatDetailsSkeleton';
+import ProfileSkeleton from './skeletons/ProfileSkeleton';
+import SettingsSkeleton from './skeletons/SettingsSkeleton';
+import Skeleton from './skeletons/Skeleton';
+import SkeletonCard from './skeletons/SkeletonCard';
+import SkeletonCircle from './skeletons/SkeletonCircle';
+import SkeletonText from './skeletons/SkeletonText';
 
 // Driver
 import DriverHeader from './common/DriverHeader';

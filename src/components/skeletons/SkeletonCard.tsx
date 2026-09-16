@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import SkeletonText from './SkeletonText';
 import SkeletonCircle from './SkeletonCircle';
-import { COLORS } from '../../../constants';
+import { COLORS } from '../../constants';
 
 const SkeletonCard = () => {
   return (

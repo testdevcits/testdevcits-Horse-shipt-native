@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import SkeletonText from './SkeletonText';
 import SkeletonCircle from './SkeletonCircle';
-import { COLORS, RADIUS, SPACING } from '../../../constants';
+import { COLORS, RADIUS, SPACING } from '../../constants';
 
 const ReviewsSkeleton = () => {
   return (

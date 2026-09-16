@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Skeleton from './Skeleton';
 import SkeletonText from './SkeletonText';
-import { COLORS, RADIUS, SPACING } from '../../../constants';
+import { COLORS, RADIUS, SPACING } from '../../constants';
 
 const ShipmentDetailSkeleton = () => {
   return (
