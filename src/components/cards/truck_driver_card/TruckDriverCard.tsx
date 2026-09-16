@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../../constants';
 import AppText from '../../common/AppText';
-import Toast from 'react-native-toast-message';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.truckdrivercard';
+import { showInfoToast } from '../../../utils/toast';
 
 export interface TruckDriverCardProps {
   driver: {
@@ -149,11 +149,11 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               if (canToggleStatus) {
                 onToggleStatus(driverId, isActive);
               } else {
-                Toast.show({
-                  type: 'info',
-                  text1: 'Driver Busy',
-                  text2: `Driver ${driverName} is currently assigned to an active trip.`,
-                });
+                
+                showInfoToast(
+                  'Driver Busy',
+                  `Driver ${driverName} is currently assigned to an active trip.`,
+                );
               }
             }}
             activeOpacity={0.7}

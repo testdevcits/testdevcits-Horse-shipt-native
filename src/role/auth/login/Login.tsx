@@ -18,10 +18,11 @@ import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 
-import Toast from 'react-native-toast-message';
+ 
 import RoleSelectionModal from './components/RoleSelectionModal';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import useLogin from './useLogin';
+import { showInfoToast } from '../../../utils/toast';
 
 const Login = () => {
   const {
@@ -206,11 +207,8 @@ const Login = () => {
         onClose={() => setIsRoleModalVisible(false)}
         onSelectRole={newRole => {
           setSelectedRole(newRole);
-          Toast.show({
-            type: 'info',
-            text1: 'Role Selected',
-            text2: `Switched signing in mode to ${newRole.toUpperCase()}`,
-          });
+          
+          showInfoToast('Role Selected',`Switched signing in mode to ${newRole.toUpperCase()}`)
         }}
       />
     </View>

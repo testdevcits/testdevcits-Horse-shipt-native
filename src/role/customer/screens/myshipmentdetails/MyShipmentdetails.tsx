@@ -5,8 +5,7 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-
-import Toast from 'react-native-toast-message';
+ 
 import { COLORS, FONT_SIZE } from '../../../../constants';
 import {
   AppHeader,
@@ -28,6 +27,7 @@ import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmen
 
 import customerService from '../../../../api/services/customerService';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -108,18 +108,14 @@ const MyShipmentDetails = ({ route }: any) => {
     setIsDeleting(true);
     try {
       await dispatch(deleteCustomerShipment(data._id)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'Draft Deleted',
-        text2: 'Draft shipment deleted successfully.',
-      });
+      showSuccessToast('Draft Deleted', 'Draft shipment deleted successfully.');
       navigation.goBack();
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Delete Failed',
-        text2: err || 'Failed to delete draft shipment',
-      });
+      
+      showErrorToast(
+        'Delete Failed',
+        `${err} || 'Failed to delete draft shipment'`,
+      );
       setIsDeleting(false);
       setIsDeleteModalVisible(false);
     }

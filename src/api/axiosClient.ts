@@ -10,6 +10,7 @@ import { logoutUser } from '../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import NetInfo from '@react-native-community/netinfo';
 import { BASE_URL } from '../config/constants';
+import { showErrorToast } from '../utils/toast';
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -127,11 +128,13 @@ axiosClient.interceptors.response?.use(
         'An error occurred',
     );
 
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: errorMessage,
-    });
+    // Toast.show({
+    //   type: 'error',
+    //   text1: 'Error',
+    //   text2: errorMessage,
+    // });
+
+    showErrorToast('Error',errorMessage)
 
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {

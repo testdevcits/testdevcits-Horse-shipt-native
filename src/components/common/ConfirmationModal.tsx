@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: COLORS.grey100,
+    borderRadius: RADIUS.md,
   },
   confirmButton: {
     // Background color is dynamic
@@ -217,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: COLORS.grey700,
+    borderRadius: RADIUS.md,
   },
   confirmText: {
     fontSize: FONT_SIZE.sm,

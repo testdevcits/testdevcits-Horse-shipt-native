@@ -1,7 +1,7 @@
 import { TextInput, Keyboard } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import authService from '../../../api/services/authService';
-import Toast from 'react-native-toast-message';
+import { showErrorToast, showInfoToast, showSuccessToast } from '../../../utils/toast';
 
 const useVerifyOtp = ({ email, role, navigation }: any) => {
   const [otp, setOtp] = useState('');
@@ -48,7 +48,7 @@ const useVerifyOtp = ({ email, role, navigation }: any) => {
       });
 
       if (res?.success) {
-        Toast.show({ type: 'success', text1: 'OTP Verified' });
+        showSuccessToast('OTP Verified');
         navigation.navigate('ResetPassword', { email, role, otp: finalOtp });
       }
     } catch (err: any) {
@@ -67,10 +67,10 @@ const useVerifyOtp = ({ email, role, navigation }: any) => {
       setResendTimer(60);
       setOtp(''); // Clear old OTP on fresh resend
       setError('');
-      Toast.show({ type: 'info', text1: 'New OTP Sent' });
+       showInfoToast( 'New OTP Sent')
     } catch (e) {
-      Toast.show({ type: 'error', text1: 'Resend Failed' });
-    }
+      showErrorToast('Resend Failed');
+     }
   };
 
   return {

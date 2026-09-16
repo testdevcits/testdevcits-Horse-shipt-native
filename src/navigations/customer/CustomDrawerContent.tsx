@@ -223,7 +223,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
 
       <View style={styles.footerContainer}>
         <DrawerMenuItem
-          label="Logout"
+          label="Log out of your account?"
           IconComponent={LogOut}
           iconColor={COLORS.error}
           onPress={() => setIsLogoutModalVisible(true)}
@@ -237,8 +237,8 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
           isVisible={isLogoutModalVisible}
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleLogoutConfirm}
-          title="Logout"
-          description="Are you sure you want to log out of your account?"
+          title="Log out of your account?"
+          description="You will need to sign back in with your credentials to access your profile and saved settings."
           confirmText="Logout"
           cancelText="Cancel"
           type="danger"

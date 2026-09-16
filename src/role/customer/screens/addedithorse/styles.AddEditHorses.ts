@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
   },
   uploadBox: {
-    width: 110,
-    height: 110,
+    width: 300,
+    height: 300,
     borderRadius: RADIUS.md,
     borderWidth: 1.5,
     borderColor: COLORS.primary,
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
   },
   photoPreviewBox: {
     position: 'relative',
-    width: 110,
-    height: 110,
+    width: 300,
+    height: 300,
     borderRadius: RADIUS.md,
     overflow: 'hidden',
   },

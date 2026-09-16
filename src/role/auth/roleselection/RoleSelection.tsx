@@ -13,8 +13,8 @@ import { COLORS } from '../../../constants';
 import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
-import Toast from 'react-native-toast-message'; // Optional but recommended for professional apps
 import styles from './styles.RoleSelection';
+import { showErrorToast } from '../../../utils/toast';
 
 type UserRole = 'customer' | 'shipper' | 'driver';
 
@@ -54,11 +54,8 @@ const RoleSelection = ({ navigation }: any) => {
       navigation.replace('Welcome', { role: selectedRole });
     } catch (error) {
       console.error('Error storing user role:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Storage Error',
-        text2: 'Could not save your preference. Please try again.',
-      });
+     
+      showErrorToast("Storage Error",'Could not save your preference. Please try again.')
     } finally {
       setIsStoring(false);
     }

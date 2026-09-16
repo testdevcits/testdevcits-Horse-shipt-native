@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: COLORS.grey400,
     marginTop: 6,
+     
   },
 
   deleteIconButton: {

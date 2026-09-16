@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import Toast from 'react-native-toast-message';
+
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
   fetchNotificationsThunk,
   markNotificationsReadThunk,
   deleteNotificationsThunk,
 } from '../../../redux/slices/notificationSlice';
+import { showErrorToast, showSuccessToast } from '../../../utils/toast';
 
 export type NotificationFilter = 'all' | 'unread' | 'read';
 
@@ -70,18 +71,13 @@ const useNotifications = () => {
     if (selectedIds.length === 0) return;
     try {
       await dispatch(markNotificationsReadThunk(selectedIds)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'Marked as Read',
-        text2: `${selectedIds.length} notification(s) marked as read`,
-      });
+      showSuccessToast(
+        'Marked as Read',
+        `${selectedIds.length} notification(s) marked as read`,
+      );
       setSelectedIds([]);
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: err || 'Failed to update notifications',
-      });
+      showErrorToast('Error', `${err} || 'Failed to update notifications'`);
     }
   };
 
@@ -90,18 +86,11 @@ const useNotifications = () => {
     if (unreadIds.length === 0) return;
     try {
       await dispatch(markNotificationsReadThunk(unreadIds)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'All Read',
-        text2: 'All notifications marked as read',
-      });
+
+      showSuccessToast('All Read', 'All notifications marked as read');
       setSelectedIds([]);
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: err || 'Failed to mark all as read',
-      });
+      showErrorToast('Error', `${err} || 'Failed to mark all as read'`);
     }
   };
 
@@ -119,18 +108,14 @@ const useNotifications = () => {
     if (idsToDelete.length === 0) return;
     try {
       await dispatch(deleteNotificationsThunk(idsToDelete)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'Deleted',
-        text2: `${idsToDelete.length} notification(s) removed`,
-      });
+
+      showSuccessToast(
+        'Deleted',
+        `${idsToDelete.length} notification(s) removed`,
+      );
       setSelectedIds(prev => prev.filter(id => !idsToDelete.includes(id)));
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: err || 'Failed to delete notifications',
-      });
+      showErrorToast('Error', `${err} || 'Failed to delete notifications' `);
     }
   };
 

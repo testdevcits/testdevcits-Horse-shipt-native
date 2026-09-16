@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
 import authService from '../../../api/services/authService';
-import Toast from 'react-native-toast-message';
+
+import { showSuccessToast } from '../../../utils/toast';
 
 const usePasswordRecovery = ({ navigation }: any) => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -39,21 +40,15 @@ const usePasswordRecovery = ({ navigation }: any) => {
       const res = await authService.forgotPassword(email, 'customer');
 
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Email Sent',
-          text2: 'Please check your inbox for reset instructions.',
-        });
+        showSuccessToast(
+          'Email Sent',
+          'Please check your inbox for reset instructions.',
+        );
         // Navigate to a success screen or back to Login
         navigation.navigate('VerifyOtp');
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Something went wrong');
-      // Toast.show({
-      //     type: 'error',
-      //     text1: 'Error',
-      //     text2: 'Unable to send recovery email.'
-      // });
     } finally {
       setIsLoading(false);
     }

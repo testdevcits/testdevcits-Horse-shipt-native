@@ -6,6 +6,7 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
+
 import {
   Bell,
   BellOff,
@@ -15,8 +16,8 @@ import {
   Truck,
   MessageSquare,
   FileText,
-  X,
   CheckCircle2,
+  ArrowRight,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
 import { COLORS } from '../../../constants';
@@ -30,6 +31,8 @@ import {
 } from '../../../components';
 import styles from './styles.notification';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppIcon from '../../../components/app_icon/AppIcon';
+import { useNavigation } from '@react-navigation/native';
 
 const ConfirmationModal = lazy(
   () => import('../../../components/common/ConfirmationModal'),
@@ -83,6 +86,7 @@ const getNotificationIcon = (title: string = '', message: string = '') => {
 };
 
 const Notifications = () => {
+  const navigation: any = useNavigation();
   const {
     allNotifications,
     notifications,
@@ -138,6 +142,8 @@ const Notifications = () => {
 
     const iconData = getNotificationIcon(item?.title, item?.message);
     const IconComp = iconData.Icon;
+
+    console.log('==item===11==', item);
 
     return (
       <TouchableOpacity
@@ -208,13 +214,43 @@ const Notifications = () => {
         </View>
 
         {/* Single Item Delete Action */}
-        <TouchableOpacity
-          style={styles.deleteIconButton}
-          onPress={() => handleInitiateDeleteSingle(item?._id)}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <Trash2 size={16} color={COLORS.grey400} />
-        </TouchableOpacity>
+
+        <View>
+          <TouchableOpacity
+            style={styles.deleteIconButton}
+            onPress={() => handleInitiateDeleteSingle(item?._id)}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Trash2 size={16} color={COLORS.grey400} />
+          </TouchableOpacity>
+          {item?.event === 'horse_shipt:chat_message_created' &&
+          item?.data?.shipmentId ? (
+            <TouchableOpacity
+              style={styles.deleteIconButton}
+              onPress={() =>
+                navigation.navigate('ChatDetails', {
+                  shipmentId: item?.data?.shipmentId,
+                })
+              }
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <ArrowRight size={16} color={COLORS.grey400} />
+            </TouchableOpacity>
+          ) : item?.event === 'horse_shipt:quote_vehicle_assigned' ? (
+            <TouchableOpacity
+              style={styles.deleteIconButton}
+              onPress={() => {
+                navigation.navigate('MyShipmentDetails', {
+                  item: { _id: item?.data?.shipmentId },
+                  quoteId: item?.quoteId,
+                });
+              }}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <ArrowRight size={16} color={COLORS.grey400} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </TouchableOpacity>
     );
   };
@@ -410,7 +446,7 @@ const Notifications = () => {
               onPress={clearSelection}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <X size={18} color={COLORS.grey700} />
+              <AppIcon name={'X'} size={18} color={COLORS.grey700} />
             </TouchableOpacity>
           </View>
         </View>

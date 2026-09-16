@@ -653,8 +653,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           isVisible={isLogoutModalVisible}
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleConfirmLogout}
-          title="Logout"
-          description="Are you sure you want to log out?"
+          title="Log out of your account?"
+          description="Are you sure you want to log out of your driver session?"
           confirmText="Logout"
           cancelText="Cancel"
           type="danger"

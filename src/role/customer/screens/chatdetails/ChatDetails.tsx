@@ -23,9 +23,10 @@ import {
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
-import Toast from 'react-native-toast-message';
+
 import { permissionService } from '../../../../utils/cameragalleryPermission';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast } from '../../../../utils/toast';
 
 const PhotoSourceSheet = lazy(
   () => import('../../../../components/common/PhotoSourceSheet'),
@@ -151,11 +152,10 @@ const ChatDetails = () => {
       });
 
       if (image?.size && image.size > 1 * 1024 * 1024) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected chat image must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected chat image must be 1 MB or less.',
+        );
         return;
       }
 
@@ -184,11 +184,10 @@ const ChatDetails = () => {
       });
 
       if (image?.size && image.size > 1 * 1024 * 1024) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected chat image must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected chat image must be 1 MB or less.',
+        );
         return;
       }
 

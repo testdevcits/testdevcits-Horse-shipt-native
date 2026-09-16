@@ -25,7 +25,7 @@ import {
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
 import { breedsList, sexes, stallTypes, defaultColors } from './constants';
-import Toast from 'react-native-toast-message';
+ 
 import { useDispatch } from 'react-redux';
 import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';
@@ -33,6 +33,7 @@ import HorseActionModal from './HorseActionModal';
 import { Horse } from '../../../../types/customer';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.AddEditHorses';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const AppSelect = lazy(() =>
   import('../../../../components').then(module => ({
@@ -115,11 +116,10 @@ const AddEditHorse = () => {
       });
 
       if (image?.size && image.size > MAX_FILE_SIZE_BYTES) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected image must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected image must be 1 MB or less.',
+        );
         return;
       }
 
@@ -155,11 +155,10 @@ const AddEditHorse = () => {
       if (!result) return;
 
       if (result.size && result.size > MAX_FILE_SIZE_BYTES) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected document must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected document must be 1 MB or less.',
+        );
         return;
       }
 
@@ -235,18 +234,12 @@ const AddEditHorse = () => {
 
       if (isEdit && horse?._id) {
         await customerService.updateHorse(horse._id, formData);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Horse updated successfully',
-        });
+
+        showSuccessToast('Success', 'Horse updated successfully');
       } else {
         await customerService.addHorse(formData);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Horse added successfully',
-        });
+
+        showSuccessToast('Success', 'Horse added successfully');
       }
       const response = await customerService.getHorses();
       if (response.success) {
@@ -255,11 +248,7 @@ const AddEditHorse = () => {
       navigation.goBack();
     } catch (error: any) {
       console.log('Error submitting horse:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'Something went wrong',
-      });
+      showErrorToast('Error', ` ${error.message} || 'Something went wrong'`);
     } finally {
       setIsSaving(false);
     }

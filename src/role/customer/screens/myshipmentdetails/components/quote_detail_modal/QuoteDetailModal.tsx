@@ -21,11 +21,12 @@ import { AppText, Input } from '../../../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import Toast from 'react-native-toast-message';
+
 import AppIcon, {
   IconName,
 } from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.QuoteDetailModal';
+import { showSuccessToast } from '../../../../../../utils/toast';
 
 const QuoteDetailModal = ({
   visible,
@@ -136,11 +137,7 @@ const QuoteDetailModal = ({
           customerSignature: signature,
         });
         if (acceptRes) {
-          Toast.show({
-            type: 'success',
-            text1: 'Success',
-            text2: 'Payment successful and quote accepted!',
-          });
+          showSuccessToast('Success', 'Payment successful and quote accepted!');
           onClose();
           navigation.goBack();
           if (onRefresh) onRefresh();
@@ -165,11 +162,7 @@ const QuoteDetailModal = ({
         reason: cancelReason.trim(),
       });
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Shipment has been cancelled.',
-        });
+        showSuccessToast('Success', 'Shipment has been cancelled.');
         setIsCancelModalVisible(false);
         onClose();
         if (onRefresh) onRefresh();

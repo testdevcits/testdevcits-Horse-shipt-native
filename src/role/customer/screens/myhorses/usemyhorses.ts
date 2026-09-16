@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Toast from 'react-native-toast-message';
 
 import customerService from '../../../../api/services/customerService';
 import { Horse } from '../../../../types/customer';
@@ -12,6 +11,7 @@ import {
   setError,
 } from '../../../../redux/slices/horseSlice';
 import { RootState } from '../../../../app/store';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const useMyHorses = () => {
   const navigation = useNavigation<any>();
@@ -61,20 +61,12 @@ const useMyHorses = () => {
 
       await customerService.deleteHorse(selectedHorseId);
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Horse removed successfully',
-      });
+      showSuccessToast('Success', 'Horse removed successfully');
 
       fetchHorses();
     } catch (error) {
       console.log(error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to delete horse',
-      });
+      showErrorToast('Error', 'Failed to delete horse');
     } finally {
       dispatch(setLoading(false));
       setIsDeleteModalVisible(false);

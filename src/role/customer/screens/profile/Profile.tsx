@@ -312,8 +312,8 @@ const Profile = ({}: any) => {
           isVisible={isLogoutModalVisible}
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleConfirmLogout}
-          title="Logout"
-          description="Are you sure you want to log out?"
+          title="Log out of your account?"
+          description="You will need to sign back in with your credentials to access your profile and saved settings."
           confirmText="Logout"
           cancelText="Cancel"
           type="danger"

@@ -11,7 +11,6 @@ import {
 
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import {
   COLORS,
   FONT_SIZE,
@@ -23,6 +22,7 @@ import {
 } from '../../constants';
 import AppText from './AppText';
 import AppIcon from '../app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../utils/toast';
 
 export interface ShipmentData {
   _id?: string;
@@ -133,11 +133,7 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
 
     try {
       Clipboard.setString(textToCopy);
-      Toast.show({
-        type: 'success',
-        text1: 'Copied to Clipboard',
-        text2: `${label} copied successfully.`,
-      });
+      showSuccessToast('Copied to Clipboard', `${label} copied successfully.`);
     } catch (error) {
       console.log('Clipboard Copy Error:', error);
     }
@@ -157,12 +153,10 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
       !delivery ||
       delivery.includes('not specified')
     ) {
-      Toast.show({
-        type: 'error',
-        text1: 'Invalid Location',
-        text2:
-          'Complete pickup and delivery locations are required for navigation.',
-      });
+      showErrorToast(
+        'Invalid Location',
+        'Complete pickup and delivery locations are required for navigation.',
+      );
       return;
     }
 
@@ -178,11 +172,8 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
 
     Linking.openURL(mapUrl).catch(err => {
       console.error('An error occurred opening map', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Unable to Open Maps',
-        text2: 'Could not open map application.',
-      });
+
+      showErrorToast('Unable to Open Maps', 'Could not open map application.');
     });
   };
 

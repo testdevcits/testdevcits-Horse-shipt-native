@@ -3,7 +3,7 @@ import { Keyboard } from 'react-native';
 
 import authService from '../../../api/services/authService';
 
-import Toast from 'react-native-toast-message';
+import { showErrorToast, showSuccessToast } from '../../../utils/toast';
 
 const useResetPassword = ({ email, role, otp, navigation }: any) => {
   // UI & Form State
@@ -69,17 +69,16 @@ const useResetPassword = ({ email, role, otp, navigation }: any) => {
       });
 
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Password Updated',
-          text2: 'You can now log in with your new password.',
-        });
+        showSuccessToast(
+          'Password Updated',
+          'You can now log in with your new password.',
+        );
         // Success: Redirect to Login
         navigation.navigate('Login');
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Failed to reset password';
-      Toast.show({ type: 'error', text1: 'Error', text2: msg });
+      showErrorToast('Error', msg);
     } finally {
       setIsLoading(false);
     }

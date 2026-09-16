@@ -260,8 +260,8 @@ const Profile = () => {
           isVisible={isLogoutModalVisible}
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleLogoutConfirm}
-          title="Logout"
-          description="Are you sure you want to log out of your driver session?"
+          title="Log out of your account?"
+          description="You will need to sign back in with your credentials to access your profile and saved settings."
           confirmText="Logout"
           cancelText="Cancel"
           type="danger" // Applies the red 'danger' layout styling from your stylesheet

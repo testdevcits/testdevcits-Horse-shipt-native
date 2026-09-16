@@ -37,19 +37,19 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
 
   useEffect(() => {
     const loc = profileData?.locale || {};
-    setAddress(loc.address || 'Not Available');
-    setLatitude(typeof loc.latitude === 'number' ? loc.latitude : DEFAULT_LAT);
+    setAddress(loc?.address || 'Not Available');
+    setLatitude(typeof loc?.latitude === 'number' ? loc?.latitude : DEFAULT_LAT);
     setLongitude(
-      typeof loc.longitude === 'number' ? loc.longitude : DEFAULT_LNG,
+      typeof loc?.longitude === 'number' ? loc?.longitude : DEFAULT_LNG,
     );
     setMobile(profileData?.mobile || user?.phoneNumber || '');
     setDescription(profileData?.description || '');
   }, [profileData, user]);
 
   const handleLocationSelect = (loc: LocationSelectResult) => {
-    if (loc.address) setAddress(loc.address);
-    if (loc.latitude) setLatitude(loc.latitude);
-    if (loc.longitude) setLongitude(loc.longitude);
+    if (loc?.address) setAddress(loc?.address);
+    if (loc?.latitude) setLatitude(loc?.latitude);
+    if (loc?.longitude) setLongitude(loc?.longitude);
   };
 
   const handleSave = async () => {
@@ -201,7 +201,7 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
               inputContainerStyle={{ minHeight: 90 }}
               rightIcon={
                 <AppText style={styles.charCounter}>
-                  {description.length}/500
+                  {description?.length}/500
                 </AppText>
               }
             />
