@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  StatusBar,
-} from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar } from 'react-native';
 
 import {
   COLORS,

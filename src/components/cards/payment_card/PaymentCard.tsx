@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, TouchableOpacity,   } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { COLORS, ICON_SIZE } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';

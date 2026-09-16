@@ -22,7 +22,9 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
-import AppIcon, { IconName } from '../../../../../../components/app_icon/AppIcon';
+import AppIcon, {
+  IconName,
+} from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.QuoteDetailModal';
 
 const QuoteDetailModal = ({

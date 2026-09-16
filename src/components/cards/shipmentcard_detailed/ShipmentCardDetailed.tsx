@@ -1,11 +1,7 @@
 import React, { memo, useState } from 'react';
-import { View, Image,   TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 
-import {
-  COLORS,
-  
-  ICON_SIZE,
-} from '../../../constants';
+import { COLORS, ICON_SIZE } from '../../../constants';
 import AppText from '../../common/AppText';
 import { horsePlaceholderImage } from '../../../config/constants';
 import AppIcon from '../../app_icon/AppIcon';
@@ -207,7 +203,5 @@ const ShipmentHorizontalCard = memo(
     );
   },
 );
-
- 
 
 export default ShipmentHorizontalCard;

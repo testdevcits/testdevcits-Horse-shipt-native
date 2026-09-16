@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native";
-import { COLORS ,SPACING,FONTS,FONT_SIZE} from "../../../constants";
+import { StyleSheet } from 'react-native';
+import { COLORS, SPACING, FONTS, FONT_SIZE } from '../../../constants';
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 20,
@@ -155,4 +155,4 @@ import { COLORS ,SPACING,FONTS,FONT_SIZE} from "../../../constants";
   },
 });
 
-export default styles
+export default styles;

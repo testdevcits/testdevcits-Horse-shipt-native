@@ -65,7 +65,6 @@ export {
   Input,
   ConfirmationModal,
   AppText,
- 
   ShipperCard,
   TruckDriverCard,
   AppLoader,

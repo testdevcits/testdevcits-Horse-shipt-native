@@ -1,13 +1,7 @@
 import React, { memo } from 'react';
-import {
- 
-  View,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 
-import { COLORS,  } from '../../../constants';
+import { COLORS } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.tripcard';

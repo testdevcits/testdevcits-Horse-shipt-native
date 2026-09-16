@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { View, Image,   } from 'react-native';
-import { COLORS,   } from '../../../constants';
+import { View, Image } from 'react-native';
+import { COLORS } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.ReviewCard';
@@ -130,7 +130,5 @@ const ReviewCard = memo(({ item, fullWidth = true }: ReviewCardProps) => {
     </View>
   );
 });
-
- 
 
 export default ReviewCard;

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { View, Image, TouchableOpacity,   } from 'react-native';
-import { COLORS,   } from '../../../constants';
+import { View, Image, TouchableOpacity } from 'react-native';
+import { COLORS } from '../../../constants';
 import AppText from '../../common/AppText';
 import Toast from 'react-native-toast-message';
 import AppIcon from '../../app_icon/AppIcon';
@@ -201,7 +201,5 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
     );
   },
 );
-
- 
 
 export default TruckDriverCard;

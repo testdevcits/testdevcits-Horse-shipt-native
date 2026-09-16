@@ -1,2 +1,2 @@
-import MyHorsesSkeleton from './MyHorsesSkeleton';
-export default MyHorsesSkeleton;
+// import MyHorsesSkeleton from './MyHorsesSkeleton';
+// export default MyHorsesSkeleton;
