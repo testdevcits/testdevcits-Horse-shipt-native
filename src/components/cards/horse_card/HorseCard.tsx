@@ -12,7 +12,7 @@ import { COLORS, FONTS } from '../../../constants';
 import AppText from '../../common/AppText';
 import { Horse } from '../../../types/customer';
 import imageIndex from '../../../assets/images/imageIndex';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.HorseCard';
 
 interface HorseCardProps {

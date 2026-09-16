@@ -24,7 +24,7 @@ import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shipperchats';
 import imageIndex from '../../../../assets/images/imageIndex';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
 

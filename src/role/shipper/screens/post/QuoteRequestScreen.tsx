@@ -4,7 +4,7 @@ import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
 import styles from './styles.postload';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 interface QuoteRequestScreenProps {
   data: any[];

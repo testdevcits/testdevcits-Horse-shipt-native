@@ -19,7 +19,7 @@ import MyQuotesScreen from '../role/shipper/screens/quotes/MyQuotesScreen';
 import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
 import ShipperProfileScreen from '../role/shipper/screens/profile/shipper_profile/ShipperProfileScreen';
 import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
-import AppIcon from '../components/AppIcon';
+import AppIcon from '../components/app_icon/AppIcon';
 
 const Tab = createBottomTabNavigator<{
   Home: undefined;

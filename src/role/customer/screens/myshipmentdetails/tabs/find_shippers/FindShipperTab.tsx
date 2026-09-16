@@ -5,7 +5,7 @@ import { AppText } from '../../../../../../components';
 import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';
 import imageIndex from '../../../../../../assets/images/imageIndex';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.FindShippers';
 
 const ShipperProfileCard = ({

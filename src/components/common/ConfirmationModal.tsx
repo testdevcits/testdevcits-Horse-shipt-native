@@ -15,7 +15,7 @@ import {
   SPACING,
 } from '../../constants';
 import AppText from './AppText';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 export type ModalType = 'danger' | 'success' | 'info' | 'warning';
 

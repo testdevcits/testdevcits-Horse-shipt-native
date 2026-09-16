@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Pressable } from 'react-native';
 import { COLORS } from '../../../constants'; // Adjust paths
 import AppText from '../../common/AppText';
 import imageIndex from '../../../assets/images/imageIndex';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.ShipperCard';
 
 interface ShipperCardProps {

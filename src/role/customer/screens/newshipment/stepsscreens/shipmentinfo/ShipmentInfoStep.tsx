@@ -4,7 +4,7 @@ import { COLORS, SPACING } from '../../../../../../constants';
 import { AppText, Input } from '../../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import styles from './ShipmentInfoStepstyles';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface ShipmentInfoStepProps {
   form: NewShipmentForm;

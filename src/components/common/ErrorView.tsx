@@ -9,7 +9,7 @@ import {
   SPACING,
   ICON_SIZE,
 } from '../../constants';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 const ErrorView = ({
   message,

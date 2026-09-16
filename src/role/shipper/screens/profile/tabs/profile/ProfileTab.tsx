@@ -5,7 +5,7 @@ import { AppText } from '../../../../../../components';
 import { COLORS } from '../../../../../../constants';
 import imageIndex from '../../../../../../assets/images/imageIndex';
 import styles from './styles.profiletab';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface Props {
   profileData: any;

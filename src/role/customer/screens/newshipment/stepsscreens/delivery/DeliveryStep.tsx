@@ -6,7 +6,7 @@ import { COLORS } from '../../../../../../constants';
 import LocationPicker from '../../../../../../components/common/LocationPicker/LocationPicker';
 import { NewShipmentForm } from '../../interfaces';
 import styles from './DeliveryStepstyles';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface DeliveryStepProps {
   form: NewShipmentForm;

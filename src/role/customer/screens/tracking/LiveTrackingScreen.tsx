@@ -9,7 +9,7 @@ import { useTracking } from './useTracking';
 import { AppText } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import imageIndex from '../../../../assets/images/imageIndex';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {

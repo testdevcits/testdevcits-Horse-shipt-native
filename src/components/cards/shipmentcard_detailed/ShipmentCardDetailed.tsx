@@ -11,7 +11,7 @@ import {
 } from '../../../constants';
 import AppText from '../../common/AppText';
 import { horsePlaceholderImage } from '../../../config/constants';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.shipmentCardDetail';
 
 // Helper to format date (e.g., "2026-07-27..." -> "July 27, 2026")

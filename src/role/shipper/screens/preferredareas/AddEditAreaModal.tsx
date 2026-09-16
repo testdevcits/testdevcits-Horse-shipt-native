@@ -16,7 +16,7 @@ import LocationPicker, {
   LocationSelectResult,
 } from '../../../../components/common/LocationPicker/LocationPicker';
 import styles from './styles.preferredareas';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 interface Props {
   visible: boolean;

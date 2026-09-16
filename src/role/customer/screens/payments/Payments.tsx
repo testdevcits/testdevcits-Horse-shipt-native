@@ -10,7 +10,7 @@ import {
   PaymentsSkeleton,
 } from '../../../../components';
 import { usePayments } from './usePayments';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.payments';
 
 const Payments = () => {

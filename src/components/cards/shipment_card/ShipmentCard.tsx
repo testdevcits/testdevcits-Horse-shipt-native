@@ -10,7 +10,7 @@ import {
 } from '../../../constants';
 import AppText from '../../common/AppText';
 import { formatDate } from '../../../utils/helpers';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.ShipmentCard';
 
 const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {

@@ -10,7 +10,7 @@ import {
 } from '../../constants';
 import AppText from './AppText';
 import { openDeviceSettings } from '../../utils/permissionHelper';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 interface LocationPermissionModalProps {
   isVisible: boolean;

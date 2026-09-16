@@ -10,7 +10,7 @@ import DriverHeader from '../../../../components/common/DriverHeader';
 import { Button } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 // Profile Theme Colors mapped to match the gold/beige screenshot details
 

@@ -14,7 +14,7 @@ import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './reset.styles';
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 import useResetPassword from './useResetPassword';
 
 const ResetPassword = ({ navigation, route }: any) => {

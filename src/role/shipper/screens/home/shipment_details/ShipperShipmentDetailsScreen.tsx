@@ -15,7 +15,7 @@ import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
 import StripePaymentMethodCardModal from '../../earnings/StripePaymentMethodCardModal';
 import ConnectBankModal from '../components/ConnectBankModal';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
 
 const AskQuestionModal = lazy(() => import('../components/AskQuestionModal'));

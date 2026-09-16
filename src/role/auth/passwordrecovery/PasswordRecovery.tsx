@@ -13,7 +13,7 @@ import { AppText, Button, Input } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './recovery.styles';
 
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 import usePasswordRecovery from './usePasswordRecovery';
 
 const PasswordRecovery = ({ navigation }: any) => {

@@ -26,7 +26,7 @@ import PaymentsTab from '../tabs/payments/PaymentsTab';
 import SubscriptionTab from '../tabs/subscription/SubscriptionTab';
 import NotificationTab from '../tabs/notifications/NotificationTab';
 import useShipperSubscription from '../../../../../hooks/useShipperSubscription';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 const Tab = createMaterialTopTabNavigator();
 

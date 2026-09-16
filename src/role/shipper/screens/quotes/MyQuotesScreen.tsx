@@ -28,7 +28,7 @@ import {
 import shipperService from '../../../../api/services/shipperService';
 import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 
 const ConfirmationModal = lazy(

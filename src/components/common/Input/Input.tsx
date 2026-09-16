@@ -10,7 +10,7 @@ import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 
 import { StyleProp, ViewStyle } from 'react-native';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 
 interface InputProps extends TextInputProps {
   label?: string;

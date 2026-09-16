@@ -11,7 +11,7 @@ import { AppHeader, AppText, SettingsSkeleton } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippersettings';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const NOTIFICATION_ITEMS = [
   {

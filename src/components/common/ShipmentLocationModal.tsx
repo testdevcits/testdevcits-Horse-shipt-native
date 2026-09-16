@@ -22,7 +22,7 @@ import {
   SPACING,
 } from '../../constants';
 import AppText from './AppText';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 export interface ShipmentData {
   _id?: string;

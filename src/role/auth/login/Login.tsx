@@ -20,7 +20,7 @@ import styles from './styles.login';
 
 import Toast from 'react-native-toast-message';
 import RoleSelectionModal from './components/RoleSelectionModal';
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 import useLogin from './useLogin';
 
 const Login = () => {

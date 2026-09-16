@@ -4,7 +4,7 @@ import { AppText, Input } from '../../../../../../components';
 import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';
 import Toast from 'react-native-toast-message';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.QuestionTab';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {

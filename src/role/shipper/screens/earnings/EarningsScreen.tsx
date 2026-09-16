@@ -19,7 +19,7 @@ import {
 import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
 const StripePaymentMethodCardModal = lazy(

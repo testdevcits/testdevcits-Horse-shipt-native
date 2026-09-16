@@ -8,7 +8,7 @@ import {
   FONT_SIZE,
   FONTS,
 } from '../../../../../../constants';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface Plan {
   priceId: string;

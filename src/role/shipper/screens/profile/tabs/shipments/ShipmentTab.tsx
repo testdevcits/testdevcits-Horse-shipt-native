@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { AppText } from '../../../../../../components';
 import styles from './styles.shipmenttab';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../../constants';
 
 interface Props {

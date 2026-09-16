@@ -24,7 +24,7 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
 import RoleSelectionModal from '../login/components/RoleSelectionModal';
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();

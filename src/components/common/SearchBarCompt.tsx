@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { ViewStyle, StyleProp } from 'react-native';
 import { COLORS, RADIUS, SPACING, ICON_SIZE } from '../../constants';
 import Input from './Input/Input';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 interface SearchBarProps {
   value: string;

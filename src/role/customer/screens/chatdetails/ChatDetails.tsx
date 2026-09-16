@@ -25,7 +25,7 @@ import ImagePicker, {
 } from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import { permissionService } from '../../../../utils/cameragalleryPermission';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const PhotoSourceSheet = lazy(
   () => import('../../../../components/common/PhotoSourceSheet'),

@@ -27,7 +27,7 @@ import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
 
 import customerService from '../../../../api/services/customerService';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),

@@ -11,7 +11,7 @@ import {
 import { COLORS, FONTS, SPACING } from '../../../../../../constants';
 import { AppText, Button, Input } from '../../../../../../components';
 import customerService from '../../../../../../api/services/customerService';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.RatingModal';
 import Toast from 'react-native-toast-message';
 

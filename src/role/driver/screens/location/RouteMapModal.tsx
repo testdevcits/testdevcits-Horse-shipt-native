@@ -23,7 +23,7 @@ import {
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import { AppText } from '../../../../components';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const { height } = Dimensions.get('window');
 

@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
 import { fetchCustomerShipments } from '../../../../../../redux/slices/customerShipmentSlice';
 import { useAppDispatch } from '../../../../../../hooks/redux';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.OverViewTab';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {

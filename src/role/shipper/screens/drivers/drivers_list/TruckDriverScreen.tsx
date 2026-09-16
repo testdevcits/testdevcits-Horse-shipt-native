@@ -13,7 +13,7 @@ import { COLORS, ICON_SIZE, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import AddDriverModal from '../add_update_drivers/AddDriverModal';
 import styles from './styles.truckdriver';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../../components/common/ConfirmationModal'),

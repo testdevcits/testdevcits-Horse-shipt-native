@@ -16,7 +16,7 @@ import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
 
 import styles from './styles.verifyotp';
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 import useVerifyOtp from './useVerifyOtp';
 
 const VerifyResetOtp = ({ navigation, route }: any) => {

@@ -16,7 +16,7 @@ import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface Props {
   stripeStatus: any;

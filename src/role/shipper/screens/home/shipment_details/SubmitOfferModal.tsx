@@ -23,7 +23,7 @@ import {
 } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface SubmitOfferModalProps {
   isVisible: boolean;

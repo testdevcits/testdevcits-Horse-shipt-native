@@ -9,7 +9,7 @@ import {
   ICON_SIZE,
 } from '../../../constants';
 import AppText from '../../common/AppText';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.PaymentCard';
 
 interface PaymentCardProps {

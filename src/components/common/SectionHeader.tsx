@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import AppText from './AppText';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 // 1. Define Props for reusability (The "Conditions")
 interface SectionHeaderProps {

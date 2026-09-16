@@ -14,7 +14,7 @@ import {
   FONT_SIZE,
 } from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const HelpCenter = ({}: any) => {
   const handleEmailPress = () => {

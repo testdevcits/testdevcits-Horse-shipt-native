@@ -16,7 +16,7 @@ import {
   SPACING,
   RADIUS,
 } from '../../../../../../constants';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface CancelSubscriptionModalProps {
   visible: boolean;

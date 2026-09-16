@@ -26,7 +26,7 @@ import {
 import { COLORS, FONTS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../../components/common/ConfirmationModal'),

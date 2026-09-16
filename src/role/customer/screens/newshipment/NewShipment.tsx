@@ -15,7 +15,7 @@ import HorseDetailsStep from './stepsscreens/horsedetails/HorseDetailsStep';
 import ReviewStep from './stepsscreens/review/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/shipmentinfo/ShipmentInfoStep';
 import imageIndex from '../../../../assets/images/imageIndex';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),

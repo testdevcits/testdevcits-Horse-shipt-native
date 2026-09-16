@@ -9,7 +9,7 @@ import {
   ReviewCard,
   ReviewsSkeleton,
 } from '../../../../components';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.reviews';
 
 const ReviewsScreen = () => {

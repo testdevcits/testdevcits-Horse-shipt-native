@@ -21,7 +21,7 @@ import shipperService from '../../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser } from '../../../../../redux/slices/authSlice';
 import styles from './styles.editprofilemodal';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface EditProfileModalProps {
   visible: boolean;

@@ -14,7 +14,7 @@ import { OtpInput } from 'react-native-otp-entry';
 import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import styles from './styles.deliveryverification';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import useDeliveryVerification from './useDeliveryVerification';
 
 const DeliveryVerificationScreen = () => {

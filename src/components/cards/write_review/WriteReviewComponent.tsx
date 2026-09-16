@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../constants';
 import AppText from '../../common/AppText';
 import Input from '../../common/Input/Input';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.writereview';
 
 const FEEDBACK_CHIPS = [

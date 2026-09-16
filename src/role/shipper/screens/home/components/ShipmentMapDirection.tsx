@@ -13,7 +13,7 @@ import {
 } from '../../../../../constants';
 import { AppText } from '../../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 // Note: Replace with your actual Google Maps API Key
 

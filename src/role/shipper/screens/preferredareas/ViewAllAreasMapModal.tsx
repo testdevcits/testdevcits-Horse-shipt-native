@@ -23,7 +23,7 @@ import {
   RADIUS,
   FONT_SIZE,
 } from '../../../../constants';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const { height } = Dimensions.get('window');
 

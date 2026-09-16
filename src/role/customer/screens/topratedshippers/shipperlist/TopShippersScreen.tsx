@@ -19,7 +19,7 @@ import {
 } from '../../../../../components';
 
 import { useNavigation } from '@react-navigation/native';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 import styles from './styles.Topshippers';
 import AppButton from '../../../../../components/common/Button/AppButton';
 

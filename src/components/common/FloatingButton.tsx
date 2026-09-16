@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 export const FloatingButton = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={onPress}>

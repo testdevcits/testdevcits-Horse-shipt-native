@@ -9,7 +9,7 @@ import {
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { COLORS, FONTS, SPACING, RADIUS, FONT_SIZE } from '../../constants';
 import AppText from './AppText';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 export const OfflineBanner: React.FC = () => {
   const { isOffline, refresh } = useNetworkStatus();

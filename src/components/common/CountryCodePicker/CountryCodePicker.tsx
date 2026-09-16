@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
 import AppText from '../AppText';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 
 export interface Country {
   code: string;

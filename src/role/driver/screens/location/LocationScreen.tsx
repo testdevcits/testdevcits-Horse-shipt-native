@@ -24,7 +24,7 @@ import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
 import { AppText, Button, DriverHeader } from '../../../../components';
 import { RouteMapModal } from './RouteMapModal';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),

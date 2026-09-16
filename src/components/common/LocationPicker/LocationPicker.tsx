@@ -20,7 +20,7 @@ import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
 import { COLORS, SPACING, ICON_SIZE } from '../../../constants';
 import AppText from '../AppText';
 import { Button } from '../..';
-import AppIcon from '../../AppIcon';
+import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.locationpicker';
 
 /**

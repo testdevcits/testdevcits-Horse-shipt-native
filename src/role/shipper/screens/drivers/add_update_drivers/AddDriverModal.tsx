@@ -13,7 +13,7 @@ import { AppText, Input } from '../../../../../components';
 import { COLORS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.adddriver';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface Props {
   visible: boolean;

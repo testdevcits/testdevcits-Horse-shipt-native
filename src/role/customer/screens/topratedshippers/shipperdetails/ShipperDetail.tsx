@@ -24,7 +24,7 @@ import {
 } from '../../../../../components';
 import imageIndex from '../../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../../utils/helpers';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 const ShipperDetail = () => {
   const route = useRoute<any>();

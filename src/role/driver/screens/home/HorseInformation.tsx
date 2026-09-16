@@ -10,7 +10,7 @@ import {
   FONT_SIZE,
 } from '../../../../constants';
 import { horsePlaceholderImage } from '../../../../config/constants';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const HorseInformation = ({
   activeShipment,

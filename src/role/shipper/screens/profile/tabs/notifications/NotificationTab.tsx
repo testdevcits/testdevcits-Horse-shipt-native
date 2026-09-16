@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { AppText } from '../../../../../../components';
 import styles from './styles.notificationtab';
 import { COLORS } from '../../../../../../constants';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface Props {
   notifications: any;

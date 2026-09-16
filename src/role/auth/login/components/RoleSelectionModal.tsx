@@ -6,7 +6,7 @@ import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import AppButton from '../../../../components/common/Button/AppButton';
 import styles from './styles.RoleSelection';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 export type UserRole = 'customer' | 'shipper' | 'driver';
 

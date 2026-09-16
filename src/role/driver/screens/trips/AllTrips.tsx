@@ -12,7 +12,7 @@ import DriverHeader from '../../../../components/common/DriverHeader';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import { AppText, TripCard } from '../../../../components';
 import styles from './styles.alltrips';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
 

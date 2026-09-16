@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../constants';
 import AppText from './AppText';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 interface DriverHeaderProps {
   name: string;

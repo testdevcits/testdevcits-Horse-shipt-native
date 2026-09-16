@@ -12,7 +12,7 @@ import { COLORS } from '../../../../../../constants';
 import { AppText } from '../../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import styles from './ReviewStepstyles';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface ReviewStepProps {
   form: NewShipmentForm;

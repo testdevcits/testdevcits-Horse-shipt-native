@@ -5,7 +5,7 @@ import { COLORS } from '../../../../../constants';
 import { formatDate } from '../../../../../utils/helpers';
 import styles from '../styles.shipperhome';
 import { horsePlaceholderImage } from '../../../../../config/constants';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface AvailableShipmentCardProps {
   item: any;

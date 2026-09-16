@@ -11,7 +11,7 @@ import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import styles from './styles.postload';
 import ReviewCustomerModal from './ReviewCustomerModal';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 export type StatusFilterType =
   | 'all'

@@ -25,7 +25,7 @@ import {
   isValidVehicleNumber,
   isValidVIN,
 } from '../../../../../utils/valiations';
-import AppIcon from '../../../../../components/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface Props {
   navigation?: any;

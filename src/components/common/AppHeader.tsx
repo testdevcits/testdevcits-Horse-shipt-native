@@ -14,7 +14,7 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchNotificationsThunk } from '../../redux/slices/notificationSlice';
 import imageIndex from '../../assets/images/imageIndex';
-import AppIcon from '../AppIcon';
+import AppIcon from '../app_icon/AppIcon';
 
 interface HeaderProps {
   title?: string;

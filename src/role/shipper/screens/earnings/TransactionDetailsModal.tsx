@@ -9,7 +9,7 @@ import {
   RADIUS,
 } from '../../../../constants';
 import { formatDate } from '../../../../utils/helpers';
-import AppIcon, { IconName } from '../../../../components/AppIcon';
+import AppIcon, { IconName } from '../../../../components/app_icon/AppIcon';
 
 interface TransactionDetailsModalProps {
   selectedTx: any;

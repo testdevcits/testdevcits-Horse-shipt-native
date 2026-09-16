@@ -19,7 +19,7 @@ import {
 } from '../../../../constants';
 import { AppText, Button } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import Toast from 'react-native-toast-message';
 
 interface ReviewCustomerModalProps {

@@ -10,7 +10,7 @@ import shipperService from '../../../../api/services/shipperService';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperreviews';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../constants';
 
 const ShipperReviewsScreen = ({ route }: any) => {

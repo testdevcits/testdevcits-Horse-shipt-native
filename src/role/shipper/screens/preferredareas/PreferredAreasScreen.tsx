@@ -12,7 +12,7 @@ import {
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const MAX_AREAS = 4;
 const ConfirmationModal = lazy(

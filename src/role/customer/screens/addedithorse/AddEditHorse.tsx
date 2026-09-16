@@ -31,7 +31,7 @@ import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';
 import HorseActionModal from './HorseActionModal';
 import { Horse } from '../../../../types/customer';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.AddEditHorses';
 
 const AppSelect = lazy(() =>

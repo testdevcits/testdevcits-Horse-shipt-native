@@ -13,7 +13,7 @@ import { COLORS } from '../../../../constants';
 import { AppText } from '../../../../components';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.paymentdetails';
 
 const PaymentDetails = () => {

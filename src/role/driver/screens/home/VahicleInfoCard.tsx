@@ -3,7 +3,7 @@ import React, { memo, useState } from 'react';
 import { AppText } from '../../../../components';
 
 import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../constants';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const VahicleInfoCard = ({
   vehicle,

@@ -18,7 +18,7 @@ import ActiveShipment from './ActiveShipment';
 import HorseInformation from './HorseInformation';
 import { RouteMapModal } from '../location/RouteMapModal';
 import AppButton from '../../../../components/common/Button/AppButton';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(

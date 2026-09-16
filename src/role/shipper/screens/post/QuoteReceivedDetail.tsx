@@ -17,7 +17,7 @@ import {
   SIZES,
 } from '../../../../constants';
 
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import { AppHeader, AppText } from '../../../../components';
 import { moderateScale } from 'react-native-size-matters';
 

@@ -19,7 +19,7 @@ import {
 } from '../../../../components';
 import ShipmentHorizontalCard from '../../../../components/cards/shipmentcard_detailed/ShipmentCardDetailed';
 import styles from './styles.myshipments';
-import AppIcon from '../../../../components/AppIcon';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 
 const ConfirmationModal = lazy(

@@ -15,7 +15,7 @@ import { breedsList, sexes, stallTypes } from '../../../addedithorse/constants';
 import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import { useNavigation } from '@react-navigation/native';
 import styles from './HorseDetailsStepstyles';
-import AppIcon from '../../../../../../components/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import Toast from 'react-native-toast-message';
 
 interface HorseDetailsStepProps {

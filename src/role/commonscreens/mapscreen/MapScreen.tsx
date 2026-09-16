@@ -17,7 +17,7 @@ import { RADIUS, COLORS, FONTS, FONT_SIZE } from '../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
 import { AppText } from '../../../components';
 import styles from './styles.mapscreen';
-import AppIcon from '../../../components/AppIcon';
+import AppIcon from '../../../components/app_icon/AppIcon';
 
 const MapScreen = ({ navigation }: any) => {
   const mapRef = useRef<MapView>(null);
