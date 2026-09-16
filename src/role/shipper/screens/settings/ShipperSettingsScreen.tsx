@@ -150,7 +150,7 @@ const ShipperSettingsScreen = () => {
             <View style={styles.notificationsCard}>
               <View style={styles.subCardHeader}>
                 <View style={styles.goldSquareIconBox}>
-                  <AppIcon name={'Bell'} size={22} color="#A06333" />
+                  <AppIcon name={'Bell'} size={22} color={COLORS.saddleBrown} />
                 </View>
 
                 <View style={styles.subHeaderTextCol}>
@@ -207,7 +207,11 @@ const ShipperSettingsScreen = () => {
                         activeOpacity={0.8}
                       >
                         {isEmailChecked && (
-                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                          <AppIcon
+                            name={'Check'}
+                            size={14}
+                            color={COLORS.saddleBrown}
+                          />
                         )}
                       </TouchableOpacity>
 
@@ -223,7 +227,11 @@ const ShipperSettingsScreen = () => {
                         activeOpacity={0.8}
                       >
                         {isSmsChecked && (
-                          <AppIcon name={'Check'} size={14} color="#A06333" />
+                          <AppIcon
+                            name={'Check'}
+                            size={14}
+                            color={COLORS.saddleBrown}
+                          />
                         )}
                       </TouchableOpacity>
                     </View>

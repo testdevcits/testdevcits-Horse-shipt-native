@@ -303,9 +303,9 @@ const PreferredAreasScreen = () => {
             <Circle
               center={{ latitude: lat, longitude: lng }}
               radius={radiusMeters}
-              strokeColor="rgba(160, 99, 51, 0.8)"
+              strokeColor={COLORS.saddleBrownOverlay80}
               strokeWidth={2}
-              fillColor="rgba(160, 99, 51, 0.18)"
+              fillColor={COLORS.saddleBrownOverlay18}
             />
           </MapView>
         </View>
@@ -326,7 +326,7 @@ const PreferredAreasScreen = () => {
             onPress={() => handleDeleteAreaPrompt(area._id, area.locationName)}
             activeOpacity={0.8}
           >
-            <AppIcon name={'Trash2'} size={16} color="#DC2626" />
+            <AppIcon name={'Trash2'} size={16} color={COLORS.redPrimary} />
             <AppText style={styles.deleteCardBtnText}>Delete</AppText>
           </TouchableOpacity>
         </View>

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
   },
   autoTrackActiveButton: {
-    backgroundColor: '#0F172A',
+    backgroundColor: COLORS.textPrimary,
   },
   btnIcon: {
     marginRight: SPACING.sm,

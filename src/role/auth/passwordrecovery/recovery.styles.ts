@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   headerImage: { width: SCREEN_WIDTH }, // Height set dynamically in component
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.18)',
+    backgroundColor: COLORS.overlay18,
   },
   keyboardView: { flex: 1, marginTop: -RADIUS.xl * 2 },
   contentCard: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     height: SPACING.xxl,
     borderRadius: RADIUS.xs,
     borderWidth: SIZES.borderWidthThick,
-    borderColor: '#C1C1C1',
+    borderColor: COLORS.grey350,
     marginRight: SPACING.md,
     backgroundColor: COLORS.white,
     justifyContent: 'center',

@@ -59,7 +59,7 @@ const HorseActionModal = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Dimmed backdrop
+    backgroundColor: COLORS.overlay40, // Dimmed backdrop
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.xl,

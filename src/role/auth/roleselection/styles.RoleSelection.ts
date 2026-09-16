@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   headerImage: { width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.28 },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: COLORS.overlay20,
   },
 
   contentCard: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconBoxActive: { backgroundColor: 'rgba(255,255,255,0.2)' },
+  iconBoxActive: { backgroundColor: COLORS.whiteOverlay20 },
   roleTextContainer: { flex: 1, marginLeft: SPACING.md },
   roleTitle: {
     fontSize: FONT_SIZE.md,

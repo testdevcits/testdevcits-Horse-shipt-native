@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: COLORS.overlay65,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   requiredBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    backgroundColor: COLORS.overlay22,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    backgroundColor: COLORS.overlay22,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   trialPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: COLORS.overlay15,
     alignSelf: 'flex-start',
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
   trialSubText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: COLORS.whiteOverlay90,
   },
   priceTagBox: {
-    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    backgroundColor: COLORS.overlay22,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: RADIUS.md,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   priceTagInterval: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: COLORS.whiteOverlay85,
   },
 
   // BODY CONTENT

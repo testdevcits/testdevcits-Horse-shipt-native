@@ -175,7 +175,7 @@ const TransactionDetailsModal = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backgroundColor: COLORS.slateOverlay65,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,
@@ -187,9 +187,9 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     elevation: 8,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.textPrimary,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.12,
     shadowRadius: 16,
@@ -216,13 +216,13 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   heroBox: {
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.warmCreamDark,
     borderRadius: RADIUS.md,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.md,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#F3E5C2',
+    borderColor: COLORS.beigeCream,
   },
   heroLabel: {
     fontSize: FONT_SIZE.xxs,
@@ -277,11 +277,11 @@ const styles = StyleSheet.create({
   },
 
   detailsCard: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: RADIUS.md,
     padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
     marginBottom: SPACING.lg,
   },
   detailRow: {
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   rowTextWrap: {
     flex: 1,
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   rowDivider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.border,
     marginVertical: 4,
   },
 

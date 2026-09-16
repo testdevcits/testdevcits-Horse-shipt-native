@@ -192,7 +192,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                   destination={pickupCoords}
                   apikey={GOOGLE_MAPS_APIKEY}
                   strokeWidth={5}
-                  strokeColor="#3B82F6"
+                  strokeColor={COLORS.info}
                   onReady={result => {
                     setMetrics(prev => ({
                       ...prev,
@@ -210,7 +210,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                   destination={deliveryCoords}
                   apikey={GOOGLE_MAPS_APIKEY}
                   strokeWidth={5}
-                  strokeColor="#10B981"
+                  strokeColor={COLORS.success}
                   onReady={result => {
                     setMetrics(prev => ({
                       ...prev,
@@ -227,19 +227,31 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
             {userCoords && (
               <Marker coordinate={userCoords}>
-                <CustomMarker color="#3B82F6" icon={Navigation} label="You" />
+                <CustomMarker
+                  color={COLORS.info}
+                  icon={Navigation}
+                  label="You"
+                />
               </Marker>
             )}
 
             {pickupCoords && (
               <Marker coordinate={pickupCoords}>
-                <CustomMarker color="#A37F3D" icon={MapPin} label="Pickup" />
+                <CustomMarker
+                  color={COLORS.goldDark}
+                  icon={MapPin}
+                  label="Pickup"
+                />
               </Marker>
             )}
 
             {deliveryCoords && (
               <Marker coordinate={deliveryCoords}>
-                <CustomMarker color="#10B981" icon={MapPin} label="Delivery" />
+                <CustomMarker
+                  color={COLORS.success}
+                  icon={MapPin}
+                  label="Delivery"
+                />
               </Marker>
             )}
           </MapView>
@@ -302,7 +314,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             <View style={styles.tripCard}>
               <View style={styles.metricRow}>
                 <View style={styles.metricItem}>
-                  <AppIcon name={'Navigation'} size={18} color="#3B82F6" />
+                  <AppIcon name={'Navigation'} size={18} color={COLORS.info} />
                   <View style={styles.metricTextContent}>
                     <AppText style={styles.metricLabel}>Total Distance</AppText>
                     <AppText style={styles.metricValue}>
@@ -312,7 +324,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 </View>
                 <View style={styles.metricDivider} />
                 <View style={styles.metricItem}>
-                  <AppIcon name={'Clock'} size={18} color="#10B981" />
+                  <AppIcon name={'Clock'} size={18} color={COLORS.success} />
                   <View style={styles.metricTextContent}>
                     <AppText style={styles.metricLabel}>Total ETA</AppText>
                     <AppText style={styles.metricValue}>
@@ -326,14 +338,18 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
               <View style={styles.addressSection}>
                 <View style={styles.addressRow}>
-                  <View style={[styles.dot, { backgroundColor: '#3B82F6' }]} />
+                  <View
+                    style={[styles.dot, { backgroundColor: COLORS.info }]}
+                  />
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {pickupLocation}
                   </AppText>
                 </View>
                 <View style={styles.verticalLine} />
                 <View style={styles.addressRow}>
-                  <View style={[styles.dot, { backgroundColor: '#10B981' }]} />
+                  <View
+                    style={[styles.dot, { backgroundColor: COLORS.success }]}
+                  />
                   <AppText numberOfLines={1} style={styles.addressText}>
                     {deliveryLocation}
                   </AppText>
@@ -399,14 +415,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.15,
     shadowRadius: 10,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: COLORS.gray100Light,
   },
   routeHeaderInfo: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: COLORS.whiteOverlay90,
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 20,
@@ -429,7 +445,7 @@ const styles = StyleSheet.create({
     width: SPACING.xs2,
     height: SPACING.xs2,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#10B981',
+    backgroundColor: COLORS.success,
   },
   liveText: {
     fontSize: FONT_SIZE.mini,
@@ -449,7 +465,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 20,
     elevation: 20,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 20,
   },
@@ -498,7 +514,7 @@ const styles = StyleSheet.create({
   },
   loader: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: COLORS.whiteOverlay90,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 99,

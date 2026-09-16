@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   // Modal Styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,
@@ -406,9 +406,9 @@ const styles = StyleSheet.create({
     height: 50,
   },
   errorBanner: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
     borderRadius: RADIUS.xs,
     padding: SPACING.xs + 2,
     marginBottom: SPACING.sm,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   errorBannerText: {
-    color: '#DC2626',
+    color: COLORS.redPrimary,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     flex: 1,

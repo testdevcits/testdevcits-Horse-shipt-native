@@ -15,7 +15,7 @@ export const AppLoader = ({
       style={[
         StyleSheet.absoluteFill,
         {
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          backgroundColor: COLORS.whiteOverlay70,
           justifyContent: 'center',
           alignItems: 'center',
           zIndex: 999,

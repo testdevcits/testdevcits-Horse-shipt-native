@@ -70,7 +70,7 @@ const DraftSuccessModal = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.lg,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     padding: SPACING.xl,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   dashboardBtn: {
     flex: 1,
-    backgroundColor: '#E9ECEF', // Light grey like image
+    backgroundColor: COLORS.gray200Alt, // Light grey like image
     height: 50,
     borderRadius: RADIUS.xs,
     justifyContent: 'center',

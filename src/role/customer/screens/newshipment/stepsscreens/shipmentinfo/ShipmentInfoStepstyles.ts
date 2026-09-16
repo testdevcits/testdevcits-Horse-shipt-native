@@ -8,7 +8,7 @@ import {
 } from '../../../../../../constants';
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F9FA' },
+  container: { flex: 1, backgroundColor: COLORS.gray50Alt },
   scrollView: { flex: 1 },
   scrollContent: { padding: SPACING.lg, paddingBottom: 60 },
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey300,
     borderStyle: 'dashed',
     borderRadius: RADIUS.md,
-    backgroundColor: '#FBFCFE',
+    backgroundColor: COLORS.sky50,
     overflow: 'hidden',
   },
   uploadBoxActive: { borderStyle: 'solid', borderColor: COLORS.primary },
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.overlay50,
     padding: 6,
     borderRadius: 20,
   },

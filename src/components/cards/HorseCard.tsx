@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
   },
-  fileicon:{ marginTop: 2 },
+  fileicon: { marginTop: 2 },
   notesContent: {
     marginLeft: SPACING.xs,
     flex: 1,

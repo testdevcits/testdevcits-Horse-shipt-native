@@ -113,7 +113,7 @@ const LocationPermissionModal: React.FC<LocationPermissionModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    backgroundColor: COLORS.overlay,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.lg,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     width: SIZES.iconHeaderBg,
     height: SIZES.iconHeaderBg,
     borderRadius: RADIUS.round,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.brandBrownLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: SPACING.md,
@@ -175,11 +175,11 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   instructionBox: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     borderWidth: SIZES.borderWidthThin,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     width: '100%',
   },
   instructionRow: {

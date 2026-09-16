@@ -166,7 +166,11 @@ const Notifications = () => {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           {isSelected ? (
-            <CheckCircle2 size={20} color={COLORS.brandBrown} fill="#FAF6EE" />
+            <CheckCircle2
+              size={20}
+              color={COLORS.brandBrown}
+              fill={COLORS.warmCreamDark}
+            />
           ) : (
             <View style={styles.checkboxUncheckedCircle} />
           )}

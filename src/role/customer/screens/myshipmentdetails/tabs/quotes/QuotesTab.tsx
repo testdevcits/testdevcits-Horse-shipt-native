@@ -113,8 +113,8 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                         key={s}
                         name={'Star'}
                         size={ICON_SIZE.xs}
-                        color="#FBBF24"
-                        fill="#FBBF24"
+                        color={COLORS.goldWarning}
+                        fill={COLORS.goldWarning}
                         style={{ marginRight: 2 }}
                       />
                     ))}

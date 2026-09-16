@@ -44,7 +44,7 @@ const MapShipmentSelectItem: React.FC<MapShipmentSelectItemProps> = ({
     >
       {/* Left Map Pin Icon Circle */}
       <View style={styles.mapPinCircle}>
-        <AppIcon name="MapPin" size={18} color="#A06333" />
+        <AppIcon name="MapPin" size={18} color={COLORS.saddleBrown} />
       </View>
 
       {/* Center Info Col */}

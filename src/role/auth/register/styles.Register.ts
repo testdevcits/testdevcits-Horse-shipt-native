@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    backgroundColor: COLORS.overlay15,
   },
   contentCard: {
     flex: 1,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: 'rgba(163, 127, 61, 0.25)',
+    backgroundColor: COLORS.goldPrimaryOverlay25,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -96,19 +96,19 @@ const styles = StyleSheet.create({
   },
   // Social Button Styles
   appleBtn: {
-    backgroundColor: '#1F2937', // Dark navy/black
+    backgroundColor: COLORS.gray800, // Dark navy/black
     height: 52,
     borderRadius: RADIUS.round,
   },
   googleBtn: {
-    backgroundColor: '#F3F4F6', // Light gray
+    backgroundColor: COLORS.gray100, // Light gray
     height: 52,
     borderRadius: RADIUS.round,
     borderWidth: 1,
     borderColor: COLORS.divider,
   },
   facebookBtn: {
-    backgroundColor: '#3B5998', // Facebook Blue
+    backgroundColor: COLORS.facebookBlue, // Facebook Blue
     height: 52,
     borderRadius: RADIUS.round,
   },

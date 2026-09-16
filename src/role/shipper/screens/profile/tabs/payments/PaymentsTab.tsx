@@ -128,7 +128,7 @@ const PaymentsTab: React.FC<Props> = ({
         {/* Top Account Header */}
         <View style={styles.payoutAccountCard}>
           <View style={styles.goldHorseIconBox}>
-            <AppIcon name="Building2" size={22} color="#A06333" />
+            <AppIcon name="Building2" size={22} color={COLORS.saddleBrown} />
           </View>
           <View style={styles.payoutTextCol}>
             <AppText style={styles.payoutTitle}>
@@ -206,13 +206,13 @@ const PaymentsTab: React.FC<Props> = ({
                 activeOpacity={0.85}
               >
                 {isConnecting ? (
-                  <ActivityIndicator size="small" color="#FFFFFF" />
+                  <ActivityIndicator size="small" color={COLORS.white} />
                 ) : (
                   <>
                     <AppText style={styles.setupPayoutBtnText}>
                       Set up payout account
                     </AppText>
-                    <AppIcon name="ArrowRight" size={16} color="#FFFFFF" />
+                    <AppIcon name="ArrowRight" size={16} color={COLORS.white} />
                   </>
                 )}
               </TouchableOpacity>
@@ -224,7 +224,7 @@ const PaymentsTab: React.FC<Props> = ({
             {/* Verified Payout Card */}
             <View style={styles.verifiedCard}>
               <View style={styles.checkSquare}>
-                <AppIcon name="Check" size={16} color="#A06333" />
+                <AppIcon name="Check" size={16} color={COLORS.saddleBrown} />
               </View>
               <View style={styles.verifiedTextCol}>
                 <AppText style={styles.verifiedTitle}>
@@ -241,7 +241,7 @@ const PaymentsTab: React.FC<Props> = ({
 
         {/* Footer Encryption Bar */}
         <View style={styles.encryptionFooterBar}>
-          <AppIcon name="Shield" size={13} color="#A06333" />
+          <AppIcon name="Shield" size={13} color={COLORS.saddleBrown} />
           <AppText style={styles.encryptionFooterText}>
             ALL TRANSACTIONS ARE ENCRYPTED AND SECURELY PROCESSED THROUGH YOUR
             PAYOUT ACCOUNT.
@@ -276,7 +276,7 @@ const PaymentsTab: React.FC<Props> = ({
           </View>
 
           <View style={modalStyles.securityBanner}>
-            <AppIcon name="Lock" size={13} color="#A06333" />
+            <AppIcon name="Lock" size={13} color={COLORS.saddleBrown} />
             <AppText style={modalStyles.securityBannerText}>
               Secured Connection • Stripe Encrypted Payout Verification
             </AppText>
@@ -289,7 +289,7 @@ const PaymentsTab: React.FC<Props> = ({
               startInLoadingState={true}
               renderLoading={() => (
                 <View style={modalStyles.loaderOverlay}>
-                  <ActivityIndicator size="large" color="#A06333" />
+                  <ActivityIndicator size="large" color={COLORS.saddleBrown} />
                 </View>
               )}
             />
@@ -314,13 +314,13 @@ const modalStyles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: COLORS.divider,
   },
   backBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -328,7 +328,7 @@ const modalStyles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -340,18 +340,18 @@ const modalStyles = StyleSheet.create({
   securityBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.warmCream,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs + 2,
     gap: 6,
     borderBottomWidth: 1,
-    borderBottomColor: '#FDE68A',
+    borderBottomColor: COLORS.goldBorder,
   },
   securityBannerText: {
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.medium,
-    color: '#8C5226',
+    color: COLORS.darkBrown,
   },
   loaderOverlay: {
     ...StyleSheet.absoluteFillObject,

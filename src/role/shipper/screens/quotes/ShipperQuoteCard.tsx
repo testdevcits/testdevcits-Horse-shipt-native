@@ -288,7 +288,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           <AppIcon
             name="Calendar"
             size={16}
-            color="#EF4444"
+            color={COLORS.error}
             style={{ marginTop: 2 }}
           />
           <AppText style={styles.cancelNoticeText}>

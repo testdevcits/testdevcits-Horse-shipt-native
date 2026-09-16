@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     left: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: COLORS.overlay75,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: RADIUS.xs,

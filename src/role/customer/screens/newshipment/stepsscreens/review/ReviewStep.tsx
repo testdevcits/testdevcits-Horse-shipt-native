@@ -37,7 +37,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   isEdit = false,
   isDraft = false,
 }) => {
-   const [isHorseExpanded, setIsHorseExpanded] = useState(true);
+  const [isHorseExpanded, setIsHorseExpanded] = useState(true);
   const [isDocsExpanded, setIsDocsExpanded] = useState(true);
 
   const formatDateDisplay = (dateVal: any) => {

@@ -50,23 +50,27 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       case 'danger':
         return {
           color: COLORS.error,
-          bg: '#FEF2F2',
+          bg: COLORS.redLightBg,
           DefaultIcon: AlertTriangle,
         };
       case 'success':
         return {
           color: COLORS.success,
-          bg: '#F0FDF4',
+          bg: COLORS.greenLightBg2,
           DefaultIcon: CheckCircle2,
         };
       case 'warning':
         return {
           color: COLORS.warning,
-          bg: '#FFFBEB',
+          bg: COLORS.goldCreamBg,
           DefaultIcon: AlertTriangle,
         };
       default:
-        return { color: COLORS.primary, bg: '#EFF6FF', DefaultIcon: Info };
+        return {
+          color: COLORS.primary,
+          bg: COLORS.blueLightBg,
+          DefaultIcon: Info,
+        };
     }
   };
 

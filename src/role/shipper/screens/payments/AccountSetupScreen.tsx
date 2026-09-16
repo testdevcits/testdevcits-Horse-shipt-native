@@ -63,7 +63,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
 
       {/* SECURE SUB-HEADER BANNER */}
       <View style={styles.securityBanner}>
-        <AppIcon name="Lock" size={13} color="#A06333" />
+        <AppIcon name="Lock" size={13} color={COLORS.saddleBrown} />
         <AppText style={styles.securityBannerText}>
           Secured Connection • Stripe Encrypted Payout Verification
         </AppText>
@@ -81,7 +81,7 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
             onLoadEnd={() => setLoading(false)}
             renderLoading={() => (
               <View style={styles.loaderOverlay}>
-                <ActivityIndicator size="large" color="#A06333" />
+                <ActivityIndicator size="large" color={COLORS.saddleBrown} />
                 <AppText style={styles.loaderText}>
                   Loading Stripe Verification...
                 </AppText>
@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     backgroundColor: COLORS.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: COLORS.divider,
   },
   backBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -139,18 +139,18 @@ const styles = StyleSheet.create({
   securityBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.warmCream,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs + 2,
     gap: 6,
     borderBottomWidth: 1,
-    borderBottomColor: '#FDE68A',
+    borderBottomColor: COLORS.goldBorder,
   },
   securityBannerText: {
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.medium,
-    color: '#8C5226',
+    color: COLORS.darkBrown,
   },
   webviewContainer: {
     flex: 1,

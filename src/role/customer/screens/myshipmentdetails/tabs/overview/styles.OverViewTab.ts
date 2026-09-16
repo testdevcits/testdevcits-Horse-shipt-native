@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#EEDCBD',
-    shadowColor: '#000',
+    borderColor: COLORS.warmBeige,
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 4,
@@ -38,17 +38,17 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   statusBadge: {
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.brandBrownLightBg,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: RADIUS.round || 999,
     borderWidth: 1,
-    borderColor: '#F59E0B',
+    borderColor: COLORS.warning,
   },
   statusBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#D97706',
+    color: COLORS.amberPrimary,
   },
 
   // Timeline
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: RADIUS.xs,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   timelineLine: {
     width: 2,
     height: 24,
-    backgroundColor: '#EEDCBD',
+    backgroundColor: COLORS.warmBeige,
     marginLeft: 11,
     marginVertical: 4,
   },
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   primaryActionBtn: {
-    backgroundColor: '#27272A',
+    backgroundColor: COLORS.zinc800,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
   secondaryActionBtn: {
-    backgroundColor: '#F4F4F5',
+    backgroundColor: COLORS.zinc100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#EEDCBD',
+    borderColor: COLORS.warmBeige,
     overflow: 'hidden',
   },
   detailsHeader: {
@@ -176,9 +176,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: SPACING.md,
-    backgroundColor: '#FBF5EB',
+    backgroundColor: COLORS.creamSoft,
     borderBottomWidth: 1,
-    borderBottomColor: '#EEDCBD',
+    borderBottomColor: COLORS.warmBeige,
   },
   detailsHeaderTitle: {
     fontSize: FONT_SIZE.md,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
 
   // Summary Box
   summaryBox: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: COLORS.zinc50,
     padding: SPACING.md,
     borderRadius: RADIUS.sm,
     marginBottom: SPACING.md,
@@ -226,16 +226,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#EEDCBD',
+    borderColor: COLORS.warmBeige,
     marginBottom: SPACING.md,
     overflow: 'hidden',
   },
   horseCardBadgeHeader: {
-    backgroundColor: '#F9F1E6',
+    backgroundColor: COLORS.warmSand,
     paddingHorizontal: SPACING.md,
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#EEDCBD',
+    borderBottomColor: COLORS.warmBeige,
   },
   horseCardBadgeText: {
     fontSize: FONT_SIZE.xs,
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   infoQuoteBox: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     padding: SPACING.md,
     borderRadius: RADIUS.xs,
     borderLeftWidth: 3,
@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xs,
   },
   logCardItem: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: COLORS.zinc50,
     padding: SPACING.sm,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: COLORS.gray200,
     marginBottom: SPACING.xs,
   },
   logCardItemHeader: {
@@ -352,9 +352,9 @@ const styles = StyleSheet.create({
   docCardPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: RADIUS.xs,
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.md,
   },
   trackButton: {
-    backgroundColor: '#18181B',
+    backgroundColor: COLORS.zinc900,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

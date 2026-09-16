@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
   },
   topCard: {
     marginHorizontal: SPACING.md,
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    shadowColor: '#0F172A',
+    borderColor: COLORS.border,
+    shadowColor: COLORS.textPrimary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.04,
     shadowRadius: 8,
@@ -39,23 +39,23 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
-    color: '#0F172A',
+    color: COLORS.textPrimary,
   },
   topSub: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     marginBottom: SPACING.md,
   },
   statsSummaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.sm,
-    backgroundColor: '#FFFBF5',
+    backgroundColor: COLORS.beigeBg,
     padding: SPACING.sm,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
   },
   statBox: {
     flex: 1,
@@ -64,18 +64,18 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: FONT_SIZE.md + 2,
     fontFamily: FONTS.bold,
-    color: '#A06333',
+    color: COLORS.saddleBrown,
   },
   statLabel: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.medium,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     marginTop: 2,
   },
   statDivider: {
     width: 1,
     height: 24,
-    backgroundColor: '#F0E4D4',
+    backgroundColor: COLORS.beigeBorder,
   },
 
   // Actions Bar Row
@@ -90,12 +90,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.saddleBrown,
     paddingHorizontal: SPACING.md,
     height: 44,
     borderRadius: RADIUS.md,
     gap: 6,
-    shadowColor: '#A06333',
+    shadowColor: COLORS.saddleBrown,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -120,16 +120,16 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   filterPillActive: {
-    backgroundColor: '#A06333',
-    borderColor: '#A06333',
+    backgroundColor: COLORS.saddleBrown,
+    borderColor: COLORS.saddleBrown,
   },
   filterPillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#64748B',
+    color: COLORS.textSecondary,
   },
   filterPillTextActive: {
     color: COLORS.white,
@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
-    color: '#0F172A',
+    color: COLORS.textPrimary,
     marginTop: SPACING.sm,
   },
   emptySub: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     textAlign: 'center',
     marginTop: 4,
   },

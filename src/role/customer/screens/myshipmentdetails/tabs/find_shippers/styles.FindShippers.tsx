@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.divider,
     marginBottom: SPACING.sm,
     elevation: 1,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
     shadowRadius: 4,
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF8E6',
+    backgroundColor: COLORS.warmCreamLight,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 2,
     borderRadius: RADIUS.round,
     borderWidth: 1,
-    borderColor: '#FFEBC2',
+    borderColor: COLORS.warmBeigeLight,
     gap: 3,
   },
   ratingText: {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   statsRow: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.md },
   statBox: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     padding: SPACING.xs + 2,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   requestedBtn: {
-    backgroundColor: '#E6F7F0',
+    backgroundColor: COLORS.mintLightBg,
     height: 44,
     borderRadius: RADIUS.sm,
     flexDirection: 'row',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     gap: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#A9E2CC',
+    borderColor: COLORS.mintBorder,
   },
   requestedText: {
     color: COLORS.greenPrimary,

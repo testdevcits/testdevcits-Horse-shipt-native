@@ -96,9 +96,7 @@ const ShipmentHorizontalCard = memo(
             </AppText>
 
             {/* Shipment Code / External Action / Delete Action */}
-            <View
-              style={styles.action}
-            >
+            <View style={styles.action}>
               {isDraft && onDelete && (
                 <TouchableOpacity
                   style={styles.deleteIconBtn}
@@ -223,7 +221,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
     marginHorizontal: SPACING.xs,
     elevation: 1,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.03,
     shadowRadius: 3,
@@ -245,7 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
-  action:{ flexDirection: 'row', alignItems: 'center', gap: 6 },
+  action: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   title: {
     flex: 1,
     fontSize: FONT_SIZE.sm,
@@ -272,7 +270,7 @@ const styles = StyleSheet.create({
   },
   badge: {
     borderWidth: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.transparent,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 1,
     borderRadius: RADIUS.round,
@@ -331,11 +329,11 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
   },
 });
 

@@ -560,8 +560,8 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.divider,
   },
   selectedOptionItem: {
-    backgroundColor: COLORS.goldLightBg || '#FEFCE8',
-    borderBottomColor: 'transparent',
+    backgroundColor: COLORS.goldLightBg || COLORS.goldLightBg,
+    borderBottomColor: COLORS.transparent,
   },
   optionLeft: {
     flexDirection: 'row',
@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: COLORS.goldTintBox || '#FEF9C3',
+    backgroundColor: COLORS.goldTintBox || COLORS.goldTintBox,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: SPACING.xs,
@@ -611,7 +611,7 @@ const styles = StyleSheet.create({
   /* Fallback Modal Styles */
   fallbackOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.overlay50,
   },
   fallbackSheet: {
     backgroundColor: COLORS.white,

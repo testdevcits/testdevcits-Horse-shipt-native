@@ -135,9 +135,9 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   errorContainer: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
     borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     marginTop: SPACING.sm,

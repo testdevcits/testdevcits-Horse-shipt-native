@@ -313,7 +313,10 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
               <View style={styles.locationSection}>
                 <View style={styles.locationHeader}>
                   <View
-                    style={[styles.pinBadge, { backgroundColor: '#E6F7F0' }]}
+                    style={[
+                      styles.pinBadge,
+                      { backgroundColor: COLORS.mintLightBg },
+                    ]}
                   >
                     <AppIcon
                       name={'MapPin'}
@@ -480,9 +483,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg || COLORS.warmCreamDark,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#DCCEB2',
+    borderColor: COLORS.goldBorder || COLORS.tanBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -555,7 +558,7 @@ const styles = StyleSheet.create({
   activeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E6F7F0',
+    backgroundColor: COLORS.mintLightBg,
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xs2 || 4,
     borderRadius: RADIUS.sm,
@@ -571,11 +574,11 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   routeBox: {
-    backgroundColor: COLORS.slate50 || '#F8FAFC',
+    backgroundColor: COLORS.slate50 || COLORS.background,
     borderRadius: RADIUS.lg || 16,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.slate200 || '#E2E8F0',
+    borderColor: COLORS.slate200 || COLORS.border,
   },
 
   // Location Sections
@@ -649,9 +652,9 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg || COLORS.warmCreamDark,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#DCCEB2',
+    borderColor: COLORS.goldBorder || COLORS.tanBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 2,
@@ -667,7 +670,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldLightBg || '#FAF6EE',
+    backgroundColor: COLORS.goldLightBg || COLORS.warmCreamDark,
     borderWidth: 1.5,
     borderColor: COLORS.primary,
     flexDirection: 'row',

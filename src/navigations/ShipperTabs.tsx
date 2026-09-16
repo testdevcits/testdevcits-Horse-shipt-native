@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: width,
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.transparent,
     elevation: 0,
   },
   tabBarBackground: {

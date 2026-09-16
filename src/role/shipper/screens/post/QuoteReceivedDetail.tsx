@@ -554,8 +554,6 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
                   Information provided for this shipment
                 </AppText>
               </View>
-
-               
             </View>
 
             <View style={styles.horseCard}>

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   uploadOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: COLORS.overlay40,
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',

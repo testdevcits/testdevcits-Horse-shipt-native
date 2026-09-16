@@ -98,7 +98,7 @@ const AppCalendarModal = memo(
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dim background
+    backgroundColor: COLORS.overlay50, // Dim background
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.lg,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     padding: SPACING.lg,
     // Professional Shadow
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,

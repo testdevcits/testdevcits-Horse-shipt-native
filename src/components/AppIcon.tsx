@@ -107,7 +107,6 @@ import {
   Minus,
   Zap,
   WalletCards,
-  
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../constants';
 import { ViewStyle } from 'react-native';

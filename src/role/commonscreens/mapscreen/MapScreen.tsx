@@ -72,7 +72,7 @@ const MapScreen = ({ navigation }: any) => {
   };
 
   const mapCustomStyle = [
-    { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
+    { elementType: 'geometry', stylers: [{ color: COLORS.gray50 }] },
     { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
   ];
 
@@ -210,7 +210,7 @@ const autocompleteStyles = {
     height: 52,
     alignItems: 'center',
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 10,
   },
@@ -218,7 +218,7 @@ const autocompleteStyles = {
     fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.medium,
     color: COLORS.grey900,
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.transparent,
     marginTop: 0,
   },
   listView: {
@@ -226,7 +226,7 @@ const autocompleteStyles = {
     borderRadius: RADIUS.md,
     marginTop: 10,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 15,
   },

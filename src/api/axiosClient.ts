@@ -121,10 +121,10 @@ axiosClient.interceptors.response?.use(
 
     const errorMessage: string = String(
       errorBody?.errors?.[0] ||
-      errorBody?.message ||
-      errorBody?.error ||
-      error.message ||
-      'An error occurred',
+        errorBody?.message ||
+        errorBody?.error ||
+        error.message ||
+        'An error occurred',
     );
 
     Toast.show({

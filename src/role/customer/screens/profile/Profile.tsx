@@ -334,7 +334,7 @@ const InfoRow = ({ label, value, isLast }: any) => (
 const localStyles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'flex-end',
   },
   modalContent: {
@@ -388,9 +388,9 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#FEE2E2',
+    backgroundColor: COLORS.redLight,
     borderWidth: 1,
-    borderColor: '#FECACA',
+    borderColor: COLORS.redBorderSoft,
     paddingVertical: SPACING.md,
     borderRadius: RADIUS.md,
     marginTop: SPACING.xl,

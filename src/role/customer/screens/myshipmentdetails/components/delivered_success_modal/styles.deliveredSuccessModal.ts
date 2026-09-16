@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: COLORS.overlay60,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.xl,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
     alignItems: 'center',
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
     shadowRadius: 20,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   secondaryBtn: {
-    backgroundColor: '#F2F4F5',
+    backgroundColor: COLORS.gray100Alt,
 
     borderWidth: 1,
     borderColor: COLORS.divider,

@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoutBtn: {
-    backgroundColor: '#DC2626',
+    backgroundColor: COLORS.redPrimary,
     borderRadius: 16,
     paddingVertical: 14,
   },

@@ -96,7 +96,10 @@ const ActiveShipment = ({
           {/* Pickup Node */}
           <View style={styles.stopCard}>
             <View
-              style={[styles.nodeIconCircle, { backgroundColor: '#10B981' }]}
+              style={[
+                styles.nodeIconCircle,
+                { backgroundColor: COLORS.success },
+              ]}
             >
               <AppIcon name={'MapPin'} size={16} color={COLORS.white} />
             </View>
@@ -122,7 +125,7 @@ const ActiveShipment = ({
           {/* Delivery Node */}
           <View style={styles.stopCard}>
             <View
-              style={[styles.nodeIconCircle, { backgroundColor: '#EF4444' }]}
+              style={[styles.nodeIconCircle, { backgroundColor: COLORS.error }]}
             >
               <AppIcon name={'MapPin'} size={16} color={COLORS.white} />
             </View>

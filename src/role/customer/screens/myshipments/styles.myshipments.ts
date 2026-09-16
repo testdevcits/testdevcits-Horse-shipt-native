@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 6,
   },
-  activeCountBadge: { backgroundColor: 'rgba(255,255,255,0.3)' },
+  activeCountBadge: { backgroundColor: COLORS.whiteOverlay30 },
   countText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,

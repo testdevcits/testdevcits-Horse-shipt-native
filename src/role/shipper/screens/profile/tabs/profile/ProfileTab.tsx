@@ -108,9 +108,11 @@ const ProfileTab: React.FC<Props> = ({
                         key={s}
                         name="Star"
                         size={16}
-                        color="#F59E0B"
+                        color={COLORS.warning}
                         fill={
-                          s <= (rev?.rating || 5) ? '#F59E0B' : 'transparent'
+                          s <= (rev?.rating || 5)
+                            ? COLORS.warning
+                            : 'transparent'
                         }
                       />
                     ))}

@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator<{
   AccountSetup: undefined;
   EditProfile: undefined;
   ShipmentMapDirection: undefined;
-  QuoteReceivedDetail:undefined
+  QuoteReceivedDetail: undefined;
 }>();
 
 const ShipperNavigation = () => {
@@ -53,7 +53,10 @@ const ShipperNavigation = () => {
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       <Stack.Screen name="AccountSetup" component={AccountSetupScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-      <Stack.Screen name="QuoteReceivedDetail" component={QuoteReceivedDetail}/>
+      <Stack.Screen
+        name="QuoteReceivedDetail"
+        component={QuoteReceivedDetail}
+      />
 
       <Stack.Screen
         name="ShipmentMapDirection"

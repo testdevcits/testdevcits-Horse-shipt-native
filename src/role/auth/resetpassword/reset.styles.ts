@@ -14,7 +14,7 @@ export default StyleSheet.create({
   headerImage: { width: SCREEN_WIDTH },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.18)',
+    backgroundColor: COLORS.overlay18,
   },
   backBtn: {
     padding: SPACING.xl,
@@ -27,7 +27,7 @@ export default StyleSheet.create({
     borderTopLeftRadius: RADIUS.xl * 1.5,
     borderTopRightRadius: RADIUS.xl * 1.5,
     paddingHorizontal: SPACING.xxl,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.05,
     shadowRadius: 15,
     elevation: 10,
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 45,
-    backgroundColor: 'rgba(163, 127, 61, 0.20)',
+    backgroundColor: COLORS.goldPrimaryOverlay20,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',

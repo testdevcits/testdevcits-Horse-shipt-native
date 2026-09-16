@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.sm,
     marginRight: SPACING.sm,
     borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderBottomColor: COLORS.transparent,
     gap: 6,
   },
   tabBtnActive: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   subFilterBadgeActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: COLORS.overlay25,
   },
   subFilterBadgeText: {
     fontSize: FONT_SIZE.xs,

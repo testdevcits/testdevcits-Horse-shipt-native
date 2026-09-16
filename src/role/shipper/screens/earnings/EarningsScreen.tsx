@@ -316,7 +316,7 @@ const EarningsScreen = () => {
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <View style={styles.walletIconBox}>
-            <AppIcon name={'Wallet'} size={22} color="#A06333" />
+            <AppIcon name={'Wallet'} size={22} color={COLORS.saddleBrown} />
           </View>
           <View style={styles.headerTextCol}>
             <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
@@ -337,7 +337,11 @@ const EarningsScreen = () => {
           <>
             <View style={styles.activeCardContainer}>
               <View style={styles.cardIconBox}>
-                <AppIcon name={'CreditCard'} size={18} color="#A06333" />
+                <AppIcon
+                  name={'CreditCard'}
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
               </View>
               <View style={styles.activeCardTextCol}>
                 <AppText style={styles.activeCardLabel}>Active Card</AppText>
@@ -346,7 +350,7 @@ const EarningsScreen = () => {
                   {cardStatus.cardLast4 || 'Not Available'}
                 </AppText>
               </View>
-              <AppIcon name={'CheckCircle'} size={22} color="#10B981" />
+              <AppIcon name={'CheckCircle'} size={22} color={COLORS.success} />
             </View>
 
             <TouchableOpacity
@@ -359,7 +363,7 @@ const EarningsScreen = () => {
                 <ActivityIndicator size="small" color={COLORS.primary} />
               ) : (
                 <>
-                  <AppIcon name={'Edit'} size={16} color="#A06333" />
+                  <AppIcon name={'Edit'} size={16} color={COLORS.saddleBrown} />
                   <AppText style={styles.updateCardBtnText}>
                     Update Card
                   </AppText>
@@ -396,7 +400,7 @@ const EarningsScreen = () => {
       {/* Payout History Section */}
       <View style={styles.payoutHistoryHeaderRow}>
         <View style={styles.payoutIconBox}>
-          <AppIcon name={'ExternalLink'} size={20} color="#A06333" />
+          <AppIcon name={'ExternalLink'} size={20} color={COLORS.saddleBrown} />
         </View>
         <View>
           <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
@@ -586,11 +590,15 @@ const EarningsScreen = () => {
           <View style={styles.feedbackModalContent}>
             {feedbackModal.type === 'success' ? (
               <View style={styles.feedbackIconBoxSuccess}>
-                <AppIcon name={'CheckCircle2'} size={36} color="#10B981" />
+                <AppIcon
+                  name={'CheckCircle2'}
+                  size={36}
+                  color={COLORS.success}
+                />
               </View>
             ) : (
               <View style={styles.feedbackIconBoxError}>
-                <AppIcon name={'XCircle'} size={36} color="#EF4444" />
+                <AppIcon name={'XCircle'} size={36} color={COLORS.error} />
               </View>
             )}
 

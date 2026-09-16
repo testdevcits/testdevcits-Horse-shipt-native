@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 3,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.02)',
+    borderColor: COLORS.shadowLight,
   },
   header: {
     flexDirection: 'row',
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: SPACING.massive,
   },
-  spacingLine:{ height: 20 },
+  spacingLine: { height: 20 },
   locationTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,

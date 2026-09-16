@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.xs,
     borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderBottomColor: COLORS.transparent,
   },
   tabButtonActive: {
     borderBottomColor: COLORS.primary,

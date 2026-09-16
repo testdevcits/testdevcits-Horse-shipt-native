@@ -278,7 +278,7 @@ const AddVehicleModal: React.FC<Props> = ({
           {/* Vehicle Details Card Header */}
           <View style={styles.vehicleDetailsHeader}>
             <View style={styles.steeringIconBox}>
-              <AppIcon name={'Compass'} size={22} color="#A06333" />
+              <AppIcon name={'Compass'} size={22} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.headerTextCol}>
               <AppText style={styles.vehicleDetailsTitle}>
@@ -562,7 +562,11 @@ const AddVehicleModal: React.FC<Props> = ({
                     {item}
                   </AppText>
                   {vehicleType === item && (
-                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                    <AppIcon
+                      name={'Check'}
+                      size={18}
+                      color={COLORS.saddleBrown}
+                    />
                   )}
                 </TouchableOpacity>
               ))}
@@ -589,7 +593,11 @@ const AddVehicleModal: React.FC<Props> = ({
                     {item}
                   </AppText>
                   {stallType === item && (
-                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                    <AppIcon
+                      name={'Check'}
+                      size={18}
+                      color={COLORS.saddleBrown}
+                    />
                   )}
                 </TouchableOpacity>
               ))}
@@ -616,7 +624,11 @@ const AddVehicleModal: React.FC<Props> = ({
                     {item}
                   </AppText>
                   {stallSize === item && (
-                    <AppIcon name={'Check'} size={18} color="#A06333" />
+                    <AppIcon
+                      name={'Check'}
+                      size={18}
+                      color={COLORS.saddleBrown}
+                    />
                   )}
                 </TouchableOpacity>
               ))}

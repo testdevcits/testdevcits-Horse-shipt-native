@@ -109,7 +109,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
         <View style={styles.timelineContainer}>
           {/* Pickup Block */}
           <View style={styles.timelineItem}>
-            <View style={[styles.timelineDot, { backgroundColor: '#EF4444' }]}>
+            <View
+              style={[styles.timelineDot, { backgroundColor: COLORS.error }]}
+            >
               <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
             </View>
             <View style={styles.timelineContent}>
@@ -137,7 +139,9 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 
           {/* Delivery Block */}
           <View style={styles.timelineItem}>
-            <View style={[styles.timelineDot, { backgroundColor: '#10B981' }]}>
+            <View
+              style={[styles.timelineDot, { backgroundColor: COLORS.success }]}
+            >
               <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
             </View>
             <View style={styles.timelineContent}>

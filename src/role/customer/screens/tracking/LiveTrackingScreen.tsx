@@ -81,7 +81,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (s.includes('intransit') || s.includes('in_transit')) {
       return {
         label: 'In Transit',
-        badgeBg: 'rgba(59, 130, 246, 0.95)',
+        badgeBg: COLORS.blueOverlay95,
         isPickupDone: true,
         isDelivered: false,
       };
@@ -89,7 +89,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (s.includes('near')) {
       return {
         label: 'Near Destination',
-        badgeBg: 'rgba(245, 158, 11, 0.95)',
+        badgeBg: COLORS.warningOverlay95,
         isPickupDone: true,
         isDelivered: false,
       };
@@ -97,7 +97,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (s.includes('delivered') || s.includes('complete')) {
       return {
         label: 'Delivered',
-        badgeBg: 'rgba(16, 185, 129, 0.95)',
+        badgeBg: COLORS.successOverlay95,
         isPickupDone: true,
         isDelivered: true,
       };
@@ -105,7 +105,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (s.includes('pickup')) {
       return {
         label: 'Heading to Pickup',
-        badgeBg: 'rgba(99, 102, 241, 0.95)',
+        badgeBg: COLORS.indigoOverlay95,
         isPickupDone: false,
         isDelivered: false,
       };
@@ -113,7 +113,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (s.includes('assign')) {
       return {
         label: 'Driver Assigned',
-        badgeBg: 'rgba(107, 114, 128, 0.95)',
+        badgeBg: COLORS.greyOverlay95,
         isPickupDone: false,
         isDelivered: false,
       };
@@ -230,7 +230,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             destination={{ latitude: pickupLat, longitude: pickupLng }}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={6}
-            strokeColor="#3B82F6"
+            strokeColor={COLORS.info}
             optimizeWaypoints={true}
           />
         )}
@@ -294,7 +294,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             description={`Updated ${driverUpdatedAt}`}
           >
             <View style={styles.truckMarkerContainer}>
-              <AppIcon name={'Truck'} size={22} color="#A06333" />
+              <AppIcon name={'Truck'} size={22} color={COLORS.saddleBrown} />
             </View>
           </Marker>
         )}
@@ -470,6 +470,3 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
 };
 
 export default LiveTrackingScreen;
-
-
-

@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Dark dimmed background
+    backgroundColor: COLORS.overlay60, // Dark dimmed background
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.xl,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
     alignItems: 'center',
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
     shadowRadius: 20,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.lg,
   },
   secondaryBtn: {
-    backgroundColor: '#F2F4F5', // Light grey background like image
+    backgroundColor: COLORS.gray100Alt, // Light grey background like image
     height: 52,
     borderRadius: RADIUS.md,
     justifyContent: 'center',

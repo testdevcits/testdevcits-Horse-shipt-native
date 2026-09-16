@@ -243,14 +243,14 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
                     radius={radiusMeters}
                     strokeColor={
                       isFocused
-                        ? 'rgba(160, 99, 51, 0.95)'
-                        : 'rgba(160, 99, 51, 0.75)'
+                        ? COLORS.saddleBrownOverlay95
+                        : COLORS.saddleBrownOverlay75
                     }
                     strokeWidth={isFocused ? 3 : 2}
                     fillColor={
                       isFocused
-                        ? 'rgba(160, 99, 51, 0.28)'
-                        : 'rgba(160, 99, 51, 0.15)'
+                        ? COLORS.saddleBrownOverlay28
+                        : COLORS.saddleBrownOverlay15
                     }
                   />
                 </React.Fragment>
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: COLORS.border,
     backgroundColor: COLORS.white,
   },
   headerTitleCol: {
@@ -512,7 +512,7 @@ const styles = StyleSheet.create({
   // MAP VIEW & FLOATING CONTROLS
   mapContainer: {
     flex: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.border,
     position: 'relative',
   },
   mapView: {
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: COLORS.whiteOverlay95,
     paddingHorizontal: SPACING.sm + 2,
     paddingVertical: 7,
     borderRadius: RADIUS.round,
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: COLORS.whiteOverlay95,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: COLORS.white,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3,
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#D97706',
+    backgroundColor: COLORS.amberPrimary,
     borderColor: COLORS.white,
     transform: [{ scale: 1.1 }],
   },
@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
     height: height * 0.36,
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: COLORS.border,
   },
   drawerHeaderRow: {
     flexDirection: 'row',
@@ -635,7 +635,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.grey100,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.sm,
     marginHorizontal: SPACING.md,
     marginBottom: SPACING.xs,
@@ -664,7 +664,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
     gap: SPACING.sm,
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#94A3B8',
+    borderColor: COLORS.textLight,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',

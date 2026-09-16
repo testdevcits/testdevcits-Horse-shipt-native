@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
   // Ask Question Modal
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,

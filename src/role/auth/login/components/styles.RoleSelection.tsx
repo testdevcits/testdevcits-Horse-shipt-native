@@ -11,7 +11,7 @@ import {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: COLORS.overlay60,
     justifyContent: 'flex-end',
   },
   modalContent: {

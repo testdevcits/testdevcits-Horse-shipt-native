@@ -105,9 +105,6 @@
 //   },
 // });
 
-
-
-
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, View, Image } from 'react-native';
 import Pdf from 'react-native-pdf';
@@ -126,7 +123,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PdfViewer'>;
 
-const PdfViewerScreen  = ({ route }:any) => {
+const PdfViewerScreen = ({ route }: any) => {
   const { url, title, type = 'pdf' } = route.params;
 
   const [useWebViewFallback, setUseWebViewFallback] = useState(false);
@@ -154,10 +151,7 @@ const PdfViewerScreen  = ({ route }:any) => {
           startInLoadingState
           renderLoading={() => (
             <View style={styles.loader}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.primary}
-              />
+              <ActivityIndicator size="large" color={COLORS.primary} />
             </View>
           )}
         />
@@ -172,10 +166,7 @@ const PdfViewerScreen  = ({ route }:any) => {
           trustAllCerts={false}
           renderActivityIndicator={() => (
             <View style={styles.loader}>
-              <ActivityIndicator
-                size="large"
-                color={COLORS.primary}
-              />
+              <ActivityIndicator size="large" color={COLORS.primary} />
             </View>
           )}
           onError={error => {

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: COLORS.whiteOverlay20,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   summarySub: {
     fontSize: FONT_SIZE.sm,
-    color: 'rgba(255,255,255,0.8)',
+    color: COLORS.whiteOverlay80,
     marginTop: 2,
   },
 });

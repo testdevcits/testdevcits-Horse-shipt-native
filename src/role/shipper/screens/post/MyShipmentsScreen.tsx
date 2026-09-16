@@ -159,11 +159,13 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
         switch (itemStatus) {
           case 'in_transit':
             return {
-              bg: '#E0F2FE',
-              border: '#7DD3FC',
-              text: '#0284C7',
+              bg: COLORS.skyLightBg,
+              border: COLORS.skyBorder,
+              text: COLORS.skyPrimary,
               label: 'IN TRANSIT',
-              icon: <AppIcon name="Truck" size={12} color="#0284C7" />,
+              icon: (
+                <AppIcon name="Truck" size={12} color={COLORS.skyPrimary} />
+              ),
             };
           case 'completed':
             return {
@@ -265,7 +267,12 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
             {/* Pickup Node */}
             <View style={styles.routeLocCol}>
               <View style={styles.locHeaderRow}>
-                <View style={[styles.locDot, { backgroundColor: '#D97706' }]} />
+                <View
+                  style={[
+                    styles.locDot,
+                    { backgroundColor: COLORS.amberPrimary },
+                  ]}
+                />
                 <AppText style={styles.routeLocLabel}>PICKUP</AppText>
               </View>
               <AppText style={styles.routeAddressText} numberOfLines={2}>
@@ -277,14 +284,20 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
             <View style={styles.trackMiddle}>
               <View style={styles.trackLine} />
               <View style={styles.trackTruckBox}>
-                <AppIcon name="ArrowRight" size={12} color="#D97706" />
+                <AppIcon
+                  name="ArrowRight"
+                  size={12}
+                  color={COLORS.amberPrimary}
+                />
               </View>
             </View>
 
             {/* Delivery Node */}
             <View style={styles.routeLocCol}>
               <View style={styles.locHeaderRow}>
-                <View style={[styles.locDot, { backgroundColor: '#10B981' }]} />
+                <View
+                  style={[styles.locDot, { backgroundColor: COLORS.success }]}
+                />
                 <AppText style={styles.routeLocLabel}>DELIVERY</AppText>
               </View>
               <AppText style={styles.routeAddressText} numberOfLines={2}>
@@ -326,7 +339,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
               onPress={() => onOpenContract(item)}
               activeOpacity={0.8}
             >
-              <AppIcon name="FileText" size={14} color="#A06333" />
+              <AppIcon name="FileText" size={14} color={COLORS.saddleBrown} />
               <AppText style={styles.viewContractBtnText}>
                 View Contract
               </AppText>
@@ -337,7 +350,12 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                 onPress={() => handleReviewPress(item)}
                 activeOpacity={0.8}
               >
-                <AppIcon name="Star" size={14} color="#FFFFFF" fill="#FFFFFF" />
+                <AppIcon
+                  name="Star"
+                  size={14}
+                  color={COLORS.white}
+                  fill={COLORS.white}
+                />
                 <AppText style={styles.reviewCustomerBtnText}>
                   Review Customer
                 </AppText>
@@ -349,7 +367,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                   onPress={() => onTrackShipment(item)}
                   activeOpacity={0.8}
                 >
-                  <AppIcon name="Navigation" size={14} color="#FFFFFF" />
+                  <AppIcon name="Navigation" size={14} color={COLORS.white} />
                   <AppText style={styles.trackShipmentBtnText}>
                     Track Shipment
                   </AppText>
@@ -367,7 +385,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
     if (loading) {
       return (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#A06333" />
+          <ActivityIndicator size="large" color={COLORS.saddleBrown} />
         </View>
       );
     }

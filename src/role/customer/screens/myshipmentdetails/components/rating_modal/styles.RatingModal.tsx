@@ -11,7 +11,7 @@ import {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'center',
     padding: 20,
   },
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,

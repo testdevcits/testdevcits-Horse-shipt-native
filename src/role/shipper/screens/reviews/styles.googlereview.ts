@@ -126,10 +126,10 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xs,
   },
   inputContainerError: {
-    borderColor: '#EF4444',
+    borderColor: COLORS.error,
   },
   errorText: {
-    color: '#EF4444',
+    color: COLORS.error,
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     marginTop: 4,

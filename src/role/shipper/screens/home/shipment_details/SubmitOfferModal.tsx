@@ -521,7 +521,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: COLORS.overlay55,
     justifyContent: 'flex-end',
   },
   backdrop: {

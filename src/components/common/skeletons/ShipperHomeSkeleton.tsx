@@ -139,15 +139,15 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border || '#E8ECEF',
+    borderColor: COLORS.border || COLORS.skeletonBg,
   },
   opportunitiesCard: {
-    backgroundColor: '#FFFBF5',
+    backgroundColor: COLORS.beigeBg,
     borderRadius: RADIUS.xl,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border || '#E8ECEF',
+    borderColor: COLORS.border || COLORS.skeletonBg,
     alignItems: 'center',
   },
   cardInfoCol: {

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.15)', // Using a slight tint
+    backgroundColor: COLORS.overlay15, // Using a slight tint
   },
   contentCard: {
     flex: 1,

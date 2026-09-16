@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: SPACING.sm,
     right: SPACING.sm,
-    backgroundColor: 'rgba(0,0,0,0.65)',
+    backgroundColor: COLORS.overlay65,
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     flexDirection: 'row',
     alignItems: 'center',
     padding: SPACING.md,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.warmCreamDark,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   subBadgePill: {
-    backgroundColor: '#DEF7EC',
+    backgroundColor: COLORS.emeraldBadgeBg,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.round,
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
   subBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#03543F',
+    color: COLORS.emeraldBadgeText,
   },
   subBillingText: {
     fontSize: FONT_SIZE.xs,
@@ -691,7 +691,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   succeededPill: {
-    backgroundColor: '#DEF7EC',
+    backgroundColor: COLORS.emeraldBadgeBg,
     paddingHorizontal: SPACING.xs,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,
@@ -700,7 +700,7 @@ const styles = StyleSheet.create({
   succeededText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: '#03543F',
+    color: COLORS.emeraldBadgeText,
   },
 
   billingFilterRow: {
@@ -801,14 +801,14 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#FEE2E2',
+    backgroundColor: COLORS.redLight,
     justifyContent: 'center',
     alignItems: 'center',
   },
   redCrossText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#EF4444',
+    color: COLORS.error,
   },
   statusPillsRow: {
     flexDirection: 'row',

@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm2,
     paddingHorizontal: SPACING.lg,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   retryButton: {
     padding: SPACING.xs2,
     borderRadius: RADIUS.md,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: COLORS.overlay25,
     marginLeft: SPACING.sm,
   },
 });

@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginRight: SPACING.md,
     borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderBottomColor: COLORS.transparent,
     gap: 4,
   },
   tabBtnActive: {

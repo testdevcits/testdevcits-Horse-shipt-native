@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   chatCardItemLast: {
-    borderBottomWidth: 0, 
+    borderBottomWidth: 0,
   },
   avatarWrapper: {
     position: 'relative',
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
   },
   offlineDot: {
-    backgroundColor: '#94A3B8',
+    backgroundColor: COLORS.textLight,
   },
 
   // Chat Content

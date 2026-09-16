@@ -377,7 +377,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <AppIcon name={'Truck'} size={24} color="#A06333" />
+            <AppIcon name={'Truck'} size={24} color={COLORS.saddleBrown} />
           </View>
         </TouchableOpacity>
 
@@ -393,7 +393,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             </AppText>
           </View>
           <View style={styles.statIconBox}>
-            <AppIcon name={'FileText'} size={24} color="#A06333" />
+            <AppIcon name={'FileText'} size={24} color={COLORS.saddleBrown} />
           </View>
         </TouchableOpacity>
       </View>
@@ -407,7 +407,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('MyQuotes')}
           >
             <AppText style={styles.viewAllText}>View All</AppText>
-            <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
+            <AppIcon
+              name={'ChevronRight'}
+              size={16}
+              color={COLORS.saddleBrown}
+            />
           </TouchableOpacity>
         </View>
         <AppText style={styles.sectionSub}>
@@ -487,7 +491,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <AppIcon
               name={'List'}
               size={16}
-              color={viewMode === 'list' ? COLORS.white : '#A06333'}
+              color={viewMode === 'list' ? COLORS.white : COLORS.saddleBrown}
             />
             <AppText
               style={[
@@ -516,7 +520,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
             <AppIcon
               name={'Map'}
               size={16}
-              color={viewMode === 'map' ? COLORS.white : '#A06333'}
+              color={viewMode === 'map' ? COLORS.white : COLORS.saddleBrown}
             />
             <AppText
               style={[
@@ -620,7 +624,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                 <View
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
                 >
-                  <AppIcon name={'List'} size={18} color="#A06333" />
+                  <AppIcon name={'List'} size={18} color={COLORS.saddleBrown} />
                   <AppText style={styles.mapSectionTitle}>
                     Shipments ({filteredShipments.length})
                   </AppText>
@@ -628,7 +632,11 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
                 <TouchableOpacity style={styles.viewAllBtn}>
                   <AppText style={styles.viewAllText}>View All</AppText>
-                  <AppIcon name={'ChevronRight'} size={16} color="#A06333" />
+                  <AppIcon
+                    name={'ChevronRight'}
+                    size={16}
+                    color={COLORS.saddleBrown}
+                  />
                 </TouchableOpacity>
               </View>
 

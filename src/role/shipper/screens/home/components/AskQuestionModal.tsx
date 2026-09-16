@@ -175,7 +175,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
           >
             {loadingQuestions ? (
               <View style={styles.loaderBox}>
-                <ActivityIndicator size="large" color="#A06333" />
+                <ActivityIndicator size="large" color={COLORS.saddleBrown} />
               </View>
             ) : answeredQuestion ? (
               /* ANSWERED QUESTION STATE (MATCHING SCREENSHOT) */
@@ -184,7 +184,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.pendingQuestionCard}>
                   <View style={styles.pendingHeaderRow}>
                     <View style={styles.pendingIconSquare}>
-                      <AppIcon name="MessageSquare" size={16} color="#A06333" />
+                      <AppIcon
+                        name="MessageSquare"
+                        size={16}
+                        color={COLORS.saddleBrown}
+                      />
                     </View>
                     <AppText style={styles.pendingHeaderLabel}>
                       YOUR QUESTION
@@ -266,7 +270,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.pendingQuestionCard}>
                   <View style={styles.pendingHeaderRow}>
                     <View style={styles.pendingIconSquare}>
-                      <AppIcon name="MessageSquare" size={16} color="#A06333" />
+                      <AppIcon
+                        name="MessageSquare"
+                        size={16}
+                        color={COLORS.saddleBrown}
+                      />
                     </View>
                     <AppText style={styles.pendingHeaderLabel}>
                       YOUR QUESTION
@@ -292,7 +300,11 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 <View style={styles.statusCard}>
                   <View style={styles.statusHeaderRow}>
                     <View style={styles.statusIconSquare}>
-                      <AppIcon name="Clock" size={16} color="#B45309" />
+                      <AppIcon
+                        name="Clock"
+                        size={16}
+                        color={COLORS.amberWarning}
+                      />
                     </View>
                     <AppText style={styles.statusHeaderLabel}>STATUS</AppText>
                   </View>
@@ -412,7 +424,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: COLORS.overlay55,
     justifyContent: 'flex-end',
   },
   backdrop: {
@@ -429,7 +441,7 @@ const styles = StyleSheet.create({
 
   // Header Banner
   headerBanner: {
-    backgroundColor: '#A06333',
+    backgroundColor: COLORS.saddleBrown,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     flexDirection: 'row',
@@ -448,14 +460,14 @@ const styles = StyleSheet.create({
   headerSub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: COLORS.whiteOverlay85,
     marginTop: 2,
   },
   closeBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: COLORS.overlay25,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -473,9 +485,9 @@ const styles = StyleSheet.create({
 
   // Notice Box
   noticeBox: {
-    backgroundColor: '#FAF6F0',
+    backgroundColor: COLORS.warmCream,
     borderLeftWidth: 4,
-    borderLeftColor: '#A06333',
+    borderLeftColor: COLORS.saddleBrown,
     borderRadius: RADIUS.xs,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
@@ -483,7 +495,7 @@ const styles = StyleSheet.create({
   noticeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
-    color: '#8C5226',
+    color: COLORS.darkBrown,
     lineHeight: 18,
   },
 
@@ -508,7 +520,7 @@ const styles = StyleSheet.create({
   textAreaContainer: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     position: 'relative',
@@ -516,7 +528,7 @@ const styles = StyleSheet.create({
   },
   textAreaContainerError: {
     borderColor: COLORS.error,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
   },
   textAreaInput: {
     height: 120,
@@ -533,7 +545,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
 
     fontFamily: FONTS.regular,
-    color: '#94A3B8',
+    color: COLORS.textLight,
   },
   errorText: {
     fontSize: FONT_SIZE.xs,

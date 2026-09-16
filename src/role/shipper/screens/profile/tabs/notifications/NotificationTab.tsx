@@ -59,7 +59,7 @@ const NotificationTab: React.FC<Props> = ({
       <View style={styles.notificationsCard}>
         <View style={styles.subCardHeader}>
           <View style={styles.goldSquareIconBox}>
-            <AppIcon name="Bell" size={22} color="#A06333" />
+            <AppIcon name="Bell" size={22} color={COLORS.saddleBrown} />
           </View>
 
           <View style={styles.subHeaderTextCol}>

@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backgroundColor: COLORS.slateOverlay65,
     justifyContent: 'flex-end',
   },
   content: {
@@ -133,9 +133,9 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     marginBottom: SPACING.md,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.textPrimary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.02,
     shadowRadius: 4,
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
   summaryItem: {
     width: '48%',
     padding: SPACING.sm,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
   },
   summaryItemHeader: {
     flexDirection: 'row',
@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
     borderRadius: RADIUS.sm,
-    backgroundColor: '#FFFDF9',
+    backgroundColor: COLORS.creamOffWhite,
   },
   docLeftRow: {
     flexDirection: 'row',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
 
   highlightCard: {
     borderColor: COLORS.primary,
-    backgroundColor: '#FFFDF7',
+    backgroundColor: COLORS.creamOffWhiteAlt,
     borderWidth: 1.5,
   },
   highlightHeader: {
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   stripeCardContainer: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.sm,
     overflow: 'hidden',
     marginBottom: SPACING.sm,
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   signatureWrap: {
     height: 140,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.sm,
     overflow: 'hidden',
     backgroundColor: COLORS.white,
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.sm,
     paddingTop: SPACING.sm,
     borderTopWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
   },
   checkbox: {
     width: 18,
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
   },
   acceptedContainer: { gap: SPACING.sm },
   successMessageCard: {
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.error,
     gap: SPACING.xs,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
   },
   cancelBookingText: {
     color: COLORS.error,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
   inactiveState: {
     alignItems: 'center',
     padding: SPACING.md,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     borderRadius: RADIUS.sm,
   },
   inactiveText: {
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
 
   promptOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    backgroundColor: COLORS.overlay,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     padding: SPACING.md,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.12,
     shadowRadius: 16,
@@ -473,9 +473,9 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm,
   },
   reasonInput: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.sm,
     padding: SPACING.sm,
     height: 80,
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: RADIUS.sm,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
   },
   promptBtnTextSecondary: {
     color: COLORS.textSecondary,

@@ -65,7 +65,11 @@ const StripePaymentMethodCardModal: React.FC<
           {/* Error Banner */}
           {!!formError && (
             <View style={styles.errorBanner}>
-              <AppIcon name={'AlertCircle'} size={16} color="#DC2626" />
+              <AppIcon
+                name={'AlertCircle'}
+                size={16}
+                color={COLORS.redPrimary}
+              />
               <AppText style={styles.errorBannerText}>{formError}</AppText>
             </View>
           )}

@@ -11,6 +11,7 @@ import imageIndex from '../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../utils/helpers';
 import styles from './styles.shipperreviews';
 import AppIcon from '../../../../components/AppIcon';
+import { COLORS } from '../../../../constants';
 
 const ShipperReviewsScreen = ({ route }: any) => {
   const initialReviews = route?.params?.reviews || [];
@@ -73,9 +74,11 @@ const ShipperReviewsScreen = ({ route }: any) => {
                 key={s}
                 name={'Star'}
                 size={22}
-                color="#F59E0B"
+                color={COLORS.warning}
                 fill={
-                  s <= Math.round(Number(avgRating)) ? '#F59E0B' : 'transparent'
+                  s <= Math.round(Number(avgRating))
+                    ? COLORS.warning
+                    : 'transparent'
                 }
               />
             ))}
@@ -103,7 +106,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
     if (loading) return null;
     return (
       <EmptyState
-        icon={<AppIcon name={'MessageSquare'} size={64} color="#A1A1AA" />}
+        icon={
+          <AppIcon name={'MessageSquare'} size={64} color={COLORS.zinc400} />
+        }
         title="No Reviews Received Yet"
         message="Reviews from customers will appear here once submitted."
       />
@@ -145,8 +150,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
                 key={s}
                 name={'Star'}
                 size={14}
-                color="#F59E0B"
-                fill={s <= (item?.rating || 5) ? '#F59E0B' : 'transparent'}
+                color={COLORS.warning}
+                fill={s <= (item?.rating || 5) ? COLORS.warning : 'transparent'}
               />
             ))}
           </View>

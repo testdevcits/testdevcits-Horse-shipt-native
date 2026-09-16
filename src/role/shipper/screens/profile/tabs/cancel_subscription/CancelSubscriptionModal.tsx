@@ -80,7 +80,11 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
             {/* Header */}
             <View style={styles.header}>
               <View style={styles.alertIconBox}>
-                <AppIcon name="AlertCircle" size={22} color="#D97706" />
+                <AppIcon
+                  name="AlertCircle"
+                  size={22}
+                  color={COLORS.amberPrimary}
+                />
               </View>
 
               <View style={styles.headerTextCol}>
@@ -213,7 +217,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
               activeOpacity={0.85}
             >
               {submitting ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
+                <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
                 <AppText
                   style={[
@@ -235,7 +239,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backgroundColor: COLORS.slateOverlay65,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.md,
@@ -247,9 +251,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.15,
     shadowRadius: 16,
@@ -268,7 +272,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 8,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.brandBrownLightBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -290,7 +294,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   planImpactBox: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     borderLeftWidth: 4,
     borderLeftColor: COLORS.primary,
     borderRadius: RADIUS.xs,
@@ -315,7 +319,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm,
   },
   asterisk: {
-    color: '#EF4444',
+    color: COLORS.error,
   },
   reasonsGrid: {
     flexDirection: 'row',
@@ -327,7 +331,7 @@ const styles = StyleSheet.create({
     width: '48.5%',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.xs,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.sm,
@@ -356,9 +360,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   otherTextInput: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.grey300,
     borderRadius: RADIUS.xs,
     padding: SPACING.sm,
     fontSize: FONT_SIZE.xs + 1,
@@ -387,15 +391,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: SPACING.sm,
     padding: SPACING.md,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: COLORS.border,
   },
   keepBtn: {
     flex: 1,
     height: 44,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -408,12 +412,12 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 44,
     borderRadius: RADIUS.xs,
-    backgroundColor: '#EF4444',
+    backgroundColor: COLORS.error,
     justifyContent: 'center',
     alignItems: 'center',
   },
   cancelBtnDisabled: {
-    backgroundColor: '#FCA5A5',
+    backgroundColor: COLORS.redBorder,
     opacity: 0.7,
   },
   cancelBtnText: {

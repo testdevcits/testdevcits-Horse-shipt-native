@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.18)',
+    backgroundColor: COLORS.overlay18,
   },
   keyboardView: {
     flex: 1,
@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
     zIndex: 99,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: COLORS.overlay65,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs + 2,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: 'rgba(218, 165, 32, 0.4)',
+    borderColor: COLORS.goldOverlay40,
   },
   changeRoleText: {
     fontSize: FONT_SIZE.xs,

@@ -168,14 +168,16 @@ const TruckDriverScreen = () => {
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statBox}>
-            <AppText style={[styles.statNumber, { color: '#10B981' }]}>
+            <AppText style={[styles.statNumber, { color: COLORS.success }]}>
               {activeCount}
             </AppText>
             <AppText style={styles.statLabel}>Active</AppText>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statBox}>
-            <AppText style={[styles.statNumber, { color: '#64748B' }]}>
+            <AppText
+              style={[styles.statNumber, { color: COLORS.textSecondary }]}
+            >
               {inactiveCount}
             </AppText>
             <AppText style={styles.statLabel}>Inactive</AppText>

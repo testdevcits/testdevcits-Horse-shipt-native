@@ -369,7 +369,7 @@ const ShipperShipmentDetailsScreen = () => {
         <View style={styles.gridContainer}>
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <AppIcon name="Compass" size={18} color="#A06333" />
+              <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>DISTANCE</AppText>
@@ -379,7 +379,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>HORSES</AppText>
@@ -391,7 +391,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
@@ -401,7 +401,7 @@ const ShipperShipmentDetailsScreen = () => {
 
           <View style={styles.specStatCard}>
             <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color="#A06333" />
+              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
@@ -413,7 +413,7 @@ const ShipperShipmentDetailsScreen = () => {
         {/* 4. Route Information Card */}
         <View style={styles.routeInfoCard}>
           <View style={styles.cardTitleRow}>
-            <AppIcon name="Compass" size={18} color="#A06333" />
+            <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
             <AppText style={styles.cardHeaderTitle}>Route Information</AppText>
           </View>
 
@@ -421,7 +421,7 @@ const ShipperShipmentDetailsScreen = () => {
             {/* Pickup Node */}
             <View style={styles.timelineRow}>
               <View style={styles.timelineIconBoxPickup}>
-                <AppIcon name="MapPin" size={16} color="#A06333" />
+                <AppIcon name="MapPin" size={16} color={COLORS.saddleBrown} />
               </View>
 
               <View style={styles.timelineTextCol}>
@@ -438,7 +438,7 @@ const ShipperShipmentDetailsScreen = () => {
             {/* Delivery Node */}
             <View style={styles.timelineRow}>
               <View style={styles.timelineIconBoxDelivery}>
-                <AppIcon name="Flag" size={16} color="#A06333" />
+                <AppIcon name="Flag" size={16} color={COLORS.saddleBrown} />
               </View>
 
               <View style={styles.timelineTextCol}>

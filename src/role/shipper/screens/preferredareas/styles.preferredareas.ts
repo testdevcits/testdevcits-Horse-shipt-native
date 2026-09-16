@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
   },
 
   scrollContent: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: RADIUS.xs || 6,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     backgroundColor: COLORS.white,
     alignItems: 'center',
     minWidth: 62,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   progressBarBg: {
     flex: 1,
     height: 6,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.border,
     borderRadius: 3,
     overflow: 'hidden',
     marginRight: SPACING.md,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   seeAllBtn: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.grey300,
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
@@ -155,10 +155,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     padding: SPACING.md,
     marginBottom: SPACING.lg,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.textPrimary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -193,9 +193,9 @@ const styles = StyleSheet.create({
 
   radiusPill: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 4,
     borderRadius: RADIUS.round,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   radiusPillText: {
     fontSize: FONT_SIZE.xs || 11,
     fontFamily: FONTS.bold,
-    color: '#D97706',
+    color: COLORS.amberPrimary,
   },
 
   // COORD BOXES ROW
@@ -216,9 +216,9 @@ const styles = StyleSheet.create({
   },
   coordBox: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
     borderRadius: RADIUS.xs || 6,
     padding: SPACING.sm,
   },
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   mapView: {
     width: '100%',
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   editCardBtn: {
     flex: 1,
-    backgroundColor: '#0F172A',
+    backgroundColor: COLORS.textPrimary,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -284,9 +284,9 @@ const styles = StyleSheet.create({
   },
   deleteCardBtn: {
     flex: 1,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: COLORS.redBorder,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   deleteCardBtnText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#DC2626',
+    color: COLORS.redPrimary,
   },
 
   // EMPTY STATE
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     padding: SPACING.xl,
     alignItems: 'center',
     justifyContent: 'center',
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
   // MODAL STYLES (Premium Refinement)
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.5)',
+    backgroundColor: COLORS.slateOverlay50,
     justifyContent: 'flex-end',
   },
   modalContainer: {
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: RADIUS.xl,
     maxHeight: '88%',
     paddingBottom: Platform.OS === 'ios' ? 20 : 10,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: COLORS.grey300,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: COLORS.divider,
   },
   modalTitle: {
     fontSize: FONT_SIZE.md,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.grey300,
     borderRadius: RADIUS.xs,
     paddingHorizontal: SPACING.md,
     paddingVertical: Platform.OS === 'ios' ? SPACING.sm : 2,
@@ -430,9 +430,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: 7,
     borderRadius: RADIUS.round,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   presetChipActive: {
     backgroundColor: COLORS.goldLightBg,
@@ -455,14 +455,14 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.md,
     paddingBottom: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
+    borderTopColor: COLORS.divider,
     backgroundColor: COLORS.white,
   },
   cancelBtn: {
     flex: 1,
     height: 44,
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.grey300,
     borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',

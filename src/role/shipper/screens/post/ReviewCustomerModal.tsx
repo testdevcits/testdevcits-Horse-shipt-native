@@ -183,7 +183,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
             {/* Customer Badge */}
             <View style={styles.customerRow}>
               <View style={styles.avatar}>
-                <AppIcon name="User" size={18} color="#D97706" />
+                <AppIcon name="User" size={18} color={COLORS.amberPrimary} />
               </View>
               <AppText style={styles.customerName}>{customerName}</AppText>
             </View>
@@ -201,8 +201,8 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
                     <AppIcon
                       name="Star"
                       size={32}
-                      color={s <= rating ? '#F59E0B' : '#CBD5E1'}
-                      fill={s <= rating ? '#F59E0B' : 'transparent'}
+                      color={s <= rating ? COLORS.warning : COLORS.grey300}
+                      fill={s <= rating ? COLORS.warning : 'transparent'}
                     />
                   </TouchableOpacity>
                 ))}
@@ -219,7 +219,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
                 allowFontScaling={false}
                 style={styles.textInput}
                 placeholder="Write your review about this customer..."
-                placeholderTextColor="#94A3B8"
+                placeholderTextColor={COLORS.textLight}
                 multiline
                 numberOfLines={4}
                 value={reviewText}
@@ -246,7 +246,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.overlay50,
     justifyContent: 'center',
     padding: SPACING.md,
   },
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.brandBrownLightBg,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: RADIUS.round,
@@ -300,14 +300,14 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#FDE68A',
+    backgroundColor: COLORS.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
   customerName: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.bold,
-    color: '#92400E',
+    color: COLORS.brandBrown,
   },
   ratingSection: {
     alignItems: 'center',
@@ -335,9 +335,9 @@ const styles = StyleSheet.create({
   },
   textInput: {
     minHeight: 100,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,

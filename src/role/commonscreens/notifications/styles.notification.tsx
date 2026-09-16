@@ -98,7 +98,7 @@ import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 //   },
 //   selectedCard: {
 //     borderColor: COLORS.primary,
-//     backgroundColor: '#FAF6EE',
+//     backgroundColor: COLORS.warmCreamDark,
 //   },
 //   checkContainer: {
 //     justifyContent: 'center',
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   countBadgeActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: COLORS.overlay25,
   },
   countText: {
     fontSize: FONT_SIZE.xs,

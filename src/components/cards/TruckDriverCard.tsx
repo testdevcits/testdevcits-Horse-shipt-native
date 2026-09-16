@@ -55,13 +55,15 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               <Image source={{ uri: profileUrl }} style={styles.avatarImg} />
             ) : (
               <View style={styles.avatarPlaceholder}>
-                <AppIcon name="User" size={24} color="#A06333" />
+                <AppIcon name="User" size={24} color={COLORS.saddleBrown} />
               </View>
             )}
             <View
               style={[
                 styles.statusDot,
-                { backgroundColor: isActive ? '#10B981' : '#94A3B8' },
+                {
+                  backgroundColor: isActive ? COLORS.success : COLORS.textLight,
+                },
               ]}
             />
           </View>
@@ -90,7 +92,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
 
             {driver?.licenseNumber ? (
               <View style={styles.licensePill}>
-                <AppIcon name="Award" size={12} color="#A06333" />
+                <AppIcon name="Award" size={12} color={COLORS.saddleBrown} />
                 <AppText style={styles.licenseText} numberOfLines={1}>
                   Lic: {driver?.licenseNumber}
                 </AppText>
@@ -106,7 +108,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {driver?.phone ? (
             <View style={styles.infoRow}>
               <View style={styles.iconCircle}>
-                <AppIcon name="Phone" size={14} color="#A06333" />
+                <AppIcon name="Phone" size={14} color={COLORS.saddleBrown} />
               </View>
               <AppText style={styles.infoText} numberOfLines={1}>
                 {driver?.phone}
@@ -117,7 +119,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
           {driver?.email ? (
             <View style={styles.infoRow}>
               <View style={styles.iconCircle}>
-                <AppIcon name="Mail" size={14} color="#A06333" />
+                <AppIcon name="Mail" size={14} color={COLORS.saddleBrown} />
               </View>
               <AppText style={styles.infoText} numberOfLines={1}>
                 {driver?.email}
@@ -127,7 +129,7 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
 
           {driver?.notes ? (
             <View style={styles.notesBox}>
-              <AppIcon name="FileText" size={13} color="#64748B" />
+              <AppIcon name="FileText" size={13} color={COLORS.textSecondary} />
               <AppText style={styles.notesText} numberOfLines={2}>
                 {driver?.notes}
               </AppText>
@@ -158,12 +160,12 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             <AppIcon
               name="Power"
               size={14}
-              color={isActive ? '#D97706' : '#10B981'}
+              color={isActive ? COLORS.amberPrimary : COLORS.success}
             />
             <AppText
               style={[
                 styles.actionBtnText,
-                { color: isActive ? '#D97706' : '#10B981' },
+                { color: isActive ? COLORS.amberPrimary : COLORS.success },
               ]}
             >
               {isActive ? 'Deactivate' : 'Activate'}
@@ -175,8 +177,8 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
             onPress={() => onEdit(driver)}
             activeOpacity={0.7}
           >
-            <AppIcon name="Edit" size={14} color="#334155" />
-            <AppText style={[styles.actionBtnText, { color: '#334155' }]}>
+            <AppIcon name="Edit" size={14} color={COLORS.grey700} />
+            <AppText style={[styles.actionBtnText, { color: COLORS.grey700 }]}>
               Edit Profile
             </AppText>
           </TouchableOpacity>
@@ -187,8 +189,8 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               onPress={() => onDelete(driverId, driverName)}
               activeOpacity={0.7}
             >
-              <AppIcon name="Trash2" size={14} color="#EF4444" />
-              <AppText style={[styles.actionBtnText, { color: '#EF4444' }]}>
+              <AppIcon name="Trash2" size={14} color={COLORS.error} />
+              <AppText style={[styles.actionBtnText, { color: COLORS.error }]}>
                 Delete
               </AppText>
             </TouchableOpacity>
@@ -206,9 +208,9 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
     borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     padding: SPACING.md,
-    shadowColor: '#0F172A',
+    shadowColor: COLORS.textPrimary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: COLORS.divider,
   },
   avatarWrapper: {
     position: 'relative',
@@ -230,15 +232,15 @@ const styles = StyleSheet.create({
     height: 52,
     borderRadius: 26,
     borderWidth: 2,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
   },
   avatarPlaceholder: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#FFFBF5',
+    backgroundColor: COLORS.beigeBg,
     borderWidth: 1.5,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -263,7 +265,7 @@ const styles = StyleSheet.create({
   driverName: {
     fontSize: FONT_SIZE.md + 1,
     fontFamily: FONTS.bold,
-    color: '#0F172A',
+    color: COLORS.textPrimary,
     flex: 1,
     marginRight: SPACING.xs,
   },
@@ -273,47 +275,47 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.round,
   },
   badgeActive: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.greenLightBg,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.greenBorder,
   },
   badgeInactive: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   statusBadgeText: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.bold,
   },
   textActive: {
-    color: '#059669',
+    color: COLORS.greenPrimary,
   },
   textInactive: {
-    color: '#64748B',
+    color: COLORS.textSecondary,
   },
   licensePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFBF5',
+    backgroundColor: COLORS.beigeBg,
     alignSelf: 'flex-start',
     paddingHorizontal: SPACING.xs + 2,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,
     marginTop: 4,
     borderWidth: 1,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
   },
   licenseText: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.medium,
-    color: '#A06333',
+    color: COLORS.saddleBrown,
     marginLeft: 4,
   },
   noLicenseText: {
     fontSize: FONT_SIZE.xs - 1,
     fontFamily: FONTS.regular,
-    color: '#94A3B8',
+    color: COLORS.textLight,
     marginTop: 2,
   },
   infoGrid: {
@@ -328,34 +330,34 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#FFFBF5',
+    backgroundColor: COLORS.beigeBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#F0E4D4',
+    borderColor: COLORS.beigeBorder,
   },
   infoText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.regular,
-    color: '#334155',
+    color: COLORS.grey700,
     flex: 1,
   },
   notesBox: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     padding: SPACING.xs + 2,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.divider,
     marginTop: 2,
     gap: 6,
   },
   notesText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     flex: 1,
   },
   actionFooter: {
@@ -374,20 +376,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   btnActivate: {
-    backgroundColor: '#ECFDF5',
-    borderColor: '#A7F3D0',
+    backgroundColor: COLORS.greenLightBg,
+    borderColor: COLORS.greenBorder,
   },
   btnDeactivate: {
-    backgroundColor: '#FEF3C7',
-    borderColor: '#FDE68A',
+    backgroundColor: COLORS.brandBrownLightBg,
+    borderColor: COLORS.goldBorder,
   },
   btnEdit: {
-    backgroundColor: '#F8FAFC',
-    borderColor: '#E2E8F0',
+    backgroundColor: COLORS.background,
+    borderColor: COLORS.border,
   },
   btnDelete: {
-    backgroundColor: '#FEF2F2',
-    borderColor: '#FCA5A5',
+    backgroundColor: COLORS.redLightBg,
+    borderColor: COLORS.redBorder,
   },
   actionBtnText: {
     fontSize: FONT_SIZE.xs,

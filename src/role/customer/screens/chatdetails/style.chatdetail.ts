@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   squareActionBtn: {
     width: 44,
     height: 44,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     borderRadius: RADIUS.round,
     justifyContent: 'center',
     alignItems: 'center',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: RADIUS.sm,
     position: 'relative',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,

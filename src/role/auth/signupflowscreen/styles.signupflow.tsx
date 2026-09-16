@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   backgroundImage: { width: SCREEN_WIDTH }, // height is dynamic
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    backgroundColor: COLORS.overlay15,
   },
   backBtn: {
     padding: SPACING.lg,

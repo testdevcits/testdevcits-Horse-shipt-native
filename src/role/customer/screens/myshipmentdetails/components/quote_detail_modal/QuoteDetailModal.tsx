@@ -78,15 +78,15 @@ const QuoteDetailModal = ({
     }
     if (isCancelled || isRejected) {
       return {
-        bg: '#FEF2F2',
+        bg: COLORS.redLightBg,
         text: COLORS.error,
-        border: '#FCA5A5',
+        border: COLORS.redBorder,
       };
     }
     return {
       bg: COLORS.goldLightBg,
       text: COLORS.primary,
-      border: '#FDE68A',
+      border: COLORS.goldBorder,
     };
   };
 

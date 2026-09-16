@@ -143,7 +143,7 @@ const GoogleReviewScreen = () => {
             {/* Info Callout Box */}
             <View style={styles.infoCalloutBox}>
               <View style={styles.infoIconBox}>
-                <AppIcon name="Info" size={18} color="#A06333" />
+                <AppIcon name="Info" size={18} color={COLORS.saddleBrown} />
               </View>
               <AppText style={styles.infoCalloutText}>
                 Add the direct Google review or Google Maps business link you
@@ -164,7 +164,9 @@ const GoogleReviewScreen = () => {
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="url"
-              leftIcon={<AppIcon name="Link" size={20} color="#A06333" />}
+              leftIcon={
+                <AppIcon name="Link" size={20} color={COLORS.saddleBrown} />
+              }
               rightIcon={
                 isConnected ? (
                   <AppIcon

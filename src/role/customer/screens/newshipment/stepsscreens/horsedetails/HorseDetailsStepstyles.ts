@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   horseSection: {
     marginBottom: SPACING.xl,
-    backgroundColor: '#FBFAf8',
+    backgroundColor: COLORS.softOffWhite,
     padding: SPACING.md,
     borderRadius: RADIUS.md,
     borderWidth: 1,

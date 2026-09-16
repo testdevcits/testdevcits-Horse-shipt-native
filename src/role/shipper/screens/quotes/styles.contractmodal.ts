@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   webView: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.transparent,
   },
   contractImage: {
     width: '100%',

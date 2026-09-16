@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 12,
     top: 12,
-    backgroundColor: 'rgba(15, 23, 42, 0.85)',
+    backgroundColor: COLORS.slateOverlay85,
     borderRadius: 8,
     paddingVertical: 4,
     paddingHorizontal: 10,

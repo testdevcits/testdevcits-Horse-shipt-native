@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
   infoCard: {
     flexDirection: 'row',
-    backgroundColor: '#FAF6EE',
+    backgroundColor: COLORS.warmCreamDark,
     padding: SPACING.sm,
     borderRadius: RADIUS.md,
     marginBottom: SPACING.md,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   form: { gap: SPACING.xs },
 
   sectionCard: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: COLORS.background,
     borderRadius: RADIUS.md,
     padding: SPACING.sm,
     borderWidth: 1,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     right: 4,
-    backgroundColor: 'rgba(239, 68, 68, 0.85)',
+    backgroundColor: COLORS.redOverlay85,
     borderRadius: 12,
     padding: 4,
   },

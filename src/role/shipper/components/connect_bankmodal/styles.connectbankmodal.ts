@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: COLORS.overlay60,
     justifyContent: 'flex-end',
   },
   modalCard: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: COLORS.overlay25,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 10,

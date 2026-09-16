@@ -36,7 +36,7 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
     if (loading) {
       return (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#A06333" />
+          <ActivityIndicator size="large" color={COLORS.saddleBrown} />
         </View>
       );
     }

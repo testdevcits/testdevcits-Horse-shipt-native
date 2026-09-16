@@ -164,7 +164,7 @@ const MapModal = ({
               destination={pickup}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={4}
-              strokeColor="#3B82F6"
+              strokeColor={COLORS.info}
               lineDashPattern={[6, 4]}
               onReady={result => {
                 setLeg1Metrics({
@@ -183,7 +183,7 @@ const MapModal = ({
             destination={delivery}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={5}
-            strokeColor={hasCurrentLocation ? '#10B981' : COLORS.primary}
+            strokeColor={hasCurrentLocation ? COLORS.success : COLORS.primary}
             onReady={result => {
               setLeg2Metrics({
                 distance: result.distance,
@@ -211,7 +211,7 @@ const MapModal = ({
                   style={[
                     styles.markerBadge,
                     {
-                      backgroundColor: '#3B82F6',
+                      backgroundColor: COLORS.info,
                       transform: [{ scale: pulseAnim }],
                     },
                   ]}
@@ -220,7 +220,7 @@ const MapModal = ({
                   <AppText style={styles.markerBadgeText}>Driver</AppText>
                 </Animated.View>
                 <View
-                  style={[styles.markerPin, { backgroundColor: '#3B82F6' }]}
+                  style={[styles.markerPin, { backgroundColor: COLORS.info }]}
                 >
                   <AppIcon
                     name={'Truck'}
@@ -230,7 +230,10 @@ const MapModal = ({
                   />
                 </View>
                 <View
-                  style={[styles.markerPointer, { borderTopColor: '#3B82F6' }]}
+                  style={[
+                    styles.markerPointer,
+                    { borderTopColor: COLORS.info },
+                  ]}
                 />
               </View>
             </Marker>
@@ -385,7 +388,7 @@ const MapModal = ({
                 <View style={styles.addressRow}>
                   <View style={styles.addressIconCol}>
                     <View
-                      style={[styles.tinyDot, { backgroundColor: '#3B82F6' }]}
+                      style={[styles.tinyDot, { backgroundColor: COLORS.info }]}
                     />
                     <View style={styles.verticalLine} />
                   </View>
@@ -479,7 +482,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 2,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -496,7 +499,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 6,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -506,18 +509,18 @@ const styles = StyleSheet.create({
   markerPointer: {
     width: 0,
     height: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.transparent,
     borderStyle: 'solid',
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderTopWidth: 8,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
+    borderLeftColor: COLORS.transparent,
+    borderRightColor: COLORS.transparent,
     marginTop: -1,
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: COLORS.whiteOverlay70,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
@@ -544,14 +547,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 8,
   },
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: COLORS.overlay80,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: RADIUS.round,
@@ -584,7 +587,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.divider,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -600,7 +603,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     padding: SPACING.xl,
     elevation: 15,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOpacity: 0.1,
     shadowRadius: 20,
   },
