@@ -17,7 +17,7 @@ import {
   EmptyState,
   ShipmentsSkeleton,
 } from '../../../../components';
-import ShipmentHorizontalCard from '../../../../components/cards/ShipmentCardDetailed';
+import ShipmentHorizontalCard from '../../../../components/cards/shipmentcard_detailed/ShipmentCardDetailed';
 import styles from './styles.myshipments';
 import AppIcon from '../../../../components/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';

@@ -18,7 +18,7 @@ import {
   SectionHeader,
   ShipperCard,
 } from '../../../../components';
-import ShipmentCardDetailed from '../../../../components/cards/ShipmentCardDetailed';
+import ShipmentCardDetailed from '../../../../components/cards/shipmentcard_detailed/ShipmentCardDetailed';
 import { useShipments } from './useShipments';
 import imageIndex from '../../../../assets/images/imageIndex';
 import { useShippers } from '../topratedshippers/shipperlist/useShippers';
