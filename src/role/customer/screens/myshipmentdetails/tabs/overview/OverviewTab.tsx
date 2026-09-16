@@ -375,7 +375,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                               <AppText style={styles.logTimeText}>
                                 {formatDate(
                                   log?.createdAt,
-                                  'DD/MM/YYYY, HH:mm',
+                                  'MM/DD/YYYY, h:mm A',
                                 )}
                               </AppText>
                             </View>
@@ -544,7 +544,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           color={COLORS.textLight}
                         />
                         <AppText style={styles.logTimeText}>
-                          {formatDate(log?.createdAt, 'DD/MM/YYYY, HH:mm')}
+                          {formatDate(log?.createdAt, 'MM/DD/YYYY, h:mm A')}
                         </AppText>
                       </View>
                     </View>

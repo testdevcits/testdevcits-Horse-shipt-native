@@ -114,7 +114,7 @@ const ShipperShipmentDetailsScreen = () => {
     ? formatDate(shipment?.deliveryDateRange.start, 'MMM DD').toUpperCase()
     : 'Not Available';
   const postedDateFormatted = shipment?.publishedAt
-    ? formatDate(shipment?.publishedAt, 'D MMM YYYY')
+    ? formatDate(shipment?.publishedAt, 'MMM D, YYYY')
     : 'Not Available';
 
   // Distance & Specs
@@ -608,7 +608,7 @@ const ShipperShipmentDetailsScreen = () => {
                         Chronological Notes
                       </AppText>
                       <AppText style={styles.notesDateText}>
-                        {formatDate(noteDate, 'D MMM YYYY, h:mm A')}
+                        {formatDate(noteDate, 'MMM D, YYYY, h:mm A')}
                       </AppText>
                     </View>
                     <AppText style={styles.notesBodyText}>

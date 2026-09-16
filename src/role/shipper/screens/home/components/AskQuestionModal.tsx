@@ -205,7 +205,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     Asked on{' '}
                     {formatDate(
                       answeredQuestion.createdAt,
-                      'DD/MM/YYYY [at] HH:mm',
+                      'MM/DD/YYYY [at] h:mm A',
                     )}
                   </AppText>
                 </View>
@@ -248,7 +248,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     Answered on{' '}
                     {formatDate(
                       answeredQuestion.answeredAt,
-                      'DD/MM/YYYY [at] HH:mm',
+                      'MM/DD/YYYY [at] h:mm A',
                     )}
                   </AppText>
                 </View>
@@ -291,7 +291,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                     Asked on{' '}
                     {formatDate(
                       pendingQuestion.createdAt,
-                      'DD/MM/YYYY [at] HH:mm',
+                      'MM/DD/YYYY [at] h:mm A',
                     )}
                   </AppText>
                 </View>

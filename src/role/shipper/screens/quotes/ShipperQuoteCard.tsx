@@ -293,7 +293,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
           />
           <AppText style={styles.cancelNoticeText}>
             Cancel before :{' '}
-            {formatDate(quote?.cancellationLastDate, 'DD/MM/YYYY, h:mm:ss A')}
+            {formatDate(quote?.cancellationLastDate, 'MM/DD/YYYY, h:mm:ss A')}
           </AppText>
         </View>
 

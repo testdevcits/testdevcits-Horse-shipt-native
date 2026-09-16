@@ -9,7 +9,6 @@ import Button from './common/Button/AppButton';
 import Input from './common/Input/Input';
 import ConfirmationModal from './common/ConfirmationModal';
 import AppText from './common/AppText';
-import { FloatingButton } from './common/FloatingButton';
 import { AppLoader } from './common/AppLoader';
 import { EmptyState } from './common/EmptyState';
 import ErrorView from './common/ErrorView';
@@ -66,7 +65,7 @@ export {
   Input,
   ConfirmationModal,
   AppText,
-  FloatingButton,
+ 
   ShipperCard,
   TruckDriverCard,
   AppLoader,

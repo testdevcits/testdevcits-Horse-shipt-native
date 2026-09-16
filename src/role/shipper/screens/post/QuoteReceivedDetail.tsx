@@ -135,7 +135,7 @@ const formatDate = (date?: string) => {
     return '--';
   }
 
-  return parsedDate.toLocaleDateString('en-IN', {
+  return parsedDate.toLocaleDateString('en-US', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -153,7 +153,7 @@ const formatTime = (date?: string) => {
     return '';
   }
 
-  return parsedDate.toLocaleTimeString('en-IN', {
+  return parsedDate.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
   });
