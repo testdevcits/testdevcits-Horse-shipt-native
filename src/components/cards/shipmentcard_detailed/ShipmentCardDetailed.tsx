@@ -1,12 +1,9 @@
 import React, { memo, useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image,   TouchableOpacity } from 'react-native';
 
 import {
   COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
+  
   ICON_SIZE,
 } from '../../../constants';
 import AppText from '../../common/AppText';

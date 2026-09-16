@@ -1,13 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { COLORS, FONTS } from '../constants';
+import { COLORS, FONTS } from '../../constants';
 
 // Screens
-import DriverHomeScreen from '../role/driver/screens/home/HomeScreen';
-import AllTrips from '../role/driver/screens/trips/AllTrips';
-import LocationScreen from '../role/driver/screens/location/LocationScreen';
-import ProfileScreen from '../role/driver/screens/profile/Profile';
-import AppIcon from '../components/app_icon/AppIcon';
+import DriverHomeScreen from '../../role/driver/screens/home/HomeScreen';
+import AllTrips from '../../role/driver/screens/trips/AllTrips';
+import LocationScreen from '../../role/driver/screens/location/LocationScreen';
+import ProfileScreen from '../../role/driver/screens/profile/Profile';
+import AppIcon from '../../components/app_icon/AppIcon';
 
 const Tab = createBottomTabNavigator<{
   Home: undefined;

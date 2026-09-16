@@ -1,21 +1,21 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomerDrawer from './CustomerDrawer'; // Import Drawer instead
-import AddEditHorse from '../role/customer/screens/addedithorse/AddEditHorse';
-import MyShipmentDetails from '../role/customer/screens/myshipmentdetails/MyShipmentdetails';
-import ChatDetails from '../role/customer/screens/chatdetails/ChatDetails';
-import Notifications from '../role/commonscreens/notifications/Notifications';
-import Payments from '../role/customer/screens/payments/Payments';
-import PaymentDetails from '../role/customer/screens/paymentdetails/PaymentDetails';
-import ReviewsScreen from '../role/customer/screens/reviews/ReviewsScreen';
-import MapScreen from '../role/commonscreens/mapscreen/MapScreen';
-import TopShippersScreen from '../role/customer/screens/topratedshippers/shipperlist/TopShippersScreen';
-import ShipperDetail from '../role/customer/screens/topratedshippers/shipperdetails/ShipperDetail';
-import Profile from '../role/customer/screens/profile/Profile';
-import PdfViewerScreen from '../role/commonscreens/pdfviews/PdfViewerScreen';
-import LiveTrackingScreen from '../role/customer/screens/tracking/LiveTrackingScreen';
+import AddEditHorse from '../../role/customer/screens/addedithorse/AddEditHorse';
+import MyShipmentDetails from '../../role/customer/screens/myshipmentdetails/MyShipmentdetails';
+import ChatDetails from '../../role/customer/screens/chatdetails/ChatDetails';
+import Notifications from '../../role/commonscreens/notifications/Notifications';
+import Payments from '../../role/customer/screens/payments/Payments';
+import PaymentDetails from '../../role/customer/screens/paymentdetails/PaymentDetails';
+import ReviewsScreen from '../../role/customer/screens/reviews/ReviewsScreen';
+import MapScreen from '../../role/commonscreens/mapscreen/MapScreen';
+import TopShippersScreen from '../../role/customer/screens/topratedshippers/shipperlist/TopShippersScreen';
+import ShipperDetail from '../../role/customer/screens/topratedshippers/shipperdetails/ShipperDetail';
+import Profile from '../../role/customer/screens/profile/Profile';
+import PdfViewerScreen from '../../role/commonscreens/pdfviews/PdfViewerScreen';
+import LiveTrackingScreen from '../../role/customer/screens/tracking/LiveTrackingScreen';
 
-import NewShipment from '../role/customer/screens/newshipment/NewShipment';
+import NewShipment from '../../role/customer/screens/newshipment/NewShipment';
 
 const Stack = createNativeStackNavigator<{
   CustomerDrawer: undefined;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS, FONTS, RADIUS, SPACING, FONT_SIZE } from '../../../constants';
+import { View, TouchableOpacity,   } from 'react-native';
+import { COLORS,  SPACING,   } from '../../../constants';
 import AppText from '../../common/AppText';
 import Input from '../../common/Input/Input';
 import AppIcon from '../../app_icon/AppIcon';

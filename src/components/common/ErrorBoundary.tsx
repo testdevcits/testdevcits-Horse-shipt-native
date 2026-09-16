@@ -30,13 +30,13 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleReset = () => {
-    this.setState({ hasError: false, error: null });
+    this?.setState({ hasError: false, error: null });
   };
 
   public render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback;
+    if (this?.state.hasError) {
+      if (this?.props?.fallback) {
+        return this?.props?.fallback;
       }
 
       return (
@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<Props, State> {
             <AppText style={styles.message}>
               An unexpected error occurred. Please try again.
             </AppText>
-            <TouchableOpacity style={styles.button} onPress={this.handleReset}>
+            <TouchableOpacity style={styles.button} onPress={this?.handleReset}>
               <AppText style={styles.buttonText}>Try Again</AppText>
             </TouchableOpacity>
           </View>
@@ -54,7 +54,7 @@ class ErrorBoundary extends Component<Props, State> {
       );
     }
 
-    return this.props.children;
+    return this?.props.children;
   }
 }
 

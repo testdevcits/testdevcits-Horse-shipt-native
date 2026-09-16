@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DriverTabs from './DriverTabs';
-import DeliveryVerificationScreen from '../role/driver/screens/verification/DeliveryVerificationScreen';
+import DeliveryVerificationScreen from '../../role/driver/screens/verification/DeliveryVerificationScreen';
 
 const Stack = createNativeStackNavigator<{
   DriverTabs: undefined;

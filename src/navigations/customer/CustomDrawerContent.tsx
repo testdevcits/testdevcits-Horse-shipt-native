@@ -19,13 +19,13 @@ import {
 } from 'lucide-react-native';
 
 // Import constants
-import { COLORS } from '../constants/colors';
-import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../constants/dimensions';
-import { FONTS } from '../constants/fonts';
-import imageIndex from '../assets/images/imageIndex';
-import { AppText } from '../components';
-import { useAppDispatch } from '../hooks/redux';
-import { logoutUser } from '../redux/slices/authSlice';
+import { COLORS } from '../../constants/colors';
+import { SPACING, FONT_SIZE, ICON_SIZE, RADIUS } from '../../constants/dimensions';
+import { FONTS } from '../../constants/fonts';
+import imageIndex from '../../assets/images/imageIndex';
+import { AppText } from '../../components';
+import { useAppDispatch } from '../../hooks/redux';
+import { logoutUser } from '../../redux/slices/authSlice';
 
 interface DrawerMenuItemProps {
   label: string;
@@ -39,7 +39,7 @@ interface DrawerMenuItemProps {
 }
 
 const ConfirmationModal = lazy(
-  () => import('../components/common/ConfirmationModal'),
+  () => import('../../components/common/ConfirmationModal'),
 );
 
 const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({

@@ -1,14 +1,7 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 
-import {
-  SPACING,
-  RADIUS,
-  FONT_SIZE,
-  SIZES,
-  ICON_SIZE,
-} from '../../../constants/dimensions';
-import { COLORS, FONTS } from '../../../constants';
+import { COLORS } from '../../../constants';
 import AppText from '../../common/AppText';
 import { Horse } from '../../../types/customer';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -189,7 +182,5 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
     </View>
   );
 });
-
- 
 
 export default HorseCard;

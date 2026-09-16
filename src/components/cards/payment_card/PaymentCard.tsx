@@ -1,13 +1,6 @@
 import React, { memo } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  RADIUS,
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-} from '../../../constants';
+import { View, TouchableOpacity,   } from 'react-native';
+import { COLORS, ICON_SIZE } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.PaymentCard';

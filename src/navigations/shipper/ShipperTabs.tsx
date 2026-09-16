@@ -9,17 +9,17 @@ import {
   Keyboard,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AppText } from '../components';
-import { COLORS, FONT_SIZE, FONTS } from '../constants';
-import imageIndex from '../assets/images/imageIndex';
+import { AppText } from '../../components';
+import { COLORS, FONT_SIZE, FONTS } from '../../constants';
+import imageIndex from '../../assets/images/imageIndex';
 
 // Screens
-import ShipperHomeScreen from '../role/shipper/screens/home/ShipperHomeScreen';
-import MyQuotesScreen from '../role/shipper/screens/quotes/MyQuotesScreen';
-import ShipmentsScreen from '../role/shipper/screens/post/PostLoadScreen';
-import ShipperProfileScreen from '../role/shipper/screens/profile/shipper_profile/ShipperProfileScreen';
-import ShipperChatsScreen from '../role/shipper/screens/chats/ShipperChatsScreen';
-import AppIcon from '../components/app_icon/AppIcon';
+import ShipperHomeScreen from '../../role/shipper/screens/home/ShipperHomeScreen';
+import MyQuotesScreen from '../../role/shipper/screens/quotes/MyQuotesScreen';
+import ShipmentsScreen from '../../role/shipper/screens/post/PostLoadScreen';
+import ShipperProfileScreen from '../../role/shipper/screens/profile/shipper_profile/ShipperProfileScreen';
+import ShipperChatsScreen from '../../role/shipper/screens/chats/ShipperChatsScreen';
+import AppIcon from '../../components/app_icon/AppIcon';
 
 const Tab = createBottomTabNavigator<{
   Home: undefined;

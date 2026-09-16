@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
+import { View, Image,   } from 'react-native';
+import { COLORS,   } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.ReviewCard';

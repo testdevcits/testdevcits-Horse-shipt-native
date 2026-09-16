@@ -11,15 +11,15 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Import screens and components
-import HomeScreen from '../role/customer/screens/home/HomeScreen';
-import MyShipments from '../role/customer/screens/myshipments/MyShipments';
-import NewShipment from '../role/customer/screens/newshipment/NewShipment';
-import MyHorses from '../role/customer/screens/myhorses/MyHorses';
-import ShipperList from '../role/customer/screens/chats/Shipperlist';
-import { AppText } from '../components';
-import { COLORS, FONT_SIZE, FONTS } from '../constants';
-import imageIndex from '../assets/images/imageIndex';
-import AppIcon from '../components/app_icon/AppIcon';
+import HomeScreen from '../../role/customer/screens/home/HomeScreen';
+import MyShipments from '../../role/customer/screens/myshipments/MyShipments';
+import NewShipment from '../../role/customer/screens/newshipment/NewShipment';
+import MyHorses from '../../role/customer/screens/myhorses/MyHorses';
+import ShipperList from '../../role/customer/screens/chats/Shipperlist';
+import { AppText } from '../../components';
+import { COLORS, FONT_SIZE, FONTS } from '../../constants';
+import imageIndex from '../../assets/images/imageIndex';
+import AppIcon from '../../components/app_icon/AppIcon';
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');

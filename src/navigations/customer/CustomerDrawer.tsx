@@ -3,13 +3,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomerTabs from './CustomerTabs';
 
 // Additional Drawer Screens
-import NotificationSettings from '../role/customer/screens/notificationsettings/NotificationSettings';
+import NotificationSettings from '../../role/customer/screens/notificationsettings/NotificationSettings';
 import CustomDrawerContent from './CustomDrawerContent';
-import Profile from '../role/customer/screens/profile/Profile';
-import ReviewsScreen from '../role/customer/screens/reviews/ReviewsScreen';
-import HelpCenter from '../role/customer/screens/help_center/HelpCenter';
-import PrivacyPolicyScreen from '../role/commonscreens/privacy/PrivacyPolicyScreen';
-import TermsAndConditionsScreen from '../role/commonscreens/terms/TermsAndConditionsScreen';
+import Profile from '../../role/customer/screens/profile/Profile';
+import ReviewsScreen from '../../role/customer/screens/reviews/ReviewsScreen';
+import HelpCenter from '../../role/customer/screens/help_center/HelpCenter';
+import PrivacyPolicyScreen from '../../role/commonscreens/privacy/PrivacyPolicyScreen';
+import TermsAndConditionsScreen from '../../role/commonscreens/terms/TermsAndConditionsScreen';
 
 const Drawer = createDrawerNavigator<{
   MainTabs: undefined;

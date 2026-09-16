@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import {
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
   StatusBar,
 } from 'react-native';

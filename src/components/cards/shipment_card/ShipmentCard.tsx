@@ -1,12 +1,8 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View,   Image, TouchableOpacity } from 'react-native';
 import {
   COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SIZES,
+  
 } from '../../../constants';
 import AppText from '../../common/AppText';
 import { formatDate } from '../../../utils/helpers';

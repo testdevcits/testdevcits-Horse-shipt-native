@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 import {
-  StyleSheet,
+ 
   View,
   TouchableOpacity,
   StyleProp,
   ViewStyle,
 } from 'react-native';
 
-import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../constants';
+import { COLORS,  } from '../../../constants';
 import AppText from '../../common/AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.tripcard';
