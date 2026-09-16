@@ -53,7 +53,7 @@ const ShipmentCard = ({ item, onView }: { item: any; onView: () => void }) => {
             <AppText numberOfLines={1} style={styles.locationTitle}>
               {item?.pickupLocation}
             </AppText>
-            <View style={{ height: 20 }} /> {/* Spacing for the line */}
+            <View style={styles.spacingLine} /> {/* Spacing for the line */}
             <AppText numberOfLines={1} style={styles.locationTitle}>
               {item?.deliveryLocation}
             </AppText>
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: SPACING.massive,
   },
+  spacingLine:{ height: 20 },
   locationTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.medium,

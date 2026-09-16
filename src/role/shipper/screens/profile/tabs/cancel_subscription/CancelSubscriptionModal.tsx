@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   },
   reasonBtn: {
     width: '48.5%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     borderRadius: RADIUS.xs,
@@ -419,10 +419,10 @@ const styles = StyleSheet.create({
   cancelBtnText: {
     fontSize: FONT_SIZE.xs + 1,
     fontFamily: FONTS.bold,
-    color: '#FFFFFF',
+    color: COLORS.white,
   },
   cancelBtnTextDisabled: {
-    color: '#FFFFFF',
+    color: COLORS.white,
   },
 });
 

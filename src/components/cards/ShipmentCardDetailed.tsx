@@ -97,7 +97,7 @@ const ShipmentHorizontalCard = memo(
 
             {/* Shipment Code / External Action / Delete Action */}
             <View
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+              style={styles.action}
             >
               {isDraft && onDelete && (
                 <TouchableOpacity
@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
+  action:{ flexDirection: 'row', alignItems: 'center', gap: 6 },
   title: {
     flex: 1,
     fontSize: FONT_SIZE.sm,

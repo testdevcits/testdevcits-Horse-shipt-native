@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
   },
   uploadBoxText: {
     fontSize: FONT_SIZE.xs,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     borderColor: COLORS.primary,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
   },
   docUploadBtnText: {
     fontSize: FONT_SIZE.xs,

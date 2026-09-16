@@ -515,9 +515,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                         size={16}
                         color={COLORS.textPrimary}
                       />
-                      <AppText style={styles.editPicText}>
-                        Edit picture
-                      </AppText>
+                      <AppText style={styles.editPicText}>Edit picture</AppText>
                     </>
                   )}
                 </TouchableOpacity>

@@ -60,7 +60,7 @@ const ShipperCard = memo(
           fill={
             index <= Math.round(ratingValue) ? COLORS.warning : 'transparent'
           }
-          style={{ marginRight: 2 }}
+          style={styles.starIcon}
         />
       ));
     };
@@ -161,6 +161,9 @@ const ShipperCard = memo(
 );
 
 const styles = StyleSheet.create({
+
+
+  starIcon:{ marginRight: 2 },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.xl, // Increased for modern look

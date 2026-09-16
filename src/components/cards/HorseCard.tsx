@@ -177,7 +177,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
             name={'FileText'}
             size={14}
             color={COLORS.primary}
-            style={{ marginTop: 2 }}
+            style={styles.fileicon}
           />
           <View style={styles.notesContent}>
             <AppText style={styles.notesHeading}>Notes</AppText>
@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
   },
+  fileicon:{ marginTop: 2 },
   notesContent: {
     marginLeft: SPACING.xs,
     flex: 1,

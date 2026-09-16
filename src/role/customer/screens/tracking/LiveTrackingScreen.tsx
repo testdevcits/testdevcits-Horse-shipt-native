@@ -1,13 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Linking,
-  Share,
-  Alert,
-} from 'react-native';
+import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -478,3 +470,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
 };
 
 export default LiveTrackingScreen;
+
+
+

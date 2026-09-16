@@ -90,7 +90,7 @@ const StripePaymentMethodCardModal: React.FC<
                 postalCodeEnabled={true}
                 style={styles.stripeCardField}
                 cardStyle={{
-                  backgroundColor: '#FFFFFF',
+                  backgroundColor: COLORS.white,
                   textColor: COLORS.textPrimary,
                   fontSize: FONT_SIZE.md,
                   placeholderColor: COLORS.textLight,

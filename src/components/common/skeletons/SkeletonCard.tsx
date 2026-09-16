@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import SkeletonText from './SkeletonText';
 import SkeletonCircle from './SkeletonCircle';
+import { COLORS } from '../../../constants';
 
 const SkeletonCard = () => {
   return (
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
   },
 
   content: {

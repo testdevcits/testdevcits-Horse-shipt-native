@@ -30,7 +30,7 @@ const App = () => {
               barStyle={'dark-content'}
               translucent={false}
             />
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={styles.container}>
               <OfflineBanner />
               <ErrorBoundary>
                 <StripeProvider
