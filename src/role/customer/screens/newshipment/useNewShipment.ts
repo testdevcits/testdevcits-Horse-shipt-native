@@ -6,7 +6,6 @@ import { StepSchemas } from './validation';
 import customerService from '../../../../api/services/customerService';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NewShipmentForm, NewShipmentHorse } from './interfaces';
-import { showErrorCSS } from 'react-native-svg/lib/typescript/deprecated';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 export const STEPS = ['Pickup', 'Delivery', 'Horses', 'Documents', 'Review'];

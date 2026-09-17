@@ -42,9 +42,15 @@ const App = () => {
             </SafeAreaView>
 
             {/* 4. Toast at the absolute top of the visual stack */}
-            <Toast
+            {/* <Toast
               config={toastConfig}
               topOffset={Platform.OS === 'ios' ? 60 : 40}
+              visibilityTime={2500}
+            /> */}
+            <Toast
+              config={toastConfig}
+              position="top"
+              bottomOffset={Platform.OS === 'ios' ? 40 : 30}
               visibilityTime={2500}
             />
           </Provider>

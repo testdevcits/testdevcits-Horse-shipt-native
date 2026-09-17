@@ -69,19 +69,19 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     }
   };
 
-  const handleChatWithShipper = () => {
-    const shipperId = data?.shipper?._id || data?.shipper;
-    if (shipperId) {
-      navigation.navigate('CustomerDrawer', {
-        screen: 'CustomerTabs',
-        params: {
-          screen: 'Chats',
-        },
-      });
-    } else {
-      Alert.alert('Chat Unavailable', 'No shipper assigned yet.');
-    }
-  };
+  // const handleChatWithShipper = () => {
+  //   const shipperId = data?.shipper?._id || data?.shipper;
+  //   if (shipperId) {
+  //     navigation.navigate('CustomerDrawer', {
+  //       screen: 'CustomerTabs',
+  //       params: {
+  //         screen: 'Chats',
+  //       },
+  //     });
+  //   } else {
+  //     Alert.alert('Chat Unavailable', 'No shipper assigned yet.');
+  //   }
+  // };
 
   const formatDateRange = (start?: string, end?: string) => {
     if (!start && !end) return 'N/A';
