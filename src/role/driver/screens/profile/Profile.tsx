@@ -18,7 +18,7 @@ const Profile = () => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
   );
-  const { driver, allShipments, loading, refresh } = useDriverMe();
+  const { driver, allShipments, loading, refresh: _refresh } = useDriverMe();
   const dispatch = useAppDispatch();
 
   // Extract completed shipments count
@@ -224,7 +224,7 @@ const Profile = () => {
                 </AppText>
               </View>
             ) : (
-              completedShipments.map((shipment, index) => (
+              completedShipments.map((shipment, _index) => (
                 <View key={shipment._id} style={styles.completedShipmentRow}>
                   <AppIcon name={'Box'} size={18} color={COLORS.primary} />
                   <AppText style={styles.completedShipmentText}>

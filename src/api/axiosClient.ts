@@ -72,7 +72,7 @@ axiosClient.interceptors.request.use(
               '   ║ 📦 PAYLOAD:',
               JSON.stringify(config.data, null, 2),
             );
-          } catch (e) {
+          } catch (_e) {
             console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
           }
         }

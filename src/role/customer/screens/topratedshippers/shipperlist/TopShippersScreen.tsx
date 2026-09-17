@@ -20,10 +20,52 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import styles from './styles.Topshippers';
 import AppButton from '../../../../../components/common/Button/AppButton';
+import styles from './styles.Topshippers';
 
 const QUICK_FILTERS = ['All', 'Verified', 'Top Rated', 'Nearest'];
+
+const FilterSection = ({
+  title,
+  options,
+  category,
+  activeFilters,
+  updateFilter,
+}: any) => {
+  const currentVal = activeFilters[category as keyof typeof activeFilters];
+  const isFiltered = currentVal !== 'All' && currentVal !== 'Any Price';
+
+  return (
+    <View style={styles.modalSection}>
+      <View style={styles.sectionHeaderRow}>
+        <AppText style={styles.modalSectionTitle}>{title}</AppText>
+        {isFiltered && <View style={styles.activeDot} />}
+      </View>
+      <View style={styles.chipGrid}>
+        {options.map((opt: string) => (
+          <TouchableOpacity
+            key={opt}
+            style={[
+              styles.modalChip,
+              currentVal === opt && styles.activeModalChip,
+            ]}
+            onPress={() => updateFilter(category, opt)}
+            activeOpacity={0.7}
+          >
+            <AppText
+              style={[
+                styles.modalChipText,
+                currentVal === opt && styles.activeModalChipText,
+              ]}
+            >
+              {opt}
+            </AppText>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+};
 
 const TopShippersScreen = () => {
   const navigation = useNavigation<any>();
@@ -54,44 +96,6 @@ const TopShippersScreen = () => {
       </View>
     );
   }
-
-  // --- Sub-Components ---
-
-  const FilterSection = ({ title, options, category }: any) => {
-    const currentVal = activeFilters[category as keyof typeof activeFilters];
-    const isFiltered = currentVal !== 'All' && currentVal !== 'Any Price';
-
-    return (
-      <View style={styles.modalSection}>
-        <View style={styles.sectionHeaderRow}>
-          <AppText style={styles.modalSectionTitle}>{title}</AppText>
-          {isFiltered && <View style={styles.activeDot} />}
-        </View>
-        <View style={styles.chipGrid}>
-          {options.map((opt: string) => (
-            <TouchableOpacity
-              key={opt}
-              style={[
-                styles.modalChip,
-                currentVal === opt && styles.activeModalChip,
-              ]}
-              onPress={() => updateFilter(category, opt)}
-              activeOpacity={0.7}
-            >
-              <AppText
-                style={[
-                  styles.modalChipText,
-                  currentVal === opt && styles.activeModalChipText,
-                ]}
-              >
-                {opt}
-              </AppText>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-    );
-  };
 
   const renderHeader = () => {
     const filtersActive = Object.values(activeFilters).some(
@@ -134,7 +138,7 @@ const TopShippersScreen = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.filterScroll}
         >
-          {QUICK_FILTERS.map(f => (
+          {QUICK_FILTERS.map((f: string) => (
             <TouchableOpacity
               key={f}
               onPress={() => updateFilter('quick', f)}
@@ -229,33 +233,43 @@ const TopShippersScreen = () => {
                 title="Price Range"
                 category="price"
                 options={['Any Price', 'Budget', 'Standard', 'Premium']}
+                activeFilters={activeFilters}
+                updateFilter={updateFilter}
               />
               <FilterSection
                 title="Minimum Rating"
                 category="rating"
                 options={['All', '2+', '3+', '4+']}
+                activeFilters={activeFilters}
+                updateFilter={updateFilter}
               />
               <FilterSection
                 title="Transport Type"
                 category="transport"
                 options={['All', 'Trucking', 'Hauling', 'Local']}
+                activeFilters={activeFilters}
+                updateFilter={updateFilter}
               />
               <FilterSection
                 title="Experience Level"
                 category="experience"
                 options={['All', 'Expert', 'Professional', 'Experienced']}
+                activeFilters={activeFilters}
+                updateFilter={updateFilter}
               />
               <FilterSection
                 title="Response Time"
-                category="response"
-                options={['All', 'Very Fast', 'Fast', 'Standard']}
+                category="responseTime"
+                options={['All', 'Instant', 'Under 1 hr', 'Same Day']}
+                activeFilters={activeFilters}
+                updateFilter={updateFilter}
               />
               <View style={{ height: 120 }} />
             </ScrollView>
 
             <View style={styles.modalFooter}>
               <AppButton
-                title={`Show ${shippers.length} Shippers`}
+                title={`Show ${shippers?.length} Shippers`}
                 onPress={() => setIsFilterVisible(false)}
               />
             </View>

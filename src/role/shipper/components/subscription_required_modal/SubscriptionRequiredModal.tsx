@@ -36,7 +36,7 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
   visible,
   onClose,
   shipperStatus,
-  subscriptionStatus,
+  subscriptionStatus: _subscriptionStatus,
   plansData,
   onOpenAddCardModal,
   onSubscriptionSuccess,

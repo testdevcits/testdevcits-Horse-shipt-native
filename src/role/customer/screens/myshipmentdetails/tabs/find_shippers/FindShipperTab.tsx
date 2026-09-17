@@ -129,8 +129,6 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const matchingKey = JSON.stringify(matching);
-
   const fetchAllProfiles = useCallback(async () => {
     if (!matching || matching.length === 0) {
       setProfiles([]);
@@ -144,7 +142,7 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
         try {
           const res = await customerService.getShipperProfile(id);
           return res.success ? res.data : null;
-        } catch (e) {
+        } catch (_e) {
           return null;
         }
       });
@@ -157,7 +155,7 @@ const FindShipperTab = ({ matching, invited, shipmentId, status }: any) => {
     } finally {
       setLoading(false);
     }
-  }, [matchingKey]);
+  }, [matching]);
 
   useEffect(() => {
     fetchAllProfiles();

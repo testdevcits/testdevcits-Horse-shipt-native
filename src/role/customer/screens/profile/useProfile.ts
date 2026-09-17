@@ -118,12 +118,12 @@ export const useProfile = () => {
         showSuccessToast('Success', 'Profile image updated successfully');
         return { success: true };
       }
-    } catch (error: any) {
-      if (error.message !== 'User cancelled image selection') {
-        console.error('Upload Error:', error);
+    } catch (err: any) {
+      if (err.message !== 'User cancelled image selection') {
+        console.error('Upload Error:', err);
         showErrorToast(
           'Upload Error',
-          error.message || 'Failed to upload profile image',
+          err.message || 'Failed to upload profile image',
         );
       }
       return { success: false };

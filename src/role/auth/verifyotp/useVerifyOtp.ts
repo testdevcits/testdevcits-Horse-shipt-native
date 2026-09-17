@@ -1,5 +1,5 @@
 import { TextInput, Keyboard } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import authService from '../../../api/services/authService';
 import {
   showErrorToast,
@@ -72,7 +72,7 @@ const useVerifyOtp = ({ email, role, navigation }: any) => {
       setOtp(''); // Clear old OTP on fresh resend
       setError('');
       showInfoToast('New OTP Sent');
-    } catch (e) {
+    } catch (_e) {
       showErrorToast('Resend Failed');
     }
   };

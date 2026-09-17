@@ -49,7 +49,7 @@ const formatDatePayload = (dateVal: any): string => {
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     }
-  } catch (e) {}
+  } catch (_e) {}
   return String(dateVal || '');
 };
 
@@ -223,7 +223,7 @@ const useNewShipment = () => {
       if (updates.numberOfHorses !== undefined) {
         const targetCount = Math.max(
           1,
-          parseInt(String(updates.numberOfHorses)) || 1,
+          parseInt(String(updates.numberOfHorses), 10) || 1,
         );
         let updatedHorses = [...newState.horses];
 
@@ -485,7 +485,7 @@ const useNewShipment = () => {
     return formData;
   };
 
-  const buildUpdateFormData = () => {
+  const _buildUpdateFormData = () => {
     const formData = new FormData();
 
     let combinedNotes = form.additionalInfo || '';

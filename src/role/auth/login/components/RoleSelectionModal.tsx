@@ -76,7 +76,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
     } else if (availableRoles.length > 0) {
       setSelected(availableRoles[0].id);
     }
-  }, [currentRole, visible, isSignup, allowedRoles]);
+  }, [currentRole, visible, isSignup, allowedRoles, availableRoles]);
 
   const handleConfirm = async () => {
     try {

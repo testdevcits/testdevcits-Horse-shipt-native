@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
 import authService from '../../../api/services/authService';

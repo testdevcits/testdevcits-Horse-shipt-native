@@ -28,6 +28,26 @@ import AppIcon, {
 import styles from './styles.QuoteDetailModal';
 import { showSuccessToast } from '../../../../../../utils/toast';
 
+const SummaryBox = ({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: IconName;
+  label: string;
+  value: any;
+}) => (
+  <View style={styles.summaryItem}>
+    <View style={styles.summaryItemHeader}>
+      <AppIcon name={Icon} size={ICON_SIZE.xs} color={COLORS.primary} />
+      <AppText style={styles.summaryLabel}>{label}</AppText>
+    </View>
+    <AppText style={styles.summaryValue} numberOfLines={1}>
+      {value || 'N/A'}
+    </AppText>
+  </View>
+);
+
 const QuoteDetailModal = ({
   visible,
   quote,
@@ -167,32 +187,12 @@ const QuoteDetailModal = ({
         onClose();
         if (onRefresh) onRefresh();
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to cancel shipment.');
     } finally {
       setLoading(false);
     }
   };
-
-  const SummaryBox = ({
-    icon: Icon,
-    label,
-    value,
-  }: {
-    icon: IconName;
-    label: string;
-    value: any;
-  }) => (
-    <View style={styles.summaryItem}>
-      <View style={styles.summaryItemHeader}>
-        <AppIcon name={Icon} size={ICON_SIZE.xs} color={COLORS.primary} />
-        <AppText style={styles.summaryLabel}>{label}</AppText>
-      </View>
-      <AppText style={styles.summaryValue} numberOfLines={1}>
-        {value || 'N/A'}
-      </AppText>
-    </View>
-  );
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -571,7 +571,7 @@ const QuoteDetailModal = ({
                     </AppText>
                   </View>
                 </View>
-                {isCancellationWindowActive && isCompleted == false && (
+                {isCancellationWindowActive && isCompleted === false && (
                   <TouchableOpacity
                     style={styles.cancelBookingBtn}
                     activeOpacity={0.8}

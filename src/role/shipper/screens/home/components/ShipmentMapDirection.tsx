@@ -23,7 +23,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
   console.log(' shipmentData   ', shipmentData);
 
   const mapRef = useRef<MapView>(null);
-  const [isMapReady, setIsMapReady] = useState(false);
+  const [_isMapReady, setIsMapReady] = useState(false);
 
   // Zoom to fit both markers on mount
   const fitToRoute = () => {

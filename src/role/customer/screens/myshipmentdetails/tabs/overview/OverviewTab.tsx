@@ -40,7 +40,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           dispatch(fetchCustomerShipments());
         }, 1000);
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to publish shipment.');
     } finally {
       setLoading(false);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import driverService from '../../../../api/services/driverService';
 import { CommonActions } from '@react-navigation/native';
 

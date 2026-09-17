@@ -48,7 +48,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
       if (!isNaN(d.getTime())) {
         return d.toISOString().split('T')[0];
       }
-    } catch (e) {}
+    } catch (_e) {}
     return new Date().toISOString().split('T')[0];
   };
 

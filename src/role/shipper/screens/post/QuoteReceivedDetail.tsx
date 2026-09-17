@@ -204,7 +204,7 @@ const truncateText = (text = '', maxLength = 90) => {
 /* Screen                                                                     */
 /* -------------------------------------------------------------------------- */
 
-const QuoteReceivedDetail = ({ route, navigation }: Props) => {
+const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
   /**
    * Supports:
    *
@@ -216,7 +216,7 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
    *
    * navigation.navigate('QuoteReceivedDetail', quoteData);
    */
-  const params = route?.params || {};
+  const params = useMemo(() => route?.params || {}, [route?.params]);
 
   const quote: QuoteData = useMemo(() => {
     return (params.data || params.quote || params.item || params) as QuoteData;

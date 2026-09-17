@@ -31,7 +31,7 @@ interface Props {
 const PaymentsTab: React.FC<Props> = ({
   stripeStatus,
   navigation,
-  onConnectPayout,
+  onConnectPayout: _onConnectPayout,
   onRefreshStripeStatus,
 }) => {
   const [isConnecting, setIsConnecting] = useState(false);

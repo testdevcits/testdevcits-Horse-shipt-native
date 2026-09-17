@@ -12,7 +12,6 @@ import imageIndex from '../../../../../assets/images/imageIndex';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
-import StripePaymentMethodCardModal from '../../earnings/StripePaymentMethodCardModal';
 import ConnectBankModal from '../components/ConnectBankModal';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
@@ -70,6 +69,7 @@ const ShipperShipmentDetailsScreen = () => {
 
   useEffect(() => {
     fetchQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shipment?._id]);
 
   // Horses List
@@ -94,16 +94,16 @@ const ShipperShipmentDetailsScreen = () => {
     typeof firstHorse?.photo === 'string'
       ? firstHorse.photo
       : firstHorse?.photo?.url || null;
-  const registeredName = firstHorse?.registeredName || 'Not Available';
-  const barnName = firstHorse?.barnName || 'Not Available';
-  const breed = firstHorse?.breed || 'Not Available';
-  const sex = firstHorse?.sex || 'Not Available';
-  const colour = firstHorse?.colour || firstHorse?.color || 'Not Available';
-  const age =
+  const heroRegisteredName = firstHorse?.registeredName || 'Not Available';
+  const heroBarnName = firstHorse?.barnName || 'Not Available';
+  const heroBreed = firstHorse?.breed || 'Not Available';
+  const heroSex = firstHorse?.sex || 'Not Available';
+  const heroColour = firstHorse?.colour || firstHorse?.color || 'Not Available';
+  const heroAge =
     firstHorse?.age !== undefined && firstHorse?.age !== null
       ? firstHorse.age
       : 'Not Available';
-  const stallSize =
+  const heroStallSize =
     firstHorse?.requestedStallSize || firstHorse?.stallSize || 'Not Available';
 
   // Dates
@@ -155,7 +155,7 @@ const ShipperShipmentDetailsScreen = () => {
       await Share.share({
         message: `Shipment Details ${shipment?.shipmentCode}: Pickup ${shipment?.pickupLocation} to ${shipment?.deliveryLocation}`,
       });
-    } catch (e) {
+    } catch (_e) {
       // ignore share error
     }
   };
@@ -261,10 +261,10 @@ const ShipperShipmentDetailsScreen = () => {
             </View>
 
             <AppText style={styles.heroTitle}>
-              {registeredName} ( {barnName} )
+              {heroRegisteredName} ( {heroBarnName} )
             </AppText>
             <AppText style={styles.heroSubtitle}>
-              {breed} • {age} yrs • {sex} • {colour}
+              {heroBreed} • {heroAge} yrs • {heroSex} • {heroColour}
             </AppText>
             <AppText style={styles.shipmentCodeText}>
               {shipment?.shipmentCode}
@@ -393,7 +393,7 @@ const ShipperShipmentDetailsScreen = () => {
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{stallSize}</AppText>
+              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
             </View>
           </View>
 
@@ -403,7 +403,7 @@ const ShipperShipmentDetailsScreen = () => {
             </View>
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{stallSize}</AppText>
+              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
             </View>
           </View>
         </View>

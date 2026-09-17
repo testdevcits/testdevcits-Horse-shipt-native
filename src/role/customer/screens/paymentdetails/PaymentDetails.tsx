@@ -77,7 +77,7 @@ const PaymentDetails = () => {
       // Fallback: Open URL directly in browser if file download fails
       try {
         await Linking.openURL(url);
-      } catch (linkErr) {
+      } catch (_linkErr) {
         showErrorToast('Error', 'Failed to download or open receipt.');
       }
     }
@@ -99,7 +99,7 @@ const PaymentDetails = () => {
       } else {
         showErrorToast('Error', 'Cannot open receipt URL.');
       }
-    } catch (error) {
+    } catch (_error) {
       showErrorToast('Error', 'Failed to open receipt link.');
     }
   };

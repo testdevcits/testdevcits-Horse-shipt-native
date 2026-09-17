@@ -13,13 +13,6 @@ import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.Register';
 
-// Local component for the Google Icon (since it's multi-colored)
-const GoogleIcon = () => (
-  <Image
-    source={imageIndex.Google}
-    style={{ width: 18, height: 18, marginRight: 10 }}
-  />
-);
 
 const RegisterScreen = ({ navigation }: any) => {
   return (

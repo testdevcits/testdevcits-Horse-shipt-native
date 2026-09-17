@@ -40,7 +40,8 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
   isLoading: propLoading = false,
   navigation: propNavigation,
 }) => {
-  const navigation = propNavigation || useNavigation<any>();
+  const hookNavigation = useNavigation<any>();
+  const navigation = propNavigation || hookNavigation;
   const [internalLoading, setInternalLoading] = React.useState(false);
   const isLoading = propLoading || internalLoading;
 

@@ -182,7 +182,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
       setResendTimer(60);
 
       showSuccessToast('OTP Resent');
-    } catch (e) {
+    } catch (_e) {
       showErrorToast('Resend Failed');
     }
   };

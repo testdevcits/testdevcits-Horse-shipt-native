@@ -17,6 +17,84 @@ import styles from './styles.deliveryverification';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import useDeliveryVerification from './useDeliveryVerification';
 
+const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
+  <View style={styles.stepperContainer}>
+    {/* Step 1 */}
+    <View style={styles.stepWrapper}>
+      <View
+        style={[
+          styles.stepCircle,
+          step > 1 && styles.stepCircleCompleted,
+          step === 1 && styles.stepCircleActive,
+        ]}
+      >
+        {step > 1 ? (
+          <AppIcon name="Check" size={14} color={COLORS.white} />
+        ) : (
+          <AppText
+            style={[styles.stepNumber, step === 1 && styles.stepNumberActive]}
+          >
+            1
+          </AppText>
+        )}
+      </View>
+      <AppText
+        style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}
+      >
+        Send OTP
+      </AppText>
+    </View>
+
+    <View style={[styles.stepLine, step > 1 && styles.stepLineCompleted]} />
+
+    {/* Step 2 */}
+    <View style={styles.stepWrapper}>
+      <View
+        style={[
+          styles.stepCircle,
+          step > 2 && styles.stepCircleCompleted,
+          step === 2 && styles.stepCircleActive,
+        ]}
+      >
+        {step > 2 ? (
+          <AppIcon name="Check" size={14} color={COLORS.white} />
+        ) : (
+          <AppText
+            style={[styles.stepNumber, step === 2 && styles.stepNumberActive]}
+          >
+            2
+          </AppText>
+        )}
+      </View>
+      <AppText
+        style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}
+      >
+        Verify OTP
+      </AppText>
+    </View>
+
+    <View style={[styles.stepLine, step > 2 && styles.stepLineCompleted]} />
+
+    {/* Step 3 */}
+    <View style={styles.stepWrapper}>
+      <View
+        style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}
+      >
+        <AppText
+          style={[styles.stepNumber, step === 3 && styles.stepNumberActive]}
+        >
+          3
+        </AppText>
+      </View>
+      <AppText
+        style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}
+      >
+        Mark Done
+      </AppText>
+    </View>
+  </View>
+);
+
 const DeliveryVerificationScreen = () => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
@@ -39,85 +117,6 @@ const DeliveryVerificationScreen = () => {
     otp,
     setModalConfig,
   } = useDeliveryVerification({ shipment, navigation });
-
-  // Stepper view subcomponent
-  const ProgressStepper = () => (
-    <View style={styles.stepperContainer}>
-      {/* Step 1 */}
-      <View style={styles.stepWrapper}>
-        <View
-          style={[
-            styles.stepCircle,
-            step > 1 && styles.stepCircleCompleted,
-            step === 1 && styles.stepCircleActive,
-          ]}
-        >
-          {step > 1 ? (
-            <AppIcon name="Check" size={14} color={COLORS.white} />
-          ) : (
-            <AppText
-              style={[styles.stepNumber, step === 1 && styles.stepNumberActive]}
-            >
-              1
-            </AppText>
-          )}
-        </View>
-        <AppText
-          style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}
-        >
-          Send OTP
-        </AppText>
-      </View>
-
-      <View style={[styles.stepLine, step > 1 && styles.stepLineCompleted]} />
-
-      {/* Step 2 */}
-      <View style={styles.stepWrapper}>
-        <View
-          style={[
-            styles.stepCircle,
-            step > 2 && styles.stepCircleCompleted,
-            step === 2 && styles.stepCircleActive,
-          ]}
-        >
-          {step > 2 ? (
-            <AppIcon name="Check" size={14} color={COLORS.white} />
-          ) : (
-            <AppText
-              style={[styles.stepNumber, step === 2 && styles.stepNumberActive]}
-            >
-              2
-            </AppText>
-          )}
-        </View>
-        <AppText
-          style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}
-        >
-          Verify OTP
-        </AppText>
-      </View>
-
-      <View style={[styles.stepLine, step > 2 && styles.stepLineCompleted]} />
-
-      {/* Step 3 */}
-      <View style={styles.stepWrapper}>
-        <View
-          style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}
-        >
-          <AppText
-            style={[styles.stepNumber, step === 3 && styles.stepNumberActive]}
-          >
-            3
-          </AppText>
-        </View>
-        <AppText
-          style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}
-        >
-          Mark Done
-        </AppText>
-      </View>
-    </View>
-  );
 
   return (
     <View style={styles.safeArea}>
@@ -148,7 +147,7 @@ const DeliveryVerificationScreen = () => {
           keyboardShouldPersistTaps="handled"
         >
           {/* Stepper Node Progress Indicator */}
-          <ProgressStepper />
+          <ProgressStepper step={step} />
 
           {/* Shipment Details Box */}
           <View style={styles.shipmentCard}>

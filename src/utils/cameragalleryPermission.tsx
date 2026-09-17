@@ -51,7 +51,7 @@ class PermissionService {
       }
 
       return false;
-    } catch (err) {
+    } catch (_err) {
       return false;
     }
   }

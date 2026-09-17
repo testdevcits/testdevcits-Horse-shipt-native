@@ -46,7 +46,7 @@ export const toggleWishlistThunk = createAsyncThunk(
   'wishlist/toggleWishlist',
   async (
     { shipperId, shipperItem }: { shipperId: string; shipperItem?: any },
-    { dispatch, getState, rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     // 1. Dispatch optimistic update in slice
     dispatch(optimisticToggleWishlist({ shipperId, shipperItem }));

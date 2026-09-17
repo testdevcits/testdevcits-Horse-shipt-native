@@ -38,6 +38,7 @@ const Splash = ({ navigation }: any) => {
     };
 
     initApp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

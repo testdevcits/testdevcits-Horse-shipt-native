@@ -56,6 +56,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
 
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, areas]);
 
   // Helper to extract numeric coordinates safely

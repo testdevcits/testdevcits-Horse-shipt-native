@@ -7,12 +7,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../../../../../constants';
 import { AppText } from '../../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import styles from './ReviewStepstyles';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
+
+const InfoRow = ({ label, value }: { label: string; value: string }) => (
+  <View style={styles.infoRow}>
+    <AppText style={styles.infoLabel}>{label}</AppText>
+    <AppText style={styles.infoValue}>{value || 'N/A'}</AppText>
+  </View>
+);
 
 interface ReviewStepProps {
   form: NewShipmentForm;
@@ -75,13 +81,6 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
     if (h.coggins) uploadedDocCount++;
     if (h.healthCert) uploadedDocCount++;
   });
-
-  const InfoRow = ({ label, value }: { label: string; value: string }) => (
-    <View style={styles.infoRow}>
-      <AppText style={styles.infoLabel}>{label}</AppText>
-      <AppText style={styles.infoValue}>{value || 'N/A'}</AppText>
-    </View>
-  );
 
   return (
     <View style={styles.container}>

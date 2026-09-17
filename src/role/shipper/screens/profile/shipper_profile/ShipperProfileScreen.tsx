@@ -73,7 +73,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [subscriptionStatusData, setSubscriptionStatusData] =
     useState<any>(null);
 
-  const [settingsData, setSettingsData] = useState<any>(null);
+  const [_settingsData, setSettingsData] = useState<any>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
@@ -326,6 +326,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     fetchAllProfileData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {
@@ -353,10 +354,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     }
   };
 
-  const ratingVal = Number(
+  const _ratingVal = Number(
     profileData?.rating ?? profileData?.averageRating ?? 0.0,
   );
-  const shipmentCount =
+  const _shipmentCount =
     profileData?.completedShipments ??
     profileData?.totalShipments ??
     profileData?.shipmentsCount ??

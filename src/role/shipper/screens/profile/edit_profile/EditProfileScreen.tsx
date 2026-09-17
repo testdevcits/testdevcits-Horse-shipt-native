@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { AppHeader, AppText, Button, Input } from '../../../../../components';
@@ -25,8 +25,11 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
   route,
 }) => {
   const dispatch = useAppDispatch();
-  const profileData = route?.params?.profileData || {};
-  const user = route?.params?.user || {};
+  const profileData = useMemo(
+    () => route?.params?.profileData || {},
+    [route?.params?.profileData],
+  );
+  const user = useMemo(() => route?.params?.user || {}, [route?.params?.user]);
 
   const [address, setAddress] = useState<string>('');
   const [latitude, setLatitude] = useState<number>(DEFAULT_LAT);

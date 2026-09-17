@@ -32,7 +32,7 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
       await customerService.submitAnswer(questionId, answerText);
       showSuccessToast('Success', 'Answer submitted successfully');
       if (onRefresh) onRefresh();
-    } catch (error) {
+    } catch (_error) {
       showErrorToast('Error', 'Failed to submit answer. Please try again.');
     } finally {
       setSubmitting(null);

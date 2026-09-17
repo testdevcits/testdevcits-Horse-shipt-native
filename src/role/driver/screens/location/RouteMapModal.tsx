@@ -150,6 +150,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
         const timer = setTimeout(handleFitAll, 1000);
         return () => clearTimeout(timer);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     // Combined totals

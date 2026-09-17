@@ -121,6 +121,7 @@ type RootStackParamList = {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Props = NativeStackScreenProps<RootStackParamList, 'PdfViewer'>;
 
 const PdfViewerScreen = ({ route }: any) => {

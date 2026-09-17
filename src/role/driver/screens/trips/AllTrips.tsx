@@ -20,7 +20,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const { loading, allShipments, driver, activeShipment } = useDriverMe();
   const [selectedTab, setSelectedTab] = useState<TabType>('ALL');
 
-  const shipments = allShipments || [];
+  const shipments = useMemo(() => allShipments || [], [allShipments]);
 
   // Compute status counts dynamically
   const counts = useMemo(() => {

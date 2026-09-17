@@ -14,8 +14,8 @@ import { showSuccessToast } from '../../../../utils/toast';
 
 const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
   const { url, title = 'Account Setup' } = route?.params || {};
-  const [loading, setLoading] = useState(true);
-  const [webUrl, setWebUrl] = useState<string>(url || '');
+  const [_loading, setLoading] = useState(true);
+  const [webUrl, _setWebUrl] = useState<string>(url || '');
 
   const handleNavigationStateChange = (navState: any) => {
     // Detect Stripe Onboarding return URLs (e.g., success, return, or complete)

@@ -28,6 +28,7 @@ const MapScreen = ({ navigation }: any) => {
   // 1. Get Device Location on Mount
   useEffect(() => {
     requestLocationPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const requestLocationPermission = async () => {

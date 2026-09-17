@@ -133,6 +133,7 @@ const LocationPickerCore: React.FC<{
   useEffect(() => {
     handleGetCurrentLocation();
     return () => searchAbortController.current?.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
@@ -149,7 +150,7 @@ const LocationPickerCore: React.FC<{
       } else {
         setDisplayAddress('Unnamed Road');
       }
-    } catch (e) {
+    } catch (_e) {
       setDisplayAddress('Location services unavailable');
     } finally {
       setIsReverseLoading(false);

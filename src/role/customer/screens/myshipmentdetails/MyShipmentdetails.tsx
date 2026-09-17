@@ -47,7 +47,7 @@ const DeliveredSuccessModal = lazy(
 
 const MyShipmentDetails = ({ route }: any) => {
   const dispatch = useAppDispatch();
-  const { item, quoteId } = route.params;
+  const { item, quoteId: _quoteId } = route.params;
 
   
 

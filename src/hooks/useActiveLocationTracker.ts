@@ -1,5 +1,5 @@
 // src/hooks/useActiveLocationTracker.ts
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AppState,
   AppStateStatus,
@@ -37,7 +37,7 @@ export const useActiveLocationTracker = () => {
   };
 
   // Perform GPS query and transmit live data to backend
-  const syncLocationWithBackend = async () => {
+  const syncLocationWithBackend = useCallback(async () => {
     try {
       const storedRole = await AsyncStorage.getItem('@user_role');
       if (!storedRole || storedRole.toLowerCase() !== 'driver') return;
@@ -80,7 +80,7 @@ export const useActiveLocationTracker = () => {
     } catch (err) {
       console.warn('Location Tracker runtime execution error:', err);
     }
-  };
+  }, []);
 
   // Listen to Active vs Background App States
   useEffect(() => {
@@ -124,5 +124,5 @@ export const useActiveLocationTracker = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [appStateVisible]);
+  }, [appStateVisible, syncLocationWithBackend]);
 };

@@ -43,7 +43,7 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
 
   const handleNumberOfHorsesChange = (val: string) => {
     if (isEdit) return;
-    const num = Math.max(1, parseInt(val) || 1);
+    const num = Math.max(1, parseInt(val, 10) || 1);
     if (num > 10) {
       // Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
 

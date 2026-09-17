@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import {
   View,
   Modal,
@@ -69,8 +69,14 @@ const MapModal = ({
     currentLocation && currentLocation.latitude && currentLocation.longitude,
   );
 
-  const pickup = pickupCoords || { latitude: 41.1544, longitude: -8.6498 };
-  const delivery = deliveryCoords || { latitude: 41.671, longitude: -72.949 };
+  const pickup = useMemo(
+    () => pickupCoords || { latitude: 41.1544, longitude: -8.6498 },
+    [pickupCoords],
+  );
+  const delivery = useMemo(
+    () => deliveryCoords || { latitude: 41.671, longitude: -72.949 },
+    [deliveryCoords],
+  );
 
   useEffect(() => {
     if (visible) {

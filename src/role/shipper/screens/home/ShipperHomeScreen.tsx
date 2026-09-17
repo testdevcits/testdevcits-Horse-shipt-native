@@ -57,9 +57,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     subscriptionStatus,
     plansData,
     isModalVisible: isSubModalVisible,
-    openModal: openSubModal,
+    openModal: _openSubModal,
     closeModal: closeSubModal,
-    checkAccessAndRun,
+    checkAccessAndRun: _checkAccessAndRun,
     refreshStatus: refreshSubStatus,
   } = useShipperSubscription();
 
@@ -188,7 +188,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               lng = pos.longitude;
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // ignore location error fallback
         }
       }
@@ -247,6 +247,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         }
       })
       .catch(() => null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {

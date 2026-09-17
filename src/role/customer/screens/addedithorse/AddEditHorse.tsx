@@ -46,7 +46,7 @@ const AddEditHorse = () => {
   const route = useRoute();
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isPicking, setIsPicking] = useState(false);
 
@@ -261,7 +261,7 @@ const AddEditHorse = () => {
         showBack
         onBack={() => navigation.goBack()}
       />
-      <AppLoader visible={loading} />
+      <AppLoader visible={_loading} />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -309,7 +309,7 @@ const AddEditHorse = () => {
               values,
               errors,
               touched,
-              handleSubmit,
+              handleSubmit: formikSubmit,
             }) => (
               <View style={styles.form}>
                 {/* Photo Upload Section */}
@@ -574,7 +574,7 @@ const AddEditHorse = () => {
                   />
                   <AppButton
                     title={isEdit ? 'Update Horse' : 'Add Horse'}
-                    onPress={() => handleSubmit()}
+                    onPress={() => formikSubmit()}
                     buttonStyle={styles.addBtn}
                   />
                 </View>

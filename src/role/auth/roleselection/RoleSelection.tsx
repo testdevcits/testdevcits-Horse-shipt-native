@@ -18,6 +18,55 @@ import { showErrorToast } from '../../../utils/toast';
 
 type UserRole = 'customer' | 'shipper' | 'driver';
 
+interface RoleCardProps {
+  role: UserRole;
+  title: string;
+  desc: string;
+  Icon: any;
+  isSelected: boolean;
+  onSelect: (role: UserRole) => void;
+}
+
+const RoleCard: React.FC<RoleCardProps> = ({
+  role,
+  title,
+  desc,
+  Icon,
+  isSelected,
+  onSelect,
+}) => {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => onSelect(role)}
+      style={[styles.roleCard, isSelected && styles.roleCardActive]}
+    >
+      <View style={[styles.iconBox, isSelected && styles.iconBoxActive]}>
+        <Icon
+          size={20}
+          color={isSelected ? COLORS.white : COLORS.primary}
+          strokeWidth={2}
+        />
+      </View>
+
+      <View style={styles.roleTextContainer}>
+        <AppText style={[styles.roleTitle, isSelected && styles.textWhite]}>
+          {title}
+        </AppText>
+        <AppText
+          style={[styles.roleDesc, isSelected && styles.textLightGold]}
+        >
+          {desc}
+        </AppText>
+      </View>
+
+      <View style={[styles.radioCircle, isSelected && styles.radioActive]}>
+        {isSelected && <View style={styles.radioInner} />}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 const RoleSelection = ({ navigation }: any) => {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [isStoring, setIsStoring] = useState(false); // Add a small loading state for storage action
@@ -64,51 +113,6 @@ const RoleSelection = ({ navigation }: any) => {
     }
   };
 
-  const RoleCard = ({
-    role,
-    title,
-    desc,
-    Icon,
-  }: {
-    role: UserRole;
-    title: string;
-    desc: string;
-    Icon: any;
-  }) => {
-    const isSelected = selectedRole === role;
-
-    return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => setSelectedRole(role)}
-        style={[styles.roleCard, isSelected && styles.roleCardActive]}
-      >
-        <View style={[styles.iconBox, isSelected && styles.iconBoxActive]}>
-          <Icon
-            size={20}
-            color={isSelected ? COLORS.white : COLORS.primary}
-            strokeWidth={2}
-          />
-        </View>
-
-        <View style={styles.roleTextContainer}>
-          <AppText style={[styles.roleTitle, isSelected && styles.textWhite]}>
-            {title}
-          </AppText>
-          <AppText
-            style={[styles.roleDesc, isSelected && styles.textLightGold]}
-          >
-            {desc}
-          </AppText>
-        </View>
-
-        <View style={[styles.radioCircle, isSelected && styles.radioActive]}>
-          {isSelected && <View style={styles.radioInner} />}
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <StatusBar
@@ -150,18 +154,24 @@ const RoleSelection = ({ navigation }: any) => {
               title="Customer"
               desc="I want to ship my horses"
               Icon={User}
+              isSelected={selectedRole === 'customer'}
+              onSelect={setSelectedRole}
             />
             <RoleCard
               role="shipper"
               title="Shipper"
               desc="I run a transport company"
               Icon={Building2}
+              isSelected={selectedRole === 'shipper'}
+              onSelect={setSelectedRole}
             />
             <RoleCard
               role="driver"
               title="Driver"
               desc="I am an individual transporter"
               Icon={Truck}
+              isSelected={selectedRole === 'driver'}
+              onSelect={setSelectedRole}
             />
           </View>
 

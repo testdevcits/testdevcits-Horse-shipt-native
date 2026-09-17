@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import customerService from '../../../api/services/customerService';
 
 const useTermsandCondition = () => {

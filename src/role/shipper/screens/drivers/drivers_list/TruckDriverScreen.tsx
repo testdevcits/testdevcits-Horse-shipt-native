@@ -36,7 +36,7 @@ const TruckDriverScreen = () => {
   } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const fetchDrivers = async () => {
+  const fetchDrivers = useCallback(async () => {
     try {
       const res = await shipperService.getDrivers({
         page: 1,
@@ -54,48 +54,51 @@ const TruckDriverScreen = () => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [searchQuery, selectedStatus]);
 
   useEffect(() => {
     fetchDrivers();
-  }, [searchQuery, selectedStatus]);
+  }, [fetchDrivers]);
 
   const onRefresh = () => {
     setRefreshing(true);
     fetchDrivers();
   };
 
-  const handleToggleStatus = async (
-    id: string,
-    currentActiveStatus: boolean,
-  ) => {
-    try {
-      const res = await shipperService.toggleDriverStatus(
-        id,
-        !currentActiveStatus,
-      );
-      if (res?.success) {
-        showSuccessToast(
-          'Success',
-          `Driver ${
-            !currentActiveStatus ? 'activated' : 'deactivated'
-          } successfully.`,
+  const handleToggleStatus = useCallback(
+    async (id: string, currentActiveStatus: boolean) => {
+      try {
+        const res = await shipperService.toggleDriverStatus(
+          id,
+          !currentActiveStatus,
         );
+        if (res?.success) {
+          showSuccessToast(
+            'Success',
+            `Driver ${
+              !currentActiveStatus ? 'activated' : 'deactivated'
+            } successfully.`,
+          );
 
-        fetchDrivers();
+          fetchDrivers();
+        }
+      } catch (error: any) {
+        showErrorToast(
+          'Error',
+          error?.response?.data?.message || 'Failed to update driver status.',
+        );
       }
-    } catch (error: any) {
-      showErrorToast(
-        'Error',
-        error?.response?.data?.message || 'Failed to update driver status.',
-      );
-    }
-  };
+    },
+    [fetchDrivers],
+  );
 
-  const handleDeleteDriverPrompt = (id: string, driverName: string) => {
-    setSelectedDriverToDelete({ id, name: driverName });
-    setDeleteModalVisible(true);
-  };
+  const handleDeleteDriverPrompt = useCallback(
+    (id: string, driverName: string) => {
+      setSelectedDriverToDelete({ id, name: driverName });
+      setDeleteModalVisible(true);
+    },
+    [],
+  );
 
   const handleConfirmDelete = async () => {
     if (!selectedDriverToDelete) return;
@@ -118,10 +121,10 @@ const TruckDriverScreen = () => {
     }
   };
 
-  const handleEditDriver = (driver: any) => {
+  const handleEditDriver = useCallback((driver: any) => {
     setSelectedDriverToEdit(driver);
     setIsAddModalVisible(true);
-  };
+  }, []);
 
   const totalCount = drivers.length;
   const activeCount = drivers.filter(d => d?.isActive ?? true).length;

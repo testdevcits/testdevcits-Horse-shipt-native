@@ -117,7 +117,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
     setIsLoading(true);
     try {
       await onSubmit(question.trim());
-    } catch (e) {
+    } catch (_e) {
       // Error handled by parent
     } finally {
       setIsLoading(false);

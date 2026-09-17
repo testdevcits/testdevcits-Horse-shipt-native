@@ -14,7 +14,7 @@ import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
-  const { data, loading, refreshing, refetch } = useTracking(shipmentId);
+  const { data, loading, refreshing: _refreshing, refetch } = useTracking(shipmentId);
   const mapRef = useRef<MapView>(null);
   const [routeDirectionData, setRouteDirectionData] = useState<{
     distanceKm?: number;
@@ -72,6 +72,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     if (data) {
       handleRecenterMap();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.driver?.lat, data?.driver?.lng]);
 
   // Status Info normalization
@@ -131,7 +132,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   // Driver details safely extracted
   const driverObj = data?.driver;
   const driverName = driverObj?.name || 'Driver';
-  const driverPhone = driverObj?.phone;
+  const _driverPhone = driverObj?.phone;
   const driverUpdatedAt = driverObj?.updatedAt
     ? `Updated ${formatFromNow(driverObj.updatedAt)}`
     : 'Live GPS Active';

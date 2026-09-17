@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // 1. Added useEffect
+import { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   Keyboard, // 2. Added Keyboard
 } from 'react-native';
@@ -89,7 +89,7 @@ const useLogin = () => {
         }),
       ).unwrap();
     } catch (err: any) {
-      const errorMsg =
+      const _errorMsg =
         typeof err === 'string'
           ? err
           : err?.message || err?.errors?.[0] || 'Invalid credentials';

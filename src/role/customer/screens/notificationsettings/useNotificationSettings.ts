@@ -46,7 +46,7 @@ export const useNotificationSettings = () => {
         //   position: 'top',
         // });
       }
-    } catch (error) {
+    } catch (_error) {
       // 2. Rollback on failure
       setSettings(prev => ({ ...prev, [key]: !newValue }));
       // Toast.show({

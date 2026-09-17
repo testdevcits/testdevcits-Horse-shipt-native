@@ -201,7 +201,8 @@ const HomeScreen = ({ navigation }: any) => {
         <RouteMapModal
           visible={mapVisible}
           onClose={() => {
-            setMapVisible(!mapVisible), setIsMapModalVisible(false);
+            setMapVisible(!mapVisible);
+            setIsMapModalVisible(false);
           }}
           pickupLocation={activeShipment?.shipment?.pickupLocation}
           deliveryLocation={activeShipment?.shipment?.deliveryLocation}
