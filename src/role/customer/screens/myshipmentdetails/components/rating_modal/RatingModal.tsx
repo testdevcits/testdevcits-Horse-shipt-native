@@ -13,7 +13,11 @@ import { AppText, Button, Input } from '../../../../../../components';
 import customerService from '../../../../../../api/services/customerService';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.RatingModal';
-import Toast from 'react-native-toast-message';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../../../../utils/toast';
 
 interface Props {
   visible: boolean;
@@ -40,21 +44,11 @@ const RatingModal = ({
 
   const handleSubmitReview = async () => {
     if (!rating || rating === 0) {
-      // Alert.alert('Rating Required', 'Please select at least 1 star rating.');
-      Toast.show({
-        type: 'info',
-        text1: 'Rating Required',
-        text2: 'Please select at least 1 star rating.',
-      });
+      showInfoToast('Rating Required', 'Please select at least 1 star rating.');
       return;
     }
     if (!shipperId || !shipmentId) {
-      // Alert.alert('Error', 'Missing shipper or shipment information.');
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Missing shipper or shipment information.',
-      });
+      showErrorToast('Error', 'Missing shipper or shipment information.');
       return;
     }
 
@@ -68,11 +62,7 @@ const RatingModal = ({
       });
 
       if (res?.success || (res as any).data) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message || 'Review added successfully',
-        });
+        showSuccessToast('Success', res.message || 'Review added successfully');
         setRating(0);
         setReview('');
         if (onSuccess) onSuccess();

@@ -25,7 +25,7 @@ import {
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
 import { breedsList, sexes, stallTypes, defaultColors } from './constants';
- 
+
 import { useDispatch } from 'react-redux';
 import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';

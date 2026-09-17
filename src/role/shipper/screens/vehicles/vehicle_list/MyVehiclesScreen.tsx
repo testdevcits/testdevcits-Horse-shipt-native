@@ -15,7 +15,6 @@ import {
   Platform,
 } from 'react-native';
 
-import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
@@ -27,6 +26,11 @@ import { COLORS, FONTS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.myvehicles';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../../components/common/ConfirmationModal'),
@@ -302,11 +306,10 @@ const MyVehiclesScreen = ({ navigation }: any) => {
       }
 
       if (!currentDrivers || currentDrivers.length === 0) {
-        Toast.show({
-          type: 'info',
-          text1: 'No Drivers Found',
-          text2: 'Please add drivers to your carrier profile first.',
-        });
+        showInfoToast(
+          'No Drivers Found',
+          'Please add drivers to your carrier profile first.',
+        );
         return;
       }
 
@@ -329,18 +332,13 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.assignDriver(vehicleId, driverId);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message || 'Driver assigned successfully',
-        });
+        showSuccessToast(
+          'Success',
+          res.message || 'Driver assigned successfully',
+        );
         fetchVehicles();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to assign driver.',
-        });
+        showErrorToast('Error', res?.message || 'Failed to assign driver.');
       }
     } catch (error: any) {
       console.error('Assign Driver Error:', error);
@@ -349,11 +347,8 @@ const MyVehiclesScreen = ({ navigation }: any) => {
         error?.response?.data?.message ||
         error?.raw?.message ||
         'Failed to assign driver.';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: errMsg,
-      });
+
+      showErrorToast('Error', errMsg);
     } finally {
       setSelectedVehicleForDriver(null);
     }
@@ -370,20 +365,12 @@ const MyVehiclesScreen = ({ navigation }: any) => {
     try {
       const res = await shipperService.deleteVehicle(selectedVehicle?.id);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Vehicle deleted successfully.',
-        });
+        showSuccessToast('Success', 'Vehicle deleted successfully.');
         setDeleteModalVisible(false);
         setSelectedVehicle(null);
         fetchVehicles();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to delete vehicle?.',
-        });
+        showErrorToast('Error', res?.message || 'Failed to delete vehicle?.');
       }
     } catch (error: any) {
       console.error('Delete Vehicle Error:', error);
@@ -392,11 +379,8 @@ const MyVehiclesScreen = ({ navigation }: any) => {
         error?.response?.data?.message ||
         error?.raw?.message ||
         'Failed to delete vehicle?.';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: errMsg,
-      });
+
+      showErrorToast('Error', errMsg);
     } finally {
       setDeleting(false);
     }

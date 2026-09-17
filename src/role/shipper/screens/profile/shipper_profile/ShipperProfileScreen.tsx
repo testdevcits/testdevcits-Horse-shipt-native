@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
-import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../../redux/slices/authSlice';
@@ -27,6 +26,7 @@ import SubscriptionTab from '../tabs/subscription/SubscriptionTab';
 import NotificationTab from '../tabs/notifications/NotificationTab';
 import useShipperSubscription from '../../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -126,11 +126,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           compressImageQuality: 0.8,
         });
         if (image?.size && image.size > 1 * 1024 * 1024) {
-          Toast.show({
-            type: 'error',
-            text1: 'File Too Large',
-            text2: 'Selected banner image must be 1 MB or less.',
-          });
+          showErrorToast(
+            'File Too Large',
+            'Selected banner image must be 1 MB or less.',
+          );
           return;
         }
         imagePath = image.path;
@@ -144,11 +143,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         if (res?.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
         if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
-          Toast.show({
-            type: 'error',
-            text1: 'File Too Large',
-            text2: 'Selected banner image must be 1 MB or less.',
-          });
+          showErrorToast(
+            'File Too Large',
+            'Selected banner image must be 1 MB or less.',
+          );
           return;
         }
         imagePath = asset.uri || '';
@@ -169,11 +167,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       const res = await shipperService?.updateBannerImage?.(formData);
       if (res?.success && res.bannerImage?.url) {
         setBannerUrl(res?.bannerImage.url);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Banner image updated successfully.',
-        });
+
+        showSuccessToast('Success', 'Banner image updated successfully.');
       }
     } catch (err: any) {
       if (
@@ -181,11 +176,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         err?.code !== 'E_PICKER_CANCELLED'
       ) {
         console.error('Update Banner Image Error:', err);
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to update banner image.',
-        });
+
+        showErrorToast('Error', 'Failed to update banner image.');
       }
     } finally {
       setBannerUploading(false);
@@ -211,11 +203,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           compressImageQuality: 0.8,
         });
         if (image?.size && image.size > 1 * 1024 * 1024) {
-          Toast.show({
-            type: 'error',
-            text1: 'File Too Large',
-            text2: 'Selected profile image must be 1 MB or less.',
-          });
+          showErrorToast(
+            'File Too Large',
+            'Selected profile image must be 1 MB or less.',
+          );
           return;
         }
         imagePath = image.path;
@@ -229,11 +220,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         if (res?.didCancel || !res.assets || res.assets.length === 0) return;
         const asset = res.assets[0];
         if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
-          Toast.show({
-            type: 'error',
-            text1: 'File Too Large',
-            text2: 'Selected profile image must be 1 MB or less.',
-          });
+          showErrorToast(
+            'File Too Large',
+            'Selected profile image must be 1 MB or less.',
+          );
           return;
         }
         imagePath = asset.uri || '';
@@ -259,11 +249,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           setAvatarUrl(newUrl);
         }
         dispatch(updateUser({ profileImage: newImg as any }));
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Profile image updated successfully.',
-        });
+
+        showSuccessToast('Success', 'Profile image updated successfully.');
       }
     } catch (err: any) {
       if (
@@ -271,11 +258,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         err?.code !== 'E_PICKER_CANCELLED'
       ) {
         console.error('Update Profile Image Error:', err);
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to update profile image.',
-        });
+        showErrorToast('Error', 'Failed to update profile image.');
       }
     } finally {
       setProfileUploading(false);

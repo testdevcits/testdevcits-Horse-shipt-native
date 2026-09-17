@@ -6,12 +6,12 @@ import {
   RefreshControl,
 } from 'react-native';
 
-import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, SettingsSkeleton } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.shippersettings';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const NOTIFICATION_ITEMS = [
   {
@@ -101,23 +101,21 @@ const ShipperSettingsScreen = () => {
     try {
       const res = await shipperService.updateNotifications(updated);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Settings Updated',
-          text2: 'Notification preferences saved successfully.',
-        });
+        showSuccessToast(
+          'Settings Updated',
+          'Notification preferences saved successfully.',
+        );
       }
     } catch (error: any) {
       console.error('Update Notifications Error:', error);
       // Revert on error
       setNotifications(notifications);
-      Toast.show({
-        type: 'error',
-        text1: 'Update Failed',
-        text2:
-          error?.response?.data?.message ||
+
+      showErrorToast(
+        'Update Failed',
+        error?.response?.data?.message ||
           'Failed to update notification settings.',
-      });
+      );
     }
   };
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Button, Input } from '../../../../../components';
 import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../constants';
 import LocationPicker, {
@@ -11,6 +10,7 @@ import shipperService from '../../../../../api/services/shipperService';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser } from '../../../../../redux/slices/authSlice';
 import styles from './styles.Editprofilescreen';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 interface EditProfileScreenProps {
   navigation: any;
@@ -38,7 +38,9 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
   useEffect(() => {
     const loc = profileData?.locale || {};
     setAddress(loc?.address || 'Not Available');
-    setLatitude(typeof loc?.latitude === 'number' ? loc?.latitude : DEFAULT_LAT);
+    setLatitude(
+      typeof loc?.latitude === 'number' ? loc?.latitude : DEFAULT_LAT,
+    );
     setLongitude(
       typeof loc?.longitude === 'number' ? loc?.longitude : DEFAULT_LNG,
     );
@@ -73,22 +75,18 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
             phoneNumber: mobile,
           }),
         );
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message || 'Shipper profile updated successfully.',
-        });
+
+        showSuccessToast(
+          'Success',
+          res.message || 'Shipper profile updated successfully.',
+        );
 
         if (route?.params?.onSuccess) {
           route.params.onSuccess(updated);
         }
         navigation.goBack();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res.message || 'Failed to update profile.',
-        });
+        showErrorToast('Error', res.message || 'Failed to update profile.');
       }
     } catch (err: any) {
       console.error('Update Profile Error:', err);
@@ -96,11 +94,7 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
         err?.response?.data?.message ||
         err?.message ||
         'Failed to update profile.';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: msg,
-      });
+      showErrorToast('Error', msg);
     } finally {
       setSaving(false);
     }

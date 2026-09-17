@@ -19,9 +19,9 @@ import {
 import { COLORS } from '../../../../constants';
 import { AppText } from '../../../../components';
 
-import Toast from 'react-native-toast-message';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.connectbankmodal';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 interface ConnectBankModalProps {
   isVisible: boolean;
@@ -75,33 +75,29 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
             }
           }, 150);
         } else {
-          Toast.show({
-            type: 'success',
-            text1: 'Stripe Payout Account',
-            text2:
-              createRes.message ||
+          showSuccessToast(
+            'Stripe Payout Account',
+            createRes.message ||
               onboardRes?.message ||
               'Stripe account processed.',
-          });
+          );
+
           onClose();
         }
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Setup Failed',
-          text2:
-            createRes?.message || 'Failed to create Stripe payout account.',
-        });
+        showErrorToast(
+          'Setup Failed',
+          createRes?.message || 'Failed to create Stripe payout account.',
+        );
       }
     } catch (err: any) {
       console.error('Create Stripe Account Error:', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2:
-          err?.response?.data?.message ||
+
+      showErrorToast(
+        'Error',
+        err?.response?.data?.message ||
           'Something went wrong setting up payout account.',
-      });
+      );
     } finally {
       setInternalLoading(false);
     }

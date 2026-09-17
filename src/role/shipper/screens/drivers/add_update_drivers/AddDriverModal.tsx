@@ -8,12 +8,13 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
+
 import { AppText, Input } from '../../../../../components';
 import { COLORS, SPACING } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.adddriver';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 interface Props {
   visible: boolean;
@@ -123,33 +124,26 @@ const AddDriverModal = ({
         res?.data ||
         res?.message === 'Data fetched successfully'
       ) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2:
-            res?.message ||
+        showSuccessToast(
+          'Success',
+          res?.message ||
             (driverToEdit
               ? 'Driver updated successfully'
               : 'Driver added successfully'),
-        });
+        );
         resetForm();
         onSuccess();
         onClose();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to save driver.',
-        });
+        showErrorToast('Error', res?.message || 'Failed to save driver.');
         setSubmitError(res?.message || 'Failed to save driver.');
       }
     } catch (error: any) {
       console.error('Save Driver Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error?.message || 'Failed to save driver details.',
-      });
+      showErrorToast(
+        'Error',
+        error?.message || 'Failed to save driver details.',
+      );
       setSubmitError(error?.message || 'Failed to save driver details.');
     } finally {
       setLoading(false);

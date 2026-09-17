@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity, Linking } from 'react-native';
 
-import Toast from 'react-native-toast-message';
 import { formatDate } from '../../../../../../utils/helpers';
 import { AppText } from '../../../../../../components';
 import { COLORS, SPACING } from '../../../../../../constants';
@@ -9,6 +8,10 @@ import shipperService from '../../../../../../api/services/shipperService';
 import styles from './styles.subscriptiontab';
 import CancelSubscriptionModal from '../cancel_subscription/CancelSubscriptionModal';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../../../../../utils/toast';
 
 interface Props {
   subscriptionData: any;
@@ -121,32 +124,28 @@ const SubscriptionTab: React.FC<Props> = ({
       setCancelingSub(true);
       const res = await shipperService.cancelSubscription({ reason });
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Subscription Canceled',
-          text2:
-            res?.message ||
+        showSuccessToast(
+          'Subscription Canceled',
+          res?.message ||
             'Subscription will be canceled at the end of billing cycle.',
-        });
+        );
         setCancellationResult({
           cancelAtPeriodEnd: true,
           accessValidTill: res?.data?.accessValidTill,
         });
         setIsCancelModalVisible(false);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Cancellation Error',
-          text2: res?.message || 'Unable to cancel subscription.',
-        });
+        showErrorToast(
+          'Cancellation Error',
+          res?.message || 'Unable to cancel subscription.',
+        );
       }
     } catch (err: any) {
       console.error('Cancel Subscription Error:', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: err?.response?.data?.message || 'Failed to cancel subscription.',
-      });
+      showErrorToast(
+        'Error',
+        err?.response?.data?.message || 'Failed to cancel subscription.',
+      );
     } finally {
       setCancelingSub(false);
     }

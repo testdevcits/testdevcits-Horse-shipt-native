@@ -8,7 +8,6 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
 import {
   COLORS,
   FONTS,
@@ -33,6 +32,7 @@ import NotificationSettings from '../notificationsettings/NotificationSettings';
 import Payments from '../payments/Payments';
 import { useAppSelector } from '../../../../hooks/redux';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const Profile = ({}: any) => {
   const ConfirmationModal = lazy(
@@ -92,17 +92,9 @@ const Profile = ({}: any) => {
     const res = await updateProfile(formData);
     if (res?.success) {
       setIsEditModalVisible(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Profile updated successfully',
-      });
+      showSuccessToast('Success', 'Profile updated successfully');
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: res.message || 'Update failed',
-      });
+      showErrorToast('Error', res.message || 'Update failed');
     }
   };
 

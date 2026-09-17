@@ -12,7 +12,6 @@ import {
 
 import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
-import Toast from 'react-native-toast-message';
 import { AppText, Input } from '../../../../../components';
 import {
   COLORS,
@@ -24,6 +23,7 @@ import {
 import shipperService from '../../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -174,22 +174,18 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
       const res = await shipperService.addQuote(formData);
 
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Quote Sent',
-          text2: res.message || 'Quote sent successfully',
-        });
+        showSuccessToast(
+          'Quote Sent',
+          res.message || 'Quote sent successfully',
+        );
         onClose();
         if (onSuccess) onSuccess();
       } else {
         const errorMsg = res?.message || 'Failed to submit quote.';
         setSubmitError(errorMsg);
         scrollViewRef.current?.scrollToEnd({ animated: true });
-        Toast.show({
-          type: 'error',
-          text1: 'Submission Failed',
-          text2: errorMsg,
-        });
+
+        showErrorToast('Submission Failed', errorMsg);
       }
     } catch (error: any) {
       console.error('Submit Offer Error:', error);
@@ -199,11 +195,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
         'Failed to submit quote.';
       setSubmitError(errorMsg);
       scrollViewRef.current?.scrollToEnd({ animated: true });
-      Toast.show({
-        type: 'error',
-        text1: 'Submission Failed',
-        text2: errorMsg,
-      });
+      showErrorToast('Submission Failed', errorMsg);
     } finally {
       setIsLoading(false);
     }

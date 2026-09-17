@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
+
 import { AppText, Input } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -17,6 +17,7 @@ import LocationPicker, {
 } from '../../../../components/common/LocationPicker/LocationPicker';
 import styles from './styles.preferredareas';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 interface Props {
   visible: boolean;
@@ -176,11 +177,10 @@ const AddEditAreaModal = ({
     setErrors(valErrors);
 
     if (Object.keys(valErrors).length > 0) {
-      Toast.show({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please fix the highlighted errors before saving.',
-      });
+      showErrorToast(
+        'Validation Error',
+        'Please fix the highlighted errors before saving.',
+      );
       return;
     }
 
@@ -205,30 +205,26 @@ const AddEditAreaModal = ({
       }
 
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: areaToEdit
+        showSuccessToast(
+          'Success',
+          areaToEdit
             ? 'Preferred area updated successfully.'
             : 'Preferred area added successfully.',
-        });
+        );
         onSuccess();
         onClose();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to save preferred area.',
-        });
+        showErrorToast(
+          'Error',
+          res?.message || 'Failed to save preferred area.',
+        );
       }
     } catch (error: any) {
       console.error('Save Preferred Area Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2:
-          error?.response?.data?.message || 'Failed to save preferred area.',
-      });
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message || 'Failed to save preferred area.',
+      );
     } finally {
       setLoading(false);
     }

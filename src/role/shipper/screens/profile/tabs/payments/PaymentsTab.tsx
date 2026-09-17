@@ -10,13 +10,16 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import Toast from 'react-native-toast-message';
 import { AppText } from '../../../../../../components';
 import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import styles from './styles.paymentstab';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../../../../../utils/toast';
 
 interface Props {
   stripeStatus: any;
@@ -71,36 +74,31 @@ const PaymentsTab: React.FC<Props> = ({
             setWebViewUrl(onboardingUrl);
           }
         } else {
-          Toast.show({
-            type: 'success',
-            text1: 'Stripe Payout Account',
-            text2:
-              createRes.message ||
+          showSuccessToast(
+            'Stripe Payout Account',
+            createRes.message ||
               onboardRes?.message ||
               'Stripe account processed.',
-          });
+          );
         }
 
         if (onRefreshStripeStatus) {
           onRefreshStripeStatus();
         }
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Payout Setup Error',
-          text2:
-            createRes?.message || 'Failed to create Stripe payout account.',
-        });
+        showErrorToast(
+          'Payout Setup Error',
+          createRes?.message || 'Failed to create Stripe payout account.',
+        );
       }
     } catch (err: any) {
       console.error('Stripe Onboarding Error:', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2:
-          err?.response?.data?.message ||
+
+      showErrorToast(
+        'Error',
+        err?.response?.data?.message ||
           'Something went wrong setting up Stripe onboarding.',
-      });
+      );
     } finally {
       setIsConnecting(false);
     }

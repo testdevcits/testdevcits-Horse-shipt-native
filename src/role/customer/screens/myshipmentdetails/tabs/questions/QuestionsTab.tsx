@@ -3,9 +3,12 @@ import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { AppText, Input } from '../../../../../../components';
 import { COLORS, ICON_SIZE } from '../../../../../../constants';
 import customerService from '../../../../../../api/services/customerService';
-import Toast from 'react-native-toast-message';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.QuestionTab';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../../../../../utils/toast';
 
 const QuestionsTab = ({ questions, onRefresh }: any) => {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
@@ -27,18 +30,10 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
     setSubmitting(questionId);
     try {
       await customerService.submitAnswer(questionId, answerText);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Answer submitted successfully',
-      });
+      showSuccessToast('Success', 'Answer submitted successfully');
       if (onRefresh) onRefresh();
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to submit answer. Please try again.',
-      });
+      showErrorToast('Error', 'Failed to submit answer. Please try again.');
     } finally {
       setSubmitting(null);
     }

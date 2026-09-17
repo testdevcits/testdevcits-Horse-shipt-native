@@ -20,7 +20,8 @@ import {
 import { AppText, Button } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import AppIcon from '../../../../components/app_icon/AppIcon';
-import Toast from 'react-native-toast-message';
+
+import { showInfoToast } from '../../../../utils/toast';
 
 interface ReviewCustomerModalProps {
   visible: boolean;
@@ -80,12 +81,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
 
   const handleSubmitReview = async () => {
     if (!rating || rating === 0) {
-      // Alert.alert('Rating Required', 'Please select at least 1 star rating.');
-      Toast.show({
-        type: 'info',
-        text1: 'Rating Required',
-        text2: 'Please select at least 1 star rating.',
-      });
+      showInfoToast('Rating Required', 'Please select at least 1 star rating.');
       return;
     }
 

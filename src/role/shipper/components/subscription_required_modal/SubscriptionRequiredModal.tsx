@@ -17,9 +17,10 @@ import {
   PlanItem,
 } from '../../../../hooks/useShipperSubscription';
 import shipperService from '../../../../api/services/shipperService';
-import Toast from 'react-native-toast-message';
+
 import styles from './styles.subscriptionRequiredModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 interface SubscriptionRequiredModalProps {
   visible: boolean;
@@ -105,32 +106,29 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
       });
 
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Subscription Activated!',
-          text2: `Your ${trialDays}-day free trial is now active.`,
-        });
+        showSuccessToast(
+          'Subscription Activated!',
+          `Your ${trialDays}-day free trial is now active.`,
+        );
+
         if (onSubscriptionSuccess) {
           onSubscriptionSuccess();
         }
         onClose();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Subscription Error',
-          text2:
-            res?.message || 'Failed to process subscription. Please try again.',
-        });
+        showErrorToast(
+          'Subscription Error',
+          res?.message || 'Failed to process subscription. Please try again.',
+        );
       }
     } catch (error: any) {
       console.error('Subscription Creation Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2:
-          error?.response?.data?.message ||
+
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message ||
           'Something went wrong while subscribing.',
-      });
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -193,11 +191,11 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
         });
         if (saveRes?.success) {
           shipperStatus.hasCard = true;
-          Toast.show({
-            type: 'success',
-            text1: 'Card Saved!',
-            text2: 'Your payment method has been attached.',
-          });
+
+          showSuccessToast(
+            'Card Saved!',
+            'Your payment method has been attached.',
+          );
           setStep('plan_selection');
           if (onSubscriptionSuccess) {
             onSubscriptionSuccess();

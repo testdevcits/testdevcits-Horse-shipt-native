@@ -12,9 +12,14 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../../../constants';
 import { AppText } from '../../../../components';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import Toast from 'react-native-toast-message';
+
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.paymentdetails';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../../utils/toast';
 
 const PaymentDetails = () => {
   const route = useRoute<any>();
@@ -26,20 +31,15 @@ const PaymentDetails = () => {
   const handleDownloadReceipt = async () => {
     const url = payment?.receiptUrl;
     if (!url) {
-      Toast.show({
-        type: 'info',
-        text1: 'No Receipt Available',
-        text2: 'Receipt link is not available for this transaction.',
-      });
+      showInfoToast(
+        'No Receipt Available',
+        'Receipt link is not available for this transaction.',
+      );
       return;
     }
 
     try {
-      Toast.show({
-        type: 'info',
-        text1: 'Downloading Receipt',
-        text2: 'Starting file download...',
-      });
+      showInfoToast('Downloading Receipt', 'Starting file download...');
 
       const { dirs } = ReactNativeBlobUtil.fs;
       const cleanTxId = (payment?.transactionId || 'receipt').replace(
@@ -67,11 +67,10 @@ const PaymentDetails = () => {
       if (Platform.OS === 'ios') {
         ReactNativeBlobUtil.ios.openDocument(res?.data);
       } else {
-        Toast.show({
-          type: 'success',
-          text1: 'Download Complete',
-          text2: 'Saved receipt to Downloads folder',
-        });
+        showSuccessToast(
+          'Download Complete',
+          'Saved receipt to Downloads folder',
+        );
       }
     } catch (error) {
       console.error('Download Receipt Error:', error);
@@ -79,22 +78,17 @@ const PaymentDetails = () => {
       try {
         await Linking.openURL(url);
       } catch (linkErr) {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to download or open receipt.',
-        });
+        showErrorToast('Error', 'Failed to download or open receipt.');
       }
     }
   };
 
   const handleOpenReceipt = async () => {
     if (!payment?.receiptUrl) {
-      Toast.show({
-        type: 'info',
-        text1: 'No Receipt Available',
-        text2: 'Receipt link is not available for this transaction.',
-      });
+      showInfoToast(
+        'No Receipt Available',
+        'Receipt link is not available for this transaction.',
+      );
       return;
     }
 
@@ -103,18 +97,10 @@ const PaymentDetails = () => {
       if (supported) {
         await Linking.openURL(payment.receiptUrl);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Cannot open receipt URL.',
-        });
+        showErrorToast('Error', 'Cannot open receipt URL.');
       }
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to open receipt link.',
-      });
+      showErrorToast('Error', 'Failed to open receipt link.');
     }
   };
 

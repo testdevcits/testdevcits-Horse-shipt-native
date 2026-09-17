@@ -29,12 +29,13 @@ import AvailableShipmentCard from './components/AvailableShipmentCard';
 import MapShipmentSelectItem from './components/MapShipmentSelectItem';
 import ConnectBankModal from './components/ConnectBankModal';
 import styles from './styles.shipperhome';
-import Toast from 'react-native-toast-message';
+
 import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import SubscriptionRequiredModal from '../../components/subscription_required_modal/SubscriptionRequiredModal';
 import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showSuccessToast } from '../../../../utils/toast';
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -131,11 +132,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         });
         if (saveRes?.success) {
           setIsCardModalVisible(false);
-          Toast.show({
-            type: 'success',
-            text1: 'Card Saved',
-            text2: 'Payment method saved successfully.',
-          });
+          showSuccessToast('Card Saved', 'Payment method saved successfully.');
           refreshSubStatus();
         }
       }

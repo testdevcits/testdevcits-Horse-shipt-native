@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import Toast from 'react-native-toast-message';
+
 import {
   AppHeader,
   AppText,
@@ -26,6 +26,7 @@ import {
   isValidVIN,
 } from '../../../../../utils/valiations';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 interface Props {
   navigation?: any;
@@ -136,11 +137,10 @@ const AddVehicleModal: React.FC<Props> = ({
       });
 
       if (image?.size && image.size > 1 * 1024 * 1024) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected vehicle image must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected vehicle image must be 1 MB or less.',
+        );
         return;
       }
 
@@ -229,15 +229,13 @@ const AddVehicleModal: React.FC<Props> = ({
       }
 
       if (res?.success || res?.vehicle || res?.data?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2:
-            res?.message ||
+        showSuccessToast(
+          'Success',
+          res?.message ||
             (vehicleToEdit
               ? 'Vehicle updated successfully'
               : 'Vehicle added successfully'),
-        });
+        );
         resetForm();
         if (onSuccess) onSuccess();
         handleClose();

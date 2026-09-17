@@ -128,13 +128,7 @@ axiosClient.interceptors.response?.use(
         'An error occurred',
     );
 
-    // Toast.show({
-    //   type: 'error',
-    //   text1: 'Error',
-    //   text2: errorMessage,
-    // });
-
-    showErrorToast('Error',errorMessage)
+    showErrorToast('Error', errorMessage);
 
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {

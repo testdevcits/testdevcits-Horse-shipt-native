@@ -1,12 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Alert } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import Toast from 'react-native-toast-message';
 import { pick } from '@react-native-documents/picker';
 import { StepSchemas } from './validation';
 import customerService from '../../../../api/services/customerService';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NewShipmentForm, NewShipmentHorse } from './interfaces';
+import { showErrorCSS } from 'react-native-svg/lib/typescript/deprecated';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 export const STEPS = ['Pickup', 'Delivery', 'Horses', 'Documents', 'Review'];
 
@@ -262,11 +263,10 @@ const useNewShipment = () => {
       });
 
       if (image?.size && image.size > 1 * 1024 * 1024) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected horse photo must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected horse photo must be 1 MB or less.',
+        );
         return;
       }
 
@@ -604,13 +604,12 @@ const useNewShipment = () => {
 
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
-        Toast.show({
-          type: 'success',
-          text1: isDraft ? 'Shipment Published' : 'Shipment Updated',
-          text2: isDraft
+        showSuccessToast(
+          isDraft ? 'Shipment Published' : 'Shipment Updated',
+          isDraft
             ? 'Draft shipment updated and published successfully!'
             : 'Shipment updated successfully!',
-        });
+        );
         resetAllData();
         navigation.goBack();
         return true;
@@ -641,11 +640,10 @@ const useNewShipment = () => {
         await customerService.publishShipment(shipmentId);
         setIsPublishModalVisible(false);
         setIsDraftModalVisible(false);
-        Toast.show({
-          type: 'success',
-          text1: 'Shipment Published',
-          text2: 'Shipment published successfully!',
-        });
+        showSuccessToast(
+          'Shipment Published',
+          'Shipment published successfully!',
+        );
         resetAllData();
         navigation.goBack();
         return true;

@@ -7,7 +7,6 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
 import useMyShipments, { ShipmentTab } from './useMyShipments';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deleteCustomerShipment } from '../../../../redux/slices/customerShipmentSlice';
@@ -21,6 +20,7 @@ import ShipmentHorizontalCard from '../../../../components/cards/shipmentcard_de
 import styles from './styles.myshipments';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -80,17 +80,10 @@ const MyShipments = ({ navigation }: { navigation?: any }) => {
     setIsDeleting(true);
     try {
       await dispatch(deleteCustomerShipment(shipmentToDelete._id)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'Draft Deleted',
-        text2: 'Draft shipment deleted successfully.',
-      });
+
+      showSuccessToast('Draft Deleted', 'Draft shipment deleted successfully.');
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Delete Failed',
-        text2: err || 'Failed to delete draft shipment',
-      });
+      showErrorToast('Delete Failed', err || 'Failed to delete draft shipment');
     } finally {
       setIsDeleting(false);
       setIsDeleteModalVisible(false);

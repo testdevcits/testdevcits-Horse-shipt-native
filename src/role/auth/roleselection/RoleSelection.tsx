@@ -54,8 +54,11 @@ const RoleSelection = ({ navigation }: any) => {
       navigation.replace('Welcome', { role: selectedRole });
     } catch (error) {
       console.error('Error storing user role:', error);
-     
-      showErrorToast("Storage Error",'Could not save your preference. Please try again.')
+
+      showErrorToast(
+        'Storage Error',
+        'Could not save your preference. Please try again.',
+      );
     } finally {
       setIsStoring(false);
     }

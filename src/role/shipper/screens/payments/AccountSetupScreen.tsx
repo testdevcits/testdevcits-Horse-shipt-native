@@ -9,8 +9,8 @@ import {
 import { WebView } from 'react-native-webview';
 import { AppText } from '../../../../components';
 import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../constants';
-import Toast from 'react-native-toast-message';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showSuccessToast } from '../../../../utils/toast';
 
 const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
   const { url, title = 'Account Setup' } = route?.params || {};
@@ -26,11 +26,10 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
         lowerUrl.includes('success') ||
         lowerUrl.includes('complete')
       ) {
-        Toast.show({
-          type: 'success',
-          text1: 'Onboarding Submitted',
-          text2: 'Your Stripe payout account details have been updated.',
-        });
+        showSuccessToast(
+          'Onboarding Submitted',
+          'Your Stripe payout account details have been updated.',
+        );
         navigation.goBack();
       }
     }

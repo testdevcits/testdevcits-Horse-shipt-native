@@ -6,12 +6,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { AppHeader, AppText, Input, Button } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.googlereview';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const GoogleReviewScreen = () => {
   const [googleReviewLink, setGoogleReviewLink] = useState('');
@@ -48,12 +48,11 @@ const GoogleReviewScreen = () => {
       setError(
         'Please make sure this is a valid Google Maps or Google Business link.',
       );
-      Toast.show({
-        type: 'error',
-        text1: 'Invalid Link',
-        text2:
-          'Please make sure this is a valid Google Maps or Google Business link.',
-      });
+
+      showErrorToast(
+        'Invalid Link',
+        'Please make sure this is a valid Google Maps or Google Business link.',
+      );
       return;
     }
 
@@ -62,30 +61,22 @@ const GoogleReviewScreen = () => {
     try {
       const res = await shipperService.updateGoogleReviewLink(trimmed);
       if (res?.success || res?.data) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res?.message || 'Google Review link updated successfully.',
-        });
+        showSuccessToast(
+          'Success',
+          res?.message || 'Google Review link updated successfully.',
+        );
       } else {
         const msg = res?.message || 'Failed to update Google Review link.';
         setError(msg);
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: msg,
-        });
+
+        showErrorToast('Error', msg);
       }
     } catch (err: any) {
       console.error('Update Google Review Link Error:', err);
       const msg =
         err?.response?.data?.message || 'Failed to update Google Review link.';
       setError(msg);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: msg,
-      });
+      showErrorToast('Error', msg);
     } finally {
       setLoading(false);
     }

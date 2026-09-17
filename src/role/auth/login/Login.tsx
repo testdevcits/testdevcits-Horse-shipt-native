@@ -18,7 +18,6 @@ import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.login';
 
- 
 import RoleSelectionModal from './components/RoleSelectionModal';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import useLogin from './useLogin';
@@ -207,8 +206,11 @@ const Login = () => {
         onClose={() => setIsRoleModalVisible(false)}
         onSelectRole={newRole => {
           setSelectedRole(newRole);
-          
-          showInfoToast('Role Selected',`Switched signing in mode to ${newRole.toUpperCase()}`)
+
+          showInfoToast(
+            'Role Selected',
+            `Switched signing in mode to ${newRole.toUpperCase()}`,
+          );
         }}
       />
     </View>

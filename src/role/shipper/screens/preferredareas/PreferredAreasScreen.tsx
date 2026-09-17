@@ -2,7 +2,6 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 
-import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
@@ -13,6 +12,11 @@ import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../../utils/toast';
 
 const MAX_AREAS = 4;
 const ConfirmationModal = lazy(
@@ -62,11 +66,10 @@ const PreferredAreasScreen = () => {
 
   const handleAddNewArea = () => {
     if (areas.length >= MAX_AREAS) {
-      Toast.show({
-        type: 'info',
-        text1: 'Limit Reached',
-        text2: `You can add a maximum of ${MAX_AREAS} preferred service areas.`,
-      });
+      showInfoToast(
+        'Limit Reached',
+        `You can add a maximum of ${MAX_AREAS} preferred service areas.`,
+      );
       return;
     }
     setSelectedAreaToEdit(null);
@@ -89,27 +92,18 @@ const PreferredAreasScreen = () => {
     try {
       const res = await shipperService.deletePreferredArea(areaToDelete.id);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Preferred area deleted successfully.',
-        });
+        showSuccessToast('Success', 'Preferred area deleted successfully.');
         setDeleteModalVisible(false);
         setAreaToDelete(null);
         fetchPreferredAreas();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to delete area.',
-        });
+        showErrorToast('Error', res?.message || 'Failed to delete area.');
       }
     } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error?.response?.data?.message || 'Failed to delete area.',
-      });
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message || 'Failed to delete area.',
+      );
     } finally {
       setIsDeleting(false);
     }

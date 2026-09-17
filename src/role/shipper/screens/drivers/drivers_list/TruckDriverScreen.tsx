@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
-import Toast from 'react-native-toast-message';
 import {
   AppHeader,
   AppText,
@@ -14,6 +13,7 @@ import shipperService from '../../../../../api/services/shipperService';
 import AddDriverModal from '../add_update_drivers/AddDriverModal';
 import styles from './styles.truckdriver';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../../components/common/ConfirmationModal'),
@@ -75,22 +75,20 @@ const TruckDriverScreen = () => {
         !currentActiveStatus,
       );
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: `Driver ${
+        showSuccessToast(
+          'Success',
+          `Driver ${
             !currentActiveStatus ? 'activated' : 'deactivated'
           } successfully.`,
-        });
+        );
+
         fetchDrivers();
       }
     } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2:
-          error?.response?.data?.message || 'Failed to update driver status.',
-      });
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message || 'Failed to update driver status.',
+      );
     }
   };
 
@@ -105,21 +103,16 @@ const TruckDriverScreen = () => {
     try {
       const res = await shipperService.deleteDriver(selectedDriverToDelete.id);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Driver deleted successfully.',
-        });
+        showSuccessToast('Success', 'Driver deleted successfully.');
         setDeleteModalVisible(false);
         setSelectedDriverToDelete(null);
         fetchDrivers();
       }
     } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error?.response?.data?.message || 'Failed to delete driver.',
-      });
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message || 'Failed to delete driver.',
+      );
     } finally {
       setIsDeleting(false);
     }

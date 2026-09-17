@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 
 import styles from './styles.newshipment';
 import { COLORS } from '../../../../constants';
@@ -16,6 +15,7 @@ import ReviewStep from './stepsscreens/review/ReviewStep';
 import ShipmentInfoStep from './stepsscreens/shipmentinfo/ShipmentInfoStep';
 import imageIndex from '../../../../assets/images/imageIndex';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -62,19 +62,12 @@ const NewShipment = () => {
     setIsDeleting(true);
     try {
       await dispatch(deleteCustomerShipment(targetId)).unwrap();
-      Toast.show({
-        type: 'success',
-        text1: 'Draft Deleted',
-        text2: 'Draft shipment deleted successfully.',
-      });
+
+      showSuccessToast('Draft Deleted', 'Draft shipment deleted successfully.');
       resetAllData();
       navigation.goBack();
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Delete Failed',
-        text2: err || 'Failed to delete draft shipment',
-      });
+      showErrorToast('Delete Failed', err || 'Failed to delete draft shipment');
       setIsDeleting(false);
       setIsDeleteModalVisible(false);
     }

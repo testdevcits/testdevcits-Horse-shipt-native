@@ -5,7 +5,6 @@ import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
 
 import { formatDate } from '../../../../../utils/helpers';
-import Toast from 'react-native-toast-message';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { AppHeader, AppText } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
@@ -17,6 +16,7 @@ import StripePaymentMethodCardModal from '../../earnings/StripePaymentMethodCard
 import ConnectBankModal from '../components/ConnectBankModal';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 const AskQuestionModal = lazy(() => import('../components/AskQuestionModal'));
 const SubmitOfferModal = lazy(() => import('./SubmitOfferModal'));
@@ -173,30 +173,28 @@ const ShipperShipmentDetailsScreen = () => {
       };
       const res = await shipperService.askQuestion(payload);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message || 'Question submitted successfully',
-        });
+        showSuccessToast(
+          'Success',
+          res.message || 'Question submitted successfully',
+        );
         if (res?.data) {
           setPendingQuestion(res?.data);
         } else {
           fetchQuestions();
         }
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Submission Failed',
-          text2: res?.message || 'Failed to submit question.',
-        });
+        showErrorToast(
+          'Submission Failed',
+          res?.message || 'Failed to submit question.',
+        );
       }
     } catch (error: any) {
       console.error('Ask Question Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Submission Failed',
-        text2: error?.response?.data?.message || 'Failed to submit question.',
-      });
+
+      showErrorToast(
+        'Submission Failed',
+        error?.response?.data?.message || 'Failed to submit question.',
+      );
       throw error;
     }
   };

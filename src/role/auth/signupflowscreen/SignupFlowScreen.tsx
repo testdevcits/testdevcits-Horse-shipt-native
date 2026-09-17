@@ -20,12 +20,16 @@ import styles from './styles.signupflow';
 import authService from '../../../api/services/authService';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../../redux/slices/authSlice';
- 
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
 import RoleSelectionModal from '../login/components/RoleSelectionModal';
 import AppIcon from '../../../components/app_icon/AppIcon';
-import { showErrorToast, showInfoToast, showSuccessToast } from '../../../utils/toast';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../utils/toast';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -117,7 +121,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
       if (res?.success) {
         setStep(2);
         setResendTimer(60);
-         
 
         showSuccessToast('OTP Sent', 'Please check your email');
       }
@@ -177,11 +180,10 @@ const SignupFlowScreen = ({ navigation }: any) => {
         'customer') as UserRole;
       await authService.forgotPassword(email, savedRole);
       setResendTimer(60);
- 
-      showSuccessToast('OTP Resent')
+
+      showSuccessToast('OTP Resent');
     } catch (e) {
-     
-      showErrorToast("Resend Failed")
+      showErrorToast('Resend Failed');
     }
   };
 
@@ -452,8 +454,11 @@ const SignupFlowScreen = ({ navigation }: any) => {
             onClose={() => setIsRoleModalVisible(false)}
             onSelectRole={newRole => {
               setSelectedRole(newRole);
-            
-              showInfoToast('Role Selected',`Switched signup mode to ${newRole.toUpperCase()}`)
+
+              showInfoToast(
+                'Role Selected',
+                `Switched signup mode to ${newRole.toUpperCase()}`,
+              );
             }}
           />
         </View>

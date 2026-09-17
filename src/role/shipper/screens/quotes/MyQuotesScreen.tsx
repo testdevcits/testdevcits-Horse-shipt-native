@@ -15,7 +15,6 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import {
   AppHeader,
@@ -30,6 +29,11 @@ import ShipperQuoteCard from './ShipperQuoteCard';
 import styles from './styles.myquotes';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
   () => import('../../../../components/common/ConfirmationModal'),
@@ -103,11 +107,10 @@ const MyQuotesScreen = () => {
   const handleOpenVehicleSelect = (quote: any) => {
     setSelectedQuoteForVehicle(quote);
     if (vehicles.length === 0) {
-      Toast.show({
-        type: 'info',
-        text1: 'No Vehicles Found',
-        text2: 'Please add a vehicle in My Vehicles first.',
-      });
+      showInfoToast(
+        'No Vehicles Found',
+        'Please add a vehicle in My Vehicles first.',
+      );
     }
     vehicleSelectRef.current?.present();
   };
@@ -123,11 +126,10 @@ const MyQuotesScreen = () => {
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
-      Toast.show({
-        type: 'info',
-        text1: 'No Contract',
-        text2: 'No contract file available for this quote.',
-      });
+      showInfoToast(
+        'No Contract',
+        'No contract file available for this quote.',
+      );
       return;
     }
 
@@ -164,11 +166,7 @@ const MyQuotesScreen = () => {
       }) || vehicles[0];
 
     if (!foundVehicle) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Selected vehicle not found.',
-      });
+      showErrorToast('Error', 'Selected vehicle not found.');
       return;
     }
 
@@ -181,18 +179,13 @@ const MyQuotesScreen = () => {
         vehicleId,
       });
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res?.message || 'Vehicle assigned successfully!',
-        });
+        showSuccessToast(
+          'Success',
+          res?.message || 'Vehicle assigned successfully!',
+        );
         fetchQuotes();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.message || 'Failed to assign vehicle.',
-        });
+        showErrorToast('Error', res?.message || 'Failed to assign vehicle.');
       }
     } catch (error: any) {
       console.error('Assign Vehicle Error:', error);
@@ -200,11 +193,7 @@ const MyQuotesScreen = () => {
         error?.response?.data?.message ||
         error?.message ||
         'Failed to assign vehicle.';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: errMsg,
-      });
+      showErrorToast('Error', errMsg);
     } finally {
       setSelectedQuoteForVehicle(null);
     }
@@ -221,11 +210,10 @@ const MyQuotesScreen = () => {
     const code = quote?.shipment?.shipmentCode || '';
 
     if (!url) {
-      Toast.show({
-        type: 'info',
-        text1: 'No Contract',
-        text2: 'No contract file available for this quote.',
-      });
+      showInfoToast(
+        'No Contract',
+        'No contract file available for this quote.',
+      );
       return;
     }
 
@@ -252,28 +240,26 @@ const MyQuotesScreen = () => {
     try {
       const res = await shipperService.deleteQuote(quoteToDelete);
       if (res?.success) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message || 'Quote deleted successfully',
-        });
+        showSuccessToast(
+          'Success',
+          res.message || 'Quote deleted successfully',
+        );
         setQuotes(prev =>
           prev.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete),
         );
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Delete Failed',
-          text2: res?.message || 'Failed to delete quote',
-        });
+        showErrorToast(
+          'Delete Failed',
+          res?.message || 'Failed to delete quote',
+        );
       }
     } catch (error: any) {
       console.error('Delete Quote Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Delete Failed',
-        text2: error?.response?.data?.message || 'Failed to delete quote',
-      });
+
+      showErrorToast(
+        'Delete Failed',
+        error?.response?.data?.message || 'Failed to delete quote',
+      );
     } finally {
       setIsDeleting(false);
       setQuoteToDelete(null);

@@ -12,13 +12,14 @@ import { useDriverMe } from '../../../../hooks/useDriverMe';
 import { AppText, Button, DriverHeader } from '../../../../components';
 import styles from './styles.home';
 import { COLORS, SPACING } from '../../../../constants';
-import Toast from 'react-native-toast-message';
+
 import VahicleInfoCard from './VahicleInfoCard';
 import ActiveShipment from './ActiveShipment';
 import HorseInformation from './HorseInformation';
 import { RouteMapModal } from '../location/RouteMapModal';
 import AppButton from '../../../../components/common/Button/AppButton';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
@@ -49,31 +50,24 @@ const HomeScreen = ({ navigation }: any) => {
 
   const onStartTrip = async () => {
     if (!activeShipment?._id || !activeShipment?.shipment?._id) {
-      Toast.show({
-        type: 'error',
-        text1: 'Unable to start trip',
-        text2: 'Quote ID not found.',
-      });
+      showErrorToast('Unable to start trip', 'Quote ID not found.');
       return;
     }
 
     try {
       const response = await handleStartTrip(activeShipment?._id);
 
-      Toast.show({
-        type: 'success',
-        text1: 'Trip Started',
-        text2: response?.message || 'Trip started successfully.',
-      });
+      showSuccessToast(
+        'Trip Started',
+        response?.message || 'Trip started successfully.',
+      );
     } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Failed to Start Trip',
-        text2:
-          error?.response?.data?.message ||
+      showErrorToast(
+        'Failed to Start Trip',
+        error?.response?.data?.message ||
           error?.message ||
           'Something went wrong.',
-      });
+      );
 
       console.error(error);
     }

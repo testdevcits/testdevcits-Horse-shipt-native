@@ -4,7 +4,7 @@ import { CustomerProfileData } from '../../../../types/customer';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
-import Toast from 'react-native-toast-message';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<CustomerProfileData | null>(null);
@@ -80,11 +80,10 @@ export const useProfile = () => {
       });
 
       if (image?.size && image.size > 1 * 1024 * 1024) {
-        Toast.show({
-          type: 'error',
-          text1: 'File Too Large',
-          text2: 'Selected profile image must be 1 MB or less.',
-        });
+        showErrorToast(
+          'File Too Large',
+          'Selected profile image must be 1 MB or less.',
+        );
         return;
       }
 
@@ -115,21 +114,17 @@ export const useProfile = () => {
             profileImage: newImgUrl as any,
           }),
         );
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Profile image updated successfully',
-        });
+
+        showSuccessToast('Success', 'Profile image updated successfully');
         return { success: true };
       }
     } catch (error: any) {
       if (error.message !== 'User cancelled image selection') {
         console.error('Upload Error:', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Upload Error',
-          text2: error.message || 'Failed to upload profile image',
-        });
+        showErrorToast(
+          'Upload Error',
+          error.message || 'Failed to upload profile image',
+        );
       }
       return { success: false };
     } finally {

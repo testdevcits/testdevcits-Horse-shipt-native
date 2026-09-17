@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
- 
+
 import { COLORS, FONT_SIZE } from '../../../../constants';
 import {
   AppHeader,
@@ -111,7 +111,6 @@ const MyShipmentDetails = ({ route }: any) => {
       showSuccessToast('Draft Deleted', 'Draft shipment deleted successfully.');
       navigation.goBack();
     } catch (err: any) {
-      
       showErrorToast(
         'Delete Failed',
         `${err} || 'Failed to delete draft shipment'`,

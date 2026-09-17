@@ -149,7 +149,6 @@ const TruckDriverCard: React.FC<TruckDriverCardProps> = memo(
               if (canToggleStatus) {
                 onToggleStatus(driverId, isActive);
               } else {
-                
                 showInfoToast(
                   'Driver Busy',
                   `Driver ${driverName} is currently assigned to an active trip.`,

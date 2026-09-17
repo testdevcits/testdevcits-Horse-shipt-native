@@ -2,10 +2,7 @@
 
 import Toast from 'react-native-toast-message';
 
-export const showSuccessToast = (
-  text1: string,
-  text2?: string,
-) => {
+export const showSuccessToast = (text1: string, text2?: string) => {
   Toast.show({
     type: 'success',
     text1,
@@ -13,10 +10,7 @@ export const showSuccessToast = (
   });
 };
 
-export const showErrorToast = (
-  text1: string,
-  text2?: string,
-) => {
+export const showErrorToast = (text1: string, text2?: string) => {
   Toast.show({
     type: 'error',
     text1,
@@ -24,10 +18,7 @@ export const showErrorToast = (
   });
 };
 
-export const showInfoToast = (
-  text1: string,
-  text2?: string,
-) => {
+export const showInfoToast = (text1: string, text2?: string) => {
   Toast.show({
     type: 'info',
     text1,
