@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  Alert,
+
   TextInput,
 } from 'react-native';
 import {
@@ -21,7 +21,7 @@ import { AppText, Button } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
-import { showInfoToast } from '../../../../utils/toast';
+import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toast';
 
 interface ReviewCustomerModalProps {
   visible: boolean;
@@ -86,7 +86,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
     }
 
     if (!customerId || !shipmentId) {
-      Alert.alert('Error', 'Missing customer or shipment information.');
+      showErrorToast('Error', 'Missing customer or shipment information.');
       return;
     }
 
@@ -100,7 +100,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
       });
 
       if (res?.success || (res as any).data) {
-        Alert.alert(
+        showSuccessToast(
           'Success',
           res.message || 'Customer review submitted successfully',
         );
@@ -109,7 +109,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
         if (onSuccess) onSuccess();
         onClose();
       } else {
-        Alert.alert(
+        showErrorToast(
           'Error',
           res.message || 'Failed to submit customer review.',
         );
@@ -119,7 +119,7 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
         error?.response?.data?.message ||
         error?.message ||
         'Failed to submit customer review.';
-      Alert.alert('Error', errMsg);
+      showErrorToast('Error', errMsg);
     } finally {
       setSubmitting(false);
     }

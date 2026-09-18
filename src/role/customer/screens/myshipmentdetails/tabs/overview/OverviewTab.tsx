@@ -3,7 +3,7 @@ import {
   View,
   TouchableOpacity,
   Linking,
-  Alert,
+
   ActivityIndicator,
 } from 'react-native';
 
@@ -17,6 +17,7 @@ import { fetchCustomerShipments } from '../../../../../../redux/slices/customerS
 import { useAppDispatch } from '../../../../../../hooks/redux';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.OverViewTab';
+import { showErrorToast } from '../../../../../../utils/toast';
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
   const navigation = useNavigation<any>();
@@ -41,7 +42,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
         }, 1000);
       }
     } catch (_error) {
-      Alert.alert('Error', 'Failed to publish shipment.');
+      showErrorToast('Error', 'Failed to publish shipment.');
     } finally {
       setLoading(false);
     }
@@ -69,19 +70,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
     }
   };
 
-  // const handleChatWithShipper = () => {
-  //   const shipperId = data?.shipper?._id || data?.shipper;
-  //   if (shipperId) {
-  //     navigation.navigate('CustomerDrawer', {
-  //       screen: 'CustomerTabs',
-  //       params: {
-  //         screen: 'Chats',
-  //       },
-  //     });
-  //   } else {
-  //     Alert.alert('Chat Unavailable', 'No shipper assigned yet.');
-  //   }
-  // };
+
 
   const formatDateRange = (start?: string, end?: string) => {
     if (!start && !end) return 'N/A';
@@ -181,19 +170,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             </TouchableOpacity>
           )}
 
-          {/* {(data?.shipper?._id || data?.shipper) &&
-            data?.status !== 'delivered' && (
-              <TouchableOpacity
-                style={styles.chatActionBtn}
-                onPress={handleChatWithShipper}
-                activeOpacity={0.8}
-              >
-                <MessageSquare size={15} color={COLORS.primary} />
-                <AppText style={styles.chatActionBtnText}>
-                  Chat with Shipper
-                </AppText>
-              </TouchableOpacity>
-            )} */}
+
           {data?.status === 'delivered' && (
             <TouchableOpacity
               style={styles.chatActionBtn}

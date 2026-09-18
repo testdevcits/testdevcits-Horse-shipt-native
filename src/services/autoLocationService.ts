@@ -9,12 +9,15 @@ let watchId: number | null = null;
 let timerId: ReturnType<typeof setInterval> | null = null;
 let isTrackingActive = false;
 
+let lastSyncTime = 0;
+
 const syncLocationNow = () => {
   Geolocation.getCurrentPosition(
     async position => {
       try {
         if (position?.coords) {
           const { latitude, longitude, speed, heading } = position.coords;
+          lastSyncTime = Date.now();
           await driverService.updateLocation({
             lat: latitude,
             lng: longitude,
@@ -61,6 +64,7 @@ export const startAutoTracking = async (): Promise<boolean> => {
         try {
           if (position?.coords) {
             const { latitude, longitude, speed, heading } = position.coords;
+            lastSyncTime = Date.now();
             await driverService.updateLocation({
               lat: latitude,
               lng: longitude,
@@ -92,13 +96,13 @@ export const startAutoTracking = async (): Promise<boolean> => {
       },
     );
 
-    // Fallback interval sync every 10 seconds
+    // Fallback interval sync only if watchPosition hasn't synced in the last 15s
     if (timerId) clearInterval(timerId);
     timerId = setInterval(() => {
-      if (isTrackingActive) {
+      if (isTrackingActive && Date.now() - lastSyncTime > 15000) {
         syncLocationNow();
       }
-    }, 10000);
+    }, 15000);
 
     return true;
   } catch (error) {

@@ -37,7 +37,7 @@ const Stack = createNativeStackNavigator<{
 
 const CustomerNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: "slide_from_right", }}>
       {/* Drawer is now the root of the customer flow */}
       <Stack.Screen name="CustomerDrawer" component={CustomerDrawer} />
       {/* Screens that should NOT have a drawer/tabs (Full screen) */}

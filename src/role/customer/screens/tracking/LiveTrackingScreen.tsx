@@ -167,38 +167,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
       ? `${rawDistanceKm.toFixed(1)} km away`
       : 'Calculating route...';
 
-  // Action handlers
-  // const handleCallDriver = () => {
-  //   if (driverPhone) {
-  //     Linking.openURL(`tel:${driverPhone}`);
-  //   } else {
-  //     Alert.alert(
-  //       'Contact Driver',
-  //       'Driver phone number is not available yet.',
-  //     );
-  //   }
-  // };
 
-  // const handleMessageDriver = () => {
-  //   if (driverPhone) {
-  //     Linking.openURL(`sms:${driverPhone}`);
-  //   } else {
-  //     Alert.alert(
-  //       'Contact Driver',
-  //       'Driver phone number is not available yet.',
-  //     );
-  //   }
-  // };
-
-  // const handleShareTracking = async () => {
-  //   try {
-  //     await Share.share({
-  //       message: `Track shipment live on Horse Shipt: ${statusDetails.label}. ETA: ${etaFormatted}.`,
-  //     });
-  //   } catch (e) {
-  //     console.warn('Share error:', e);
-  //   }
-  // };
 
   if (loading && !data) {
     return (
@@ -350,8 +319,8 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             source={
               driverObj?.avatar
                 ? {
-                    uri: driverObj?.avatar,
-                  }
+                  uri: driverObj?.avatar,
+                }
                 : imageIndex.AccountIcon
             }
             style={styles.driverAvatar}
@@ -363,29 +332,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             <AppText style={styles.lastUpdated}>{driverUpdatedAt}</AppText>
           </View>
         </View>
-        {/* <View style={styles.actionRow}>
-          <TouchableOpacity
-            style={styles.iconAction}
-            onPress={handleCallDriver}
-            activeOpacity={0.7}
-          >
-            <AppIcon name={'Phone'} size={18} color={COLORS.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconAction}
-            onPress={handleMessageDriver}
-            activeOpacity={0.7}
-          >
-            <MessageCircle size={18} color={COLORS.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconAction}
-            onPress={handleShareTracking}
-            activeOpacity={0.7}
-          >
-            <Share2 size={18} color={COLORS.primary} />
-          </TouchableOpacity>
-        </View> */}
+
       </View>
 
       {/* 5. BOTTOM TRACKING DETAILS SHEET */}

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, Easing, ActivityIndicator, Image } from 'react-native';
+import { View, Animated, Easing, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BootSplash from 'react-native-bootsplash';
 
-import { COLORS } from '../../../constants';
 import styles from './styles.splash';
 import { rehydrateAuth } from '../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -24,7 +23,7 @@ const Splash = ({ navigation }: any) => {
     startAnimations();
 
     // Immediately hide native BootSplash window so UI displays without 50s freeze
-    BootSplash.hide({ fade: true }).catch(() => {});
+    BootSplash.hide({ fade: true }).catch(() => { });
 
     const initApp = async () => {
       // 1. Try to restore user session (token/user data)
@@ -153,12 +152,7 @@ const Splash = ({ navigation }: any) => {
 
       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
         <AppText style={styles.titleText}>Horse Shipt</AppText>
-        {/* <AppText style={styles.subtitleText}>LOGISTICS PORTAL</AppText> */}
-        <ActivityIndicator
-          size="small"
-          color={COLORS.primary}
-          style={styles.loader}
-        />
+
       </Animated.View>
     </View>
   );

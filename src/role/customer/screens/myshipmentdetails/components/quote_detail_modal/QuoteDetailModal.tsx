@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Alert,
+
   ActivityIndicator,
 } from 'react-native';
 
@@ -26,7 +26,7 @@ import AppIcon, {
   IconName,
 } from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.QuoteDetailModal';
-import { showSuccessToast } from '../../../../../../utils/toast';
+import { showErrorToast, showSuccessToast } from '../../../../../../utils/toast';
 
 const SummaryBox = ({
   icon: Icon,
@@ -117,14 +117,15 @@ const QuoteDetailModal = ({
 
   const handleProcessFlow = async () => {
     if (!cardDetails?.complete)
-      return Alert.alert('Payment Error', 'Please enter valid card details.');
+      return showErrorToast('Payment Error', 'Please enter valid card details.');
+
     if (!isAcceptedTerms)
-      return Alert.alert(
+      return showErrorToast(
         'Terms Error',
         'Please agree to the terms and conditions.',
       );
     if (!signature)
-      return Alert.alert(
+      return showErrorToast(
         'Signature Required',
         'Please draw your signature in the box provided.',
       );
@@ -143,7 +144,7 @@ const QuoteDetailModal = ({
       );
       if (error) {
         console.error('Stripe Payment Error:--------------------', error);
-        Alert.alert('Payment Error', error.message);
+        showErrorToast('Payment Error', error.message);
         setLoading(false);
         return;
       }
@@ -164,7 +165,7 @@ const QuoteDetailModal = ({
         }
       }
     } catch (e: any) {
-      Alert.alert('Process Failed', e.message || 'Something went wrong.');
+      showErrorToast('Payment Error', e.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -188,7 +189,7 @@ const QuoteDetailModal = ({
         if (onRefresh) onRefresh();
       }
     } catch (_error) {
-      Alert.alert('Error', 'Failed to cancel shipment.');
+      showErrorToast('Error', 'Failed to cancel shipment.');
     } finally {
       setLoading(false);
     }
@@ -319,115 +320,115 @@ const QuoteDetailModal = ({
               quote?.contract ||
               quote?.shipperContract?.url ||
               quote?.shipperContract) && (
-              <View style={styles.cardContainer}>
-                <AppText style={styles.cardTitle}>
-                  Contracts & Documents
-                </AppText>
+                <View style={styles.cardContainer}>
+                  <AppText style={styles.cardTitle}>
+                    Contracts & Documents
+                  </AppText>
 
-                {(quote?.contract?.url ||
-                  typeof quote?.contract === 'string') && (
-                  <TouchableOpacity
-                    style={styles.docItem}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const contractUrl =
-                        typeof quote?.contract === 'string'
-                          ? quote?.contract
-                          : quote?.contract.url;
-                      if (contractUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: contractUrl,
-                          title: 'Shipment Contract',
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <AppIcon
-                          name={'FileText'}
-                          size={ICON_SIZE.sm}
-                          color={COLORS.primary}
-                        />
-                      </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName}>
-                          Shipment Contract
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Official shipment agreement
-                        </AppText>
-                      </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <AppIcon
-                        name={'ChevronRight'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.primary}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
+                  {(quote?.contract?.url ||
+                    typeof quote?.contract === 'string') && (
+                      <TouchableOpacity
+                        style={styles.docItem}
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          const contractUrl =
+                            typeof quote?.contract === 'string'
+                              ? quote?.contract
+                              : quote?.contract.url;
+                          if (contractUrl) {
+                            onClose();
+                            navigation.navigate('PdfViewer', {
+                              url: contractUrl,
+                              title: 'Shipment Contract',
+                            });
+                          }
+                        }}
+                      >
+                        <View style={styles.docLeftRow}>
+                          <View style={styles.docIconBox}>
+                            <AppIcon
+                              name={'FileText'}
+                              size={ICON_SIZE.sm}
+                              color={COLORS.primary}
+                            />
+                          </View>
+                          <View style={styles.docInfo}>
+                            <AppText style={styles.docName}>
+                              Shipment Contract
+                            </AppText>
+                            <AppText style={styles.docSub}>
+                              Official shipment agreement
+                            </AppText>
+                          </View>
+                        </View>
+                        <View style={styles.docActionWrap}>
+                          <AppText style={styles.docActionText}>View</AppText>
+                          <AppIcon
+                            name={'ChevronRight'}
+                            size={ICON_SIZE.xs}
+                            color={COLORS.primary}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
 
-                {(quote?.shipperContract?.url ||
-                  typeof quote?.shipperContract === 'string') && (
-                  <TouchableOpacity
-                    style={[
-                      styles.docItem,
-                      (quote?.contract?.url ||
-                        typeof quote?.contract === 'string') && {
-                        marginTop: SPACING.sm,
-                      },
-                    ]}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const shipperUrl =
-                        typeof quote?.shipperContract === 'string'
-                          ? quote?.shipperContract
-                          : quote?.shipperContract.url;
-                      const docTitle =
-                        quote?.shipperContract?.originalName || 'Not Available';
-                      if (shipperUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: shipperUrl,
-                          title: docTitle,
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <AppIcon
-                          name={'FileText'}
-                          size={ICON_SIZE.sm}
-                          color={COLORS.primary}
-                        />
-                      </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName} numberOfLines={1}>
-                          {quote?.shipperContract?.originalName ||
-                            'Shipper Contract'}
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Uploaded contract terms
-                        </AppText>
-                      </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <AppIcon
-                        name={'ChevronRight'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.primary}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+                  {(quote?.shipperContract?.url ||
+                    typeof quote?.shipperContract === 'string') && (
+                      <TouchableOpacity
+                        style={[
+                          styles.docItem,
+                          (quote?.contract?.url ||
+                            typeof quote?.contract === 'string') && {
+                            marginTop: SPACING.sm,
+                          },
+                        ]}
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          const shipperUrl =
+                            typeof quote?.shipperContract === 'string'
+                              ? quote?.shipperContract
+                              : quote?.shipperContract.url;
+                          const docTitle =
+                            quote?.shipperContract?.originalName || 'Not Available';
+                          if (shipperUrl) {
+                            onClose();
+                            navigation.navigate('PdfViewer', {
+                              url: shipperUrl,
+                              title: docTitle,
+                            });
+                          }
+                        }}
+                      >
+                        <View style={styles.docLeftRow}>
+                          <View style={styles.docIconBox}>
+                            <AppIcon
+                              name={'FileText'}
+                              size={ICON_SIZE.sm}
+                              color={COLORS.primary}
+                            />
+                          </View>
+                          <View style={styles.docInfo}>
+                            <AppText style={styles.docName} numberOfLines={1}>
+                              {quote?.shipperContract?.originalName ||
+                                'Shipper Contract'}
+                            </AppText>
+                            <AppText style={styles.docSub}>
+                              Uploaded contract terms
+                            </AppText>
+                          </View>
+                        </View>
+                        <View style={styles.docActionWrap}>
+                          <AppText style={styles.docActionText}>View</AppText>
+                          <AppIcon
+                            name={'ChevronRight'}
+                            size={ICON_SIZE.xs}
+                            color={COLORS.primary}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                </View>
+              )}
 
             {/* FORM: ONLY SHOWN IF PENDING */}
             {isPending && (
@@ -598,7 +599,7 @@ const QuoteDetailModal = ({
                     !signature ||
                     !cardDetails?.complete ||
                     loading) &&
-                    styles.disabledBtn,
+                  styles.disabledBtn,
                 ]}
                 disabled={
                   !isAcceptedTerms ||

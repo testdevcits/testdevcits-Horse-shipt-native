@@ -3,7 +3,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Alert,
+
   Pressable,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -45,8 +45,6 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
     if (isEdit) return;
     const num = Math.max(1, parseInt(val, 10) || 1);
     if (num > 10) {
-      // Alert.alert('Limit Exceeded', 'Maximum 10 horses per shipment.');
-
       showInfoToast('Limit Exceeded', 'Maximum 10 horses per shipment.');
       return;
     }
@@ -355,10 +353,10 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
             onPress={() =>
               isFormValid
                 ? onNext()
-                : Alert.alert(
-                    'Missing Info',
-                    'Please fill in registered name, breed, sex, and stall size for all horses.',
-                  )
+                : showInfoToast(
+                  'Missing Info',
+                  'Please fill in registered name, breed, sex, and stall size for all horses.',
+                )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>

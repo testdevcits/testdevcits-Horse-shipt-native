@@ -6,7 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  Alert,
+
 } from 'react-native';
 import { COLORS, FONTS, SPACING } from '../../../../../../constants';
 import { AppText, Button, Input } from '../../../../../../components';
@@ -18,6 +18,7 @@ import {
   showInfoToast,
   showSuccessToast,
 } from '../../../../../../utils/toast';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   visible: boolean;
@@ -68,15 +69,11 @@ const RatingModal = ({
         if (onSuccess) onSuccess();
         onClose();
       } else {
-        // Alert.alert('Error', res.message || 'Failed to submit review.');
+        showErrorToast("Error", res.message || 'Failed to submit review.')
       }
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message ||
-          error?.message ||
-          'Failed to submit review.',
-      );
+
+      showErrorToast("Error", error?.response?.data?.message || error?.message || 'Failed to submit review.')
     } finally {
       setSubmitting(false);
     }
@@ -155,6 +152,7 @@ const RatingModal = ({
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
+      <Toast />
     </Modal>
   );
 };

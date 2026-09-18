@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Alert } from 'react-native';
+
 import ImagePicker from 'react-native-image-crop-picker';
 import { pick } from '@react-native-documents/picker';
 import { StepSchemas } from './validation';
@@ -49,7 +49,7 @@ const formatDatePayload = (dateVal: any): string => {
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     }
-  } catch (_e) {}
+  } catch (_e) { }
   return String(dateVal || '');
 };
 
@@ -86,21 +86,21 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
     generalInfo: h.generalInfo || h.notes || '',
     photo: h.photo?.url
       ? {
-          uri: h.photo.url,
-          type: h.photo.type || 'image/jpeg',
-          name: h.photo.name || 'photo.jpg',
-        }
+        uri: h.photo.url,
+        type: h.photo.type || 'image/jpeg',
+        name: h.photo.name || 'photo.jpg',
+      }
       : typeof h.photo === 'string'
-      ? { uri: h.photo, type: 'image/jpeg', name: 'photo.jpg' }
-      : h.photo || null,
+        ? { uri: h.photo, type: 'image/jpeg', name: 'photo.jpg' }
+        : h.photo || null,
     coggins: h.coggins?.url
       ? {
-          uri: h.coggins.url,
-          type: 'application/pdf',
-          name: h.coggins.originalName || h.coggins.name || 'coggins.pdf',
-        }
+        uri: h.coggins.url,
+        type: 'application/pdf',
+        name: h.coggins.originalName || h.coggins.name || 'coggins.pdf',
+      }
       : h.documents?.coggins?.url
-      ? {
+        ? {
           uri: h.documents.coggins.url,
           type: 'application/pdf',
           name:
@@ -108,15 +108,15 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
             h.documents.coggins.name ||
             'coggins.pdf',
         }
-      : h.coggins || null,
+        : h.coggins || null,
     healthCert: h.healthCert?.url
       ? {
-          uri: h.healthCert.url,
-          type: 'application/pdf',
-          name: h.healthCert.originalName || h.healthCert.name || 'health.pdf',
-        }
+        uri: h.healthCert.url,
+        type: 'application/pdf',
+        name: h.healthCert.originalName || h.healthCert.name || 'health.pdf',
+      }
       : h.documents?.healthCertificate?.url
-      ? {
+        ? {
           uri: h.documents.healthCertificate.url,
           type: 'application/pdf',
           name:
@@ -124,21 +124,21 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
             h.documents.healthCertificate.name ||
             'health.pdf',
         }
-      : h.healthCert || null,
+        : h.healthCert || null,
     otherDocuments:
       h.otherDocuments?.url ||
-      h.other?.url ||
-      h.documents?.other?.url ||
-      h.documents?.otherDocuments?.url
+        h.other?.url ||
+        h.documents?.other?.url ||
+        h.documents?.otherDocuments?.url
         ? {
-            uri:
-              h.otherDocuments?.url ||
-              h.other?.url ||
-              h.documents?.other?.url ||
-              h.documents?.otherDocuments?.url,
-            type: 'application/pdf',
-            name: 'other_document.pdf',
-          }
+          uri:
+            h.otherDocuments?.url ||
+            h.other?.url ||
+            h.documents?.other?.url ||
+            h.documents?.otherDocuments?.url,
+          type: 'application/pdf',
+          name: 'other_document.pdf',
+        }
         : h.otherDocuments || null,
   }));
 
@@ -569,7 +569,7 @@ const useNewShipment = () => {
           setIsDraftModalVisible(true);
           return true;
         } else {
-          Alert.alert(
+          showErrorToast(
             'Error',
             response?.message || 'Failed to save draft shipment.',
           );
@@ -578,7 +578,7 @@ const useNewShipment = () => {
       }
     } catch (error: any) {
       console.error('Draft Error:', error);
-      Alert.alert(
+      showErrorToast(
         'Error',
         error?.response?.data?.message || 'Failed to save draft shipment',
       );
@@ -625,7 +625,7 @@ const useNewShipment = () => {
           shipmentId = shipment._id;
           setCreatedShipmentId(shipment._id);
         } else {
-          Alert.alert(
+          showErrorToast(
             'Error',
             response?.message || 'Failed to create shipment.',
           );
@@ -650,10 +650,10 @@ const useNewShipment = () => {
       return false;
     } catch (error: any) {
       console.error('Publish Error:', error);
-      Alert.alert(
+      showErrorToast(
         'Error',
         error?.response?.data?.message ||
-          'Failed to update or publish shipment',
+        'Failed to update or publish shipment',
       );
       return false;
     } finally {
