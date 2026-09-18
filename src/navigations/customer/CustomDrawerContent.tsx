@@ -164,7 +164,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             onPress={() => navigateToTab('Home')}
           />
           <DrawerMenuItem
-            label="Shipping"
+            label="New Shipping"
             iconSource={imageIndex.Shipping}
             isActive={isTabActive('New')}
             onPress={() => navigateToTab('New')}

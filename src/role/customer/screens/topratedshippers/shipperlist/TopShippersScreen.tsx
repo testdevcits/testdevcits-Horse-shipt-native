@@ -170,7 +170,7 @@ const TopShippersScreen = () => {
         keyExtractor={(item, index) =>
           item?._id || item?.id || index.toString()
         }
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={renderHeader()}
         renderItem={({ item }) => (
           <ShipperCard
             item={item}

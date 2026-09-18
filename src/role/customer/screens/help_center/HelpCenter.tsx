@@ -16,14 +16,14 @@ import {
 import { AppHeader, AppText } from '../../../../components';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
-const HelpCenter = ({}: any) => {
+const HelpCenter = ({ }: any) => {
   const handleEmailPress = () => {
     Linking.openURL('mailto:noreply.horseshipt2026@gmail.com');
   };
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack={true} title="Help Center" />
+      <AppHeader showBack={true} title="Help Center" showNotificationIcon={false} showProfileImage={false} />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Main Support Card */}

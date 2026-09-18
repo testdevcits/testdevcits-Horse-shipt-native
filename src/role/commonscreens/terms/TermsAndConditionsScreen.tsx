@@ -71,6 +71,7 @@ const TermsAndConditionsScreen = () => {
         showBack={true}
         title="Terms & Conditions"
         showProfileImage={false}
+        showNotificationIcon={false}
       />
 
       {loading ? (

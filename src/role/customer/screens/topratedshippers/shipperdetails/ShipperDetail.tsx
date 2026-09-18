@@ -42,8 +42,8 @@ const ShipperDetail = () => {
   const targetId = shipperId || shipper?._id || shipper?.id;
   const isFavorite = targetId
     ? wishlistIds.includes(targetId) ||
-      !!shipper?.isWishlisted ||
-      !!shipper?.isFavorite
+    !!shipper?.isWishlisted ||
+    !!shipper?.isFavorite
     : false;
 
   const handleToggleWishlist = () => {
@@ -61,7 +61,7 @@ const ShipperDetail = () => {
   if (loading && !refreshing) {
     return (
       <View style={styles.container}>
-        <AppHeader title="Shipper Details" />
+        <AppHeader title="Shipper Profile" showNotificationIcon={false} showProfileImage={false} showBack={true} />
         <ShipperDetailSkeleton />
       </View>
     );

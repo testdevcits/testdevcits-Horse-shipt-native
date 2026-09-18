@@ -71,6 +71,7 @@ const PrivacyPolicyScreen = () => {
         showBack={true}
         title="Privacy Policy"
         showProfileImage={false}
+        showNotificationIcon={false}
       />
 
       {loading ? (
