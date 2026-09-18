@@ -90,6 +90,15 @@ const RoleSelection = ({ navigation }: any) => {
     loadSavedRole();
   }, []);
 
+  const handleSelectRole = async (role: UserRole) => {
+    setSelectedRole(role);
+    try {
+      await AsyncStorage.setItem('@user_role', role);
+    } catch (error) {
+      console.error('Error auto-saving role:', error);
+    }
+  };
+
   // 2. Updated handleContinue with AsyncStorage Logic
   const handleContinue = async () => {
     if (!selectedRole) return;
@@ -155,7 +164,7 @@ const RoleSelection = ({ navigation }: any) => {
               desc="I want to ship my horses"
               Icon={User}
               isSelected={selectedRole === 'customer'}
-              onSelect={setSelectedRole}
+              onSelect={handleSelectRole}
             />
             <RoleCard
               role="shipper"
@@ -163,7 +172,7 @@ const RoleSelection = ({ navigation }: any) => {
               desc="I run a transport company"
               Icon={Building2}
               isSelected={selectedRole === 'shipper'}
-              onSelect={setSelectedRole}
+              onSelect={handleSelectRole}
             />
             <RoleCard
               role="driver"
@@ -171,7 +180,7 @@ const RoleSelection = ({ navigation }: any) => {
               desc="I am an individual transporter"
               Icon={Truck}
               isSelected={selectedRole === 'driver'}
-              onSelect={setSelectedRole}
+              onSelect={handleSelectRole}
             />
           </View>
 

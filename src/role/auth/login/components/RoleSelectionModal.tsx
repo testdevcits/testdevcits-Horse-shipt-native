@@ -60,10 +60,8 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
     },
   ];
 
-  // Filter roles: if called from signup or allowedRoles specified, show Customer & Shipper only
-  const availableRoles = isSignup
-    ? ROLES.filter(r => r.id === 'customer' || r.id === 'shipper')
-    : allowedRoles
+  // Filter roles: if allowedRoles specified, show allowed roles, otherwise all roles (customer, shipper, driver)
+  const availableRoles = allowedRoles
     ? ROLES.filter(r => allowedRoles.includes(r.id))
     : ROLES;
 

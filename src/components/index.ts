@@ -26,6 +26,7 @@ import CountryCodePicker, {
 import ShipmentLocationModal from './common/ShipmentLocationModal';
 import LocationPermissionModal from './common/LocationPermissionModal';
 import LazyFallback from './common/LazyFallback';
+import ImageViewer from './common/ImageViewer';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -79,6 +80,7 @@ export {
   CountryCodePicker,
   COUNTRIES,
   LazyFallback,
+  ImageViewer,
 
   // Skeletons
   HomeSkeleton,

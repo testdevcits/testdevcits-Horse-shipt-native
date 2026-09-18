@@ -98,6 +98,9 @@ const authSlice = createSlice({
       // AsyncStorage saving here if not handled in the component.
       AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token);
       AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+      if (user?.role) {
+        AsyncStorage.setItem(STORAGE_KEYS.ROLE, user.role);
+      }
     },
 
     clearAuthError: state => {

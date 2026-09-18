@@ -18,7 +18,6 @@ import {
   showInfoToast,
   showSuccessToast,
 } from '../../../../../../utils/toast';
-import Toast from 'react-native-toast-message';
 
 interface Props {
   visible: boolean;
@@ -152,7 +151,6 @@ const RatingModal = ({
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
-      <Toast />
     </Modal>
   );
 };

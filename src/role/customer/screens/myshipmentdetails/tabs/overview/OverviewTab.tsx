@@ -9,7 +9,7 @@ import {
 
 import { formatDate } from '../../../../../../utils/helpers';
 import { AppText, MapModal } from '../../../../../../components';
-import { COLORS, FONTS, SPACING, FONT_SIZE } from '../../../../../../constants';
+import { COLORS, SPACING, } from '../../../../../../constants';
 import PublishedSuccessModal from '../../components/publish_success_modal/PublishedSuccessModal';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
@@ -162,11 +162,23 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               style={styles.primaryActionBtn}
               onPress={handleEditDocumentsNotes}
               activeOpacity={0.8}
+              disabled={loading}
             >
-              <AppIcon name={'Edit3'} size={15} color={COLORS.white} />
-              <AppText style={styles.primaryActionBtnText}>
-                Edit Documents & Notes
-              </AppText>
+
+              {
+                loading ?
+                  <ActivityIndicator size={"small"} color={COLORS.white} /> :
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }} >
+                    <AppIcon name={'Edit3'} size={15} color={COLORS.white} />
+                    <AppText style={styles.primaryActionBtnText}>
+                      {/* Edit Documents & Notes */}
+                      Edit Docs / Notes
+                    </AppText>
+                  </View>
+              }
+
+
+              <View />
             </TouchableOpacity>
           )}
 
@@ -385,22 +397,31 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                             alignItems: 'center',
                             gap: 4,
                           }}
+                          disabled={loading}
                           onPress={handleEditDocumentsNotes}
                         >
-                          <AppIcon
-                            name={'Edit3'}
-                            size={14}
-                            color={COLORS.primary}
-                          />
-                          <AppText
-                            style={{
-                              color: COLORS.primary,
-                              fontSize: FONT_SIZE.sm,
-                              fontFamily: FONTS.semiBold,
-                            }}
-                          >
-                            Edit Docs / Notes
-                          </AppText>
+
+                          {loading ? (
+                            <ActivityIndicator
+                              size="small"
+                              color={COLORS.primary}
+                            />
+                          ) : (
+                            <View style={styles.editDocsContainer}>
+                              <AppIcon
+                                name="Edit3"
+                                size={14}
+                                color={COLORS.primary}
+                              />
+
+                              <AppText style={styles.editDocsText}>
+                                Edit Docs / Notes
+                              </AppText>
+                            </View>
+                          )}
+
+
+
                         </TouchableOpacity>
                       )}
                     </View>

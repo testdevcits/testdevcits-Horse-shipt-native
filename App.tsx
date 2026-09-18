@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 
 // Your Imports
 import AppNavigation from './src/navigations/AppNavigation';
-import { store } from './src/app/store';
+import { store } from './src/redux/store';
 import { COLORS } from './src/constants';
 import { toastConfig } from './src/components/common/ToastConfig';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';

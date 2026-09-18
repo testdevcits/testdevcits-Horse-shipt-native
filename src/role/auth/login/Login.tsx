@@ -22,6 +22,7 @@ import RoleSelectionModal from './components/RoleSelectionModal';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import useLogin from './useLogin';
 import { showInfoToast } from '../../../utils/toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const {
@@ -204,8 +205,9 @@ const Login = () => {
         visible={isRoleModalVisible}
         currentRole={selectedRole || 'customer'}
         onClose={() => setIsRoleModalVisible(false)}
-        onSelectRole={newRole => {
+        onSelectRole={async newRole => {
           setSelectedRole(newRole);
+          await AsyncStorage.setItem('@user_role', newRole);
 
           showInfoToast(
             'Role Selected',

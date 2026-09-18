@@ -346,6 +346,18 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     marginBottom: SPACING.xs,
   },
+
+  editDocsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  editDocsText: {
+    marginLeft: SPACING.xs,
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.semiBold,
+  },
   docListGrid: {
     gap: SPACING.xs,
   },

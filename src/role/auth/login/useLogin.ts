@@ -72,11 +72,12 @@ const useLogin = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      let userRole = await AsyncStorage.getItem('@user_role');
+      let userRole =
+        selectedRole || (await AsyncStorage.getItem('@user_role'));
       if (!userRole || userRole.trim() === '' || userRole === 'null') {
         userRole = 'customer';
-        await AsyncStorage.setItem('@user_role', 'customer');
       }
+      await AsyncStorage.setItem('@user_role', userRole);
 
       await dispatch(
         loginUser({

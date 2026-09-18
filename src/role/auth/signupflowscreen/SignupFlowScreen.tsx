@@ -67,6 +67,25 @@ const SignupFlowScreen = ({ navigation }: any) => {
   }, []);
 
   useEffect(() => {
+    const loadRole = async () => {
+      try {
+        const savedRole = await AsyncStorage.getItem('@user_role');
+        if (
+          savedRole &&
+          ['customer', 'shipper', 'driver'].includes(savedRole)
+        ) {
+          setSelectedRole(savedRole);
+        } else {
+          setSelectedRole('customer');
+        }
+      } catch (e) {
+        console.error('Error loading role in SignupFlowScreen:', e);
+      }
+    };
+    loadRole();
+  }, []);
+
+  useEffect(() => {
     let interval: any;
     if (resendTimer > 0) {
       interval = setInterval(() => setResendTimer(prev => prev - 1), 1000);
@@ -109,13 +128,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
     try {
       setIsLoading(true);
-      const savedRole =
-        (await AsyncStorage.getItem('@user_role')) || 'customer';
+      const activeRole =
+        selectedRole ||
+        (await AsyncStorage.getItem('@user_role')) ||
+        'customer';
+      await AsyncStorage.setItem('@user_role', activeRole);
       const res = await authService.signup({
         name: name.trim(),
         email: email.toLowerCase().trim(),
         password: password,
-        role: savedRole,
+        role: activeRole,
       });
 
       if (res?.success) {
@@ -141,11 +163,12 @@ const SignupFlowScreen = ({ navigation }: any) => {
       // 1. Clear previous OTP errors
       setErrors(p => ({ ...p, otp: '' }));
 
-      const savedRole = ((await AsyncStorage.getItem('@user_role')) ||
+      const activeRole = (selectedRole ||
+        (await AsyncStorage.getItem('@user_role')) ||
         'customer') as UserRole;
       const result = await authService.verifySignupOtp({
         email: email.toLowerCase().trim(),
-        role: savedRole,
+        role: activeRole,
         otp: code,
       });
 
@@ -176,9 +199,10 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     try {
-      const savedRole = ((await AsyncStorage.getItem('@user_role')) ||
+      const activeRole = (selectedRole ||
+        (await AsyncStorage.getItem('@user_role')) ||
         'customer') as UserRole;
-      await authService.forgotPassword(email, savedRole);
+      await authService.forgotPassword(email, activeRole);
       setResendTimer(60);
 
       showSuccessToast('OTP Resent');
@@ -452,8 +476,9 @@ const SignupFlowScreen = ({ navigation }: any) => {
             currentRole={selectedRole || 'customer'}
             isSignup={true}
             onClose={() => setIsRoleModalVisible(false)}
-            onSelectRole={newRole => {
+            onSelectRole={async newRole => {
               setSelectedRole(newRole);
+              await AsyncStorage.setItem('@user_role', newRole);
 
               showInfoToast(
                 'Role Selected',

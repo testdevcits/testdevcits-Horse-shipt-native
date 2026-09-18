@@ -7,6 +7,7 @@ import {
   Modal,
   StyleSheet,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import {
   COLORS,
@@ -26,6 +27,7 @@ import {
   COUNTRIES,
   Input,
   ProfileSkeleton,
+
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
@@ -34,10 +36,13 @@ import { useAppSelector } from '../../../../hooks/redux';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
-const Profile = ({}: any) => {
+const Profile = ({ }: any) => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
   );
+  const ImageViewer = lazy(
+    () => import("../../../../components/common/ImageViewer")
+  )
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
@@ -56,6 +61,9 @@ const Profile = ({}: any) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('')
+
 
   // Form State
   const [formData, setFormData] = useState({
@@ -167,7 +175,9 @@ const Profile = ({}: any) => {
                   avatarUri !== '/images/default_profile.png';
 
                 return isValidAvatar ? (
-                  <Image source={{ uri: avatarUri }} style={styles.avatar} />
+                  <Pressable onPress={() => { setImageViewerVisible(true); setSelectedImage(avatarUri) }}>
+                    <Image source={{ uri: avatarUri }} style={styles.avatar} />
+                  </Pressable>
                 ) : (
                   <View style={[styles.avatar, styles.placeholderAvatar]}>
                     <AppIcon name={'User'} size={40} color={COLORS.grey400} />
@@ -310,6 +320,15 @@ const Profile = ({}: any) => {
           cancelText="Cancel"
           type="danger"
           isLoading={isLoggingOut}
+        />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ImageViewer
+          visible={imageViewerVisible}
+          image={selectedImage}
+          title="Profile image"
+          onClose={() => setImageViewerVisible(false)}
         />
       </Suspense>
     </View>
