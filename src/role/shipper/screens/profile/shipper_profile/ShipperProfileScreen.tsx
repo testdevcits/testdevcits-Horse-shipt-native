@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -284,7 +284,13 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             typeof profRes.data?.bannerImage === 'string'
               ? profRes.data?.bannerImage
               : profRes.data?.bannerImage?.url;
-          if (bUrl) {
+          if (
+            bUrl &&
+            bUrl !== '/images/default_banner.png' &&
+            bUrl !== '/default-banner.png' &&
+            !bUrl.includes('default_banner') &&
+            !bUrl.includes('default-banner')
+          ) {
             setBannerUrl(bUrl);
           }
         }
@@ -364,6 +370,299 @@ const ShipperProfileScreen = ({ navigation }: any) => {
     profileData?.shipmentCount ??
     (Array.isArray(profileData?.shipments) ? profileData.shipments.length : 0);
 
+  const renderProfileTab = useCallback(
+    () => (
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {/* TOP SECTION: BANNER IMAGE */}
+        <View style={styles.bannerWrapper}>
+          {(() => {
+            const getBannerPath = () => {
+              if (bannerUrl) return bannerUrl;
+              if (typeof profileData?.bannerImage === 'string')
+                return profileData?.bannerImage;
+              if (profileData?.bannerImage?.url)
+                return profileData?.bannerImage?.url;
+              if (typeof user?.bannerImage === 'string')
+                return user?.bannerImage;
+              if (user?.bannerImage?.url) return user?.bannerImage?.url;
+              return null;
+            };
+
+            const candidate = getBannerPath();
+            const isValidBanner =
+              candidate &&
+              typeof candidate === 'string' &&
+              candidate.trim() !== '' &&
+              candidate !== 'null' &&
+              candidate !== 'undefined' &&
+              candidate !== '/images/default_banner.png' &&
+              candidate !== '/default-banner.png' &&
+              !candidate.includes('default_banner') &&
+              !candidate.includes('default-banner');
+
+            const displayBanner = isValidBanner ? candidate : null;
+
+            return displayBanner ? (
+              <Image
+                source={{ uri: displayBanner }}
+                style={styles.bannerImg}
+                resizeMode="cover"
+              />
+            ) : (
+              <TouchableOpacity
+                style={styles.bannerPlaceholder}
+                onPress={handleUploadBannerImage}
+                disabled={bannerUploading}
+                activeOpacity={0.7}
+              >
+                <View style={styles.bannerIconCircle}>
+                  <AppIcon name="ImagePlus" size={22} color={COLORS.primary} />
+                </View>
+                <AppText style={styles.bannerPlaceholderText}>
+                  Add Banner
+                </AppText>
+              </TouchableOpacity>
+            );
+          })()}
+          <TouchableOpacity
+            style={styles.editBannerBtn}
+            onPress={handleUploadBannerImage}
+            disabled={bannerUploading}
+            activeOpacity={0.8}
+          >
+            {bannerUploading ? (
+              <ActivityIndicator size="small" color={COLORS.white} />
+            ) : (
+              <>
+                <AppIcon name="Camera" size={14} color={COLORS.white} />
+                <AppText style={styles.editBannerText}>
+                  {(() => {
+                    const getBannerPath = () => {
+                      if (bannerUrl) return bannerUrl;
+                      if (typeof profileData?.bannerImage === 'string')
+                        return profileData?.bannerImage;
+                      if (profileData?.bannerImage?.url)
+                        return profileData?.bannerImage?.url;
+                      if (typeof user?.bannerImage === 'string')
+                        return user?.bannerImage;
+                      if (user?.bannerImage?.url) return user?.bannerImage?.url;
+                      return null;
+                    };
+
+                    const candidate = getBannerPath();
+                    const isValidBanner =
+                      candidate &&
+                      typeof candidate === 'string' &&
+                      candidate.trim() !== '' &&
+                      candidate !== 'null' &&
+                      candidate !== 'undefined' &&
+                      candidate !== '/images/default_banner.png' &&
+                      candidate !== '/default-banner.png' &&
+                      !candidate.includes('default_banner') &&
+                      !candidate.includes('default-banner');
+
+                    return isValidBanner ? 'Edit banner' : 'Add banner';
+                  })()}
+                </AppText>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        {/* AVATAR & EDIT PICTURE */}
+        <View style={styles.avatarSection}>
+          <View style={styles.avatarCircleWrapper}>
+            {(() => {
+              const displayAvatar =
+                avatarUrl ||
+                (typeof profileData?.profileImage === 'string'
+                  ? profileData?.profileImage
+                  : profileData?.profileImage?.url) ||
+                (typeof user?.profileImage === 'string'
+                  ? user.profileImage
+                  : user?.profileImage?.url);
+              const isValidAvatar =
+                displayAvatar &&
+                displayAvatar !== '/images/default_profile.png' &&
+                displayAvatar !== '/default-avatar.png';
+
+              return isValidAvatar ? (
+                <Image
+                  source={{ uri: displayAvatar }}
+                  style={styles.avatarImg}
+                />
+              ) : (
+                <Image
+                  source={imageIndex.AccountIcon}
+                  style={styles.avatarImg}
+                />
+              );
+            })()}
+          </View>
+
+          <TouchableOpacity
+            style={styles.editPicBtn}
+            onPress={handleUploadProfileImage}
+            disabled={profileUploading}
+          >
+            {profileUploading ? (
+              <ActivityIndicator size="small" color={COLORS.primary} />
+            ) : (
+              <>
+                <AppIcon name="Pencil" size={16} color={COLORS.textPrimary} />
+                <AppText style={styles.editPicText}>Edit picture</AppText>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        {/* PROFILE TAB CONTENT */}
+        <ProfileTab
+          profileData={profileData}
+          user={user}
+          navigation={navigation}
+          onEditProfile={() =>
+            navigation.navigate('EditProfile', {
+              profileData,
+              user,
+              onSuccess: (updatedData: any) => {
+                setProfileData((prev: any) => ({
+                  ...prev,
+                  ...updatedData,
+                }));
+              },
+            })
+          }
+          onLogout={handleLogout}
+        />
+      </ScrollView>
+    ),
+    [
+      refreshing,
+      onRefresh,
+      bannerUrl,
+      profileData,
+      user,
+      bannerUploading,
+      avatarUrl,
+      profileUploading,
+      handleUploadBannerImage,
+      handleUploadProfileImage,
+      navigation,
+      handleLogout,
+    ],
+  );
+
+  const renderShipmentTab = useCallback(
+    () => (
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <ShipmentTab navigation={navigation} />
+      </ScrollView>
+    ),
+    [refreshing, onRefresh, navigation],
+  );
+
+  const renderPaymentsTab = useCallback(
+    () => (
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <PaymentsTab
+          stripeStatus={stripeStatus}
+          navigation={navigation}
+          onRefreshStripeStatus={fetchAllProfileData}
+        />
+      </ScrollView>
+    ),
+    [refreshing, onRefresh, stripeStatus, navigation, fetchAllProfileData],
+  );
+
+  const renderSubscriptionTab = useCallback(
+    () => (
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <SubscriptionTab
+          subscriptionData={subscriptionData}
+          billingHistoryData={billingHistoryData}
+          subscriptionStatusData={subscriptionStatusData}
+          billingFilter={billingFilter}
+          setBillingFilter={setBillingFilter}
+          onOpenSubscriptionModal={openSubModal}
+          subsciptionPlans={subscriptionData?.plans || []}
+        />
+      </ScrollView>
+    ),
+    [
+      refreshing,
+      onRefresh,
+      subscriptionData,
+      billingHistoryData,
+      subscriptionStatusData,
+      billingFilter,
+      setBillingFilter,
+      openSubModal,
+    ],
+  );
+
+  const renderNotificationTab = useCallback(
+    () => (
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        <NotificationTab
+          notifications={notifications}
+          handleToggleNotification={handleToggleNotification}
+        />
+      </ScrollView>
+    ),
+    [refreshing, onRefresh, notifications, handleToggleNotification],
+  );
+
   if (loading && !refreshing) {
     return (
       <View style={styles.container}>
@@ -380,241 +679,102 @@ const ShipperProfileScreen = ({ navigation }: any) => {
       <Tab.Navigator
         screenOptions={{
           tabBarScrollEnabled: true,
+          tabBarShowIcon: true,
           tabBarIndicatorStyle: {
             backgroundColor: COLORS.primary,
             height: 3,
-            borderRadius: 2,
+            borderRadius: 3,
           },
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: COLORS.textSecondary,
           tabBarLabelStyle: {
             fontSize: 13,
-            fontFamily: FONTS.bold,
+            fontFamily: FONTS.semiBold,
             textTransform: 'none',
+            marginLeft: 4,
           },
           tabBarItemStyle: {
             width: 'auto',
-            paddingHorizontal: 16,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 14,
+            paddingVertical: 6,
           },
           tabBarStyle: {
             backgroundColor: COLORS.white,
-            elevation: 0,
-            shadowOpacity: 0,
+            elevation: 2,
+            shadowColor: COLORS.black,
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.05,
+            shadowRadius: 2,
             borderBottomWidth: 1,
             borderBottomColor: COLORS.divider,
           },
           swipeEnabled: true,
+          lazy: false,
         }}
       >
-        <Tab.Screen name="Profile">
-          {() => (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={COLORS.primary}
-                />
-              }
-            >
-              {/* TOP SECTION: BANNER IMAGE */}
-              <View style={styles.bannerWrapper}>
-                {(() => {
-                  const displayBanner =
-                    bannerUrl ||
-                    (typeof profileData?.bannerImage === 'string'
-                      ? profileData?.bannerImage
-                      : profileData?.bannerImage?.url);
-                  return displayBanner ? (
-                    <Image
-                      source={{ uri: displayBanner }}
-                      style={styles.bannerImg}
-                      resizeMode="cover"
-                    />
-                  ) : null;
-                })()}
-                <TouchableOpacity
-                  style={styles.editBannerBtn}
-                  onPress={handleUploadBannerImage}
-                  disabled={bannerUploading}
-                  activeOpacity={0.8}
-                >
-                  {bannerUploading ? (
-                    <ActivityIndicator size="small" color={COLORS.white} />
-                  ) : (
-                    <>
-                      <AppIcon name="Camera" size={14} color={COLORS.white} />
-                      <AppText style={styles.editBannerText}>
-                        Edit banner
-                      </AppText>
-                    </>
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              {/* AVATAR & EDIT PICTURE */}
-              <View style={styles.avatarSection}>
-                <View style={styles.avatarCircleWrapper}>
-                  {(() => {
-                    const displayAvatar =
-                      avatarUrl ||
-                      (typeof profileData?.profileImage === 'string'
-                        ? profileData?.profileImage
-                        : profileData?.profileImage?.url) ||
-                      (typeof user?.profileImage === 'string'
-                        ? user.profileImage
-                        : user?.profileImage?.url);
-                    const isValidAvatar =
-                      displayAvatar &&
-                      displayAvatar !== '/images/default_profile.png' &&
-                      displayAvatar !== '/default-avatar.png';
-
-                    return isValidAvatar ? (
-                      <Image
-                        source={{ uri: displayAvatar }}
-                        style={styles.avatarImg}
-                      />
-                    ) : (
-                      <Image
-                        source={imageIndex.AccountIcon}
-                        style={styles.avatarImg}
-                      />
-                    );
-                  })()}
-                </View>
-
-                <TouchableOpacity
-                  style={styles.editPicBtn}
-                  onPress={handleUploadProfileImage}
-                  disabled={profileUploading}
-                >
-                  {profileUploading ? (
-                    <ActivityIndicator size="small" color={COLORS.primary} />
-                  ) : (
-                    <>
-                      <AppIcon
-                        name="Pencil"
-                        size={16}
-                        color={COLORS.textPrimary}
-                      />
-                      <AppText style={styles.editPicText}>Edit picture</AppText>
-                    </>
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              {/* PROFILE TAB CONTENT */}
-              <ProfileTab
-                profileData={profileData}
-                user={user}
-                navigation={navigation}
-                onEditProfile={() =>
-                  navigation.navigate('EditProfile', {
-                    profileData,
-                    user,
-                    onSuccess: (updatedData: any) => {
-                      setProfileData((prev: any) => ({
-                        ...prev,
-                        ...updatedData,
-                      }));
-                    },
-                  })
-                }
-                onLogout={handleLogout}
-              />
-            </ScrollView>
-          )}
+        <Tab.Screen
+          name="Profile"
+          options={{
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({ color }: { color: string }) => (
+              <AppIcon name="User" size={16} color={color} />
+            ),
+          }}
+        >
+          {renderProfileTab}
         </Tab.Screen>
 
-        <Tab.Screen name="Shipment">
-          {() => (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={COLORS.primary}
-                />
-              }
-            >
-              <ShipmentTab navigation={navigation} />
-            </ScrollView>
-          )}
+        <Tab.Screen
+          name="Shipment"
+          options={{
+            tabBarLabel: 'Shipments',
+            tabBarIcon: ({ color }: { color: string }) => (
+              <AppIcon name="Package" size={16} color={color} />
+            ),
+          }}
+        >
+          {renderShipmentTab}
         </Tab.Screen>
 
-        <Tab.Screen name="Payments">
-          {() => (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={COLORS.primary}
-                />
-              }
-            >
-              <PaymentsTab
-                stripeStatus={stripeStatus}
-                navigation={navigation}
-                onRefreshStripeStatus={fetchAllProfileData}
-              />
-            </ScrollView>
-          )}
+        <Tab.Screen
+          name="Payments"
+          options={{
+            tabBarLabel: 'Payments',
+            tabBarIcon: ({ color }: { color: string }) => (
+              <AppIcon name="CreditCard" size={16} color={color} />
+            ),
+          }}
+        >
+          {renderPaymentsTab}
         </Tab.Screen>
 
-        <Tab.Screen name="Subscription">
-          {() => (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={COLORS.primary}
-                />
-              }
-            >
-              <SubscriptionTab
-                subscriptionData={subscriptionData}
-                billingHistoryData={billingHistoryData}
-                subscriptionStatusData={subscriptionStatusData}
-                billingFilter={billingFilter}
-                setBillingFilter={setBillingFilter}
-                onOpenSubscriptionModal={openSubModal}
-                subsciptionPlans={subscriptionData?.plans || []}
-              />
-            </ScrollView>
-          )}
+        <Tab.Screen
+          name="Subscription"
+          options={{
+            tabBarLabel: 'Subscription',
+            tabBarIcon: ({ color }: { color: string }) => (
+              <AppIcon name="Sparkles" size={16} color={color} />
+            ),
+          }}
+        >
+          {renderSubscriptionTab}
         </Tab.Screen>
 
-        <Tab.Screen name="Notification">
-          {() => (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={COLORS.primary}
-                />
-              }
-            >
-              <NotificationTab
-                notifications={notifications}
-                handleToggleNotification={handleToggleNotification}
-              />
-            </ScrollView>
-          )}
+        <Tab.Screen
+          name="Notification"
+          options={{
+            tabBarLabel: 'Notifications',
+            tabBarIcon: ({ color }: { color: string }) => (
+              <AppIcon name="Bell" size={16} color={color} />
+            ),
+          }}
+        >
+          {renderNotificationTab}
         </Tab.Screen>
       </Tab.Navigator>
+
       <Suspense fallback={null}>
         <ConnectBankModal
           isVisible={isBankModalVisible}

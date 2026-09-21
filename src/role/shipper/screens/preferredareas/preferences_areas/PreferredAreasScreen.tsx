@@ -5,22 +5,21 @@ import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import {
   AppHeader,
   AppText,
-  EmptyState,
   ShipmentsSkeleton,
-} from '../../../../components';
-import { COLORS } from '../../../../constants';
-import shipperService from '../../../../api/services/shipperService';
+} from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.preferredareas';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 import {
   showErrorToast,
   showInfoToast,
   showSuccessToast,
-} from '../../../../utils/toast';
+} from '../../../../../utils/toast';
 
 const MAX_AREAS = 4;
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () => import('../../../../../components/common/ConfirmationModal'),
 );
 
 const PreferredAreasScreen = () => {
@@ -30,8 +29,12 @@ const PreferredAreasScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isViewAllModalVisible, setIsViewAllModalVisible] = useState(false);
   const [selectedAreaToEdit, setSelectedAreaToEdit] = useState<any>(null);
-  const AddEditAreaModal = lazy(() => import('./AddEditAreaModal'));
-  const ViewAllAreasMapModal = lazy(() => import('./ViewAllAreasMapModal'));
+  const AddEditAreaModal = lazy(
+    () => import('../add_edit_areas/AddEditAreaModal'),
+  );
+  const ViewAllAreasMapModal = lazy(
+    () => import('../view_all_area_map/ViewAllAreasMapModal'),
+  );
 
   // Delete Confirmation Modal State
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -113,16 +116,28 @@ const PreferredAreasScreen = () => {
   const progressPercent = Math.min((filledCount / MAX_AREAS) * 100, 100);
 
   const renderHeader = () => (
-    <View style={styles.headerSection}>
-      <View style={styles.headerTitleRow}>
-        <AppText style={styles.headerTitle}>Preferred Areas</AppText>
+    <View style={styles.heroCard}>
+      {/* HERO HEADER TITLE ROW */}
+      <View style={styles.heroHeaderRow}>
+        <View style={styles.heroTitleLeft}>
+          <View style={styles.heroIconBox}>
+            <AppIcon name={'MapPin'} size={20} color={COLORS.primary} />
+          </View>
+          <AppText style={styles.heroTitle}>Preferred Areas</AppText>
+        </View>
+        <View style={styles.heroBadge}>
+          <AppText style={styles.heroBadgeText}>
+            {filledCount}/{MAX_AREAS} Active
+          </AppText>
+        </View>
       </View>
-      <AppText style={styles.headerSubText}>
-        Add up to 4 service areas, edit them clearly, and adjust the exact pin
-        on the map when you need better precision.
+
+      <AppText style={styles.heroSubText}>
+        Set up to 4 operational zones to receive matched shipment notifications
+        in your active coverage regions.
       </AppText>
 
-      {/* STEP / SLOT INDICATORS (1 FILLED, 2 OPEN, 3 OPEN, 4 OPEN) */}
+      {/* STEP / SLOT CAPSULES */}
       <View style={styles.slotsRow}>
         {[1, 2, 3, 4].map(slotNum => {
           const isFilled = slotNum <= filledCount;
@@ -131,21 +146,18 @@ const PreferredAreasScreen = () => {
               key={slotNum}
               style={[styles.slotBadge, isFilled && styles.slotBadgeFilled]}
             >
+              <AppIcon
+                name={isFilled ? 'Check' : 'Plus'}
+                size={12}
+                color={isFilled ? COLORS.primary : COLORS.textSecondary}
+              />
               <AppText
                 style={[
                   styles.slotBadgeNum,
                   isFilled && styles.slotBadgeNumFilled,
                 ]}
               >
-                {slotNum}
-              </AppText>
-              <AppText
-                style={[
-                  styles.slotBadgeText,
-                  isFilled && styles.slotBadgeTextFilled,
-                ]}
-              >
-                {isFilled ? 'FILLED' : 'OPEN'}
+                Slot {slotNum}
               </AppText>
             </View>
           );
@@ -159,12 +171,17 @@ const PreferredAreasScreen = () => {
             style={[styles.progressBarFill, { width: `${progressPercent}%` }]}
           />
         </View>
-        <AppText style={styles.areaCountText}>
-          {filledCount} / {MAX_AREAS} areas added
-        </AppText>
+        <View style={styles.progressTextRow}>
+          <AppText style={styles.areaCountText}>
+            {filledCount} of {MAX_AREAS} areas configured
+          </AppText>
+          <AppText style={styles.progressPercentText}>
+            {Math.round(progressPercent)}%
+          </AppText>
+        </View>
       </View>
 
-      {/* TOP ACTION BAR (+ Add New Area, See All Areas) */}
+      {/* TOP ACTION BUTTONS BAR */}
       <View style={styles.actionButtonsBar}>
         <TouchableOpacity
           style={styles.addAreaBtn}
@@ -181,7 +198,7 @@ const PreferredAreasScreen = () => {
             activeOpacity={0.8}
           >
             <AppIcon name={'Map'} size={16} color={COLORS.textPrimary} />
-            <AppText style={styles.seeAllBtnText}>See All Areas</AppText>
+            <AppText style={styles.seeAllBtnText}>View Map</AppText>
           </TouchableOpacity>
         )}
       </View>
@@ -191,17 +208,19 @@ const PreferredAreasScreen = () => {
   const renderEmpty = () => {
     if (loading) return null;
     return (
-      <View style={{ alignItems: 'center', paddingVertical: 20 }}>
-        <EmptyState
-          icon={
-            <AppIcon name={'MapPin'} size={24} color={COLORS.textSecondary} />
-          }
-          title="No Preferred Areas"
-          message="Set up to 4 working areas to receive targeted shipment matches near you."
-        />
+      <View style={styles.emptyStateCard}>
+        <View style={styles.emptyIconBg}>
+          <AppIcon name={'MapPin'} size={26} color={COLORS.primary} />
+        </View>
+        <AppText style={styles.emptyTitle}>No Preferred Areas Set</AppText>
+        <AppText style={styles.emptySub}>
+          Define up to 4 working zones with customized radii to receive targeted
+          shipment matches and notifications near you.
+        </AppText>
         <TouchableOpacity
-          style={[styles.addAreaBtn, { marginTop: 16, alignSelf: 'center' }]}
+          style={styles.addAreaBtn}
           onPress={handleAddNewArea}
+          activeOpacity={0.8}
         >
           <AppIcon name={'Plus'} size={16} color={COLORS.white} />
           <AppText style={styles.addAreaBtnText}>Add Preferred Area</AppText>
@@ -237,21 +256,26 @@ const PreferredAreasScreen = () => {
 
     return (
       <View key={area._id || index} style={styles.areaCard}>
-        {/* Header Row: Badge & Location Title */}
+        {/* Header Row: Badge, Location Title & Radius Badge */}
         <View style={styles.areaCardHeader}>
-          <View style={styles.indexBadge}>
-            <AppText style={styles.indexBadgeText}>#{index + 1}</AppText>
+          <View style={styles.areaHeaderLeft}>
+            <View style={styles.indexBadge}>
+              <AppText style={styles.indexBadgeText}>#{index + 1}</AppText>
+            </View>
+            <AppText style={styles.locationTitle} numberOfLines={2}>
+              {area.locationName || 'Saved Preferred Area'}
+            </AppText>
           </View>
-          <AppText style={styles.locationTitle} numberOfLines={2}>
-            {area.locationName || 'Saved Preferred Area'}
-          </AppText>
-        </View>
-
-        {/* Radius Pill Tag */}
-        <View style={styles.radiusPill}>
-          <AppText style={styles.radiusPillText}>
-            📍 {radiusKm} km radius
-          </AppText>
+          <View style={styles.radiusPill}>
+            <AppIcon
+              name={'Radio'}
+              size={12}
+              color={COLORS.amberPrimary || COLORS.primary}
+            />
+            <AppText style={styles.radiusPillText}>
+              {radiusKm} km radius
+            </AppText>
+          </View>
         </View>
 
         {/* Coordinates Row (LATITUDE & LONGITUDE) */}
@@ -268,9 +292,9 @@ const PreferredAreasScreen = () => {
 
         {/* Saved Point Note */}
         <View style={styles.exactPointNoteRow}>
-          <AppIcon name={'Compass'} size={12} color={COLORS.textSecondary} />
+          <AppIcon name={'Compass'} size={14} color={COLORS.textSecondary} />
           <AppText style={styles.exactPointNoteText}>
-            Exact saved point for this preferred area
+            Center point for proximity matching & notification dispatch
           </AppText>
         </View>
 

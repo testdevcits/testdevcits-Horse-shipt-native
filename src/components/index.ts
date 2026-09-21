@@ -32,6 +32,8 @@ import ImageViewer from './common/ImageViewer';
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
 import ShipperHomeSkeleton from './skeletons/ShipperHomeSkeleton';
 import ShipmentsSkeleton from './skeletons/ShipmentsSkeleton';
+import MyShipmentsSkeleton from './skeletons/MyShipmentsSkeleton';
+import QuoteRequestSkeleton from './skeletons/QuoteRequestSkeleton';
 import MyHorsesSkeleton, {
   MyHorsesSkelatons,
 } from './skeletons/MyHorsesSkeleton';
@@ -87,6 +89,8 @@ export {
   HomeSkelaton,
   ShipperHomeSkeleton,
   ShipmentsSkeleton,
+  MyShipmentsSkeleton,
+  QuoteRequestSkeleton,
   MyHorsesSkeleton,
   MyHorsesSkelatons,
   ShippersListSkeleton,

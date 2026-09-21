@@ -14,7 +14,12 @@ import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
-  const { data, loading, refreshing: _refreshing, refetch } = useTracking(shipmentId);
+  const {
+    data,
+    loading,
+    refreshing: _refreshing,
+    refetch,
+  } = useTracking(shipmentId);
   const mapRef = useRef<MapView>(null);
   const [routeDirectionData, setRouteDirectionData] = useState<{
     distanceKm?: number;
@@ -167,8 +172,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
       ? `${rawDistanceKm.toFixed(1)} km away`
       : 'Calculating route...';
 
-
-
   if (loading && !data) {
     return (
       <View style={styles.loaderContainer}>
@@ -319,8 +322,8 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             source={
               driverObj?.avatar
                 ? {
-                  uri: driverObj?.avatar,
-                }
+                    uri: driverObj?.avatar,
+                  }
                 : imageIndex.AccountIcon
             }
             style={styles.driverAvatar}
@@ -332,7 +335,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             <AppText style={styles.lastUpdated}>{driverUpdatedAt}</AppText>
           </View>
         </View>
-
       </View>
 
       {/* 5. BOTTOM TRACKING DETAILS SHEET */}

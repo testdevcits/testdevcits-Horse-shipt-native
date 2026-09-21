@@ -6,14 +6,14 @@ import Notifications from '../../role/commonscreens/notifications/Notifications'
 
 import ShipperShipmentDetailsScreen from '../../role/shipper/screens/home/shipment_details/ShipperShipmentDetailsScreen';
 import LiveTrackingScreen from '../../role/customer/screens/tracking/LiveTrackingScreen';
-import PreferredAreasScreen from '../../role/shipper/screens/preferredareas/PreferredAreasScreen';
-import ShipperReviewsScreen from '../../role/shipper/screens/reviews/ShipperReviewsScreen';
+import PreferredAreasScreen from '../../role/shipper/screens/preferredareas/preferences_areas/PreferredAreasScreen';
+import ShipperReviewsScreen from '../../role/shipper/screens/reviews/shipper_reviews/ShipperReviewsScreen';
 import AddVehicleScreen from '../../role/shipper/screens/vehicles/add_edit_vehicle/AddVehicleModal';
 import PdfViewerScreen from '../../role/commonscreens/pdfviews/PdfViewerScreen';
 import AccountSetupScreen from '../../role/shipper/screens/payments/AccountSetupScreen';
 import EditProfileScreen from '../../role/shipper/screens/profile/edit_profile/EditProfileScreen';
 import ShipmentMapDirection from '../../role/shipper/screens/home/components/ShipmentMapDirection';
-import QuoteReceivedDetail from '../../role/shipper/screens/post/QuoteReceivedDetail';
+import QuoteReceivedDetail from '../../role/shipper/screens/post/quote_received_details/QuoteReceivedDetail';
 
 const Stack = createNativeStackNavigator<{
   ShipperDrawer: undefined;
@@ -34,7 +34,9 @@ const Stack = createNativeStackNavigator<{
 
 const ShipperNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+    >
       <Stack.Screen name="ShipperDrawer" component={ShipperDrawer} />
       <Stack.Screen
         name="ShipperShipmentDetails"

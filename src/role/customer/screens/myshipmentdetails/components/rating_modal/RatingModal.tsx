@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-
 } from 'react-native';
 import { COLORS, FONTS, SPACING } from '../../../../../../constants';
 import { AppText, Button, Input } from '../../../../../../components';
@@ -68,11 +67,15 @@ const RatingModal = ({
         if (onSuccess) onSuccess();
         onClose();
       } else {
-        showErrorToast("Error", res.message || 'Failed to submit review.')
+        showErrorToast('Error', res.message || 'Failed to submit review.');
       }
     } catch (error: any) {
-
-      showErrorToast("Error", error?.response?.data?.message || error?.message || 'Failed to submit review.')
+      showErrorToast(
+        'Error',
+        error?.response?.data?.message ||
+          error?.message ||
+          'Failed to submit review.',
+      );
     } finally {
       setSubmitting(false);
     }

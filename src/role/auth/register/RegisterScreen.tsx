@@ -13,7 +13,6 @@ import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.Register';
 
-
 const RegisterScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>

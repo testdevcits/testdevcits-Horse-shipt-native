@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
   headerContainer: {
     backgroundColor: COLORS.background,
-    paddingBottom: SPACING.md,
+    // paddingBottom: SPACING.md,
   },
   titleRow: {
     flexDirection: 'row',
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     color: COLORS.grey600,
   },
   activeChipText: { color: COLORS.white },
-  list: { paddingBottom: 100 },
+  list: { paddingBottom: 100, flex: 1 },
 
   // Modal Styles
   modalOverlay: {

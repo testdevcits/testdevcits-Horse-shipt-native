@@ -1,8 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { AppHeader, AppText, Button, Input } from '../../../../../components';
-import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../../constants';
+import {
+  AppHeader,
+  AppText,
+  Button,
+  Input,
+  CountryCodePicker,
+  COUNTRIES,
+} from '../../../../../components';
+import { Country } from '../../../../../components/common/CountryCodePicker/CountryCodePicker';
+import { SPACING } from '../../../../../constants';
 import LocationPicker, {
   LocationSelectResult,
 } from '../../../../../components/common/LocationPicker/LocationPicker';
@@ -34,6 +42,9 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
   const [address, setAddress] = useState<string>('');
   const [latitude, setLatitude] = useState<number>(DEFAULT_LAT);
   const [longitude, setLongitude] = useState<number>(DEFAULT_LNG);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    COUNTRIES[1] || COUNTRIES[0],
+  );
   const [mobile, setMobile] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
@@ -47,7 +58,14 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
     setLongitude(
       typeof loc?.longitude === 'number' ? loc?.longitude : DEFAULT_LNG,
     );
-    setMobile(profileData?.mobile || user?.phoneNumber || '');
+    const rawMobile = profileData?.mobile || user?.phoneNumber || '';
+    const matched = COUNTRIES.find(c => rawMobile.startsWith(c.code));
+    if (matched) {
+      setSelectedCountry(matched);
+      setMobile(rawMobile.slice(matched.code.length).trim());
+    } else {
+      setMobile(rawMobile);
+    }
     setDescription(profileData?.description || '');
   }, [profileData, user]);
 
@@ -60,8 +78,15 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
   const handleSave = async () => {
     try {
       setSaving(true);
+      const cleanNum = mobile.trim();
+      const formattedMobile = cleanNum
+        ? cleanNum.startsWith('+')
+          ? cleanNum
+          : `${selectedCountry.code}${cleanNum}`
+        : '';
+
       const payload = {
-        mobile,
+        mobile: formattedMobile,
         description,
         locale: {
           address,
@@ -75,7 +100,7 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
         const updated = res.data || payload;
         dispatch(
           updateUser({
-            phoneNumber: mobile,
+            phoneNumber: formattedMobile,
           }),
         );
 
@@ -155,18 +180,11 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
               placeholder="Phone number"
               keyboardType="phone-pad"
               leftIcon={
-                <View style={styles.phonePrefix}>
-                  <AppText style={{ fontSize: FONT_SIZE.md }}>🇺🇸</AppText>
-                  <AppText
-                    style={{
-                      fontSize: FONT_SIZE.sm,
-                      color: COLORS.textSecondary,
-                      fontFamily: FONTS.medium,
-                    }}
-                  >
-                    +1
-                  </AppText>
-                </View>
+                <CountryCodePicker
+                  selectedCountry={selectedCountry}
+                  onSelectCountry={c => setSelectedCountry(c)}
+                  showBorder={false}
+                />
               }
             />
           </View>

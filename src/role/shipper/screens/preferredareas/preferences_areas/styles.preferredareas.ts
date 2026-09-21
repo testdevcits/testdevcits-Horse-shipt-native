@@ -5,7 +5,7 @@ import {
   SPACING,
   RADIUS,
   FONT_SIZE,
-} from '../../../../constants';
+} from '../../../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,22 +18,61 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.xxl * 2,
   },
 
-  // HEADER & DESCRIPTION SECTION
-  headerSection: {
-    marginBottom: SPACING.md,
+  // HERO HEADER CARD
+  heroCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: SPACING.lg,
+    marginBottom: SPACING.lg,
+    shadowColor: COLORS.textPrimary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 3,
   },
-  headerTitleRow: {
+  heroHeaderRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginBottom: SPACING.xs,
   },
-  headerTitle: {
-    fontSize: FONT_SIZE.xl,
+  heroTitleLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    flex: 1,
+  },
+  heroIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: COLORS.goldLightBg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroTitle: {
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
   },
-  headerSubText: {
+  heroBadge: {
+    backgroundColor: COLORS.goldCreamBg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: RADIUS.round,
+  },
+  heroBadgeText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.amberPrimary || COLORS.primary,
+  },
+  heroSubText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
@@ -42,25 +81,26 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
 
-  // STEP / SLOT BADGES ROW
+  // STEP / SLOT CAPSULES ROW
   slotsRow: {
     flexDirection: 'row',
     gap: SPACING.xs,
-    justifyContent: 'flex-end',
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.md,
   },
   slotBadge: {
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 6,
-    borderRadius: RADIUS.xs || 6,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.white,
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    minWidth: 62,
+    justifyContent: 'center',
+    gap: 4,
+    paddingVertical: 8,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.grey300,
+    backgroundColor: COLORS.background,
   },
   slotBadgeFilled: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.goldLightBg,
     borderColor: COLORS.primary,
   },
   slotBadgeNum: {
@@ -69,55 +109,62 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   slotBadgeNumFilled: {
-    color: COLORS.white,
+    color: COLORS.primary,
   },
   slotBadgeText: {
     fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
-    letterSpacing: 0.5,
-    marginTop: 1,
+    letterSpacing: 0.3,
   },
   slotBadgeTextFilled: {
-    color: COLORS.white,
+    color: COLORS.primary,
   },
 
   // PROGRESS BAR & COUNTER
   progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
   },
   progressBarBg: {
-    flex: 1,
-    height: 6,
-    backgroundColor: COLORS.border,
-    borderRadius: 3,
+    height: 7,
+    backgroundColor: COLORS.divider || '#EBEBEB',
+    borderRadius: 4,
     overflow: 'hidden',
-    marginRight: SPACING.md,
+    marginBottom: 6,
   },
   progressBarFill: {
     height: '100%',
     backgroundColor: COLORS.primary,
-    borderRadius: 3,
+    borderRadius: 4,
+  },
+  progressTextRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   areaCountText: {
     fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textSecondary,
+  },
+  progressPercentText: {
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
+    color: COLORS.primary,
   },
 
   // TOP ACTION BUTTONS BAR
   actionButtonsBar: {
     flexDirection: 'row',
     gap: SPACING.sm,
-    marginBottom: SPACING.lg,
+    marginTop: SPACING.xs,
   },
   addAreaBtn: {
+    flex: 1,
     backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: SPACING.xs,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
@@ -139,6 +186,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey300,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: SPACING.xs,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
@@ -153,7 +201,7 @@ const styles = StyleSheet.create({
   // PREFERRED AREA CARD
   areaCard: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
     padding: SPACING.md,
@@ -166,16 +214,23 @@ const styles = StyleSheet.create({
   },
   areaCardHeader: {
     flexDirection: 'row',
-    gap: SPACING.sm,
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.xs,
+  },
+  areaHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs + 2,
+    flex: 1,
+    marginRight: SPACING.xs,
   },
   indexBadge: {
     backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 3,
     borderRadius: RADIUS.xs,
   },
   indexBadgeText: {
@@ -192,26 +247,27 @@ const styles = StyleSheet.create({
   },
 
   radiusPill: {
-    alignSelf: 'flex-start',
     backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,
-    paddingHorizontal: SPACING.sm,
+    paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: RADIUS.round,
-    marginBottom: SPACING.md,
-    marginLeft: 34,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   radiusPillText: {
-    fontSize: FONT_SIZE.xs || 11,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.amberPrimary,
+    color: COLORS.amberPrimary || COLORS.primary,
   },
 
   // COORD BOXES ROW
   coordsRow: {
     flexDirection: 'row',
     gap: SPACING.sm,
+    marginTop: SPACING.xs,
     marginBottom: SPACING.xs,
   },
   coordBox: {
@@ -223,7 +279,7 @@ const styles = StyleSheet.create({
     padding: SPACING.sm,
   },
   coordLabel: {
-    fontSize: FONT_SIZE.xs,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -238,20 +294,20 @@ const styles = StyleSheet.create({
   exactPointNoteRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
     marginBottom: SPACING.md,
+    marginTop: 2,
   },
   exactPointNoteText: {
-    fontSize: FONT_SIZE.sm,
-
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
   },
 
   // MAP PREVIEW
   mapContainer: {
-    height: 180,
-    borderRadius: RADIUS.sm,
+    height: 190,
+    borderRadius: RADIUS.md,
     overflow: 'hidden',
     marginBottom: SPACING.md,
     borderWidth: 1,
@@ -301,28 +357,45 @@ const styles = StyleSheet.create({
   },
 
   // EMPTY STATE
-  emptyStateBox: {
+  emptyStateCard: {
     backgroundColor: COLORS.white,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
     padding: SPACING.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: SPACING.md,
+    marginTop: SPACING.sm,
+    shadowColor: COLORS.textPrimary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  emptyIconBg: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: COLORS.goldLightBg,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: SPACING.sm,
   },
   emptyTitle: {
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
-    marginTop: SPACING.sm,
+    marginBottom: 4,
   },
   emptySub: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    marginTop: 4,
+    lineHeight: 18,
+    paddingHorizontal: SPACING.md,
     marginBottom: SPACING.md,
   },
 

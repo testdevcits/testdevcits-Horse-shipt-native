@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import {
   Modal,
   View,
@@ -24,6 +24,7 @@ import shipperService from '../../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+import Toast from 'react-native-toast-message';
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -506,6 +507,7 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
+      <Toast />
     </Modal>
   );
 };
@@ -871,4 +873,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SubmitOfferModal;
+export default memo(SubmitOfferModal);

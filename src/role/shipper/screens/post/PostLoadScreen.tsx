@@ -6,10 +6,10 @@ import shipperService from '../../../../api/services/shipperService';
 import AskQuestionModal from '../home/components/AskQuestionModal';
 import SubmitOfferModal from '../home/shipment_details/SubmitOfferModal';
 import ContractModal from '../quotes/ContractModal';
-import MyShipmentsScreen from './MyShipmentsScreen';
-import QuoteRequestScreen from './QuoteRequestScreen';
-import AllShipmentScreen from './AllShipmentScreen';
-import styles from './styles.postload';
+import MyShipmentsScreen from './my_shipments/MyShipmentsScreen';
+import QuoteRequestScreen from './quote_received/QuoteRequestScreen';
+import AllShipmentScreen from './all_Shipments/AllShipmentScreen';
+import styles from './all_Shipments/styles.postload';
 
 export type TabType = 'my_shipments' | 'quote_request' | 'all_shipment';
 

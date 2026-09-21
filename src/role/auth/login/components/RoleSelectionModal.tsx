@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, View, TouchableOpacity, Pressable } from 'react-native';
 import { User, Building2, Truck } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +19,36 @@ interface RoleSelectionModalProps {
   isSignup?: boolean;
 }
 
+const ROLES: {
+  id: UserRole;
+  title: string;
+  subtitle: string;
+  Icon: any;
+  tag: string;
+}[] = [
+  {
+    id: 'customer',
+    title: 'Customer / Horse Owner',
+    subtitle: 'Book transportation, track shipments live & post load requests.',
+    Icon: User,
+    tag: 'BOOK & TRACK',
+  },
+  {
+    id: 'shipper',
+    title: 'Shipper / Transport Company',
+    subtitle: 'Manage dispatch operations, list vehicles & issue quotes.',
+    Icon: Building2,
+    tag: 'MANAGE FLEET',
+  },
+  {
+    id: 'driver',
+    title: 'Driver / Transporter',
+    subtitle: 'Accept assigned trips, navigate routes & verify deliveries.',
+    Icon: Truck,
+    tag: 'HAUL & DELIVER',
+  },
+];
+
 const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
   visible,
   currentRole,
@@ -29,52 +59,25 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
 }) => {
   const [selected, setSelected] = useState<UserRole>('customer');
 
-  const ROLES: {
-    id: UserRole;
-    title: string;
-    subtitle: string;
-    Icon: any;
-    tag: string;
-  }[] = [
-    {
-      id: 'customer',
-      title: 'Customer / Horse Owner',
-      subtitle:
-        'Book transportation, track shipments live & post load requests.',
-      Icon: User,
-      tag: 'BOOK & TRACK',
-    },
-    {
-      id: 'shipper',
-      title: 'Shipper / Transport Company',
-      subtitle: 'Manage dispatch operations, list vehicles & issue quotes.',
-      Icon: Building2,
-      tag: 'MANAGE FLEET',
-    },
-    {
-      id: 'driver',
-      title: 'Driver / Transporter',
-      subtitle: 'Accept assigned trips, navigate routes & verify deliveries.',
-      Icon: Truck,
-      tag: 'HAUL & DELIVER',
-    },
-  ];
-
   // Filter roles: if allowedRoles specified, show allowed roles, otherwise all roles (customer, shipper, driver)
-  const availableRoles = allowedRoles
-    ? ROLES.filter(r => allowedRoles.includes(r.id))
-    : ROLES;
+  const availableRoles = useMemo(() => {
+    return allowedRoles
+      ? ROLES.filter(r => allowedRoles.includes(r.id))
+      : ROLES;
+  }, [allowedRoles]);
 
   useEffect(() => {
-    if (
-      currentRole &&
-      availableRoles.some(roleItem => roleItem?.id === currentRole)
-    ) {
-      setSelected(currentRole as UserRole);
-    } else if (availableRoles.length > 0) {
-      setSelected(availableRoles[0].id);
+    if (visible) {
+      if (
+        currentRole &&
+        availableRoles.some(roleItem => roleItem?.id === currentRole)
+      ) {
+        setSelected(currentRole as UserRole);
+      } else if (availableRoles.length > 0) {
+        setSelected(availableRoles[0].id);
+      }
     }
-  }, [currentRole, visible, isSignup, allowedRoles, availableRoles]);
+  }, [visible, currentRole, availableRoles]);
 
   const handleConfirm = async () => {
     try {

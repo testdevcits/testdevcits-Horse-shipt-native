@@ -23,7 +23,7 @@ import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import styles from './styles.Topshippers';
 
-const QUICK_FILTERS = ['All', 'Verified', 'Top Rated', 'Nearest'];
+// const QUICK_FILTERS = ['All', 'Verified', 'Top Rated', 'Nearest'];
 
 const FilterSection = ({
   title,
@@ -111,7 +111,7 @@ const TopShippersScreen = () => {
               Verified professionals for your horses
             </AppText>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[
               styles.filterCircle,
               filtersActive && styles.filterCircleActive,
@@ -123,7 +123,7 @@ const TopShippersScreen = () => {
               size={20}
               color={filtersActive ? COLORS.white : COLORS.primary}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <SearchBarCompt
@@ -138,7 +138,7 @@ const TopShippersScreen = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.filterScroll}
         >
-          {QUICK_FILTERS.map((f: string) => (
+          {/* {QUICK_FILTERS.map((f: string) => (
             <TouchableOpacity
               key={f}
               onPress={() => updateFilter('quick', f)}
@@ -156,7 +156,7 @@ const TopShippersScreen = () => {
                 {f}
               </AppText>
             </TouchableOpacity>
-          ))}
+          ))} */}
         </ScrollView>
       </View>
     );

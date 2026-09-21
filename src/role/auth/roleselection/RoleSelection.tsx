@@ -53,9 +53,7 @@ const RoleCard: React.FC<RoleCardProps> = ({
         <AppText style={[styles.roleTitle, isSelected && styles.textWhite]}>
           {title}
         </AppText>
-        <AppText
-          style={[styles.roleDesc, isSelected && styles.textLightGold]}
-        >
+        <AppText style={[styles.roleDesc, isSelected && styles.textLightGold]}>
           {desc}
         </AppText>
       </View>

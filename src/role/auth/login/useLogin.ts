@@ -72,8 +72,7 @@ const useLogin = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      let userRole =
-        selectedRole || (await AsyncStorage.getItem('@user_role'));
+      let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
       if (!userRole || userRole.trim() === '' || userRole === 'null') {
         userRole = 'customer';
       }

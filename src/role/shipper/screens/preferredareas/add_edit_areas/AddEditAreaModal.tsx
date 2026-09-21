@@ -9,15 +9,15 @@ import {
   Platform,
 } from 'react-native';
 
-import { AppText, Input } from '../../../../components';
-import { COLORS, FONTS, FONT_SIZE } from '../../../../constants';
-import shipperService from '../../../../api/services/shipperService';
+import { AppText, Input } from '../../../../../components';
+import { COLORS, FONTS, FONT_SIZE } from '../../../../../constants';
+import shipperService from '../../../../../api/services/shipperService';
 import LocationPicker, {
   LocationSelectResult,
-} from '../../../../components/common/LocationPicker/LocationPicker';
-import styles from './styles.preferredareas';
-import AppIcon from '../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
+} from '../../../../../components/common/LocationPicker/LocationPicker';
+import styles from '../preferences_areas/styles.preferredareas';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 interface Props {
   visible: boolean;

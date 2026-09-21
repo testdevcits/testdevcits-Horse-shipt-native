@@ -50,7 +50,7 @@ const AppButton = ({
       {...props}
     >
       {isLoading ? (
-        <ActivityIndicator color={COLORS.white} />
+        <ActivityIndicator color={COLORS.primary} />
       ) : (
         <>
           {leftIcon}

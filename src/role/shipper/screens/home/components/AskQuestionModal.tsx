@@ -21,6 +21,7 @@ import {
   FONT_SIZE,
 } from '../../../../../constants';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
+import Toast from 'react-native-toast-message';
 
 interface AskQuestionModalProps {
   isVisible: boolean;
@@ -417,6 +418,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
+      <Toast />
     </Modal>
   );
 };

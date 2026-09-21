@@ -64,7 +64,7 @@ const ProfileTab: React.FC<Props> = ({
 
         <View style={styles.infoRow}>
           <AppText style={styles.infoLabel}>Location</AppText>
-          <AppText style={styles.infoVal}>
+          <AppText style={styles.infoVal} numberOfLines={4}>
             {profileData?.locale?.address || 'Not Available'}
           </AppText>
         </View>

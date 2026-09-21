@@ -1,19 +1,40 @@
-import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, View, StatusBar } from 'react-native';
-
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+  lazy,
+  Suspense,
+} from 'react';
 import {
-  COLORS,
-  FONTS,
-  FONT_SIZE,
-  ICON_SIZE,
-  RADIUS,
-  SPACING,
-  SIZES,
-} from '../../../../constants';
+  ScrollView,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Share,
+} from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 
-import AppIcon from '../../../../components/app_icon/AppIcon';
-import { AppHeader, AppText } from '../../../../components';
-import { moderateScale } from 'react-native-size-matters';
+import { COLORS, ICON_SIZE } from '../../../../../constants';
+import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
+
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { AppHeader, AppText } from '../../../../../components';
+import shipperService from '../../../../../api/services/shipperService';
+import useStripeStatus from '../../../../../hooks/useStripeStatus';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+import styles from './styles.QuoteReceivedDetails';
+
+const AskQuestionModal = lazy(
+  () => import('../../home/components/AskQuestionModal'),
+);
+const SubmitOfferModal = lazy(
+  () => import('../../home/shipment_details/SubmitOfferModal'),
+);
+const ConnectBankModal = lazy(
+  () => import('../../home/components/ConnectBankModal'),
+);
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -106,7 +127,6 @@ interface Props {
       quote?: QuoteData;
       item?: QuoteData;
 
-      // Also supports passing the object directly as params.
       [key: string]: any;
     };
   };
@@ -119,16 +139,9 @@ interface Props {
 /* -------------------------------------------------------------------------- */
 
 const formatDate = (date?: string) => {
-  if (!date) {
-    return '--';
-  }
-
+  if (!date) return '--';
   const parsedDate = new Date(date);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return '--';
-  }
-
+  if (Number.isNaN(parsedDate.getTime())) return '--';
   return parsedDate.toLocaleDateString('en-US', {
     day: '2-digit',
     month: 'short',
@@ -137,16 +150,9 @@ const formatDate = (date?: string) => {
 };
 
 const formatTime = (date?: string) => {
-  if (!date) {
-    return '';
-  }
-
+  if (!date) return '';
   const parsedDate = new Date(date);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return '';
-  }
-
+  if (Number.isNaN(parsedDate.getTime())) return '';
   return parsedDate.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
@@ -176,16 +182,12 @@ const getStatusColor = (status?: string) => {
   switch (status) {
     case 'accepted':
       return COLORS.greenPrimary;
-
     case 'completed':
       return COLORS.greenSuccess;
-
     case 'cancelled':
       return COLORS.redPrimary;
-
     case 'open_for_offers':
       return COLORS.bluePrimary;
-
     case 'pending':
     default:
       return COLORS.amberPrimary;
@@ -193,29 +195,53 @@ const getStatusColor = (status?: string) => {
 };
 
 const truncateText = (text = '', maxLength = 90) => {
-  if (text.length <= maxLength) {
-    return text;
-  }
-
+  if (text.length <= maxLength) return text;
   return `${text.substring(0, maxLength)}...`;
+};
+
+// Haversine distance and duration calculation helper
+const calculateHaversine = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+) => {
+  const toRad = (x: number) => (x * Math.PI) / 180;
+  const R = 6371; // km
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const km = R * c;
+  const miles = km * 0.621371;
+
+  // Assuming average driving speed 60 km/h (1 km / min)
+  const totalMins = Math.max(1, Math.round(km));
+  const hrs = Math.floor(totalMins / 60);
+  const mins = totalMins % 60;
+  const timeStr = hrs > 0 ? `${hrs}h ${mins}m` : `${mins} mins`;
+
+  return {
+    km: km.toFixed(1),
+    miles: miles.toFixed(1),
+    formattedKm: `${km.toFixed(1)} km`,
+    formattedMiles: `${miles.toFixed(1)} mi`,
+    timeStr,
+  };
 };
 
 /* -------------------------------------------------------------------------- */
 /* Screen                                                                     */
 /* -------------------------------------------------------------------------- */
 
-const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
-  /**
-   * Supports:
-   *
-   * navigation.navigate('QuoteReceivedDetail', {
-   *   data: quoteData,
-   * });
-   *
-   * OR:
-   *
-   * navigation.navigate('QuoteReceivedDetail', quoteData);
-   */
+const QuoteReceivedDetail = ({ route, navigation }: Props) => {
   const params = useMemo(() => route?.params || {}, [route?.params]);
 
   const quote: QuoteData = useMemo(() => {
@@ -223,11 +249,8 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
   }, [params]);
 
   const shipment = quote?.shipment;
-
   const horse = shipment?.horses?.[0];
-
-  const status = quote?.status || 'pending';
-
+  const status = quote?.status || shipment?.status || 'pending';
   const statusColor = getStatusColor(status);
 
   const pickupLocation =
@@ -241,35 +264,209 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
     'Delivery location unavailable';
 
   const pickupDate = shipment?.pickupDateRange?.start;
-
   const deliveryDate = shipment?.deliveryDateRange?.start;
 
   const shipmentCode =
     quote?.shipmentCode || shipment?.shipmentCode || 'HS-SHIP';
 
+  const shipmentId = shipment?._id || quote?._id;
+
+  // Stripe readiness
+  const { isStripeReady, loading: stripeLoading } = useStripeStatus();
+  const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+
+  // Map & Route Coordinates
+  const mapRef = useRef<MapView>(null);
+  const pLat =
+    quote?.pickupCoords?.latitude ||
+    shipment?.pickupCoords?.latitude ||
+    22.750089225339288;
+  const pLng =
+    quote?.pickupCoords?.longitude ||
+    shipment?.pickupCoords?.longitude ||
+    75.90277293697;
+  const dLat =
+    quote?.deliveryCoords?.latitude ||
+    shipment?.deliveryCoords?.latitude ||
+    22.754344256169404;
+  const dLng =
+    quote?.deliveryCoords?.longitude ||
+    shipment?.deliveryCoords?.longitude ||
+    75.9033459238708;
+
+  const mapRegion = useMemo(
+    () => ({
+      latitude: (pLat + dLat) / 2,
+      longitude: (pLng + dLng) / 2,
+      latitudeDelta: Math.max(Math.abs(pLat - dLat) * 1.5, 0.05),
+      longitudeDelta: Math.max(Math.abs(pLng - dLng) * 1.5, 0.05),
+    }),
+    [pLat, pLng, dLat, dLng],
+  );
+
+  const haversine = useMemo(
+    () => calculateHaversine(pLat, pLng, dLat, dLng),
+    [pLat, pLng, dLat, dLng],
+  );
+
+  const [calculatedDistance, setCalculatedDistance] = useState<string | null>(
+    null,
+  );
+  const [calculatedDuration, setCalculatedDuration] = useState<string | null>(
+    null,
+  );
+
+  // Modals state
+  const [isAskModalVisible, setIsAskModalVisible] = useState(false);
+  const [isSubmitOfferModalVisible, setIsSubmitOfferModalVisible] =
+    useState(false);
+
+  // Questions State
+  const [pendingQuestion, setPendingQuestion] = useState<any>(null);
+  const [answeredQuestion, setAnsweredQuestion] = useState<any>(null);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+
+  const fetchQuestions = async () => {
+    if (!shipmentId) return;
+    setLoadingQuestions(true);
+    try {
+      const res = await shipperService.getShipmentQuestions(shipmentId);
+      if (res?.success && res?.data) {
+        if (res?.data?.pending?.length > 0) {
+          setPendingQuestion(res.data.pending[0]);
+        } else {
+          setPendingQuestion(null);
+        }
+        if (res?.data?.answered?.length > 0) {
+          setAnsweredQuestion(res.data.answered[0]);
+        } else {
+          setAnsweredQuestion(null);
+        }
+      }
+    } catch (error) {
+      console.error('Fetch Shipment Questions Error:', error);
+    } finally {
+      setLoadingQuestions(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shipmentId]);
+
+  const fitToRoute = () => {
+    if (mapRef.current) {
+      mapRef.current.fitToCoordinates(
+        [
+          { latitude: pLat, longitude: pLng },
+          { latitude: dLat, longitude: dLng },
+        ],
+        {
+          edgePadding: { top: 40, right: 40, bottom: 40, left: 40 },
+          animated: true,
+        },
+      );
+    }
+  };
+
+  const handleDirectionsReady = (result: any) => {
+    if (result) {
+      setCalculatedDistance(
+        `${result.distance.toFixed(1)} km (${(
+          result.distance * 0.621371
+        ).toFixed(1)} mi)`,
+      );
+      const mins = Math.round(result.duration);
+      const hrs = Math.floor(mins / 60);
+      const remMins = mins % 60;
+      setCalculatedDuration(hrs > 0 ? `${hrs}h ${remMins}m` : `${mins} mins`);
+    }
+  };
+
+  const handleAskQuestionPress = () => {
+    setIsAskModalVisible(true);
+    fetchQuestions();
+  };
+
+  const handleSubmitQuestion = async (question: string) => {
+    try {
+      const payload = {
+        shipmentId: shipmentId || '',
+        question,
+      };
+      const res = await shipperService.askQuestion(payload);
+      if (res?.success) {
+        showSuccessToast(
+          'Success',
+          res.message || 'Question submitted successfully',
+        );
+        if (res?.data) {
+          setPendingQuestion(res.data);
+        } else {
+          fetchQuestions();
+        }
+      } else {
+        showErrorToast(
+          'Submission Failed',
+          res?.message || 'Failed to submit question.',
+        );
+      }
+    } catch (error: any) {
+      console.error('Ask Question Error:', error);
+      showErrorToast(
+        'Submission Failed',
+        error?.response?.data?.message || 'Failed to submit question.',
+      );
+      throw error;
+    }
+  };
+
+  const handleSubmitOfferPress = () => {
+    if (!isStripeReady && !stripeLoading) {
+      setIsBankModalVisible(true);
+    } else {
+      setIsSubmitOfferModalVisible(true);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `Shipment Request ${shipmentCode}: ${pickupLocation} -> ${deliveryLocation}`,
+      });
+    } catch (_e) {
+      // ignore share error
+    }
+  };
+
   return (
     <View style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Header                                                             */}
-      {/* ------------------------------------------------------------------ */}
-
+      {/* Header */}
       <AppHeader
         showBack
         title="Quote Detail"
         showProfileImage={false}
         showNotificationIcon={false}
+        onBack={() => navigation?.goBack?.()}
+        rightElement={
+          <TouchableOpacity
+            onPress={handleShare}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={{ padding: 6 }}
+          >
+            <AppIcon name="Share2" size={20} color={COLORS.textPrimary} />
+          </TouchableOpacity>
+        }
       />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* ---------------------------------------------------------------- */}
-        {/* Status Hero                                                      */}
-        {/* ---------------------------------------------------------------- */}
-
+        {/* Status Hero */}
         <View style={styles.heroCard}>
           <View style={styles.heroTopRow}>
             <View style={styles.shipmentIcon}>
@@ -282,35 +479,19 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
 
             <View style={styles.heroInfo}>
               <AppText style={styles.heroLabel}>SHIPMENT REQUEST</AppText>
-
               <AppText style={styles.heroCode}>{shipmentCode}</AppText>
             </View>
 
             <View
               style={[
                 styles.statusBadge,
-                {
-                  backgroundColor: `${statusColor}15`,
-                },
+                { backgroundColor: `${statusColor}15` },
               ]}
             >
               <View
-                style={[
-                  styles.statusDot,
-                  {
-                    backgroundColor: statusColor,
-                  },
-                ]}
+                style={[styles.statusDot, { backgroundColor: statusColor }]}
               />
-
-              <AppText
-                style={[
-                  styles.statusText,
-                  {
-                    color: statusColor,
-                  },
-                ]}
-              >
+              <AppText style={[styles.statusText, { color: statusColor }]}>
                 {getStatusLabel(status)}
               </AppText>
             </View>
@@ -325,7 +506,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                 size={ICON_SIZE.sm}
                 color={COLORS.textSecondary}
               />
-
               <AppText style={styles.heroMetaText}>
                 Requested {formatDate(quote?.createdAt)}
               </AppText>
@@ -337,7 +517,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                 size={ICON_SIZE.sm}
                 color={COLORS.textSecondary}
               />
-
               <AppText style={styles.heroMetaText}>
                 {shipment?.numberOfHorses || 1}{' '}
                 {shipment?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
@@ -346,19 +525,14 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </View>
         </View>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Route                                                             */}
-        {/* ---------------------------------------------------------------- */}
-
+        {/* Route Section */}
         <View style={styles.sectionHeader}>
           <View>
             <AppText style={styles.sectionTitle}>Shipment Route</AppText>
-
             <AppText style={styles.sectionSubtitle}>
               Pickup and delivery details
             </AppText>
           </View>
-
           <View style={styles.routeIcon}>
             <AppIcon name="Route" size={ICON_SIZE.sm} color={COLORS.primary} />
           </View>
@@ -366,40 +540,32 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
 
         <View style={styles.routeCard}>
           {/* Pickup */}
-
           <View style={styles.locationRow}>
             <View style={styles.timelineContainer}>
               <View
                 style={[
                   styles.locationDot,
-                  {
-                    backgroundColor: COLORS.greenPrimary,
-                  },
+                  { backgroundColor: COLORS.greenPrimary },
                 ]}
               />
-
               <View style={styles.timelineLine} />
             </View>
 
             <View style={styles.locationContent}>
               <View style={styles.locationHeader}>
                 <AppText style={styles.locationType}>PICKUP</AppText>
-
                 <View style={styles.datePill}>
                   <AppIcon
                     name="Calendar"
                     size={ICON_SIZE.xs}
                     color={COLORS.greenPrimary}
                   />
-
                   <AppText style={styles.datePillText}>
                     {formatDate(pickupDate)}
                   </AppText>
                 </View>
               </View>
-
               <AppText style={styles.locationText}>{pickupLocation}</AppText>
-
               {pickupDate && (
                 <View style={styles.timeRow}>
                   <AppIcon
@@ -407,7 +573,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                     size={ICON_SIZE.xs}
                     color={COLORS.textLight}
                   />
-
                   <AppText style={styles.timeText}>
                     {formatTime(pickupDate) || 'Scheduled pickup'}
                   </AppText>
@@ -417,15 +582,12 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </View>
 
           {/* Delivery */}
-
           <View style={styles.locationRow}>
             <View style={styles.timelineContainer}>
               <View
                 style={[
                   styles.locationDot,
-                  {
-                    backgroundColor: COLORS.redPrimary,
-                  },
+                  { backgroundColor: COLORS.redPrimary },
                 ]}
               />
             </View>
@@ -433,13 +595,10 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
             <View style={styles.locationContent}>
               <View style={styles.locationHeader}>
                 <AppText style={styles.locationType}>DELIVERY</AppText>
-
                 <View
                   style={[
                     styles.datePill,
-                    {
-                      backgroundColor: COLORS.redLightBg,
-                    },
+                    { backgroundColor: COLORS.redLightBg },
                   ]}
                 >
                   <AppIcon
@@ -447,22 +606,14 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                     size={ICON_SIZE.xs}
                     color={COLORS.redPrimary}
                   />
-
                   <AppText
-                    style={[
-                      styles.datePillText,
-                      {
-                        color: COLORS.redPrimary,
-                      },
-                    ]}
+                    style={[styles.datePillText, { color: COLORS.redPrimary }]}
                   >
                     {formatDate(deliveryDate)}
                   </AppText>
                 </View>
               </View>
-
               <AppText style={styles.locationText}>{deliveryLocation}</AppText>
-
               {deliveryDate && (
                 <View style={styles.timeRow}>
                   <AppIcon
@@ -470,7 +621,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                     size={ICON_SIZE.xs}
                     color={COLORS.textLight}
                   />
-
                   <AppText style={styles.timeText}>
                     {formatTime(deliveryDate) || 'Scheduled delivery'}
                   </AppText>
@@ -480,10 +630,111 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </View>
         </View>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Shipment Summary                                                 */}
-        {/* ---------------------------------------------------------------- */}
+        {/* Interactive Map Card with Distance & Time Calculation */}
+        <View style={styles.mapCardContainer}>
+          <View style={styles.mapHeaderRow}>
+            <View style={styles.mapHeaderInfo}>
+              <AppIcon
+                name="Route"
+                size={ICON_SIZE.sm}
+                color={COLORS.primary}
+              />
+              <AppText style={styles.mapHeaderTitle}>
+                Interactive Route & Distance
+              </AppText>
+            </View>
+            <TouchableOpacity
+              style={styles.recenterBtn}
+              onPress={fitToRoute}
+              activeOpacity={0.8}
+            >
+              <AppIcon name="LocateFixed" size={14} color={COLORS.primary} />
+              <AppText style={styles.recenterText}>Fit Route</AppText>
+            </TouchableOpacity>
+          </View>
 
+          <View style={styles.mapWrapper}>
+            <MapView
+              ref={mapRef}
+              provider={PROVIDER_GOOGLE}
+              style={styles.mapView}
+              initialRegion={mapRegion}
+              showsUserLocation={false}
+              showsMyLocationButton={false}
+              onMapReady={fitToRoute}
+            >
+              <Marker
+                coordinate={{ latitude: pLat, longitude: pLng }}
+                title="Pickup Location"
+              >
+                <View
+                  style={[
+                    styles.markerBadge,
+                    { backgroundColor: COLORS.greenSuccess },
+                  ]}
+                >
+                  <AppIcon name="PackageCheck" size={14} color={COLORS.white} />
+                </View>
+              </Marker>
+
+              <Marker
+                coordinate={{ latitude: dLat, longitude: dLng }}
+                title="Delivery Location"
+              >
+                <View
+                  style={[
+                    styles.markerBadge,
+                    { backgroundColor: COLORS.primary },
+                  ]}
+                >
+                  <AppIcon name="MapPin" size={14} color={COLORS.white} />
+                </View>
+              </Marker>
+
+              <MapViewDirections
+                origin={{ latitude: pLat, longitude: pLng }}
+                destination={{ latitude: dLat, longitude: dLng }}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={4}
+                strokeColor={COLORS.primary}
+                optimizeWaypoints={true}
+                onReady={handleDirectionsReady}
+              />
+            </MapView>
+
+            {/* Distance & Duration Live Overlay Card */}
+            <View style={styles.mapStatsCard}>
+              <View style={styles.mapStatItem}>
+                <AppIcon name="Navigation" size={16} color={COLORS.primary} />
+                <View style={styles.mapStatContent}>
+                  <AppText style={styles.mapStatLabel}>
+                    ESTIMATED DISTANCE
+                  </AppText>
+                  <AppText style={styles.mapStatVal}>
+                    {calculatedDistance ||
+                      `${haversine.formattedKm} (${haversine.formattedMiles})`}
+                  </AppText>
+                </View>
+              </View>
+
+              <View style={styles.mapStatDivider} />
+
+              <View style={styles.mapStatItem}>
+                <AppIcon name="Clock" size={16} color={COLORS.primary} />
+                <View style={styles.mapStatContent}>
+                  <AppText style={styles.mapStatLabel}>
+                    ESTIMATED DURATION
+                  </AppText>
+                  <AppText style={styles.mapStatVal}>
+                    {calculatedDuration || haversine.timeStr}
+                  </AppText>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Shipment Summary */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryHeader}>
             <View style={styles.summaryTitleRow}>
@@ -494,7 +745,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                   color={COLORS.primary}
                 />
               </View>
-
               <AppText style={styles.summaryTitle}>Shipment Summary</AppText>
             </View>
           </View>
@@ -502,7 +752,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           <View style={styles.summaryGrid}>
             <View style={styles.summaryItem}>
               <AppText style={styles.summaryLabel}>HORSES</AppText>
-
               <AppText style={styles.summaryValue}>
                 {shipment?.numberOfHorses || 1}
               </AppText>
@@ -510,7 +759,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
 
             <View style={styles.summaryItem}>
               <AppText style={styles.summaryLabel}>SHIPMENT</AppText>
-
               <AppText style={styles.summaryValueSmall} numberOfLines={1}>
                 {shipment?.status ? getStatusLabel(shipment.status) : 'Open'}
               </AppText>
@@ -518,7 +766,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
 
             <View style={styles.summaryItem}>
               <AppText style={styles.summaryLabel}>PICKUP</AppText>
-
               <AppText style={styles.summaryValueSmall}>
                 {formatDate(pickupDate)}
               </AppText>
@@ -526,7 +773,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
 
             <View style={styles.summaryItem}>
               <AppText style={styles.summaryLabel}>DELIVERY</AppText>
-
               <AppText style={styles.summaryValueSmall}>
                 {formatDate(deliveryDate)}
               </AppText>
@@ -534,16 +780,12 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </View>
         </View>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Horse Details                                                    */}
-        {/* ---------------------------------------------------------------- */}
-
+        {/* Horse Details */}
         {horse && (
           <>
             <View style={styles.sectionHeader}>
               <View>
                 <AppText style={styles.sectionTitle}>Horse Details</AppText>
-
                 <AppText style={styles.sectionSubtitle}>
                   Information provided for this shipment
                 </AppText>
@@ -564,7 +806,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                   <AppText style={styles.horseName}>
                     {horse?.registeredName || 'Unnamed Horse'}
                   </AppText>
-
                   <AppText style={styles.horseBarnName}>
                     {horse?.barnName || 'Barn not specified'}
                   </AppText>
@@ -574,7 +815,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                   <AppText style={styles.horseAge}>
                     {horse?.age ?? '--'}
                   </AppText>
-
                   <AppText style={styles.horseAgeLabel}>yrs</AppText>
                 </View>
               </View>
@@ -587,19 +827,16 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                   label="Breed"
                   value={horse?.breed || horse?.otherBreed || 'Not specified'}
                 />
-
                 <HorseDetail
                   icon="User"
                   label="Sex"
                   value={horse?.sex || 'Not specified'}
                 />
-
                 <HorseDetail
                   icon="Circle"
                   label="Colour"
                   value={horse?.colour || 'Not specified'}
                 />
-
                 <HorseDetail
                   icon="Box"
                   label="Stall Size"
@@ -607,7 +844,7 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                 />
               </View>
 
-              {horse?.generalInfo && (
+              {horse?.generalInfo ? (
                 <View style={styles.infoBox}>
                   <View style={styles.infoBoxHeader}>
                     <AppIcon
@@ -615,19 +852,17 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                       size={ICON_SIZE.xs}
                       color={COLORS.primary}
                     />
-
                     <AppText style={styles.infoBoxTitle}>
                       General Information
                     </AppText>
                   </View>
-
                   <AppText style={styles.infoBoxText}>
                     {horse?.generalInfo}
                   </AppText>
                 </View>
-              )}
+              ) : null}
 
-              {horse?.notes && (
+              {horse?.notes ? (
                 <View style={styles.notesBox}>
                   <View style={styles.infoBoxHeader}>
                     <AppIcon
@@ -635,27 +870,21 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                       size={ICON_SIZE.xs}
                       color={COLORS.textSecondary}
                     />
-
                     <AppText style={styles.notesTitle}>Notes</AppText>
                   </View>
-
                   <AppText style={styles.notesText}>{horse?.notes}</AppText>
                 </View>
-              )}
+              ) : null}
             </View>
           </>
         )}
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Customer                                                          */}
-        {/* ---------------------------------------------------------------- */}
-
+        {/* Customer Info */}
         {quote?.customer && (
           <>
             <View style={styles.sectionHeader}>
               <View>
                 <AppText style={styles.sectionTitle}>Customer</AppText>
-
                 <AppText style={styles.sectionSubtitle}>
                   Shipment requested by
                 </AppText>
@@ -670,12 +899,10 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                   color={COLORS.primary}
                 />
               </View>
-
               <View style={styles.customerInfo}>
                 <AppText style={styles.customerName}>
                   {quote?.customer?.name || 'Customer'}
                 </AppText>
-
                 {!!quote?.customer?.email && (
                   <View style={styles.customerMeta}>
                     <AppIcon
@@ -683,7 +910,6 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                       size={ICON_SIZE.xs}
                       color={COLORS.textSecondary}
                     />
-
                     <AppText style={styles.customerEmail}>
                       {quote?.customer?.email}
                     </AppText>
@@ -694,10 +920,7 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </>
         )}
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Customer Message                                                  */}
-        {/* ---------------------------------------------------------------- */}
-
+        {/* Customer Message */}
         {!!quote?.message && (
           <View style={styles.messageCard}>
             <View style={styles.messageIcon}>
@@ -707,10 +930,8 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
                 color={COLORS.primary}
               />
             </View>
-
             <View style={styles.messageContent}>
               <AppText style={styles.messageTitle}>Customer Message</AppText>
-
               <AppText style={styles.messageText}>
                 {truncateText(quote?.message, 180)}
               </AppText>
@@ -718,13 +939,67 @@ const QuoteReceivedDetail = ({ route, navigation: _navigation }: Props) => {
           </View>
         )}
 
-        {/* Bottom spacing for sticky actions */}
         <View style={styles.bottomSpacing} />
       </ScrollView>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Bottom Action Bar                                                   */}
-      {/* ------------------------------------------------------------------ */}
+      {/* Sticky Bottom Action Bar */}
+      <View style={styles.stickyBottomBar}>
+        <TouchableOpacity
+          style={styles.askQuestionBtn}
+          onPress={handleAskQuestionPress}
+          activeOpacity={0.8}
+        >
+          <AppIcon name="MessageSquare" size={16} color={COLORS.primary} />
+          <AppText style={styles.askQuestionBtnText}>Ask Question</AppText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.submitOfferBtn}
+          onPress={handleSubmitOfferPress}
+          activeOpacity={0.85}
+        >
+          <AppIcon name="Send" size={16} color={COLORS.white} />
+          <AppText style={styles.submitOfferBtnText}>Submit Offer</AppText>
+        </TouchableOpacity>
+      </View>
+
+      {/* Modals with Suspense */}
+      <Suspense fallback={null}>
+        <AskQuestionModal
+          isVisible={isAskModalVisible}
+          onClose={() => setIsAskModalVisible(false)}
+          onSubmit={handleSubmitQuestion}
+          shipmentCode={shipmentCode}
+          pendingQuestion={pendingQuestion}
+          loadingQuestions={loadingQuestions}
+          answeredQuestion={answeredQuestion}
+        />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <SubmitOfferModal
+          isVisible={isSubmitOfferModalVisible}
+          onClose={() => setIsSubmitOfferModalVisible(false)}
+          shipmentId={shipmentId || ''}
+          shipmentCode={shipmentCode}
+          onSuccess={() => {
+            setIsSubmitOfferModalVisible(false);
+            showSuccessToast(
+              'Offer Submitted',
+              'Your offer was submitted successfully.',
+            );
+            if (navigation?.goBack) navigation.goBack();
+          }}
+        />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ConnectBankModal
+          isVisible={isBankModalVisible}
+          onClose={() => setIsBankModalVisible(false)}
+          navigation={navigation}
+        />
+      </Suspense>
     </View>
   );
 };
@@ -748,7 +1023,6 @@ const HorseDetail = ({ icon, label, value }: HorseDetailProps) => {
 
       <View style={styles.horseDetailContent}>
         <AppText style={styles.horseDetailLabel}>{label}</AppText>
-
         <AppText style={styles.horseDetailValue} numberOfLines={1}>
           {value}
         </AppText>
@@ -760,557 +1034,5 @@ const HorseDetail = ({ icon, label, value }: HorseDetailProps) => {
 /* -------------------------------------------------------------------------- */
 /* Styles                                                                     */
 /* -------------------------------------------------------------------------- */
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-
-  /* Header */
-
-  scrollContent: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.sm,
-  },
-
-  /* Hero */
-
-  heroCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    shadowColor: COLORS.black,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-
-  heroTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  shipmentIcon: {
-    width: SIZES.avatarLg,
-    height: SIZES.avatarLg,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  heroInfo: {
-    flex: 1,
-    marginLeft: SPACING.md,
-  },
-
-  heroLabel: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textLight,
-    letterSpacing: 0.7,
-  },
-
-  heroCode: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
-  },
-
-  statusBadge: {
-    minHeight: moderateScale(30),
-    paddingHorizontal: SPACING.sm2,
-    borderRadius: RADIUS.pill,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  statusDot: {
-    width: moderateScale(7),
-    height: moderateScale(7),
-    borderRadius: RADIUS.circle,
-    marginRight: SPACING.xs,
-  },
-
-  statusText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs,
-  },
-
-  heroDivider: {
-    height: 1,
-    backgroundColor: COLORS.divider,
-    marginVertical: SPACING.md,
-  },
-
-  heroBottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
-  heroMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  heroMetaText: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-
-  /* Section */
-
-  sectionHeader: {
-    marginTop: SPACING.xxl,
-    marginBottom: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  sectionTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
-  },
-
-  sectionSubtitle: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-
-  routeIcon: {
-    width: SIZES.iconActionBtn,
-    height: SIZES.iconActionBtn,
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  /* Route */
-
-  routeCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-
-  locationRow: {
-    flexDirection: 'row',
-  },
-
-  timelineContainer: {
-    width: moderateScale(24),
-    alignItems: 'center',
-  },
-
-  locationDot: {
-    width: moderateScale(12),
-    height: moderateScale(12),
-    borderRadius: RADIUS.circle,
-    borderWidth: 3,
-    borderColor: COLORS.surface,
-  },
-
-  timelineLine: {
-    width: 2,
-    flex: 1,
-    minHeight: moderateScale(65),
-    marginVertical: SPACING.xs,
-    backgroundColor: COLORS.border,
-  },
-
-  locationContent: {
-    flex: 1,
-    marginLeft: SPACING.md,
-    paddingBottom: SPACING.lg,
-  },
-
-  locationHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  locationType: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.7,
-  },
-
-  datePill: {
-    backgroundColor: COLORS.greenLightBg,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.pill,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  datePillText: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xxs,
-    color: COLORS.greenPrimary,
-  },
-
-  locationText: {
-    marginTop: SPACING.sm,
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.sm,
-    lineHeight: moderateScale(20),
-    color: COLORS.textPrimary,
-  },
-
-  timeRow: {
-    marginTop: SPACING.sm,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  timeText: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textLight,
-  },
-
-  /* Summary */
-
-  summaryCard: {
-    marginTop: SPACING.lg,
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-
-  summaryHeader: {
-    marginBottom: SPACING.lg,
-  },
-
-  summaryTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  smallIconContainer: {
-    width: SIZES.iconActionBtn,
-    height: SIZES.iconActionBtn,
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  summaryTitle: {
-    marginLeft: SPACING.sm,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-  },
-
-  summaryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: SPACING.lg,
-  },
-
-  summaryItem: {
-    width: '50%',
-  },
-
-  summaryLabel: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xxs,
-    letterSpacing: 0.6,
-    color: COLORS.textLight,
-  },
-
-  summaryValue: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
-  },
-
-  summaryValueSmall: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-  },
-
-  /* Horse */
-
-  horseCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-
-  horseHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  horseAvatar: {
-    width: SIZES.avatarXl,
-    height: SIZES.avatarXl,
-    borderRadius: RADIUS.lg,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  horseNameContainer: {
-    flex: 1,
-    marginLeft: SPACING.md,
-  },
-
-  horseName: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
-  },
-
-  horseBarnName: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-
-  horseAgeBadge: {
-    width: moderateScale(48),
-    height: moderateScale(48),
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  horseAge: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.primaryDark,
-  },
-
-  horseAgeLabel: {
-    marginTop: -2,
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.xxs,
-    color: COLORS.goldBrownText,
-  },
-
-  horseDivider: {
-    height: 1,
-    backgroundColor: COLORS.divider,
-    marginVertical: SPACING.lg,
-  },
-
-  horseDetailsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: SPACING.lg,
-  },
-
-  horseDetailItem: {
-    width: '50%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: SPACING.sm,
-  },
-
-  horseDetailIcon: {
-    width: moderateScale(30),
-    height: moderateScale(30),
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  horseDetailContent: {
-    flex: 1,
-    marginLeft: SPACING.sm,
-  },
-
-  horseDetailLabel: {
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xxs,
-    color: COLORS.textLight,
-  },
-
-  horseDetailValue: {
-    marginTop: 2,
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textPrimary,
-  },
-
-  infoBox: {
-    marginTop: SPACING.lg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.goldLightBg,
-    borderWidth: 1,
-    borderColor: COLORS.goldBorder,
-  },
-
-  infoBoxHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  infoBoxTitle: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.goldDarkText,
-  },
-
-  infoBoxText: {
-    marginTop: SPACING.sm,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: moderateScale(18),
-    color: COLORS.textPrimary,
-  },
-
-  notesBox: {
-    marginTop: SPACING.sm,
-    padding: SPACING.md,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.grey50,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-
-  notesTitle: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-
-  notesText: {
-    marginTop: SPACING.sm,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: moderateScale(18),
-    color: COLORS.textSecondary,
-  },
-
-  /* Customer */
-
-  customerCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-
-  customerAvatar: {
-    width: SIZES.avatarMd44,
-    height: SIZES.avatarMd44,
-    borderRadius: RADIUS.circle,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  customerInfo: {
-    flex: 1,
-    marginLeft: SPACING.md,
-  },
-
-  customerName: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-  },
-
-  customerMeta: {
-    marginTop: SPACING.xs,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  customerEmail: {
-    marginLeft: SPACING.xs,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-  },
-
-  /* Message */
-
-  messageCard: {
-    marginTop: SPACING.lg,
-    padding: SPACING.md,
-    borderRadius: RADIUS.lg,
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    flexDirection: 'row',
-  },
-
-  messageIcon: {
-    width: SIZES.iconActionBtn,
-    height: SIZES.iconActionBtn,
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.goldCreamBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  messageContent: {
-    flex: 1,
-    marginLeft: SPACING.md,
-  },
-
-  messageTitle: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-  },
-
-  messageText: {
-    marginTop: SPACING.xs,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: moderateScale(18),
-    color: COLORS.textSecondary,
-  },
-
-  /* Bottom */
-
-  bottomSpacing: {
-    height: moderateScale(100),
-  },
-});
 
 export default QuoteReceivedDetail;

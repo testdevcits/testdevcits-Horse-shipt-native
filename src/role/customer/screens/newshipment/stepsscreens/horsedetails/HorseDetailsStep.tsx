@@ -1,11 +1,5 @@
 import React, { lazy, Suspense, useMemo } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-
-  Pressable,
-} from 'react-native';
+import { View, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { COLORS } from '../../../../../../constants';
 import { AppText, Input } from '../../../../../../components';
@@ -354,9 +348,9 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
               isFormValid
                 ? onNext()
                 : showInfoToast(
-                  'Missing Info',
-                  'Please fill in registered name, breed, sex, and stall size for all horses.',
-                )
+                    'Missing Info',
+                    'Please fill in registered name, breed, sex, and stall size for all horses.',
+                  )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>

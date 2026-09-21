@@ -15,6 +15,8 @@ import ProfileSkeleton from './ProfileSkeleton';
 import SettingsSkeleton from './SettingsSkeleton';
 import ShipperHomeSkeleton from './ShipperHomeSkeleton';
 import ChatDetailsSkeleton from './ChatDetailsSkeleton';
+import MyShipmentsSkeleton from './MyShipmentsSkeleton';
+import QuoteRequestSkeleton from './QuoteRequestSkeleton';
 
 export {
   Skeleton,
@@ -25,6 +27,8 @@ export {
   HomeSkelaton,
   ShipperHomeSkeleton,
   ShipmentsSkeleton,
+  MyShipmentsSkeleton,
+  QuoteRequestSkeleton,
   MyHorsesSkeleton,
   MyHorsesSkelatons,
   ShippersListSkeleton,

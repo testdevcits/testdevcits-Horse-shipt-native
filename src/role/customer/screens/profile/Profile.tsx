@@ -27,7 +27,6 @@ import {
   COUNTRIES,
   Input,
   ProfileSkeleton,
-
 } from '../../../../components';
 import styles from './styles.profile';
 import NotificationSettings from '../notificationsettings/NotificationSettings';
@@ -36,13 +35,13 @@ import { useAppSelector } from '../../../../hooks/redux';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
-const Profile = ({ }: any) => {
+const Profile = ({}: any) => {
   const ConfirmationModal = lazy(
     () => import('../../../../components/common/ConfirmationModal'),
   );
   const ImageViewer = lazy(
-    () => import("../../../../components/common/ImageViewer")
-  )
+    () => import('../../../../components/common/ImageViewer'),
+  );
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
@@ -62,8 +61,7 @@ const Profile = ({ }: any) => {
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string>('')
-
+  const [selectedImage, setSelectedImage] = useState<string>('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -175,7 +173,12 @@ const Profile = ({ }: any) => {
                   avatarUri !== '/images/default_profile.png';
 
                 return isValidAvatar ? (
-                  <Pressable onPress={() => { setImageViewerVisible(true); setSelectedImage(avatarUri) }}>
+                  <Pressable
+                    onPress={() => {
+                      setImageViewerVisible(true);
+                      setSelectedImage(avatarUri);
+                    }}
+                  >
                     <Image source={{ uri: avatarUri }} style={styles.avatar} />
                   </Pressable>
                 ) : (

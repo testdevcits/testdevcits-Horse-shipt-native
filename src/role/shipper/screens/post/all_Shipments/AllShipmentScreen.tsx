@@ -1,10 +1,14 @@
 import React, { useCallback } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
-import { AppText, Input } from '../../../../components';
-import { COLORS } from '../../../../constants';
-import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
+import { View, FlatList } from 'react-native';
+import {
+  AppText,
+  Input,
+  QuoteRequestSkeleton,
+} from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import AvailableShipmentCard from '../../home/components/AvailableShipmentCard';
 import styles from './styles.postload';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface AllShipmentScreenProps {
   data: any[];
@@ -25,21 +29,21 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
     if (!searchQuery.trim()) return data;
 
     const q = searchQuery.toLowerCase();
-    return data.filter(item => {
+    return data?.filter(item => {
       const shipment = item?.shipment || item;
       const p = (
         item?.pickupLocation ||
-        shipment.pickupLocation ||
+        shipment?.pickupLocation ||
         ''
       ).toLowerCase();
       const d = (
         item?.deliveryLocation ||
-        shipment.deliveryLocation ||
+        shipment?.deliveryLocation ||
         ''
       ).toLowerCase();
       const c = (
         item?.shipmentCode ||
-        shipment.shipmentCode ||
+        shipment?.shipmentCode ||
         ''
       ).toLowerCase();
       return p.includes(q) || d.includes(q) || c.includes(q);
@@ -63,11 +67,7 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
 
   const renderEmpty = useCallback(() => {
     if (loading) {
-      return (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.saddleBrown} />
-        </View>
-      );
+      return <QuoteRequestSkeleton />;
     }
 
     return (

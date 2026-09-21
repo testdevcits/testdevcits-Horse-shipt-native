@@ -49,8 +49,6 @@ const MyShipmentDetails = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const { item, quoteId: _quoteId } = route.params;
 
-  
-
   // console.log('=========quoteId===============', quoteId);
 
   const [activeTab, setActiveTab] = useState('Overview');

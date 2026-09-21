@@ -30,9 +30,9 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
 
   const horseSpecs =
     item?.horses && item?.horses[0]
-      ? `${item?.horses[0].breed || 'Not Available'} | ${
-          item?.horses[0].age || '2'
-        }yr | ${item?.horses[0].colour || 'Not Available'}`
+      ? `${item?.horses[0]?.breed || 'Not Available'} | ${
+          item?.horses[0]?.age || '2'
+        }yr | ${item?.horses[0]?.colour || 'Not Available'}`
       : 'Not Available | Not Available | Not Available';
 
   const locationText = item?.pickupLocation

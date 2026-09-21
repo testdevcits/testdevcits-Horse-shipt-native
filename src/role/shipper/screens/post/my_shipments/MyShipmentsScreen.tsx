@@ -1,17 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 
-import { AppText } from '../../../../components';
-import { COLORS } from '../../../../constants';
-import styles from './styles.postload';
-import ReviewCustomerModal from './ReviewCustomerModal';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import { AppText, MyShipmentsSkeleton } from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import styles from '../all_Shipments/styles.postload';
+import ReviewCustomerModal from '../components/ReviewCustomerModal';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 export type StatusFilterType =
   | 'all'
@@ -383,11 +377,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
 
   const renderEmpty = useCallback(() => {
     if (loading) {
-      return (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.saddleBrown} />
-        </View>
-      );
+      return <MyShipmentsSkeleton />;
     }
 
     const labelMap: Record<StatusFilterType, string> = {

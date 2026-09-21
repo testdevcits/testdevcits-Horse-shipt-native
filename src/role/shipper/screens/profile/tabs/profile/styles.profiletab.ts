@@ -22,10 +22,9 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey400,
   },
   goldFilledBtnText: {
-    color: COLORS.black,
+    color: COLORS.white,
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
-    opacity: 0.8,
   },
   infoCard: {
     backgroundColor: COLORS.white,
@@ -61,11 +60,16 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
     color: COLORS.textPrimary,
+    flex: 1,
   },
   infoVal: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
+
+    alignItems: 'flex-end',
+
+    width: '60%',
   },
   reviewsSection: {
     marginTop: SPACING.xs,

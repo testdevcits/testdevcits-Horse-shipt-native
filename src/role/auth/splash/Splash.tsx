@@ -23,7 +23,7 @@ const Splash = ({ navigation }: any) => {
     startAnimations();
 
     // Immediately hide native BootSplash window so UI displays without 50s freeze
-    BootSplash.hide({ fade: true }).catch(() => { });
+    BootSplash.hide({ fade: true }).catch(() => {});
 
     const initApp = async () => {
       // 1. Try to restore user session (token/user data)
@@ -152,7 +152,6 @@ const Splash = ({ navigation }: any) => {
 
       <Animated.View style={[styles.textWrapper, { opacity: fadeContent }]}>
         <AppText style={styles.titleText}>Horse Shipt</AppText>
-
       </Animated.View>
     </View>
   );

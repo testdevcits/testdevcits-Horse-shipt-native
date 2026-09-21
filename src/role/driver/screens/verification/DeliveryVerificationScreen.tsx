@@ -38,9 +38,7 @@ const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
           </AppText>
         )}
       </View>
-      <AppText
-        style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}
-      >
+      <AppText style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}>
         Send OTP
       </AppText>
     </View>
@@ -66,9 +64,7 @@ const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
           </AppText>
         )}
       </View>
-      <AppText
-        style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}
-      >
+      <AppText style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}>
         Verify OTP
       </AppText>
     </View>
@@ -77,18 +73,14 @@ const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
 
     {/* Step 3 */}
     <View style={styles.stepWrapper}>
-      <View
-        style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}
-      >
+      <View style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}>
         <AppText
           style={[styles.stepNumber, step === 3 && styles.stepNumberActive]}
         >
           3
         </AppText>
       </View>
-      <AppText
-        style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}
-      >
+      <AppText style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}>
         Mark Done
       </AppText>
     </View>

@@ -18,14 +18,7 @@ import {
   LucideIcon,
 } from 'lucide-react-native';
 
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SIZES,
-} from '../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING, SIZES } from '../constants';
 import { AppText } from '../components';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
@@ -98,11 +91,7 @@ const CustomToast: React.FC<CustomToastProps> = ({
 
   return (
     <ContentWrapper
-      style={[
-        styles.container,
-        { borderLeftColor: theme.borderAccent },
-        style,
-      ]}
+      style={[styles.container, { borderLeftColor: theme.borderAccent }, style]}
       onPress={onPress}
       activeOpacity={0.9}
     >

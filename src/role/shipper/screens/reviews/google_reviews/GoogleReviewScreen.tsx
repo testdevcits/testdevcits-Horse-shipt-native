@@ -6,12 +6,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { AppHeader, AppText, Input, Button } from '../../../../components';
-import { COLORS } from '../../../../constants';
-import shipperService from '../../../../api/services/shipperService';
+import { AppHeader, AppText, Input, Button } from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.googlereview';
-import AppIcon from '../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 const GoogleReviewScreen = () => {
   const [googleReviewLink, setGoogleReviewLink] = useState('');

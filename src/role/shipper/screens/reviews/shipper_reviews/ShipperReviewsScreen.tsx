@@ -5,13 +5,13 @@ import {
   AppText,
   EmptyState,
   ReviewsSkeleton,
-} from '../../../../components';
-import shipperService from '../../../../api/services/shipperService';
-import imageIndex from '../../../../assets/images/imageIndex';
-import { formatDate } from '../../../../utils/helpers';
+} from '../../../../../components';
+import shipperService from '../../../../../api/services/shipperService';
+import imageIndex from '../../../../../assets/images/imageIndex';
+import { formatDate } from '../../../../../utils/helpers';
 import styles from './styles.shipperreviews';
-import AppIcon from '../../../../components/app_icon/AppIcon';
-import { COLORS } from '../../../../constants';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { COLORS } from '../../../../../constants';
 
 const ShipperReviewsScreen = ({ route }: any) => {
   const initialReviews = route?.params?.reviews || [];

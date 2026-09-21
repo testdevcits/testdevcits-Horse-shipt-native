@@ -85,4 +85,3 @@ export const showInfoToast = (
 export const hideToast = () => {
   Toast.hide();
 };
-

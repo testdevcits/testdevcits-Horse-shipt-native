@@ -54,4 +54,3 @@ export const toastConfig: ToastConfig = {
 };
 
 export default toastConfig;
-

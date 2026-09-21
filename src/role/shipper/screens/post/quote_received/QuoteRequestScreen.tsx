@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
-import { AppText } from '../../../../components';
-import { COLORS } from '../../../../constants';
-import AvailableShipmentCard from '../home/components/AvailableShipmentCard';
-import styles from './styles.postload';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import { View, FlatList } from 'react-native';
+import { AppText, QuoteRequestSkeleton } from '../../../../../components';
+import { COLORS } from '../../../../../constants';
+import AvailableShipmentCard from '../../home/components/AvailableShipmentCard';
+import styles from '../all_Shipments/styles.postload';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface QuoteRequestScreenProps {
   data: any[];
@@ -34,11 +34,7 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
 
   const renderEmpty = useCallback(() => {
     if (loading) {
-      return (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={COLORS.saddleBrown} />
-        </View>
-      );
+      return <QuoteRequestSkeleton />;
     }
 
     return (
@@ -59,7 +55,7 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
       keyExtractor={(item, index) => item?._id || item?.id || String(index)}
       renderItem={renderCard}
       ListEmptyComponent={renderEmpty}
-      contentContainerStyle={{ paddingBottom: 20 }}
+      contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 10 }}
       scrollEnabled={false}
     />
   );

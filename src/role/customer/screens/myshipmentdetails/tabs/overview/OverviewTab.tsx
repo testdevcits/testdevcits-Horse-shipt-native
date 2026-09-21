@@ -3,13 +3,12 @@ import {
   View,
   TouchableOpacity,
   Linking,
-
   ActivityIndicator,
 } from 'react-native';
 
 import { formatDate } from '../../../../../../utils/helpers';
 import { AppText, MapModal } from '../../../../../../components';
-import { COLORS, SPACING, } from '../../../../../../constants';
+import { COLORS, SPACING } from '../../../../../../constants';
 import PublishedSuccessModal from '../../components/publish_success_modal/PublishedSuccessModal';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
@@ -69,8 +68,6 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
       setLoading(false);
     }
   };
-
-
 
   const formatDateRange = (start?: string, end?: string) => {
     if (!start && !end) return 'N/A';
@@ -164,24 +161,27 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               activeOpacity={0.8}
               disabled={loading}
             >
-
-              {
-                loading ?
-                  <ActivityIndicator size={"small"} color={COLORS.white} /> :
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }} >
-                    <AppIcon name={'Edit3'} size={15} color={COLORS.white} />
-                    <AppText style={styles.primaryActionBtnText}>
-                      {/* Edit Documents & Notes */}
-                      Edit Docs / Notes
-                    </AppText>
-                  </View>
-              }
-
+              {loading ? (
+                <ActivityIndicator size={'small'} color={COLORS.white} />
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                  }}
+                >
+                  <AppIcon name={'Edit3'} size={15} color={COLORS.white} />
+                  <AppText style={styles.primaryActionBtnText}>
+                    {/* Edit Documents & Notes */}
+                    Edit Docs / Notes
+                  </AppText>
+                </View>
+              )}
 
               <View />
             </TouchableOpacity>
           )}
-
 
           {data?.status === 'delivered' && (
             <TouchableOpacity
@@ -400,7 +400,6 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                           disabled={loading}
                           onPress={handleEditDocumentsNotes}
                         >
-
                           {loading ? (
                             <ActivityIndicator
                               size="small"
@@ -419,9 +418,6 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
                               </AppText>
                             </View>
                           )}
-
-
-
                         </TouchableOpacity>
                       )}
                     </View>

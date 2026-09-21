@@ -10,14 +10,9 @@ import {
 import {
   Bell,
   BellOff,
-  Check,
-  CheckCheck,
-  Trash2,
   Truck,
   MessageSquare,
   FileText,
-  CheckCircle2,
-  ArrowRight,
 } from 'lucide-react-native';
 import { formatDate } from '../../../utils/helpers';
 import { COLORS } from '../../../constants';
@@ -172,7 +167,8 @@ const Notifications = () => {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           {isSelected ? (
-            <CheckCircle2
+            <AppIcon
+              name={'CheckCircle2'}
               size={20}
               color={COLORS.brandBrown}
               fill={COLORS.warmCreamDark}
@@ -221,7 +217,7 @@ const Notifications = () => {
             onPress={() => handleInitiateDeleteSingle(item?._id)}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Trash2 size={16} color={COLORS.grey400} />
+            <AppIcon name={'Trash2'} size={16} color={COLORS.grey400} />
           </TouchableOpacity>
           {item?.event === 'horse_shipt:chat_message_created' &&
           item?.data?.shipmentId ? (
@@ -234,7 +230,7 @@ const Notifications = () => {
               }
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              <ArrowRight size={16} color={COLORS.grey400} />
+              <AppIcon name={'ArrowRight'} size={16} color={COLORS.grey400} />
             </TouchableOpacity>
           ) : item?.event === 'horse_shipt:quote_vehicle_assigned' ? (
             <TouchableOpacity
@@ -247,7 +243,7 @@ const Notifications = () => {
               }}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              <ArrowRight size={16} color={COLORS.grey400} />
+              <AppIcon name={'ArrowRight'} size={16} color={COLORS.grey400} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -276,7 +272,8 @@ const Notifications = () => {
               onPress={handleMarkAllRead}
               activeOpacity={0.8}
             >
-              <CheckCheck
+              <AppIcon
+                name={'CheckCheck'}
                 size={18}
                 color={COLORS.brandBrown}
                 style={{ marginRight: 4 }}
@@ -420,7 +417,8 @@ const Notifications = () => {
               onPress={handleMarkSelectedRead}
               activeOpacity={0.8}
             >
-              <Check
+              <AppIcon
+                name={'Check'}
                 size={16}
                 color={COLORS.emeraldPrimary}
                 style={{ marginRight: 4 }}
@@ -433,7 +431,8 @@ const Notifications = () => {
               onPress={handleInitiateDeleteSelected}
               activeOpacity={0.8}
             >
-              <Trash2
+              <AppIcon
+                name={'Trash2'}
                 size={16}
                 color={COLORS.error}
                 style={{ marginRight: 4 }}
