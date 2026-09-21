@@ -25,7 +25,6 @@ import {
   ErrorView,
 } from '../../../components';
 import styles from './styles.notification';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import { useNavigation } from '@react-navigation/native';
 
@@ -220,7 +219,7 @@ const Notifications = () => {
             <AppIcon name={'Trash2'} size={16} color={COLORS.grey400} />
           </TouchableOpacity>
           {item?.event === 'horse_shipt:chat_message_created' &&
-          item?.data?.shipmentId ? (
+            item?.data?.shipmentId ? (
             <TouchableOpacity
               style={styles.deleteIconButton}
               onPress={() =>
@@ -260,7 +259,7 @@ const Notifications = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* HEADER */}
       <AppHeader
         showBack={true}
@@ -316,8 +315,8 @@ const Notifications = () => {
                 filter === 'all'
                   ? allCount
                   : filter === 'unread'
-                  ? unreadCount
-                  : readCount;
+                    ? unreadCount
+                    : readCount;
 
               return (
                 <TouchableOpacity
@@ -384,8 +383,8 @@ const Notifications = () => {
                 activeFilter === 'all'
                   ? "You're all caught up! No notifications to show right now."
                   : activeFilter === 'unread'
-                  ? 'No unread notifications.'
-                  : 'No read notifications found.'
+                    ? 'No unread notifications.'
+                    : 'No read notifications found.'
               }
             />
           ) : null
@@ -474,7 +473,7 @@ const Notifications = () => {
           onConfirm={handleConfirmDelete}
         />
       </Suspense>
-    </SafeAreaView>
+    </View>
   );
 };
 

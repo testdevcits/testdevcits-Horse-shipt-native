@@ -3,7 +3,7 @@ import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
 export default StyleSheet.create({
   button: {
-    height: 46,
+    height: 54,
     borderRadius: RADIUS.sm,
     backgroundColor: COLORS.primary,
     flexDirection: 'row',

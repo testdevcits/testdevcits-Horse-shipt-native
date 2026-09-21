@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
   },
   confirmBtn: {
-    height: SIZES.buttonHeight,
     borderRadius: RADIUS.md,
   },
 });

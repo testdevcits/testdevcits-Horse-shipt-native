@@ -678,6 +678,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
       <Tab.Navigator
         screenOptions={{
+          tabBarAllowFontScaling: false,
           tabBarScrollEnabled: true,
           tabBarShowIcon: true,
           tabBarIndicatorStyle: {

@@ -110,13 +110,9 @@ const styles = StyleSheet.create({
   textLightGold: { color: COLORS.goldLightBg },
 
   continueBtn: {
-    backgroundColor: COLORS.primary,
-    height: 48,
-    borderRadius: RADIUS.md,
-    shadowColor: COLORS.primary,
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+
+
+
   },
 
   footer: { marginTop: SPACING.lg, alignItems: 'center' },

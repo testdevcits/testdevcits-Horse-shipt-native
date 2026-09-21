@@ -26,72 +26,158 @@ const ProfileTab: React.FC<Props> = ({
 
   return (
     <View style={styles.tabSection}>
-      {/* Update Locations Button */}
-      <TouchableOpacity
-        style={styles.goldFilledBtn}
-        onPress={() => navigation.navigate('PreferredAreas')}
-        activeOpacity={0.8}
-      >
-        <AppText style={styles.goldFilledBtnText}>Update Locations</AppText>
-      </TouchableOpacity>
+      {/* Preferred Service Coverage Banner Card */}
+      <View style={styles.coverageBannerCard}>
+        <View style={styles.coverageLeft}>
+          <View style={styles.coverageIconBox}>
+            <AppIcon name="MapPin" size={20} color={COLORS.primary} />
+          </View>
+          <View style={styles.coverageTextCol}>
+            <AppText style={styles.coverageTitle}>Service Areas</AppText>
+            <AppText style={styles.coverageSubText}>
+              Set up to 4 operating coverage zones
+            </AppText>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={styles.manageLocationsBtn}
+          onPress={() => navigation.navigate('PreferredAreas')}
+          activeOpacity={0.8}
+        >
+          <AppIcon name="Compass" size={14} color={COLORS.white} />
+          <AppText style={styles.manageLocationsBtnText}>Manage</AppText>
+        </TouchableOpacity>
+      </View>
 
       {/* Basic Info Card */}
       <View style={styles.infoCard}>
         <View style={styles.infoCardHeader}>
-          <AppText style={styles.infoCardTitle}>Basic Info</AppText>
+          <View style={styles.infoCardTitleRow}>
+            <AppIcon name="UserCheck" size={18} color={COLORS.primary} />
+            <AppText style={styles.infoCardTitle}>Basic Info</AppText>
+          </View>
           <TouchableOpacity
             style={styles.iconEditBtn}
             onPress={onEditProfile}
             activeOpacity={0.7}
           >
-            <AppIcon name="Pencil" size={16} color={COLORS.textPrimary} />
+            <AppIcon name="Pencil" size={14} color={COLORS.primary} />
+            <AppText style={styles.editBtnText}>Edit</AppText>
           </TouchableOpacity>
         </View>
 
+        {/* Name Row */}
         <View style={styles.infoRow}>
-          <AppText style={styles.infoLabel}>Name</AppText>
-          <AppText style={styles.infoVal}>
-            {profileData?.name || user?.name || 'Not Available'}
-          </AppText>
+          <View style={styles.infoIconContainer}>
+            <AppIcon name="User" size={16} color={COLORS.textSecondary} />
+          </View>
+          <View style={styles.infoContentCol}>
+            <AppText style={styles.infoLabel}>FULL NAME</AppText>
+            <AppText style={styles.infoVal}>
+              {profileData?.name || user?.name || 'Not Available'}
+            </AppText>
+          </View>
         </View>
 
+        {/* Email Row */}
         <View style={styles.infoRow}>
-          <AppText style={styles.infoLabel}>Email</AppText>
-          <AppText style={styles.infoVal}>
-            {profileData?.email || user?.email || 'Not Available'}
-          </AppText>
+          <View style={styles.infoIconContainer}>
+            <AppIcon name="Mail" size={16} color={COLORS.textSecondary} />
+          </View>
+          <View style={styles.infoContentCol}>
+            <AppText style={styles.infoLabel}>EMAIL ADDRESS</AppText>
+            <AppText style={styles.infoVal}>
+              {profileData?.email || user?.email || 'Not Available'}
+            </AppText>
+          </View>
         </View>
 
+        {/* Phone Row */}
         <View style={styles.infoRow}>
-          <AppText style={styles.infoLabel}>Location</AppText>
-          <AppText style={styles.infoVal} numberOfLines={4}>
-            {profileData?.locale?.address || 'Not Available'}
-          </AppText>
+          <View style={styles.infoIconContainer}>
+            <AppIcon name="Phone" size={16} color={COLORS.textSecondary} />
+          </View>
+          <View style={styles.infoContentCol}>
+            <AppText style={styles.infoLabel}>PHONE NUMBER</AppText>
+            <AppText style={styles.infoVal}>
+              {profileData?.mobile || 'Not Available'}
+            </AppText>
+          </View>
         </View>
 
+        {/* Operating Address Row */}
         <View style={styles.infoRow}>
-          <AppText style={styles.infoLabel}>Account</AppText>
-          <AppText style={styles.infoVal}>Shipper</AppText>
+          <View style={styles.infoIconContainer}>
+            <AppIcon name="MapPin" size={16} color={COLORS.textSecondary} />
+          </View>
+          <View style={styles.infoContentCol}>
+            <AppText style={styles.infoLabel}>OPERATING LOCATION</AppText>
+            <AppText style={styles.infoVal} numberOfLines={3}>
+              {profileData?.locale?.address || 'Not Available'}
+            </AppText>
+          </View>
         </View>
 
-        <View style={styles.infoRow}>
-          <AppText style={styles.infoLabel}>Phone</AppText>
-          <AppText style={styles.infoVal}>
-            {profileData?.mobile || 'Not Available'}
-          </AppText>
+        {/* Account Type Row */}
+        <View
+          style={[
+            styles.infoRow,
+            !profileData?.description && { borderBottomWidth: 0 },
+          ]}
+        >
+          <View style={styles.infoIconContainer}>
+            <AppIcon name="ShieldCheck" size={16} color={COLORS.primary} />
+          </View>
+          <View style={styles.infoContentCol}>
+            <AppText style={styles.infoLabel}>ACCOUNT ROLE</AppText>
+            <View style={styles.accountTypeBadge}>
+              <AppText style={styles.accountTypeBadgeText}>
+                Verified Shipper
+              </AppText>
+            </View>
+          </View>
         </View>
 
+        {/* Description Row (if present) */}
         {profileData?.description ? (
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
-            <AppText style={styles.infoLabel}>Description</AppText>
-            <AppText style={styles.infoVal}>{profileData?.description}</AppText>
+            <View style={styles.infoIconContainer}>
+              <AppIcon name="FileText" size={16} color={COLORS.textSecondary} />
+            </View>
+            <View style={styles.infoContentCol}>
+              <AppText style={styles.infoLabel}>ABOUT / BIO</AppText>
+              <AppText style={styles.infoVal}>
+                {profileData?.description}
+              </AppText>
+            </View>
           </View>
         ) : null}
       </View>
 
       {/* Reviews Received Section */}
       <View style={styles.reviewsSection}>
-        <AppText style={styles.reviewsSectionTitle}>Reviews received</AppText>
+        <View style={styles.reviewsHeaderRow}>
+          <View style={styles.reviewsTitleRow}>
+            <AppIcon
+              name="Star"
+              size={18}
+              color={COLORS.warning}
+              fill={COLORS.warning}
+            />
+            <AppText style={styles.reviewsSectionTitle}>
+              Reviews Received
+            </AppText>
+          </View>
+          {reviewsList.length > 0 && (
+            <View style={styles.reviewsCountBadge}>
+              <AppText style={styles.reviewsCountBadgeText}>
+                {reviewsList.length}{' '}
+                {reviewsList.length === 1 ? 'Review' : 'Reviews'}
+              </AppText>
+            </View>
+          )}
+        </View>
 
         {reviewsList.length > 0 ? (
           <>
@@ -107,7 +193,7 @@ const ProfileTab: React.FC<Props> = ({
                       <AppIcon
                         key={s}
                         name="Star"
-                        size={16}
+                        size={15}
                         color={COLORS.warning}
                         fill={
                           s <= (rev?.rating || 5)
@@ -117,8 +203,8 @@ const ProfileTab: React.FC<Props> = ({
                       />
                     ))}
                   </View>
-                  <AppText style={styles.reviewText}>
-                    {rev?.reviewText || ''}
+                  <AppText style={styles.reviewText} numberOfLines={3}>
+                    "{rev?.reviewText || 'Great service and communication!'}"
                   </AppText>
                   <View style={styles.reviewerRow}>
                     <Image
@@ -129,8 +215,8 @@ const ProfileTab: React.FC<Props> = ({
                       }
                       style={styles.reviewerAvatar}
                     />
-                    <View>
-                      <AppText style={styles.reviewerName}>
+                    <View style={{ flex: 1 }}>
+                      <AppText style={styles.reviewerName} numberOfLines={1}>
                         {rev?.customerName ||
                           rev?.customerId?.name ||
                           'Customer'}
@@ -155,14 +241,19 @@ const ProfileTab: React.FC<Props> = ({
               activeOpacity={0.8}
             >
               <AppText style={styles.showMoreBtnText}>
-                Show more reviews
+                Show all reviews
               </AppText>
+              <AppIcon
+                name="ChevronRight"
+                size={14}
+                color={COLORS.textPrimary}
+              />
             </TouchableOpacity>
           </>
         ) : (
           <View style={styles.emptyReviewsCard}>
             <View style={styles.emptyIconCircle}>
-              <AppIcon name="Star" size={22} color={COLORS.primary} />
+              <AppIcon name="Star" size={24} color={COLORS.primary} />
             </View>
             <AppText style={styles.emptyReviewsTitle}>No Reviews Yet</AppText>
             <AppText style={styles.emptyReviewsSubtitle}>
@@ -180,8 +271,12 @@ const ProfileTab: React.FC<Props> = ({
           onPress={onLogout}
           activeOpacity={0.8}
         >
-          <AppIcon name="LogOut" size={18} color={COLORS.error} />
-          <AppText style={styles.logoutBtnText}>Logout</AppText>
+          <AppIcon
+            name="LogOut"
+            size={18}
+            color={COLORS.redPrimary || COLORS.error}
+          />
+          <AppText style={styles.logoutBtnText}>Logout Account</AppText>
         </TouchableOpacity>
       )}
     </View>
