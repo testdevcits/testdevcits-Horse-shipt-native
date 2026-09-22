@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
   Modal,
   View,
@@ -573,4 +573,4 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
   );
 };
 
-export default SubscriptionRequiredModal;
+export default memo(SubscriptionRequiredModal);

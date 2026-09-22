@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Modal,   View, TouchableOpacity } from 'react-native';
+import { Modal, View, TouchableOpacity } from 'react-native';
 import {
   LucideIcon,
   AlertTriangle,

@@ -1,17 +1,12 @@
 import React, { useCallback, useMemo, useRef, useEffect, memo } from 'react';
-import {   View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  COLORS,
-  SPACING,
-   
-  ICON_SIZE,
-} from '../../../constants';
+import { COLORS, SPACING, ICON_SIZE } from '../../../constants';
 import AppText from '../AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './PhotoSourceSheet.styles';

@@ -6,7 +6,6 @@ import {
   Modal,
   Platform,
   Pressable,
- 
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -14,13 +13,7 @@ import {
 import { AlertCircle, X } from 'lucide-react-native';
 
 import AppText from '../AppText';
-import {
-  COLORS,
-   
-  ICON_SIZE,
-  
-  SPACING,
-} from '../../../constants';
+import { COLORS, ICON_SIZE, SPACING } from '../../../constants';
 import styles from './ImageViewer.styles';
 
 type Props = {

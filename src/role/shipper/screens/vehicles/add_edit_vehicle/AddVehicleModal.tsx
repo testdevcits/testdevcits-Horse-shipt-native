@@ -56,7 +56,6 @@ const AddVehicleModal: React.FC<Props> = ({
 }) => {
   const vehicleToEdit = route?.params?.vehicleToEdit || propVehicleToEdit;
 
- 
   const handleClose = () => {
     if (navigation?.canGoBack?.()) {
       navigation.goBack();

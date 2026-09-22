@@ -26,8 +26,10 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const counts = useMemo(() => {
     return {
       ALL: shipments.length,
-      PENDING: shipments.filter((s: any) => s.tripStatus === 'pending').length,
-      ACTIVE: shipments.filter((s: any) => s.tripStatus === 'inTransit').length,
+      PENDING: shipments?.filter((s: any) => s?.tripStatus === 'pending')
+        .length,
+      ACTIVE: shipments?.filter((s: any) => s?.tripStatus === 'inTransit')
+        .length,
       DELIVERED: shipments.filter(
         (s: any) =>
           s.tripStatus === 'completed' || s.tripStatus === 'delivered',
@@ -39,13 +41,13 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const filteredShipments = useMemo(() => {
     switch (selectedTab) {
       case 'PENDING':
-        return shipments.filter((s: any) => s.tripStatus === 'pending');
+        return shipments?.filter((s: any) => s?.tripStatus === 'pending');
       case 'ACTIVE':
-        return shipments.filter((s: any) => s.tripStatus === 'inTransit');
+        return shipments?.filter((s: any) => s?.tripStatus === 'inTransit');
       case 'DELIVERED':
         return shipments.filter(
           (s: any) =>
-            s.tripStatus === 'completed' || s.tripStatus === 'delivered',
+            s?.tripStatus === 'completed' || s?.tripStatus === 'delivered',
         );
       default:
         return shipments;

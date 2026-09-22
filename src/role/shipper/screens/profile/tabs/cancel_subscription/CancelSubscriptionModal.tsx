@@ -237,6 +237,4 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
   );
 };
 
- 
-
 export default memo(CancelSubscriptionModal);

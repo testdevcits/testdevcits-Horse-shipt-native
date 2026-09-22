@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import {
   Modal,
-  
   View,
   TouchableOpacity,
   ScrollView,
@@ -11,17 +10,12 @@ import {
 
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  COLORS,
-  
-  ICON_SIZE,
-   
-  SPACING,
-} from '../../../constants';
+import { COLORS, ICON_SIZE, SPACING } from '../../../constants';
 import AppText from '../AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../utils/toast';
 import styles from './ShipmentLocationModal.styles';
+import ShipmentLocationFooter from './ShipmentLocationFooter';
 
 export interface ShipmentData {
   _id?: string;
@@ -396,35 +390,11 @@ const ShipmentLocationModal: React.FC<ShipmentLocationModalProps> = ({
           </ScrollView>
 
           {/* Action Buttons Footer */}
-          <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.mapButton}
-              onPress={handleOpenExternalMaps}
-              activeOpacity={0.8}
-              accessibilityRole="button"
-              accessibilityLabel="Get Directions"
-              accessibilityHint="Opens external map application for directions"
-            >
-              <AppIcon
-                name={'Navigation'}
-                size={18}
-                color={COLORS.primary}
-                strokeWidth={2.2}
-                style={{ marginRight: 8 }}
-              />
-              <AppText style={styles.mapButtonText}>Get Directions</AppText>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.closePrimaryBtn}
-              onPress={onClose}
-              activeOpacity={0.85}
-              accessibilityRole="button"
-              accessibilityLabel="Close"
-            >
-              <AppText style={styles.closePrimaryText}>Close</AppText>
-            </TouchableOpacity>
-          </View>
+          <ShipmentLocationFooter
+            handleOpenExternalMaps={handleOpenExternalMaps}
+            onClose={onClose}
+          />
         </TouchableOpacity>
       </TouchableOpacity>
     </Modal>

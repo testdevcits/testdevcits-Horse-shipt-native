@@ -21,7 +21,9 @@ import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
-const TransactionDetailsModal = lazy(() => import('./components/TransactionDetailsModal'));
+const TransactionDetailsModal = lazy(
+  () => import('./components/TransactionDetailsModal'),
+);
 const StripePaymentMethodCardModal = lazy(
   () => import('./components/StripePaymentMethodCardModal'),
 );

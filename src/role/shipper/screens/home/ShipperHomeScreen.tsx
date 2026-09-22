@@ -697,6 +697,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                     provider={PROVIDER_GOOGLE}
                     style={styles.mapView}
                     initialRegion={getRegionForShipment(selectedMapShipment)}
+                    showsUserLocation
                   >
                     {selectedMapShipment?.pickupCoords && (
                       <Marker

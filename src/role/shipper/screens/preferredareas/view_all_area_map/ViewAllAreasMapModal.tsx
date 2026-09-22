@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ScrollView,
-   
-} from 'react-native';
+import { Modal, View, TouchableOpacity, ScrollView } from 'react-native';
 import MapView, {
   Marker,
   Circle,
@@ -19,7 +13,6 @@ import { COLORS, SPACING } from '../../../../../constants';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import styles from './styles.AllAreasMapModal';
 
- 
 interface Props {
   visible: boolean;
   onClose: () => void;

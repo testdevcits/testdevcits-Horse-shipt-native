@@ -10,19 +10,14 @@ import {
   View,
   Modal,
   TouchableOpacity,
-  
   Animated,
-  
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
-import {
-  COLORS,
-  
-} from '../../../constants';
+import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';
 import AppIcon from '../../app_icon/AppIcon';

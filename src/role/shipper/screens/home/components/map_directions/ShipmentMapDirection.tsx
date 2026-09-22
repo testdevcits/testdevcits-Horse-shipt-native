@@ -49,6 +49,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
           longitudeDelta: 0.05,
         }}
         showsUserLocation={true}
+        userLocationAnnotationTitle="My Location"
         showsMyLocationButton={false}
         onMapReady={() => {
           setIsMapReady(true);
@@ -143,7 +144,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
               <AppText style={styles.statLabel}>Est. Time</AppText>
               <AppText style={styles.statValue}>
                 {/* {shipmentData?.estimatedDuration} hrs */}
-               
+
                 {time && `Duration: ${time} min.`}
               </AppText>
             </View>

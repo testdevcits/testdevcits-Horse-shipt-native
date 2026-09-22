@@ -1,14 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
-import { View,   TouchableOpacity, Image } from 'react-native';
-import {
-  COLORS,
-  
-  SPACING,
-  
-  ICON_SIZE,
-  RADIUS,
-  SIZES,
-} from '../../../constants';
+import { View, TouchableOpacity, Image } from 'react-native';
+import { COLORS, SPACING, ICON_SIZE, RADIUS, SIZES } from '../../../constants';
 import AppText from '../AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';

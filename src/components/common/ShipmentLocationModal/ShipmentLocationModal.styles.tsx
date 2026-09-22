@@ -3,7 +3,6 @@ import {
   COLORS,
   FONT_SIZE,
   FONTS,
-   
   RADIUS,
   SIZES,
   SPACING,

@@ -17,8 +17,8 @@ import useChatDetails from './useChatDetails';
 import {
   AppText,
   Input,
-  ShipmentLocationModal,
   ChatDetailsSkeleton,
+  LazyFallback,
 } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
@@ -31,6 +31,13 @@ import { showErrorToast } from '../../../../utils/toast';
 const PhotoSourceSheet = lazy(
   () =>
     import('../../../../components/common/PhotoSourceSheet/PhotoSourceSheet'),
+);
+
+const ShipmentLocationModal = lazy(
+  () =>
+    import(
+      '../../../../components/common/ShipmentLocationModal/ShipmentLocationModal'
+    ),
 );
 
 const ChatMessageImage = ({ uri }: { uri?: string }) => {
@@ -343,11 +350,15 @@ const ChatDetails = () => {
       )}
 
       {/* Shipment Location Details Modal */}
-      <ShipmentLocationModal
-        isVisible={showLocationModal}
-        onClose={() => setShowLocationModal(false)}
-        shipment={shipment}
-      />
+      {showLocationModal && (
+        <Suspense fallback={<ActivityIndicator size={'small'} />}>
+          <ShipmentLocationModal
+            isVisible={showLocationModal}
+            onClose={() => setShowLocationModal(false)}
+            shipment={shipment}
+          />
+        </Suspense>
+      )}
     </KeyboardAvoidingView>
   );
 };
