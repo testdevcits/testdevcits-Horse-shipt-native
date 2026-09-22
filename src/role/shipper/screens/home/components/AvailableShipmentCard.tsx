@@ -102,7 +102,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
       <View style={styles.cardRightCol}>
         <TouchableOpacity
           style={styles.externalActionBtn}
-          onPress={() => onPress(item)}
+          // onPress={() => onPress(item)}
           activeOpacity={0.8}
         >
           <AppIcon name={'ExternalLink'} size={14} color={COLORS.white} />

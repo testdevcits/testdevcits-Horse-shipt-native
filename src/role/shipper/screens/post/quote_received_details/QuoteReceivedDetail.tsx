@@ -27,10 +27,10 @@ import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import styles from './styles.QuoteReceivedDetails';
 
 const AskQuestionModal = lazy(
-  () => import('../../home/components/AskQuestionModal'),
+  () => import('../../home/components/ask_question/AskQuestionModal'),
 );
 const SubmitOfferModal = lazy(
-  () => import('../../home/shipment_details/SubmitOfferModal'),
+  () => import('../../home/components/submit_offer_modal/SubmitOfferModal'),
 );
 const ConnectBankModal = lazy(
   () => import('../../home/components/ConnectBankModal'),

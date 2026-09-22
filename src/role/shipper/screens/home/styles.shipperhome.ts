@@ -319,7 +319,6 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xxs,
-    flex: 1,
   },
   infoMetaRow: {
     flexDirection: 'row',

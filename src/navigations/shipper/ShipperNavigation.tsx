@@ -12,7 +12,7 @@ import AddVehicleScreen from '../../role/shipper/screens/vehicles/add_edit_vehic
 import PdfViewerScreen from '../../role/commonscreens/pdfviews/PdfViewerScreen';
 import AccountSetupScreen from '../../role/shipper/screens/payments/AccountSetupScreen';
 import EditProfileScreen from '../../role/shipper/screens/profile/edit_profile/EditProfileScreen';
-import ShipmentMapDirection from '../../role/shipper/screens/home/components/ShipmentMapDirection';
+import ShipmentMapDirection from '../../role/shipper/screens/home/components/map_directions/ShipmentMapDirection';
 import QuoteReceivedDetail from '../../role/shipper/screens/post/quote_received_details/QuoteReceivedDetail';
 
 const Stack = createNativeStackNavigator<{
