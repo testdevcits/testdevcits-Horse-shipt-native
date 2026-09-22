@@ -143,16 +143,72 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* UPDATE LOCATION SECTION */}
+          {/* 1. EMAIL & ACCOUNT TYPE ROW */}
+          <View style={styles.row}>
+            <View style={styles.col}>
+              <Input
+                label="EMAIL ADDRESS"
+                value={email}
+                disabled
+                editable={false}
+              />
+            </View>
+            <View style={styles.col}>
+              <Input
+                label="ACCOUNT TYPE"
+                value="VERIFIED SHIPPER"
+                disabled
+                editable={false}
+              />
+            </View>
+          </View>
+
+          {/* 2. PHONE NUMBER */}
+          <View style={{ marginBottom: SPACING.md }}>
+            <Input
+              label="PHONE NUMBER"
+              value={mobile}
+              onChangeText={setMobile}
+              placeholder="Enter phone number"
+              keyboardType="phone-pad"
+              leftIcon={
+                <CountryCodePicker
+                  selectedCountry={selectedCountry}
+                  onSelectCountry={c => setSelectedCountry(c)}
+                  showBorder={false}
+                />
+              }
+            />
+          </View>
+
+          {/* 3. DESCRIPTION / BIO */}
+          <View style={{ marginBottom: SPACING.md }}>
+            <Input
+              label="DESCRIPTION / BIO"
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Tell horse owners about your transport service & experience..."
+              multiline
+              maxLength={500}
+              inputContainerStyle={{ minHeight: 90 }}
+              rightIcon={
+                <AppText style={styles.charCounter}>
+                  {description?.length}/500
+                </AppText>
+              }
+            />
+          </View>
+
+          {/* 4. OPERATING LOCATION & MAP PREVIEW (Right above Save button) */}
           <View style={styles.fieldContainer}>
-            <AppText style={styles.fieldLabel}>LOCATION</AppText>
+            <AppText style={styles.fieldLabel}>OPERATING LOCATION</AppText>
             <LocationPicker
               value={address}
-              placeholder="Search location..."
+              placeholder="Search operating location..."
               onSelect={handleLocationSelect}
             />
 
-            {/* MAP PREVIEW */}
+            {/* MAP PREVIEW CARD */}
             <View style={styles.mapContainer}>
               <MapView
                 provider={PROVIDER_GOOGLE}
@@ -169,57 +225,6 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
                 <Marker coordinate={{ latitude, longitude }} />
               </MapView>
             </View>
-          </View>
-
-          {/* PHONE NUMBER */}
-          <View style={{ marginBottom: SPACING.md }}>
-            <Input
-              label="PHONE NUMBER"
-              value={mobile}
-              onChangeText={setMobile}
-              placeholder="Phone number"
-              keyboardType="phone-pad"
-              leftIcon={
-                <CountryCodePicker
-                  selectedCountry={selectedCountry}
-                  onSelectCountry={c => setSelectedCountry(c)}
-                  showBorder={false}
-                />
-              }
-            />
-          </View>
-
-          {/* EMAIL & ACCOUNT TYPE ROW */}
-          <View style={styles.row}>
-            <View style={styles.col}>
-              <Input label="EMAIL" value={email} disabled editable={false} />
-            </View>
-            <View style={styles.col}>
-              <Input
-                label="ACCOUNT TYPE"
-                value="SHIPPER"
-                disabled
-                editable={false}
-              />
-            </View>
-          </View>
-
-          {/* DESCRIPTION */}
-          <View style={{ marginBottom: SPACING.lg }}>
-            <Input
-              label="DESCRIPTION"
-              value={description}
-              onChangeText={setDescription}
-              placeholder="Enter description..."
-              multiline
-              maxLength={500}
-              inputContainerStyle={{ minHeight: 90 }}
-              rightIcon={
-                <AppText style={styles.charCounter}>
-                  {description?.length}/500
-                </AppText>
-              }
-            />
           </View>
         </ScrollView>
 

@@ -15,6 +15,11 @@ import EditProfileScreen from '../../role/shipper/screens/profile/edit_profile/E
 import ShipmentMapDirection from '../../role/shipper/screens/home/components/map_directions/ShipmentMapDirection';
 import QuoteReceivedDetail from '../../role/shipper/screens/post/quote_received_details/QuoteReceivedDetail';
 
+// New Screens
+import ShipperPaymentsScreen from '../../role/shipper/screens/payments/ShipperPaymentsScreen';
+import ShipperSubscriptionScreen from '../../role/shipper/screens/subscription/ShipperSubscriptionScreen';
+import ShipperNotificationSettingsScreen from '../../role/shipper/screens/notifications/ShipperNotificationSettingsScreen';
+
 const Stack = createNativeStackNavigator<{
   ShipperDrawer: undefined;
   ShipperShipmentDetails: undefined;
@@ -30,6 +35,9 @@ const Stack = createNativeStackNavigator<{
   EditProfile: undefined;
   ShipmentMapDirection: undefined;
   QuoteReceivedDetail: undefined;
+  ShipperPayments: undefined;
+  ShipperSubscription: undefined;
+  ShipperNotificationSettings: undefined;
 }>();
 
 const ShipperNavigation = () => {
@@ -59,10 +67,18 @@ const ShipperNavigation = () => {
         name="QuoteReceivedDetail"
         component={QuoteReceivedDetail}
       />
-
       <Stack.Screen
         name="ShipmentMapDirection"
         component={ShipmentMapDirection}
+      />
+      <Stack.Screen name="ShipperPayments" component={ShipperPaymentsScreen} />
+      <Stack.Screen
+        name="ShipperSubscription"
+        component={ShipperSubscriptionScreen}
+      />
+      <Stack.Screen
+        name="ShipperNotificationSettings"
+        component={ShipperNotificationSettingsScreen}
       />
     </Stack.Navigator>
   );

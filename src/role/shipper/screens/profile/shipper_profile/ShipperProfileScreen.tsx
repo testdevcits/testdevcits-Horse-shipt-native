@@ -6,7 +6,6 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
-  Modal,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -14,18 +13,13 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../../hooks/redux';
 import { updateUser, logoutUser } from '../../../../../redux/slices/authSlice';
 import { AppHeader, AppText, ProfileSkeleton } from '../../../../../components';
-import { COLORS, FONTS } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import imageIndex from '../../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
 
-import PaymentsTab from '../tabs/payments/PaymentsTab';
-import SubscriptionTab from '../tabs/subscription/SubscriptionTab';
-import NotificationTab from '../tabs/notifications/NotificationTab';
-import useShipperSubscription from '../../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
@@ -37,22 +31,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const ConnectBankModal = lazy(
     () => import('../../home/components/ConnectBankModal'),
   );
-  const SubscriptionRequiredModal = lazy(
-    () =>
-      import(
-        '../../../components/subscription_required_modal/SubscriptionRequiredModal'
-      ),
-  );
 
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  // Sub-modal states for Payments, Subscription, and Notifications
-  const [isPaymentsModalOpen, setIsPaymentsModalOpen] = useState(false);
-  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
-  const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
 
   const handleLogout = () => {
     setIsLogoutModalVisible(true);
@@ -72,23 +55,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   // Data states
   const [profileData, setProfileData] = useState<any>(null);
-  const [subscriptionData, setSubscriptionData] = useState<any>(null);
-  const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
-  const [subscriptionStatusData, setSubscriptionStatusData] = useState<any>(null);
-
-  const [_settingsData, setSettingsData] = useState<any>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
-
-  const {
-    shipperStatus,
-    subscriptionStatus,
-    plansData,
-    isModalVisible: isSubModalVisible,
-    openModal: openSubModal,
-    closeModal: closeSubModal,
-    refreshStatus: refreshSubStatus,
-  } = useShipperSubscription();
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -96,19 +64,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const [profileUploading, setProfileUploading] = useState(false);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [billingFilter, setBillingFilter] = useState<
-    'All' | 'Invoices' | 'Payments' | 'Payouts'
-  >('All');
-
-  // Notification Checkbox Toggles State
-  const [notifications, setNotifications] = useState<any>({
-    quote: { email: true, sms: true },
-    opportunity: { email: true, sms: true },
-    message: { email: true, sms: true },
-    question: { email: true, sms: true },
-    review: { email: true, sms: true },
-    shipment: { email: true, sms: true },
-  });
 
   const handleUploadBannerImage = async () => {
     try {
@@ -267,15 +222,10 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
   const fetchAllProfileData = async () => {
     try {
-      const [profRes, subRes, billRes, setRes, stripeRes, subStatusRes] =
-        await Promise.all([
-          shipperService.getProfile().catch(() => null),
-          shipperService.getSubscriptionPlan().catch(() => null),
-          shipperService.getBillingHistory().catch(() => null),
-          shipperService.getSettings().catch(() => null),
-          shipperService.getStripeStatus().catch(() => null),
-          shipperService.getSubscriptionStatus().catch(() => null),
-        ]);
+      const [profRes, stripeRes] = await Promise.all([
+        shipperService.getProfile().catch(() => null),
+        shipperService.getStripeStatus().catch(() => null),
+      ]);
 
       if (profRes?.data) {
         setProfileData(profRes.data);
@@ -305,21 +255,8 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           dispatch(updateUser({ profileImage: profRes.data?.profileImage }));
         }
       }
-      if (subRes?.data) {
-        setSubscriptionData(subRes.data);
-      }
-      if (billRes) {
-        setBillingHistoryData(billRes.data || billRes);
-      }
-      if (setRes?.data?.notifications) {
-        setSettingsData(setRes.data);
-        setNotifications(setRes.data?.notifications);
-      }
       if (stripeRes) {
         setStripeStatus(stripeRes);
-      }
-      if (subStatusRes) {
-        setSubscriptionStatusData(subStatusRes);
       }
     } catch (error) {
       console.error('Fetch Profile Data Error:', error);
@@ -337,26 +274,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
   const onRefresh = () => {
     setRefreshing(true);
     fetchAllProfileData();
-  };
-
-  const handleToggleNotification = async (
-    key: string,
-    channel: 'email' | 'sms',
-  ) => {
-    const updated = {
-      ...notifications,
-      [key]: {
-        ...notifications[key],
-        [channel]: !notifications[key]?.[channel],
-      },
-    };
-    setNotifications(updated);
-
-    try {
-      await shipperService.updateNotifications(updated);
-    } catch (e) {
-      console.error('Update Notifications Error:', e);
-    }
   };
 
   const _ratingVal = Number(
@@ -743,7 +660,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             {/* Payout Account (Stripe) */}
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => setIsPaymentsModalOpen(true)}
+              onPress={() => navigation.navigate('ShipperPayments')}
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>
@@ -784,7 +701,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             {/* Subscription & Billing */}
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => setIsSubscriptionModalOpen(true)}
+              onPress={() => navigation.navigate('ShipperSubscription')}
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>
@@ -862,7 +779,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             {/* Notification Preferences */}
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => setIsNotificationsModalOpen(true)}
+              onPress={() => navigation.navigate('ShipperNotificationSettings')}
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>
@@ -975,107 +892,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      {/* PAYMENTS MODAL */}
-      <Modal
-        visible={isPaymentsModalOpen}
-        animationType="slide"
-        onRequestClose={() => setIsPaymentsModalOpen(false)}
-      >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity
-              style={styles.modalCloseBtn}
-              onPress={() => setIsPaymentsModalOpen(false)}
-              activeOpacity={0.7}
-            >
-              <AppIcon name="X" size={20} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-            <AppText style={styles.modalTitle}>Payment Settings</AppText>
-            <View style={{ width: 32 }} />
-          </View>
-
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-          >
-            <PaymentsTab
-              stripeStatus={stripeStatus}
-              navigation={navigation}
-              onRefreshStripeStatus={fetchAllProfileData}
-            />
-          </ScrollView>
-        </SafeAreaView>
-      </Modal>
-
-      {/* SUBSCRIPTION MODAL */}
-      <Modal
-        visible={isSubscriptionModalOpen}
-        animationType="slide"
-        onRequestClose={() => setIsSubscriptionModalOpen(false)}
-      >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity
-              style={styles.modalCloseBtn}
-              onPress={() => setIsSubscriptionModalOpen(false)}
-              activeOpacity={0.7}
-            >
-              <AppIcon name="X" size={20} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-            <AppText style={styles.modalTitle}>Subscription & Billing</AppText>
-            <View style={{ width: 32 }} />
-          </View>
-
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-          >
-            <SubscriptionTab
-              subscriptionData={subscriptionData}
-              billingHistoryData={billingHistoryData}
-              subscriptionStatusData={subscriptionStatusData}
-              billingFilter={billingFilter}
-              setBillingFilter={setBillingFilter}
-              onOpenSubscriptionModal={openSubModal}
-              subsciptionPlans={subscriptionData?.plans || []}
-            />
-          </ScrollView>
-        </SafeAreaView>
-      </Modal>
-
-      {/* NOTIFICATION PREFERENCES MODAL */}
-      <Modal
-        visible={isNotificationsModalOpen}
-        animationType="slide"
-        onRequestClose={() => setIsNotificationsModalOpen(false)}
-      >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity
-              style={styles.modalCloseBtn}
-              onPress={() => setIsNotificationsModalOpen(false)}
-              activeOpacity={0.7}
-            >
-              <AppIcon name="X" size={20} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-            <AppText style={styles.modalTitle}>
-              Notification Preferences
-            </AppText>
-            <View style={{ width: 32 }} />
-          </View>
-
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-          >
-            <NotificationTab
-              notifications={notifications}
-              handleToggleNotification={handleToggleNotification}
-            />
-          </ScrollView>
-        </SafeAreaView>
-      </Modal>
-
       {/* LOGOUT CONFIRMATION MODAL */}
       <Suspense fallback={null}>
         <ConfirmationModal
@@ -1096,17 +912,6 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
           navigation={navigation}
-        />
-      </Suspense>
-
-      <Suspense fallback={null}>
-        <SubscriptionRequiredModal
-          visible={isSubModalVisible}
-          onClose={closeSubModal}
-          shipperStatus={shipperStatus}
-          subscriptionStatus={subscriptionStatus}
-          plansData={plansData}
-          onSubscriptionSuccess={refreshSubStatus}
         />
       </Suspense>
     </View>

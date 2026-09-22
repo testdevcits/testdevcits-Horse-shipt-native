@@ -351,6 +351,19 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
   },
+  // MAP PREVIEW STYLES
+  mapContainer: {
+    height: 140,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    marginTop: SPACING.xs,
+    borderWidth: 1,
+    borderColor: COLORS.divider,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+  },
 });
 
 export default styles;
