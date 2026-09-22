@@ -213,6 +213,16 @@ const shipperService = {
     return axiosClient.get(`/api/questions/${shipmentId}`);
   },
 
+  // get Google review link (Get /api/shipper/reviews/google-link)
+  getGoogleReviewLink: async (): Promise<{
+    success: boolean;
+    message?: string;
+    googleReviewLink?: string;
+    data?: any;
+  }> => {
+    return axiosClient.get('/api/shipper/reviews/google-link');
+  },
+
   // Update Google review link (PUT /api/shipper/reviews/google-link)
   updateGoogleReviewLink: async (
     googleReviewLink: string,

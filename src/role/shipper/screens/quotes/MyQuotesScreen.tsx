@@ -25,7 +25,7 @@ import {
   ShipmentsSkeleton,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
-import ShipperQuoteCard from './ShipperQuoteCard';
+import ShipperQuoteCard from './components/shipper_quote_card/ShipperQuoteCard';
 import styles from './styles.myquotes';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
@@ -39,7 +39,7 @@ const ConfirmationModal = lazy(
   () =>
     import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
-const ContractModal = lazy(() => import('./ContractModal'));
+const ContractModal = lazy(() => import('./components/contract_modal/ContractModal'));
 const AppSelect = lazy(
   () => import('../../../../components/common/AppSelect/AppSelect'),
 );

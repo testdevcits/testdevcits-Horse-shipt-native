@@ -19,6 +19,7 @@ import ShipmentCard from './cards/shipment_card/ShipmentCard';
 import PaymentCard from './cards/payment_card/PaymentCard';
 import ReviewCard from './cards/review_card/ReviewCard';
 import ShipperCard from './cards/shipper_card/ShipperCard';
+import VehicleItemCard from './cards/vehicle_card/VehicleItemCard';
 import TruckDriverCard from './cards/truck_driver_card/TruckDriverCard';
 import CountryCodePicker, {
   COUNTRIES,
@@ -79,6 +80,7 @@ export {
   ShipmentCard,
   PaymentCard,
   ReviewCard,
+  VehicleItemCard,
   CountryCodePicker,
   COUNTRIES,
   LazyFallback,

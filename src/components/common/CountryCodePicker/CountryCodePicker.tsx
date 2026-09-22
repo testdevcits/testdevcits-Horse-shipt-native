@@ -4,10 +4,9 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
-  StyleSheet,
   Pressable,
 } from 'react-native';
-import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
+import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './styles.CountryCodePIcker';

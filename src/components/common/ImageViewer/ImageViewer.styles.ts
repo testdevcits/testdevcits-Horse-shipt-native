@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import {
   COLORS,
   FONT_SIZE,
-  ICON_SIZE,
+  
   RADIUS,
   SIZES,
   SPACING,

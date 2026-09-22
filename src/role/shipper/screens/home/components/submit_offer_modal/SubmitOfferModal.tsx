@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -13,13 +12,7 @@ import {
 import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
 import { AppText, Input } from '../../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  RADIUS,
-  FONT_SIZE,
-} from '../../../../../../constants';
+import { COLORS, SPACING } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';

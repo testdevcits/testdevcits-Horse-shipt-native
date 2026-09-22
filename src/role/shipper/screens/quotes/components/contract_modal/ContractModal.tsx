@@ -8,10 +8,10 @@ import {
   Image,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { AppText } from '../../../../components';
-import { COLORS } from '../../../../constants';
+import { AppText } from '../../../../../../components';
+import { COLORS } from '../../../../../../constants';
 import styles from './styles.contractmodal';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
 
 interface ContractModalProps {
   visible: boolean;

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import {
   Modal,
-  StyleSheet,
+  
   View,
   TouchableOpacity,
   ScrollView,
@@ -13,11 +13,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   COLORS,
-  FONT_SIZE,
-  FONTS,
+  
   ICON_SIZE,
-  RADIUS,
-  SIZES,
+   
   SPACING,
 } from '../../../constants';
 import AppText from '../AppText';

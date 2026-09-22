@@ -21,9 +21,9 @@ import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
-const TransactionDetailsModal = lazy(() => import('./TransactionDetailsModal'));
+const TransactionDetailsModal = lazy(() => import('./components/TransactionDetailsModal'));
 const StripePaymentMethodCardModal = lazy(
-  () => import('./StripePaymentMethodCardModal'),
+  () => import('./components/StripePaymentMethodCardModal'),
 );
 
 interface CardStatusState {
@@ -334,7 +334,7 @@ const EarningsScreen = () => {
           <View style={styles.loaderContainer}>
             <ActivityIndicator size="small" color={COLORS.primary} />
           </View>
-        ) : cardStatus.hasCard ? (
+        ) : cardStatus?.hasCard ? (
           <>
             <View style={styles.activeCardContainer}>
               <View style={styles.cardIconBox}>
@@ -347,8 +347,8 @@ const EarningsScreen = () => {
               <View style={styles.activeCardTextCol}>
                 <AppText style={styles.activeCardLabel}>Active Card</AppText>
                 <AppText style={styles.activeCardNumber}>
-                  {(cardStatus.cardBrand || 'VISA').toUpperCase()}....
-                  {cardStatus.cardLast4 || 'Not Available'}
+                  {(cardStatus?.cardBrand || 'VISA').toUpperCase()}....
+                  {cardStatus?.cardLast4 || 'Not Available'}
                 </AppText>
               </View>
               <AppIcon name={'CheckCircle'} size={22} color={COLORS.success} />
@@ -580,7 +580,7 @@ const EarningsScreen = () => {
 
       {/* Professional Feedback Modal (Replaces Native Alert) */}
       <Modal
-        visible={feedbackModal.visible}
+        visible={feedbackModal?.visible}
         transparent
         animationType="fade"
         onRequestClose={() =>
@@ -589,7 +589,7 @@ const EarningsScreen = () => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.feedbackModalContent}>
-            {feedbackModal.type === 'success' ? (
+            {feedbackModal?.type === 'success' ? (
               <View style={styles.feedbackIconBoxSuccess}>
                 <AppIcon
                   name={'CheckCircle2'}
@@ -604,10 +604,10 @@ const EarningsScreen = () => {
             )}
 
             <AppText style={styles.feedbackTitle}>
-              {feedbackModal.title}
+              {feedbackModal?.title}
             </AppText>
             <AppText style={styles.feedbackSub}>
-              {feedbackModal.message}
+              {feedbackModal?.message}
             </AppText>
 
             <TouchableOpacity

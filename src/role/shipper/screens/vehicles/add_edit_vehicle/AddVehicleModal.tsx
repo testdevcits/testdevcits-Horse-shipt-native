@@ -50,15 +50,13 @@ const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
   route,
-
   onClose,
   onSuccess,
   vehicleToEdit: propVehicleToEdit,
 }) => {
   const vehicleToEdit = route?.params?.vehicleToEdit || propVehicleToEdit;
 
-  console.log('AddVehicleModal vehicleToEdit:', vehicleToEdit);
-
+ 
   const handleClose = () => {
     if (navigation?.canGoBack?.()) {
       navigation.goBack();

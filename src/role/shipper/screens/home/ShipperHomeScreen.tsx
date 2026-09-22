@@ -33,7 +33,7 @@ import styles from './styles.shipperhome';
 import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
 import SubscriptionRequiredModal from '../../components/subscription_required_modal/SubscriptionRequiredModal';
-import StripePaymentMethodCardModal from '../earnings/StripePaymentMethodCardModal';
+import StripePaymentMethodCardModal from '../earnings/components/StripePaymentMethodCardModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showSuccessToast } from '../../../../utils/toast';
 

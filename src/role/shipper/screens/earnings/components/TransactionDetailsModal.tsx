@@ -1,15 +1,15 @@
 import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { AppText } from '../../../../components';
+import { AppText } from '../../../../../components';
 import {
   COLORS,
   FONT_SIZE,
   FONTS,
   SPACING,
   RADIUS,
-} from '../../../../constants';
-import { formatDate } from '../../../../utils/helpers';
-import AppIcon, { IconName } from '../../../../components/app_icon/AppIcon';
+} from '../../../../../constants';
+import { formatDate } from '../../../../../utils/helpers';
+import AppIcon, { IconName } from '../../../../../components/app_icon/AppIcon';
 
 interface TransactionDetailsModalProps {
   selectedTx: any;

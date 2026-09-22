@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useEffect, memo } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import {   View, TouchableOpacity } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -9,9 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   COLORS,
   SPACING,
-  RADIUS,
-  FONT_SIZE,
-  FONTS,
+   
   ICON_SIZE,
 } from '../../../constants';
 import AppText from '../AppText';

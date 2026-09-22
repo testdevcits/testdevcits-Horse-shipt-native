@@ -5,7 +5,7 @@ import { AppHeader } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import AskQuestionModal from '../home/components/ask_question/AskQuestionModal';
 import SubmitOfferModal from '../home/components/submit_offer_modal/SubmitOfferModal';
-import ContractModal from '../quotes/ContractModal';
+import ContractModal from '../quotes/components/contract_modal/ContractModal';
 import MyShipmentsScreen from './my_shipments/MyShipmentsScreen';
 import QuoteRequestScreen from './quote_received/QuoteRequestScreen';
 import AllShipmentScreen from './all_Shipments/AllShipmentScreen';

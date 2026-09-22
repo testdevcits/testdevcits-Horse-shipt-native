@@ -1,16 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity, StatusBar } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
 // Import your constants
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  RADIUS,
-  FONT_SIZE,
-} from '../../../../../../constants';
+import { COLORS } from '../../../../../../constants';
 import { AppText } from '../../../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../../config/constants';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
@@ -21,7 +15,10 @@ import styles from './styles.MapDirection';
 const ShipmentMapDirection = ({ route, navigation }: any) => {
   // Use the params provided in your JSON
   const { shipmentData } = route.params;
+
   console.log(' shipmentData   ', shipmentData);
+
+  const [time, setTime] = useState<any>(undefined);
 
   const mapRef = useRef<MapView>(null);
   const [_isMapReady, setIsMapReady] = useState(false);
@@ -92,6 +89,7 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
           optimizeWaypoints={true}
           onReady={result => {
             console.log(`Distance: ${result.distance} km`);
+            setTime(result?.duration);
             console.log(`Duration: ${result.duration} min.`);
           }}
         />
@@ -144,7 +142,9 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
             <View style={styles.statTextContent}>
               <AppText style={styles.statLabel}>Est. Time</AppText>
               <AppText style={styles.statValue}>
-                {shipmentData?.estimatedDuration} hrs
+                {/* {shipmentData?.estimatedDuration} hrs */}
+               
+                {time && `Duration: ${time} min.`}
               </AppText>
             </View>
           </View>

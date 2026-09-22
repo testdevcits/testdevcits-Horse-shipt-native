@@ -6,7 +6,7 @@ import {
   Modal,
   Platform,
   Pressable,
-  StyleSheet,
+ 
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -16,10 +16,9 @@ import { AlertCircle, X } from 'lucide-react-native';
 import AppText from '../AppText';
 import {
   COLORS,
-  FONT_SIZE,
+   
   ICON_SIZE,
-  RADIUS,
-  SIZES,
+  
   SPACING,
 } from '../../../constants';
 import styles from './ImageViewer.styles';

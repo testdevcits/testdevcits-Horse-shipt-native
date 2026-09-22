@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from 'react'; // 1. Import memo & useEffect
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View,   TouchableOpacity, Image } from 'react-native';
 import {
   COLORS,
-  FONTS,
+  
   SPACING,
-  FONT_SIZE,
+  
   ICON_SIZE,
   RADIUS,
   SIZES,

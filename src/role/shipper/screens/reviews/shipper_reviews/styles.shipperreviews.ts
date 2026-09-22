@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: SPACING.xs,
+    marginTop: SPACING.sm2,
     marginBottom: SPACING.xs,
   },
   sectionTitle: {

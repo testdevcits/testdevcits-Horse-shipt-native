@@ -1,13 +1,6 @@
 import React, { memo } from 'react';
-import { Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SIZES,
-} from '../../../constants';
+import { Modal, View, TouchableOpacity } from 'react-native';
+import { COLORS } from '../../../constants';
 import AppText from '../AppText';
 import { openDeviceSettings } from '../../../utils/permissionHelper';
 import AppIcon from '../../app_icon/AppIcon';

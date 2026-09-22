@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -13,13 +12,7 @@ import {
 
 import { formatDate } from '../../../../../../utils/helpers';
 import { AppText, Input } from '../../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  RADIUS,
-  FONT_SIZE,
-} from '../../../../../../constants';
+import { COLORS } from '../../../../../../constants';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import Toast from 'react-native-toast-message';
 import styles from './styles.AskQuestion';

@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
+   
 } from 'react-native';
 import MapView, {
   Marker,
@@ -19,8 +19,7 @@ import { COLORS, SPACING } from '../../../../../constants';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import styles from './styles.AllAreasMapModal';
 
-const { height } = Dimensions.get('window');
-
+ 
 interface Props {
   visible: boolean;
   onClose: () => void;

@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.bold,
     color: COLORS.textPrimary,
+   
   },
   addressSection: {
     marginBottom: SPACING.xl,

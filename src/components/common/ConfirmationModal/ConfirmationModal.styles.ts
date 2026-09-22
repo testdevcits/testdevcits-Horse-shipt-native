@@ -3,7 +3,7 @@ import {
   COLORS,
   FONT_SIZE,
   FONTS,
-  ICON_SIZE,
+  
   RADIUS,
   SPACING,
 } from '../../../constants';

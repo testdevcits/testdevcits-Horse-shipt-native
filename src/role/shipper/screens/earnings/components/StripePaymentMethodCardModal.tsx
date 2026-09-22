@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { CardField } from '@stripe/stripe-react-native';
-import { AppText, Input } from '../../../../components';
-import { COLORS, FONT_SIZE } from '../../../../constants';
-import styles from './styles.earnings';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import { AppText, Input } from '../../../../../components';
+import { COLORS, FONT_SIZE } from '../../../../../constants';
+import styles from '../styles.earnings';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 
 interface StripePaymentMethodCardModalProps {
   isCardModalVisible: boolean;

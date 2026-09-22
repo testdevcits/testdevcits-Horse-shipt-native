@@ -1,12 +1,12 @@
 import React, { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 
-import { formatDate } from '../../../../utils/helpers';
-import { AppText } from '../../../../components';
-import { COLORS, FONTS } from '../../../../constants';
-import styles from './styles.myquotes';
-import { horsePlaceholderImage } from '../../../../config/constants';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import { formatDate } from '../../../../../../utils/helpers';
+import { AppText } from '../../../../../../components';
+import { COLORS, FONTS } from '../../../../../../constants';
+import { horsePlaceholderImage } from '../../../../../../config/constants';
+import AppIcon from '../../../../../../components/app_icon/AppIcon';
+import styles from './ShipperQuoteCard.styles';
 
 interface ShipperQuoteCardProps {
   quote: any;

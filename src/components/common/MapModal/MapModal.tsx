@@ -10,10 +10,9 @@ import {
   View,
   Modal,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
+  
   Animated,
-  Platform,
+  
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
@@ -22,11 +21,7 @@ import MapViewDirections from 'react-native-maps-directions';
 
 import {
   COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SIZES,
+  
 } from '../../../constants';
 import AppText from '../AppText';
 import { GOOGLE_MAPS_APIKEY } from '../../../config/constants';

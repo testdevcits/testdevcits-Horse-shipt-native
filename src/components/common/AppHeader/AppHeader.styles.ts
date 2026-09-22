@@ -4,7 +4,7 @@ import {
   FONTS,
   SPACING,
   FONT_SIZE,
-  ICON_SIZE,
+  
   RADIUS,
   SIZES,
 } from '../../../constants';

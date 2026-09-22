@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  StyleSheet,
+  
   View,
   Image,
-  Platform,
+   
   ViewStyle,
   StyleProp,
   TouchableOpacity,
 } from 'react-native';
-import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../constants';
+import { COLORS,  } from '../../../constants';
 import AppText from '../AppText';
 import AppIcon from '../../app_icon/AppIcon';
 import styles from './DriverHeader.styles';

@@ -1,16 +1,8 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  lazy,
-  Suspense,
-} from 'react';
+import React, { useCallback, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
-  Image,
   RefreshControl,
   Platform,
 } from 'react-native';
@@ -19,18 +11,14 @@ import {
   AppHeader,
   AppText,
   EmptyState,
-  AppSelectRef,
   ShipmentsSkeleton,
+  VehicleItemCard,
 } from '../../../../../components';
-import { COLORS, FONTS, SPACING } from '../../../../../constants';
-import shipperService from '../../../../../api/services/shipperService';
+import { COLORS, SPACING } from '../../../../../constants';
 import styles from './styles.myvehicles';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import {
-  showErrorToast,
-  showInfoToast,
-  showSuccessToast,
-} from '../../../../../utils/toast';
+
+import useVehicleList from './useVehicleList';
 
 const ConfirmationModal = lazy(
   () =>
@@ -42,368 +30,27 @@ const AppSelect = lazy(
   () => import('../../../../../components/common/AppSelect/AppSelect'),
 );
 
-interface VehicleItemCardProps {
-  vehicle: any;
-  index: number;
-  onAssignDriver: (v: any) => void;
-  onEdit: (v: any) => void;
-  onDelete: (id: string, num: string) => void;
-}
-
-const VehicleItemCard = React.memo(
-  ({
-    vehicle,
-    index,
-    onAssignDriver,
-    onEdit,
-    onDelete,
-  }: VehicleItemCardProps) => {
-    const [imageError, setImageError] = useState(false);
-    const vehicleImg =
-      vehicle?.images && vehicle?.images[0]?.url
-        ? vehicle?.images[0].url
-        : null;
-    const status = vehicle?.verificationStatus || 'Not Available';
-    const assignedDriverName = vehicle?.driver?.name;
-
-    return (
-      <View key={vehicle?._id || index} style={styles.vehicleCard}>
-        {/* Vehicle Banner Image */}
-        <View style={styles.imageContainer}>
-          {vehicleImg && !imageError ? (
-            <Image
-              source={{ uri: vehicleImg }}
-              style={styles.vehicleImage}
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <View style={styles.fallbackImage}>
-              <AppIcon name={'Truck'} size={44} color={COLORS.primary} />
-            </View>
-          )}
-          {/* Status Badge */}
-          <View
-            style={[
-              styles.statusBadge,
-              status === 'APPROVED'
-                ? styles.statusApproved
-                : status === 'REJECTED'
-                ? styles.statusRejected
-                : styles.statusPending,
-            ]}
-          >
-            <AppText
-              style={[
-                styles.statusBadgeText,
-                status === 'APPROVED'
-                  ? styles.statusApprovedText
-                  : status === 'REJECTED'
-                  ? styles.statusRejectedText
-                  : styles.statusPendingText,
-              ]}
-            >
-              {status}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Card Main Info */}
-        <View style={styles.cardContent}>
-          <AppText style={styles.vehicleNum}>
-            {vehicle?.vehicleNumber || 'No Plate Number'}
-          </AppText>
-          <AppText style={styles.vehicleType}>
-            {vehicle?.vehicleType || 'Not Available'} -{' '}
-            {vehicle?.transportType || 'Not Available'}
-          </AppText>
-
-          {/* 2x2 Specs Grid */}
-          <View style={styles.specsGrid}>
-            <View style={styles.specBox}>
-              <AppIcon name={'Truck'} size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>VIN</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle?.vinNumber || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <AppIcon name={'Box'} size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Size</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle?.stallSize || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <AppIcon name={'Layers'} size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Stalls</AppText>
-                <AppText style={styles.specValue}>
-                  {vehicle?.numberOfStalls
-                    ? String(vehicle?.numberOfStalls).padStart(2, '0')
-                    : '01'}
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.specBox}>
-              <AppIcon name={'Truck'} size={18} color={COLORS.primary} />
-              <View style={styles.specBoxTextCol}>
-                <AppText style={styles.specLabel}>Stall Type</AppText>
-                <AppText style={styles.specValue} numberOfLines={1}>
-                  {vehicle?.trailerType || 'N/A'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          {/* Notes / Spec Description */}
-          {vehicle?.notes ? (
-            <View style={styles.notesBox}>
-              <AppIcon name={'FileText'} size={18} color={COLORS.primary} />
-              <View style={styles.notesTextCol}>
-                <AppText style={styles.notesTitle}>Notes</AppText>
-                <AppText style={styles.notesText}>{vehicle?.notes}</AppText>
-              </View>
-            </View>
-          ) : null}
-
-          {/* Action Buttons Row */}
-          <View style={styles.actionsRow}>
-            <TouchableOpacity
-              style={styles.actionPill}
-              onPress={() => onAssignDriver(vehicle)}
-            >
-              {assignedDriverName ? (
-                <AppIcon name={'UserCheck'} size={15} color={COLORS.primary} />
-              ) : (
-                <AppIcon
-                  name={'UserPlus'}
-                  size={15}
-                  color={COLORS.textPrimary}
-                />
-              )}
-              <AppText
-                style={[
-                  styles.actionPillText,
-                  assignedDriverName && {
-                    color: COLORS.primary,
-                    fontFamily: FONTS.bold,
-                  },
-                ]}
-                numberOfLines={1}
-              >
-                {assignedDriverName ? `${assignedDriverName}` : 'Assign Driver'}
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.actionPill}
-              onPress={() => onEdit(vehicle)}
-            >
-              <AppIcon name={'Edit'} size={15} color={COLORS.textPrimary} />
-              <AppText style={styles.actionPillText}>Edit</AppText>
-            </TouchableOpacity>
-            {vehicle?.currentShipment === null ? (
-              <TouchableOpacity
-                style={styles.actionPill}
-                onPress={() => onDelete(vehicle?._id, vehicle?.vehicleNumber)}
-              >
-                <AppIcon name={'Trash2'} size={15} color={COLORS.error} />
-                <AppText
-                  style={[styles.actionPillText, { color: COLORS.error }]}
-                >
-                  Delete
-                </AppText>
-              </TouchableOpacity>
-            ) : (
-              <View style={[styles.actionPill, styles.actionPillExtraStyles]}>
-                <AppText
-                  style={[styles.actionPillText, { color: COLORS.error }]}
-                >
-                  In-Use
-                </AppText>
-              </View>
-            )}
-          </View>
-        </View>
-      </View>
-    );
-  },
-);
-
 const MyVehiclesScreen = ({ navigation }: any) => {
-  const [vehicles, setVehicles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  // Driver Assignment State
-  const [drivers, setDrivers] = useState<any[]>([]);
-  const [selectedVehicleForDriver, setSelectedVehicleForDriver] =
-    useState<any>(null);
-  const driverSelectRef = useRef<AppSelectRef>(null);
-
-  // Delete Confirmation Modal State
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState<{
-    id: string;
-    vehicleNum: string;
-  } | null>(null);
-  const [deleting, setDeleting] = useState(false);
-
-  const fetchVehicles = async () => {
-    try {
-      const res = await shipperService.getVehicles();
-      if (res?.success || res?.vehicles) {
-        setVehicles(res?.vehicles || []);
-      }
-    } catch (error: any) {
-      console.error('Fetch Vehicles Error:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  const fetchDrivers = async () => {
-    try {
-      const res = await shipperService.getDrivers();
-      if (res?.success || res?.drivers || res?.data) {
-        const list = res?.drivers || res?.data || [];
-        setDrivers(list);
-        return list;
-      }
-    } catch (error) {
-      console.error('Fetch Drivers Error:', error);
-    }
-    return [];
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation?.addListener?.('focus', () => {
-      fetchVehicles();
-      fetchDrivers();
-    });
-    fetchVehicles();
-    fetchDrivers();
-    return unsubscribe;
-  }, [navigation]);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchVehicles();
-    fetchDrivers();
-  };
-
-  const handleOpenAssignDriver = useCallback(
-    async (vehicle: any) => {
-      setSelectedVehicleForDriver(vehicle);
-      let currentDrivers = drivers;
-      if (!currentDrivers || currentDrivers.length === 0) {
-        currentDrivers = await fetchDrivers();
-      }
-
-      if (!currentDrivers || currentDrivers.length === 0) {
-        showInfoToast(
-          'No Drivers Found',
-          'Please add drivers to your carrier profile first.',
-        );
-        return;
-      }
-
-      driverSelectRef.current?.present();
-    },
-    [drivers],
-  );
-
-  const handleSelectDriver = async (driverDisplayName: string) => {
-    if (!selectedVehicleForDriver) return;
-
-    const foundDriver = drivers.find(
-      d => (d.name || d.email || 'Unnamed Driver') === driverDisplayName,
-    );
-    if (!foundDriver) return;
-
-    const driverId = foundDriver._id || foundDriver.id;
-    const vehicleId = selectedVehicleForDriver._id;
-
-    try {
-      const res = await shipperService.assignDriver(vehicleId, driverId);
-      if (res?.success) {
-        showSuccessToast(
-          'Success',
-          res.message || 'Driver assigned successfully',
-        );
-        fetchVehicles();
-      } else {
-        showErrorToast('Error', res?.message || 'Failed to assign driver.');
-      }
-    } catch (error: any) {
-      console.error('Assign Driver Error:', error);
-      const errMsg =
-        error?.message ||
-        error?.response?.data?.message ||
-        error?.raw?.message ||
-        'Failed to assign driver.';
-
-      showErrorToast('Error', errMsg);
-    } finally {
-      setSelectedVehicleForDriver(null);
-    }
-  };
-
-  const handleDeleteVehicle = useCallback((id: string, vehicleNum: string) => {
-    setSelectedVehicle({ id, vehicleNum });
-    setDeleteModalVisible(true);
-  }, []);
-
-  const confirmDelete = async () => {
-    if (!selectedVehicle) return;
-    setDeleting(true);
-    try {
-      const res = await shipperService.deleteVehicle(selectedVehicle?.id);
-      if (res?.success) {
-        showSuccessToast('Success', 'Vehicle deleted successfully.');
-        setDeleteModalVisible(false);
-        setSelectedVehicle(null);
-        fetchVehicles();
-      } else {
-        showErrorToast('Error', res?.message || 'Failed to delete vehicle?.');
-      }
-    } catch (error: any) {
-      console.error('Delete Vehicle Error:', error);
-      const errMsg =
-        error?.message ||
-        error?.response?.data?.message ||
-        error?.raw?.message ||
-        'Failed to delete vehicle?.';
-
-      showErrorToast('Error', errMsg);
-    } finally {
-      setDeleting(false);
-    }
-  };
-
-  const handleAddNewVehicle = () => {
-    navigation.navigate('AddVehicle', {
-      onSuccess: fetchVehicles,
-    });
-  };
-
-  const handleEdit = useCallback(
-    (vehicle: any) => {
-      navigation.navigate('AddVehicle', {
-        vehicleToEdit: vehicle,
-        onSuccess: fetchVehicles,
-      });
-    },
-    [navigation],
-  );
+  const {
+    vehicles,
+    loading,
+    refreshing,
+    deleteModalVisible,
+    deleting,
+    handleOpenAssignDriver,
+    handleSelectDriver,
+    handleDeleteVehicle,
+    confirmDelete,
+    handleAddNewVehicle,
+    handleEdit,
+    setDeleteModalVisible,
+    onRefresh,
+    setSelectedVehicle,
+    selectedVehicle,
+    driverSelectRef,
+    selectedVehicleForDriver,
+    drivers,
+  } = useVehicleList({ navigation });
 
   const renderHeader = () => (
     <View style={styles.topCard}>

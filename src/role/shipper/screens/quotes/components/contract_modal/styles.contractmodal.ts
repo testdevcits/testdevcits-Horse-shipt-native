@@ -5,7 +5,7 @@ import {
   SPACING,
   RADIUS,
   FONT_SIZE,
-} from '../../../../constants';
+} from '../../../../../../constants';
 
 const { height } = Dimensions.get('window');
 

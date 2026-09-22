@@ -16,6 +16,18 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     gap: SPACING.lg,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: SPACING.xl,
+  },
+  loadingText: {
+    marginTop: SPACING.sm,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
@@ -40,6 +52,9 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: RADIUS.round,
@@ -55,8 +70,6 @@ const styles = StyleSheet.create({
   },
   badgeNotConnectedText: {
     color: COLORS.warning,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
   },
   badgeConnectedBg: {
     backgroundColor: COLORS.greenLightBg,
@@ -64,8 +77,6 @@ const styles = StyleSheet.create({
   },
   badgeConnectedText: {
     color: COLORS.greenSuccess,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
   },
   cardSub: {
     fontSize: FONT_SIZE.xs,
@@ -73,6 +84,55 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     lineHeight: 18,
     marginBottom: SPACING.md,
+  },
+
+  // Active Link Preview Section
+  activePreviewCard: {
+    backgroundColor: COLORS.slate50,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.grey200,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  activePreviewHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  activePreviewTitle: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  activeUrlText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.primary,
+    marginBottom: SPACING.sm,
+  },
+  activePreviewActions: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  actionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.grey300,
+  },
+  actionBtnText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
   },
 
   // Info Callout Box
