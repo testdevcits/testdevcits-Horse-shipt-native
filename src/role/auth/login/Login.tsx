@@ -33,6 +33,7 @@ const Login = () => {
     password,
     setPassword,
     isLoading,
+    isGoogleLoading,
     rememberMe,
     setRememberMe,
     selectedRole,
@@ -40,6 +41,7 @@ const Login = () => {
     setIsRoleModalVisible,
     errors,
     handleSignIn,
+    handleGoogleSignIn,
     setErrors,
     setSelectedRole,
   } = useLogin();
@@ -185,6 +187,30 @@ const Login = () => {
               onPress={handleSignIn}
               buttonStyle={styles.signInBtn}
             />
+
+            {/* Divider */}
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <AppText style={styles.dividerText}>or continue with</AppText>
+              <View style={styles.dividerLine} />
+            </View>
+
+            {/* Google Sign In Button */}
+            <TouchableOpacity
+              style={styles.googleBtn}
+              onPress={handleGoogleSignIn}
+              disabled={isGoogleLoading || isLoading}
+              activeOpacity={0.8}
+            >
+              <Image
+                source={imageIndex.Google}
+                style={styles.googleIcon}
+                resizeMode="contain"
+              />
+              <AppText style={styles.googleBtnText}>
+                {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+              </AppText>
+            </TouchableOpacity>
 
             <View style={styles.footer}>
               <AppText style={styles.footerText}>

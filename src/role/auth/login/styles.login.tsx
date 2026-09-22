@@ -125,6 +125,42 @@ const styles = StyleSheet.create({
   signInBtn: {
     marginTop: SPACING.lg,
   },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: SPACING.lg,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: COLORS.divider || '#E5E7EB',
+  },
+  dividerText: {
+    marginHorizontal: SPACING.md,
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+  },
+  googleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.divider || '#E5E7EB',
+    height: 50,
+    borderRadius: RADIUS.md,
+  },
+  googleIcon: {
+    width: 20,
+    height: 20,
+    marginRight: SPACING.sm,
+  },
+  googleBtnText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',

@@ -5,7 +5,9 @@ import {
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 import { useAppDispatch } from '../../../hooks/redux';
-import { loginUser } from '../../../redux/slices/authSlice';
+import { loginUser, googleLoginUser } from '../../../redux/slices/authSlice';
+import { signInWithGoogle } from '../../../services/googleAuthService';
+import { showErrorToast, showSuccessToast } from '../../../utils/toast';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,6 +21,7 @@ const useLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [isRoleModalVisible, setIsRoleModalVisible] = useState(false);
@@ -89,15 +92,55 @@ const useLogin = () => {
         }),
       ).unwrap();
     } catch (err: any) {
-      const _errorMsg =
+      const errorMsg =
         typeof err === 'string'
           ? err
           : err?.message || err?.errors?.[0] || 'Invalid credentials';
-      // Alert.alert('Authentication Error', errorMsg);
+      showErrorToast('Authentication Failed', errorMsg);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
+      if (!userRole || userRole.trim() === '' || userRole === 'null') {
+        userRole = 'customer';
+      }
+      await AsyncStorage.setItem('@user_role', userRole);
+
+      const googleUser = await signInWithGoogle();
+
+      if (!googleUser.idToken) {
+        throw new Error('Could not obtain Google ID Token.');
+      }
+
+      await dispatch(
+        googleLoginUser({
+          idToken: googleUser.idToken,
+          role: userRole as any,
+          intent: 'login',
+          email: googleUser.user.email,
+          name: googleUser.user.name,
+          photo: googleUser.user.photo,
+        }),
+      ).unwrap();
+
+      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+    } catch (err: any) {
+      if (err?.message !== 'Google Sign-In was cancelled.') {
+        showErrorToast(
+          'Google Sign-In Error',
+          err?.message || 'Failed to sign in with Google.',
+        );
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   return {
     navigation,
     isKeyboardOpen,
@@ -106,6 +149,7 @@ const useLogin = () => {
     password,
     setPassword,
     isLoading,
+    isGoogleLoading,
     rememberMe,
     setRememberMe,
     selectedRole,
@@ -113,9 +157,11 @@ const useLogin = () => {
     setIsRoleModalVisible,
     errors,
     handleSignIn,
+    handleGoogleSignIn,
     setErrors,
     setSelectedRole,
   };
 };
 
 export default useLogin;
+

@@ -62,6 +62,31 @@ const authService = {
     return transformResponse(response, role); // Pass role to ensure it's set
   },
 
+  googleLogin: async (googleData: {
+    idToken: string;
+    role: UserRole;
+    intent?: 'login' | 'signup';
+    email?: string;
+    name?: string | null;
+    photo?: string | null;
+  }) => {
+    try {
+      const response = await axiosClient.post('/api/auth/firebase/google', {
+        idToken: googleData.idToken,
+        role: googleData.role,
+        intent: googleData.intent || 'login',
+      });
+      return transformResponse(response, googleData.role);
+    } catch (error: any) {
+      // Fallback if backend returns mock/development offline error
+      const responseData = error.response?.data;
+      if (responseData && (responseData.user || responseData.token)) {
+        return transformResponse(responseData, googleData.role);
+      }
+      throw error;
+    }
+  },
+
   signup: async (
     payload: any,
   ): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {

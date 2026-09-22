@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ImageBackground,
@@ -12,8 +12,55 @@ import { AppText } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.Register';
+import { useAppDispatch } from '../../../hooks/redux';
+import { googleLoginUser } from '../../../redux/slices/authSlice';
+import { signInWithGoogle } from '../../../services/googleAuthService';
+import { showErrorToast, showSuccessToast } from '../../../utils/toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegisterScreen = ({ navigation }: any) => {
+  const dispatch = useAppDispatch();
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      let userRole = await AsyncStorage.getItem('@user_role');
+      if (!userRole || userRole.trim() === '' || userRole === 'null') {
+        userRole = 'customer';
+      }
+      await AsyncStorage.setItem('@user_role', userRole);
+
+      const googleUser = await signInWithGoogle();
+
+      if (!googleUser.idToken) {
+        throw new Error('Could not obtain Google ID Token.');
+      }
+
+      await dispatch(
+        googleLoginUser({
+          idToken: googleUser.idToken,
+          role: userRole as any,
+          intent: 'signup',
+          email: googleUser.user.email,
+          name: googleUser.user.name,
+          photo: googleUser.user.photo,
+        }),
+      ).unwrap();
+
+      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+    } catch (err: any) {
+      if (err?.message !== 'Google Sign-In was cancelled.') {
+        showErrorToast(
+          'Google Sign-In Error',
+          err?.message || 'Failed to sign in with Google.',
+        );
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -33,17 +80,6 @@ const RegisterScreen = ({ navigation }: any) => {
 
       {/* 2. Content Card (Overlapping) */}
       <View style={styles.contentCard}>
-        {/* 3. Circular Logo Seal */}
-        {/* <View style={styles.logoOuterRing}>
-                    <View style={styles.logoInnerRing}>
-                        <Image
-                            source={imageIndex.LogoIcon}
-                            style={styles.logoIcon}
-                            resizeMode="contain"
-                        />
-                    </View>
-                </View> */}
-
         <Image
           source={imageIndex.Logo}
           style={styles.logoIcon}
@@ -57,8 +93,8 @@ const RegisterScreen = ({ navigation }: any) => {
           <View style={styles.textSection}>
             <AppText style={styles.title}>Create new account</AppText>
             <AppText style={styles.description}>
-              Create your free SAM Global account to shop smarter, track orders,
-              and enjoy a seamless buying experience.
+              Create your free HorseShipt account to shop smarter, track orders,
+              and enjoy a seamless transportation experience.
             </AppText>
           </View>
 
@@ -70,19 +106,28 @@ const RegisterScreen = ({ navigation }: any) => {
               onPress={() => navigation.navigate('SignupFlowScreen')}
             />
 
-            {/* <View style={styles.dividerRow}>
-                            <AppText style={styles.dividerText}>Or</AppText>
-                        </View> */}
+            <View style={styles.dividerRow}>
+              <AppText style={styles.dividerText}>Or</AppText>
+            </View>
 
             {/* Social Logins */}
-
-            {/* <AppButton
-                            title="Continue with Google"
-                            leftIcon={<GoogleIcon />}
-                            buttonStyle={styles.googleBtn}
-                            textStyle={styles.darkBtnText}
-                        /> */}
+            <TouchableOpacity
+              style={styles.googleBtn}
+              onPress={handleGoogleSignIn}
+              disabled={isGoogleLoading}
+              activeOpacity={0.8}
+            >
+              <Image
+                source={imageIndex.Google}
+                style={{ width: 20, height: 20, marginRight: 10 }}
+                resizeMode="contain"
+              />
+              <AppText style={styles.darkBtnText}>
+                {isGoogleLoading ? 'Signing in...' : 'Continue with Google'}
+              </AppText>
+            </TouchableOpacity>
           </View>
+
 
           {/* 5. Footer Link */}
           <TouchableOpacity
