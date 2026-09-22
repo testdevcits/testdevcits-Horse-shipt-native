@@ -17,7 +17,10 @@ interface DeliveryStepProps {
 }
 
 const AppCalendarModal = lazy(
-  () => import('../../../../../../components/common/AppCalendarModal'),
+  () =>
+    import(
+      '../../../../../../components/common/AppCalendarModal/AppCalendarModal'
+    ),
 );
 const DeliveryStep: React.FC<DeliveryStepProps> = ({
   form,

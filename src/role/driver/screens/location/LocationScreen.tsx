@@ -27,7 +27,8 @@ import { RouteMapModal } from './RouteMapModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
 const LocationScreen = () => {

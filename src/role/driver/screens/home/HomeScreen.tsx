@@ -23,10 +23,16 @@ import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
-    () => import('../../../../components/common/ConfirmationModal'),
+    () =>
+      import(
+        '../../../../components/common/ConfirmationModal/ConfirmationModal'
+      ),
   );
   const LocationPermissionModal = lazy(
-    () => import('../../../../components/common/LocationPermissionModal'),
+    () =>
+      import(
+        '../../../../components/common/LocationPermissionModal/LocationPermissionModal'
+      ),
   );
 
   const {

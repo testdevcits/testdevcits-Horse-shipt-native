@@ -240,9 +240,7 @@ const ProfileTab: React.FC<Props> = ({
               }
               activeOpacity={0.8}
             >
-              <AppText style={styles.showMoreBtnText}>
-                Show all reviews
-              </AppText>
+              <AppText style={styles.showMoreBtnText}>Show all reviews</AppText>
               <AppIcon
                 name="ChevronRight"
                 size={14}

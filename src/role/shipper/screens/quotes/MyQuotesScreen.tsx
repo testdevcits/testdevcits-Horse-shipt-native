@@ -36,10 +36,13 @@ import {
 } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 const ContractModal = lazy(() => import('./ContractModal'));
-const AppSelect = lazy(() => import('../../../../components/common/AppSelect'));
+const AppSelect = lazy(
+  () => import('../../../../components/common/AppSelect/AppSelect'),
+);
 
 const MyQuotesScreen = () => {
   const navigation = useNavigation<any>();

@@ -109,11 +109,7 @@ const styles = StyleSheet.create({
   textWhite: { color: COLORS.white },
   textLightGold: { color: COLORS.goldLightBg },
 
-  continueBtn: {
-
-
-
-  },
+  continueBtn: {},
 
   footer: { marginTop: SPACING.lg, alignItems: 'center' },
   footerText: {

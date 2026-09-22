@@ -424,6 +424,4 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
   );
 };
 
- 
-
 export default memo(AskQuestionModal);

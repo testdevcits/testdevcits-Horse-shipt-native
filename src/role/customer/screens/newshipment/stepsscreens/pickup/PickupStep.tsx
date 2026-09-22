@@ -17,7 +17,10 @@ interface PickupStepProps {
 }
 
 const AppCalendarModal = lazy(
-  () => import('../../../../../../components/common/AppCalendarModal'),
+  () =>
+    import(
+      '../../../../../../components/common/AppCalendarModal/AppCalendarModal'
+    ),
 );
 
 const PickupStep: React.FC<PickupStepProps> = ({

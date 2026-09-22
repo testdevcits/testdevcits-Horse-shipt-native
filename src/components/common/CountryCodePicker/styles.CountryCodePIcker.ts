@@ -1,4 +1,3 @@
-
 import { StyleSheet } from 'react-native';
 import { COLORS, FONTS, FONT_SIZE, RADIUS, SPACING } from '../../../constants';
 
@@ -99,4 +98,4 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
 });
-export default styles
+export default styles;

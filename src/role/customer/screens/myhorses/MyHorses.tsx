@@ -20,7 +20,8 @@ import {
 import styles from './style.myhorses';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
 const MyHorses = ({ navigation }: any) => {

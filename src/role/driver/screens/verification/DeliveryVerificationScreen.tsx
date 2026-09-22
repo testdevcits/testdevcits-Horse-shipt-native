@@ -89,7 +89,10 @@ const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
 
 const DeliveryVerificationScreen = () => {
   const ConfirmationModal = lazy(
-    () => import('../../../../components/common/ConfirmationModal'),
+    () =>
+      import(
+        '../../../../components/common/ConfirmationModal/ConfirmationModal'
+      ),
   );
   const navigation = useNavigation<any>();
   const route = useRoute<any>();

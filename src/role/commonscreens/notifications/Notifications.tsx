@@ -29,7 +29,8 @@ import AppIcon from '../../../components/app_icon/AppIcon';
 import { useNavigation } from '@react-navigation/native';
 
 const ConfirmationModal = lazy(
-  () => import('../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 // Helper to determine notification icon based on content
 const getNotificationIcon = (title: string = '', message: string = '') => {
@@ -219,7 +220,7 @@ const Notifications = () => {
             <AppIcon name={'Trash2'} size={16} color={COLORS.grey400} />
           </TouchableOpacity>
           {item?.event === 'horse_shipt:chat_message_created' &&
-            item?.data?.shipmentId ? (
+          item?.data?.shipmentId ? (
             <TouchableOpacity
               style={styles.deleteIconButton}
               onPress={() =>
@@ -315,8 +316,8 @@ const Notifications = () => {
                 filter === 'all'
                   ? allCount
                   : filter === 'unread'
-                    ? unreadCount
-                    : readCount;
+                  ? unreadCount
+                  : readCount;
 
               return (
                 <TouchableOpacity
@@ -383,8 +384,8 @@ const Notifications = () => {
                 activeFilter === 'all'
                   ? "You're all caught up! No notifications to show right now."
                   : activeFilter === 'unread'
-                    ? 'No unread notifications.'
-                    : 'No read notifications found.'
+                  ? 'No unread notifications.'
+                  : 'No read notifications found.'
               }
             />
           ) : null

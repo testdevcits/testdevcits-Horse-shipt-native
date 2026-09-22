@@ -6,7 +6,7 @@ import { COLORS } from '../../../../constants'; // Adjust relative path as neede
 import AppText from '../../../../components/common/AppText';
 import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
 import styles from './styles.profile';
-import DriverHeader from '../../../../components/common/DriverHeader';
+import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
 import { Button } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
@@ -16,7 +16,10 @@ import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const Profile = () => {
   const ConfirmationModal = lazy(
-    () => import('../../../../components/common/ConfirmationModal'),
+    () =>
+      import(
+        '../../../../components/common/ConfirmationModal/ConfirmationModal'
+      ),
   );
   const { driver, allShipments, loading, refresh: _refresh } = useDriverMe();
   const dispatch = useAppDispatch();

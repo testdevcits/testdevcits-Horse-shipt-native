@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
-import DriverHeader from '../../../../components/common/DriverHeader';
+import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import { AppText, TripCard } from '../../../../components';
 import styles from './styles.alltrips';

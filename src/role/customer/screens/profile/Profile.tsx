@@ -37,10 +37,13 @@ import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const Profile = ({}: any) => {
   const ConfirmationModal = lazy(
-    () => import('../../../../components/common/ConfirmationModal'),
+    () =>
+      import(
+        '../../../../components/common/ConfirmationModal/ConfirmationModal'
+      ),
   );
   const ImageViewer = lazy(
-    () => import('../../../../components/common/ImageViewer'),
+    () => import('../../../../components/common/ImageViewer/ImageViewer'),
   );
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);

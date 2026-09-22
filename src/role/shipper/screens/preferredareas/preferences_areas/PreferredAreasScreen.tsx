@@ -19,7 +19,10 @@ import {
 
 const MAX_AREAS = 4;
 const ConfirmationModal = lazy(
-  () => import('../../../../../components/common/ConfirmationModal'),
+  () =>
+    import(
+      '../../../../../components/common/ConfirmationModal/ConfirmationModal'
+    ),
 );
 
 const PreferredAreasScreen = () => {

@@ -17,8 +17,12 @@ import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
-const AskQuestionModal = lazy(() => import('../components/ask_question/AskQuestionModal'));
-const SubmitOfferModal = lazy(() => import('../components/submit_offer_modal/SubmitOfferModal'));
+const AskQuestionModal = lazy(
+  () => import('../components/ask_question/AskQuestionModal'),
+);
+const SubmitOfferModal = lazy(
+  () => import('../components/submit_offer_modal/SubmitOfferModal'),
+);
 
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();

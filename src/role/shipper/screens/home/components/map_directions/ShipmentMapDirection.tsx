@@ -188,6 +188,4 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
   );
 };
 
- 
-
 export default ShipmentMapDirection;

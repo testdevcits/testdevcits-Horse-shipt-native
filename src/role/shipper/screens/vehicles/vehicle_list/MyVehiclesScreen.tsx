@@ -33,10 +33,13 @@ import {
 } from '../../../../../utils/toast';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../../components/common/ConfirmationModal'),
+  () =>
+    import(
+      '../../../../../components/common/ConfirmationModal/ConfirmationModal'
+    ),
 );
 const AppSelect = lazy(
-  () => import('../../../../../components/common/AppSelect'),
+  () => import('../../../../../components/common/AppSelect/AppSelect'),
 );
 
 interface VehicleItemCardProps {

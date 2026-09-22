@@ -30,7 +30,8 @@ import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
 const TABS = ['Overview', 'Quotes', 'Questions', 'Find Shipper'];

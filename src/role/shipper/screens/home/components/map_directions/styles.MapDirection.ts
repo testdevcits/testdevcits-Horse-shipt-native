@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 import {
   COLORS,
   FONTS,
@@ -201,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles
+export default styles;

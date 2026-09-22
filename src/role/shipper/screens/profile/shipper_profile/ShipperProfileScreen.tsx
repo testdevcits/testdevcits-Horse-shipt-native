@@ -32,7 +32,10 @@ const Tab = createMaterialTopTabNavigator();
 
 const ShipperProfileScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
-    () => import('../../../../../components/common/ConfirmationModal'),
+    () =>
+      import(
+        '../../../../../components/common/ConfirmationModal/ConfirmationModal'
+      ),
   );
   const ConnectBankModal = lazy(
     () => import('../../home/components/ConnectBankModal'),

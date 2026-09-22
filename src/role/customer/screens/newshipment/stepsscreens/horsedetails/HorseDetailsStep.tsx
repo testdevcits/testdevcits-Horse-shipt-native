@@ -21,7 +21,7 @@ interface HorseDetailsStepProps {
 }
 
 const AppSelect = lazy(
-  () => import('../../../../../../components/common/AppSelect'),
+  () => import('../../../../../../components/common/AppSelect/AppSelect'),
 );
 
 const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({

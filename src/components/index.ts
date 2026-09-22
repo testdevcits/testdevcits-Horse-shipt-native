@@ -1,13 +1,13 @@
-import AppHeader from './common/AppHeader';
+import AppHeader from './common/AppHeader/AppHeader';
 import SectionHeader from './common/SectionHeader';
-import AppCalendarModal from './common/AppCalendarModal';
-import PhotoSourceSheet from './common/PhotoSourceSheet';
-import AppSelect from './common/AppSelect';
-import MapModal from './common/MapModal';
+import AppCalendarModal from './common/AppCalendarModal/AppCalendarModal';
+import PhotoSourceSheet from './common/PhotoSourceSheet/PhotoSourceSheet';
+import AppSelect from './common/AppSelect/AppSelect';
+import MapModal from './common/MapModal/MapModal';
 import ChatlistCard from './cards/chatcard/ChatlistCard';
 import Button from './common/Button/AppButton';
 import Input from './common/Input/Input';
-import ConfirmationModal from './common/ConfirmationModal';
+import ConfirmationModal from './common/ConfirmationModal/ConfirmationModal';
 import AppText from './common/AppText';
 import { AppLoader } from './common/AppLoader';
 import { EmptyState } from './common/EmptyState';
@@ -23,10 +23,10 @@ import TruckDriverCard from './cards/truck_driver_card/TruckDriverCard';
 import CountryCodePicker, {
   COUNTRIES,
 } from './common/CountryCodePicker/CountryCodePicker';
-import ShipmentLocationModal from './common/ShipmentLocationModal';
-import LocationPermissionModal from './common/LocationPermissionModal';
+import ShipmentLocationModal from './common/ShipmentLocationModal/ShipmentLocationModal';
+import LocationPermissionModal from './common/LocationPermissionModal/LocationPermissionModal';
 import LazyFallback from './common/LazyFallback';
-import ImageViewer from './common/ImageViewer';
+import ImageViewer from './common/ImageViewer/ImageViewer';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -52,7 +52,7 @@ import SkeletonCircle from './skeletons/SkeletonCircle';
 import SkeletonText from './skeletons/SkeletonText';
 
 // Driver
-import DriverHeader from './common/DriverHeader';
+import DriverHeader from './common/DriverHeader/DriverHeader';
 
 export {
   AppHeader,
@@ -111,4 +111,4 @@ export {
   DriverHeader,
 };
 
-export type { AppSelectRef } from './common/AppSelect';
+export type { AppSelectRef } from './common/AppSelect/AppSelect';

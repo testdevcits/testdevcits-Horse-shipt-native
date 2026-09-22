@@ -29,7 +29,8 @@ import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast } from '../../../../utils/toast';
 
 const PhotoSourceSheet = lazy(
-  () => import('../../../../components/common/PhotoSourceSheet'),
+  () =>
+    import('../../../../components/common/PhotoSourceSheet/PhotoSourceSheet'),
 );
 
 const ChatMessageImage = ({ uri }: { uri?: string }) => {

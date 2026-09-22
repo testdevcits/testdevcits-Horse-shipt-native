@@ -23,7 +23,8 @@ import { COLORS, ICON_SIZE } from '../../../../constants';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const ConfirmationModal = lazy(
-  () => import('../../../../components/common/ConfirmationModal'),
+  () =>
+    import('../../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
 const MyShipments = ({ navigation }: { navigation?: any }) => {

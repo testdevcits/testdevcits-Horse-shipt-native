@@ -8,13 +8,14 @@ import {
   ICON_SIZE,
   RADIUS,
   SIZES,
-} from '../../constants';
-import AppText from './AppText';
+} from '../../../constants';
+import AppText from '../AppText';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchNotificationsThunk } from '../../redux/slices/notificationSlice';
-import imageIndex from '../../assets/images/imageIndex';
-import AppIcon from '../app_icon/AppIcon';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { fetchNotificationsThunk } from '../../../redux/slices/notificationSlice';
+import imageIndex from '../../../assets/images/imageIndex';
+import AppIcon from '../../app_icon/AppIcon';
+import styles from './AppHeader.styles';
 
 interface HeaderProps {
   title?: string;
@@ -174,68 +175,5 @@ const AppHeader = memo(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  header: {
-    height: SPACING.massive,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    // backgroundColor: COLORS.surface,
-    borderBottomWidth: SIZES.borderWidthThin,
-    borderBottomColor: COLORS.divider,
-  },
-  leftContainer: {
-    flex: 0.15,
-    alignItems: 'flex-start',
-  },
-  titleContainer: {
-    flex: 0.5,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  rightContainer: {
-    flex: 0.35,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  title: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.textPrimary,
-  },
-  iconBtn: {
-    padding: SPACING.xs2,
-  },
-  bellContainer: {
-    position: 'relative',
-  },
-  badge: {
-    position: 'absolute',
-    top: -5,
-    right: -7,
-    backgroundColor: COLORS.error,
-    minWidth: RADIUS.lg,
-    height: RADIUS.lg,
-    borderRadius: RADIUS.sm,
-    paddingHorizontal: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: COLORS.white,
-  },
-  badgeText: {
-    color: COLORS.white,
-    fontSize: FONT_SIZE.mini,
-    fontFamily: FONTS.bold,
-    textAlign: 'center',
-    lineHeight: SPACING.md,
-  },
-  profileBtn: {
-    marginLeft: SPACING.xs,
-    padding: SPACING.xs,
-  },
-});
 
 export default AppHeader;

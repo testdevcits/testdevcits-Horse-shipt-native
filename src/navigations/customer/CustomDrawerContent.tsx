@@ -44,7 +44,7 @@ interface DrawerMenuItemProps {
 }
 
 const ConfirmationModal = lazy(
-  () => import('../../components/common/ConfirmationModal'),
+  () => import('../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
 const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
