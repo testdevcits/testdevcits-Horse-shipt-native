@@ -124,11 +124,15 @@ const SubscriptionRequiredModal: React.FC<SubscriptionRequiredModalProps> = ({
     } catch (error: any) {
       console.error('Subscription Creation Error:', error);
 
-      showErrorToast(
-        'Error',
-        error?.response?.data?.message ||
-          'Something went wrong while subscribing.',
-      );
+      const errMessage =
+        typeof error === 'string'
+          ? error
+          : error?.message ||
+            error?.response?.data?.message ||
+            error?.response?.data?.errors?.[0] ||
+            'Something went wrong while subscribing.';
+
+      showErrorToast('Subscription Error', errMessage);
     } finally {
       setIsSubmitting(false);
     }

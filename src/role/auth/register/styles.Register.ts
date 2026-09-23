@@ -103,9 +103,12 @@ const styles = StyleSheet.create({
   googleBtn: {
     backgroundColor: COLORS.gray100, // Light gray
     height: 52,
-    borderRadius: RADIUS.round,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
     borderColor: COLORS.divider,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   facebookBtn: {
     backgroundColor: COLORS.facebookBlue, // Facebook Blue

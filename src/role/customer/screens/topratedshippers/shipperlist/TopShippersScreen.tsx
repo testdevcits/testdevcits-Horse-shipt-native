@@ -98,9 +98,9 @@ const TopShippersScreen = () => {
   }
 
   const renderHeader = () => {
-    const filtersActive = Object.values(activeFilters).some(
-      v => v !== 'All' && v !== 'Any Price',
-    );
+    // const filtersActive = Object.values(activeFilters).some(
+    //   v => v !== 'All' && v !== 'Any Price',
+    // );
 
     return (
       <View style={styles.headerContainer}>

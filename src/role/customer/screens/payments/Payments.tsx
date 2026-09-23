@@ -3,6 +3,7 @@ import { View, FlatList, RefreshControl, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import {
+  AppHeader,
   AppText,
   EmptyState,
   ErrorView,
@@ -39,14 +40,33 @@ const Payments = () => {
   if (loading && !refreshing)
     return (
       <View style={styles.container}>
+        <AppHeader
+          title="Payment History"
+          showBack={true}
+          showProfileImage={false}
+        />
         <PaymentsSkeleton />
       </View>
     );
   if (error)
-    return <ErrorView message={error} onRetry={() => fetchPayments()} />;
+    return (
+      <View style={styles.container}>
+        <AppHeader
+          title="Payment History"
+          showBack={true}
+          showProfileImage={false}
+        />
+        <ErrorView message={error} onRetry={() => fetchPayments()} />
+      </View>
+    );
 
   return (
     <View style={styles.container}>
+      <AppHeader
+        title="Payment History"
+        showBack={true}
+        showProfileImage={false}
+      />
       <View style={styles.header}>
         <AppText style={styles.title}>Transaction History</AppText>
         <AppText style={styles.subtitle}>
@@ -73,7 +93,6 @@ const Payments = () => {
         }
         ListEmptyComponent={
           <EmptyState
-            // icon={WalletCards}
             icon={
               <AppIcon
                 name={'WalletCards'}

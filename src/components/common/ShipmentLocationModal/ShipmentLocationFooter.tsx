@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import React, { memo } from 'react';
 import styles from './ShipmentLocationModal.styles';
 import AppIcon from '../../app_icon/AppIcon';

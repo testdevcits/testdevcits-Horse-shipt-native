@@ -14,12 +14,7 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import {
-  AppText,
-  Input,
-  ChatDetailsSkeleton,
-  LazyFallback,
-} from '../../../../components';
+import { AppText, Input, ChatDetailsSkeleton } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';

@@ -14,8 +14,8 @@ import ShipperDetail from '../../role/customer/screens/topratedshippers/shipperd
 import Profile from '../../role/customer/screens/profile/Profile';
 import PdfViewerScreen from '../../role/commonscreens/pdfviews/PdfViewerScreen';
 import LiveTrackingScreen from '../../role/customer/screens/tracking/LiveTrackingScreen';
-
 import NewShipment from '../../role/customer/screens/newshipment/NewShipment';
+import CustomerEditProfileScreen from '../../role/customer/screens/profile/edit_profile/CustomerEditProfileScreen';
 
 const Stack = createNativeStackNavigator<{
   CustomerDrawer: undefined;
@@ -31,6 +31,9 @@ const Stack = createNativeStackNavigator<{
   ShipperDetail: undefined;
   MapScreen: undefined;
   Profile: undefined;
+  EditProfile:
+    | { profileData?: any; user?: any; onSuccess?: (data: any) => void }
+    | undefined;
   PdfViewer: undefined;
   LiveTracking: undefined;
 }>();
@@ -55,6 +58,7 @@ const CustomerNavigation = () => {
       <Stack.Screen name="ShipperDetail" component={ShipperDetail} />
       <Stack.Screen name="MapScreen" component={MapScreen} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={CustomerEditProfileScreen} />
       <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
       <Stack.Screen name="LiveTracking" component={LiveTrackingScreen} />
     </Stack.Navigator>

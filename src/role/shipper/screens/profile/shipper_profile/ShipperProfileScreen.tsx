@@ -389,8 +389,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                         return profileData?.bannerImage?.url;
                       if (typeof user?.bannerImage === 'string')
                         return user?.bannerImage;
-                      if (user?.bannerImage?.url)
-                        return user?.bannerImage?.url;
+                      if (user?.bannerImage?.url) return user?.bannerImage?.url;
                       return null;
                     };
 
@@ -476,7 +475,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               {(profileData?.mobile || user?.mobile) && (
                 <>
                   <AppText style={{ color: COLORS.grey400 }}>•</AppText>
-                  <AppIcon name="Phone" size={13} color={COLORS.textSecondary} />
+                  <AppIcon
+                    name="Phone"
+                    size={13}
+                    color={COLORS.textSecondary}
+                  />
                   <AppText style={styles.profileContactText}>
                     {profileData?.mobile || user?.mobile}
                   </AppText>
@@ -485,7 +488,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.verifiedBadge}>
-              <AppIcon name="ShieldCheck" size={14} color={COLORS.saddleBrown} />
+              <AppIcon
+                name="ShieldCheck"
+                size={14}
+                color={COLORS.saddleBrown}
+              />
               <AppText style={styles.verifiedBadgeText}>
                 VERIFIED SHIPPER
               </AppText>
@@ -524,7 +531,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
 
           <View style={styles.statCol}>
             <View style={styles.statIconBox}>
-              <AppIcon name="ShieldCheck" size={16} color={COLORS.emeraldPrimary} />
+              <AppIcon
+                name="ShieldCheck"
+                size={16}
+                color={COLORS.emeraldPrimary}
+              />
             </View>
             <AppText
               style={[
@@ -664,7 +675,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>
-                <AppIcon name="CreditCard" size={18} color={COLORS.saddleBrown} />
+                <AppIcon
+                  name="CreditCard"
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
               </View>
               <View style={styles.menuContent}>
                 <AppText style={styles.menuItemTitle}>
@@ -821,7 +836,11 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>
-                <AppIcon name="ShieldCheck" size={18} color={COLORS.saddleBrown} />
+                <AppIcon
+                  name="ShieldCheck"
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
               </View>
               <View style={styles.menuContent}>
                 <AppText style={styles.menuItemTitle}>Privacy Policy</AppText>
@@ -842,7 +861,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                 <AppIcon name="FileText" size={18} color={COLORS.saddleBrown} />
               </View>
               <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>Terms & Conditions</AppText>
+                <AppText style={styles.menuItemTitle}>
+                  Terms & Conditions
+                </AppText>
                 <AppText style={styles.menuItemSub}>
                   Terms of service agreement
                 </AppText>

@@ -1,41 +1,28 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useCallback } from 'react';
 import {
   View,
   Image,
   TouchableOpacity,
   ScrollView,
-  Modal,
   StyleSheet,
   ActivityIndicator,
   Pressable,
+  RefreshControl,
 } from 'react-native';
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  RADIUS,
-  FONT_SIZE,
-} from '../../../../constants';
+import { COLORS } from '../../../../constants';
 import { useProfile } from './useProfile';
-import { useAppDispatch } from '../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
 import {
   AppHeader,
   AppLoader,
   AppText,
-  CountryCodePicker,
-  COUNTRIES,
-  Input,
   ProfileSkeleton,
 } from '../../../../components';
 import styles from './styles.profile';
-import NotificationSettings from '../notificationsettings/NotificationSettings';
-import Payments from '../payments/Payments';
-import { useAppSelector } from '../../../../hooks/redux';
 import AppIcon from '../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
-const Profile = ({}: any) => {
+const Profile = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
     () =>
       import(
@@ -45,44 +32,31 @@ const Profile = ({}: any) => {
   const ImageViewer = lazy(
     () => import('../../../../components/common/ImageViewer/ImageViewer'),
   );
+
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
-  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
-  console.log('user from profile screen', JSON.stringify(user, null, 2));
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     profile,
     loading,
     isUpdating,
-    updateProfile,
     uploading,
     uploadAvatar,
     picking,
+    refetch,
   } = useProfile();
-  const [activeTab, setActiveTab] = useState('Profile');
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
 
-  // Form State
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-  });
-
-  // Initialize form when modal opens
-  useEffect(() => {
-    if (profile) {
-      setFormData({
-        firstName: profile.firstName?.trim() || '',
-        lastName: profile.lastName?.trim() || '',
-        phone: profile.phone || '',
-      });
-    }
-  }, [profile, isEditModalVisible]);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }, [refetch]);
 
   if (loading) {
     return (
@@ -96,16 +70,6 @@ const Profile = ({}: any) => {
       </View>
     );
   }
-
-  const handleSave = async () => {
-    const res = await updateProfile(formData);
-    if (res?.success) {
-      setIsEditModalVisible(false);
-      showSuccessToast('Success', 'Profile updated successfully');
-    } else {
-      showErrorToast('Error', res.message || 'Update failed');
-    }
-  };
 
   const handleLogout = () => {
     setIsLogoutModalVisible(true);
@@ -123,6 +87,61 @@ const Profile = ({}: any) => {
     }
   };
 
+  // Safe navigation helper
+  const navigateTo = (screenName: string, params?: any) => {
+    if (navigation && typeof navigation.navigate === 'function') {
+      try {
+        const tabScreens = ['Horses', 'Shipments', 'Home', 'New', 'Chats'];
+        if (tabScreens.includes(screenName)) {
+          navigation.navigate('MainTabs', {
+            screen: screenName,
+            params: params,
+          });
+          return;
+        }
+        navigation.navigate(screenName, params);
+      } catch (err) {
+        console.warn(`Navigation error to ${screenName}:`, err);
+      }
+    }
+  };
+
+  // Extract avatar URL
+  const rawAvatar = (user?.profileImage || profile?.profileImage) as any;
+  const avatarUri =
+    typeof rawAvatar === 'string'
+      ? rawAvatar
+      : rawAvatar?.url || rawAvatar?.uri;
+  const isValidAvatar =
+    avatarUri &&
+    typeof avatarUri === 'string' &&
+    avatarUri.trim() !== '' &&
+    avatarUri !== '/default-avatar.png' &&
+    avatarUri !== '/images/default_profile.png';
+
+  // Extract banner URL if available
+  const rawBanner = ((profile as any)?.bannerImage ||
+    (user as any)?.bannerImage) as any;
+  const bannerUri =
+    typeof rawBanner === 'string'
+      ? rawBanner
+      : rawBanner?.url || rawBanner?.uri;
+  const isValidBanner =
+    bannerUri &&
+    typeof bannerUri === 'string' &&
+    bannerUri.trim() !== '' &&
+    !bannerUri.includes('default_banner');
+
+  const fullName =
+    `${profile?.firstName || ''} ${profile?.lastName || ''}`.trim() ||
+    profile?.name ||
+    user?.name ||
+    'Customer User';
+
+  const userEmail = profile?.email || user?.email || 'No email provided';
+  const userPhone =
+    profile?.phone || (user as any)?.phone || user?.phoneNumber || '';
+
   return (
     <View style={styles.container}>
       <AppHeader
@@ -132,66 +151,62 @@ const Profile = ({}: any) => {
       />
       <AppLoader visible={loading || isUpdating} />
 
-      {/* Tabs */}
-      <View style={styles.tabContainer}>
-        {['Profile', 'Notifications', 'Payments'].map(tab => (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {/* TOP SECTION: BANNER IMAGE */}
+        <View style={styles.bannerWrapper}>
+          {isValidBanner ? (
+            <Image
+              source={{ uri: bannerUri }}
+              style={styles.bannerImg}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={styles.bannerPlaceholder}>
+              {/* <View style={styles.bannerIconCircle}>
+                <AppIcon name="User" size={22} color={COLORS.primary} />
+              </View>
+              <AppText style={styles.bannerPlaceholderText}>
+                Customer Profile
+              </AppText> */}
+            </View>
+          )}
+        </View>
+
+        {/* AVATAR & USER PROFILE INFO */}
+        <View style={styles.avatarSection}>
           <TouchableOpacity
-            key={tab}
-            onPress={() => setActiveTab(tab)}
-            style={[styles.tab, activeTab === tab && styles.activeTab]}
+            style={styles.avatarContainer}
+            onPress={uploadAvatar}
+            disabled={uploading || picking}
+            activeOpacity={0.85}
           >
-            <AppText
-              style={[
-                styles.tabText,
-                activeTab === tab && styles.activeTabText,
-              ]}
-            >
-              {tab}
-            </AppText>
-          </TouchableOpacity>
-        ))}
-      </View>
+            <View style={styles.avatarCircleWrapper}>
+              {isValidAvatar ? (
+                <Pressable
+                  onPress={() => {
+                    setImageViewerVisible(true);
+                    setSelectedImage(avatarUri);
+                  }}
+                >
+                  <Image source={{ uri: avatarUri }} style={styles.avatarImg} />
+                </Pressable>
+              ) : (
+                <View style={[styles.avatarImg, styles.placeholderAvatar]}>
+                  <AppIcon name="User" size={42} color={COLORS.grey400} />
+                </View>
+              )}
 
-      {activeTab === 'Profile' && (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {/* Avatar Section */}
-          <View style={styles.avatarSection}>
-            <View style={styles.imageWrapper}>
-              {/* Profile Image Logic - Safely extracts string URL */}
-              {(() => {
-                const rawAvatar = (user?.profileImage ||
-                  profile?.profileImage) as any;
-                const avatarUri =
-                  typeof rawAvatar === 'string'
-                    ? rawAvatar
-                    : rawAvatar?.url || rawAvatar?.uri;
-                const isValidAvatar =
-                  avatarUri &&
-                  typeof avatarUri === 'string' &&
-                  avatarUri.trim() !== '' &&
-                  avatarUri !== '/default-avatar.png' &&
-                  avatarUri !== '/images/default_profile.png';
-
-                return isValidAvatar ? (
-                  <Pressable
-                    onPress={() => {
-                      setImageViewerVisible(true);
-                      setSelectedImage(avatarUri);
-                    }}
-                  >
-                    <Image source={{ uri: avatarUri }} style={styles.avatar} />
-                  </Pressable>
-                ) : (
-                  <View style={[styles.avatar, styles.placeholderAvatar]}>
-                    <AppIcon name={'User'} size={40} color={COLORS.grey400} />
-                  </View>
-                );
-              })()}
-
-              {/* Loader Overlay: Shown only during upload */}
+              {/* Uploading Overlay */}
               {uploading && (
                 <View style={styles.uploadOverlay}>
                   <ActivityIndicator color={COLORS.white} size="small" />
@@ -199,120 +214,333 @@ const Profile = ({}: any) => {
               )}
             </View>
 
-            {/* Edit Button */}
-            <TouchableOpacity
-              onPress={uploadAvatar}
-              style={[styles.editPictureBtn, uploading && { opacity: 0.7 }]}
-              disabled={uploading || picking}
-              activeOpacity={0.8}
-            >
+            {/* Floating Camera Badge */}
+            <View style={styles.avatarCameraBadge}>
               {uploading ? (
-                <AppText style={styles.editPictureText}>Processing...</AppText>
+                <ActivityIndicator size="small" color={COLORS.white} />
               ) : (
-                <>
-                  <AppIcon
-                    name={'PencilLine'}
-                    size={16}
-                    color={COLORS.textPrimary}
-                  />
-                  <AppText style={styles.editPictureText}>Edit picture</AppText>
-                </>
-              )}
-            </TouchableOpacity>
-          </View>
-
-          {/* Basic Info */}
-          <View style={styles.infoCard}>
-            <View style={styles.cardHeader}>
-              <AppText style={styles.cardTitle}>Basic Info</AppText>
-              <TouchableOpacity
-                style={styles.editIconBtn}
-                onPress={() => setIsEditModalVisible(true)}
-              >
-                <AppIcon
-                  name={'PencilLine'}
-                  size={18}
-                  color={COLORS.textPrimary}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.infoList}>
-              {profile?.firstName && profile?.lastName && (
-                <InfoRow
-                  label="Name"
-                  value={`${profile?.firstName} ${profile?.lastName}`}
-                />
-              )}
-              <InfoRow
-                label="Email"
-                value={profile?.email || 'Not Available'}
-              />
-              {profile?.phone && (
-                <InfoRow label="Phone" value={profile?.phone} isLast />
+                <AppIcon name="Camera" size={15} color={COLORS.white} />
               )}
             </View>
-          </View>
-
-          {/* Logout Button */}
-          <TouchableOpacity
-            style={localStyles.logoutBtn}
-            onPress={handleLogout}
-            activeOpacity={0.8}
-          >
-            <AppIcon name={'LogOut'} size={18} color={COLORS.error} />
-            <AppText style={localStyles.logoutBtnText}>Logout</AppText>
           </TouchableOpacity>
-        </ScrollView>
-      )}
 
-      {activeTab === 'Notifications' && <NotificationSettings />}
-      {activeTab === 'Payments' && <Payments />}
+          {/* User Details */}
+          <View style={styles.profileHeaderInfo}>
+            <AppText style={styles.profileName}>{fullName}</AppText>
 
-      {/* Edit Modal */}
-      <Modal visible={isEditModalVisible} animationType="slide" transparent>
-        <View style={localStyles.modalOverlay}>
-          <View style={localStyles.modalContent}>
-            <View style={localStyles.modalHeader}>
-              <AppText style={localStyles.modalTitle}>Edit Profile</AppText>
-              <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
-                <AppIcon name={'X'} size={24} color={COLORS.textPrimary} />
-              </TouchableOpacity>
-            </View>
+            <View style={styles.profileContactRow}>
+              <AppIcon name="Mail" size={13} color={COLORS.textSecondary} />
+              <AppText style={styles.profileContactText}>{userEmail}</AppText>
 
-            <View style={{ marginBottom: SPACING.md }}>
-              <Input
-                label="First Name"
-                value={formData?.firstName}
-                onChangeText={t => setFormData({ ...formData, firstName: t })}
-              />
-
-              <Input
-                label="Last Name"
-                value={formData?.lastName}
-                onChangeText={t => setFormData({ ...formData, lastName: t })}
-              />
-
-              <Input
-                label="Phone"
-                value={formData?.phone}
-                keyboardType="phone-pad"
-                leftIcon={
-                  <CountryCodePicker
-                    selectedCountry={selectedCountry}
-                    onSelectCountry={c => setSelectedCountry(c)}
-                    showBorder={true}
+              {userPhone ? (
+                <>
+                  <AppText style={{ color: COLORS.grey400 }}>•</AppText>
+                  <AppIcon
+                    name="Phone"
+                    size={13}
+                    color={COLORS.textSecondary}
                   />
-                }
-                onChangeText={t => setFormData({ ...formData, phone: t })}
-              />
+                  <AppText style={styles.profileContactText}>
+                    {userPhone}
+                  </AppText>
+                </>
+              ) : null}
             </View>
 
-            <TouchableOpacity style={localStyles.saveBtn} onPress={handleSave}>
-              <AppText style={localStyles.saveBtnText}>Update Profile</AppText>
+            <View style={styles.verifiedBadge}>
+              <AppIcon
+                name="ShieldCheck"
+                size={14}
+                color={COLORS.saddleBrown}
+              />
+              <AppText style={styles.verifiedBadgeText}>
+                VERIFIED CUSTOMER
+              </AppText>
+            </View>
+          </View>
+        </View>
+
+        {/* QUICK STATS BAR */}
+        <View style={styles.statsCard}>
+          <View style={styles.statCol}>
+            <View style={styles.statIconBox}>
+              <AppIcon name="Shield" size={16} color={COLORS.primary} />
+            </View>
+            <AppText style={styles.statVal}>Active</AppText>
+            <AppText style={styles.statSub}>Account Status</AppText>
+          </View>
+
+          <View style={styles.statDivider} />
+
+          <TouchableOpacity
+            style={styles.statCol}
+            onPress={() => navigateTo('Shipments')}
+            activeOpacity={0.7}
+          >
+            <View style={styles.statIconBox}>
+              <AppIcon name="Truck" size={16} color={COLORS.saddleBrown} />
+            </View>
+            <AppText style={styles.statVal}>Shipments</AppText>
+            <AppText style={styles.statSub}>Bookings</AppText>
+          </TouchableOpacity>
+
+          <View style={styles.statDivider} />
+
+          <View style={styles.statCol}>
+            <View style={styles.statIconBox}>
+              <AppIcon
+                name="Star"
+                size={16}
+                color={COLORS.warning}
+                fill={COLORS.warning}
+              />
+            </View>
+            <AppText style={styles.statVal}>Member</AppText>
+            <AppText style={styles.statSub}>Verified Role</AppText>
+          </View>
+        </View>
+
+        <View style={{ height: 12 }} />
+
+        {/* SECTION 1: ACCOUNT & HORSES */}
+        <View style={styles.menuSection}>
+          <AppText style={styles.sectionTitle}>Account & Profile</AppText>
+          <View style={styles.menuCard}>
+            {/* Edit Personal Info - Navigates to dedicated EditProfile Screen */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() =>
+                navigateTo('EditProfile', {
+                  profileData: profile,
+                  user,
+                  onSuccess: () => {
+                    refetch();
+                  },
+                })
+              }
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="User" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>Personal Info</AppText>
+                <AppText style={styles.menuItemSub}>
+                  Name, phone number & contact email
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* My Horses */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigateTo('Horses')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="Heart" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>My Horses</AppText>
+                <AppText style={styles.menuItemSub}>
+                  Registered horses, breeds & health records
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* My Shipments */}
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemLast]}
+              onPress={() => navigateTo('Shipments')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="Truck" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>My Shipments</AppText>
+                <AppText style={styles.menuItemSub}>
+                  Active transport bookings & shipment history
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+
+        {/* SECTION 2: PAYMENTS & BILLING */}
+        <View style={styles.menuSection}>
+          <AppText style={styles.sectionTitle}>Payments & Transactions</AppText>
+          <View style={styles.menuCard}>
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemLast]}
+              onPress={() => navigateTo('Payments')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon
+                  name="CreditCard"
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>
+                  Payment History & Methods
+                </AppText>
+                <AppText style={styles.menuItemSub}>
+                  Transaction receipts & payment details
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* SECTION 3: PREFERENCES & SUPPORT */}
+        <View style={styles.menuSection}>
+          <AppText style={styles.sectionTitle}>Preferences & Support</AppText>
+          <View style={styles.menuCard}>
+            {/* Notification Preferences */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigateTo('Settings')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="Bell" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>
+                  Notification Preferences
+                </AppText>
+                <AppText style={styles.menuItemSub}>
+                  Manage Email, Push & SMS alerts
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* Customer Reviews & Feedback */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigateTo('Reviews')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon
+                  name="MessageSquare"
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>
+                  Reviews & Feedback
+                </AppText>
+                <AppText style={styles.menuItemSub}>
+                  Ratings & feedback left for shippers
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* Help Center */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigateTo('HelpCenter')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon
+                  name="HelpCircle"
+                  size={18}
+                  color={COLORS.saddleBrown}
+                />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>Help & Support</AppText>
+                <AppText style={styles.menuItemSub}>
+                  FAQs, customer support & live chat
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* Privacy Policy */}
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigateTo('PrivacyPolicy')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="Lock" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>Privacy Policy</AppText>
+                <AppText style={styles.menuItemSub}>
+                  How your profile & location data is protected
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+
+            {/* Terms and Conditions */}
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemLast]}
+              onPress={() => navigateTo('TermsAndConditions')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuIconBox}>
+                <AppIcon name="FileText" size={18} color={COLORS.saddleBrown} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText style={styles.menuItemTitle}>
+                  Terms & Conditions
+                </AppText>
+                <AppText style={styles.menuItemSub}>
+                  HorseShipt platform rules & agreement
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* SECTION 4: ACCOUNT ACTION */}
+        <View style={styles.menuSection}>
+          <AppText style={styles.sectionTitle}>Account Actions</AppText>
+          <View style={[styles.menuCard, localStyles.logoutCard]}>
+            <TouchableOpacity
+              style={[styles.menuItem, styles.menuItemLast]}
+              onPress={handleLogout}
+              activeOpacity={0.7}
+            >
+              <View
+                style={[
+                  styles.menuIconBox,
+                  { backgroundColor: COLORS.redLightBg || '#FEF2F2' },
+                ]}
+              >
+                <AppIcon name="LogOut" size={18} color={COLORS.error} />
+              </View>
+              <View style={styles.menuContent}>
+                <AppText
+                  style={[styles.menuItemTitle, { color: COLORS.error }]}
+                >
+                  Log Out
+                </AppText>
+                <AppText style={styles.menuItemSub}>
+                  Sign out of your account
+                </AppText>
+              </View>
+              <AppIcon name="ChevronRight" size={18} color={COLORS.error} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
 
       {/* Logout Confirmation Modal */}
       <Suspense fallback={null}>
@@ -329,6 +557,7 @@ const Profile = ({}: any) => {
         />
       </Suspense>
 
+      {/* Image Viewer */}
       <Suspense fallback={null}>
         <ImageViewer
           visible={imageViewerVisible}
@@ -341,82 +570,10 @@ const Profile = ({}: any) => {
   );
 };
 
-const InfoRow = ({ label, value, isLast }: any) => (
-  <View style={[styles.infoRow, isLast && { borderBottomWidth: 0 }]}>
-    <AppText style={styles.infoLabel}>{label}</AppText>
-    <AppText style={styles.infoValue}>{value}</AppText>
-  </View>
-);
-
 const localStyles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: COLORS.overlay50,
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: RADIUS.xl,
-    borderTopRightRadius: RADIUS.xl,
-    padding: SPACING.lg,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.lg,
-  },
-  modalTitle: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  inputGroup: { marginBottom: SPACING.lg },
-  inputLabel: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    marginBottom: 6,
-    fontFamily: FONTS.medium,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.grey200,
-    borderRadius: RADIUS.md,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: 10,
-    marginBottom: SPACING.md,
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.sm,
-  },
-  saveBtn: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-  },
-  saveBtnText: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
-  },
-  logoutBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: COLORS.redLight,
-    borderWidth: 1,
-    borderColor: COLORS.redBorderSoft,
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.md,
-    marginTop: SPACING.xl,
-    marginBottom: SPACING.xl,
-  },
-  logoutBtnText: {
-    color: COLORS.error,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.sm,
+  logoutCard: {
+    borderColor: COLORS.redBorder || '#FCA5A5',
+    backgroundColor: COLORS.redLightBg || '#FEF2F2',
   },
 });
 

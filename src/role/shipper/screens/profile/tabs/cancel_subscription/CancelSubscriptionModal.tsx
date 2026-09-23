@@ -5,17 +5,10 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  StyleSheet,
   ScrollView,
 } from 'react-native';
 import { AppText } from '../../../../../../components';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  SPACING,
-  RADIUS,
-} from '../../../../../../constants';
+import { COLORS } from '../../../../../../constants';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.CancelSubscription';
 

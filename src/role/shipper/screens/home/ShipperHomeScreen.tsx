@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import {
   View,
   ScrollView,
@@ -27,15 +27,23 @@ import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
 import AvailableShipmentCard from './components/AvailableShipmentCard';
 import MapShipmentSelectItem from './components/MapShipmentSelectItem';
-import ConnectBankModal from './components/ConnectBankModal';
 import styles from './styles.shipperhome';
 
 import { useStripe } from '@stripe/stripe-react-native';
 import useShipperSubscription from '../../../../hooks/useShipperSubscription';
-import SubscriptionRequiredModal from '../../components/subscription_required_modal/SubscriptionRequiredModal';
-import StripePaymentMethodCardModal from '../earnings/components/StripePaymentMethodCardModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showSuccessToast } from '../../../../utils/toast';
+
+const ConnectBankModal = lazy(() => import('./components/ConnectBankModal'));
+const SubscriptionRequiredModal = lazy(
+  () =>
+    import(
+      '../../components/subscription_required_modal/SubscriptionRequiredModal'
+    ),
+);
+const StripePaymentMethodCardModal = lazy(
+  () => import('../earnings/components/StripePaymentMethodCardModal'),
+);
 
 const ShipperHomeScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -221,18 +229,21 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const checkStripeStatus = async () => {
     try {
       const res = await shipperService.getStripeStatus();
-      if (res && res.success) {
-        // console.log('======checkStripeStatus==========', res);
-        const needsModal =
-          res.needsVerification === true ||
-          res.onboardingCompleted === false ||
-          res.chargesEnabled === false ||
-          res.payoutsEnabled === false ||
-          res.verified === false;
-        setIsBankModalVisible(needsModal);
+      if (!res || res.success === false) {
+        // Account not created ({"success":false,"message":"Stripe account not created"})
+        setIsBankModalVisible(true);
+        return;
       }
+      const needsModal =
+        res.needsVerification === true ||
+        res.onboardingCompleted === false ||
+        res.chargesEnabled === false ||
+        res.payoutsEnabled === false ||
+        res.verified === false;
+      setIsBankModalVisible(needsModal);
     } catch (err) {
       console.log('Stripe status check error:', err);
+      setIsBankModalVisible(true);
     }
   };
 
@@ -829,35 +840,40 @@ const ShipperHomeScreen = ({ navigation }: any) => {
           </View>
         </ScrollView>
       )}
+      <Suspense fallback={null}>
+        <ConnectBankModal
+          isVisible={isBankModalVisible}
+          onClose={() => setIsBankModalVisible(false)}
+          navigation={navigation}
+        />
+      </Suspense>
 
-      <ConnectBankModal
-        isVisible={isBankModalVisible}
-        onClose={() => setIsBankModalVisible(false)}
-        navigation={navigation}
-      />
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubModalVisible}
+          onClose={closeSubModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onOpenAddCardModal={() => setIsCardModalVisible(true)}
+          onSubscriptionSuccess={refreshSubStatus}
+        />
+      </Suspense>
 
-      <SubscriptionRequiredModal
-        visible={isSubModalVisible}
-        onClose={closeSubModal}
-        shipperStatus={shipperStatus}
-        subscriptionStatus={subscriptionStatus}
-        plansData={plansData}
-        onOpenAddCardModal={() => setIsCardModalVisible(true)}
-        onSubscriptionSuccess={refreshSubStatus}
-      />
-
-      <StripePaymentMethodCardModal
-        isCardModalVisible={isCardModalVisible}
-        setIsCardModalVisible={setIsCardModalVisible}
-        cardStatus={{ hasCard: shipperStatus.hasCard }}
-        submittingCard={submittingCard}
-        formError={cardFormError}
-        cardholderName={cardholderName}
-        setCardholderName={setCardholderName}
-        cardDetails={cardDetails}
-        setCardDetails={setCardDetails}
-        handleSavePaymentMethod={handleSavePaymentMethod}
-      />
+      <Suspense fallback={null}>
+        <StripePaymentMethodCardModal
+          isCardModalVisible={isCardModalVisible}
+          setIsCardModalVisible={setIsCardModalVisible}
+          cardStatus={{ hasCard: shipperStatus.hasCard }}
+          submittingCard={submittingCard}
+          formError={cardFormError}
+          cardholderName={cardholderName}
+          setCardholderName={setCardholderName}
+          cardDetails={cardDetails}
+          setCardDetails={setCardDetails}
+          handleSavePaymentMethod={handleSavePaymentMethod}
+        />
+      </Suspense>
     </View>
   );
 };

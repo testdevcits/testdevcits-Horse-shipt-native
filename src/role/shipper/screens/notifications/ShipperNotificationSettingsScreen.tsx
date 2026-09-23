@@ -72,7 +72,9 @@ const ShipperNotificationSettingsScreen = () => {
       <AppHeader title="Notification Preferences" showProfileImage={false} />
 
       {loading && !refreshing ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
           <ActivityIndicator size="large" color={COLORS.primary} />
           <AppText
             style={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, Platform, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // CRITICAL for Map & BottomSheet
@@ -15,8 +15,24 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
+import { notificationService } from './src/services/notificationService';
 
 const App = () => {
+  useEffect(() => {
+    let cleanup: (() => void) | undefined;
+    notificationService
+      .init(data => {
+        console.log('App notification clicked with payload:', data);
+      })
+      .then(unsubscribe => {
+        cleanup = unsubscribe;
+      });
+
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, []);
+
   return (
     // 1. GestureHandlerRootView must wrap EVERYTHING for Reanimated/Bottom Sheets to work
     <GestureHandlerRootView style={styles.container}>

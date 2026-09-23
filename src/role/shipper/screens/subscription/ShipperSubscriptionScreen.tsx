@@ -22,7 +22,8 @@ const SubscriptionRequiredModal = lazy(
 const ShipperSubscriptionScreen = () => {
   const [subscriptionData, setSubscriptionData] = useState<any>(null);
   const [billingHistoryData, setBillingHistoryData] = useState<any>(null);
-  const [subscriptionStatusData, setSubscriptionStatusData] = useState<any>(null);
+  const [subscriptionStatusData, setSubscriptionStatusData] =
+    useState<any>(null);
   const [billingFilter, setBillingFilter] = useState<
     'All' | 'Invoices' | 'Payments' | 'Payouts'
   >('All');
@@ -76,10 +77,16 @@ const ShipperSubscriptionScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Subscription & Billing" showProfileImage={false} />
+      <AppHeader
+        title="Subscription & Billing"
+        showBack={true}
+        showProfileImage={false}
+      />
 
       {loading && !refreshing ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
           <ActivityIndicator size="large" color={COLORS.primary} />
           <AppText
             style={{

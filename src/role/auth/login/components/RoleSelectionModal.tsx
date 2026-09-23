@@ -55,7 +55,7 @@ const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
   onClose,
   onSelectRole,
   allowedRoles,
-  isSignup,
+  isSignup: _isSignup,
 }) => {
   const [selected, setSelected] = useState<UserRole>('customer');
 

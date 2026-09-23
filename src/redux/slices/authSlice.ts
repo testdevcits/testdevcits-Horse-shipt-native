@@ -10,6 +10,27 @@ const STORAGE_KEYS = {
   ROLE: '@user_role',
 };
 
+const getCleanErrorMessage = (error: any, defaultMsg: string): string => {
+  if (typeof error === 'string') return error;
+  if (
+    error?.message &&
+    typeof error.message === 'string' &&
+    !error.message.startsWith('Request failed with status code')
+  ) {
+    return error.message;
+  }
+  const data = error?.response?.data || error?.raw || error;
+  if (Array.isArray(data?.errors) && data.errors.length > 0) {
+    return String(data.errors[0]);
+  }
+  if (data?.errors && typeof data.errors === 'string') {
+    return data.errors;
+  }
+  if (data?.message) return String(data.message);
+  if (data?.error) return String(data.error);
+  return defaultMsg;
+};
+
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
@@ -32,13 +53,7 @@ export const loginUser = createAsyncThunk(
 
       return response;
     } catch (error: any) {
-      const data = error.response?.data;
-      const message =
-        error?.message ||
-        data?.errors?.[0] ||
-        data?.message ||
-        data?.error ||
-        'Login Failed';
+      const message = getCleanErrorMessage(error, 'Login Failed');
       return thunkAPI.rejectWithValue(message);
     }
   },
@@ -76,13 +91,7 @@ export const googleLoginUser = createAsyncThunk(
 
       return response;
     } catch (error: any) {
-      const data = error.response?.data;
-      const message =
-        data?.message ||
-        data?.error ||
-        data?.errors?.[0] ||
-        error?.message ||
-        'Google Auth Failed';
+      const message = getCleanErrorMessage(error, 'Google Auth Failed');
       return thunkAPI.rejectWithValue(message);
     }
   },

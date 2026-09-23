@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import shipperService from '../../../../../api/services/shipperService';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 

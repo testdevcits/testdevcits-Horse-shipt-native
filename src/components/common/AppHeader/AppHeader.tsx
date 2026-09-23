@@ -82,7 +82,15 @@ const AppHeader = memo(
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              onPress={() => {
+                try {
+                  navigation.dispatch(DrawerActions.openDrawer());
+                } catch (_err) {
+                  if (navigation.canGoBack()) {
+                    navigation.goBack();
+                  }
+                }
+              }}
               style={styles.iconBtn}
             >
               <AppIcon

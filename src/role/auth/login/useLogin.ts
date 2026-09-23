@@ -130,11 +130,15 @@ const useLogin = () => {
 
       showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
     } catch (err: any) {
-      if (err?.message !== 'Google Sign-In was cancelled.') {
-        showErrorToast(
-          'Google Sign-In Error',
-          err?.message || 'Failed to sign in with Google.',
-        );
+      const errorMsg =
+        typeof err === 'string'
+          ? err
+          : err?.message ||
+            err?.errors?.[0] ||
+            'Failed to sign in with Google.';
+
+      if (errorMsg !== 'Google Sign-In was cancelled.') {
+        showErrorToast('Google Sign-In Error', errorMsg);
       }
     } finally {
       setIsGoogleLoading(false);
@@ -164,4 +168,3 @@ const useLogin = () => {
 };
 
 export default useLogin;
-
