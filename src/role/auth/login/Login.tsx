@@ -100,24 +100,106 @@ const Login = () => {
           >
             <View style={styles.textHeader}>
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
-
-              {/* Selected Role Badge Label (Tap to open modal) */}
-              <TouchableOpacity
-                style={styles.roleBadgeContainer}
-                onPress={() => setIsRoleModalVisible(true)}
-                activeOpacity={0.7}
-              >
-                <AppText style={styles.roleBadgeLabel}>Signing in as: </AppText>
-                <AppText style={styles.roleBadgeValue}>
-                  {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
-                </AppText>
-                <AppText style={styles.changeTextLink}> (Change)</AppText>
-              </TouchableOpacity>
-
               <AppText style={styles.subtitle}>
                 Sign in to manage your shipments, track your horses in real
                 time, and access trusted transportation services.
               </AppText>
+            </View>
+
+            {/* Professional Role Selector Buttons */}
+            <View style={styles.roleSelectionBlock}>
+              <AppText style={styles.roleSelectionLabel}>SELECT ROLE</AppText>
+              <View style={styles.roleButtonsRow}>
+                <TouchableOpacity
+                  style={[
+                    styles.roleTabBtn,
+                    selectedRole === 'customer' && styles.roleTabBtnActive,
+                  ]}
+                  onPress={async () => {
+                    setSelectedRole('customer');
+                    await AsyncStorage.setItem('@user_role', 'customer');
+                  }}
+                  activeOpacity={0.75}
+                >
+                  <AppIcon
+                    name={'User'}
+                    size={15}
+                    color={
+                      selectedRole === 'customer'
+                        ? COLORS.white
+                        : COLORS.primary
+                    }
+                  />
+                  <AppText
+                    style={[
+                      styles.roleTabBtnText,
+                      selectedRole === 'customer' && styles.roleTabBtnTextActive,
+                    ]}
+                  >
+                    Customer
+                  </AppText>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.roleTabBtn,
+                    selectedRole === 'shipper' && styles.roleTabBtnActive,
+                  ]}
+                  onPress={async () => {
+                    setSelectedRole('shipper');
+                    await AsyncStorage.setItem('@user_role', 'shipper');
+                  }}
+                  activeOpacity={0.75}
+                >
+                  <AppIcon
+                    name={'Building2'}
+                    size={15}
+                    color={
+                      selectedRole === 'shipper'
+                        ? COLORS.white
+                        : COLORS.primary
+                    }
+                  />
+                  <AppText
+                    style={[
+                      styles.roleTabBtnText,
+                      selectedRole === 'shipper' && styles.roleTabBtnTextActive,
+                    ]}
+                  >
+                    Shipper
+                  </AppText>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.roleTabBtn,
+                    selectedRole === 'driver' && styles.roleTabBtnActive,
+                  ]}
+                  onPress={async () => {
+                    setSelectedRole('driver');
+                    await AsyncStorage.setItem('@user_role', 'driver');
+                  }}
+                  activeOpacity={0.75}
+                >
+                  <AppIcon
+                    name={'Truck'}
+                    size={15}
+                    color={
+                      selectedRole === 'driver'
+                        ? COLORS.white
+                        : COLORS.primary
+                    }
+                  />
+                  <AppText
+                    style={[
+                      styles.roleTabBtnText,
+                      selectedRole === 'driver' && styles.roleTabBtnTextActive,
+                    ]}
+                  >
+                    Driver
+                  </AppText>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <Input
@@ -155,23 +237,18 @@ const Login = () => {
               <TouchableOpacity
                 style={styles.checkboxRow}
                 onPress={() => setRememberMe(!rememberMe)}
+                activeOpacity={0.7}
               >
-                <TouchableOpacity
-                  style={styles.checkboxRow}
-                  onPress={() => setRememberMe(!rememberMe)}
-                  activeOpacity={0.7}
+                <View
+                  style={[
+                    styles.checkbox,
+                    rememberMe && styles.checkboxActive,
+                  ]}
                 >
-                  <View
-                    style={[
-                      styles.checkbox,
-                      rememberMe && styles.checkboxActive,
-                    ]}
-                  >
-                    {rememberMe && (
-                      <AppIcon name={'Check'} size={14} color={COLORS.white} />
-                    )}
-                  </View>
-                </TouchableOpacity>
+                  {rememberMe && (
+                    <AppIcon name={'Check'} size={14} color={COLORS.white} />
+                  )}
+                </View>
                 <AppText style={styles.utilText}>Remember me</AppText>
               </TouchableOpacity>
               <TouchableOpacity
@@ -188,29 +265,34 @@ const Login = () => {
               buttonStyle={styles.signInBtn}
             />
 
-            {/* Divider */}
-            <View style={styles.dividerRow}>
-              <View style={styles.dividerLine} />
-              <AppText style={styles.dividerText}>or continue with</AppText>
-              <View style={styles.dividerLine} />
-            </View>
+            {/* Google Sign In - HIDDEN for Driver Role */}
+            {selectedRole !== 'driver' && (
+              <>
+                {/* Divider */}
+                <View style={styles.dividerRow}>
+                  <View style={styles.dividerLine} />
+                  <AppText style={styles.dividerText}>or continue with</AppText>
+                  <View style={styles.dividerLine} />
+                </View>
 
-            {/* Google Sign In Button */}
-            <TouchableOpacity
-              style={styles.googleBtn}
-              onPress={handleGoogleSignIn}
-              disabled={isGoogleLoading || isLoading}
-              activeOpacity={0.8}
-            >
-              <Image
-                source={imageIndex.Google}
-                style={styles.googleIcon}
-                resizeMode="contain"
-              />
-              <AppText style={styles.googleBtnText}>
-                {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
-              </AppText>
-            </TouchableOpacity>
+                {/* Google Sign In Button */}
+                <TouchableOpacity
+                  style={styles.googleBtn}
+                  onPress={handleGoogleSignIn}
+                  disabled={isGoogleLoading || isLoading}
+                  activeOpacity={0.8}
+                >
+                  <Image
+                    source={imageIndex.Google}
+                    style={styles.googleIcon}
+                    resizeMode="contain"
+                  />
+                  <AppText style={styles.googleBtnText}>
+                    {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+                  </AppText>
+                </TouchableOpacity>
+              </>
+            )}
 
             <View style={styles.footer}>
               <AppText style={styles.footerText}>
@@ -229,7 +311,7 @@ const Login = () => {
       {/* Role Selection Modal */}
       <RoleSelectionModal
         visible={isRoleModalVisible}
-        currentRole={selectedRole || 'customer'}
+        currentRole={selectedRole || ''}
         onClose={() => setIsRoleModalVisible(false)}
         onSelectRole={async newRole => {
           setSelectedRole(newRole);

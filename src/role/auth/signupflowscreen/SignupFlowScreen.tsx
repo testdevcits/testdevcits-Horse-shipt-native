@@ -18,8 +18,9 @@ import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.signupflow';
 import authService from '../../../api/services/authService';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../../redux/slices/authSlice';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setCredentials, googleLoginUser } from '../../../redux/slices/authSlice';
+import { signInWithGoogle } from '../../../services/googleAuthService';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserRole } from '../../../types/auth';
@@ -32,11 +33,12 @@ import {
 } from '../../../utils/toast';
 
 const SignupFlowScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // UI State
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [selectedRole, setSelectedRole] = useState<string>('');
@@ -76,7 +78,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
         ) {
           setSelectedRole(savedRole);
         } else {
-          setSelectedRole('customer');
+          setSelectedRole('');
         }
       } catch (e) {
         console.error('Error loading role in SignupFlowScreen:', e);
@@ -120,6 +122,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
   // --- API HANDLERS ---
 
   const handleInitialSignup = async () => {
+    const activeRole =
+      selectedRole || (await AsyncStorage.getItem('@user_role'));
+    if (!activeRole || activeRole.trim() === '' || activeRole === 'null') {
+      showErrorToast(
+        'Role Required',
+        'Please select your account role (Customer, Shipper, or Driver) to proceed.',
+      );
+      return;
+    }
+
     if (!name.trim())
       return setErrors(p => ({ ...p, name: 'Name is required' }));
     if (!emailRegex.test(email))
@@ -128,10 +140,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
     try {
       setIsLoading(true);
-      const activeRole =
-        selectedRole ||
-        (await AsyncStorage.getItem('@user_role')) ||
-        'customer';
       await AsyncStorage.setItem('@user_role', activeRole);
       const res = await authService.signup({
         name: name.trim(),
@@ -211,6 +219,63 @@ const SignupFlowScreen = ({ navigation }: any) => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    const activeRole =
+      selectedRole || (await AsyncStorage.getItem('@user_role'));
+    if (!activeRole || activeRole.trim() === '' || activeRole === 'null') {
+      showErrorToast(
+        'Role Required',
+        'Please select your account role before signing up with Google.',
+      );
+      return;
+    }
+
+    if (activeRole === 'driver') {
+      showErrorToast(
+        'Not Allowed',
+        'Google Sign-In is not available for Driver accounts. Please register with Email & Password.',
+      );
+      return;
+    }
+
+    setIsGoogleLoading(true);
+    try {
+      await AsyncStorage.setItem('@user_role', activeRole);
+
+      const googleUser = await signInWithGoogle();
+
+      if (!googleUser.idToken) {
+        throw new Error('Could not obtain Google ID Token.');
+      }
+
+      await dispatch(
+        googleLoginUser({
+          idToken: googleUser.idToken,
+          role: activeRole as any,
+          intent: 'signup',
+          email: googleUser.user.email,
+          name: googleUser.user.name,
+          photo: googleUser.user.photo,
+        }),
+      ).unwrap();
+
+      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+    } catch (err: any) {
+      const errorMsg =
+        typeof err === 'string'
+          ? err
+          : err?.message ||
+            err?.errors?.[0] ||
+            'Failed to sign in with Google.';
+
+      if (errorMsg !== 'Google Sign-In was cancelled.') {
+        showErrorToast('Google Sign-In Error', errorMsg);
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   // --- RENDER HELPERS ---
 
   const renderStepper = (current: number) => (
@@ -282,20 +347,104 @@ const SignupFlowScreen = ({ navigation }: any) => {
               <View style={styles.formContainer}>
                 <AppText style={styles.title}>Create Account 1/3</AppText>
 
-                {/* Selected Role Badge Label (Tap to open modal) */}
-                <TouchableOpacity
-                  style={styles.roleBadgeContainer}
-                  onPress={() => setIsRoleModalVisible(true)}
-                  activeOpacity={0.7}
-                >
-                  <AppText style={styles.roleBadgeLabel}>
-                    Signing in as:{' '}
-                  </AppText>
-                  <AppText style={styles.roleBadgeValue}>
-                    {selectedRole ? selectedRole.toUpperCase() : 'CUSTOMER'}
-                  </AppText>
-                  <AppText style={styles.changeTextLink}> (Change)</AppText>
-                </TouchableOpacity>
+                {/* Professional Role Selector Buttons */}
+                <View style={styles.roleSelectionBlock}>
+                  <AppText style={styles.roleSelectionLabel}>SELECT ROLE</AppText>
+                  <View style={styles.roleButtonsRow}>
+                    <TouchableOpacity
+                      style={[
+                        styles.roleTabBtn,
+                        selectedRole === 'customer' && styles.roleTabBtnActive,
+                      ]}
+                      onPress={async () => {
+                        setSelectedRole('customer');
+                        await AsyncStorage.setItem('@user_role', 'customer');
+                      }}
+                      activeOpacity={0.75}
+                    >
+                      <AppIcon
+                        name={'User'}
+                        size={15}
+                        color={
+                          selectedRole === 'customer'
+                            ? COLORS.white
+                            : COLORS.primary
+                        }
+                      />
+                      <AppText
+                        style={[
+                          styles.roleTabBtnText,
+                          selectedRole === 'customer' &&
+                            styles.roleTabBtnTextActive,
+                        ]}
+                      >
+                        Customer
+                      </AppText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.roleTabBtn,
+                        selectedRole === 'shipper' && styles.roleTabBtnActive,
+                      ]}
+                      onPress={async () => {
+                        setSelectedRole('shipper');
+                        await AsyncStorage.setItem('@user_role', 'shipper');
+                      }}
+                      activeOpacity={0.75}
+                    >
+                      <AppIcon
+                        name={'Building2'}
+                        size={15}
+                        color={
+                          selectedRole === 'shipper'
+                            ? COLORS.white
+                            : COLORS.primary
+                        }
+                      />
+                      <AppText
+                        style={[
+                          styles.roleTabBtnText,
+                          selectedRole === 'shipper' &&
+                            styles.roleTabBtnTextActive,
+                        ]}
+                      >
+                        Shipper
+                      </AppText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.roleTabBtn,
+                        selectedRole === 'driver' && styles.roleTabBtnActive,
+                      ]}
+                      onPress={async () => {
+                        setSelectedRole('driver');
+                        await AsyncStorage.setItem('@user_role', 'driver');
+                      }}
+                      activeOpacity={0.75}
+                    >
+                      <AppIcon
+                        name={'Truck'}
+                        size={15}
+                        color={
+                          selectedRole === 'driver'
+                            ? COLORS.white
+                            : COLORS.primary
+                        }
+                      />
+                      <AppText
+                        style={[
+                          styles.roleTabBtnText,
+                          selectedRole === 'driver' &&
+                            styles.roleTabBtnTextActive,
+                        ]}
+                      >
+                        Driver
+                      </AppText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
                 {renderStepper(1)}
 
                 <Input
@@ -352,6 +501,37 @@ const SignupFlowScreen = ({ navigation }: any) => {
                   disabled={!name || !email || !isPasswordValid}
                   buttonStyle={styles.actionBtn}
                 />
+
+                {/* Google Signup - HIDDEN for Driver Role */}
+                {selectedRole !== 'driver' && (
+                  <>
+                    <View style={styles.dividerRow}>
+                      <View style={styles.dividerLine} />
+                      <AppText style={styles.dividerText}>
+                        or continue with
+                      </AppText>
+                      <View style={styles.dividerLine} />
+                    </View>
+
+                    <TouchableOpacity
+                      style={styles.googleBtn}
+                      onPress={handleGoogleSignIn}
+                      disabled={isGoogleLoading || isLoading}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={imageIndex.Google}
+                        style={styles.googleIcon}
+                        resizeMode="contain"
+                      />
+                      <AppText style={styles.googleBtnText}>
+                        {isGoogleLoading
+                          ? 'Signing in...'
+                          : 'Sign up with Google'}
+                      </AppText>
+                    </TouchableOpacity>
+                  </>
+                )}
               </View>
             )}
 
@@ -473,7 +653,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
           {/* Role Selection Modal */}
           <RoleSelectionModal
             visible={isRoleModalVisible}
-            currentRole={selectedRole || 'customer'}
+            currentRole={selectedRole || ''}
             isSignup={true}
             onClose={() => setIsRoleModalVisible(false)}
             onSelectRole={async newRole => {

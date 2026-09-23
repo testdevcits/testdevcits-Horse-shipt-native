@@ -134,6 +134,51 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: FONTS.semiBold,
   },
+  roleSelectionBlock: {
+    marginTop: SPACING.md,
+    marginBottom: SPACING.sm,
+  },
+  roleSelectionLabel: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.xs,
+    letterSpacing: 0.8,
+  },
+  roleButtonsRow: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    borderRadius: RADIUS.md,
+    padding: 4,
+    justifyContent: 'space-between',
+  },
+  roleTabBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: SPACING.sm + 2,
+    paddingHorizontal: SPACING.xs,
+    borderRadius: RADIUS.sm,
+  },
+  roleTabBtnActive: {
+    backgroundColor: COLORS.primary,
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  roleTabBtnText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+    marginLeft: 6,
+  },
+  roleTabBtnTextActive: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+  },
 });
 
 export default styles;

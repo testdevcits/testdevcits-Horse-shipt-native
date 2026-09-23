@@ -72,13 +72,17 @@ const useLogin = () => {
   };
 
   const handleSignIn = async () => {
+    let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
+    if (!userRole || userRole.trim() === '' || userRole === 'null') {
+      showErrorToast(
+        'Role Required',
+        'Please select your account role (Customer, Shipper, or Driver) to proceed.',
+      );
+      return;
+    }
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
-      if (!userRole || userRole.trim() === '' || userRole === 'null') {
-        userRole = 'customer';
-      }
       await AsyncStorage.setItem('@user_role', userRole);
 
       await dispatch(
@@ -103,12 +107,25 @@ const useLogin = () => {
   };
 
   const handleGoogleSignIn = async () => {
+    let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
+    if (!userRole || userRole.trim() === '' || userRole === 'null') {
+      showErrorToast(
+        'Role Required',
+        'Please select your account role before signing in with Google.',
+      );
+      return;
+    }
+
+    if (userRole === 'driver') {
+      showErrorToast(
+        'Not Allowed',
+        'Google Sign-In is not available for Driver accounts. Please sign in with Email & Password.',
+      );
+      return;
+    }
+
     setIsGoogleLoading(true);
     try {
-      let userRole = selectedRole || (await AsyncStorage.getItem('@user_role'));
-      if (!userRole || userRole.trim() === '' || userRole === 'null') {
-        userRole = 'customer';
-      }
       await AsyncStorage.setItem('@user_role', userRole);
 
       const googleUser = await signInWithGoogle();
