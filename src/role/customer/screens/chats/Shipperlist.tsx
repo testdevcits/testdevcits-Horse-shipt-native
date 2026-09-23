@@ -46,28 +46,36 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
       ) : (
         <FlatList
           data={shippers}
-          keyExtractor={item => item?._id}
+          keyExtractor={({ index }) => index}
           ListHeaderComponent={
             <View style={styles.header}>
-              <AppText style={styles.screenTitle}>Messages</AppText>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <AppText style={styles.screenTitle}>Messages</AppText>
+
+                <View style={styles.filterContainer}>
+                  <AppSelect
+                    label="" // Empty label for header style
+                    value={activeFilter}
+                    options={['All', 'Online', 'Offline']}
+                    placeholder="Filter"
+                    onSelect={item => setActiveFilter(item as any)}
+                    // Passing a style override to make it small and fit the header
+                    customSelectorStyle={styles.miniSelect}
+                  />
+                </View>
+              </View>
 
               <SearchBarCompt
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="Search"
               />
-
-              <View style={styles.filterContainer}>
-                <AppSelect
-                  label="" // Empty label for header style
-                  value={activeFilter}
-                  options={['All', 'Online', 'Offline']}
-                  placeholder="Filter"
-                  onSelect={item => setActiveFilter(item as any)}
-                  // Passing a style override to make it small and fit the header
-                  customSelectorStyle={styles.miniSelect}
-                />
-              </View>
             </View>
           }
           renderItem={({ item }) => (

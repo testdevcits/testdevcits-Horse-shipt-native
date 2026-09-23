@@ -78,18 +78,26 @@ const MyHorses = ({ navigation }: any) => {
         removeClippedSubviews={Platform.OS === 'android'}
         ListHeaderComponent={() => (
           <View style={styles.headerWrap}>
-            <AppText style={styles.headerTitle}>My Horses</AppText>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <AppText style={styles.headerTitle}>My Horses</AppText>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AddEditHorse')}
+                activeOpacity={0.8}
+                style={styles.addBtn}
+              >
+                <AppText style={styles.addBtnText}>+ Horse</AppText>
+              </TouchableOpacity>
+            </View>
             <AppText style={styles.headerSubtitle}>
               Manage your horses, update their details, and keep all
               transportation information in one place.
             </AppText>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AddEditHorse')}
-              activeOpacity={0.8}
-              style={styles.addBtn}
-            >
-              <AppText style={styles.addBtnText}>+ Horse</AppText>
-            </TouchableOpacity>
           </View>
         )}
         renderItem={renderItem}

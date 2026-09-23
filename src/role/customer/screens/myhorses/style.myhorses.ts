@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     alignSelf: 'flex-start',
     borderRadius: RADIUS.sm,
-    marginBottom: SPACING.sm,
+     
   },
   addBtnText: {
     color: COLORS.white,

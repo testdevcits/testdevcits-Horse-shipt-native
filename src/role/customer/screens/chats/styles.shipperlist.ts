@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
   },
 
   filterContainer: {
-    alignSelf: 'flex-start',
+     
     width: 130,
-    marginTop: SPACING.xs,
+     
   },
 
   miniSelect: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
     borderColor: COLORS.grey200,
     backgroundColor: COLORS.white,
-    marginBottom: 0,
+    marginBottom: -10,
   },
 
   list: { paddingBottom: 100 },
