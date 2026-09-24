@@ -133,7 +133,8 @@ const Login = () => {
                   <AppText
                     style={[
                       styles.roleTabBtnText,
-                      selectedRole === 'customer' && styles.roleTabBtnTextActive,
+                      selectedRole === 'customer' &&
+                        styles.roleTabBtnTextActive,
                     ]}
                   >
                     Customer
@@ -155,9 +156,7 @@ const Login = () => {
                     name={'Building2'}
                     size={15}
                     color={
-                      selectedRole === 'shipper'
-                        ? COLORS.white
-                        : COLORS.primary
+                      selectedRole === 'shipper' ? COLORS.white : COLORS.primary
                     }
                   />
                   <AppText
@@ -185,9 +184,7 @@ const Login = () => {
                     name={'Truck'}
                     size={15}
                     color={
-                      selectedRole === 'driver'
-                        ? COLORS.white
-                        : COLORS.primary
+                      selectedRole === 'driver' ? COLORS.white : COLORS.primary
                     }
                   />
                   <AppText
@@ -240,10 +237,7 @@ const Login = () => {
                 activeOpacity={0.7}
               >
                 <View
-                  style={[
-                    styles.checkbox,
-                    rememberMe && styles.checkboxActive,
-                  ]}
+                  style={[styles.checkbox, rememberMe && styles.checkboxActive]}
                 >
                   {rememberMe && (
                     <AppIcon name={'Check'} size={14} color={COLORS.white} />

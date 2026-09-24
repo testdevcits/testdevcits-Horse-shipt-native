@@ -47,4 +47,3 @@ export const getLiveTracking = async (
 ): Promise<TrackingResponse> => {
   return axiosClient.get(`/api/tracking/track/${shipmentId}`);
 };
-

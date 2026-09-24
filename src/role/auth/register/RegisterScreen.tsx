@@ -164,9 +164,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'User'}
                   size={15}
                   color={
-                    selectedRole === 'customer'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'customer' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText
@@ -191,9 +189,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'Building2'}
                   size={15}
                   color={
-                    selectedRole === 'shipper'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'shipper' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText
@@ -218,9 +214,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'Truck'}
                   size={15}
                   color={
-                    selectedRole === 'driver'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'driver' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText

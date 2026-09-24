@@ -16,8 +16,7 @@ import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import { notificationService } from './src/services/notificationService';
-import {PersistGate} from 'redux-persist/integration/react';
-
+import { PersistGate } from 'redux-persist/integration/react';
 
 const App = () => {
   useEffect(() => {

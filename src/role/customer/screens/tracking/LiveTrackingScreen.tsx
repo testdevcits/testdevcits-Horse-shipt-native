@@ -1,5 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, ActivityIndicator, Linking } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Linking,
+} from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -14,14 +20,8 @@ import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
-  const {
-    data,
-    loading,
-    refreshing,
-    error,
-    statusCode,
-    refetch,
-  } = useTracking(shipmentId);
+  const { data, loading, refreshing, error, statusCode, refetch } =
+    useTracking(shipmentId);
   const mapRef = useRef<MapView>(null);
   const [routeDirectionData, setRouteDirectionData] = useState<{
     distanceKm?: number;

@@ -19,7 +19,10 @@ import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.signupflow';
 import authService from '../../../api/services/authService';
 import { useAppDispatch } from '../../../hooks/redux';
-import { setCredentials, googleLoginUser } from '../../../redux/slices/authSlice';
+import {
+  setCredentials,
+  googleLoginUser,
+} from '../../../redux/slices/authSlice';
 import { signInWithGoogle } from '../../../services/googleAuthService';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -349,7 +352,9 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
                 {/* Professional Role Selector Buttons */}
                 <View style={styles.roleSelectionBlock}>
-                  <AppText style={styles.roleSelectionLabel}>SELECT ROLE</AppText>
+                  <AppText style={styles.roleSelectionLabel}>
+                    SELECT ROLE
+                  </AppText>
                   <View style={styles.roleButtonsRow}>
                     <TouchableOpacity
                       style={[

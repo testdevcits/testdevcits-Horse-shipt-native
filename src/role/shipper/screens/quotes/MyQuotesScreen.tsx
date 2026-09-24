@@ -576,7 +576,7 @@ const MyQuotesScreen = () => {
       />
 
       {/* Contract Detail Modal */}
-      <Suspense fallback={<LazyFallback/>}>
+      <Suspense fallback={<LazyFallback />}>
         <ContractModal
           visible={isContractModalVisible}
           onClose={() => setIsContractModalVisible(false)}
@@ -587,7 +587,7 @@ const MyQuotesScreen = () => {
       </Suspense>
 
       {/* Quote Delete Confirmation Modal */}
-      <Suspense fallback={<LazyFallback/>}>
+      <Suspense fallback={<LazyFallback />}>
         <ConfirmationModal
           isVisible={Boolean(quoteToDelete)}
           onClose={() => setQuoteToDelete(null)}
@@ -602,7 +602,7 @@ const MyQuotesScreen = () => {
       </Suspense>
 
       {/* Vehicle Selection AppSelect Sheet */}
-      <Suspense fallback={<LazyFallback/>}>
+      <Suspense fallback={<LazyFallback />}>
         <AppSelect
           ref={vehicleSelectRef}
           hideSelector

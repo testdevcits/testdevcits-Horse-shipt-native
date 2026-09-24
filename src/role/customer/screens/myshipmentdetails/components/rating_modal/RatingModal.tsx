@@ -155,7 +155,7 @@ const RatingModal = ({
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
-      <Toast/>
+      <Toast />
     </Modal>
   );
 };

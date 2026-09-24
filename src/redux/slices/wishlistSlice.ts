@@ -115,7 +115,11 @@ const wishlistSlice = createSlice({
         state.wishlistIds.splice(index, 1);
         state.wishlist = state.wishlist.filter((item: any) => {
           const itemFavId = String(
-            item?.id || item?._id || item?.shipperId?._id || item?.shipperId || '',
+            item?.id ||
+              item?._id ||
+              item?.shipperId?._id ||
+              item?.shipperId ||
+              '',
           );
           return itemFavId !== targetIdStr;
         });

@@ -25,9 +25,7 @@ const styles = StyleSheet.create({
   },
 
   filterContainer: {
-     
     width: 130,
-     
   },
 
   miniSelect: {

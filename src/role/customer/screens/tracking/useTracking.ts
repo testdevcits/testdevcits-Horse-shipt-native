@@ -64,4 +64,3 @@ export const useTracking = (shipmentId: string) => {
     refetch: () => fetchData(true),
   };
 };
-
