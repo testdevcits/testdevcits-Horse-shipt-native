@@ -12,7 +12,6 @@ import { COLORS, SCREEN_WIDTH } from '../../../../constants';
 import {
   AppHeader,
   AppLoader,
-  AppText,
   EmptyState,
   HomeSkeleton,
   SectionHeader,

@@ -11,7 +11,7 @@ import ConfirmationModal from './common/ConfirmationModal/ConfirmationModal';
 import AppText from './common/AppText';
 import { AppLoader } from './common/AppLoader';
 import { EmptyState } from './common/EmptyState';
-import ErrorView from './common/ErrorView';
+import ErrorView from './common/ErrorView/ErrorView';
 import SearchBarCompt from './common/SearchBarCompt';
 import TripCard from './cards/trip_card/TripCard';
 import HorseCard from './cards/horse_card/HorseCard';

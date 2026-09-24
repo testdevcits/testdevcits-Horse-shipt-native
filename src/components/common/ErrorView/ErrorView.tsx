@@ -1,5 +1,4 @@
 import {
-  StyleSheet,
   TouchableOpacity,
   View,
   ActivityIndicator,
@@ -7,16 +6,10 @@ import {
   ViewStyle,
 } from 'react-native';
 import React, { memo } from 'react';
-import AppText from './AppText';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  ICON_SIZE,
-} from '../../constants';
-import AppIcon, { IconName } from '../app_icon/AppIcon';
+import AppText from '../AppText';
+import { COLORS, SPACING, ICON_SIZE } from '../../../constants';
+import AppIcon, { IconName } from '../../app_icon/AppIcon';
+import styles from './ErrorView.Styles';
 
 export interface ErrorViewProps {
   title?: string;
@@ -142,111 +135,3 @@ const ErrorView = ({
 };
 
 export default memo(ErrorView);
-
-const styles = StyleSheet.create({
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.xxl,
-    paddingVertical: SPACING.giant,
-    backgroundColor: COLORS.background,
-  },
-  iconCircleOuter: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: 'rgba(239, 68, 68, 0.08)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  iconCircleInner: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    backgroundColor: 'rgba(239, 68, 68, 0.15)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: 4,
-    borderRadius: RADIUS.pill,
-    marginBottom: SPACING.sm,
-  },
-  badgeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: COLORS.error,
-    marginRight: SPACING.xs,
-  },
-  badgeText: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.error,
-    letterSpacing: 0.5,
-  },
-  errorTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xxl || 20,
-    color: COLORS.textPrimary,
-    marginTop: SPACING.xs,
-    textAlign: 'center',
-  },
-  errorMessage: {
-    textAlign: 'center',
-    color: COLORS.textSecondary,
-    fontSize: FONT_SIZE.md || 14,
-    lineHeight: 22,
-    marginTop: SPACING.xs,
-    marginBottom: SPACING.xl,
-    maxWidth: 320,
-  },
-  actionsContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-    gap: SPACING.sm,
-  },
-  retryBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: SPACING.xxl,
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.round,
-    minWidth: 160,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  retryText: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-  },
-  backBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.grey100,
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.round,
-    minWidth: 140,
-  },
-  backText: {
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.medium,
-    fontSize: FONT_SIZE.md,
-  },
-});
-
