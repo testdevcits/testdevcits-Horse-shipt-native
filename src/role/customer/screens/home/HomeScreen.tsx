@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   FlatList,
@@ -29,7 +29,11 @@ import styles from './styles.home';
 
 const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const dispatch = useAppDispatch();
-  const { wishlist } = useAppSelector(state => state.wishlist);
+  const {
+    wishlist,
+    wishlistIds,
+    loading: wishlistLoading,
+  } = useAppSelector(state => state.wishlist);
   const { shipments, loading, refreshing, refresh } = useShipments();
   const {
     shippers,
@@ -65,13 +69,49 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     navigation.navigate('ShipperDetail', { item });
   };
 
-  const displayedShippers = wishlist.length > 0 ? wishlist : shippers;
+  const displayedShippers = useMemo(() => {
+    return (wishlist || []).map((item: any) => {
+      const rawId =
+        item?.id || item?._id || item?.shipperId?._id || item?.shipperId;
+      const sId = rawId ? String(rawId) : '';
+      const img =
+        typeof item?.profileImage === 'string'
+          ? item.profileImage
+          : item?.profileImage?.url || item?.avatar || item?.image || '';
+      const shipperName =
+        item?.name ||
+        item?.shipperName ||
+        `${item?.firstName || ''} ${item?.lastName || ''}`.trim() ||
+        'Professional Shipper';
+      const locationRegion =
+        item?.region ||
+        item?.location ||
+        item?.address ||
+        item?.city ||
+        'Region N/A';
+
+      return {
+        ...item,
+        _id: sId || item?._id || item?.id,
+        id: sId || item?.id || item?._id,
+        profileImage: img,
+        name: shipperName,
+        region: locationRegion,
+        rating: item?.rating ?? 0,
+        reviewCount: item?.reviewCount ?? 0,
+        isFavorite: true,
+        isWishlisted: true,
+      };
+    });
+  }, [wishlist]);
 
   const { user } = useSelector((state: any) => state.auth || {});
   const userName = user?.name || user?.firstName || 'Not available';
 
   const isInitialLoading =
-    (loading || shipperloading) && !isRefreshing && !refreshing;
+    (loading || shipperloading || wishlistLoading) &&
+    !isRefreshing &&
+    !refreshing;
 
   if (isInitialLoading) {
     return (
@@ -84,7 +124,10 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader />
+      <AppHeader
+        title={`Hello ${userName},`}
+        subTitle="Good to see you again!"
+      />
 
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
@@ -98,10 +141,10 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           />
         }
       >
-        <View style={styles.welcomeHeader}>
+        {/* <View style={styles.welcomeHeader}>
           <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
           <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
-        </View>
+        </View> */}
 
         <FlatList
           data={shipments.slice(0, 5)}
@@ -161,7 +204,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           />
         )}
 
-        {displayedShippers && !shipperloading && !loading && (
+        {!shipperloading && !loading && (
           <FlatList
             data={displayedShippers}
             keyExtractor={(item, index) =>
@@ -181,8 +224,8 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
               !loading ? (
                 <EmptyState
                   icon={Award}
-                  title="No Shippers Found"
-                  message="Try adjusting your filters or search query."
+                  title="No Favorite Shippers"
+                  message="You haven't saved any favorite shippers yet."
                 />
               ) : (
                 <AppLoader visible={true} />

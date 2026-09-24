@@ -11,6 +11,7 @@ import styles from './AppHeader.styles';
 
 interface HeaderProps {
   title?: string;
+  subTitle?: string;
   showBack?: boolean;
   onBack?: () => void;
   rightElement?: React.ReactNode;
@@ -22,6 +23,7 @@ interface HeaderProps {
 const AppHeader = memo(
   ({
     title,
+    subTitle,
     showBack,
     onBack,
     rightElement,
@@ -107,6 +109,11 @@ const AppHeader = memo(
           <AppText numberOfLines={1} style={styles.title}>
             {title}
           </AppText>
+          {subTitle && (
+            <AppText numberOfLines={1} style={styles.subTitle}>
+              {subTitle}
+            </AppText>
+          )}
         </View>
 
         {/* RIGHT SECTION */}

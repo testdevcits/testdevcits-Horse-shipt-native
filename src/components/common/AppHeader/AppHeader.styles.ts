@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   titleContainer: {
-    flex: 0.5,
+    flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
@@ -37,6 +37,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.lg,
     color: COLORS.textPrimary,
+  },
+
+  subTitle: {
+    fontFamily: FONTS.regular,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textPrimary,
+    marginTop: -5,
   },
   iconBtn: {
     padding: SPACING.xs2,

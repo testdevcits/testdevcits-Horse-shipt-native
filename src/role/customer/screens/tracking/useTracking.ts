@@ -9,6 +9,8 @@ export const useTracking = (shipmentId: string) => {
   const [data, setData] = useState<TrackingResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<any>(null);
+  const [statusCode, setStatusCode] = useState<number | null>(null);
   const pollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchData = useCallback(
@@ -16,12 +18,22 @@ export const useTracking = (shipmentId: string) => {
       if (!shipmentId) return;
       if (isManualRefresh) setRefreshing(true);
       try {
+        setError(null);
+        setStatusCode(null);
         const res = await getLiveTracking(shipmentId);
         if (res) {
           setData(res);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Live Tracking API Error:', err);
+        setError(err);
+        const status =
+          err?.status ||
+          err?.response?.status ||
+          (typeof err === 'object' && String(err?.message || '').includes('500')
+            ? 500
+            : 500);
+        setStatusCode(status);
       } finally {
         setLoading(false);
         setRefreshing(false);
@@ -42,5 +54,14 @@ export const useTracking = (shipmentId: string) => {
     };
   }, [fetchData]);
 
-  return { data, loading, refreshing, refetch: () => fetchData(true) };
+  return {
+    data,
+    loading,
+    refreshing,
+    error,
+    statusCode,
+    isServerError: statusCode === 500,
+    refetch: () => fetchData(true),
+  };
 };
+

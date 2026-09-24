@@ -123,12 +123,13 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
             source={{ uri: horsePhoto }}
             style={styles.horseBanner}
             onError={() => setImageError(true)}
-            resizeMode="cover"
+            resizeMode="stretch"
           />
         ) : (
           <Image
             source={{ uri: horsePlaceholderImage }}
             style={styles.horseBanner}
+            resizeMode="center"
           />
         )}
         {/* Status Badge */}

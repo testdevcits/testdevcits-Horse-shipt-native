@@ -105,20 +105,28 @@ const wishlistSlice = createSlice({
       action: PayloadAction<{ shipperId: string; shipperItem?: any }>,
     ) => {
       const { shipperId, shipperItem } = action.payload;
-      const index = state.wishlistIds.indexOf(shipperId);
+      const targetIdStr = String(shipperId);
+      const index = state.wishlistIds.findIndex(
+        id => String(id) === targetIdStr,
+      );
 
       if (index > -1) {
         // Currently in wishlist -> Remove it
         state.wishlistIds.splice(index, 1);
-        state.wishlist = state.wishlist.filter(
-          item => (item?.id || item?._id) !== shipperId,
-        );
+        state.wishlist = state.wishlist.filter((item: any) => {
+          const itemFavId = String(
+            item?.id || item?._id || item?.shipperId?._id || item?.shipperId || '',
+          );
+          return itemFavId !== targetIdStr;
+        });
       } else {
         // Not in wishlist -> Add it
-        state.wishlistIds.push(shipperId);
+        state.wishlistIds.push(targetIdStr);
         if (shipperItem) {
           const itemToAdd = {
             ...shipperItem,
+            id: targetIdStr,
+            _id: targetIdStr,
             isFavorite: true,
             isWishlisted: true,
           };

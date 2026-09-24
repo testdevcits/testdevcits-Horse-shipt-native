@@ -139,7 +139,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
   if (loading && !refreshing) {
     return (
       <View style={styles.container}>
-        <AppHeader showBack title="Shipper Reviews" />
+        <AppHeader showBack title="Customer Reviews" />
         <ReviewsSkeleton />
       </View>
     );
@@ -147,7 +147,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader showBack title="Shipper Reviews" />
+      <AppHeader showBack title="Customer Reviews" />
 
       <FlatList
         data={reviews}

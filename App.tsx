@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 
 // Your Imports
 import AppNavigation from './src/navigations/AppNavigation';
-import { store } from './src/redux/store';
+import { store, persistor } from './src/redux/store';
 import { COLORS } from './src/constants';
 import { toastConfig } from './src/components/common/ToastConfig';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -16,6 +16,8 @@ import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import { notificationService } from './src/services/notificationService';
+import {PersistGate} from 'redux-persist/integration/react';
+
 
 const App = () => {
   useEffect(() => {
@@ -40,31 +42,33 @@ const App = () => {
         <BottomSheetModalProvider>
           {/* 2. Redux Provider */}
           <Provider store={store}>
-            {/* 3. StatusBar Configuration */}
-            <StatusBar
-              backgroundColor={COLORS.background}
-              barStyle={'dark-content'}
-              translucent={false}
-            />
-            <SafeAreaView style={styles.container}>
-              <OfflineBanner />
-              <ErrorBoundary>
-                <StripeProvider
-                  publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}
-                >
-                  <AppNavigation />
-                </StripeProvider>
-              </ErrorBoundary>
-            </SafeAreaView>
+            <PersistGate loading={null} persistor={persistor}>
+              {/* 3. StatusBar Configuration */}
+              <StatusBar
+                backgroundColor={COLORS.background}
+                barStyle={'dark-content'}
+                translucent={false}
+              />
+              <SafeAreaView style={styles.container}>
+                <OfflineBanner />
+                <ErrorBoundary>
+                  <StripeProvider
+                    publishableKey={REACT_APP_STRIPE_PUBLISHABLE_KEY}
+                  >
+                    <AppNavigation />
+                  </StripeProvider>
+                </ErrorBoundary>
+              </SafeAreaView>
 
-            {/* 4. Toast at the absolute top of the visual stack */}
+              {/* 4. Toast at the absolute top of the visual stack */}
 
-            <Toast
-              config={toastConfig}
-              position="top"
-              bottomOffset={Platform.OS === 'ios' ? 40 : 30}
-              visibilityTime={2500}
-            />
+              <Toast
+                config={toastConfig}
+                position="top"
+                bottomOffset={Platform.OS === 'ios' ? 40 : 30}
+                visibilityTime={2500}
+              />
+            </PersistGate>
           </Provider>
         </BottomSheetModalProvider>
       </SafeAreaProvider>

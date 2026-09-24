@@ -16,6 +16,7 @@ interface ShipperCardProps {
     reviewCount?: number;
     region: string;
     isFavorite?: boolean;
+    isWishlisted?: boolean;
   };
   onPress: () => void;
   onFavoritePress?: (item: any) => void;
@@ -24,6 +25,9 @@ interface ShipperCardProps {
 
 const ShipperCard = memo(
   ({ item, onPress, onFavoritePress, customstyle }: ShipperCardProps) => {
+    // Check either isFavorite or isWishlisted
+    const isFav = Boolean(item?.isFavorite || item?.isWishlisted);
+
     // Extract City/Area from a long address string
     const formatLocation = (address: string) => {
       if (!address) return 'Unknown Location';
@@ -103,8 +107,8 @@ const ShipperCard = memo(
             <AppIcon
               name="Heart"
               size={20}
-              color={item?.isFavorite ? COLORS.error : COLORS.grey400}
-              fill={item?.isFavorite ? COLORS.error : 'transparent'}
+              color={isFav ? COLORS.error : COLORS.grey400}
+              fill={isFav ? COLORS.error : 'transparent'}
             />
           </TouchableOpacity>
         </View>

@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Image, ActivityIndicator, Linking } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
 import { formatDate, formatFromNow } from '../../../../utils/helpers';
-import { COLORS } from '../../../../constants';
+import { COLORS, FONTS } from '../../../../constants';
 import { useTracking } from './useTracking';
-import { AppText } from '../../../../components';
+import { AppText, ErrorView } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import imageIndex from '../../../../assets/images/imageIndex';
 import AppIcon from '../../../../components/app_icon/AppIcon';
@@ -17,7 +17,9 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const {
     data,
     loading,
-    refreshing: _refreshing,
+    refreshing,
+    error,
+    statusCode,
     refetch,
   } = useTracking(shipmentId);
   const mapRef = useRef<MapView>(null);
@@ -135,9 +137,16 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const statusDetails = getStatusDetails(rawTripStatus);
 
   // Driver details safely extracted
-  const driverObj = data?.driver;
+  const driverObj = data?.driverDetails || data?.driver;
   const driverName = driverObj?.name || 'Driver';
-  const _driverPhone = driverObj?.phone;
+  const driverPhone = driverObj?.phone || driverObj?.mobile;
+  const driverEmail = driverObj?.email;
+  const driverStatus = driverObj?.driverStatus;
+  const driverAvatarUri =
+    driverObj?.profileImage?.url ||
+    driverObj?.image ||
+    driverObj?.avatar ||
+    null;
   const driverUpdatedAt = driverObj?.updatedAt
     ? `Updated ${formatFromNow(driverObj.updatedAt)}`
     : 'Live GPS Active';
@@ -177,6 +186,41 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color={COLORS.primary} />
         <AppText style={styles.loaderText}>Initializing Live Map...</AppText>
+      </View>
+    );
+  }
+
+  if (error && !data) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.topHeader}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.8}
+          >
+            <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
+          </TouchableOpacity>
+        </View>
+        <ErrorView
+          statusCode={statusCode || 500}
+          title={
+            statusCode === 500
+              ? 'Server Under Maintenance'
+              : 'Unable to Load Live Tracking'
+          }
+          subtitle={
+            statusCode === 500
+              ? 'Our tracking server encountered an issue (500 Error). Please retry in a few moments.'
+              : typeof error === 'string'
+              ? error
+              : error?.message || 'Failed to fetch live shipment location data.'
+          }
+          icon={statusCode === 500 ? 'AlertTriangle' : 'AlertCircle'}
+          onRetry={refetch}
+          isRetrying={refreshing}
+          onBack={() => navigation.goBack()}
+        />
       </View>
     );
   }
@@ -320,19 +364,71 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
         <View style={styles.driverInfo}>
           <Image
             source={
-              driverObj?.avatar
-                ? {
-                    uri: driverObj?.avatar,
-                  }
+              driverAvatarUri
+                ? { uri: driverAvatarUri }
                 : imageIndex.AccountIcon
             }
             style={styles.driverAvatar}
           />
           <View style={{ flex: 1 }}>
-            <AppText style={styles.driverName} numberOfLines={1}>
-              {driverName}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <AppText style={styles.driverName} numberOfLines={1}>
+                {driverName}
+              </AppText>
+              {driverStatus && (
+                <View
+                  style={{
+                    backgroundColor: 'rgba(34, 197, 94, 0.12)',
+                    paddingHorizontal: 6,
+                    paddingVertical: 2,
+                    borderRadius: 4,
+                  }}
+                >
+                  <AppText
+                    style={{
+                      fontSize: 10,
+                      fontFamily: FONTS.bold,
+                      color: COLORS.success,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {driverStatus}
+                  </AppText>
+                </View>
+              )}
+            </View>
+            <AppText style={styles.lastUpdated} numberOfLines={1}>
+              {driverPhone ? `${driverPhone} • ` : ''}
+              {driverUpdatedAt}
             </AppText>
-            <AppText style={styles.lastUpdated}>{driverUpdatedAt}</AppText>
+          </View>
+
+          {/* Action Row: Direct Call and Mail Buttons */}
+          <View style={styles.actionRow}>
+            {driverPhone && (
+              <TouchableOpacity
+                style={styles.iconAction}
+                onPress={() => Linking.openURL(`tel:${driverPhone}`)}
+                activeOpacity={0.8}
+              >
+                <AppIcon name={'Phone'} size={18} color={COLORS.primary} />
+              </TouchableOpacity>
+            )}
+            {driverEmail && (
+              <TouchableOpacity
+                style={styles.iconAction}
+                onPress={() => Linking.openURL(`mailto:${driverEmail}`)}
+                activeOpacity={0.8}
+              >
+                <AppIcon name={'Mail'} size={18} color={COLORS.primary} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
