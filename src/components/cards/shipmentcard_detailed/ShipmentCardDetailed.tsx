@@ -204,4 +204,4 @@ const ShipmentHorizontalCard = memo(
   },
 );
 
-export default ShipmentHorizontalCard;
+export default memo(ShipmentHorizontalCard);

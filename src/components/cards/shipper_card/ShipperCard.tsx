@@ -154,4 +154,4 @@ const ShipperCard = memo(
   },
 );
 
-export default ShipperCard;
+export default memo(ShipperCard);

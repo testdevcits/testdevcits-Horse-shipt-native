@@ -1,5 +1,5 @@
 // src/screens/home/HomeScreen.tsx
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense,   } from 'react';
 import {
   View,
   ScrollView,
@@ -17,7 +17,7 @@ import HorseInformation from '../horse_information/HorseInformation';
 import { RouteMapModal } from '../../location/route_map_modal/RouteMapModal';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+ import useHome from './useHome';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
@@ -47,35 +47,20 @@ const HomeScreen = ({ navigation }: any) => {
     closeLocationPermissionModal,
   } = useDriverMe();
 
+
+
+  const {
+    isVehicleCollapsed,
+    setIsVehicleCollapsed,
+    isMapModalVisible,
+    setIsMapModalVisible,
+    mapVisible,
+    setMapVisible,
+    onStartTrip,
+  } = useHome({ activeShipment, handleStartTrip })
+
   // Collapsible accordion state for the Assigned Vehicle card [1]
-  const [isVehicleCollapsed, setIsVehicleCollapsed] = useState(false);
-  const [isMapModalVisible, setIsMapModalVisible] = useState(false);
-  const [mapVisible, setMapVisible] = useState(false);
 
-  const onStartTrip = async () => {
-    if (!activeShipment?._id || !activeShipment?.shipment?._id) {
-      showErrorToast('Unable to start trip', 'Quote ID not found.');
-      return;
-    }
-
-    try {
-      const response = await handleStartTrip(activeShipment?._id);
-
-      showSuccessToast(
-        'Trip Started',
-        response?.message || 'Trip started successfully.',
-      );
-    } catch (error: any) {
-      showErrorToast(
-        'Failed to Start Trip',
-        error?.response?.data?.message ||
-        error?.message ||
-        'Something went wrong.',
-      );
-
-      console.error(error);
-    }
-  };
 
   if (loading && !driver) {
     return <HomeSkeleton />;
@@ -84,7 +69,7 @@ const HomeScreen = ({ navigation }: any) => {
   // Parse location short names (e.g. "New Mexico, USA" -> "New Mexico") [1]
   const getShortLocation = (fullName?: string) => {
     if (!fullName) return 'N/A';
-    return fullName.split(',')[0].trim();
+    return fullName?.split(',')[0].trim();
   };
 
   return (
@@ -184,21 +169,25 @@ const HomeScreen = ({ navigation }: any) => {
       </View>
 
       {/* Confirmation Modal Slot */}
-      <Suspense fallback={null}>
-        <ConfirmationModal
-          isVisible={isMapModalVisible}
-          onClose={() => setIsMapModalVisible(false)}
-          onConfirm={() => {
-            setIsMapModalVisible(false);
-            setMapVisible(true);
-          }}
-          title="Routing Map"
-          description={`This command launches GPS navigation for your route:\n\n${activeShipment?.shipment?.pickupLocation} ➔ ${activeShipment?.shipment?.deliveryLocation}`}
-          confirmText="Start Nav"
-          cancelText="Close"
-          type="info"
-        />
-      </Suspense>
+      {
+        isMapModalVisible &&
+        <Suspense fallback={null}>
+          <ConfirmationModal
+            isVisible={isMapModalVisible}
+            onClose={() => setIsMapModalVisible(false)}
+            onConfirm={() => {
+              setIsMapModalVisible(false);
+              setMapVisible(true);
+            }}
+            title="Routing Map"
+            description={`This command launches GPS navigation for your route:\n\n${activeShipment?.shipment?.pickupLocation} ➔ ${activeShipment?.shipment?.deliveryLocation}`}
+            confirmText="Start Nav"
+            cancelText="Close"
+            type="info"
+          />
+        </Suspense>
+
+      }
 
       {mapVisible && (
         <RouteMapModal
@@ -215,14 +204,17 @@ const HomeScreen = ({ navigation }: any) => {
       )}
 
       {/* Custom Professional Location Permission Modal */}
-      <Suspense fallback={null}>
-        <LocationPermissionModal
-          isVisible={isLocationPermissionModalVisible}
-          onClose={closeLocationPermissionModal}
-          title={locationModalTitle}
-          message={locationModalMessage}
-        />
-      </Suspense>
+      {
+        isLocationPermissionModalVisible &&
+        <Suspense fallback={null}>
+          <LocationPermissionModal
+            isVisible={isLocationPermissionModalVisible}
+            onClose={closeLocationPermissionModal}
+            title={locationModalTitle}
+            message={locationModalMessage}
+          />
+        </Suspense>
+      }
     </View>
   );
 };
