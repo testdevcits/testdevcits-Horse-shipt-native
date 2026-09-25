@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey100,
     aspectRatio: 1,
     margin: 8,
-    borderRadius: 10
+    borderRadius: 10,
   },
   content: {
     flex: 1,

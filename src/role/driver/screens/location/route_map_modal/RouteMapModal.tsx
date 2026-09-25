@@ -1,31 +1,14 @@
 import React, { useRef, useEffect, useState, memo, useCallback } from 'react';
-import {
-  StyleSheet,
-  View,
-  Modal,
-  TouchableOpacity,
-  Platform,
-  ActivityIndicator,
-  Dimensions,
-  StatusBar,
-} from 'react-native';
+import { View, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Navigation, MapPin } from 'lucide-react-native';
-import {
-  COLORS,
-  FONT_SIZE,
-  FONTS,
-  RADIUS,
-  SPACING,
-  SIZES,
-} from '../../../../constants';
-import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
-import { AppText } from '../../../../components';
-import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
-import AppIcon from '../../../../components/app_icon/AppIcon';
-
-const { height } = Dimensions.get('window');
+import { COLORS } from '../../../../../constants';
+import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
+import { AppText } from '../../../../../components';
+import { useCurrentLocation } from '../../../../../hooks/useCurrentLocation';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import styles from './RouteMapModal.Styles';
 
 interface Coords {
   latitude: number;
@@ -169,7 +152,6 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
         onRequestClose={onClose}
       >
         <View style={styles.container}>
-
           <MapView
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
@@ -371,157 +353,3 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
-  map: { ...StyleSheet.absoluteFillObject },
-  markerContainer: { alignItems: 'center' },
-  markerLabel: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    marginBottom: 2,
-    elevation: 4,
-  },
-  markerLabelText: {
-    color: COLORS.white,
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xs,
-  },
-  markerIconCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-  },
-  markerStem: { width: 2, height: 4 },
-  headerOverlay: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 50 : 20,
-    left: 20,
-    right: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  circleBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: COLORS.black,
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.gray100Light,
-  },
-  routeHeaderInfo: {
-    backgroundColor: COLORS.whiteOverlay90,
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    borderRadius: 20,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.divider,
-  },
-  headerTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-  },
-  liveIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    marginTop: 2,
-  },
-  pulseDot: {
-    width: SPACING.xs2,
-    height: SPACING.xs2,
-    borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.success,
-  },
-  liveText: {
-    fontSize: FONT_SIZE.mini,
-    fontFamily: FONTS.bold,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.5,
-  },
-  sideControls: { position: 'absolute', right: 20, top: height * 0.25 },
-  bottomCardWrapper: {
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 40 : 20,
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  tripCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 24,
-    padding: 20,
-    elevation: 20,
-    shadowColor: COLORS.black,
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-  },
-  metricRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  metricItem: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  metricTextContent: { gap: 2 },
-  metricLabel: {
-    fontSize: FONT_SIZE.sm,
-
-    color: COLORS.textSecondary,
-    fontFamily: FONTS.medium,
-  },
-  metricValue: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  metricDivider: {
-    width: SIZES.borderWidthThin,
-    height: RADIUS.pill,
-    backgroundColor: COLORS.divider,
-  },
-  divider: {
-    height: SIZES.borderWidthThin,
-    backgroundColor: COLORS.divider,
-    marginVertical: SPACING.lg2,
-  },
-  addressSection: { gap: 10 },
-  addressRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  dot: { width: SPACING.sm, height: SPACING.sm, borderRadius: RADIUS.xs },
-  addressText: {
-    flex: 1,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-    fontFamily: FONTS.medium,
-  },
-  verticalLine: {
-    width: 1,
-    height: 12,
-    backgroundColor: COLORS.divider,
-    marginLeft: 3.5,
-  },
-  loader: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: COLORS.whiteOverlay90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 99,
-  },
-  loadingText: {
-    marginTop: 12,
-    fontFamily: FONTS.medium,
-    color: COLORS.textSecondary,
-  },
-});

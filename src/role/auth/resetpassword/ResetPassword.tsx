@@ -5,7 +5,6 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  StatusBar,
   TouchableOpacity,
   Platform,
 } from 'react-native';
@@ -120,7 +119,6 @@ const ResetPassword = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.container}>
-
       {/* Dynamic Background Image (Shrinks to 15% when keyboard open) */}
       <ImageBackground
         source={imageIndex?.HorseBg}

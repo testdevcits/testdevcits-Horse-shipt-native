@@ -23,7 +23,7 @@ import {
 import driverService from '../../../../api/services/driverService';
 import styles from './styles.location';
 import { AppText, Button, DriverHeader } from '../../../../components';
-import { RouteMapModal } from './RouteMapModal';
+import { RouteMapModal } from './route_map_modal/RouteMapModal';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
 const ConfirmationModal = lazy(

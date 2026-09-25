@@ -3,7 +3,6 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  StatusBar,
   Image,
   ScrollView,
 } from 'react-native';
@@ -113,7 +112,6 @@ const RegisterScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-
       {/* 1. Top Image Section */}
       <ImageBackground
         source={imageIndex?.HorseBg}

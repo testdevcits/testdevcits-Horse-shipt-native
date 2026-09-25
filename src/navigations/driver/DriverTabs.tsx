@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS, FONTS } from '../../constants';
 
 // Screens
-import DriverHomeScreen from '../../role/driver/screens/home/HomeScreen';
+import DriverHomeScreen from '../../role/driver/screens/home/home_screen/HomeScreen';
 import AllTrips from '../../role/driver/screens/trips/AllTrips';
 import LocationScreen from '../../role/driver/screens/location/LocationScreen';
 import ProfileScreen from '../../role/driver/screens/profile/Profile';
@@ -25,6 +25,7 @@ const DriverTabs = () => (
       tabBarLabelStyle: {
         fontFamily: FONTS.semiBold,
       },
+      tabBarAllowFontScaling: false,
     }}
   >
     <Tab.Screen

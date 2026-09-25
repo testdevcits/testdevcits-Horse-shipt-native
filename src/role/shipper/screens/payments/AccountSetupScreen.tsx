@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { AppText } from '../../../../components';
 import { COLORS } from '../../../../constants';
@@ -37,7 +32,6 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
 
   return (
     <View style={styles.safeArea}>
-
       {/* APP HEADER WITH GO BACK */}
       <View style={styles.headerRow}>
         <TouchableOpacity

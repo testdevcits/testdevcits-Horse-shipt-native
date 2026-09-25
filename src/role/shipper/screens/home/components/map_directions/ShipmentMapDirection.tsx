@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -36,7 +36,6 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
 
   return (
     <View style={styles.container}>
-
       {/* Map Implementation */}
       <MapView
         ref={mapRef}

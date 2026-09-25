@@ -6,13 +6,7 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import {
-  ScrollView,
-  View,
-  StatusBar,
-  TouchableOpacity,
-  Share,
-} from 'react-native';
+import { ScrollView, View, TouchableOpacity, Share } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -442,7 +436,6 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
 
   return (
     <View style={styles.safeArea}>
-
       {/* Header */}
       <AppHeader
         showBack

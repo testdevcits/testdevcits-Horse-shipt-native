@@ -10,7 +10,6 @@ import {
   Keyboard,
   Platform,
   PermissionsAndroid,
-  StatusBar,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import axios from 'axios';
@@ -313,7 +312,6 @@ const LocationPickerCore: React.FC<{
 
   return (
     <View style={styles.modalContainer}>
-
       {/* MAP ENGINE */}
       <MapView
         ref={mapRef}

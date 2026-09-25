@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 import React from 'react';
 
-import { AppText, Button } from '../../../../components';
-import { COLORS, SPACING } from '../../../../constants';
-import AppIcon from '../../../../components/app_icon/AppIcon';
+import { AppText, Button } from '../../../../../components';
+import { COLORS, SPACING } from '../../../../../constants';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
 import styles from './styles.ActiveShipment';
 
 const ActiveShipment = ({

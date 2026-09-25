@@ -5,7 +5,7 @@ import {
   FONTS,
   RADIUS,
   SPACING,
-} from '../../../../constants';
+} from '../../../../../constants';
 
 const styles = StyleSheet.create({
   card: {

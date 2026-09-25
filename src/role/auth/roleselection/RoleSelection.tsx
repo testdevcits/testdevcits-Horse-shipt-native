@@ -3,7 +3,6 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  StatusBar,
   Image,
   ScrollView,
 } from 'react-native';
@@ -122,7 +121,6 @@ const RoleSelection = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-
       <ImageBackground
         source={imageIndex?.HorseBg}
         style={styles.headerImage}

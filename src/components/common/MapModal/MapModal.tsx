@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   Animated,
   ActivityIndicator,
-  StatusBar,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -149,7 +148,6 @@ const MapModal = ({
       onRequestClose={onClose}
     >
       <View style={styles.container}>
-
         <MapView
           ref={mapRef}
           provider={PROVIDER_GOOGLE}

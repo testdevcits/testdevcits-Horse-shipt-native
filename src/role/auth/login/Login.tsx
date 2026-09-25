@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
-  StatusBar,
 } from 'react-native';
 
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
@@ -48,7 +47,6 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-
       {/* Top Right Change Role Button */}
       {!isKeyboardOpen && (
         <TouchableOpacity
@@ -88,10 +86,7 @@ const Login = () => {
         <View style={styles.contentCard}>
           <Image
             source={imageIndex?.Logo}
-            style={[
-              styles.logoIcon,
-              isKeyboardOpen && styles.logoIconKeyboard,
-            ]}
+            style={[styles.logoIcon, isKeyboardOpen && styles.logoIconKeyboard]}
             resizeMode="contain"
           />
 

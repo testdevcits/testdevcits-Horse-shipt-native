@@ -5,7 +5,6 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  StatusBar,
   TouchableOpacity,
 } from 'react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';

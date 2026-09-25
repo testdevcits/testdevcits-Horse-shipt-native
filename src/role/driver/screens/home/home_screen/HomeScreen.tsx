@@ -8,30 +8,30 @@ import {
 } from 'react-native';
 
 // Imported design systems & components
-import { useDriverMe } from '../../../../hooks/useDriverMe';
-import { AppText, Button, DriverHeader } from '../../../../components';
+import { useDriverMe } from '../../../../../hooks/useDriverMe';
+import { AppText, Button, DriverHeader } from '../../../../../components';
 import styles from './styles.home';
-import { COLORS, SPACING } from '../../../../constants';
+import { COLORS, SPACING } from '../../../../../constants';
 
-import VahicleInfoCard from './VahicleInfoCard';
-import ActiveShipment from './ActiveShipment';
-import HorseInformation from './HorseInformation';
-import { RouteMapModal } from '../location/RouteMapModal';
-import AppButton from '../../../../components/common/Button/AppButton';
-import AppIcon from '../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
+import VahicleInfoCard from '../vahicle_infocard/VahicleInfoCard';
+import ActiveShipment from '../active_shipment/ActiveShipment';
+import HorseInformation from '../horse_information/HorseInformation';
+import { RouteMapModal } from '../../location/route_map_modal/RouteMapModal';
+import AppButton from '../../../../../components/common/Button/AppButton';
+import AppIcon from '../../../../../components/app_icon/AppIcon';
+import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
     () =>
       import(
-        '../../../../components/common/ConfirmationModal/ConfirmationModal'
+        '../../../../../components/common/ConfirmationModal/ConfirmationModal'
       ),
   );
   const LocationPermissionModal = lazy(
     () =>
       import(
-        '../../../../components/common/LocationPermissionModal/LocationPermissionModal'
+        '../../../../../components/common/LocationPermissionModal/LocationPermissionModal'
       ),
   );
 
@@ -193,8 +193,11 @@ const HomeScreen = ({ navigation }: any) => {
       <Suspense fallback={null}>
         <ConfirmationModal
           isVisible={isMapModalVisible}
-          onClose={() => setIsMapModalVisible(!isMapModalVisible)}
-          onConfirm={() => setMapVisible(!mapVisible)}
+          onClose={() => setIsMapModalVisible(false)}
+          onConfirm={() => {
+            setIsMapModalVisible(false);
+            setMapVisible(true);
+          }}
           title="Routing Map"
           description={`This command launches GPS navigation for your route:\n\n${activeShipment?.shipment?.pickupLocation} ➔ ${activeShipment?.shipment?.deliveryLocation}`}
           confirmText="Start Nav"
@@ -207,7 +210,7 @@ const HomeScreen = ({ navigation }: any) => {
         <RouteMapModal
           visible={mapVisible}
           onClose={() => {
-            setMapVisible(!mapVisible);
+            setMapVisible(false);
             setIsMapModalVisible(false);
           }}
           pickupLocation={activeShipment?.shipment?.pickupLocation}

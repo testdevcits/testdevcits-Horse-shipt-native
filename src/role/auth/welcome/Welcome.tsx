@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  StatusBar,
-  Image,
-} from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Image } from 'react-native';
 
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -14,7 +8,6 @@ import styles from './styles.Welcome';
 const WelcomeScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-
       {/* 1. Background Image Section */}
       <ImageBackground
         source={imageIndex?.HorseBg} // Add your horse image here

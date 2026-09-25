@@ -9,7 +9,6 @@ import {
   Keyboard,
   Image,
   ImageBackground,
-  StatusBar,
 } from 'react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button } from '../../../components';
@@ -106,7 +105,6 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.container}>
-
       <ImageBackground
         source={imageIndex?.HorseBg}
         style={[

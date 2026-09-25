@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   ImageBackground,
-  StatusBar,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -318,7 +317,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-
       <ImageBackground
         source={imageIndex?.HorseBg}
         style={[
@@ -349,10 +347,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
         <View style={styles.contentCard}>
           <Image
             source={imageIndex?.Logo}
-            style={[
-              styles.logoIcon,
-              isKeyboardOpen && styles.logoIconKeyboard,
-            ]}
+            style={[styles.logoIcon, isKeyboardOpen && styles.logoIconKeyboard]}
             resizeMode="contain"
           />
 
