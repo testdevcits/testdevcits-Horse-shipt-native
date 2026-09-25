@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { View, ScrollView, Image, } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 
 // Custom Design Systems
 import { COLORS } from '../../../../constants'; // Adjust relative path as needed

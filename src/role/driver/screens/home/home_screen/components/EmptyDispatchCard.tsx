@@ -16,18 +16,14 @@ const EmptyDispatchCard: React.FC<Props> = ({ onRefresh }) => {
       <View style={styles.emptyIconBox}>
         <AppIcon name={'Radio'} size={24} color={COLORS.primary} />
       </View>
-      <AppText style={styles.emptyTitle}>
-        No active manifests assigned
-      </AppText>
+      <AppText style={styles.emptyTitle}>No active manifests assigned</AppText>
       <AppText style={styles.emptyText}>
-        You are currently on standby for dispatch assignments. Tap below to check
-        for new trip manifests.
+        You are currently on standby for dispatch assignments. Tap below to
+        check for new trip manifests.
       </AppText>
 
       <AppButton
-        leftIcon={
-          <AppIcon name={'RotateCw'} size={16} color={COLORS.white} />
-        }
+        leftIcon={<AppIcon name={'RotateCw'} size={16} color={COLORS.white} />}
         title="Check for Dispatch"
         onPress={onRefresh}
         buttonStyle={styles.refreshBtn}

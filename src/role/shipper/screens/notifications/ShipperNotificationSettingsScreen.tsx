@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import { AppHeader, SettingsSkeleton } from '../../../../components';
 import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
@@ -95,4 +91,3 @@ const ShipperNotificationSettingsScreen = () => {
 };
 
 export default ShipperNotificationSettingsScreen;
-

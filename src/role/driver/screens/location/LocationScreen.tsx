@@ -1,6 +1,6 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, ScrollView, } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import Geolocation from 'react-native-geolocation-service';
 
@@ -65,7 +65,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
   const fallbackLat =

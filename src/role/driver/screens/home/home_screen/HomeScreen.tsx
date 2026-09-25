@@ -1,14 +1,14 @@
 // src/screens/home/HomeScreen.tsx
-import React, { lazy, Suspense,   } from 'react';
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
-
+import React, { lazy, Suspense } from 'react';
+import { View, ScrollView, RefreshControl } from 'react-native';
 // Imported design systems & components
 import { useDriverMe } from '../../../../../hooks/useDriverMe';
-import { AppText, Button, DriverHeader, HomeSkeleton } from '../../../../../components';
+import {
+  AppText,
+  Button,
+  DriverHeader,
+  HomeSkeleton,
+} from '../../../../../components';
 import styles from './styles.home';
 import { COLORS, SPACING } from '../../../../../constants';
 import VahicleInfoCard from '../vahicle_infocard/VahicleInfoCard';
@@ -17,7 +17,7 @@ import HorseInformation from '../horse_information/HorseInformation';
 import { RouteMapModal } from '../../location/route_map_modal/RouteMapModal';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
- import useHome from './useHome';
+import useHome from './useHome';
 
 const HomeScreen = ({ navigation }: any) => {
   const ConfirmationModal = lazy(
@@ -47,8 +47,6 @@ const HomeScreen = ({ navigation }: any) => {
     closeLocationPermissionModal,
   } = useDriverMe();
 
-
-
   const {
     isVehicleCollapsed,
     setIsVehicleCollapsed,
@@ -57,10 +55,9 @@ const HomeScreen = ({ navigation }: any) => {
     mapVisible,
     setMapVisible,
     onStartTrip,
-  } = useHome({ activeShipment, handleStartTrip })
+  } = useHome({ activeShipment, handleStartTrip });
 
   // Collapsible accordion state for the Assigned Vehicle card [1]
-
 
   if (loading && !driver) {
     return <HomeSkeleton />;
@@ -169,8 +166,7 @@ const HomeScreen = ({ navigation }: any) => {
       </View>
 
       {/* Confirmation Modal Slot */}
-      {
-        isMapModalVisible &&
+      {isMapModalVisible && (
         <Suspense fallback={null}>
           <ConfirmationModal
             isVisible={isMapModalVisible}
@@ -186,8 +182,7 @@ const HomeScreen = ({ navigation }: any) => {
             type="info"
           />
         </Suspense>
-
-      }
+      )}
 
       {mapVisible && (
         <RouteMapModal
@@ -204,8 +199,7 @@ const HomeScreen = ({ navigation }: any) => {
       )}
 
       {/* Custom Professional Location Permission Modal */}
-      {
-        isLocationPermissionModalVisible &&
+      {isLocationPermissionModalVisible && (
         <Suspense fallback={null}>
           <LocationPermissionModal
             isVisible={isLocationPermissionModalVisible}
@@ -214,7 +208,7 @@ const HomeScreen = ({ navigation }: any) => {
             message={locationModalMessage}
           />
         </Suspense>
-      }
+      )}
     </View>
   );
 };

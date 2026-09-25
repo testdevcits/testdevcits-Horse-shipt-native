@@ -3,7 +3,6 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-
   ScrollView, // Imported ScrollView for the horizontal chip layout
   Platform,
 } from 'react-native';
