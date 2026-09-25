@@ -3,14 +3,14 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
+
   ScrollView, // Imported ScrollView for the horizontal chip layout
   Platform,
 } from 'react-native';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
 import { COLORS, ICON_SIZE } from '../../../../constants';
-import { AppText, TripCard } from '../../../../components';
+import { AppText, TripCard, ShipmentsSkeleton } from '../../../../components';
 import styles from './styles.alltrips';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
@@ -119,9 +119,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
       />
 
       {loading ? (
-        <View style={styles.centered}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
+        <ShipmentsSkeleton />
       ) : (
         <FlatList
           data={filteredShipments}

@@ -3,16 +3,14 @@ import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   ScrollView,
-  ActivityIndicator,
   RefreshControl,
 } from 'react-native';
 
 // Imported design systems & components
 import { useDriverMe } from '../../../../../hooks/useDriverMe';
-import { AppText, Button, DriverHeader } from '../../../../../components';
+import { AppText, Button, DriverHeader, HomeSkeleton } from '../../../../../components';
 import styles from './styles.home';
 import { COLORS, SPACING } from '../../../../../constants';
-
 import VahicleInfoCard from '../vahicle_infocard/VahicleInfoCard';
 import ActiveShipment from '../active_shipment/ActiveShipment';
 import HorseInformation from '../horse_information/HorseInformation';
@@ -71,8 +69,8 @@ const HomeScreen = ({ navigation }: any) => {
       showErrorToast(
         'Failed to Start Trip',
         error?.response?.data?.message ||
-          error?.message ||
-          'Something went wrong.',
+        error?.message ||
+        'Something went wrong.',
       );
 
       console.error(error);
@@ -80,11 +78,7 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   if (loading && !driver) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
+    return <HomeSkeleton />;
   }
 
   // Parse location short names (e.g. "New Mexico, USA" -> "New Mexico") [1]

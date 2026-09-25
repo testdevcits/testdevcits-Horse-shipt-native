@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { View, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Image, } from 'react-native';
 
 // Custom Design Systems
 import { COLORS } from '../../../../constants'; // Adjust relative path as needed
@@ -7,7 +7,7 @@ import AppText from '../../../../components/common/AppText';
 import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
 import styles from './styles.profile';
 import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
-import { Button } from '../../../../components';
+import { Button, ProfileSkeleton } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
 import AppIcon from '../../../../components/app_icon/AppIcon';
@@ -53,11 +53,7 @@ const Profile = () => {
   };
 
   if (loading && !driver) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
+    return <ProfileSkeleton />;
   }
 
   // Fallback monogram if driver profile image does not exist

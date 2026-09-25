@@ -53,7 +53,7 @@ const HorseInformation = ({
           const hasError = imageErrors[idx];
           const photoUrl =
             !hasError && horse?.photo?.url
-              ? horse.photo.url
+              ? horse?.photo.url
               : horsePlaceholderImage;
           const horseName =
             horse?.registeredName || horse?.barnName || `Horse #${idx + 1}`;
@@ -87,7 +87,7 @@ const HorseInformation = ({
                         style={styles.horseNameBadgeText}
                         numberOfLines={1}
                       >
-                        {horse.registeredName}
+                        {horse?.registeredName}
                       </AppText>
                     </View>
                   ) : null}
@@ -113,7 +113,7 @@ const HorseInformation = ({
                   </AppText>
                   {horse?.barnName ? (
                     <AppText style={styles.barnNameSub} numberOfLines={1}>
-                      Barn Name: "{horse.barnName}"
+                      Barn Name: "{horse?.barnName}"
                     </AppText>
                   ) : null}
                 </View>

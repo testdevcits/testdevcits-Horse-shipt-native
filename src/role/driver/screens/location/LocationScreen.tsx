@@ -1,12 +1,13 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ScrollView, } from 'react-native';
 
 import Geolocation from 'react-native-geolocation-service';
 
 import { COLORS } from '../../../../constants';
 
 import { useDriverMe } from '../../../../hooks/useDriverMe';
+import { HomeSkeleton } from '../../../../components';
 
 // Import permission helper and auto location service
 import {
@@ -64,7 +65,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const fallbackLat =
@@ -238,11 +239,7 @@ const LocationScreen = () => {
   const [mapVisible, setMapVisible] = useState(false);
 
   if (loading && !driver) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
+    return <HomeSkeleton />;
   }
 
   return (
