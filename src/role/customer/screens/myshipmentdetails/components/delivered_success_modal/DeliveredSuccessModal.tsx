@@ -28,7 +28,7 @@ const DeliveredSuccessModal = ({
           {/* SUCCESS GIF ANIMATION */}
           <View style={styles.gifContainer}>
             <Image
-              source={imageIndex.success}
+              source={imageIndex?.success}
               style={styles.successGif}
               resizeMode="contain"
             />

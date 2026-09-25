@@ -637,7 +637,7 @@ const AddVehicleModal: React.FC<Props> = ({
           <View style={styles.loadingCard}>
             <View style={styles.truckIconContainer}>
               <Image
-                source={imageIndex.runningtruck}
+                source={imageIndex?.runningtruck}
                 style={{
                   width: 200,
                   height: 200,

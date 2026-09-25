@@ -175,7 +175,7 @@ const CustomShipperDrawerContent: React.FC<
       {/* Header Section */}
       <View style={styles.headerContainer}>
         <Image
-          source={imageIndex.LogoIcon}
+          source={imageIndex?.LogoIcon}
           style={styles.logoIcon}
           resizeMode="contain"
         />
@@ -240,7 +240,7 @@ const CustomShipperDrawerContent: React.FC<
           />
           <ShipperDrawerMenuItem
             label="My Vehicles"
-            imageSource={imageIndex.vehicles}
+            imageSource={imageIndex?.vehicles}
             isActive={isDrawerRouteActive('MyVehicles')}
             onPress={() => navigateToRoute('MyVehicles')}
           />
@@ -258,13 +258,13 @@ const CustomShipperDrawerContent: React.FC<
           />
           <ShipperDrawerMenuItem
             label="Earnings"
-            imageSource={imageIndex.earnings}
+            imageSource={imageIndex?.earnings}
             isActive={isDrawerRouteActive('Earnings')}
             onPress={() => navigateToRoute('Earnings')}
           />
           <ShipperDrawerMenuItem
             label="Google review"
-            imageSource={imageIndex.googlereview}
+            imageSource={imageIndex?.googlereview}
             isActive={isDrawerRouteActive('GoogleReview')}
             onPress={() => navigateToRoute('GoogleReview')}
           />

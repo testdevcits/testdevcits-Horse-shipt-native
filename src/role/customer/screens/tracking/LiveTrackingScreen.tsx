@@ -366,7 +366,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             source={
               driverAvatarUri
                 ? { uri: driverAvatarUri }
-                : imageIndex.AccountIcon
+                : imageIndex?.AccountIcon
             }
             style={styles.driverAvatar}
           />

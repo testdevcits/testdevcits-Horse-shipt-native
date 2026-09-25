@@ -80,7 +80,9 @@ const ShipperCard = memo(
               return (
                 <Image
                   source={
-                    hasValidImage ? { uri: profileUri } : imageIndex.AccountIcon
+                    hasValidImage
+                      ? { uri: profileUri }
+                      : imageIndex?.AccountIcon
                   }
                   style={styles.avatar}
                 />

@@ -151,7 +151,7 @@ const AppHeader = memo(
                 >
                   {imageError ? (
                     <Image
-                      source={imageIndex.AccountIcon}
+                      source={imageIndex?.AccountIcon}
                       style={{
                         width: SIZES.avatarSm,
                         height: SIZES.avatarSm,
@@ -162,7 +162,7 @@ const AppHeader = memo(
                   ) : (
                     <Image
                       source={
-                        avatarUri ? { uri: avatarUri } : imageIndex.AccountIcon
+                        avatarUri ? { uri: avatarUri } : imageIndex?.AccountIcon
                       }
                       style={{
                         width: SIZES.avatarSm,

@@ -101,7 +101,7 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                 case 'Home':
                   return (
                     <Image
-                      source={imageIndex.Home}
+                      source={imageIndex?.Home}
                       style={{ width: 24, height: 24, tintColor: iconColor }}
                       resizeMode="contain"
                     />
@@ -109,7 +109,7 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                 case 'MyQuotes':
                   return (
                     <Image
-                      source={imageIndex.Shipments}
+                      source={imageIndex?.Shipments}
                       style={{ width: 24, height: 24, tintColor: iconColor }}
                       resizeMode="contain"
                     />
@@ -117,7 +117,7 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                 case 'Chats':
                   return (
                     <Image
-                      source={imageIndex.Chat}
+                      source={imageIndex?.Chat}
                       style={{ width: 24, height: 24, tintColor: iconColor }}
                       resizeMode="contain"
                     />
@@ -125,7 +125,7 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                 case 'Profile':
                   return (
                     <Image
-                      source={imageIndex.AccountIcon}
+                      source={imageIndex?.AccountIcon}
                       style={{ width: 24, height: 24, tintColor: iconColor }}
                       resizeMode="contain"
                     />

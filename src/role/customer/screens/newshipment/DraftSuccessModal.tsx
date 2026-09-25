@@ -28,7 +28,7 @@ const DraftSuccessModal = ({
           {/* LOGO SECTION */}
           <View style={styles.logoContainer}>
             <Image
-              source={imageIndex.LogoIcon}
+              source={imageIndex?.LogoIcon}
               style={styles.logo}
               resizeMode="contain"
             />

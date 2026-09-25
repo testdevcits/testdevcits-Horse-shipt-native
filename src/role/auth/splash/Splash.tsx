@@ -143,7 +143,7 @@ const Splash = ({ navigation }: any) => {
           ]}
         >
           <Image
-            source={imageIndex.racinghorse}
+            source={imageIndex?.racinghorse}
             style={{ height: 100, width: 100 }}
             resizeMode="center"
           />

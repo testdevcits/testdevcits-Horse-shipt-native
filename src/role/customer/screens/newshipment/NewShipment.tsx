@@ -83,7 +83,7 @@ const NewShipment = () => {
           <View key={index} style={styles.stepItem}>
             {isActive && isCurrent ? (
               <Image
-                source={imageIndex.LogoIcon}
+                source={imageIndex?.LogoIcon}
                 style={styles.stepImage}
                 resizeMode="contain"
               />

@@ -443,7 +443,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   />
                 ) : (
                   <Image
-                    source={imageIndex.AccountIcon}
+                    source={imageIndex?.AccountIcon}
                     style={styles.avatarImg}
                   />
                 );

@@ -284,7 +284,7 @@ const AddEditHorse = () => {
           <View style={styles.infoCard}>
             <View style={styles.iconContainer}>
               <Image
-                source={imageIndex.addedithorseiocn}
+                source={imageIndex?.addedithorseiocn}
                 style={styles.placeholderIcon}
                 resizeMode="center"
               />

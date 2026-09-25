@@ -234,7 +234,7 @@ const ProfileTab: React.FC<Props> = ({
                       source={
                         rev?.customerId?.profileImage?.url
                           ? { uri: rev?.customerId.profileImage.url }
-                          : imageIndex.AccountIcon
+                          : imageIndex?.AccountIcon
                       }
                       style={styles.reviewerAvatar}
                     />

@@ -128,7 +128,7 @@ const ResetPassword = ({ navigation, route }: any) => {
 
       {/* Dynamic Background Image (Shrinks to 15% when keyboard open) */}
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
@@ -157,7 +157,7 @@ const ResetPassword = ({ navigation, route }: any) => {
           <View style={styles.logoOuterRing}>
             <View style={styles.logoInnerRing}>
               <Image
-                source={imageIndex.LogoIcon}
+                source={imageIndex?.LogoIcon}
                 style={styles.logoIcon}
                 resizeMode="contain"
               />

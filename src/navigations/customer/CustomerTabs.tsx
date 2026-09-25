@@ -75,7 +75,7 @@ const CustomTabBar = ({ state, navigation }: any) => {
                 case 'Home':
                   return (
                     <Image
-                      source={imageIndex.Home}
+                      source={imageIndex?.Home}
                       style={{ width: 24, height: 24, tintColor: color }}
                       resizeMode="contain"
                     />
@@ -83,7 +83,7 @@ const CustomTabBar = ({ state, navigation }: any) => {
                 case 'Shipments':
                   return (
                     <Image
-                      source={imageIndex.Shipments}
+                      source={imageIndex?.Shipments}
                       style={{ width: 24, height: 24, tintColor: color }}
                       resizeMode="contain"
                     />
@@ -93,7 +93,7 @@ const CustomTabBar = ({ state, navigation }: any) => {
                 case 'Horses':
                   return (
                     <Image
-                      source={imageIndex.Horse}
+                      source={imageIndex?.Horse}
                       style={{ width: 24, height: 24, tintColor: color }}
                       resizeMode="contain"
                     />
@@ -101,7 +101,7 @@ const CustomTabBar = ({ state, navigation }: any) => {
                 case 'Chats':
                   return (
                     <Image
-                      source={imageIndex.Chat}
+                      source={imageIndex?.Chat}
                       style={{ width: 24, height: 24, tintColor: color }}
                       resizeMode="contain"
                     />

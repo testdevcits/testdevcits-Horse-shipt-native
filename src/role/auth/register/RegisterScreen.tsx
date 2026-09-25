@@ -121,7 +121,7 @@ const RegisterScreen = ({ navigation }: any) => {
 
       {/* 1. Top Image Section */}
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
@@ -131,7 +131,7 @@ const RegisterScreen = ({ navigation }: any) => {
       {/* 2. Content Card (Overlapping) */}
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo}
+          source={imageIndex?.Logo}
           style={styles.logoIcon}
           resizeMode="contain"
         />
@@ -251,7 +251,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   activeOpacity={0.8}
                 >
                   <Image
-                    source={imageIndex.Google}
+                    source={imageIndex?.Google}
                     style={{ width: 20, height: 20, marginRight: 10 }}
                     resizeMode="contain"
                   />

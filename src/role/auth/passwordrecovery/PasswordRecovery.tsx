@@ -37,7 +37,7 @@ const PasswordRecovery = ({ navigation }: any) => {
         backgroundColor="transparent"
       />
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
@@ -59,7 +59,7 @@ const PasswordRecovery = ({ navigation }: any) => {
 
       <KeyboardAvoidingView style={styles.keyboardView} behavior="padding">
         <View style={styles.contentCard}>
-          <Image source={imageIndex.Logo} style={styles.logoIcon} />
+          <Image source={imageIndex?.Logo} style={styles.logoIcon} />
 
           <ScrollView
             contentContainerStyle={styles.scrollContent}

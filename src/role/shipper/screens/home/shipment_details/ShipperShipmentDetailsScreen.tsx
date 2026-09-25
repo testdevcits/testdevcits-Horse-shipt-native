@@ -246,7 +246,7 @@ const ShipperShipmentDetailsScreen = () => {
               />
             ) : (
               <Image
-                source={imageIndex.Banner}
+                source={imageIndex?.Banner}
                 style={styles.heroBannerImage}
               />
             )}
@@ -535,7 +535,7 @@ const ShipperShipmentDetailsScreen = () => {
                       />
                     ) : (
                       <Image
-                        source={imageIndex.Banner}
+                        source={imageIndex?.Banner}
                         style={styles.horseThumb}
                       />
                     )}

@@ -28,7 +28,7 @@ const PublishedSuccessModal = ({
           {/* LOGO SECTION */}
           <View style={styles.logoContainer}>
             <Image
-              source={imageIndex.LogoIcon} // Replace with your actual path
+              source={imageIndex?.LogoIcon} // Replace with your actual path
               style={styles.logo}
               resizeMode="contain"
             />

@@ -22,7 +22,7 @@ const WelcomeScreen = ({ navigation }: any) => {
 
       {/* 1. Background Image Section */}
       <ImageBackground
-        source={imageIndex.HorseBg} // Add your horse image here
+        source={imageIndex?.HorseBg} // Add your horse image here
         style={styles.backgroundImage}
         resizeMode="cover"
       >
@@ -32,7 +32,7 @@ const WelcomeScreen = ({ navigation }: any) => {
       {/* 2. Bottom Content Card */}
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo} // Stylized horse head icon
+          source={imageIndex?.Logo} // Stylized horse head icon
           style={styles.logoIcon}
           resizeMode="contain"
         />

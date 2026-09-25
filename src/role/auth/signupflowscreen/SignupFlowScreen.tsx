@@ -309,7 +309,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
       />
 
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.backgroundImage,
           {
@@ -335,7 +335,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
       >
         <View style={styles.contentCard}>
           <Image
-            source={imageIndex.Logo}
+            source={imageIndex?.Logo}
             style={styles.logoIcon}
             resizeMode="contain"
           />
@@ -525,7 +525,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
                       activeOpacity={0.8}
                     >
                       <Image
-                        source={imageIndex.Google}
+                        source={imageIndex?.Google}
                         style={styles.googleIcon}
                         resizeMode="contain"
                       />
@@ -636,7 +636,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
                 <View style={styles.successIconWrapper}>
                   <Image
-                    source={imageIndex.HorseIcon}
+                    source={imageIndex?.HorseIcon}
                     style={styles.successIcon}
                     resizeMode="contain"
                   />

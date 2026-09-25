@@ -144,7 +144,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
       {/* Header Section with Logo */}
       <View style={styles.headerContainer}>
         <Image
-          source={imageIndex.LogoIcon}
+          source={imageIndex?.LogoIcon}
           style={styles.logoIcon}
           resizeMode="contain"
         />
@@ -159,37 +159,37 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
         <View style={styles.menuContainer}>
           <DrawerMenuItem
             label="Home"
-            iconSource={imageIndex.Drawer_Home}
+            iconSource={imageIndex?.Drawer_Home}
             isActive={isTabActive('Home')}
             onPress={() => navigateToTab('Home')}
           />
           <DrawerMenuItem
             label="New Shipping"
-            iconSource={imageIndex.Shipping}
+            iconSource={imageIndex?.Shipping}
             isActive={isTabActive('New')}
             onPress={() => navigateToTab('New')}
           />
           <DrawerMenuItem
             label="My Shipments"
-            iconSource={imageIndex.Drawer_Shipments}
+            iconSource={imageIndex?.Drawer_Shipments}
             isActive={isTabActive('Shipments')}
             onPress={() => navigateToTab('Shipments')}
           />
           <DrawerMenuItem
             label="My Horses"
-            iconSource={imageIndex.Horse}
+            iconSource={imageIndex?.Horse}
             isActive={isTabActive('Horses')}
             onPress={() => navigateToTab('Horses')}
           />
           <DrawerMenuItem
             label="Chat"
-            iconSource={imageIndex.Messages}
+            iconSource={imageIndex?.Messages}
             isActive={isTabActive('Chats')}
             onPress={() => navigateToTab('Chats')}
           />
           <DrawerMenuItem
             label="Profile"
-            iconSource={imageIndex.AccountIcon}
+            iconSource={imageIndex?.AccountIcon}
             isActive={isDrawerRouteActive('Profile')}
             onPress={() => navigateToRoute('Profile')}
           />
@@ -201,7 +201,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
           />
           <DrawerMenuItem
             label="Help Center"
-            iconSource={imageIndex.Help}
+            iconSource={imageIndex?.Help}
             isActive={isDrawerRouteActive('HelpCenter')}
             onPress={() => navigateToRoute('HelpCenter')}
           />

@@ -129,7 +129,7 @@ const RoleSelection = ({ navigation }: any) => {
       />
 
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={styles.headerImage}
         resizeMode="cover"
       >
@@ -138,7 +138,7 @@ const RoleSelection = ({ navigation }: any) => {
 
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo}
+          source={imageIndex?.Logo}
           style={styles.logoIcon}
           resizeMode="contain"
         />

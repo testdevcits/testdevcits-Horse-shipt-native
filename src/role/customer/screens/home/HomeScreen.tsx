@@ -146,7 +146,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         </View> */}
 
         <FlatList
-          data={shipments.slice(0, 5)}
+          data={shipments?.slice(0, 5)}
           keyExtractor={item => item?._id}
           scrollEnabled={false}
           ListHeaderComponent={
@@ -154,7 +154,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
               <>
                 <Pressable onPress={() => navigation.navigate('New')}>
                   <Image
-                    source={imageIndex.Banner}
+                    source={imageIndex?.Banner}
                     style={{
                       width: SCREEN_WIDTH - 16,
                       height: 216,

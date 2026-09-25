@@ -27,6 +27,7 @@ import {
 import styles from './styles.notification';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import { useNavigation } from '@react-navigation/native';
+1;
 
 const ConfirmationModal = lazy(
   () =>

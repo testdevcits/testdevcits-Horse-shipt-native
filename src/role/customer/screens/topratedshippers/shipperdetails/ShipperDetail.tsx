@@ -184,7 +184,7 @@ const ShipperDetail = () => {
               source={
                 shipper?.profileImage !== '/default-avatar.png'
                   ? { uri: shipper?.profileImage }
-                  : imageIndex.AccountIcon
+                  : imageIndex?.AccountIcon
               }
               style={styles.profileImage}
             />

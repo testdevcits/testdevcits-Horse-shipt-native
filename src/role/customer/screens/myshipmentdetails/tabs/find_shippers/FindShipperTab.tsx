@@ -43,7 +43,7 @@ const ShipperProfileCard = ({
           source={
             profile?.profileImage
               ? { uri: profile?.profileImage }
-              : imageIndex.AccountIcon
+              : imageIndex?.AccountIcon
           }
           style={styles.avatar}
         />

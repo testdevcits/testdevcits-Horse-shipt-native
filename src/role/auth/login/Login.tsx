@@ -69,7 +69,7 @@ const Login = () => {
 
       {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
@@ -88,7 +88,7 @@ const Login = () => {
         {/* 6. This View will now occupy 80-85% of the screen when keyboard is open */}
         <View style={styles.contentCard}>
           <Image
-            source={imageIndex.Logo}
+            source={imageIndex?.Logo}
             style={styles.logoIcon}
             resizeMode="contain"
           />
@@ -277,7 +277,7 @@ const Login = () => {
                   activeOpacity={0.8}
                 >
                   <Image
-                    source={imageIndex.Google}
+                    source={imageIndex?.Google}
                     style={styles.googleIcon}
                     resizeMode="contain"
                   />

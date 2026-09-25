@@ -113,7 +113,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
       />
 
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
@@ -141,7 +141,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
           <View style={styles.logoOuterRing}>
             <View style={styles.logoInnerRing}>
               <Image
-                source={imageIndex.LogoIcon}
+                source={imageIndex?.LogoIcon}
                 style={styles.logoIcon}
                 resizeMode="contain"
               />

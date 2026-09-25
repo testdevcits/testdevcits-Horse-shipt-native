@@ -20,7 +20,7 @@ const ChatListCard = ({
 
       {/* 2. Avatar */}
       <Image
-        source={item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon}
+        source={item?.avatar ? { uri: item?.avatar } : imageIndex?.AccountIcon}
         style={styles.avatar}
       />
 

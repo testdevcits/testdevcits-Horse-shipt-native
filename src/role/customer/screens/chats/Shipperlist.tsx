@@ -87,7 +87,7 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
                   isChatLocked: item?.isChatLocked,
                   avatar: item?.avatar
                     ? { uri: item?.avatar }
-                    : imageIndex.AccountIcon,
+                    : imageIndex?.AccountIcon,
                 })
               }
             />

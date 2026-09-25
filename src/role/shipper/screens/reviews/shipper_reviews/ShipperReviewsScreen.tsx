@@ -100,7 +100,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
                 typeof avatarUri === 'string' &&
                 avatarUri.trim() !== ''
                   ? { uri: avatarUri }
-                  : imageIndex.AccountIcon
+                  : imageIndex?.AccountIcon
               }
               style={styles.reviewerAvatar}
             />

@@ -140,7 +140,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
       navigation.navigate('ChatDetails', {
         shipmentId: item?.shipmentId,
         name: item?.name || 'Customer',
-        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon,
+        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex?.AccountIcon,
       });
     },
     [navigation],
