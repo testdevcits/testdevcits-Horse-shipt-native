@@ -149,7 +149,6 @@ const MapModal = ({
       onRequestClose={onClose}
     >
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
 
         <MapView
           ref={mapRef}

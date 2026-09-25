@@ -18,10 +18,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   image: {
-    width: '32%',
+    width: '30%',
     height: '100%',
     backgroundColor: COLORS.grey100,
     aspectRatio: 1,
+    margin: 8,
+    borderRadius: 10
   },
   content: {
     flex: 1,

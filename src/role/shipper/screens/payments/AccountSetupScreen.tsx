@@ -37,7 +37,6 @@ const AccountSetupScreen: React.FC<any> = ({ route, navigation }) => {
 
   return (
     <View style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
 
       {/* APP HEADER WITH GO BACK */}
       <View style={styles.headerRow}>

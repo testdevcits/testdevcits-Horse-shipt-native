@@ -48,32 +48,31 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
 
       {/* Top Right Change Role Button */}
-      <TouchableOpacity
-        style={styles.changeRoleBtn}
-        onPress={() => setIsRoleModalVisible(true)}
-        activeOpacity={0.8}
-      >
-        <AppIcon name={'UserCog'} size={16} color={COLORS.primary} />
-        <AppText style={styles.changeRoleText}>
-          {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
-        </AppText>
-        <AppIcon name={'RefreshCw'} size={12} color={COLORS.primary} />
-      </TouchableOpacity>
+      {!isKeyboardOpen && (
+        <TouchableOpacity
+          style={styles.changeRoleBtn}
+          onPress={() => setIsRoleModalVisible(true)}
+          activeOpacity={0.8}
+        >
+          <AppIcon name={'UserCog'} size={16} color={COLORS.primary} />
+          <AppText style={styles.changeRoleText}>
+            {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
+          </AppText>
+          <AppIcon name={'RefreshCw'} size={12} color={COLORS.primary} />
+        </TouchableOpacity>
+      )}
 
-      {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}
+      {/* Dynamic Header Image Height (Collapses when keyboard open) */}
       <ImageBackground
         source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
-            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.08
+              : SCREEN_HEIGHT * 0.42,
           },
         ]}
         resizeMode="cover"
@@ -82,28 +81,41 @@ const Login = () => {
       </ImageBackground>
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        {/* 6. This View will now occupy 80-85% of the screen when keyboard is open */}
+        {/* Content Card with Smooth Transitions */}
         <View style={styles.contentCard}>
           <Image
             source={imageIndex?.Logo}
-            style={styles.logoIcon}
+            style={[
+              styles.logoIcon,
+              isKeyboardOpen && styles.logoIconKeyboard,
+            ]}
             resizeMode="contain"
           />
 
           <ScrollView
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[
+              styles.scrollContent,
+              isKeyboardOpen && styles.scrollContentKeyboard,
+            ]}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View style={styles.textHeader}>
+            <View
+              style={[
+                styles.textHeader,
+                isKeyboardOpen && styles.textHeaderKeyboard,
+              ]}
+            >
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
-              <AppText style={styles.subtitle}>
-                Sign in to manage your shipments, track your horses in real
-                time, and access trusted transportation services.
-              </AppText>
+              {!isKeyboardOpen && (
+                <AppText style={styles.subtitle}>
+                  Sign in to manage your shipments, track your horses in real
+                  time, and access trusted transportation services.
+                </AppText>
+              )}
             </View>
 
             {/* Professional Role Selector Buttons */}

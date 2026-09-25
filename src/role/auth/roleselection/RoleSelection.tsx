@@ -122,11 +122,6 @@ const RoleSelection = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
 
       <ImageBackground
         source={imageIndex?.HorseBg}

@@ -169,7 +169,6 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
         onRequestClose={onClose}
       >
         <View style={styles.container}>
-          <StatusBar barStyle="dark-content" />
 
           <MapView
             ref={mapRef}

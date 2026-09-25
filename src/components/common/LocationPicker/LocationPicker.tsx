@@ -313,7 +313,6 @@ const LocationPickerCore: React.FC<{
 
   return (
     <View style={styles.modalContainer}>
-      <StatusBar barStyle="dark-content" />
 
       {/* MAP ENGINE */}
       <MapView

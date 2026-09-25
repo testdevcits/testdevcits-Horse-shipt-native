@@ -10,6 +10,8 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 
 import { COLORS, FONTS, SCREEN_HEIGHT } from '../../../constants';
@@ -59,12 +61,26 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const otpInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardOpen(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardOpen(false),
-    );
+    if (
+      Platform.OS === 'android' &&
+      UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsKeyboardOpen(true);
+    });
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsKeyboardOpen(false);
+    });
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
@@ -302,24 +318,21 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
 
       <ImageBackground
         source={imageIndex?.HorseBg}
         style={[
           styles.backgroundImage,
           {
-            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.08
+              : SCREEN_HEIGHT * 0.42,
           },
         ]}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
-        {step < 3 && (
+        {step < 3 && !isKeyboardOpen && (
           <TouchableOpacity
             onPress={() => (step === 1 ? navigation.goBack() : setStep(1))}
             style={styles.backBtn}
@@ -331,18 +344,24 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
       <KeyboardAvoidingView
         style={styles.cardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.contentCard}>
           <Image
             source={imageIndex?.Logo}
-            style={styles.logoIcon}
+            style={[
+              styles.logoIcon,
+              isKeyboardOpen && styles.logoIconKeyboard,
+            ]}
             resizeMode="contain"
           />
 
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[
+              styles.scrollContent,
+              isKeyboardOpen && styles.scrollContentKeyboard,
+            ]}
             keyboardShouldPersistTaps="handled"
           >
             {/* STEP 1: INFORMATION */}

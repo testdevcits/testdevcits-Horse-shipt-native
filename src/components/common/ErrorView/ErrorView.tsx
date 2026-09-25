@@ -57,8 +57,8 @@ const ErrorView = ({
   const badgeText = statusCode
     ? `HTTP ${statusCode} ${is500 ? 'SERVER ERROR' : 'ERROR'}`
     : is500
-    ? '500 SERVER ERROR'
-    : null;
+      ? '500 SERVER ERROR'
+      : null;
 
   return (
     <View style={[styles.centerContainer, containerStyle]}>

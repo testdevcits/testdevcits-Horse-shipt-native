@@ -113,11 +113,6 @@ const RegisterScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
 
       {/* 1. Top Image Section */}
       <ImageBackground

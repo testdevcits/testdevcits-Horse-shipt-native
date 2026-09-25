@@ -14,11 +14,6 @@ import styles from './styles.Welcome';
 const WelcomeScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
 
       {/* 1. Background Image Section */}
       <ImageBackground

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   Keyboard, // 2. Added Keyboard
+  Platform,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 
@@ -39,14 +42,28 @@ const useLogin = () => {
     }
   }, [isFocused]);
 
-  // 4. Keyboard Listeners Logic
+  // 4. Keyboard Listeners Logic with Smooth Animation
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardOpen(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardOpen(false),
-    );
+    if (
+      Platform.OS === 'android' &&
+      UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsKeyboardOpen(true);
+    });
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsKeyboardOpen(false);
+    });
 
     return () => {
       showSubscription.remove();

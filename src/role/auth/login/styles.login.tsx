@@ -44,13 +44,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -45, // Half of height to center on the edge
   },
+  logoIconKeyboard: {
+    width: 48,
+    height: 48,
+    marginTop: -24,
+  },
   scrollContent: {
     paddingTop: SPACING.xl,
     paddingBottom: Platform.OS === 'ios' ? SPACING.xxxl : SPACING.xl,
     flexGrow: 1,
   },
+  scrollContentKeyboard: {
+    paddingTop: SPACING.xs,
+    paddingBottom: 160,
+  },
   textHeader: {
     marginBottom: SPACING.xl,
+  },
+  textHeaderKeyboard: {
+    marginBottom: SPACING.xs,
   },
   welcomeTitle: {
     fontSize: FONT_SIZE.heading, // 32

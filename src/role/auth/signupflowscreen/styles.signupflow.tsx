@@ -29,7 +29,16 @@ const styles = StyleSheet.create({
   },
 
   logoIcon: { width: 90, height: 90, marginTop: -45, alignSelf: 'center' },
+  logoIconKeyboard: {
+    width: 48,
+    height: 48,
+    marginTop: -24,
+  },
   scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant },
+  scrollContentKeyboard: {
+    paddingTop: SPACING.xs,
+    paddingBottom: 160,
+  },
   formContainer: { gap: SPACING.md },
   title: {
     fontSize: FONT_SIZE.title,

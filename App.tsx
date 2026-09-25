@@ -44,7 +44,7 @@ const App = () => {
             <PersistGate loading={null} persistor={persistor}>
               {/* 3. StatusBar Configuration */}
               <StatusBar
-                backgroundColor={COLORS.background}
+                backgroundColor={COLORS.white}
                 barStyle={'dark-content'}
                 translucent={false}
               />

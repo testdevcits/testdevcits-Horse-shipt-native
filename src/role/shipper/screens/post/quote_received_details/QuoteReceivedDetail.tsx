@@ -442,7 +442,6 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
 
   return (
     <View style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
       {/* Header */}
       <AppHeader
