@@ -1,6 +1,5 @@
 import {
   View,
-  
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
@@ -31,7 +30,7 @@ const QuoteActionButtons = ({
   handleProcessFlow,
   isRejected,
   isCancelled,
-}:any) => {
+}: any) => {
   return (
     <View style={styles.footerActionContainer}>
       {isAccepted && !quote?.isCancelled && (

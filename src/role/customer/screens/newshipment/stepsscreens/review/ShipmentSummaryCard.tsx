@@ -38,8 +38,8 @@ const ShipmentSummaryCard: React.FC<ShipmentSummaryCardProps> = ({
         <View style={styles.bannerLeft}>
           <AppText style={styles.bannerTitle}>Shipment Overview</AppText>
           <AppText style={styles.bannerSub}>
-            {numberOfHorses || horsesCount || 1} Horse(s) •{' '}
-            {uploadedDocCount} of {totalDocCount} Papers Attached
+            {numberOfHorses || horsesCount || 1} Horse(s) • {uploadedDocCount}{' '}
+            of {totalDocCount} Papers Attached
           </AppText>
         </View>
         <View style={styles.bannerBadge}>
@@ -65,9 +65,7 @@ const ShipmentSummaryCard: React.FC<ShipmentSummaryCardProps> = ({
 
           {hasSpecialRequirement && (
             <View style={styles.notesBlock}>
-              <AppText style={styles.notesLabel}>
-                Special Requirements:
-              </AppText>
+              <AppText style={styles.notesLabel}>Special Requirements:</AppText>
               <AppText style={styles.notesValue}>
                 {specialRequirementDetails || 'None details provided.'}
               </AppText>
@@ -79,9 +77,7 @@ const ShipmentSummaryCard: React.FC<ShipmentSummaryCardProps> = ({
               <AppText style={styles.notesLabel}>
                 General Shipment Notes:
               </AppText>
-              <AppText style={styles.notesValue}>
-                {additionalInfo}
-              </AppText>
+              <AppText style={styles.notesValue}>{additionalInfo}</AppText>
             </View>
           )}
 
@@ -90,9 +86,7 @@ const ShipmentSummaryCard: React.FC<ShipmentSummaryCardProps> = ({
               <AppText style={styles.notesLabel}>
                 Share Tracking Recipient Email:
               </AppText>
-              <AppText style={styles.notesValue}>
-                {recipientEmail}
-              </AppText>
+              <AppText style={styles.notesValue}>{recipientEmail}</AppText>
             </View>
           )}
         </View>

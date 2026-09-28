@@ -9,24 +9,25 @@ import React, {
 } from 'react';
 import {
   View,
-  TouchableOpacity,
+
   RefreshControl,
   FlatList,
-  ScrollView,
+
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import {
   AppHeader,
-  AppText,
+
   EmptyState,
-  SearchBarCompt,
+
   AppSelectRef,
   ShipmentsSkeleton,
   LazyFallback,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import ShipperQuoteCard from './components/shipper_quote_card/ShipperQuoteCard';
+import { MyQuotesFilterBar } from './components/MyQuotesFilterBar';
 import styles from './styles.myquotes';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { COLORS, ICON_SIZE } from '../../../../constants';
@@ -161,9 +162,8 @@ const MyQuotesScreen = () => {
 
     const foundVehicle =
       vehicles.find(v => {
-        const label = `${v.make || ''} ${v.model || ''} (${
-          v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
-        })`.trim();
+        const label = `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+          })`.trim();
         return (
           label === selectedLabel ||
           v.vehicleNumber === selectedLabel ||
@@ -410,159 +410,13 @@ const MyQuotesScreen = () => {
           />
         )}
         ListHeaderComponent={
-          <>
-            {/* Top Header Card */}
-            <View style={styles.topCard}>
-              <AppText style={styles.topTitle}>My Quotes</AppText>
-              <AppText style={styles.topSub}>
-                Review shipment offers, contracts, vehicles, and payment status.
-              </AppText>
-
-              {/* Search Input Bar Component */}
-              <SearchBarCompt
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                placeholder="Search by pickup or delivery location..."
-              />
-            </View>
-
-            {/* Horizontal Filter Tabs */}
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.tabContainer}
-            >
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'all' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('all')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'all' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  All Quotes
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>{counts.all}</AppText>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'in_transit' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('in_transit')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'in_transit' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  In Transit
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {counts.in_transit}
-                  </AppText>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'upcoming' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('upcoming')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'upcoming' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  Upcoming
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {counts.upcoming}
-                  </AppText>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'completed' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('completed')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'completed' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  Completed
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {counts.completed}
-                  </AppText>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'cancelled' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('cancelled')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'cancelled' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  Cancelled
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {counts.cancelled}
-                  </AppText>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  activeTab === 'pending' && styles.tabBtnActive,
-                ]}
-                onPress={() => setActiveTab('pending')}
-              >
-                <AppText
-                  style={[
-                    styles.tabBtnText,
-                    activeTab === 'pending' && styles.tabBtnTextActive,
-                  ]}
-                >
-                  Pending
-                </AppText>
-                <View style={styles.badgePill}>
-                  <AppText style={styles.badgePillText}>
-                    {counts.pending}
-                  </AppText>
-                </View>
-              </TouchableOpacity>
-            </ScrollView>
-          </>
+          <MyQuotesFilterBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            counts={counts}
+          />
         }
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={[
@@ -610,9 +464,8 @@ const MyQuotesScreen = () => {
           placeholder="Select Vehicle"
           value=""
           options={vehicles?.map(v =>
-            `${v.make || ''} ${v.model || ''} (${
-              v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
-            })`.trim(),
+            `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+              })`.trim(),
           )}
           onSelect={handleSelectVehicle}
           searchable

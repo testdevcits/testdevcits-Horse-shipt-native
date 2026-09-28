@@ -19,6 +19,8 @@ import shipperService from '../../../../../api/services/shipperService';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import styles from './styles.QuoteReceivedDetails';
+import { HorseDetailCard } from './components/HorseDetailCard';
+import { CustomerInfoSection } from './components/CustomerInfoSection';
 
 const AskQuestionModal = lazy(
   () => import('../../home/components/ask_question/AskQuestionModal'),
@@ -188,10 +190,6 @@ const getStatusColor = (status?: string) => {
   }
 };
 
-const truncateText = (text = '', maxLength = 90) => {
-  if (text.length <= maxLength) return text;
-  return `${text.substring(0, maxLength)}...`;
-};
 
 // Haversine distance and duration calculation helper
 const calculateHaversine = (
@@ -208,9 +206,9 @@ const calculateHaversine = (
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const km = R * c;
@@ -773,163 +771,10 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
         </View>
 
         {/* Horse Details */}
-        {horse && (
-          <>
-            <View style={styles.sectionHeader}>
-              <View>
-                <AppText style={styles.sectionTitle}>Horse Details</AppText>
-                <AppText style={styles.sectionSubtitle}>
-                  Information provided for this shipment
-                </AppText>
-              </View>
-            </View>
+        <HorseDetailCard horse={horse} />
 
-            <View style={styles.horseCard}>
-              <View style={styles.horseHeader}>
-                <View style={styles.horseAvatar}>
-                  <AppIcon
-                    name="Heart"
-                    size={ICON_SIZE.lg}
-                    color={COLORS.primary}
-                  />
-                </View>
-
-                <View style={styles.horseNameContainer}>
-                  <AppText style={styles.horseName}>
-                    {horse?.registeredName || 'Unnamed Horse'}
-                  </AppText>
-                  <AppText style={styles.horseBarnName}>
-                    {horse?.barnName || 'Barn not specified'}
-                  </AppText>
-                </View>
-
-                <View style={styles.horseAgeBadge}>
-                  <AppText style={styles.horseAge}>
-                    {horse?.age ?? '--'}
-                  </AppText>
-                  <AppText style={styles.horseAgeLabel}>yrs</AppText>
-                </View>
-              </View>
-
-              <View style={styles.horseDivider} />
-
-              <View style={styles.horseDetailsGrid}>
-                <HorseDetail
-                  icon="Award"
-                  label="Breed"
-                  value={horse?.breed || horse?.otherBreed || 'Not specified'}
-                />
-                <HorseDetail
-                  icon="User"
-                  label="Sex"
-                  value={horse?.sex || 'Not specified'}
-                />
-                <HorseDetail
-                  icon="Circle"
-                  label="Colour"
-                  value={horse?.colour || 'Not specified'}
-                />
-                <HorseDetail
-                  icon="Box"
-                  label="Stall Size"
-                  value={horse?.requestedStallSize || 'Not specified'}
-                />
-              </View>
-
-              {horse?.generalInfo ? (
-                <View style={styles.infoBox}>
-                  <View style={styles.infoBoxHeader}>
-                    <AppIcon
-                      name="Info"
-                      size={ICON_SIZE.xs}
-                      color={COLORS.primary}
-                    />
-                    <AppText style={styles.infoBoxTitle}>
-                      General Information
-                    </AppText>
-                  </View>
-                  <AppText style={styles.infoBoxText}>
-                    {horse?.generalInfo}
-                  </AppText>
-                </View>
-              ) : null}
-
-              {horse?.notes ? (
-                <View style={styles.notesBox}>
-                  <View style={styles.infoBoxHeader}>
-                    <AppIcon
-                      name="FileText"
-                      size={ICON_SIZE.xs}
-                      color={COLORS.textSecondary}
-                    />
-                    <AppText style={styles.notesTitle}>Notes</AppText>
-                  </View>
-                  <AppText style={styles.notesText}>{horse?.notes}</AppText>
-                </View>
-              ) : null}
-            </View>
-          </>
-        )}
-
-        {/* Customer Info */}
-        {quote?.customer && (
-          <>
-            <View style={styles.sectionHeader}>
-              <View>
-                <AppText style={styles.sectionTitle}>Customer</AppText>
-                <AppText style={styles.sectionSubtitle}>
-                  Shipment requested by
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.customerCard}>
-              <View style={styles.customerAvatar}>
-                <AppIcon
-                  name="User"
-                  size={ICON_SIZE.lg}
-                  color={COLORS.primary}
-                />
-              </View>
-              <View style={styles.customerInfo}>
-                <AppText style={styles.customerName}>
-                  {quote?.customer?.name || 'Customer'}
-                </AppText>
-                {!!quote?.customer?.email && (
-                  <View style={styles.customerMeta}>
-                    <AppIcon
-                      name="Mail"
-                      size={ICON_SIZE.xs}
-                      color={COLORS.textSecondary}
-                    />
-                    <AppText style={styles.customerEmail}>
-                      {quote?.customer?.email}
-                    </AppText>
-                  </View>
-                )}
-              </View>
-            </View>
-          </>
-        )}
-
-        {/* Customer Message */}
-        {!!quote?.message && (
-          <View style={styles.messageCard}>
-            <View style={styles.messageIcon}>
-              <AppIcon
-                name="MessageSquare"
-                size={ICON_SIZE.sm}
-                color={COLORS.primary}
-              />
-            </View>
-            <View style={styles.messageContent}>
-              <AppText style={styles.messageTitle}>Customer Message</AppText>
-              <AppText style={styles.messageText}>
-                {truncateText(quote?.message, 180)}
-              </AppText>
-            </View>
-          </View>
-        )}
+        {/* Customer Info & Message */}
+        <CustomerInfoSection customer={quote?.customer} message={quote?.message} />
 
         <View style={styles.bottomSpacing} />
       </ScrollView>
@@ -995,36 +840,5 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
     </View>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/* Horse Detail Component                                                     */
-/* -------------------------------------------------------------------------- */
-
-interface HorseDetailProps {
-  icon: any;
-  label: string;
-  value: string;
-}
-
-const HorseDetail = ({ icon, label, value }: HorseDetailProps) => {
-  return (
-    <View style={styles.horseDetailItem}>
-      <View style={styles.horseDetailIcon}>
-        <AppIcon name={icon} size={ICON_SIZE.xs} color={COLORS.primary} />
-      </View>
-
-      <View style={styles.horseDetailContent}>
-        <AppText style={styles.horseDetailLabel}>{label}</AppText>
-        <AppText style={styles.horseDetailValue} numberOfLines={1}>
-          {value}
-        </AppText>
-      </View>
-    </View>
-  );
-};
-
-/* -------------------------------------------------------------------------- */
-/* Styles                                                                     */
-/* -------------------------------------------------------------------------- */
 
 export default QuoteReceivedDetail;

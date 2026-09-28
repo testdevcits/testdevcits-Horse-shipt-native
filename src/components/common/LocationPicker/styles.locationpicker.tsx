@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
     marginTop: 10,
   },
-  
 });
 
 export default styles;

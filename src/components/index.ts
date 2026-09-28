@@ -55,7 +55,7 @@ import SkeletonText from './skeletons/SkeletonText';
 
 // Driver
 import DriverHeader from './common/DriverHeader/DriverHeader';
- 
+
 export {
   AppHeader,
   SectionHeader,

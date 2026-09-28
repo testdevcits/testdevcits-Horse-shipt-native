@@ -60,7 +60,8 @@ const RouteOverviewCard: React.FC<RouteOverviewCardProps> = ({
             <View style={styles.routeDateBadge}>
               <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
               <AppText style={styles.routeDateText}>
-                {formatDateDisplay(pickupStartDate)} — {formatDateDisplay(pickupEndDate)}
+                {formatDateDisplay(pickupStartDate)} —{' '}
+                {formatDateDisplay(pickupEndDate)}
               </AppText>
             </View>
           </View>
@@ -86,7 +87,8 @@ const RouteOverviewCard: React.FC<RouteOverviewCardProps> = ({
             <View style={styles.routeDateBadge}>
               <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
               <AppText style={styles.routeDateText}>
-                {formatDateDisplay(deliveryStartDate)} — {formatDateDisplay(deliveryEndDate)}
+                {formatDateDisplay(deliveryStartDate)} —{' '}
+                {formatDateDisplay(deliveryEndDate)}
               </AppText>
             </View>
           </View>

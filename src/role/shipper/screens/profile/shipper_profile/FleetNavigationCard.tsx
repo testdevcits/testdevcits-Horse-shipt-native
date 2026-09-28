@@ -81,9 +81,7 @@ const FleetNavigationCard: React.FC<FleetNavigationCardProps> = ({
             <AppIcon name="Star" size={18} color={COLORS.saddleBrown} />
           </View>
           <View style={styles.menuContent}>
-            <AppText style={styles.menuItemTitle}>
-              Google Review Link
-            </AppText>
+            <AppText style={styles.menuItemTitle}>Google Review Link</AppText>
             <AppText style={styles.menuItemSub}>
               Connect your Google Business reviews
             </AppText>
@@ -101,9 +99,7 @@ const FleetNavigationCard: React.FC<FleetNavigationCardProps> = ({
             <AppIcon name="Truck" size={18} color={COLORS.saddleBrown} />
           </View>
           <View style={styles.menuContent}>
-            <AppText style={styles.menuItemTitle}>
-              My Vehicles & Fleet
-            </AppText>
+            <AppText style={styles.menuItemTitle}>My Vehicles & Fleet</AppText>
             <AppText style={styles.menuItemSub}>
               Trucks, trailers & capacity management
             </AppText>

@@ -105,7 +105,8 @@ const HorseDetailsList: React.FC<HorseDetailsListProps> = ({
                           color={COLORS.primary}
                         />
                         <AppText style={styles.logUserNameText}>
-                          {log?.userName || 'User'} ({log?.userRole || 'Customer'})
+                          {log?.userName || 'User'} (
+                          {log?.userRole || 'Customer'})
                         </AppText>
                       </View>
                       <View style={styles.logUserRow}>

@@ -37,11 +37,7 @@ const HorseSummaryList: React.FC<HorseSummaryListProps> = ({
       >
         <View style={styles.cardHeaderLeft}>
           <View style={styles.iconCircle}>
-            <AppIcon
-              name={'ShieldCheck'}
-              size={16}
-              color={COLORS.primary}
-            />
+            <AppIcon name={'ShieldCheck'} size={16} color={COLORS.primary} />
           </View>
           <AppText style={styles.cardTitle}>HORSE DETAILS</AppText>
         </View>

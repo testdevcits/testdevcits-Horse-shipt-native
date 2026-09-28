@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView } from 'react-native';
 import MapView, {
   Marker,
@@ -439,4 +439,4 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
   );
 };
 
-export default ViewAllAreasMapModal;
+export default memo(ViewAllAreasMapModal);

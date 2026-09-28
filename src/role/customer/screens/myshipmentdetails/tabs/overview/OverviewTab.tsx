@@ -200,7 +200,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               <View style={styles.summaryRow}>
                 <AppText style={styles.summaryLabel}>Total Horses:</AppText>
                 <AppText style={styles.summaryValue}>
-                  {data?.numberOfHorses || "0"}
+                  {data?.numberOfHorses || '0'}
                 </AppText>
               </View>
               <View style={styles.summaryRow}>

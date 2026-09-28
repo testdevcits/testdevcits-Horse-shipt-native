@@ -1,4 +1,4 @@
-import { View,   Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { memo } from 'react';
 import { AppText, Input } from '../../../../../../components';
 import {

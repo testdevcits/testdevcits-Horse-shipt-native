@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { OtpInput } from 'react-native-otp-entry';
-
 import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import styles from './styles.deliveryverification';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import useDeliveryVerification from './useDeliveryVerification';
+import DeliveryShipmentCard from './components/DeliveryShipmentCard';
+import DeliveryStepContent from './components/DeliveryStepContent';
 
 const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
   <View style={styles.stepperContainer}>
@@ -97,7 +97,7 @@ const DeliveryVerificationScreen = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  // Extract shipment details from navigation parameters (fallback to mock structure if params are empty)
+  // Extract shipment details from navigation parameters
   const shipment = route.params?.shipment || {};
 
   const {
@@ -145,175 +145,16 @@ const DeliveryVerificationScreen = () => {
           <ProgressStepper step={step} />
 
           {/* Shipment Details Box */}
-          <View style={styles.shipmentCard}>
-            <AppText style={styles.shipmentHeaderLabel}>
-              SHIPMENT DETAILS
-            </AppText>
-
-            <View style={styles.shipmentTitleRow}>
-              <AppText style={styles.shipmentTitle}>
-                {shipment?.shipment?.horses?.[0]?.registeredName ||
-                  'Not Available'}
-              </AppText>
-              <View style={styles.passengerCountBadge}>
-                <AppText style={styles.badgeText}>
-                  {shipment?.shipment?.numberOfHorses}{' '}
-                  {shipment?.shipment?.numberOfHorses > 1 ? 'Horses' : 'Horse'}
-                </AppText>
-              </View>
-            </View>
-
-            {/* Pickup */}
-            <View style={styles.stopBox}>
-              <AppText style={styles.stopHeaderLabel}>PICKUP</AppText>
-              <AppText style={styles.stopName}>
-                {shipment?.shipment?.pickupLocation}
-              </AppText>
-            </View>
-
-            {/* Delivery */}
-            <View style={styles.stopBox}>
-              <AppText style={styles.stopHeaderLabel}>DELIVERY</AppText>
-              <AppText style={styles.stopName}>
-                {shipment?.shipment?.deliveryLocation}
-              </AppText>
-            </View>
-
-            {/* Metadata Fields */}
-            <View style={styles.metaRow}>
-              <AppIcon
-                name="User"
-                size={16}
-                color={COLORS.textLight}
-                style={styles.metaIcon}
-              />
-              <View>
-                <AppText style={styles.metaLabel}>CUSTOMER</AppText>
-                <AppText style={styles.metaValue}>
-                  Customer name not available
-                </AppText>
-              </View>
-            </View>
-
-            <View
-              style={[
-                styles.metaRow,
-                { borderBottomWidth: 0, paddingBottom: 0 },
-              ]}
-            >
-              <AppIcon
-                name="Truck"
-                size={16}
-                color={COLORS.textLight}
-                style={styles.metaIcon}
-              />
-              <View>
-                <AppText style={styles.metaLabel}>VEHICLE</AppText>
-                <AppText style={styles.metaValue}>
-                  {shipment?.vehicle?.vehicleNumber || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-          </View>
+          <DeliveryShipmentCard shipment={shipment} />
 
           {/* DYNAMIC VIEWS ACCORDING TO STEPPER */}
-
-          {/* STEP 1: Ready to Deliver (Send OTP) */}
-          {step === 1 && (
-            <View style={styles.centerSection}>
-              <View style={styles.middleIconBox}>
-                <AppIcon name="Milestone" size={32} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.mainActionHeading}>
-                Ready to Deliver?
-              </AppText>
-              <AppText style={styles.mainActionDescription}>
-                Send an OTP to the horse owner to confirm you've arrived at the
-                delivery location.
-              </AppText>
-            </View>
-          )}
-
-          {/* STEP 2: Verify OTP View */}
-          {step === 2 && (
-            <View style={styles.centerSection}>
-              <View style={styles.middleIconBox}>
-                <AppIcon name="Smartphone" size={32} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.mainActionHeading}>Enter OTP</AppText>
-              <AppText style={styles.mainActionDescription}>
-                Ask the horse owner for the 6-digit OTP sent to their phone.
-              </AppText>
-
-              {/* Success Send Banner Alert */}
-              {otpSentSuccess && (
-                <View style={styles.successBanner}>
-                  <AppIcon name="Check" size={14} color={COLORS.greenSuccess} />
-                  <AppText style={styles.successBannerText}>
-                    OTP sent to customer successfully
-                  </AppText>
-                </View>
-              )}
-
-              {/* 6 Digit Box Slots using react-native-otp-entry */}
-              <View style={styles.otpGridContainer}>
-                <OtpInput
-                  numberOfDigits={6}
-                  focusColor={COLORS.primary}
-                  onTextChange={text => setOtp(text)}
-                  onFilled={text => setOtp(text)}
-                  theme={{
-                    containerStyle: {
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    },
-                    pinCodeContainerStyle: styles.otpInputBox,
-                    pinCodeTextStyle: styles.otpPinCodeText,
-                    focusedPinCodeContainerStyle: styles.activeOtpInputBox,
-                  }}
-                />
-              </View>
-              <AppText style={styles.otpLabelDigits}>
-                {otp?.length}/6 digits
-              </AppText>
-
-              {/* Resend Action Trigger */}
-              <TouchableOpacity activeOpacity={0.7} onPress={handleSendOtp}>
-                <AppText style={styles.resendTextLink}>
-                  Didn't receive? Resend OTP
-                </AppText>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {/* STEP 3: Complete View */}
-          {step === 3 && (
-            <View style={styles.centerSection}>
-              <View
-                style={[
-                  styles.middleIconBox,
-                  {
-                    backgroundColor: COLORS.greenLightBg,
-                    borderColor: COLORS.greenBorder,
-                  },
-                ]}
-              >
-                <AppIcon
-                  name="CheckCircle2"
-                  size={32}
-                  color={COLORS.greenActive}
-                />
-              </View>
-              <AppText style={styles.mainActionHeading}>
-                Verified successfully
-              </AppText>
-              <AppText style={styles.mainActionDescription}>
-                The delivery PIN has been validated. You are now cleared to mark
-                this shipment route as complete.
-              </AppText>
-            </View>
-          )}
+          <DeliveryStepContent
+            step={step}
+            otpSentSuccess={otpSentSuccess}
+            otp={otp}
+            setOtp={setOtp}
+            onSendOtp={handleSendOtp}
+          />
         </ScrollView>
 
         {/* Footer Fixed Action Buttons */}

@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { View, TouchableOpacity, Linking } from 'react-native';
+import { View } from 'react-native';
 
-import { formatDate } from '../../../../../../utils/helpers';
 import { AppText } from '../../../../../../components';
-import { COLORS, SPACING } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import styles from './styles.subscriptiontab';
 import CancelSubscriptionModal from '../cancel_subscription/CancelSubscriptionModal';
-import AppIcon from '../../../../../../components/app_icon/AppIcon';
+import { SubscriptionStatusCard } from './components/SubscriptionStatusCard';
+import { BillingHistorySection } from './components/BillingHistorySection';
 import {
   showErrorToast,
   showSuccessToast,
@@ -64,16 +63,16 @@ const SubscriptionTab: React.FC<Props> = ({
   // Derived status values using GET /api/shipper/stripe/subscription/status
   const isSubActive = subscriptionStatusData
     ? !!(
-        subscriptionStatusData.isActive ||
-        (subscriptionStatusData.hasAccess &&
-          !subscriptionStatusData.needsSubscription)
-      )
+      subscriptionStatusData.isActive ||
+      (subscriptionStatusData.hasAccess &&
+        !subscriptionStatusData.needsSubscription)
+    )
     : true;
 
   const isSubTrial = subscriptionStatusData
     ? !!(
-        subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing
-      )
+      subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing
+    )
     : isTrialInList;
 
   const isCancelScheduled =
@@ -111,14 +110,6 @@ const SubscriptionTab: React.FC<Props> = ({
     });
   }, [billingFilter, subscriptionsList, paymentsList, payoutsList]);
 
-  const handleOpenUrl = (url?: string) => {
-    if (url) {
-      Linking.openURL(url).catch(err =>
-        console.error('Failed to open URL:', err),
-      );
-    }
-  };
-
   const handleCancelSubscription = async (reason: string) => {
     try {
       setCancelingSub(true);
@@ -127,7 +118,7 @@ const SubscriptionTab: React.FC<Props> = ({
         showSuccessToast(
           'Subscription Canceled',
           res?.message ||
-            'Subscription will be canceled at the end of billing cycle.',
+          'Subscription will be canceled at the end of billing cycle.',
         );
         setCancellationResult({
           cancelAtPeriodEnd: true,
@@ -158,391 +149,29 @@ const SubscriptionTab: React.FC<Props> = ({
         View your subscription, invoices, and transactions
       </AppText>
 
-      {/* Subscription Status Card / Empty State matching Image 2 */}
-      {!isSubActive ? (
-        <View style={styles.emptySubCard}>
-          <View style={styles.crownCircle}>
-            <AppIcon name="Crown" size={26} color={COLORS.saddleBrown} />
-          </View>
-          <AppText style={styles.emptySubTitle}>No active subscription</AppText>
-          <AppText style={styles.emptySubSub}>
-            Subscribe to unlock all features.
-          </AppText>
-          {onOpenSubscriptionModal && (
-            <TouchableOpacity
-              style={styles.subscribeNowBtn}
-              onPress={onOpenSubscriptionModal}
-              activeOpacity={0.85}
-            >
-              <AppText style={styles.subscribeNowBtnText}>
-                Subscribe Now
-              </AppText>
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : (
-        <View style={styles.subCardContainer}>
-          <View style={styles.subCardHeader}>
-            <View style={styles.goldSquareIconBox}>
-              <AppIcon name="Crown" size={22} color={COLORS.saddleBrown} />
-            </View>
-
-            <View style={styles.subHeaderTextCol}>
-              <AppText style={styles.subHeaderTitle}>
-                Subscription Status
-              </AppText>
-              <AppText style={styles.subHeaderSub}>
-                Managed securely via Stripe Billing
-              </AppText>
-            </View>
-
-            <View
-              style={[
-                styles.subActiveBadge,
-                !isSubActive && {
-                  backgroundColor: COLORS.redLightBg,
-                  borderColor: COLORS.redBorder,
-                },
-              ]}
-            >
-              <AppIcon
-                name="ShieldCheck"
-                size={14}
-                color={isSubActive ? COLORS.emeraldPrimary : COLORS.redPrimary}
-              />
-              <AppText
-                style={[
-                  styles.subActiveBadgeText,
-                  !isSubActive && { color: COLORS.redPrimary },
-                ]}
-              >
-                {isSubActive ? 'Active' : 'Inactive'}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.cardDivider} />
-
-          {/* Status Pills */}
-          <View style={styles.statusPillsRow}>
-            <View
-              style={
-                isSubTrial ? styles.blueOutlinePill : styles.greenOutlinePill
-              }
-            >
-              <AppText
-                style={
-                  isSubTrial
-                    ? styles.blueOutlinePillText
-                    : styles.greenOutlinePillText
-                }
-              >
-                {isSubTrial
-                  ? `Free Trial Active (${
-                      subscriptionStatusData?.remainingTrialDays || 0
-                    }d left)`
-                  : 'Paid Subscription'}
-              </AppText>
-            </View>
-
-            <View style={styles.goldOutlinePill}>
-              <AppText style={styles.goldOutlinePillText}>{planName}</AppText>
-            </View>
-          </View>
-
-          {/* Plan Card Box */}
-          <View style={styles.planDetailsBox}>
-            <View style={styles.planDetailsHeader}>
-              <AppIcon name="Sparkles" size={16} color={COLORS.saddleBrown} />
-              <AppText style={styles.planLabel}>CURRENT PLAN</AppText>
-            </View>
-
-            <View style={styles.planRow}>
-              <View>
-                <AppText style={styles.planName}>{planName}</AppText>
-                {subscriptionStatusData?.currentPeriodStart &&
-                subscriptionStatusData?.currentPeriodEnd ? (
-                  <AppText style={styles.planPeriodText}>
-                    Cycle:{' '}
-                    {formatDate(
-                      subscriptionStatusData.currentPeriodStart,
-                      'MMM DD, YYYY',
-                    )}{' '}
-                    -{' '}
-                    {formatDate(
-                      subscriptionStatusData.currentPeriodEnd,
-                      'MMM DD, YYYY',
-                    )}
-                  </AppText>
-                ) : latestSub?.periodStart && latestSub?.periodEnd ? (
-                  <AppText style={styles.planPeriodText}>
-                    Cycle: {formatDate(latestSub.periodStart, 'MMM DD, YYYY')} -{' '}
-                    {formatDate(latestSub.periodEnd, 'MMM DD, YYYY')}
-                  </AppText>
-                ) : null}
-              </View>
-
-              <View style={{ alignItems: 'flex-end' }}>
-                <AppText style={styles.planPrice}>
-                  {isSubTrial
-                    ? '$0.00 USD'
-                    : `$${
-                        latestSub?.amount ??
-                        subscriptionData?.monthly?.amount ??
-                        '00.00'
-                      } USD`}
-                </AppText>
-                <AppText style={styles.planBillingFrequency}>
-                  {isSubTrial ? 'Trial Period' : '/ billing cycle'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          {/* Active Banner & Cancel Button Row */}
-          {isCancelScheduled ? (
-            <View style={styles.subCancelingBanner}>
-              <AppIcon
-                name="AlertCircle"
-                size={18}
-                color={COLORS.amberPrimary}
-              />
-              <AppText style={styles.subCancelingBannerText}>
-                Subscription scheduled to cancel on{' '}
-                {cancelValidTillDate
-                  ? formatDate(cancelValidTillDate, 'MMM DD, YYYY')
-                  : 'end of billing cycle'}
-              </AppText>
-            </View>
-          ) : (
-            <View style={styles.subActiveBannerRow}>
-              <View style={styles.subActiveBanner}>
-                <AppIcon
-                  name="CheckCircle"
-                  size={18}
-                  color={COLORS.emeraldPrimary}
-                />
-                <AppText style={styles.subActiveBannerText}>
-                  Subscription Active
-                </AppText>
-              </View>
-
-              <TouchableOpacity
-                style={styles.cancelSubTriggerBtn}
-                onPress={() => setIsCancelModalVisible(true)}
-                activeOpacity={0.7}
-              >
-                <AppText style={styles.cancelSubTriggerBtnText}>
-                  Cancel Subscription
-                </AppText>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      )}
+      {/* Subscription Status Card */}
+      <SubscriptionStatusCard
+        isSubActive={isSubActive}
+        isSubTrial={isSubTrial}
+        planName={planName}
+        subscriptionStatusData={subscriptionStatusData}
+        latestSub={latestSub}
+        subscriptionData={subscriptionData}
+        isCancelScheduled={isCancelScheduled}
+        cancelValidTillDate={cancelValidTillDate}
+        onOpenSubscriptionModal={onOpenSubscriptionModal}
+        onOpenCancelModal={() => setIsCancelModalVisible(true)}
+      />
 
       {/* Billing History Section */}
-      <View style={{ marginTop: SPACING.lg }}>
-        <View style={styles.subCardHeader}>
-          <View style={styles.goldSquareIconBox}>
-            <AppIcon name="Calendar" size={22} color={COLORS.brandBrown} />
-          </View>
-
-          <View style={styles.subHeaderTextCol}>
-            <AppText style={styles.subHeaderTitle}>Billing History</AppText>
-            <AppText style={styles.subHeaderSub}>
-              Invoices, receipts, and payment transactions
-            </AppText>
-          </View>
-        </View>
-
-        <View style={styles.cardDivider} />
-
-        {/* Filter Pills */}
-        <View style={styles.billingFilterRow}>
-          {(
-            [
-              {
-                label: 'All',
-                count:
-                  subscriptionsList.length +
-                  paymentsList.length +
-                  payoutsList.length,
-              },
-              { label: 'Invoices', count: subscriptionsList.length },
-              { label: 'Payments', count: paymentsList.length },
-              { label: 'Payouts', count: payoutsList.length },
-            ] as const
-          ).map(f => (
-            <TouchableOpacity
-              key={f.label}
-              style={[
-                styles.billingFilterPill,
-                billingFilter === f.label && styles.billingFilterPillActive,
-              ]}
-              onPress={() =>
-                setBillingFilter(
-                  f.label as 'All' | 'Invoices' | 'Payments' | 'Payouts',
-                )
-              }
-            >
-              <AppText
-                style={[
-                  styles.billingFilterText,
-                  billingFilter === f.label && styles.billingFilterTextActive,
-                ]}
-              >
-                {f.label} ({f.count})
-              </AppText>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Transactions List */}
-        <View style={styles.historyListContainer}>
-          {filteredList.length === 0 ? (
-            <View style={styles.emptyContainer}>
-              <AppIcon name="FileText" size={32} color={COLORS.textLight} />
-              <AppText style={styles.emptyTitle}>No records found</AppText>
-              <AppText style={styles.emptySub}>
-                No {billingFilter.toLowerCase()} available for this account.
-              </AppText>
-            </View>
-          ) : (
-            filteredList.map((item, idx) => {
-              const isInvoice =
-                !!item.invoicePdf ||
-                !!item.hostedInvoiceUrl ||
-                item.displayType === 'invoice' ||
-                item.displayType === 'trial';
-              const isPayment =
-                !!item.receiptUrl || item.paymentMethod === 'card';
-
-              const targetUrl =
-                item.invoicePdf || item.hostedInvoiceUrl || item.receiptUrl;
-
-              const dateStr = formatDate(
-                item.createdAt || item.paidAt || item.periodStart || new Date(),
-                'MMM DD, YYYY • hh:mm A',
-              );
-
-              const titleText =
-                item.title ||
-                item.description ||
-                (isInvoice
-                  ? 'Subscription Invoice'
-                  : isPayment
-                  ? 'Card Payment Receipt'
-                  : 'Payout Transfer');
-
-              const statusStr = (item.status || 'paid').toLowerCase();
-              const isSuccessStatus =
-                statusStr === 'paid' || statusStr === 'succeeded';
-
-              return (
-                <View
-                  key={item.id || item._id || idx}
-                  style={[
-                    styles.historyCardItem,
-                    idx === filteredList.length - 1 && { borderBottomWidth: 0 },
-                  ]}
-                >
-                  {/* Left Type Icon */}
-                  <View style={styles.itemIconBox}>
-                    {isInvoice ? (
-                      <AppIcon
-                        name="FileText"
-                        size={18}
-                        color={COLORS.brandBrown}
-                      />
-                    ) : isPayment ? (
-                      <AppIcon
-                        name="CreditCard"
-                        size={18}
-                        color={COLORS.bluePrimary}
-                      />
-                    ) : (
-                      <AppIcon
-                        name="ArrowUpRight"
-                        size={18}
-                        color={COLORS.emeraldPrimary}
-                      />
-                    )}
-                  </View>
-
-                  {/* Content Details */}
-                  <View style={styles.itemContentCol}>
-                    <View style={styles.itemTopRow}>
-                      <AppText style={styles.itemTitleText} numberOfLines={1}>
-                        {titleText}
-                      </AppText>
-                      <AppText style={styles.itemAmountText}>
-                        {item.isNoChargeInvoice || item.amount === 0
-                          ? 'Free'
-                          : `$${Number(item.amount).toFixed(2)} ${(
-                              item.currency || 'USD'
-                            ).toUpperCase()}`}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.itemBottomRow}>
-                      <AppText style={styles.itemDateText}>{dateStr}</AppText>
-
-                      {item.cardBrand && item.last4 ? (
-                        <AppText style={styles.itemCardText}>
-                          • {item.cardBrand.toUpperCase()} •••• {item.last4}
-                        </AppText>
-                      ) : null}
-                    </View>
-
-                    {/* Status & PDF Link Row */}
-                    <View style={styles.itemBadgeRow}>
-                      <View
-                        style={[
-                          styles.statusBadgePill,
-                          isSuccessStatus
-                            ? styles.statusBadgeSuccess
-                            : styles.statusBadgeTrial,
-                        ]}
-                      >
-                        <AppText
-                          style={[
-                            styles.statusBadgeText,
-                            isSuccessStatus
-                              ? styles.statusBadgeTextSuccess
-                              : styles.statusBadgeTextTrial,
-                          ]}
-                        >
-                          {item.isTrialInvoice
-                            ? 'Trial Invoice'
-                            : (item.status || 'paid').toUpperCase()}
-                        </AppText>
-                      </View>
-
-                      {targetUrl ? (
-                        <TouchableOpacity
-                          style={styles.viewPdfBtn}
-                          onPress={() => handleOpenUrl(targetUrl)}
-                          activeOpacity={0.7}
-                        >
-                          <AppIcon
-                            name="ExternalLink"
-                            size={12}
-                            color={COLORS.saddleBrown}
-                          />
-                          <AppText style={styles.viewPdfBtnText}>
-                            {isInvoice ? 'View PDF' : 'Receipt'}
-                          </AppText>
-                        </TouchableOpacity>
-                      ) : null}
-                    </View>
-                  </View>
-                </View>
-              );
-            })
-          )}
-        </View>
-      </View>
+      <BillingHistorySection
+        billingFilter={billingFilter}
+        setBillingFilter={setBillingFilter}
+        subscriptionsList={subscriptionsList}
+        paymentsList={paymentsList}
+        payoutsList={payoutsList}
+        filteredList={filteredList}
+      />
 
       {/* Cancel Subscription Modal */}
       <CancelSubscriptionModal

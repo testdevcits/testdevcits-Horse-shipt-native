@@ -1,5 +1,6 @@
 // api/services/trackingService.ts
 import axiosClient from '../axiosClient';
+import API_ENDPOINTS from '../endpoints';
 
 export interface DriverDetails {
   _id?: string;
@@ -45,5 +46,5 @@ export interface TrackingResponse {
 export const getLiveTracking = async (
   shipmentId: string,
 ): Promise<TrackingResponse> => {
-  return axiosClient.get(`/api/tracking/track/${shipmentId}`);
+  return axiosClient.get(API_ENDPOINTS.TRACKING.LIVE_TRACKING(shipmentId));
 };

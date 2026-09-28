@@ -25,11 +25,7 @@ const PaymentMembershipCard: React.FC<PaymentMembershipCardProps> = ({
           activeOpacity={0.7}
         >
           <View style={styles.menuIconBox}>
-            <AppIcon
-              name="CreditCard"
-              size={18}
-              color={COLORS.saddleBrown}
-            />
+            <AppIcon name="CreditCard" size={18} color={COLORS.saddleBrown} />
           </View>
           <View style={styles.menuContent}>
             <AppText style={styles.menuItemTitle}>
@@ -55,11 +51,7 @@ const PaymentMembershipCard: React.FC<PaymentMembershipCardProps> = ({
                 {isStripeConnected ? 'Connected' : 'Action Needed'}
               </AppText>
             </View>
-            <AppIcon
-              name="ChevronRight"
-              size={18}
-              color={COLORS.textLight}
-            />
+            <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
           </View>
         </TouchableOpacity>
 

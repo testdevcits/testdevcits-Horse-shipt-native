@@ -353,8 +353,6 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     lineHeight: 20,
   },
-
-   
 });
 
 export default styles;

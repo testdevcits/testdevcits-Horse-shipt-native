@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import {
-  View,
-  FlatList,
-  RefreshControl,
-  Image,
-  Pressable,
-} from 'react-native';
+import { View, FlatList, RefreshControl, Image, Pressable } from 'react-native';
 import { PackageSearch, Award } from 'lucide-react-native';
 import { COLORS, SCREEN_WIDTH } from '../../../../constants';
 import {
@@ -37,12 +31,12 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
   const dispatch = useAppDispatch();
   const {
     wishlist,
-    wishlistIds,
+    wishlistIds: _wishlistIds,
     loading: wishlistLoading,
   } = useAppSelector(state => state.wishlist);
   const { shipments, loading, refreshing, refresh } = useShipments();
   const {
-    shippers,
+    shippers: _shippers,
     loading: shipperloading,
     toggleWishlist,
     refresh: shipperRefresh,
@@ -71,9 +65,12 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     }
   };
 
-  const handleShipperPress = (item: any) => {
-    navigation.navigate('ShipperDetail', { item });
-  };
+  const handleShipperPress = useCallback(
+    (item: any) => {
+      navigation.navigate('ShipperDetail', { item });
+    },
+    [navigation],
+  );
 
   const displayedShippers = useMemo(() => {
     return (wishlist || []).map((item: any) => {
@@ -164,10 +161,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
       switch (item.type) {
         case 'SECTION_HEADER':
           return (
-            <SectionHeader
-              title={item.title}
-              onPress={item.onMorePress}
-            />
+            <SectionHeader title={item.title} onPress={item.onMorePress} />
           );
         case 'SHIPMENT_ITEM':
           return (
@@ -212,7 +206,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
           return null;
       }
     },
-    [navigation, toggleWishlist]
+    [handleShipperPress, navigation, toggleWishlist],
   );
 
   const keyExtractor = useCallback((item: ListItemType, index: number) => {
@@ -240,7 +234,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         />
       </Pressable>
     ),
-    [navigation]
+    [navigation],
   );
 
   if (isInitialLoading) {
@@ -274,6 +268,10 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
             colors={[COLORS.primary]}
           />
         }
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews
       />
     </View>
   );

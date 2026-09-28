@@ -1,27 +1,19 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  View,
-  TouchableOpacity,
-   
-  RefreshControl,
-   
-  FlatList,
-} from 'react-native';
+import { View, RefreshControl, FlatList } from 'react-native';
 
-import { formatDate } from '../../../../utils/helpers';
 import { useStripe } from '@stripe/stripe-react-native';
 import {
   AppHeader,
-  AppText,
   EmptyState,
   PaymentsSkeleton,
 } from '../../../../components';
-import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
+import { COLORS, ICON_SIZE, } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import PayoutModal from './components/PayoutModal';
 import EarningsSummaryHeader from './components/EarningsSummaryHeader';
+import { TransactionRowItem } from './components/TransactionRowItem';
 
 const TransactionDetailsModal = lazy(
   () => import('./components/TransactionDetailsModal'),
@@ -178,8 +170,8 @@ const EarningsScreen = () => {
         'error',
         'Setup Error',
         error?.response?.data?.message ||
-          error?.message ||
-          'Unable to prepare card update.',
+        error?.message ||
+        'Unable to prepare card update.',
       );
     } finally {
       setInitializingCard(false);
@@ -284,7 +276,7 @@ const EarningsScreen = () => {
           'success',
           'Card Saved Successfully',
           saveRes.message ||
-            'Card saved successfully. Account activated if previously restricted.',
+          'Card saved successfully. Account activated if previously restricted.',
         );
       } else {
         showFeedback(
@@ -299,157 +291,15 @@ const EarningsScreen = () => {
         'error',
         'Process Error',
         error?.response?.data?.message ||
-          error?.message ||
-          'Failed to save payment method.',
+        error?.message ||
+        'Failed to save payment method.',
       );
     } finally {
       setSubmittingCard(false);
     }
   };
 
-  const formatTxId = (id: string) => {
-    if (!id) return 'tr_...';
-    if (id.length > 16) {
-      return `${id.substring(0, 9)}.....${id.substring(id.length - 4)}`;
-    }
-    return id;
-  };
-
   const renderHeader = () => (
-    // <>
-    //   {/* Payments & Payouts Card */}
-    //   <View style={styles.card}>
-    //     <View style={styles.headerRow}>
-    //       <View style={styles.walletIconBox}>
-    //         <AppIcon name={'Wallet'} size={22} color={COLORS.saddleBrown} />
-    //       </View>
-    //       <View style={styles.headerTextCol}>
-    //         <AppText style={styles.cardTitle}>Payments & Payouts</AppText>
-    //         <AppText style={styles.cardSub}>
-    //           Manage payment methods and track earnings
-    //         </AppText>
-    //       </View>
-    //     </View>
-
-    //     <View style={styles.divider} />
-
-    //     {/* Active Card Container */}
-    //     {statusLoading ? (
-    //       <View style={styles.loaderContainer}>
-    //         <ActivityIndicator size="small" color={COLORS.primary} />
-    //       </View>
-    //     ) : cardStatus?.hasCard ? (
-    //       <>
-    //         <View style={styles.activeCardContainer}>
-    //           <View style={styles.cardIconBox}>
-    //             <AppIcon
-    //               name={'CreditCard'}
-    //               size={18}
-    //               color={COLORS.saddleBrown}
-    //             />
-    //           </View>
-    //           <View style={styles.activeCardTextCol}>
-    //             <AppText style={styles.activeCardLabel}>Active Card</AppText>
-    //             <AppText style={styles.activeCardNumber}>
-    //               {(cardStatus?.cardBrand || 'VISA').toUpperCase()}....
-    //               {cardStatus?.cardLast4 || 'Not Available'}
-    //             </AppText>
-    //           </View>
-    //           <AppIcon name={'CheckCircle'} size={22} color={COLORS.success} />
-    //         </View>
-
-    //         <TouchableOpacity
-    //           style={styles.updateCardBtn}
-    //           onPress={handleOpenCardModal}
-    //           disabled={initializingCard}
-    //           activeOpacity={0.8}
-    //         >
-    //           {initializingCard ? (
-    //             <ActivityIndicator size="small" color={COLORS.primary} />
-    //           ) : (
-    //             <>
-    //               <AppIcon name={'Edit'} size={16} color={COLORS.saddleBrown} />
-    //               <AppText style={styles.updateCardBtnText}>
-    //                 Update Card
-    //               </AppText>
-    //             </>
-    //           )}
-    //         </TouchableOpacity>
-    //       </>
-    //     ) : (
-    //       <View style={styles.noCardContainer}>
-    //         <AppText style={styles.noCardText}>
-    //           No payment method currently attached.
-    //         </AppText>
-    //         <TouchableOpacity
-    //           style={styles.addCardPrimaryBtn}
-    //           onPress={handleOpenCardModal}
-    //           disabled={initializingCard}
-    //           activeOpacity={0.8}
-    //         >
-    //           {initializingCard ? (
-    //             <ActivityIndicator size="small" color={COLORS.white} />
-    //           ) : (
-    //             <>
-    //               <AppIcon name={'Plus'} size={16} color={COLORS.white} />
-    //               <AppText style={styles.addCardPrimaryBtnText}>
-    //                 Add Payment Method
-    //               </AppText>
-    //             </>
-    //           )}
-    //         </TouchableOpacity>
-    //       </View>
-    //     )}
-    //   </View>
-
-    //   {/* Payout History Section */}
-    //   <View style={styles.payoutHistoryHeaderRow}>
-    //     <View style={styles.payoutIconBox}>
-    //       <AppIcon name={'ExternalLink'} size={20} color={COLORS.saddleBrown} />
-    //     </View>
-    //     <View>
-    //       <AppText style={styles.payoutSectionTitle}>Payout History</AppText>
-    //       <AppText style={styles.payoutSectionSub}>
-    //         {totalTransactionsCount}{' '}
-    //         {totalTransactionsCount === 1 ? 'transaction' : 'transactions'}
-    //       </AppText>
-    //     </View>
-    //   </View>
-
-    //   <View style={styles.divider} />
-
-    //   {/* Table Column Headers */}
-    //   <View
-    //     style={[
-    //       styles.tableCard,
-    //       {
-    //         marginBottom: 0,
-    //         borderBottomLeftRadius: 0,
-    //         borderBottomRightRadius: 0,
-    //       },
-    //     ]}
-    //   >
-    //     <View style={styles.tableHeaderRow}>
-    //       <AppText style={[styles.columnHeader, { flex: 2.2 }]}>ID</AppText>
-    //       <AppText
-    //         style={[styles.columnHeader, { flex: 1.5, textAlign: 'center' }]}
-    //       >
-    //         Amount
-    //       </AppText>
-    //       <AppText
-    //         style={[styles.columnHeader, { flex: 1.8, textAlign: 'center' }]}
-    //       >
-    //         Date
-    //       </AppText>
-    //       <AppText
-    //         style={[styles.columnHeader, { flex: 1.5, textAlign: 'right' }]}
-    //       >
-    //         Status
-    //       </AppText>
-    //     </View>
-    //   </View>
-    // </>
-
     <EarningsSummaryHeader
       statusLoading={statusLoading}
       cardStatus={cardStatus}
@@ -469,7 +319,6 @@ const EarningsScreen = () => {
         ]}
       >
         <EmptyState
-          // icon={FileText}
           icon={
             <AppIcon
               name={'FileText'}
@@ -485,56 +334,13 @@ const EarningsScreen = () => {
     );
   };
 
-  const renderTxItem = ({ item: tx, index }: { item: any; index: number }) => {
-    const isLast = index === transactions.length - 1;
-    const formattedDate = tx?.createdAt
-      ? formatDate(tx.createdAt, 'MMM DD, YYYY')
-      : 'Not Available';
-
-    return (
-      <View
-        style={[
-          styles.tableRow,
-          isLast && styles.tableRowLast,
-          { backgroundColor: COLORS.white, paddingHorizontal: SPACING.md },
-        ]}
-      >
-        {/* ID */}
-        <TouchableOpacity
-          style={styles.idCol}
-          onPress={() => setSelectedTx(tx)}
-        >
-          <AppText style={styles.idText} numberOfLines={1}>
-            {formatTxId(tx.id)}
-          </AppText>
-          <AppIcon name={'Eye'} size={13} color={COLORS.textSecondary} />
-        </TouchableOpacity>
-
-        {/* Amount */}
-        <AppText style={styles.amountText}>
-          $
-          {tx.amount
-            ? tx?.amount % 1 === 0
-              ? tx?.amount.toFixed(2)
-              : tx?.amount
-            : 'not available'}
-        </AppText>
-
-        {/* Date */}
-        <AppText style={styles.dateText}>{formattedDate}</AppText>
-
-        {/* Status Badge */}
-        <View style={styles.statusCol}>
-          <View style={styles.paidBadge}>
-            <AppText style={styles.paidBadgeText}>
-              {(tx.status || 'Not Available').charAt(0).toUpperCase() +
-                (tx.status || 'Not Available').slice(1)}
-            </AppText>
-          </View>
-        </View>
-      </View>
-    );
-  };
+  const renderTxItem = ({ item: tx, index }: { item: any; index: number }) => (
+    <TransactionRowItem
+      tx={tx}
+      isLast={index === transactions.length - 1}
+      onSelectTx={setSelectedTx}
+    />
+  );
 
   if (loading && !refreshing) {
     return (

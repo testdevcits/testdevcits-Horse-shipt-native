@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Modal,
+
   View,
   TouchableOpacity,
   ScrollView,
@@ -20,13 +20,14 @@ import {
 import { COLORS } from '../../../../../constants';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.addvehicle';
-import imageIndex from '../../../../../assets/images/imageIndex';
 import {
   isValidVehicleNumber,
   isValidVIN,
 } from '../../../../../utils/valiations';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+import { VehiclePickerModal } from './components/VehiclePickerModal';
+import { VehicleLoadingModal } from './components/VehicleLoadingModal';
 
 interface Props {
   navigation?: any;
@@ -37,15 +38,7 @@ interface Props {
   vehicleToEdit?: any;
 }
 
-const VEHICLE_TYPES = ['Truck', 'Trailer', 'Other'];
-const STALL_TYPES = [
-  'Stock Trailer',
-  'Slant Load',
-  'Head to Head',
-  'Semi',
-  'Other',
-];
-const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
+
 
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
@@ -229,9 +222,9 @@ const AddVehicleModal: React.FC<Props> = ({
         showSuccessToast(
           'Success',
           res?.message ||
-            (vehicleToEdit
-              ? 'Vehicle updated successfully'
-              : 'Vehicle added successfully'),
+          (vehicleToEdit
+            ? 'Vehicle updated successfully'
+            : 'Vehicle added successfully'),
         );
         resetForm();
         if (onSuccess) onSuccess();
@@ -515,145 +508,37 @@ const AddVehicleModal: React.FC<Props> = ({
       </KeyboardAvoidingView>
 
       {/* Select Picker Bottom Sheet Modal */}
-      <Modal
-        visible={activePicker !== null}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setActivePicker(null)}
-      >
-        <TouchableOpacity
-          style={styles.pickerOverlay}
-          activeOpacity={1}
-          onPress={() => setActivePicker(null)}
-        >
-          <View style={styles.pickerContent}>
-            <AppText style={styles.pickerTitle}>
-              {activePicker === 'vehicleType'
-                ? 'Select Vehicle Type'
-                : activePicker === 'stallType'
-                ? 'Select Stall Type'
-                : 'Select Stall Size'}
-            </AppText>
-
-            {activePicker === 'vehicleType' &&
-              VEHICLE_TYPES.map(item => (
-                <TouchableOpacity
-                  key={item}
-                  style={styles.pickerItem}
-                  onPress={() => {
-                    setVehicleType(item);
-                    if (errors.vehicleType) {
-                      setErrors(prev => ({ ...prev, vehicleType: '' }));
-                    }
-                    setActivePicker(null);
-                  }}
-                >
-                  <AppText
-                    style={[
-                      styles.pickerItemText,
-                      vehicleType === item && styles.pickerItemTextActive,
-                    ]}
-                  >
-                    {item}
-                  </AppText>
-                  {vehicleType === item && (
-                    <AppIcon
-                      name={'Check'}
-                      size={18}
-                      color={COLORS.saddleBrown}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-
-            {activePicker === 'stallType' &&
-              STALL_TYPES.map(item => (
-                <TouchableOpacity
-                  key={item}
-                  style={styles.pickerItem}
-                  onPress={() => {
-                    setStallType(item);
-                    if (errors.stallType) {
-                      setErrors(prev => ({ ...prev, stallType: '' }));
-                    }
-                    setActivePicker(null);
-                  }}
-                >
-                  <AppText
-                    style={[
-                      styles.pickerItemText,
-                      stallType === item && styles.pickerItemTextActive,
-                    ]}
-                  >
-                    {item}
-                  </AppText>
-                  {stallType === item && (
-                    <AppIcon
-                      name={'Check'}
-                      size={18}
-                      color={COLORS.saddleBrown}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-
-            {activePicker === 'stallSize' &&
-              STALL_SIZES.map(item => (
-                <TouchableOpacity
-                  key={item}
-                  style={styles.pickerItem}
-                  onPress={() => {
-                    setStallSize(item);
-                    if (errors.stallSize) {
-                      setErrors(prev => ({ ...prev, stallSize: '' }));
-                    }
-                    setActivePicker(null);
-                  }}
-                >
-                  <AppText
-                    style={[
-                      styles.pickerItemText,
-                      stallSize === item && styles.pickerItemTextActive,
-                    ]}
-                  >
-                    {item}
-                  </AppText>
-                  {stallSize === item && (
-                    <AppIcon
-                      name={'Check'}
-                      size={18}
-                      color={COLORS.saddleBrown}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-          </View>
-        </TouchableOpacity>
-      </Modal>
+      <VehiclePickerModal
+        activePicker={activePicker}
+        onClose={() => setActivePicker(null)}
+        vehicleType={vehicleType}
+        stallType={stallType}
+        stallSize={stallSize}
+        onSelectVehicleType={item => {
+          setVehicleType(item);
+          if (errors.vehicleType) {
+            setErrors(prev => ({ ...prev, vehicleType: '' }));
+          }
+          setActivePicker(null);
+        }}
+        onSelectStallType={item => {
+          setStallType(item);
+          if (errors.stallType) {
+            setErrors(prev => ({ ...prev, stallType: '' }));
+          }
+          setActivePicker(null);
+        }}
+        onSelectStallSize={item => {
+          setStallSize(item);
+          if (errors.stallSize) {
+            setErrors(prev => ({ ...prev, stallSize: '' }));
+          }
+          setActivePicker(null);
+        }}
+      />
 
       {/* Adding Vehicle Loading Modal */}
-      <Modal visible={loading} transparent animationType="fade">
-        <View style={styles.loadingOverlay}>
-          <View style={styles.loadingCard}>
-            <View style={styles.truckIconContainer}>
-              <Image
-                source={imageIndex?.runningtruck}
-                style={{
-                  width: 200,
-                  height: 200,
-                }}
-                resizeMode="contain"
-              />
-            </View>
-
-            <AppText style={styles.loadingTitle}>Saving Vehicle</AppText>
-            <AppText style={styles.loadingSubtitle}>
-              Registering your vehicle... Please wait while we save the
-              information.
-            </AppText>
-          </View>
-        </View>
-      </Modal>
+      <VehicleLoadingModal loading={loading} />
     </View>
   );
 };

@@ -34,6 +34,7 @@ import { Horse } from '../../../../types/customer';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.AddEditHorses';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
+import HorseDocumentPickerSection from './components/HorseDocumentPickerSection';
 
 const AppSelect = lazy(() =>
   import('../../../../components').then(module => ({
@@ -458,111 +459,13 @@ const AddEditHorse = () => {
                 />
 
                 {/* Documents Upload Section */}
-                <View style={styles.sectionCard}>
-                  <AppText style={styles.sectionTitle}>
-                    Documents (PDF only)
-                  </AppText>
-
-                  {/* Coggins Row */}
-                  <View style={styles.docRow}>
-                    <View style={styles.docLeft}>
-                      <AppIcon
-                        name={'Paperclip'}
-                        size={18}
-                        color={COLORS.primary}
-                      />
-                      <View style={styles.docTextWrap}>
-                        <AppText style={styles.docLabel}>Coggins Test</AppText>
-                        <AppText style={styles.docSubtext} numberOfLines={1}>
-                          {values.coggins?.name ||
-                            values.coggins?.originalName ||
-                            'No document selected'}
-                        </AppText>
-                      </View>
-                    </View>
-                    {values.coggins ? (
-                      <TouchableOpacity
-                        disabled={isPicking}
-                        style={styles.docDeleteBtn}
-                        onPress={() => setFieldValue('coggins', null)}
-                      >
-                        <AppIcon
-                          name={'Trash2'}
-                          size={16}
-                          color={COLORS.error}
-                        />
-                      </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        disabled={isPicking}
-                        style={styles.docUploadBtn}
-                        onPress={() =>
-                          handlePickDocument('coggins', setFieldValue)
-                        }
-                      >
-                        <AppIcon
-                          name={'Upload'}
-                          size={14}
-                          color={COLORS.primary}
-                        />
-                        <AppText style={styles.docUploadBtnText}>
-                          Upload
-                        </AppText>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-
-                  {/* Health Certificate Row */}
-                  <View style={[styles.docRow, { borderBottomWidth: 0 }]}>
-                    <View style={styles.docLeft}>
-                      <AppIcon
-                        name={'Paperclip'}
-                        size={18}
-                        color={COLORS.primary}
-                      />
-                      <View style={styles.docTextWrap}>
-                        <AppText style={styles.docLabel}>
-                          Health Certificate
-                        </AppText>
-                        <AppText style={styles.docSubtext} numberOfLines={1}>
-                          {values.healthCertificate?.name ||
-                            values.healthCertificate?.originalName ||
-                            'No document selected'}
-                        </AppText>
-                      </View>
-                    </View>
-                    {values.healthCertificate ? (
-                      <TouchableOpacity
-                        disabled={isPicking}
-                        style={styles.docDeleteBtn}
-                        onPress={() => setFieldValue('healthCertificate', null)}
-                      >
-                        <AppIcon
-                          name={'Trash2'}
-                          size={16}
-                          color={COLORS.error}
-                        />
-                      </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        disabled={isPicking}
-                        style={styles.docUploadBtn}
-                        onPress={() =>
-                          handlePickDocument('healthCertificate', setFieldValue)
-                        }
-                      >
-                        <AppIcon
-                          name={'Upload'}
-                          size={14}
-                          color={COLORS.primary}
-                        />
-                        <AppText style={styles.docUploadBtnText}>
-                          Upload
-                        </AppText>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </View>
+                <HorseDocumentPickerSection
+                  coggins={values.coggins}
+                  healthCertificate={values.healthCertificate}
+                  isPicking={isPicking}
+                  onPickDocument={field => handlePickDocument(field, setFieldValue)}
+                  onRemoveDocument={field => setFieldValue(field, null)}
+                />
 
                 {/* Footer Buttons */}
                 <View style={styles.btnContainer}>

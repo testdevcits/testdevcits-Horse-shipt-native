@@ -1,5 +1,10 @@
 import React, { lazy, Suspense } from 'react';
-import { View, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import { AppHeader, AppText, ProfileSkeleton } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import styles from './styles.shipperprofile';
@@ -138,9 +143,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             {/* Notification Preferences */}
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() =>
-                navigation.navigate('ShipperNotificationSettings')
-              }
+              onPress={() => navigation.navigate('ShipperNotificationSettings')}
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>

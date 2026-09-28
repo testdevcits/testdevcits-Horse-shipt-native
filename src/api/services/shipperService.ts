@@ -1,4 +1,5 @@
 import axiosClient from '../axiosClient';
+import API_ENDPOINTS from '../endpoints';
 
 const shipperService = {
   // Get all registered vehicles for the shipper
@@ -7,7 +8,7 @@ const shipperService = {
     message?: string;
     vehicles: any[];
   }> => {
-    return axiosClient.get('/api/shipper/vehicles');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.VEHICLES);
   },
 
   // Add new vehicle (multipart/form-data)
@@ -18,7 +19,7 @@ const shipperService = {
     message?: string;
     vehicle?: any;
   }> => {
-    return axiosClient.post('/api/shipper/vehicles', formData, {
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.VEHICLES, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -34,7 +35,7 @@ const shipperService = {
     message?: string;
     vehicle?: any;
   }> => {
-    return axiosClient.put(`/api/shipper/vehicles/${id}`, formData, {
+    return axiosClient.put(API_ENDPOINTS.SHIPPER.VEHICLE_BY_ID(id), formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -48,7 +49,7 @@ const shipperService = {
     success: boolean;
     message?: string;
   }> => {
-    return axiosClient.delete(`/api/shipper/vehicles/${id}`);
+    return axiosClient.delete(API_ENDPOINTS.SHIPPER.VEHICLE_BY_ID(id));
   },
 
   // Assign vehicle to quote (POST /api/shipper/assign-vehicle)
@@ -61,7 +62,7 @@ const shipperService = {
     data?: any;
     quote?: any;
   }> => {
-    return axiosClient.post('/api/shipper/assign-vehicle', payload);
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.ASSIGN_VEHICLE, payload);
   },
 
   // Fetch drivers list for shipper
@@ -78,7 +79,7 @@ const shipperService = {
     drivers?: any[];
     data?: any[];
   }> => {
-    return axiosClient.get('/api/shipper/drivers', { params });
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.DRIVERS, { params });
   },
 
   // Add new driver
@@ -94,7 +95,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/shipper/drivers', payload);
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.DRIVERS, payload);
   },
 
   // Update driver details
@@ -112,7 +113,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.put(`/api/shipper/drivers/${id}`, payload);
+    return axiosClient.put(API_ENDPOINTS.SHIPPER.DRIVER_BY_ID(id), payload);
   },
 
   // Delete driver
@@ -122,7 +123,7 @@ const shipperService = {
     success: boolean;
     message?: string;
   }> => {
-    return axiosClient.delete(`/api/shipper/drivers/${id}`);
+    return axiosClient.delete(API_ENDPOINTS.SHIPPER.DRIVER_BY_ID(id));
   },
 
   // Toggle driver active/inactive status
@@ -133,7 +134,7 @@ const shipperService = {
     success: boolean;
     message?: string;
   }> => {
-    return axiosClient.patch(`/api/shipper/drivers/${id}/toggle-status`, {
+    return axiosClient.patch(API_ENDPOINTS.SHIPPER.TOGGLE_DRIVER_STATUS(id), {
       isActive,
     });
   },
@@ -148,7 +149,7 @@ const shipperService = {
     vehicle?: any;
     driver?: any;
   }> => {
-    return axiosClient.post('/api/shipper/vehicles/assign-driver', {
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.ASSIGN_DRIVER_TO_VEHICLE, {
       vehicleId,
       driverId,
     });
@@ -160,7 +161,7 @@ const shipperService = {
     message?: string;
     quotes: any[];
   }> => {
-    return axiosClient.get('/api/shipper/quotes/mq');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.MY_QUOTES);
   },
 
   // Submit a shipping offer / quote (POST /api/shipper/quotes/add)
@@ -171,7 +172,7 @@ const shipperService = {
     message?: string;
     quote?: any;
   }> => {
-    return axiosClient.post('/api/shipper/quotes/add', formData, {
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.ADD_QUOTE, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -185,7 +186,7 @@ const shipperService = {
     success: boolean;
     message?: string;
   }> => {
-    return axiosClient.delete(`/api/shipper/delete/${id}`);
+    return axiosClient.delete(API_ENDPOINTS.SHIPPER.DELETE_QUOTE(id));
   },
 
   // Ask a question about a shipment (POST /api/questions/ask)
@@ -197,7 +198,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/questions/ask', data);
+    return axiosClient.post(API_ENDPOINTS.QUESTIONS.ASK, data);
   },
 
   // Fetch shipment questions (GET /api/questions/:shipmentId)
@@ -210,7 +211,7 @@ const shipperService = {
       pending: any[];
     };
   }> => {
-    return axiosClient.get(`/api/questions/${shipmentId}`);
+    return axiosClient.get(API_ENDPOINTS.QUESTIONS.BY_SHIPMENT_ID(shipmentId));
   },
 
   // get Google review link (Get /api/shipper/reviews/google-link)
@@ -220,7 +221,7 @@ const shipperService = {
     googleReviewLink?: string;
     data?: any;
   }> => {
-    return axiosClient.get('/api/shipper/reviews/google-link');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.GOOGLE_REVIEW_LINK);
   },
 
   // Update Google review link (PUT /api/shipper/reviews/google-link)
@@ -231,7 +232,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.put('/api/shipper/reviews/google-link', {
+    return axiosClient.put(API_ENDPOINTS.SHIPPER.GOOGLE_REVIEW_LINK, {
       googleReviewLink,
     });
   },
@@ -247,7 +248,7 @@ const shipperService = {
     nextCursor?: string;
     transactions: any[];
   }> => {
-    return axiosClient.get('/api/shipper/shipper/payout-history', { params });
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.PAYOUT_HISTORY, { params });
   },
 
   // Fetch available shipments for bidding (/api/shipper/shipments/available)
@@ -265,7 +266,9 @@ const shipperService = {
     totalPages?: number;
     shipments: any[];
   }> => {
-    return axiosClient.get('/api/shipper/shipments/available', { params });
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.AVAILABLE_SHIPMENTS, {
+      params,
+    });
   },
 
   // Fetch shipper quote invitations (GET /api/shipper/invitations)
@@ -274,7 +277,7 @@ const shipperService = {
     count?: number;
     data: any[];
   }> => {
-    return axiosClient.get('/api/shipper/invitations');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.INVITATIONS);
   },
 
   // Fetch chat customer conversations (/api/shipper/chat/customers)
@@ -282,7 +285,7 @@ const shipperService = {
     success: boolean;
     data: any[];
   }> => {
-    return axiosClient.get('/api/shipper/chat/customers');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.CHAT_CUSTOMERS);
   },
 
   // Get or create chat room for shipment (/api/shipper/chat/room)
@@ -294,7 +297,7 @@ const shipperService = {
     room: any;
     shipment: any;
   }> => {
-    return axiosClient.post('/api/shipper/chat/room', { shipmentId });
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.CHAT_ROOM, { shipmentId });
   },
 
   // Get chat room messages (/api/shipper/chat/rooms/:roomId/messages)
@@ -304,7 +307,7 @@ const shipperService = {
     success: boolean;
     messages: any[];
   }> => {
-    return axiosClient.get(`/api/shipper/chat/rooms/${roomId}/messages`);
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.CHAT_MESSAGES(roomId));
   },
 
   // Send message in chat room
@@ -318,7 +321,7 @@ const shipperService = {
   }> => {
     if (formDataOrPayload instanceof FormData) {
       return axiosClient.post(
-        `/api/shipper/chat/rooms/${roomId}/messages`,
+        API_ENDPOINTS.SHIPPER.CHAT_MESSAGES(roomId),
         formDataOrPayload,
         {
           headers: {
@@ -328,7 +331,7 @@ const shipperService = {
       );
     }
     return axiosClient.post(
-      `/api/shipper/chat/rooms/${roomId}/messages`,
+      API_ENDPOINTS.SHIPPER.CHAT_MESSAGES(roomId),
       formDataOrPayload,
     );
   },
@@ -338,7 +341,7 @@ const shipperService = {
     success: boolean;
     data: any;
   }> => {
-    return axiosClient.get('/api/shipper/stripe/subscription-plan');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.STRIPE.SUBSCRIPTION_PLAN);
   },
 
   // Get Shipper Profile (/api/shipper/profile)
@@ -347,7 +350,7 @@ const shipperService = {
     message?: string;
     data: any;
   }> => {
-    return axiosClient.get('/api/shipper/profile');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.PROFILE);
   },
 
   // Get Shipper Settings (/api/shipper/settings)
@@ -356,7 +359,7 @@ const shipperService = {
     message?: string;
     data: any;
   }> => {
-    return axiosClient.get('/api/shipper/settings');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.SETTINGS);
   },
 
   // Update Shipper Settings (/api/shipper/settings)
@@ -367,7 +370,7 @@ const shipperService = {
     message?: string;
     data: any;
   }> => {
-    return axiosClient.put('/api/shipper/settings', settingsData);
+    return axiosClient.put(API_ENDPOINTS.SHIPPER.SETTINGS, settingsData);
   },
 
   // Update Notification Settings (/api/shipper/settings/update-notifications)
@@ -378,7 +381,7 @@ const shipperService = {
     message?: string;
     data: any;
   }> => {
-    return axiosClient.post('/api/shipper/settings/update-notifications', {
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.UPDATE_NOTIFICATIONS, {
       notifications,
     });
   },
@@ -388,14 +391,14 @@ const shipperService = {
     success: boolean;
     data: any[];
   }> => {
-    return axiosClient.get('/api/shipper/notification-activity');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.NOTIFICATION_ACTIVITY);
   },
 
   // Mark Shipper Notifications as Read (/api/shipper/notification-activity/read)
   markNotificationsRead: async (
     ids: string[],
   ): Promise<{ success: boolean; message?: string }> => {
-    return axiosClient.patch('/api/shipper/notification-activity/read', {
+    return axiosClient.patch(API_ENDPOINTS.SHIPPER.NOTIFICATION_ACTIVITY_READ, {
       notificationIds: ids,
       ids: ids,
     });
@@ -409,7 +412,7 @@ const shipperService = {
     message?: string;
     data?: { deletedCount: number };
   }> => {
-    return axiosClient.delete('/api/shipper/notification-activity', {
+    return axiosClient.delete(API_ENDPOINTS.SHIPPER.NOTIFICATION_ACTIVITY, {
       data: { ids },
     });
   },
@@ -424,7 +427,7 @@ const shipperService = {
       payouts?: any[];
     };
   }> => {
-    return axiosClient.get('/api/shipper/stripe/subscription/billing/history');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.STRIPE.BILLING_HISTORY);
   },
 
   // Fetch Subscription Status (GET /api/shipper/stripe/subscription/status)
@@ -448,7 +451,7 @@ const shipperService = {
     needsRenewal?: boolean;
     needsSubscription?: boolean;
   }> => {
-    return axiosClient.get('/api/shipper/stripe/subscription/status');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.STRIPE.SUBSCRIPTION_STATUS);
   },
 
   // Create Subscription (POST /api/shipper/stripe/subscription/create)
@@ -463,7 +466,10 @@ const shipperService = {
     status?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/shipper/stripe/subscription/create', payload);
+    return axiosClient.post(
+      API_ENDPOINTS.SHIPPER.STRIPE.SUBSCRIPTION_CREATE,
+      payload,
+    );
   },
 
   // Cancel Subscription (POST /api/shipper/stripe/subscription/cancel)
@@ -479,7 +485,10 @@ const shipperService = {
       accessValidTill?: string;
     };
   }> => {
-    return axiosClient.post('/api/shipper/stripe/subscription/cancel', payload);
+    return axiosClient.post(
+      API_ENDPOINTS.SHIPPER.STRIPE.SUBSCRIPTION_CANCEL,
+      payload,
+    );
   },
 
   // Fetch Active Privacy Policy (/api/admin/privacy-policy/active)
@@ -489,7 +498,7 @@ const shipperService = {
     count?: number;
     data: any[];
   }> => {
-    return axiosClient.get('/api/admin/privacy-policy/active');
+    return axiosClient.get(API_ENDPOINTS.ADMIN.PRIVACY_POLICY);
   },
 
   // Fetch Active Terms & Conditions (/api/admin/terms-condition/active)
@@ -499,7 +508,7 @@ const shipperService = {
     count?: number;
     data: any[];
   }> => {
-    return axiosClient.get('/api/admin/terms-condition/active');
+    return axiosClient.get(API_ENDPOINTS.ADMIN.TERMS_CONDITIONS);
   },
 
   // Fetch Stripe Status (/api/shipper/stripe/status)
@@ -512,7 +521,7 @@ const shipperService = {
     needsVerification?: boolean;
     requirements?: any;
   }> => {
-    return axiosClient.get('/api/shipper/stripe/status');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.STRIPE.STATUS);
   },
 
   // Create Stripe Payout Account for Shipper (POST /api/shipper/stripe/create-account)
@@ -523,7 +532,7 @@ const shipperService = {
     accountLinkUrl?: string;
     url?: string;
   }> => {
-    return axiosClient.post('/api/shipper/stripe/create-account');
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.STRIPE.CREATE_ACCOUNT);
   },
 
   // Get Stripe Onboarding Link for Shipper (POST /api/shipper/stripe/onboarding)
@@ -535,7 +544,7 @@ const shipperService = {
     url?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/shipper/stripe/onboarding');
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.STRIPE.ONBOARDING);
   },
 
   // Fetch Shipper Payment Card Status (/api/shipper/status)
@@ -548,7 +557,7 @@ const shipperService = {
     cardExpYear?: number;
     message?: string;
   }> => {
-    return axiosClient.get('/api/shipper/status');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.STATUS);
   },
 
   // Create Stripe Customer for Shipper (/api/shipper/create-customer)
@@ -557,7 +566,7 @@ const shipperService = {
     message?: string;
     stripeCustomerId?: string;
   }> => {
-    return axiosClient.post('/api/shipper/create-customer');
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.CREATE_CUSTOMER);
   },
 
   // Get Setup Intent for Shipper (/api/shipper/setup-intent)
@@ -566,7 +575,7 @@ const shipperService = {
     clientSecret?: string;
     message?: string;
   }> => {
-    return axiosClient.post('/api/shipper/setup-intent');
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.SETUP_INTENT);
   },
 
   // Save Payment Method for Shipper (/api/shipper/save-payment-method)
@@ -580,10 +589,8 @@ const shipperService = {
     cardExpMonth?: number;
     cardExpYear?: number;
   }> => {
-    return axiosClient.post('/api/shipper/save-payment-method', payload);
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.SAVE_PAYMENT_METHOD, payload);
   },
-
-  // Update Banner Image (/api/shipper/update-banner-image)
 
   // Update Banner Image (/api/shipper/update-banner-image)
   updateBannerImage: async (
@@ -597,12 +604,16 @@ const shipperService = {
       _id: string;
     };
   }> => {
-    return axiosClient.put('/api/shipper/update-banner-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    return axiosClient.put(
+      API_ENDPOINTS.SHIPPER.UPDATE_BANNER_IMAGE,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        transformRequest: [data => data],
       },
-      transformRequest: [data => data],
-    });
+    );
   },
 
   // Update Profile Image (/api/shipper/update-profile-image)
@@ -617,12 +628,16 @@ const shipperService = {
       _id: string;
     };
   }> => {
-    return axiosClient.put('/api/shipper/update-profile-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    return axiosClient.put(
+      API_ENDPOINTS.SHIPPER.UPDATE_PROFILE_IMAGE,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        transformRequest: [data => data],
       },
-      transformRequest: [data => data],
-    });
+    );
   },
 
   // Update Profile Details (PUT /api/shipper/update-profile)
@@ -639,7 +654,7 @@ const shipperService = {
     message?: string;
     data: any;
   }> => {
-    return axiosClient.put('/api/shipper/update-profile', payload);
+    return axiosClient.put(API_ENDPOINTS.SHIPPER.UPDATE_PROFILE, payload);
   },
 
   // Fetch Preferred Areas
@@ -648,7 +663,7 @@ const shipperService = {
     message?: string;
     data: any[];
   }> => {
-    return axiosClient.get('/api/shipper/preferred-areas');
+    return axiosClient.get(API_ENDPOINTS.SHIPPER.PREFERRED_AREAS);
   },
 
   // Add Preferred Area
@@ -662,7 +677,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/shipper/preferred-areas', payload);
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.PREFERRED_AREAS, payload);
   },
 
   // Update Preferred Area
@@ -679,7 +694,10 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.put(`/api/shipper/preferred-areas/${id}`, payload);
+    return axiosClient.put(
+      API_ENDPOINTS.SHIPPER.PREFERRED_AREA_BY_ID(id),
+      payload,
+    );
   },
 
   deletePreferredArea: async (
@@ -689,7 +707,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.delete(`/api/shipper/preferred-areas/${id}`);
+    return axiosClient.delete(API_ENDPOINTS.SHIPPER.PREFERRED_AREA_BY_ID(id));
   },
 
   // Submit Customer Review (POST /api/shipper/customer-reviews)
@@ -703,7 +721,7 @@ const shipperService = {
     message?: string;
     data?: any;
   }> => {
-    return axiosClient.post('/api/shipper/customer-reviews', payload);
+    return axiosClient.post(API_ENDPOINTS.SHIPPER.CUSTOMER_REVIEWS, payload);
   },
 };
 

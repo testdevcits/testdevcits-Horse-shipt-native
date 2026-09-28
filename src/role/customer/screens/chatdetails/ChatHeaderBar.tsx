@@ -1,11 +1,9 @@
 import {
   View,
-  
   TouchableOpacity,
   Image,
   StyleSheet,
   Platform,
-   
 } from 'react-native';
 import React, { memo } from 'react';
 import {

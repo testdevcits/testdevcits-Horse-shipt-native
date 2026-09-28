@@ -7,16 +7,9 @@ import {
   Platform,
 } from 'react-native';
 
-import {
-  Bell,
-  BellOff,
-  Truck,
-  MessageSquare,
-  FileText,
-} from 'lucide-react-native';
-import { formatDate } from '../../../utils/helpers';
+import { BellOff } from 'lucide-react-native';
 import { COLORS } from '../../../constants';
-import useNotifications, { NotificationFilter } from './useNotifications';
+import useNotifications from './useNotifications';
 import {
   AppHeader,
   AppLoader,
@@ -27,59 +20,14 @@ import {
 import styles from './styles.notification';
 import AppIcon from '../../../components/app_icon/AppIcon';
 import { useNavigation } from '@react-navigation/native';
-1;
+import NotificationItemCard from './components/NotificationItemCard';
+import NotificationFilterBar from './components/NotificationFilterBar';
+import NotificationBatchActionBar from './components/NotificationBatchActionBar';
 
 const ConfirmationModal = lazy(
   () =>
     import('../../../components/common/ConfirmationModal/ConfirmationModal'),
 );
-// Helper to determine notification icon based on content
-const getNotificationIcon = (title: string = '', message: string = '') => {
-  const content = (title + ' ' + message).toLowerCase();
-  if (
-    content.includes('quote') ||
-    content.includes('offer') ||
-    content.includes('bid')
-  ) {
-    return {
-      Icon: FileText,
-      color: COLORS.emeraldPrimary,
-      bg: COLORS.emeraldLightBg,
-      border: COLORS.emeraldBorder,
-    };
-  }
-  if (
-    content.includes('chat') ||
-    content.includes('message') ||
-    content.includes('question')
-  ) {
-    return {
-      Icon: MessageSquare,
-      color: COLORS.bluePrimary,
-      bg: COLORS.blueLightBg,
-      border: COLORS.blueBorder,
-    };
-  }
-  if (
-    content.includes('shipment') ||
-    content.includes('deliver') ||
-    content.includes('pickup') ||
-    content.includes('transit')
-  ) {
-    return {
-      Icon: Truck,
-      color: COLORS.brandBrown,
-      bg: COLORS.goldLightBg,
-      border: COLORS.goldBorder,
-    };
-  }
-  return {
-    Icon: Bell,
-    color: COLORS.brandBrown,
-    bg: COLORS.goldLightBg,
-    border: COLORS.goldBorder,
-  };
-};
 
 const Notifications = () => {
   const navigation: any = useNavigation();
@@ -130,125 +78,16 @@ const Notifications = () => {
 
   const renderNotificationItem = ({ item }: { item: any }) => {
     const isSelected = selectedIds.includes(item?._id);
-    const isUnread = !item?.read;
-    const formattedTime = formatDate(
-      item?.createdAt || item?.createdAtDate || new Date(),
-      'MMM DD, YYYY • h:mm A',
-    );
-
-    const iconData = getNotificationIcon(item?.title, item?.message);
-    const IconComp = iconData.Icon;
-
-    console.log('==item===11==', item);
-
     return (
-      <TouchableOpacity
-        style={[
-          styles.notifCard,
-          isUnread ? styles.notifCardUnread : styles.notifCardRead,
-          isSelected && styles.notifCardSelected,
-        ]}
-        onPress={() => {
-          if (isSelectionMode) {
-            toggleSelect(item?._id);
-          } else if (isUnread) {
-            handleMarkSingleRead(item?._id);
-          }
-        }}
-        onLongPress={() => toggleSelect(item?._id)}
-        activeOpacity={0.85}
-      >
-        {/* Left Accent Strip for Unread */}
-        {isUnread && <View style={styles.unreadAccentBar} />}
-
-        {/* Checkbox / Selection Circle */}
-        <TouchableOpacity
-          style={[styles.checkbox, isSelected && styles.checkboxSelected]}
-          onPress={() => toggleSelect(item?._id)}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          {isSelected ? (
-            <AppIcon
-              name={'CheckCircle2'}
-              size={20}
-              color={COLORS.brandBrown}
-              fill={COLORS.warmCreamDark}
-            />
-          ) : (
-            <View style={styles.checkboxUncheckedCircle} />
-          )}
-        </TouchableOpacity>
-
-        {/* Icon Badge */}
-        <View
-          style={[
-            styles.iconContainer,
-            { backgroundColor: iconData.bg, borderColor: iconData.border },
-          ]}
-        >
-          <IconComp size={20} color={iconData.color} />
-        </View>
-
-        {/* Text Content */}
-        <View style={styles.notifTextCol}>
-          <View style={styles.titleRow}>
-            <AppText
-              style={[styles.notifTitle, isUnread && styles.notifTitleUnread]}
-              numberOfLines={1}
-            >
-              {item?.title || 'Notification'}
-            </AppText>
-
-            {/* Unread Pill Badge */}
-            {isUnread && <View style={styles.unreadDot} />}
-          </View>
-
-          <AppText style={styles.notifMsg} numberOfLines={2}>
-            {item?.message}
-          </AppText>
-
-          <AppText style={styles.notifTime}>{formattedTime}</AppText>
-        </View>
-
-        {/* Single Item Delete Action */}
-
-        <View>
-          <TouchableOpacity
-            style={styles.deleteIconButton}
-            onPress={() => handleInitiateDeleteSingle(item?._id)}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <AppIcon name={'Trash2'} size={16} color={COLORS.grey400} />
-          </TouchableOpacity>
-          {item?.event === 'horse_shipt:chat_message_created' &&
-          item?.data?.shipmentId ? (
-            <TouchableOpacity
-              style={styles.deleteIconButton}
-              onPress={() =>
-                navigation.navigate('ChatDetails', {
-                  shipmentId: item?.data?.shipmentId,
-                })
-              }
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <AppIcon name={'ArrowRight'} size={16} color={COLORS.grey400} />
-            </TouchableOpacity>
-          ) : item?.event === 'horse_shipt:quote_vehicle_assigned' ? (
-            <TouchableOpacity
-              style={styles.deleteIconButton}
-              onPress={() => {
-                navigation.navigate('MyShipmentDetails', {
-                  item: { _id: item?.data?.shipmentId },
-                  quoteId: item?.quoteId,
-                });
-              }}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <AppIcon name={'ArrowRight'} size={16} color={COLORS.grey400} />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      </TouchableOpacity>
+      <NotificationItemCard
+        item={item}
+        isSelected={isSelected}
+        isSelectionMode={isSelectionMode}
+        onToggleSelect={toggleSelect}
+        onMarkSingleRead={handleMarkSingleRead}
+        onInitiateDeleteSingle={handleInitiateDeleteSingle}
+        navigation={navigation}
+      />
     );
   };
 
@@ -290,70 +129,13 @@ const Notifications = () => {
       <AppLoader visible={actionLoading} />
 
       {/* TOP SUMMARY & SEGMENTED FILTER TABS */}
-      <View style={styles.filterBarContainer}>
-        {/* Count Summary */}
-        <View style={styles.summaryRow}>
-          <AppText style={styles.summaryText}>
-            {unreadCount > 0 ? (
-              <>
-                You have{' '}
-                <AppText style={styles.summaryHighlight}>
-                  {unreadCount} unread
-                </AppText>{' '}
-                notification{unreadCount > 1 ? 's' : ''}
-              </>
-            ) : (
-              'You are all caught up!'
-            )}
-          </AppText>
-        </View>
-
-        {/* Filter Tabs */}
-        <View style={styles.tabsWrapper}>
-          {(['all', 'unread', 'read'] as const).map(
-            (filter: NotificationFilter) => {
-              const isActive = activeFilter === filter;
-              const count =
-                filter === 'all'
-                  ? allCount
-                  : filter === 'unread'
-                  ? unreadCount
-                  : readCount;
-
-              return (
-                <TouchableOpacity
-                  key={filter}
-                  style={[styles.tabPill, isActive && styles.tabPillActive]}
-                  onPress={() => setActiveFilter(filter)}
-                  activeOpacity={0.8}
-                >
-                  <AppText
-                    style={[styles.tabLabel, isActive && styles.tabLabelActive]}
-                  >
-                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                  </AppText>
-
-                  <View
-                    style={[
-                      styles.countBadge,
-                      isActive && styles.countBadgeActive,
-                    ]}
-                  >
-                    <AppText
-                      style={[
-                        styles.countText,
-                        isActive && styles.countTextActive,
-                      ]}
-                    >
-                      {count}
-                    </AppText>
-                  </View>
-                </TouchableOpacity>
-              );
-            },
-          )}
-        </View>
-      </View>
+      <NotificationFilterBar
+        unreadCount={unreadCount}
+        activeFilter={activeFilter}
+        allCount={allCount}
+        readCount={readCount}
+        onSelectFilter={setActiveFilter}
+      />
 
       {/* NOTIFICATIONS LIST */}
       <FlatList
@@ -393,63 +175,16 @@ const Notifications = () => {
         }
       />
 
-      {/* FLOATING BATCH ACTION BAR (Shown when items are selected) */}
+      {/* FLOATING BATCH ACTION BAR */}
       {isSelectionMode && (
-        <View style={styles.floatingActionBar}>
-          <View style={styles.actionInfoCol}>
-            <AppText style={styles.selectedCountText}>
-              {selectedIds.length} Selected
-            </AppText>
-            <TouchableOpacity
-              onPress={selectAll}
-              style={styles.selectAllToggle}
-            >
-              <AppText style={styles.selectAllToggleText}>
-                {selectedIds.length === notifications.length
-                  ? 'Deselect All'
-                  : 'Select All'}
-              </AppText>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.batchActionsGroup}>
-            <TouchableOpacity
-              style={styles.batchMarkReadBtn}
-              onPress={handleMarkSelectedRead}
-              activeOpacity={0.8}
-            >
-              <AppIcon
-                name={'Check'}
-                size={16}
-                color={COLORS.emeraldPrimary}
-                style={{ marginRight: 4 }}
-              />
-              <AppText style={styles.batchMarkReadText}>Mark Read</AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.batchDeleteBtn}
-              onPress={handleInitiateDeleteSelected}
-              activeOpacity={0.8}
-            >
-              <AppIcon
-                name={'Trash2'}
-                size={16}
-                color={COLORS.error}
-                style={{ marginRight: 4 }}
-              />
-              <AppText style={styles.batchDeleteText}>Delete</AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.batchCloseBtn}
-              onPress={clearSelection}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <AppIcon name={'X'} size={18} color={COLORS.grey700} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <NotificationBatchActionBar
+          selectedCount={selectedIds.length}
+          totalNotifications={notifications.length}
+          onSelectAll={selectAll}
+          onMarkSelectedRead={handleMarkSelectedRead}
+          onInitiateDeleteSelected={handleInitiateDeleteSelected}
+          onClearSelection={clearSelection}
+        />
       )}
 
       {/* DELETE CONFIRMATION MODAL */}

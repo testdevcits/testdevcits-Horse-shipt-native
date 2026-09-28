@@ -1,10 +1,5 @@
 import React, { memo } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { AppText } from '../../../../../components';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../constants';
@@ -170,11 +165,7 @@ const ShipperProfileHeader: React.FC<ShipperProfileHeaderProps> = ({
           </View>
 
           <View style={styles.verifiedBadge}>
-            <AppIcon
-              name="ShieldCheck"
-              size={14}
-              color={COLORS.saddleBrown}
-            />
+            <AppIcon name="ShieldCheck" size={14} color={COLORS.saddleBrown} />
             <AppText style={styles.verifiedBadgeText}>VERIFIED SHIPPER</AppText>
           </View>
         </View>

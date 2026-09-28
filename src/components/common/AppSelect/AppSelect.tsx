@@ -125,7 +125,7 @@ const AppSelect = memo(
       const handleDismissModal = useCallback(() => {
         try {
           bottomSheetModalRef.current?.dismiss();
-        } catch {}
+        } catch { }
         setFallbackVisible(false);
         setSearchQuery('');
       }, []);
@@ -408,6 +408,10 @@ const AppSelect = memo(
                     </View>
                   }
                   renderItem={({ item }) => renderOptionItem(item)}
+                  initialNumToRender={10}
+                  maxToRenderPerBatch={10}
+                  windowSize={5}
+                  removeClippedSubviews
                 />
               </KeyboardAvoidingView>
             </Modal>

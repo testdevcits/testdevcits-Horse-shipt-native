@@ -9,10 +9,9 @@ import {
   Platform,
 } from 'react-native';
 
-import SignatureScreen from 'react-native-signature-canvas';
 import { pick, types } from '@react-native-documents/picker';
 import { AppText, Input } from '../../../../../../components';
-import { COLORS, SPACING } from '../../../../../../constants';
+import { COLORS } from '../../../../../../constants';
 import shipperService from '../../../../../../api/services/shipperService';
 import { useNavigation } from '@react-navigation/native';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
@@ -22,6 +21,8 @@ import {
 } from '../../../../../../utils/toast';
 import Toast from 'react-native-toast-message';
 import styles from './styles.SubmitOffer';
+import ContractUploadSection from './components/ContractUploadSection';
+import DigitalSignatureSection from './components/DigitalSignatureSection';
 
 interface SubmitOfferModalProps {
   isVisible: boolean;
@@ -338,144 +339,26 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
             </View>
 
             {/* 4. Shipper Contract Section (Optional File Upload) */}
-            <View style={styles.sectionContainer}>
-              <View style={styles.sectionTitleRow}>
-                <AppIcon name="FileText" size={18} color={COLORS.brandBrown} />
-                <AppText style={styles.sectionTitle}>Shipper Contract</AppText>
-              </View>
-
-              <View style={styles.dashedFileContainer}>
-                <View style={styles.fileTextCol}>
-                  <AppText style={styles.fileNameText} numberOfLines={1}>
-                    {contractFile?.fileName || 'No file chosen'}
-                  </AppText>
-                  <AppText style={styles.fileCaptionText}>
-                    Optional PDF or image. Customers can review it before
-                    accepting the quote?.
-                  </AppText>
-                </View>
-
-                <TouchableOpacity
-                  style={[styles.chooseFileBtn, isPicking && { opacity: 0.7 }]}
-                  onPress={handleChooseFile}
-                  activeOpacity={0.8}
-                  disabled={isPicking}
-                >
-                  {isPicking ? (
-                    <ActivityIndicator size="small" color={COLORS.white} />
-                  ) : (
-                    <AppText style={styles.chooseFileBtnText}>
-                      Choose File
-                    </AppText>
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              {contractFile && (
-                <TouchableOpacity
-                  style={styles.removeContractBtn}
-                  onPress={() => setContractFile(null)}
-                >
-                  <AppText style={styles.removeContractText}>
-                    Remove contract
-                  </AppText>
-                </TouchableOpacity>
-              )}
-            </View>
+            <ContractUploadSection
+              contractFile={contractFile}
+              isPicking={isPicking}
+              onChooseFile={handleChooseFile}
+              onRemoveContract={() => setContractFile(null)}
+            />
 
             {/* 5. Digital Signature Section */}
-            <View style={styles.sectionContainer}>
-              <View style={styles.sectionTitleRow}>
-                <AppIcon name="Edit3" size={18} color={COLORS.brandBrown} />
-                <AppText style={styles.sectionTitle}>
-                  Digital Signature{' '}
-                </AppText>
-                <AppText style={styles.asterisk}>*</AppText>
-              </View>
-              <AppText style={styles.sigSub}>
-                Sign below to confirm your shipping offer
-              </AppText>
-
-              <View
-                style={[
-                  styles.signatureWrapper,
-                  Boolean(sigError || submitError) && styles.inputError,
-                ]}
-              >
-                <SignatureScreen
-                  ref={sigRef}
-                  onOK={data => {
-                    setSignature(data);
-                    if (sigError) setSigError('');
-                    if (submitError) setSubmitError('');
-                  }}
-                  onEmpty={() => setSignature(null)}
-                  onBegin={() => setScrollEnabled(false)}
-                  onEnd={() => {
-                    setScrollEnabled(true);
-                    sigRef.current?.readSignature();
-                  }}
-                  descriptionText=""
-                  clearText="Clear"
-                  confirmText="Save"
-                  webStyle={`.m-signature-pad--footer { display: none; margin: 0px; } body,html { width: 100%; height: 100%; }`}
-                  autoClear={false}
-                  imageType="image/png"
-                />
-              </View>
-
-              <View style={styles.sigFooterRow}>
-                <TouchableOpacity
-                  style={styles.clearSigBtn}
-                  onPress={handleClearSignature}
-                  activeOpacity={0.7}
-                >
-                  <AppIcon
-                    name="RotateCcw"
-                    size={14}
-                    color={COLORS.bluePrimary}
-                  />
-                  <AppText style={styles.clearSigText}>Clear Signature</AppText>
-                </TouchableOpacity>
-
-                {signature ? (
-                  <View style={styles.capturedRow}>
-                    <AppIcon
-                      name="CheckCircle2"
-                      size={14}
-                      color={COLORS.greenActive}
-                    />
-                    <AppText style={styles.capturedText}>
-                      Signature captured
-                    </AppText>
-                  </View>
-                ) : null}
-              </View>
-              {Boolean(sigError) && (
-                <View style={styles.focusedErrorBox}>
-                  <AppIcon name="AlertCircle" size={15} color={COLORS.error} />
-                  <AppText style={styles.focusedErrorText}>{sigError}</AppText>
-                </View>
-              )}
-              {Boolean(submitError) && (
-                <View style={styles.focusedErrorBox}>
-                  <AppIcon name="AlertCircle" size={15} color={COLORS.error} />
-                  <AppText style={styles.focusedErrorText}>
-                    {submitError}
-                  </AppText>
-                </View>
-              )}
-              {submitError === 'subscription is required' && (
-                <TouchableOpacity
-                  style={[styles.submitBtn, { marginVertical: SPACING.md }]}
-                  onPress={() => (navigation as any).navigate('Profile')}
-                >
-                  <AppText style={styles.submitBtnText}>
-                    Go to Subscription Page
-                  </AppText>
-                </TouchableOpacity>
-              )}
-            </View>
+            <DigitalSignatureSection
+              sigRef={sigRef}
+              sigError={sigError}
+              submitError={submitError}
+              signature={signature}
+              onSetSignature={setSignature}
+              onSetSigError={setPriceError}
+              onSetSubmitError={setSubmitError}
+              onSetScrollEnabled={setScrollEnabled}
+              onClearSignature={handleClearSignature}
+              navigation={navigation}
+            />
 
             {/* 6. Action Buttons Row */}
             <View style={styles.actionsRow}>

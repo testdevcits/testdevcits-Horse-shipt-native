@@ -1,6 +1,5 @@
 import {
   View,
-  
   StyleSheet,
   Platform,
   TouchableOpacity,

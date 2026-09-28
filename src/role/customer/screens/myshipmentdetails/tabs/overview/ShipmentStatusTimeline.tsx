@@ -63,7 +63,10 @@ const ShipmentStatusTimeline: React.FC<ShipmentStatusTimelineProps> = ({
           <View style={styles.dateChip}>
             <AppIcon name={'Calendar'} size={12} color={COLORS.goldDarkText} />
             <AppText style={styles.dateChipText}>
-              {formatDateRange(deliveryDateRange?.start, deliveryDateRange?.end)}
+              {formatDateRange(
+                deliveryDateRange?.start,
+                deliveryDateRange?.end,
+              )}
             </AppText>
           </View>
         </View>
