@@ -226,18 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xs,
     marginTop: 10,
   },
-  confirmButton: {
-    backgroundColor: COLORS.primary,
-    height: 58,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: COLORS.white,
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
-  },
+  
 });
 
 export default styles;

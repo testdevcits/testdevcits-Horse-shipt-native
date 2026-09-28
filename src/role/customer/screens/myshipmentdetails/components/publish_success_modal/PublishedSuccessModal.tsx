@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, Image } from 'react-native';
 
 import { AppText } from '../../../../../../components';
@@ -70,4 +70,4 @@ const PublishedSuccessModal = ({
   );
 };
 
-export default PublishedSuccessModal;
+export default memo(PublishedSuccessModal);

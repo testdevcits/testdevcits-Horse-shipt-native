@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import {
   Modal,
   View,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
+   
 } from 'react-native';
 
 import { formatDate } from '../../../../../../utils/helpers';
@@ -16,7 +16,7 @@ import {
   FONT_SIZE,
   ICON_SIZE,
 } from '../../../../../../constants';
-import { AppText, Input } from '../../../../../../components';
+import { AppText } from '../../../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
@@ -29,6 +29,8 @@ import {
   showErrorToast,
   showSuccessToast,
 } from '../../../../../../utils/toast';
+import CancelModal from './CancelModal';
+import QuoteActionButtons from './QuoteActionButtons';
 
 const SummaryBox = ({
   icon: Icon,
@@ -559,134 +561,39 @@ const QuoteDetailModal = ({
           </ScrollView>
 
           {/* FOOTER ACTIONS */}
-          <View style={styles.footerActionContainer}>
-            {isAccepted && !quote?.isCancelled && (
-              <View style={styles.acceptedContainer}>
-                <View style={styles.successMessageCard}>
-                  <AppIcon
-                    name={'CheckCircle2'}
-                    size={ICON_SIZE.md}
-                    color={COLORS.greenPrimary}
-                  />
-                  <View style={{ flex: 1 }}>
-                    <AppText style={styles.successTitle}>
-                      Quote Accepted & Secured
-                    </AppText>
-                    <AppText style={styles.successSub}>
-                      Your shipment is confirmed.
-                    </AppText>
-                  </View>
-                </View>
-                {isCancellationWindowActive && isCompleted === false && (
-                  <TouchableOpacity
-                    style={styles.cancelBookingBtn}
-                    activeOpacity={0.8}
-                    onPress={() => setIsCancelModalVisible(true)}
-                  >
-                    <AppIcon
-                      name={'AlertCircle'}
-                      size={ICON_SIZE.sm}
-                      color={COLORS.error}
-                    />
-                    <AppText style={styles.cancelBookingText}>
-                      Cancel Shipment
-                    </AppText>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
-
-            {isPending && (
-              <TouchableOpacity
-                style={[
-                  styles.acceptBtn,
-                  (!isAcceptedTerms ||
-                    !signature ||
-                    !cardDetails?.complete ||
-                    loading) &&
-                    styles.disabledBtn,
-                ]}
-                disabled={
-                  !isAcceptedTerms ||
-                  !signature ||
-                  !cardDetails?.complete ||
-                  loading
-                }
-                activeOpacity={0.85}
-                onPress={handleProcessFlow}
-              >
-                {loading ? (
-                  <ActivityIndicator color={COLORS.white} />
-                ) : (
-                  <View style={styles.acceptBtnInner}>
-                    <AppIcon
-                      name={'ShieldCheck'}
-                      size={ICON_SIZE.sm}
-                      color={COLORS.white}
-                    />
-                    <AppText style={styles.acceptBtnText}>
-                      Pay & Accept Quote
-                    </AppText>
-                  </View>
-                )}
-              </TouchableOpacity>
-            )}
-
-            {(isRejected || isCancelled) && (
-              <View style={styles.inactiveState}>
-                <AppText style={styles.inactiveText}>
-                  This quote is no longer active.
-                </AppText>
-              </View>
-            )}
-          </View>
+          <QuoteActionButtons
+            isAccepted={isAccepted}
+            quote={quote}
+            isCancellationWindowActive={isCancellationWindowActive}
+            isCompleted={isCompleted}
+            setIsCancelModalVisible={setIsCancelModalVisible}
+            isPending={isPending}
+            isAcceptedTerms={isAcceptedTerms}
+            signature={signature}
+            cardDetails={cardDetails}
+            loading={loading}
+            handleProcessFlow={handleProcessFlow}
+            isRejected={isRejected}
+            isCancelled={isCancelled}
+          />
         </View>
       </View>
 
       {/* CANCEL MODAL */}
+
       {isCancelModalVisible && (
-        <Modal visible={isCancelModalVisible} transparent animationType="fade">
-          <View style={styles.promptOverlay}>
-            <View style={styles.promptContent}>
-              <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
-              <AppText style={styles.promptSub}>
-                Please state the reason for cancelling this shipment quote:
-              </AppText>
-              <Input
-                placeholder="Enter reason here..."
-                multiline
-                value={cancelReason}
-                onChangeText={text => {
-                  setCancelReason(text);
-                  if (cancelReasonError) setCancelReasonError('');
-                }}
-                containerStyle={{ marginBottom: SPACING.md }}
-                error={cancelReasonError}
-              />
-              <View style={styles.promptFooter}>
-                <TouchableOpacity
-                  style={styles.promptBtnSecondary}
-                  onPress={() => setIsCancelModalVisible(false)}
-                >
-                  <AppText style={styles.promptBtnTextSecondary}>
-                    Keep Booking
-                  </AppText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.promptBtnPrimary}
-                  onPress={handleCancelShipment}
-                >
-                  <AppText style={styles.promptBtnTextPrimary}>
-                    Confirm Cancel
-                  </AppText>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        <CancelModal
+          isCancelModalVisible={isCancelModalVisible}
+          cancelReason={cancelReason}
+          setCancelReason={setCancelReason}
+          cancelReasonError={cancelReasonError}
+          setCancelReasonError={setCancelReasonError}
+          setIsCancelModalVisible={setIsCancelModalVisible}
+          handleCancelShipment={handleCancelShipment}
+        />
       )}
     </Modal>
   );
 };
 
-export default QuoteDetailModal;
+export default memo(QuoteDetailModal);

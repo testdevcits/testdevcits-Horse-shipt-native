@@ -1,296 +1,49 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../../../../hooks/redux';
-import { updateUser, logoutUser } from '../../../../../redux/slices/authSlice';
+import React, { lazy, Suspense } from 'react';
+import { View, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { AppHeader, AppText, ProfileSkeleton } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
-import shipperService from '../../../../../api/services/shipperService';
-import imageIndex from '../../../../../assets/images/imageIndex';
 import styles from './styles.shipperprofile';
-
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+import useShipperProfile from './useShipperProfile';
+import ShipperProfileHeader from './ShipperProfileHeader';
+import FleetNavigationCard from './FleetNavigationCard';
+import PaymentMembershipCard from './PaymentMembershipCard';
+
+const ConfirmationModal = lazy(
+  () =>
+    import(
+      '../../../../../components/common/ConfirmationModal/ConfirmationModal'
+    ),
+);
+const ConnectBankModal = lazy(
+  () => import('../../home/components/ConnectBankModal'),
+);
 
 const ShipperProfileScreen = ({ navigation }: any) => {
-  const ConfirmationModal = lazy(
-    () =>
-      import(
-        '../../../../../components/common/ConfirmationModal/ConfirmationModal'
-      ),
-  );
-  const ConnectBankModal = lazy(
-    () => import('../../home/components/ConnectBankModal'),
-  );
-
-  const dispatch = useAppDispatch();
-  const { user } = useSelector((state: any) => state.auth || {});
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  const handleLogout = () => {
-    setIsLogoutModalVisible(true);
-  };
-
-  const handleConfirmLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await dispatch(logoutUser()).unwrap();
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      setIsLoggingOut(false);
-      setIsLogoutModalVisible(false);
-    }
-  };
-
-  // Data states
-  const [profileData, setProfileData] = useState<any>(null);
-  const [stripeStatus, setStripeStatus] = useState<any>(null);
-  const [isBankModalVisible, setIsBankModalVisible] = useState(false);
-
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [bannerUploading, setBannerUploading] = useState(false);
-  const [profileUploading, setProfileUploading] = useState(false);
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-
-  const handleUploadBannerImage = async () => {
-    try {
-      let imagePath = '';
-      let imageMime = 'image/jpeg';
-      let imageName = 'banner.jpg';
-
-      const pickerModule: any = (ImagePicker as any)?.openPicker
-        ? ImagePicker
-        : (ImagePicker as any)?.default;
-
-      if (pickerModule && typeof pickerModule.openPicker === 'function') {
-        const image = await pickerModule.openPicker({
-          width: 1200,
-          height: 400,
-          cropping: true,
-          mediaType: 'photo',
-          compressImageQuality: 0.8,
-        });
-        if (image?.size && image.size > 1 * 1024 * 1024) {
-          showErrorToast(
-            'File Too Large',
-            'Selected banner image must be 1 MB or less.',
-          );
-          return;
-        }
-        imagePath = image.path;
-        imageMime = image.mime || 'image/jpeg';
-        imageName = image.filename || 'banner.jpg';
-      } else {
-        const res = await launchImageLibrary({
-          mediaType: 'photo',
-          quality: 0.8,
-        });
-        if (res?.didCancel || !res.assets || res.assets.length === 0) return;
-        const asset = res.assets[0];
-        if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
-          showErrorToast(
-            'File Too Large',
-            'Selected banner image must be 1 MB or less.',
-          );
-          return;
-        }
-        imagePath = asset.uri || '';
-        imageMime = asset.type || 'image/jpeg';
-        imageName = asset.fileName || 'banner.jpg';
-      }
-
-      if (!imagePath) return;
-      setBannerUploading(true);
-
-      const formData = new FormData();
-      formData.append('image', {
-        uri: imagePath,
-        type: imageMime,
-        name: imageName,
-      } as any);
-
-      const res = await shipperService?.updateBannerImage?.(formData);
-      if (res?.success && res.bannerImage?.url) {
-        setBannerUrl(res?.bannerImage.url);
-        showSuccessToast('Success', 'Banner image updated successfully.');
-      }
-    } catch (err: any) {
-      if (
-        err?.message !== 'User cancelled image selection' &&
-        err?.code !== 'E_PICKER_CANCELLED'
-      ) {
-        console.error('Update Banner Image Error:', err);
-        showErrorToast('Error', 'Failed to update banner image.');
-      }
-    } finally {
-      setBannerUploading(false);
-    }
-  };
-
-  const handleUploadProfileImage = async () => {
-    try {
-      let imagePath = '';
-      let imageMime = 'image/jpeg';
-      let imageName = 'profile.jpg';
-
-      const pickerModule: any = (ImagePicker as any)?.openPicker
-        ? ImagePicker
-        : (ImagePicker as any)?.default;
-
-      if (pickerModule && typeof pickerModule.openPicker === 'function') {
-        const image = await pickerModule.openPicker({
-          width: 400,
-          height: 400,
-          cropping: true,
-          mediaType: 'photo',
-          compressImageQuality: 0.8,
-        });
-        if (image?.size && image.size > 1 * 1024 * 1024) {
-          showErrorToast(
-            'File Too Large',
-            'Selected profile image must be 1 MB or less.',
-          );
-          return;
-        }
-        imagePath = image.path;
-        imageMime = image.mime || 'image/jpeg';
-        imageName = image.filename || 'profile.jpg';
-      } else {
-        const res = await launchImageLibrary({
-          mediaType: 'photo',
-          quality: 0.8,
-        });
-        if (res?.didCancel || !res.assets || res.assets.length === 0) return;
-        const asset = res.assets[0];
-        if (asset?.fileSize && asset.fileSize > 1 * 1024 * 1024) {
-          showErrorToast(
-            'File Too Large',
-            'Selected profile image must be 1 MB or less.',
-          );
-          return;
-        }
-        imagePath = asset.uri || '';
-        imageMime = asset.type || 'image/jpeg';
-        imageName = asset.fileName || 'profile.jpg';
-      }
-
-      if (!imagePath) return;
-      setProfileUploading(true);
-
-      const formData = new FormData();
-      formData.append('image', {
-        uri: imagePath,
-        type: imageMime,
-        name: imageName,
-      } as any);
-
-      const res = await shipperService?.updateProfileImage?.(formData);
-      if (res?.success && (res?.profileImage?.url || res.profileImage)) {
-        const newImg = res.profileImage;
-        const newUrl = typeof newImg === 'string' ? newImg : newImg?.url;
-        if (newUrl) {
-          setAvatarUrl(newUrl);
-        }
-        dispatch(updateUser({ profileImage: newImg as any }));
-        showSuccessToast('Success', 'Profile image updated successfully.');
-      }
-    } catch (err: any) {
-      if (
-        err?.message !== 'User cancelled image selection' &&
-        err?.code !== 'E_PICKER_CANCELLED'
-      ) {
-        console.error('Update Profile Image Error:', err);
-        showErrorToast('Error', 'Failed to update profile image.');
-      }
-    } finally {
-      setProfileUploading(false);
-    }
-  };
-
-  const fetchAllProfileData = async () => {
-    try {
-      const [profRes, stripeRes] = await Promise.all([
-        shipperService.getProfile().catch(() => null),
-        shipperService.getStripeStatus().catch(() => null),
-      ]);
-
-      if (profRes?.data) {
-        setProfileData(profRes.data);
-        if (profRes.data?.bannerImage) {
-          const bUrl =
-            typeof profRes.data?.bannerImage === 'string'
-              ? profRes.data?.bannerImage
-              : profRes.data?.bannerImage?.url;
-          if (
-            bUrl &&
-            bUrl !== '/images/default_banner.png' &&
-            bUrl !== '/default-banner.png' &&
-            !bUrl.includes('default_banner') &&
-            !bUrl.includes('default-banner')
-          ) {
-            setBannerUrl(bUrl);
-          }
-        }
-        if (profRes.data?.profileImage) {
-          const imgUrl =
-            typeof profRes.data?.profileImage === 'string'
-              ? profRes.data?.profileImage
-              : profRes.data?.profileImage?.url;
-          if (imgUrl) {
-            setAvatarUrl(imgUrl);
-          }
-          dispatch(updateUser({ profileImage: profRes.data?.profileImage }));
-        }
-      }
-      if (stripeRes) {
-        setStripeStatus(stripeRes);
-      }
-    } catch (error) {
-      console.error('Fetch Profile Data Error:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllProfileData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchAllProfileData();
-  };
-
-  const _ratingVal = Number(
-    profileData?.rating ?? profileData?.averageRating ?? 0.0,
-  );
-  const _shipmentCount =
-    profileData?.completedShipments ??
-    profileData?.totalShipments ??
-    profileData?.shipmentsCount ??
-    profileData?.shipmentCount ??
-    (Array.isArray(profileData?.shipments) ? profileData.shipments.length : 0);
-
-  const isStripeConnected = Boolean(
-    stripeStatus?.verified ||
-      stripeStatus?.chargesEnabled ||
-      stripeStatus?.onboardingCompleted,
-  );
+  const {
+    user,
+    profileData,
+    loading,
+    refreshing,
+    bannerUploading,
+    profileUploading,
+    bannerUrl,
+    avatarUrl,
+    isLogoutModalVisible,
+    setIsLogoutModalVisible,
+    isLoggingOut,
+    isBankModalVisible,
+    setIsBankModalVisible,
+    handleLogout,
+    handleConfirmLogout,
+    handleUploadBannerImage,
+    handleUploadProfileImage,
+    onRefresh,
+    ratingVal,
+    shipmentCount,
+    isStripeConnected,
+    setProfileData,
+  } = useShipperProfile();
 
   if (loading && !refreshing) {
     return (
@@ -316,444 +69,35 @@ const ShipperProfileScreen = ({ navigation }: any) => {
           />
         }
       >
-        {/* TOP SECTION: BANNER IMAGE */}
-        <View style={styles.bannerWrapper}>
-          {(() => {
-            const getBannerPath = () => {
-              if (bannerUrl) return bannerUrl;
-              if (typeof profileData?.bannerImage === 'string')
-                return profileData?.bannerImage;
-              if (profileData?.bannerImage?.url)
-                return profileData?.bannerImage?.url;
-              if (typeof user?.bannerImage === 'string')
-                return user?.bannerImage;
-              if (user?.bannerImage?.url) return user?.bannerImage?.url;
-              return null;
-            };
-
-            const candidate = getBannerPath();
-            const isValidBanner =
-              candidate &&
-              typeof candidate === 'string' &&
-              candidate.trim() !== '' &&
-              candidate !== 'null' &&
-              candidate !== 'undefined' &&
-              candidate !== '/images/default_banner.png' &&
-              candidate !== '/default-banner.png' &&
-              !candidate.includes('default_banner') &&
-              !candidate.includes('default-banner');
-
-            const displayBanner = isValidBanner ? candidate : null;
-
-            return displayBanner ? (
-              <Image
-                source={{ uri: displayBanner }}
-                style={styles.bannerImg}
-                resizeMode="cover"
-              />
-            ) : (
-              <TouchableOpacity
-                style={styles.bannerPlaceholder}
-                onPress={handleUploadBannerImage}
-                disabled={bannerUploading}
-                activeOpacity={0.7}
-              >
-                <View style={styles.bannerIconCircle}>
-                  <AppIcon name="ImagePlus" size={22} color={COLORS.primary} />
-                </View>
-                <AppText style={styles.bannerPlaceholderText}>
-                  Add Banner
-                </AppText>
-              </TouchableOpacity>
-            );
-          })()}
-
-          <TouchableOpacity
-            style={styles.editBannerBtn}
-            onPress={handleUploadBannerImage}
-            disabled={bannerUploading}
-            activeOpacity={0.8}
-          >
-            {bannerUploading ? (
-              <ActivityIndicator size="small" color={COLORS.white} />
-            ) : (
-              <>
-                <AppIcon name="Camera" size={14} color={COLORS.white} />
-                <AppText style={styles.editBannerText}>
-                  {(() => {
-                    const getBannerPath = () => {
-                      if (bannerUrl) return bannerUrl;
-                      if (typeof profileData?.bannerImage === 'string')
-                        return profileData?.bannerImage;
-                      if (profileData?.bannerImage?.url)
-                        return profileData?.bannerImage?.url;
-                      if (typeof user?.bannerImage === 'string')
-                        return user?.bannerImage;
-                      if (user?.bannerImage?.url) return user?.bannerImage?.url;
-                      return null;
-                    };
-
-                    const candidate = getBannerPath();
-                    const isValidBanner =
-                      candidate &&
-                      typeof candidate === 'string' &&
-                      candidate.trim() !== '' &&
-                      candidate !== 'null' &&
-                      candidate !== 'undefined' &&
-                      candidate !== '/images/default_banner.png' &&
-                      candidate !== '/default-banner.png' &&
-                      !candidate.includes('default_banner') &&
-                      !candidate.includes('default-banner');
-
-                    return isValidBanner ? 'Edit banner' : 'Add banner';
-                  })()}
-                </AppText>
-              </>
-            )}
-          </TouchableOpacity>
-        </View>
-
-        {/* AVATAR & USER PROFILE INFO */}
-        <View style={styles.avatarSection}>
-          <TouchableOpacity
-            style={styles.avatarContainer}
-            onPress={handleUploadProfileImage}
-            disabled={profileUploading}
-            activeOpacity={0.85}
-          >
-            <View style={styles.avatarCircleWrapper}>
-              {(() => {
-                const displayAvatar =
-                  avatarUrl ||
-                  (typeof profileData?.profileImage === 'string'
-                    ? profileData?.profileImage
-                    : profileData?.profileImage?.url) ||
-                  (typeof user?.profileImage === 'string'
-                    ? user.profileImage
-                    : user?.profileImage?.url);
-                const isValidAvatar =
-                  displayAvatar &&
-                  displayAvatar !== '/images/default_profile.png' &&
-                  displayAvatar !== '/default-avatar.png';
-
-                return isValidAvatar ? (
-                  <Image
-                    source={{ uri: displayAvatar }}
-                    style={styles.avatarImg}
-                  />
-                ) : (
-                  <Image
-                    source={imageIndex?.AccountIcon}
-                    style={styles.avatarImg}
-                  />
-                );
-              })()}
-            </View>
-
-            {/* Floating Camera Edit Badge */}
-            <View style={styles.avatarCameraBadge}>
-              {profileUploading ? (
-                <ActivityIndicator size="small" color={COLORS.white} />
-              ) : (
-                <AppIcon name="Camera" size={15} color={COLORS.white} />
-              )}
-            </View>
-          </TouchableOpacity>
-
-          {/* User Details Box */}
-          <View style={styles.profileHeaderInfo}>
-            <AppText style={styles.profileName}>
-              {profileData?.name || user?.name || 'Shipper User'}
-            </AppText>
-
-            <View style={styles.profileContactRow}>
-              <AppIcon name="Mail" size={13} color={COLORS.textSecondary} />
-              <AppText style={styles.profileContactText}>
-                {profileData?.email || user?.email || 'No email provided'}
-              </AppText>
-
-              {(profileData?.mobile || user?.mobile) && (
-                <>
-                  <AppText style={{ color: COLORS.grey400 }}>•</AppText>
-                  <AppIcon
-                    name="Phone"
-                    size={13}
-                    color={COLORS.textSecondary}
-                  />
-                  <AppText style={styles.profileContactText}>
-                    {profileData?.mobile || user?.mobile}
-                  </AppText>
-                </>
-              )}
-            </View>
-
-            <View style={styles.verifiedBadge}>
-              <AppIcon
-                name="ShieldCheck"
-                size={14}
-                color={COLORS.saddleBrown}
-              />
-              <AppText style={styles.verifiedBadgeText}>
-                VERIFIED SHIPPER
-              </AppText>
-            </View>
-          </View>
-        </View>
-
-        {/* QUICK STATS BAR */}
-        <View style={styles.statsCard}>
-          <View style={styles.statCol}>
-            <View style={styles.statIconBox}>
-              <AppIcon
-                name="Star"
-                size={16}
-                color={COLORS.warning}
-                fill={COLORS.warning}
-              />
-            </View>
-            <AppText style={styles.statVal}>
-              {_ratingVal > 0 ? _ratingVal.toFixed(1) : '5.0'}
-            </AppText>
-            <AppText style={styles.statSub}>Overall Rating</AppText>
-          </View>
-
-          <View style={styles.statDivider} />
-
-          <View style={styles.statCol}>
-            <View style={styles.statIconBox}>
-              <AppIcon name="Truck" size={16} color={COLORS.primary} />
-            </View>
-            <AppText style={styles.statVal}>{_shipmentCount}</AppText>
-            <AppText style={styles.statSub}>Completed Loads</AppText>
-          </View>
-
-          <View style={styles.statDivider} />
-
-          <View style={styles.statCol}>
-            <View style={styles.statIconBox}>
-              <AppIcon
-                name="ShieldCheck"
-                size={16}
-                color={COLORS.emeraldPrimary}
-              />
-            </View>
-            <AppText
-              style={[
-                styles.statVal,
-                { color: COLORS.emeraldPrimary, fontSize: 14 },
-              ]}
-            >
-              Active
-            </AppText>
-            <AppText style={styles.statSub}>Shipper Status</AppText>
-          </View>
-        </View>
+        {/* HEADER SECTION (BANNER, AVATAR, USER INFO & STATS) */}
+        <ShipperProfileHeader
+          user={user}
+          profileData={profileData}
+          bannerUrl={bannerUrl}
+          avatarUrl={avatarUrl}
+          bannerUploading={bannerUploading}
+          profileUploading={profileUploading}
+          ratingVal={ratingVal}
+          shipmentCount={shipmentCount}
+          onUploadBannerImage={handleUploadBannerImage}
+          onUploadProfileImage={handleUploadProfileImage}
+        />
 
         <View style={{ height: 20 }} />
 
         {/* SECTION 1: ACCOUNT & FLEET */}
-        <View style={styles.menuSection}>
-          <AppText style={styles.sectionTitle}>Account & Fleet</AppText>
-          <View style={styles.menuCard}>
-            {/* Edit Personal Profile */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() =>
-                navigation.navigate('EditProfile', {
-                  profileData,
-                  user,
-                  onSuccess: (updatedData: any) => {
-                    setProfileData((prev: any) => ({
-                      ...prev,
-                      ...updatedData,
-                    }));
-                  },
-                })
-              }
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="User" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>Personal Info</AppText>
-                <AppText style={styles.menuItemSub}>
-                  Name, phone, bio & operating location
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-
-            {/* Operating Service Areas */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('PreferredAreas')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="MapPin" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  Service Coverage Areas
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Operating zones & bidding preferences
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-
-            {/* Google Review Link */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('GoogleReview')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="Star" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  Google Review Link
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Connect your Google Business reviews
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-
-            {/* My Vehicles & Capacity */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MyVehicles')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="Truck" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  My Vehicles & Fleet
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Trucks, trailers & capacity management
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-
-            {/* Truck Drivers */}
-            <TouchableOpacity
-              style={[styles.menuItem, styles.menuItemLast]}
-              onPress={() => navigation.navigate('TruckDriver')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="Users" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>Truck Drivers</AppText>
-                <AppText style={styles.menuItemSub}>
-                  Manage driver accounts & assignments
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <FleetNavigationCard
+          navigation={navigation}
+          profileData={profileData}
+          user={user}
+          setProfileData={setProfileData}
+        />
 
         {/* SECTION 2: PAYMENTS & MEMBERSHIP */}
-        <View style={styles.menuSection}>
-          <AppText style={styles.sectionTitle}>Payments & Membership</AppText>
-          <View style={styles.menuCard}>
-            {/* Payout Account (Stripe) */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('ShipperPayments')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon
-                  name="CreditCard"
-                  size={18}
-                  color={COLORS.saddleBrown}
-                />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  Payment Settings & Payouts
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Stripe payout account & bank setup
-                </AppText>
-              </View>
-              <View style={styles.menuRightRow}>
-                <View
-                  style={[
-                    styles.badgePill,
-                    isStripeConnected && styles.badgePillConnected,
-                  ]}
-                >
-                  <AppText
-                    style={[
-                      styles.badgeText,
-                      isStripeConnected && styles.badgeTextConnected,
-                    ]}
-                  >
-                    {isStripeConnected ? 'Connected' : 'Action Needed'}
-                  </AppText>
-                </View>
-                <AppIcon
-                  name="ChevronRight"
-                  size={18}
-                  color={COLORS.textLight}
-                />
-              </View>
-            </TouchableOpacity>
-
-            {/* Subscription & Billing */}
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('ShipperSubscription')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="Sparkles" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  Subscription & Billing
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Active plan, invoices & upgrade options
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-
-            {/* Earnings History */}
-            <TouchableOpacity
-              style={[styles.menuItem, styles.menuItemLast]}
-              onPress={() => navigation.navigate('Earnings')}
-              activeOpacity={0.7}
-            >
-              <View style={styles.menuIconBox}>
-                <AppIcon name="Wallet" size={18} color={COLORS.saddleBrown} />
-              </View>
-              <View style={styles.menuContent}>
-                <AppText style={styles.menuItemTitle}>
-                  Earnings & Payout Logs
-                </AppText>
-                <AppText style={styles.menuItemSub}>
-                  Track total earnings & payout history
-                </AppText>
-              </View>
-              <AppIcon name="ChevronRight" size={18} color={COLORS.textLight} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <PaymentMembershipCard
+          navigation={navigation}
+          isStripeConnected={isStripeConnected}
+        />
 
         {/* SECTION 3: REVIEWS & FEEDBACK */}
         <View style={styles.menuSection}>
@@ -794,7 +138,9 @@ const ShipperProfileScreen = ({ navigation }: any) => {
             {/* Notification Preferences */}
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('ShipperNotificationSettings')}
+              onPress={() =>
+                navigation.navigate('ShipperNotificationSettings')
+              }
               activeOpacity={0.7}
             >
               <View style={styles.menuIconBox}>

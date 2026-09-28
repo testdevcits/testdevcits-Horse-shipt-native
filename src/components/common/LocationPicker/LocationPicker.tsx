@@ -144,8 +144,8 @@ const LocationPickerCore: React.FC<{
       const resp = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_APIKEY}`,
       );
-      if (resp.data?.results.length > 0) {
-        setDisplayAddress(resp.data?.results[0].formatted_address);
+      if (resp.data?.results?.length > 0) {
+        setDisplayAddress(resp.data?.results[0]?.formatted_address);
       } else {
         setDisplayAddress('Unnamed Road');
       }
@@ -498,16 +498,6 @@ const LocationPickerCore: React.FC<{
               </View>
             </View>
 
-            {/* <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => onConfirm({
-                address: displayAddress,
-                latitude: region.latitude,
-                longitude: region.longitude
-              })}
-            >
-              <AppText style={styles.confirmButtonText}>Confirm and Continue</AppText>
-            </TouchableOpacity> */}
             <Button
               title={'Confirm and Continue'}
               onPress={() =>

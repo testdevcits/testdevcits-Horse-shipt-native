@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,9 +7,8 @@ import {
 } from 'react-native';
 
 import { formatDate } from '../../../../../../utils/helpers';
-import { AppText, MapModal } from '../../../../../../components';
-import { COLORS, SPACING } from '../../../../../../constants';
-import PublishedSuccessModal from '../../components/publish_success_modal/PublishedSuccessModal';
+import { AppText } from '../../../../../../components';
+import { COLORS } from '../../../../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
 import { fetchCustomerShipments } from '../../../../../../redux/slices/customerShipmentSlice';
@@ -17,6 +16,15 @@ import { useAppDispatch } from '../../../../../../hooks/redux';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.OverViewTab';
 import { showErrorToast } from '../../../../../../utils/toast';
+import ShipmentStatusTimeline from './ShipmentStatusTimeline';
+import HorseDetailsList from './HorseDetailsList';
+
+const PublishedSuccessModal = lazy(
+  () => import('../../components/publish_success_modal/PublishedSuccessModal'),
+);
+const MapModal = lazy(
+  () => import('../../../../../../components/common/MapModal/MapModal'),
+);
 
 const OverviewTab = ({ data, quoteId, onReview }: any) => {
   const navigation = useNavigation<any>();
@@ -86,71 +94,18 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           <AppText style={styles.topCardTitle}>Overview</AppText>
           <View style={styles.statusBadge}>
             <AppText style={styles.statusBadgeText}>
-              {(data?.status || 'Draft').toUpperCase()}
+              {(data?.status || 'Not Available').toUpperCase()}
             </AppText>
           </View>
         </View>
 
         {/* Route Timeline (Pickup to Delivery) */}
-        <View style={styles.timelineContainer}>
-          {/* Pickup Block */}
-          <View style={styles.timelineItem}>
-            <View
-              style={[styles.timelineDot, { backgroundColor: COLORS.error }]}
-            >
-              <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
-            </View>
-            <View style={styles.timelineContent}>
-              <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
-              <AppText style={styles.timelineAddress} numberOfLines={2}>
-                {data?.pickupLocation || 'N/A'}
-              </AppText>
-              <View style={styles.dateChip}>
-                <AppIcon
-                  name={'Calendar'}
-                  size={12}
-                  color={COLORS.goldDarkText}
-                />
-                <AppText style={styles.dateChipText}>
-                  {formatDateRange(
-                    data?.pickupDateRange?.start,
-                    data?.pickupDateRange?.end,
-                  )}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.timelineLine} />
-
-          {/* Delivery Block */}
-          <View style={styles.timelineItem}>
-            <View
-              style={[styles.timelineDot, { backgroundColor: COLORS.success }]}
-            >
-              <AppIcon name={'MapPin'} size={12} color={COLORS.white} />
-            </View>
-            <View style={styles.timelineContent}>
-              <AppText style={styles.timelineLabel}>DELIVERY LOCATION</AppText>
-              <AppText style={styles.timelineAddress} numberOfLines={3}>
-                {data?.deliveryLocation || 'N/A'}
-              </AppText>
-              <View style={styles.dateChip}>
-                <AppIcon
-                  name={'Calendar'}
-                  size={12}
-                  color={COLORS.goldDarkText}
-                />
-                <AppText style={styles.dateChipText}>
-                  {formatDateRange(
-                    data?.deliveryDateRange?.start,
-                    data?.deliveryDateRange?.end,
-                  )}
-                </AppText>
-              </View>
-            </View>
-          </View>
-        </View>
+        <ShipmentStatusTimeline
+          pickupLocation={data?.pickupLocation}
+          pickupDateRange={data?.pickupDateRange}
+          deliveryLocation={data?.deliveryLocation}
+          deliveryDateRange={data?.deliveryDateRange}
+        />
 
         {/* Action Buttons */}
         <View style={styles.actionRow}>
@@ -245,7 +200,7 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               <View style={styles.summaryRow}>
                 <AppText style={styles.summaryLabel}>Total Horses:</AppText>
                 <AppText style={styles.summaryValue}>
-                  {data?.numberOfHorses || 1}
+                  {data?.numberOfHorses || "0"}
                 </AppText>
               </View>
               <View style={styles.summaryRow}>
@@ -269,248 +224,13 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
             </View>
 
             {/* Horses List */}
-            {data?.horses?.map((horse: any, index: number) => (
-              <View key={index} style={styles.horseCard}>
-                <View style={styles.horseCardBadgeHeader}>
-                  <AppText style={styles.horseCardBadgeText}>
-                    HORSE {index + 1}
-                  </AppText>
-                </View>
-
-                <View style={styles.horseCardBody}>
-                  {/* Horse Profile Grid */}
-                  <View style={styles.horseSpecGrid}>
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>
-                        Registered Name
-                      </AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.registeredName || 'N/A'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Barn Name</AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.barnName || 'N/A'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Breed</AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.breed || 'N/A'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Colour</AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.colour || 'N/A'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Age</AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.age || 'N/A'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.specItem}>
-                      <AppText style={styles.specLabel}>Sex</AppText>
-                      <AppText style={styles.specValue}>
-                        {horse.sex || 'N/A'}
-                      </AppText>
-                    </View>
-                  </View>
-
-                  {/* General Info Box */}
-                  <View style={styles.infoQuoteBox}>
-                    <AppText style={styles.infoQuoteTitle}>
-                      General Info / Care Notes
-                    </AppText>
-                    <AppText style={styles.infoQuoteText}>
-                      {horse.generalInfo || horse.notes || 'No notes provided.'}
-                    </AppText>
-                  </View>
-
-                  {/* Chronological Notes Log */}
-                  {horse.notesLog && horse.noteslog?.length > 0 && (
-                    <View style={styles.logSection}>
-                      <AppText style={styles.logSectionHeader}>
-                        CHRONOLOGICAL NOTES
-                      </AppText>
-                      {horse.noteslog?.map((log: any, lIdx: number) => (
-                        <View key={lIdx} style={styles.logCardItem}>
-                          <View style={styles.logCardItemHeader}>
-                            <View style={styles.logUserRow}>
-                              <AppIcon
-                                name={'User'}
-                                size={12}
-                                color={COLORS.primary}
-                              />
-                              <AppText style={styles.logUserNameText}>
-                                {log?.userName || 'User'} (
-                                {log?.userRole || 'Customer'})
-                              </AppText>
-                            </View>
-                            <View style={styles.logUserRow}>
-                              <AppIcon
-                                name={'Clock'}
-                                size={11}
-                                color={COLORS.textLight}
-                              />
-                              <AppText style={styles.logTimeText}>
-                                {formatDate(
-                                  log?.createdAt,
-                                  'MM/DD/YYYY, h:mm A',
-                                )}
-                              </AppText>
-                            </View>
-                          </View>
-                          <AppText style={styles.logBodyText}>
-                            {log?.note}
-                          </AppText>
-                        </View>
-                      ))}
-                    </View>
-                  )}
-
-                  {/* Uploaded Documents */}
-                  <View style={styles.documentsContainer}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: SPACING.xs,
-                      }}
-                    >
-                      <AppText style={styles.documentsHeaderTitle}>
-                        Uploaded Documents
-                      </AppText>
-                      {data?.status !== 'delivered' && (
-                        <TouchableOpacity
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 4,
-                          }}
-                          disabled={loading}
-                          onPress={handleEditDocumentsNotes}
-                        >
-                          {loading ? (
-                            <ActivityIndicator
-                              size="small"
-                              color={COLORS.primary}
-                            />
-                          ) : (
-                            <View style={styles.editDocsContainer}>
-                              <AppIcon
-                                name="Edit3"
-                                size={14}
-                                color={COLORS.primary}
-                              />
-
-                              <AppText style={styles.editDocsText}>
-                                Edit Docs / Notes
-                              </AppText>
-                            </View>
-                          )}
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                    <View style={styles.docListGrid}>
-                      {horse.documents?.coggins?.url && (
-                        <TouchableOpacity
-                          style={styles.docCardPill}
-                          onPress={() => openUrl(horse.documents.coggins.url)}
-                          activeOpacity={0.8}
-                        >
-                          <AppIcon
-                            name={'FileText'}
-                            size={16}
-                            color={COLORS.primary}
-                          />
-                          <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>
-                              Coggins Test
-                            </AppText>
-                            <AppText style={styles.docSub}>Tap to view</AppText>
-                          </View>
-                          <AppIcon
-                            name={'ExternalLink'}
-                            size={13}
-                            color={COLORS.textSecondary}
-                          />
-                        </TouchableOpacity>
-                      )}
-
-                      {horse.documents?.healthCertificate?.url && (
-                        <TouchableOpacity
-                          style={styles.docCardPill}
-                          onPress={() =>
-                            openUrl(horse.documents.healthCertificate.url)
-                          }
-                          activeOpacity={0.8}
-                        >
-                          <AppIcon
-                            name={'FileText'}
-                            size={16}
-                            color={COLORS.primary}
-                          />
-                          <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>
-                              Health Certificate
-                            </AppText>
-                            <AppText style={styles.docSub}>Tap to view</AppText>
-                          </View>
-                          <AppIcon
-                            name={'ExternalLink'}
-                            size={13}
-                            color={COLORS.textSecondary}
-                          />
-                        </TouchableOpacity>
-                      )}
-
-                      {horse.documents?.other?.url && (
-                        <TouchableOpacity
-                          style={styles.docCardPill}
-                          onPress={() => openUrl(horse.documents.other.url)}
-                          activeOpacity={0.8}
-                        >
-                          <AppIcon
-                            name={'FileText'}
-                            size={16}
-                            color={COLORS.primary}
-                          />
-                          <View style={styles.docCardPillTextCol}>
-                            <AppText style={styles.docTitle}>
-                              Other Document
-                            </AppText>
-                            <AppText style={styles.docSub}>Tap to view</AppText>
-                          </View>
-                          <AppIcon
-                            name={'ExternalLink'}
-                            size={13}
-                            color={COLORS.textSecondary}
-                          />
-                        </TouchableOpacity>
-                      )}
-
-                      {!horse.documents?.coggins?.url &&
-                        !horse.documents?.healthCertificate?.url &&
-                        !horse.documents?.other?.url && (
-                          <AppText style={styles.emptyDocsText}>
-                            No documents uploaded for this horse.
-                          </AppText>
-                        )}
-                    </View>
-                  </View>
-                </View>
-              </View>
-            ))}
+            <HorseDetailsList
+              horses={data?.horses}
+              status={data?.status}
+              loading={loading}
+              onEditDocumentsNotes={handleEditDocumentsNotes}
+              onOpenUrl={openUrl}
+            />
 
             {/* Additional Info History Log */}
             {data?.additionalInfoLog && data?.additionalInfolog?.length > 0 && (
@@ -580,32 +300,35 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
           </View>
         )}
       </View>
+      <Suspense fallback={<ActivityIndicator />}>
+        <PublishedSuccessModal
+          visible={isSuccessModalVisible}
+          onClose={() => {
+            setIsSuccessModalVisible(false);
+            navigation.goBack();
+          }}
+          onViewShipment={() => {
+            setIsSuccessModalVisible(false);
+            navigation.goBack();
+          }}
+        />
+      </Suspense>
 
-      <PublishedSuccessModal
-        visible={isSuccessModalVisible}
-        onClose={() => {
-          setIsSuccessModalVisible(false);
-          navigation.goBack();
-        }}
-        onViewShipment={() => {
-          setIsSuccessModalVisible(false);
-          navigation.goBack();
-        }}
-      />
-
-      <MapModal
-        visible={isMapVisible}
-        onClose={() => setIsMapVisible(false)}
-        distance={data?.estimatedDistance || 'Not Available'}
-        pickupCoords={data?.pickupCoords}
-        deliveryCoords={data?.deliveryCoords}
-        shipmentData={{
-          pickupLocation: data?.pickupLocation,
-          deliveryLocation: data?.deliveryLocation,
-          status: data?.status,
-        }}
-        currentLocation={data?.currentLocation}
-      />
+      <Suspense fallback={<ActivityIndicator />}>
+        <MapModal
+          visible={isMapVisible}
+          onClose={() => setIsMapVisible(false)}
+          distance={data?.estimatedDistance || 'Not Available'}
+          pickupCoords={data?.pickupCoords}
+          deliveryCoords={data?.deliveryCoords}
+          shipmentData={{
+            pickupLocation: data?.pickupLocation,
+            deliveryLocation: data?.deliveryLocation,
+            status: data?.status,
+          }}
+          currentLocation={data?.currentLocation}
+        />
+      </Suspense>
     </View>
   );
 };

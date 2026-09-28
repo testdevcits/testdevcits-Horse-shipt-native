@@ -3,7 +3,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 
@@ -12,13 +11,9 @@ import { AppText } from '../../../../../../components';
 import { NewShipmentForm, NewShipmentHorse } from '../../interfaces';
 import styles from './ReviewStepstyles';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
-
-const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <View style={styles.infoRow}>
-    <AppText style={styles.infoLabel}>{label}</AppText>
-    <AppText style={styles.infoValue}>{value || 'N/A'}</AppText>
-  </View>
-);
+import RouteOverviewCard from './RouteOverviewCard';
+import HorseSummaryList from './HorseSummaryList';
+import ShipmentSummaryCard from './ShipmentSummaryCard';
 
 interface ReviewStepProps {
   form: NewShipmentForm;
@@ -133,219 +128,38 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           </View>
         </View>
 
-        {/* HORSES SUMMARY BANNER */}
-        <View style={styles.summaryBanner}>
-          <View style={styles.bannerLeft}>
-            <AppText style={styles.bannerTitle}>Shipment Overview</AppText>
-            <AppText style={styles.bannerSub}>
-              {form?.numberOfHorses || form.horses?.length || 1} Horse(s) •{' '}
-              {uploadedDocCount} of {totalDocCount} Papers Attached
-            </AppText>
-          </View>
-          <View style={styles.bannerBadge}>
-            <AppText style={styles.bannerBadgeText}>
-              {uploadedDocCount === totalDocCount ? 'Complete' : 'Pending Docs'}
-            </AppText>
-          </View>
-        </View>
+        {/* SHIPMENT OVERVIEW BANNER */}
+        <ShipmentSummaryCard
+          numberOfHorses={form?.numberOfHorses}
+          horsesCount={form.horses?.length || 0}
+          uploadedDocCount={uploadedDocCount}
+          totalDocCount={totalDocCount}
+          additionalInfo={form.additionalInfo}
+          hasSpecialRequirement={form.hasSpecialRequirement}
+          specialRequirementDetails={form.specialRequirementDetails}
+          recipientEmail={form.recipientEmail}
+        />
 
         {/* SECTION 1: PICKUP & DELIVERY ROUTE CARD */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View style={styles.cardHeaderLeft}>
-              <View style={styles.iconCircle}>
-                <AppIcon name={'MapPin'} size={16} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.cardTitle}>ROUTE & SCHEDULE</AppText>
-            </View>
-            <TouchableOpacity
-              style={styles.miniEditBtn}
-              onPress={() => onEditSection(0)}
-              activeOpacity={0.8}
-            >
-              <AppIcon name={'Edit3'} size={13} color={COLORS.primary} />
-              <AppText style={styles.miniEditText}>Edit Route</AppText>
-            </TouchableOpacity>
-          </View>
-
-          {/* VISUAL ROUTE TIMELINE */}
-          <View style={styles.routeTimeline}>
-            {/* PICKUP NODE */}
-            <View style={styles.routeNode}>
-              <View style={styles.pickupDotContainer}>
-                <View style={styles.pickupDot} />
-              </View>
-              <View style={styles.routeTextContent}>
-                <AppText style={styles.routeNodeLabel}>PICKUP LOCATION</AppText>
-                <AppText style={styles.routeAddressText}>
-                  {form?.pickupLocation || 'Pickup location not specified'}
-                </AppText>
-                <View style={styles.routeDateBadge}>
-                  <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
-                  <AppText style={styles.routeDateText}>
-                    {formatDateDisplay(form?.pickupStartDate)} —{' '}
-                    {formatDateDisplay(form?.pickupEndDate)}
-                  </AppText>
-                </View>
-              </View>
-            </View>
-
-            {/* CONNECTING LINE */}
-            <View style={styles.routeLineContainer}>
-              <View style={styles.routeLine} />
-            </View>
-
-            {/* DELIVERY NODE */}
-            <View style={styles.routeNode}>
-              <View style={styles.deliveryDotContainer}>
-                <View style={styles.deliveryDot} />
-              </View>
-              <View style={styles.routeTextContent}>
-                <AppText style={styles.routeNodeLabel}>
-                  DELIVERY DESTINATION
-                </AppText>
-                <AppText style={styles.routeAddressText}>
-                  {form?.deliveryLocation || 'Delivery location not specified'}
-                </AppText>
-                <View style={styles.routeDateBadge}>
-                  <AppIcon name={'Calendar'} size={13} color={COLORS.primary} />
-                  <AppText style={styles.routeDateText}>
-                    {formatDateDisplay(form?.deliveryStartDate)} —{' '}
-                    {formatDateDisplay(form?.deliveryEndDate)}
-                  </AppText>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        <RouteOverviewCard
+          pickupLocation={form?.pickupLocation}
+          pickupStartDate={form?.pickupStartDate}
+          pickupEndDate={form?.pickupEndDate}
+          deliveryLocation={form?.deliveryLocation}
+          deliveryStartDate={form?.deliveryStartDate}
+          deliveryEndDate={form?.deliveryEndDate}
+          onEditSection={onEditSection}
+          formatDateDisplay={formatDateDisplay}
+        />
 
         {/* SECTION 2: HORSE DETAILS ACCORDION CARD */}
-        <View style={styles.card}>
-          <TouchableOpacity
-            style={styles.cardHeaderToggle}
-            onPress={() => setIsHorseExpanded(!isHorseExpanded)}
-            activeOpacity={0.8}
-          >
-            <View style={styles.cardHeaderLeft}>
-              <View style={styles.iconCircle}>
-                <AppIcon
-                  name={'ShieldCheck'}
-                  size={16}
-                  color={COLORS.primary}
-                />
-              </View>
-              <AppText style={styles.cardTitle}>HORSE DETAILS</AppText>
-            </View>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
-            >
-              <TouchableOpacity
-                style={styles.miniEditBtn}
-                onPress={() => onEditSection(2)}
-                activeOpacity={0.8}
-              >
-                <AppIcon name={'Edit3'} size={13} color={COLORS.primary} />
-                <AppText style={styles.miniEditText}>Edit</AppText>
-              </TouchableOpacity>
-              {isHorseExpanded ? (
-                <AppIcon name={'ChevronUp'} size={18} color={COLORS.grey600} />
-              ) : (
-                <AppIcon
-                  name={'ChevronDown'}
-                  size={18}
-                  color={COLORS.grey600}
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-
-          {isHorseExpanded && (
-            <View style={styles.accordionContent}>
-              {form.horses.map((horse: NewShipmentHorse, index: number) => {
-                const photoUri = getDocUri(horse?.photo);
-                return (
-                  <View
-                    key={index}
-                    style={[
-                      styles.horseSectionBox,
-                      index < form.horses.length - 1 && styles.horseBoxBorder,
-                    ]}
-                  >
-                    <View style={styles.horseHeaderRow}>
-                      <View style={styles.horseTag}>
-                        <AppText style={styles.horseTagText}>
-                          HORSE {index + 1}
-                        </AppText>
-                      </View>
-                      <AppText style={styles.horseNameTitle}>
-                        {horse?.registeredName || 'Unnamed Horse'}
-                      </AppText>
-                    </View>
-
-                    <View style={styles.infoGrid}>
-                      <InfoRow
-                        label="Registered Name:"
-                        value={horse?.registeredName}
-                      />
-                      {!!horse?.barnName && (
-                        <InfoRow label="Barn Name:" value={horse?.barnName} />
-                      )}
-                      <InfoRow label="Breed:" value={horse?.breed} />
-                      <InfoRow label="Sex:" value={horse?.sex} />
-                      {!!horse?.age && (
-                        <InfoRow label="Age:" value={`${horse?.age} yrs`} />
-                      )}
-                      {!!horse?.colour && (
-                        <InfoRow label="Colour:" value={horse?.colour} />
-                      )}
-                      <InfoRow
-                        label="Stall Size:"
-                        value={horse?.requestedStallSize || 'Box'}
-                      />
-                    </View>
-
-                    {/* HORSE PHOTO PREVIEW */}
-                    <View style={styles.photoContainer}>
-                      <AppText style={styles.subFieldLabel}>
-                        Horse Photo
-                      </AppText>
-                      {photoUri ? (
-                        <View style={styles.photoPreviewCard}>
-                          <Image
-                            source={{ uri: photoUri }}
-                            style={styles.horseImagePreview}
-                            resizeMode="contain"
-                          />
-                          <View style={styles.photoOverlayBadge}>
-                            <AppIcon
-                              name={'CheckCircle2'}
-                              size={12}
-                              color={COLORS.white}
-                            />
-                            <AppText style={styles.photoOverlayText}>
-                              Photo Attached
-                            </AppText>
-                          </View>
-                        </View>
-                      ) : (
-                        <View style={styles.noPhotoBox}>
-                          <AppIcon
-                            name={'Image'}
-                            size={20}
-                            color={COLORS.grey400}
-                          />
-                          <AppText style={styles.noPhotoText}>
-                            No photo attached
-                          </AppText>
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
-          )}
-        </View>
+        <HorseSummaryList
+          horses={form.horses}
+          isHorseExpanded={isHorseExpanded}
+          setIsHorseExpanded={setIsHorseExpanded}
+          onEditSection={onEditSection}
+          getDocUri={getDocUri}
+        />
 
         {/* SECTION 3: UPLOADED DOCUMENTS & MEDIA CARD */}
         <View style={styles.card}>
@@ -587,57 +401,6 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
             </View>
           )}
         </View>
-
-        {/* SECTION 4: NOTES & SPECIAL REQUIREMENTS CARD */}
-        {(Boolean(form.additionalInfo) ||
-          Boolean(form.hasSpecialRequirement) ||
-          Boolean(form.recipientEmail)) && (
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <View style={styles.cardHeaderLeft}>
-                <View style={styles.iconCircle}>
-                  <AppIcon name={'Info'} size={16} color={COLORS.primary} />
-                </View>
-                <AppText style={styles.cardTitle}>
-                  NOTES & SPECIAL INSTRUCTIONS
-                </AppText>
-              </View>
-            </View>
-
-            {form.hasSpecialRequirement && (
-              <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>
-                  Special Requirements:
-                </AppText>
-                <AppText style={styles.notesValue}>
-                  {form.specialRequirementDetails || 'None details provided.'}
-                </AppText>
-              </View>
-            )}
-
-            {Boolean(form.additionalInfo) && (
-              <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>
-                  General Shipment Notes:
-                </AppText>
-                <AppText style={styles.notesValue}>
-                  {form.additionalInfo}
-                </AppText>
-              </View>
-            )}
-
-            {Boolean(form.recipientEmail) && (
-              <View style={styles.notesBlock}>
-                <AppText style={styles.notesLabel}>
-                  Share Tracking Recipient Email:
-                </AppText>
-                <AppText style={styles.notesValue}>
-                  {form.recipientEmail}
-                </AppText>
-              </View>
-            )}
-          </View>
-        )}
 
         {/* FOOTER ACTION BUTTONS */}
         <View style={styles.footer}>

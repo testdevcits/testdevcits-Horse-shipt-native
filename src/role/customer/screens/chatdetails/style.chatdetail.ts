@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   COLORS,
   RADIUS,
@@ -10,35 +10,6 @@ import {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-
-  // Header Design
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-    ...Platform.select({ ios: { paddingTop: 50 } }),
-  },
-  headerAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    marginLeft: SPACING.xs,
-  },
-  headerInfo: { flex: 1, marginLeft: SPACING.sm },
-  headerTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.textPrimary,
-  },
-  headerSubtitle: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textSecondary,
-    fontFamily: FONTS.regular,
-  },
 
   // Message List
   listContent: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.md },
@@ -113,50 +84,6 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
 
-  // Footer / Input Area
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: SPACING.sm,
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
-    paddingBottom: Platform.OS === 'ios' ? 24 : SPACING.sm,
-    gap: SPACING.xs,
-  },
-  inputBox: {
-    flex: 1,
-    minHeight: 44,
-    maxHeight: 100,
-    borderWidth: 1,
-    borderColor: COLORS.slate200,
-    borderRadius: RADIUS.round,
-    justifyContent: 'center',
-    paddingHorizontal: SPACING.md,
-    backgroundColor: COLORS.slate50,
-  },
-  textInput: {
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-    paddingVertical: Platform.OS === 'ios' ? 10 : 6,
-  },
-  squareActionBtn: {
-    width: 44,
-    height: 44,
-    backgroundColor: COLORS.divider,
-    borderRadius: RADIUS.round,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendBtn: {
-    backgroundColor: COLORS.primary,
-  },
-  disabledSendBtn: {
-    opacity: 0.5,
-    backgroundColor: COLORS.black,
-  },
-
   draftPreviewContainer: {
     padding: SPACING.sm,
     backgroundColor: COLORS.white,
@@ -191,24 +118,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: COLORS.white,
-  },
-
-  // Locked Chat Container
-  lockedContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: SPACING.md,
-    backgroundColor: COLORS.grey100,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
-    paddingBottom: Platform.OS === 'ios' ? 28 : SPACING.md,
-  },
-  lockedText: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-    color: COLORS.grey600,
-    textAlign: 'center',
   },
 });
 

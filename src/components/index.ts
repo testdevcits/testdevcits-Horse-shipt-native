@@ -28,6 +28,7 @@ import ShipmentLocationModal from './common/ShipmentLocationModal/ShipmentLocati
 import LocationPermissionModal from './common/LocationPermissionModal/LocationPermissionModal';
 import LazyFallback from './common/LazyFallback';
 import ImageViewer from './common/ImageViewer/ImageViewer';
+import ShipmentHorizontalCard from './cards/shipmentcard_detailed/ShipmentCardDetailed';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -54,7 +55,7 @@ import SkeletonText from './skeletons/SkeletonText';
 
 // Driver
 import DriverHeader from './common/DriverHeader/DriverHeader';
-
+ 
 export {
   AppHeader,
   SectionHeader,
@@ -85,6 +86,7 @@ export {
   COUNTRIES,
   LazyFallback,
   ImageViewer,
+  ShipmentHorizontalCard,
 
   // Skeletons
   HomeSkeleton,

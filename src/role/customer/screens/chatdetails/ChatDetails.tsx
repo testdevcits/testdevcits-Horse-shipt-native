@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, Input, ChatDetailsSkeleton } from '../../../../components';
+import { AppText,   ChatDetailsSkeleton } from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -22,6 +22,8 @@ import ImagePicker, {
 import { permissionService } from '../../../../utils/cameragalleryPermission';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast } from '../../../../utils/toast';
+import ChatHeaderBar from './ChatHeaderBar';
+import ChatInputBar from './ChatInputBar';
 
 const PhotoSourceSheet = lazy(
   () =>
@@ -213,37 +215,13 @@ const ChatDetails = () => {
       style={styles.container}
     >
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AppIcon
-            name={'ChevronLeft'}
-            color={COLORS.textPrimary}
-            size={ICON_SIZE.md}
-          />
-        </TouchableOpacity>
-        <Image source={avatar} style={styles.headerAvatar} />
-        <TouchableOpacity
-          style={styles.headerInfo}
-          onPress={() => setShowLocationModal(true)}
-          activeOpacity={0.7}
-        >
-          <AppText style={styles.headerTitle}>{partnerName}</AppText>
-          <AppText style={styles.headerSubtitle}>
-            Shipment ID {shipment?.shipmentCode || 'Not Available'}
-          </AppText>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={{ paddingHorizontal: 6 }}
-          onPress={() => setShowLocationModal(true)}
-          activeOpacity={0.7}
-        >
-          <MapPin color={COLORS.primary} size={ICON_SIZE.sm} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowLocationModal(true)}>
-          <MoreVertical color={COLORS.textPrimary} size={ICON_SIZE.sm} />
-        </TouchableOpacity> */}
-      </View>
-
+      <ChatHeaderBar
+        navigation={navigation}
+        setShowLocationModal={setShowLocationModal}
+        partnerName={partnerName}
+        avatar={avatar}
+        shipment={shipment}
+      />
       <FlatList
         data={messages}
         keyExtractor={item => item?._id}
@@ -277,60 +255,17 @@ const ChatDetails = () => {
       )}
 
       {/* Bottom Area: Input Bar or Locked Notice */}
-      {isLocked ? (
-        <View style={styles.lockedContainer}>
-          <AppIcon
-            name={'Lock'}
-            size={18}
-            color={COLORS.grey500}
-            style={{ marginRight: 8 }}
-          />
-          <AppText style={styles.lockedText}>
-            Chat is locked because this shipment is completed.
-          </AppText>
-        </View>
-      ) : (
-        <View style={styles.footer}>
-          <View style={{ flex: 1 }}>
-            <Input
-              placeholder="Type a message..."
-              value={inputText}
-              onChangeText={setInputText}
-              multiline
-              containerStyle={{ marginBottom: 0 }}
-            />
-          </View>
 
-          <TouchableOpacity
-            onPress={() => setShowPhotoSheet(!showPhotoSheet)}
-            style={styles.squareActionBtn}
-            activeOpacity={0.7}
-          >
-            <AppIcon
-              name={'Upload'}
-              size={ICON_SIZE.sm}
-              color={COLORS.textSecondary}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.squareActionBtn,
-              styles.sendBtn,
-              (!canSend || sending) && styles.disabledSendBtn,
-            ]}
-            onPress={handleSend}
-            disabled={sending || !canSend}
-            activeOpacity={0.8}
-          >
-            {sending ? (
-              <ActivityIndicator color={COLORS.white} size="small" />
-            ) : (
-              <AppIcon name={'Send'} size={ICON_SIZE.sm} color={COLORS.white} />
-            )}
-          </TouchableOpacity>
-        </View>
-      )}
+      <ChatInputBar
+        isLocked={isLocked}
+        inputText={inputText}
+        setInputText={setInputText}
+        setShowPhotoSheet={setShowPhotoSheet}
+        showPhotoSheet={showPhotoSheet}
+        canSend={canSend}
+        sending={sending}
+        handleSend={handleSend}
+      />
 
       {showPhotoSheet && !isLocked && (
         <Suspense fallback={null}>
