@@ -64,7 +64,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (
-      Platform.OS === 'android' &&
+      Platform.OS === 'ios' &&
       UIManager.setLayoutAnimationEnabledExperimental
     ) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -76,11 +76,15 @@ const SignupFlowScreen = ({ navigation }: any) => {
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
     const showSubscription = Keyboard.addListener(showEvent, () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
       setIsKeyboardOpen(true);
     });
     const hideSubscription = Keyboard.addListener(hideEvent, () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
       setIsKeyboardOpen(false);
     });
     return () => {
@@ -129,16 +133,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
     getPasswordScore() === 0
       ? '0%'
       : getPasswordScore() === 1
-      ? '33%'
-      : getPasswordScore() === 2
-      ? '66%'
-      : '100%';
+        ? '33%'
+        : getPasswordScore() === 2
+          ? '66%'
+          : '100%';
   const barColor =
     getPasswordScore() === 3
       ? COLORS.success
       : getPasswordScore() === 2
-      ? COLORS.warning
-      : COLORS.error;
+        ? COLORS.warning
+        : COLORS.error;
 
   // --- API HANDLERS ---
 
@@ -257,29 +261,29 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: activeRole as any,
           intent: 'signup',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'
           ? err
           : err?.message ||
-            err?.errors?.[0] ||
-            'Failed to sign in with Google.';
+          err?.errors?.[0] ||
+          'Failed to sign in with Google.';
 
       if (errorMsg !== 'Google Sign-In was cancelled.') {
         showErrorToast('Google Sign-In Error', errorMsg);
@@ -336,7 +340,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
       <KeyboardAvoidingView
         style={styles.cardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View style={styles.contentCard}>
           <Image

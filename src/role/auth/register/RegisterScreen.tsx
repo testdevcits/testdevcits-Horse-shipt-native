@@ -78,29 +78,29 @@ const RegisterScreen = ({ navigation }: any) => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: selectedRole as any,
           intent: 'signup',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'
           ? err
           : err?.message ||
-            err?.errors?.[0] ||
-            'Failed to sign in with Google.';
+          err?.errors?.[0] ||
+          'Failed to sign in with Google.';
 
       if (errorMsg !== 'Google Sign-In was cancelled.') {
         showErrorToast('Google Sign-In Error', errorMsg);

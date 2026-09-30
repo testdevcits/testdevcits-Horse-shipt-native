@@ -31,7 +31,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
         .length,
       DELIVERED: shipments.filter(
         (s: any) =>
-          s.tripStatus === 'completed' || s.tripStatus === 'delivered',
+          s?.tripStatus === 'completed' || s?.tripStatus === 'delivered',
       ).length,
     };
   }, [shipments]);
@@ -44,7 +44,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
       case 'ACTIVE':
         return shipments?.filter((s: any) => s?.tripStatus === 'inTransit');
       case 'DELIVERED':
-        return shipments.filter(
+        return shipments?.filter(
           (s: any) =>
             s?.tripStatus === 'completed' || s?.tripStatus === 'delivered',
         );
@@ -64,7 +64,8 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   );
 
   const keyExtractor = useCallback(
-    (item: any) => item?._id || String(Math.random()),
+    (item: any, index: number) =>
+      item?._id || item?.id || item?.shipmentCode || index.toString(),
     [],
   );
 

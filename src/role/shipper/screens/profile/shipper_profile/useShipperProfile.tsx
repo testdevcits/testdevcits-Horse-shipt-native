@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,9 @@ import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 export const useShipperProfile = () => {
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
+
+  // Ref lock to prevent multiple rapid taps opening duplicate picker dialogs
+  const isPickingRef = useRef(false);
 
   // Modal states
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
@@ -45,6 +48,10 @@ export const useShipperProfile = () => {
   };
 
   const handleUploadBannerImage = async () => {
+    if (isPickingRef.current || bannerUploading) return;
+    isPickingRef.current = true;
+    setBannerUploading(true);
+
     try {
       let imagePath = '';
       let imageMime = 'image/jpeg';
@@ -92,7 +99,6 @@ export const useShipperProfile = () => {
       }
 
       if (!imagePath) return;
-      setBannerUploading(true);
 
       const formData = new FormData();
       formData.append('image', {
@@ -115,11 +121,16 @@ export const useShipperProfile = () => {
         showErrorToast('Error', 'Failed to update banner image.');
       }
     } finally {
+      isPickingRef.current = false;
       setBannerUploading(false);
     }
   };
 
   const handleUploadProfileImage = async () => {
+    if (isPickingRef.current || profileUploading) return;
+    isPickingRef.current = true;
+    setProfileUploading(true);
+
     try {
       let imagePath = '';
       let imageMime = 'image/jpeg';
@@ -167,7 +178,6 @@ export const useShipperProfile = () => {
       }
 
       if (!imagePath) return;
-      setProfileUploading(true);
 
       const formData = new FormData();
       formData.append('image', {
@@ -195,6 +205,7 @@ export const useShipperProfile = () => {
         showErrorToast('Error', 'Failed to update profile image.');
       }
     } finally {
+      isPickingRef.current = false;
       setProfileUploading(false);
     }
   };

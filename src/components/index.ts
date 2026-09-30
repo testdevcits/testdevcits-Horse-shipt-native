@@ -29,6 +29,7 @@ import LocationPermissionModal from './common/LocationPermissionModal/LocationPe
 import LazyFallback from './common/LazyFallback';
 import ImageViewer from './common/ImageViewer/ImageViewer';
 import ShipmentHorizontalCard from './cards/shipmentcard_detailed/ShipmentCardDetailed';
+import CustomSwitch from './common/CustomSwitch/CustomSwitch';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -87,6 +88,7 @@ export {
   LazyFallback,
   ImageViewer,
   ShipmentHorizontalCard,
+  CustomSwitch,
 
   // Skeletons
   HomeSkeleton,

@@ -1,7 +1,5 @@
 const useAddEditHorse = () => {
-  return {
+  return {};
+};
 
-  }
-}
-
-export default useAddEditHorse
+export default useAddEditHorse;

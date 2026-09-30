@@ -21,6 +21,8 @@ import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import styles from './styles.QuoteReceivedDetails';
 import { HorseDetailCard } from './components/HorseDetailCard';
 import { CustomerInfoSection } from './components/CustomerInfoSection';
+import { QuoteHeroCard } from './components/QuoteHeroCard';
+import { QuoteRouteCard } from './components/QuoteRouteCard';
 
 const AskQuestionModal = lazy(
   () => import('../../home/components/ask_question/AskQuestionModal'),
@@ -457,168 +459,25 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Status Hero */}
-        <View style={styles.heroCard}>
-          <View style={styles.heroTopRow}>
-            <View style={styles.shipmentIcon}>
-              <AppIcon
-                name="Truck"
-                size={ICON_SIZE.xl}
-                color={COLORS.primary}
-              />
-            </View>
-
-            <View style={styles.heroInfo}>
-              <AppText style={styles.heroLabel}>SHIPMENT REQUEST</AppText>
-              <AppText style={styles.heroCode}>{shipmentCode}</AppText>
-            </View>
-
-            <View
-              style={[
-                styles.statusBadge,
-                { backgroundColor: `${statusColor}15` },
-              ]}
-            >
-              <View
-                style={[styles.statusDot, { backgroundColor: statusColor }]}
-              />
-              <AppText style={[styles.statusText, { color: statusColor }]}>
-                {getStatusLabel(status)}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.heroDivider} />
-
-          <View style={styles.heroBottomRow}>
-            <View style={styles.heroMeta}>
-              <AppIcon
-                name="Calendar"
-                size={ICON_SIZE.sm}
-                color={COLORS.textSecondary}
-              />
-              <AppText style={styles.heroMetaText}>
-                Requested {formatDate(quote?.createdAt)}
-              </AppText>
-            </View>
-
-            <View style={styles.heroMeta}>
-              <AppIcon
-                name="Box"
-                size={ICON_SIZE.sm}
-                color={COLORS.textSecondary}
-              />
-              <AppText style={styles.heroMetaText}>
-                {shipment?.numberOfHorses || 1}{' '}
-                {shipment?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
-              </AppText>
-            </View>
-          </View>
-        </View>
+        <QuoteHeroCard
+          shipmentCode={shipmentCode}
+          status={status}
+          statusColor={statusColor}
+          getStatusLabel={getStatusLabel}
+          formatDate={formatDate}
+          quoteCreatedAt={quote?.createdAt}
+          numberOfHorses={shipment?.numberOfHorses || 1}
+        />
 
         {/* Route Section */}
-        <View style={styles.sectionHeader}>
-          <View>
-            <AppText style={styles.sectionTitle}>Shipment Route</AppText>
-            <AppText style={styles.sectionSubtitle}>
-              Pickup and delivery details
-            </AppText>
-          </View>
-          <View style={styles.routeIcon}>
-            <AppIcon name="Route" size={ICON_SIZE.sm} color={COLORS.primary} />
-          </View>
-        </View>
-
-        <View style={styles.routeCard}>
-          {/* Pickup */}
-          <View style={styles.locationRow}>
-            <View style={styles.timelineContainer}>
-              <View
-                style={[
-                  styles.locationDot,
-                  { backgroundColor: COLORS.greenPrimary },
-                ]}
-              />
-              <View style={styles.timelineLine} />
-            </View>
-
-            <View style={styles.locationContent}>
-              <View style={styles.locationHeader}>
-                <AppText style={styles.locationType}>PICKUP</AppText>
-                <View style={styles.datePill}>
-                  <AppIcon
-                    name="Calendar"
-                    size={ICON_SIZE.xs}
-                    color={COLORS.greenPrimary}
-                  />
-                  <AppText style={styles.datePillText}>
-                    {formatDate(pickupDate)}
-                  </AppText>
-                </View>
-              </View>
-              <AppText style={styles.locationText}>{pickupLocation}</AppText>
-              {pickupDate && (
-                <View style={styles.timeRow}>
-                  <AppIcon
-                    name="Clock"
-                    size={ICON_SIZE.xs}
-                    color={COLORS.textLight}
-                  />
-                  <AppText style={styles.timeText}>
-                    {formatTime(pickupDate) || 'Scheduled pickup'}
-                  </AppText>
-                </View>
-              )}
-            </View>
-          </View>
-
-          {/* Delivery */}
-          <View style={styles.locationRow}>
-            <View style={styles.timelineContainer}>
-              <View
-                style={[
-                  styles.locationDot,
-                  { backgroundColor: COLORS.redPrimary },
-                ]}
-              />
-            </View>
-
-            <View style={styles.locationContent}>
-              <View style={styles.locationHeader}>
-                <AppText style={styles.locationType}>DELIVERY</AppText>
-                <View
-                  style={[
-                    styles.datePill,
-                    { backgroundColor: COLORS.redLightBg },
-                  ]}
-                >
-                  <AppIcon
-                    name="Calendar"
-                    size={ICON_SIZE.xs}
-                    color={COLORS.redPrimary}
-                  />
-                  <AppText
-                    style={[styles.datePillText, { color: COLORS.redPrimary }]}
-                  >
-                    {formatDate(deliveryDate)}
-                  </AppText>
-                </View>
-              </View>
-              <AppText style={styles.locationText}>{deliveryLocation}</AppText>
-              {deliveryDate && (
-                <View style={styles.timeRow}>
-                  <AppIcon
-                    name="Clock"
-                    size={ICON_SIZE.xs}
-                    color={COLORS.textLight}
-                  />
-                  <AppText style={styles.timeText}>
-                    {formatTime(deliveryDate) || 'Scheduled delivery'}
-                  </AppText>
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
+        <QuoteRouteCard
+          pickupLocation={pickupLocation}
+          pickupDate={pickupDate}
+          deliveryLocation={deliveryLocation}
+          deliveryDate={deliveryDate}
+          formatDate={formatDate}
+          formatTime={formatTime}
+        />
 
         {/* Interactive Map Card with Distance & Time Calculation */}
         <View style={styles.mapCardContainer}>

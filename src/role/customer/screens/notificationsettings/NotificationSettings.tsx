@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, ScrollView, Switch } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import styles from './NotificationSettings.styles';
 import { useNotificationSettings } from './useNotificationSettings';
 import { COLORS } from '../../../../constants';
-import { AppHeader, AppText, SettingsSkeleton } from '../../../../components';
+import { AppHeader, AppText, CustomSwitch, SettingsSkeleton } from '../../../../components';
 
 const NotificationSettings = () => {
   const { settings, loading, toggleSetting } = useNotificationSettings();
@@ -11,15 +11,11 @@ const NotificationSettings = () => {
   const renderSettingItem = (key: string, title: string) => (
     <View style={styles.settingItem}>
       <AppText style={styles.itemTitle}>{title}</AppText>
-      <Switch
+      <CustomSwitch
         value={settings[key as keyof typeof settings]}
         onValueChange={() => toggleSetting(key)}
-        trackColor={{
-          false: COLORS.grey200,
-          true: COLORS.primary,
-        }}
-        thumbColor={COLORS.white}
-        ios_backgroundColor={COLORS.grey200}
+        activeColor={COLORS.greenActive || '#10B981'}
+        inActiveColor={COLORS.grey200}
       />
     </View>
   );

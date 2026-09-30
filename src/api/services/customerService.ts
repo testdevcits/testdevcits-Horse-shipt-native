@@ -223,10 +223,10 @@ const customerService = {
       payload,
       payload instanceof FormData
         ? {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
         : undefined,
     );
   },
@@ -379,3 +379,5 @@ const customerService = {
 };
 
 export default customerService;
+
+

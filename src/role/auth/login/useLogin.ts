@@ -42,10 +42,10 @@ const useLogin = () => {
     }
   }, [isFocused]);
 
-  // 4. Keyboard Listeners Logic with Smooth Animation
+  // 4. Keyboard Listeners Logic
   useEffect(() => {
     if (
-      Platform.OS === 'android' &&
+      Platform.OS === 'ios' &&
       UIManager.setLayoutAnimationEnabledExperimental
     ) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -57,11 +57,15 @@ const useLogin = () => {
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
     const showSubscription = Keyboard.addListener(showEvent, () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
       setIsKeyboardOpen(true);
     });
     const hideSubscription = Keyboard.addListener(hideEvent, () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
       setIsKeyboardOpen(false);
     });
 
@@ -147,29 +151,29 @@ const useLogin = () => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: userRole as any,
           intent: 'login',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'
           ? err
           : err?.message ||
-            err?.errors?.[0] ||
-            'Failed to sign in with Google.';
+          err?.errors?.[0] ||
+          'Failed to sign in with Google.';
 
       if (errorMsg !== 'Google Sign-In was cancelled.') {
         showErrorToast('Google Sign-In Error', errorMsg);

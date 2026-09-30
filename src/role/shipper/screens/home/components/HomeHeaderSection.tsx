@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { AppText, Input, SectionHeader } from '../../../../../components';
+import {
+  AppText,
+
+  SearchBarCompt,
+  SectionHeader,
+} from '../../../../../components';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS, SPACING } from '../../../../../constants';
 import styles from '../styles.shipperhome';
@@ -25,7 +30,7 @@ interface HomeHeaderSectionProps {
 }
 
 export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
-  user,
+  user: _user,
   shipperStatus: _shipperStatus,
   subscriptionStatus: _subscriptionStatus,
   quotesCount,
@@ -42,15 +47,15 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
   onNavigatePost,
   onSelectMapFirstShipment,
 }) => {
-  const userName = user?.name || 'Shipper';
+  // const userName = user?.name || 'Shipper';
 
   return (
     <View style={{ width: '100%' }}>
       {/* Welcome Greeting Header */}
-      <View style={styles.welcomeHeader}>
+      {/* <View style={styles.welcomeHeader}>
         <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
         <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
-      </View>
+      </View> */}
 
       {/* Stats Row Cards */}
       <View style={styles.statsRow}>
@@ -85,7 +90,7 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
         </AppText>
 
         {/* Search Input Bar */}
-        <Input
+        {/* <Input
           placeholder="Search by pickup or delivery location..."
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -93,6 +98,11 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
             <AppIcon name="Search" size={18} color={COLORS.textSecondary} />
           }
           containerStyle={{ marginBottom: SPACING.md }}
+        /> */}
+        <SearchBarCompt
+          placeholder="Search by pickup or delivery location..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
         />
 
         {/* Filter By Row */}
