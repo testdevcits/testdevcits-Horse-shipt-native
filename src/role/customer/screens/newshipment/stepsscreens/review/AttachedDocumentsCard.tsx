@@ -58,10 +58,7 @@ const AttachedDocumentsCard: React.FC<AttachedDocumentsCardProps> = ({
           </AppText>
 
           {horses.map((horse: NewShipmentHorse, index: number) => {
-            const cogginsName = getDocName(
-              horse?.coggins,
-              'Coggins_Test.pdf',
-            );
+            const cogginsName = getDocName(horse?.coggins, 'Coggins_Test.pdf');
             const healthCertName = getDocName(
               horse?.healthCert,
               'Health_Certificate.pdf',
@@ -101,9 +98,7 @@ const AttachedDocumentsCard: React.FC<AttachedDocumentsCardProps> = ({
                   </View>
 
                   <View style={styles.docTextGroup}>
-                    <AppText style={styles.docTitleText}>
-                      Coggins Test
-                    </AppText>
+                    <AppText style={styles.docTitleText}>Coggins Test</AppText>
                     <AppText style={styles.docFileName} numberOfLines={1}>
                       {cogginsName || 'Not uploaded yet'}
                     </AppText>
@@ -125,9 +120,7 @@ const AttachedDocumentsCard: React.FC<AttachedDocumentsCardProps> = ({
                       style={styles.uploadQuickBtn}
                       onPress={() => onEditSection(3)}
                     >
-                      <AppText style={styles.uploadQuickText}>
-                        + Upload
-                      </AppText>
+                      <AppText style={styles.uploadQuickText}>+ Upload</AppText>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -182,9 +175,7 @@ const AttachedDocumentsCard: React.FC<AttachedDocumentsCardProps> = ({
                       style={styles.uploadQuickBtn}
                       onPress={() => onEditSection(3)}
                     >
-                      <AppText style={styles.uploadQuickText}>
-                        + Upload
-                      </AppText>
+                      <AppText style={styles.uploadQuickText}>+ Upload</AppText>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -242,9 +233,7 @@ const AttachedDocumentsCard: React.FC<AttachedDocumentsCardProps> = ({
                       style={styles.uploadQuickBtn}
                       onPress={() => onEditSection(3)}
                     >
-                      <AppText style={styles.uploadQuickText}>
-                        + Upload
-                      </AppText>
+                      <AppText style={styles.uploadQuickText}>+ Upload</AppText>
                     </TouchableOpacity>
                   )}
                 </View>

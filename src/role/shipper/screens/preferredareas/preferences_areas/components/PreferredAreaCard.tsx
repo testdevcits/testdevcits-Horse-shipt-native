@@ -55,9 +55,7 @@ const PreferredAreaCard: React.FC<PreferredAreaCardProps> = ({
             size={12}
             color={COLORS.amberPrimary || COLORS.primary}
           />
-          <AppText style={styles.radiusPillText}>
-            {radiusKm} km radius
-          </AppText>
+          <AppText style={styles.radiusPillText}>{radiusKm} km radius</AppText>
         </View>
       </View>
 

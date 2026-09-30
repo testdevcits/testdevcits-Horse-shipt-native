@@ -1,5 +1,11 @@
 import React, { memo } from 'react';
-import { View, Image, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 import { AppText } from '../../../../../components';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../constants';
@@ -97,24 +103,14 @@ const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
             {userPhone ? (
               <>
                 <AppText style={{ color: COLORS.grey400 }}>•</AppText>
-                <AppIcon
-                  name="Phone"
-                  size={13}
-                  color={COLORS.textSecondary}
-                />
-                <AppText style={styles.profileContactText}>
-                  {userPhone}
-                </AppText>
+                <AppIcon name="Phone" size={13} color={COLORS.textSecondary} />
+                <AppText style={styles.profileContactText}>{userPhone}</AppText>
               </>
             ) : null}
           </View>
 
           <View style={styles.verifiedBadge}>
-            <AppIcon
-              name="ShieldCheck"
-              size={14}
-              color={COLORS.saddleBrown}
-            />
+            <AppIcon name="ShieldCheck" size={14} color={COLORS.saddleBrown} />
             <AppText style={styles.verifiedBadgeText}>
               VERIFIED CUSTOMER
             </AppText>

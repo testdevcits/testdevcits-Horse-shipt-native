@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   roleButtonsRow: {
     flexDirection: 'row',
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.md,
     padding: 4,
     justifyContent: 'space-between',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.divider || '#E5E7EB',
+    backgroundColor: COLORS.divider,
   },
   dividerText: {
     marginHorizontal: SPACING.md,
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.divider || '#E5E7EB',
+    borderColor: COLORS.divider,
     height: 50,
     borderRadius: RADIUS.md,
     marginTop: SPACING.xs,

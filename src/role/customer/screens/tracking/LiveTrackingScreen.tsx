@@ -206,8 +206,8 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             statusCode === 500
               ? 'Our tracking server encountered an issue (500 Error). Please retry in a few moments.'
               : typeof error === 'string'
-                ? error
-                : error?.message || 'Failed to fetch live shipment location data.'
+              ? error
+              : error?.message || 'Failed to fetch live shipment location data.'
           }
           icon={statusCode === 500 ? 'AlertTriangle' : 'AlertCircle'}
           onRetry={refetch}

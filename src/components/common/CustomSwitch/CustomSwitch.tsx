@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
   TouchableOpacity,
-  Text,
   Animated,
   StyleSheet,
   ViewStyle,
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     letterSpacing: 0.5,
     fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs
+    fontSize: FONT_SIZE.xs,
   },
   onText: {
     left: 10,
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
     right: 8,
     color: '#94A3B8',
     fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZE.xs
+    fontSize: FONT_SIZE.xs,
   },
 });
 

@@ -3,7 +3,12 @@ import { View, ScrollView } from 'react-native';
 import styles from './NotificationSettings.styles';
 import { useNotificationSettings } from './useNotificationSettings';
 import { COLORS } from '../../../../constants';
-import { AppHeader, AppText, CustomSwitch, SettingsSkeleton } from '../../../../components';
+import {
+  AppHeader,
+  AppText,
+  CustomSwitch,
+  SettingsSkeleton,
+} from '../../../../components';
 
 const NotificationSettings = () => {
   const { settings, loading, toggleSetting } = useNotificationSettings();
@@ -14,7 +19,7 @@ const NotificationSettings = () => {
       <CustomSwitch
         value={settings[key as keyof typeof settings]}
         onValueChange={() => toggleSetting(key)}
-        activeColor={COLORS.greenActive || '#10B981'}
+        activeColor={COLORS.greenActive}
         inActiveColor={COLORS.grey200}
       />
     </View>

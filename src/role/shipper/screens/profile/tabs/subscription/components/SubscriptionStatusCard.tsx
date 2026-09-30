@@ -78,7 +78,9 @@ export const SubscriptionStatusCard: React.FC<SubscriptionStatusCardProps> = ({
 
       {/* Status Pills */}
       <View style={styles.statusPillsRow}>
-        <View style={isSubTrial ? styles.blueOutlinePill : styles.greenOutlinePill}>
+        <View
+          style={isSubTrial ? styles.blueOutlinePill : styles.greenOutlinePill}
+        >
           <AppText
             style={
               isSubTrial

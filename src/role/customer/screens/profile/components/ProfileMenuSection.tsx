@@ -97,11 +97,7 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
             activeOpacity={0.7}
           >
             <View style={styles.menuIconBox}>
-              <AppIcon
-                name="CreditCard"
-                size={18}
-                color={COLORS.saddleBrown}
-              />
+              <AppIcon name="CreditCard" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.menuContent}>
               <AppText style={styles.menuItemTitle}>
@@ -152,9 +148,7 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
               />
             </View>
             <View style={styles.menuContent}>
-              <AppText style={styles.menuItemTitle}>
-                Reviews & Feedback
-              </AppText>
+              <AppText style={styles.menuItemTitle}>Reviews & Feedback</AppText>
               <AppText style={styles.menuItemSub}>
                 Ratings & feedback left for shippers
               </AppText>
@@ -168,11 +162,7 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
             activeOpacity={0.7}
           >
             <View style={styles.menuIconBox}>
-              <AppIcon
-                name="HelpCircle"
-                size={18}
-                color={COLORS.saddleBrown}
-              />
+              <AppIcon name="HelpCircle" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.menuContent}>
               <AppText style={styles.menuItemTitle}>Help & Support</AppText>
@@ -209,9 +199,7 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
               <AppIcon name="FileText" size={18} color={COLORS.saddleBrown} />
             </View>
             <View style={styles.menuContent}>
-              <AppText style={styles.menuItemTitle}>
-                Terms & Conditions
-              </AppText>
+              <AppText style={styles.menuItemTitle}>Terms & Conditions</AppText>
               <AppText style={styles.menuItemSub}>
                 HorseShipt platform rules & agreement
               </AppText>
@@ -233,15 +221,13 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
             <View
               style={[
                 styles.menuIconBox,
-                { backgroundColor: COLORS.redLightBg || '#FEF2F2' },
+                { backgroundColor: COLORS.redLightBg },
               ]}
             >
               <AppIcon name="LogOut" size={18} color={COLORS.error} />
             </View>
             <View style={styles.menuContent}>
-              <AppText
-                style={[styles.menuItemTitle, { color: COLORS.error }]}
-              >
+              <AppText style={[styles.menuItemTitle, { color: COLORS.error }]}>
                 Log Out
               </AppText>
               <AppText style={styles.menuItemSub}>
@@ -258,8 +244,8 @@ const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
 
 const localStyles = StyleSheet.create({
   logoutCard: {
-    borderColor: COLORS.redBorder || '#FCA5A5',
-    backgroundColor: COLORS.redLightBg || '#FEF2F2',
+    borderColor: COLORS.redBorder,
+    backgroundColor: COLORS.redLightBg,
   },
 });
 

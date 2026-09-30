@@ -1,5 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+} from 'react-native';
 
 import { AppText, MyShipmentsSkeleton } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
@@ -156,7 +162,8 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
           No {labelMap[selectedStatus]} Found
         </AppText>
         <AppText style={styles.emptySub}>
-          There are currently no shipments under the "{labelMap[selectedStatus]}" category.
+          There are currently no shipments under the "{labelMap[selectedStatus]}
+          " category.
         </AppText>
       </View>
     );
@@ -231,6 +238,10 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={{ paddingBottom: 20 }}
         scrollEnabled={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       <ReviewCustomerModal

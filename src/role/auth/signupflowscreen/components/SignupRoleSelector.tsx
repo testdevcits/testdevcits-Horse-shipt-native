@@ -35,11 +35,7 @@ const SignupRoleSelector: React.FC<SignupRoleSelectorProps> = ({
           <AppIcon
             name={'User'}
             size={15}
-            color={
-              selectedRole === 'customer'
-                ? COLORS.white
-                : COLORS.primary
-            }
+            color={selectedRole === 'customer' ? COLORS.white : COLORS.primary}
           />
           <AppText
             style={[
@@ -62,11 +58,7 @@ const SignupRoleSelector: React.FC<SignupRoleSelectorProps> = ({
           <AppIcon
             name={'Building2'}
             size={15}
-            color={
-              selectedRole === 'shipper'
-                ? COLORS.white
-                : COLORS.primary
-            }
+            color={selectedRole === 'shipper' ? COLORS.white : COLORS.primary}
           />
           <AppText
             style={[
@@ -89,11 +81,7 @@ const SignupRoleSelector: React.FC<SignupRoleSelectorProps> = ({
           <AppIcon
             name={'Truck'}
             size={15}
-            color={
-              selectedRole === 'driver'
-                ? COLORS.white
-                : COLORS.primary
-            }
+            color={selectedRole === 'driver' ? COLORS.white : COLORS.primary}
           />
           <AppText
             style={[

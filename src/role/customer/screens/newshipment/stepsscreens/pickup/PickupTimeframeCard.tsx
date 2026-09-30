@@ -60,9 +60,7 @@ const PickupTimeframeCard: React.FC<PickupTimeframeCardProps> = ({
               <AppIcon
                 name={'Calendar'}
                 size={16}
-                color={
-                  form.pickupStartDate ? COLORS.primary : COLORS.grey400
-                }
+                color={form.pickupStartDate ? COLORS.primary : COLORS.grey400}
               />
               <AppText style={styles.dateLabelBadge}>START</AppText>
             </View>
@@ -77,9 +75,7 @@ const PickupTimeframeCard: React.FC<PickupTimeframeCardProps> = ({
             </AppText>
           </TouchableOpacity>
           {errors.pickupStartDate && (
-            <AppText style={styles.errorText}>
-              {errors.pickupStartDate}
-            </AppText>
+            <AppText style={styles.errorText}>{errors.pickupStartDate}</AppText>
           )}
         </View>
 
@@ -87,11 +83,7 @@ const PickupTimeframeCard: React.FC<PickupTimeframeCardProps> = ({
         <View style={styles.dateConnector}>
           <View style={styles.connectorLine} />
           <View style={styles.connectorIconBox}>
-            <AppIcon
-              name={'ChevronRight'}
-              size={14}
-              color={COLORS.grey400}
-            />
+            <AppIcon name={'ChevronRight'} size={14} color={COLORS.grey400} />
           </View>
           <View style={styles.connectorLine} />
         </View>
@@ -127,9 +119,7 @@ const PickupTimeframeCard: React.FC<PickupTimeframeCardProps> = ({
             </AppText>
           </TouchableOpacity>
           {errors.pickupEndDate && (
-            <AppText style={styles.errorText}>
-              {errors.pickupEndDate}
-            </AppText>
+            <AppText style={styles.errorText}>{errors.pickupEndDate}</AppText>
           )}
         </View>
       </View>

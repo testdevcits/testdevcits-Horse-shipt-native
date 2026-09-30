@@ -2,7 +2,6 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import {
   AppText,
-
   SearchBarCompt,
   SectionHeader,
 } from '../../../../../components';

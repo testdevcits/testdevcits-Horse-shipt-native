@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   bannerPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: COLORS.warmCreamDark || '#FDF8F0',
+    backgroundColor: COLORS.warmCreamDark,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
@@ -1102,8 +1102,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey100,
   },
   logoutMenuCard: {
-    backgroundColor: COLORS.redLightBg || '#FEF2F2',
-    borderColor: COLORS.redBorder || '#FCA5A5',
+    backgroundColor: COLORS.redLightBg,
+    borderColor: COLORS.redBorder,
   },
   logoutMenuItemTitle: {
     color: COLORS.redPrimary || COLORS.error,

@@ -1,5 +1,11 @@
 import React, { useCallback, lazy, Suspense } from 'react';
-import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+  Platform,
+} from 'react-native';
 import {
   AppHeader,
   AppText,
@@ -252,6 +258,10 @@ const TruckDriverScreen = () => {
             tintColor={COLORS.primary}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* Add / Edit Driver Modal */}

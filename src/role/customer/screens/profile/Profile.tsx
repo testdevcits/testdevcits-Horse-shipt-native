@@ -4,11 +4,7 @@ import { COLORS } from '../../../../constants';
 import { useProfile } from './useProfile';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
-import {
-  AppHeader,
-  AppLoader,
-  ProfileSkeleton,
-} from '../../../../components';
+import { AppHeader, AppLoader, ProfileSkeleton } from '../../../../components';
 import styles from './styles.profile';
 import ProfileHeaderCard from './components/ProfileHeaderCard';
 import ProfileMenuSection from './components/ProfileMenuSection';

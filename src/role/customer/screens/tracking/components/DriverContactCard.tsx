@@ -28,9 +28,7 @@ export const DriverContactCard: React.FC<DriverContactCardProps> = ({
       <View style={styles.driverInfo}>
         <Image
           source={
-            driverAvatarUri
-              ? { uri: driverAvatarUri }
-              : imageIndex?.AccountIcon
+            driverAvatarUri ? { uri: driverAvatarUri } : imageIndex?.AccountIcon
           }
           style={styles.driverAvatar}
         />

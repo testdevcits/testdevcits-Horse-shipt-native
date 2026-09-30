@@ -73,8 +73,8 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
           showSuccessToast(
             'Stripe Payout Account',
             createRes.message ||
-            onboardRes?.message ||
-            'Stripe account processed.',
+              onboardRes?.message ||
+              'Stripe account processed.',
           );
 
           onClose();
@@ -91,7 +91,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
       showErrorToast(
         'Error',
         err?.response?.data?.message ||
-        'Something went wrong setting up payout account.',
+          'Something went wrong setting up payout account.',
       );
     } finally {
       setInternalLoading(false);
@@ -118,11 +118,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
           {/* 1. Header Banner */}
           <View style={styles.headerBanner}>
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-              <AppIcon name={"X"} size={18} color={COLORS.white} />
+              <AppIcon name={'X'} size={18} color={COLORS.white} />
             </TouchableOpacity>
 
             <View style={styles.badgeRow}>
-              <AppIcon name={"ShieldCheck"} size={16} color={COLORS.white} />
+              <AppIcon name={'ShieldCheck'} size={16} color={COLORS.white} />
               <AppText style={styles.badgeText}>VERIFICATION REQUIRED</AppText>
             </View>
 
@@ -142,7 +142,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
             {/* Why is this required section */}
             <View style={styles.sectionHeader}>
               <View style={styles.infoIconWrapper}>
-                <AppIcon name={"Info"} size={16} color={COLORS.goldBrownText} />
+                <AppIcon name={'Info'} size={16} color={COLORS.goldBrownText} />
               </View>
               <AppText style={styles.sectionTitle}>
                 Why is this required?
@@ -154,7 +154,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 1: Receive Payments */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <AppIcon name={"Landmark"} size={20} color={COLORS.goldBrownText} />
+                  <AppIcon
+                    name={'Landmark'}
+                    size={20}
+                    color={COLORS.goldBrownText}
+                  />
                 </View>
                 <AppText style={styles.cardTitle}>Receive Payments</AppText>
                 <AppText style={styles.cardSub}>
@@ -165,7 +169,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 2: Secure Transactions */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <AppIcon name={"Lock"} size={20} color={COLORS.goldBrownText} />
+                  <AppIcon
+                    name={'Lock'}
+                    size={20}
+                    color={COLORS.goldBrownText}
+                  />
                 </View>
                 <AppText style={styles.cardTitle}>Secure Transactions</AppText>
                 <AppText style={styles.cardSub}>
@@ -176,7 +184,12 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
 
             {/* Security Encryption Notice */}
             <View style={styles.encryptionCard}>
-              <AppIcon name={"Lock"} size={18} color={COLORS.grey700} style={{ marginTop: 2 }} />
+              <AppIcon
+                name={'Lock'}
+                size={18}
+                color={COLORS.grey700}
+                style={{ marginTop: 2 }}
+              />
               <AppText style={styles.encryptionText}>
                 Your banking information is encrypted and process only by
                 stripe. We never store your bank details.
@@ -222,7 +235,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
                 <ActivityIndicator color={COLORS.white} size="small" />
               ) : (
                 <>
-                  <AppIcon name={"Link"} size={18} color={COLORS.white} />
+                  <AppIcon name={'Link'} size={18} color={COLORS.white} />
                   <AppText style={styles.connectBtnText}>
                     Connect Bank Account
                   </AppText>

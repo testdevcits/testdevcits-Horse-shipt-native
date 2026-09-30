@@ -133,16 +133,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
     getPasswordScore() === 0
       ? '0%'
       : getPasswordScore() === 1
-        ? '33%'
-        : getPasswordScore() === 2
-          ? '66%'
-          : '100%';
+      ? '33%'
+      : getPasswordScore() === 2
+      ? '66%'
+      : '100%';
   const barColor =
     getPasswordScore() === 3
       ? COLORS.success
       : getPasswordScore() === 2
-        ? COLORS.warning
-        : COLORS.error;
+      ? COLORS.warning
+      : COLORS.error;
 
   // --- API HANDLERS ---
 
@@ -282,8 +282,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
         typeof err === 'string'
           ? err
           : err?.message ||
-          err?.errors?.[0] ||
-          'Failed to sign in with Google.';
+            err?.errors?.[0] ||
+            'Failed to sign in with Google.';
 
       if (errorMsg !== 'Google Sign-In was cancelled.') {
         showErrorToast('Google Sign-In Error', errorMsg);

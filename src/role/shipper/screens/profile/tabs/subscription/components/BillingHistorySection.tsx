@@ -8,7 +8,9 @@ import styles from '../styles.subscriptiontab';
 
 interface BillingHistorySectionProps {
   billingFilter: 'All' | 'Invoices' | 'Payments' | 'Payouts';
-  setBillingFilter: (filter: 'All' | 'Invoices' | 'Payments' | 'Payouts') => void;
+  setBillingFilter: (
+    filter: 'All' | 'Invoices' | 'Payments' | 'Payouts',
+  ) => void;
   subscriptionsList: any[];
   paymentsList: any[];
   payoutsList: any[];

@@ -14,14 +14,11 @@ const DeliveryShipmentCard: React.FC<DeliveryShipmentCardProps> = ({
 }) => {
   return (
     <View style={styles.shipmentCard}>
-      <AppText style={styles.shipmentHeaderLabel}>
-        SHIPMENT DETAILS
-      </AppText>
+      <AppText style={styles.shipmentHeaderLabel}>SHIPMENT DETAILS</AppText>
 
       <View style={styles.shipmentTitleRow}>
         <AppText style={styles.shipmentTitle}>
-          {shipment?.shipment?.horses?.[0]?.registeredName ||
-            'Not Available'}
+          {shipment?.shipment?.horses?.[0]?.registeredName || 'Not Available'}
         </AppText>
         <View style={styles.passengerCountBadge}>
           <AppText style={styles.badgeText}>
@@ -64,10 +61,7 @@ const DeliveryShipmentCard: React.FC<DeliveryShipmentCardProps> = ({
       </View>
 
       <View
-        style={[
-          styles.metaRow,
-          { borderBottomWidth: 0, paddingBottom: 0 },
-        ]}
+        style={[styles.metaRow, { borderBottomWidth: 0, paddingBottom: 0 }]}
       >
         <AppIcon
           name="Truck"

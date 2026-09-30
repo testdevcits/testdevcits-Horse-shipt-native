@@ -35,9 +35,7 @@ export const TrackingBottomSheet: React.FC<TrackingBottomSheetProps> = ({
       <View style={styles.etaContainer}>
         <View>
           <AppText style={styles.etaLabel}>
-            {isHeadingToPickup
-              ? 'Estimated Pickup Time'
-              : 'Estimated Arrival'}
+            {isHeadingToPickup ? 'Estimated Pickup Time' : 'Estimated Arrival'}
           </AppText>
           <AppText style={styles.etaTime}>{etaFormatted}</AppText>
         </View>
@@ -84,19 +82,13 @@ export const TrackingBottomSheet: React.FC<TrackingBottomSheetProps> = ({
             ]}
           >
             {statusDetails.isDelivered ? (
-              <AppIcon
-                name="CheckCircle2"
-                size={16}
-                color={COLORS.primary}
-              />
+              <AppIcon name="CheckCircle2" size={16} color={COLORS.primary} />
             ) : (
               <AppIcon name="Clock" size={16} color={COLORS.grey400} />
             )}
           </View>
           <View style={styles.timelineContent}>
-            <AppText style={styles.locationTitle}>
-              Delivery Destination
-            </AppText>
+            <AppText style={styles.locationTitle}>Delivery Destination</AppText>
             <AppText numberOfLines={1} style={styles.locationSub}>
               {deliveryLocation || 'Delivery Destination'}
             </AppText>

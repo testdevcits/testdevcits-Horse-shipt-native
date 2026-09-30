@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef, memo } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView } from 'react-native';
 
 import { formatDate } from '../../../../../../utils/helpers';
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  ICON_SIZE,
-} from '../../../../../../constants';
+import { COLORS, FONTS, SPACING, ICON_SIZE } from '../../../../../../constants';
 import { AppText } from '../../../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';

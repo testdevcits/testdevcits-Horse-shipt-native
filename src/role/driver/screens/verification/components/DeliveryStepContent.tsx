@@ -74,9 +74,7 @@ const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
             }}
           />
         </View>
-        <AppText style={styles.otpLabelDigits}>
-          {otp?.length}/6 digits
-        </AppText>
+        <AppText style={styles.otpLabelDigits}>{otp?.length}/6 digits</AppText>
 
         <TouchableOpacity activeOpacity={0.7} onPress={onSendOtp}>
           <AppText style={styles.resendTextLink}>
@@ -99,11 +97,7 @@ const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
             },
           ]}
         >
-          <AppIcon
-            name="CheckCircle2"
-            size={32}
-            color={COLORS.greenActive}
-          />
+          <AppIcon name="CheckCircle2" size={32} color={COLORS.greenActive} />
         </View>
         <AppText style={styles.mainActionHeading}>
           Verified successfully

@@ -192,7 +192,6 @@ const getStatusColor = (status?: string) => {
   }
 };
 
-
 // Haversine distance and duration calculation helper
 const calculateHaversine = (
   lat1: number,
@@ -208,9 +207,9 @@ const calculateHaversine = (
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRad(lat1)) *
-    Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const km = R * c;
@@ -633,7 +632,10 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
         <HorseDetailCard horse={horse} />
 
         {/* Customer Info & Message */}
-        <CustomerInfoSection customer={quote?.customer} message={quote?.message} />
+        <CustomerInfoSection
+          customer={quote?.customer}
+          message={quote?.message}
+        />
 
         <View style={styles.bottomSpacing} />
       </ScrollView>

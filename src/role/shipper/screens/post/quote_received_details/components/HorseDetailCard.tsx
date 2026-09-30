@@ -71,7 +71,11 @@ export const HorseDetailCard: React.FC<HorseDetailCardProps> = ({ horse }) => {
             <Image source={{ uri: photoUrl }} style={styles.horseAvatar} />
           ) : (
             <View style={styles.horseAvatar}>
-              <AppIcon name="Award" size={ICON_SIZE.md} color={COLORS.primary} />
+              <AppIcon
+                name="Award"
+                size={ICON_SIZE.md}
+                color={COLORS.primary}
+              />
             </View>
           )}
 

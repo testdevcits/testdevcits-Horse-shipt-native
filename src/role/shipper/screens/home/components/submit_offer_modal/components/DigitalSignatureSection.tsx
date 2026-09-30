@@ -82,11 +82,7 @@ const DigitalSignatureSection: React.FC<DigitalSignatureSectionProps> = ({
 
         {signature ? (
           <View style={styles.capturedRow}>
-            <AppIcon
-              name="CheckCircle2"
-              size={14}
-              color={COLORS.greenActive}
-            />
+            <AppIcon name="CheckCircle2" size={14} color={COLORS.greenActive} />
             <AppText style={styles.capturedText}>Signature captured</AppText>
           </View>
         ) : null}

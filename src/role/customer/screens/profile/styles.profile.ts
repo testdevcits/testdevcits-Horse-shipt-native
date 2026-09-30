@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: SPACING.xs,
     position: 'relative',
-    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg || '#FAF5EF',
+    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   bannerPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: COLORS.warmCreamDark || '#FDF8F0',
+    backgroundColor: COLORS.warmCreamDark,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: COLORS.goldBorder || '#E8D5C4',
+    borderColor: COLORS.goldBorder,
     borderStyle: 'dashed',
     borderRadius: RADIUS.md,
     gap: SPACING.xs,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   bannerPlaceholderText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.semiBold,
-    color: COLORS.saddleBrown || '#633C1D',
+    color: COLORS.saddleBrown,
     marginTop: 2,
   },
   editBannerBtn: {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     overflow: 'hidden',
-    backgroundColor: COLORS.goldLightBg || '#FAF5EF',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 4,
     borderColor: COLORS.white,
     shadowColor: COLORS.black,
@@ -173,9 +173,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: COLORS.goldLightBg || '#FAF5EF',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E8D5C4',
+    borderColor: COLORS.goldBorder,
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: RADIUS.round,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   verifiedBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.semiBold,
-    color: COLORS.goldBrownText || COLORS.saddleBrown || '#633C1D',
+    color: COLORS.goldBrownText || COLORS.saddleBrown,
   },
 
   // QUICK STATS DASHBOARD CARD
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#E8D5C4',
+    borderColor: COLORS.goldBorder,
     borderTopWidth: 3,
     borderTopColor: COLORS.primary,
     flexDirection: 'row',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: COLORS.goldLightBg || '#FAF5EF',
+    backgroundColor: COLORS.goldLightBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 4,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg || '#FAF5EF',
+    backgroundColor: COLORS.warmCreamDark,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.md,
@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   logoutMenuCard: {
-    backgroundColor: COLORS.redLightBg || '#FEF2F2',
-    borderColor: COLORS.redBorder || '#FCA5A5',
+    backgroundColor: COLORS.redLightBg,
+    borderColor: COLORS.redBorder,
   },
   logoutMenuItemTitle: {
-    color: COLORS.redPrimary || COLORS.error,
+    color: COLORS.redPrimary,
   },
 
   // MODAL STYLES & RETAINED STYLES

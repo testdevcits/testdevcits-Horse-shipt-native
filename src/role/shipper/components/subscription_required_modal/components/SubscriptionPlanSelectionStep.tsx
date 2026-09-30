@@ -3,7 +3,10 @@ import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { AppText } from '../../../../../components';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../constants';
-import { ShipperStatus, SubscriptionPlansData } from '../../../../../hooks/useShipperSubscription';
+import {
+  ShipperStatus,
+  SubscriptionPlansData,
+} from '../../../../../hooks/useShipperSubscription';
 import styles from '../styles.subscriptionRequiredModal';
 
 interface SubscriptionPlanSelectionStepProps {
@@ -19,7 +22,9 @@ interface SubscriptionPlanSelectionStepProps {
   onActionPress: () => void;
 }
 
-const SubscriptionPlanSelectionStep: React.FC<SubscriptionPlanSelectionStepProps> = ({
+const SubscriptionPlanSelectionStep: React.FC<
+  SubscriptionPlanSelectionStepProps
+> = ({
   shipperStatus,
   selectedPlanType,
   setSelectedPlanType,
@@ -192,11 +197,7 @@ const SubscriptionPlanSelectionStep: React.FC<SubscriptionPlanSelectionStepProps
         ) : (
           <View style={styles.actionBtnContent}>
             {!shipperStatus.hasCard && (
-              <AppIcon
-                name={'CreditCard'}
-                size={18}
-                color={COLORS.white}
-              />
+              <AppIcon name={'CreditCard'} size={18} color={COLORS.white} />
             )}
             <AppText style={styles.actionBtnText}>
               {!shipperStatus.hasCard

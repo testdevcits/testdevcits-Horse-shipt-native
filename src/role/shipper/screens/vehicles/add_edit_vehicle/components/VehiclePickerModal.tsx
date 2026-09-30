@@ -13,7 +13,12 @@ export const STALL_TYPES = [
   'Semi',
   'Other',
 ];
-export const STALL_SIZES = ['Single Stall', 'Stall and a Half', 'Box Stall', 'Other'];
+export const STALL_SIZES = [
+  'Single Stall',
+  'Stall and a Half',
+  'Box Stall',
+  'Other',
+];
 
 interface VehiclePickerModalProps {
   activePicker: 'vehicleType' | 'stallType' | 'stallSize' | null;
@@ -73,11 +78,7 @@ export const VehiclePickerModal: React.FC<VehiclePickerModalProps> = ({
                   {item}
                 </AppText>
                 {vehicleType === item && (
-                  <AppIcon
-                    name="Check"
-                    size={18}
-                    color={COLORS.saddleBrown}
-                  />
+                  <AppIcon name="Check" size={18} color={COLORS.saddleBrown} />
                 )}
               </TouchableOpacity>
             ))}
@@ -98,11 +99,7 @@ export const VehiclePickerModal: React.FC<VehiclePickerModalProps> = ({
                   {item}
                 </AppText>
                 {stallType === item && (
-                  <AppIcon
-                    name="Check"
-                    size={18}
-                    color={COLORS.saddleBrown}
-                  />
+                  <AppIcon name="Check" size={18} color={COLORS.saddleBrown} />
                 )}
               </TouchableOpacity>
             ))}
@@ -123,11 +120,7 @@ export const VehiclePickerModal: React.FC<VehiclePickerModalProps> = ({
                   {item}
                 </AppText>
                 {stallSize === item && (
-                  <AppIcon
-                    name="Check"
-                    size={18}
-                    color={COLORS.saddleBrown}
-                  />
+                  <AppIcon name="Check" size={18} color={COLORS.saddleBrown} />
                 )}
               </TouchableOpacity>
             ))}

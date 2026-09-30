@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, RefreshControl, FlatList } from 'react-native';
+import { View, RefreshControl, FlatList, Platform } from 'react-native';
 
 import { useStripe } from '@stripe/stripe-react-native';
 import {
@@ -7,7 +7,7 @@ import {
   EmptyState,
   PaymentsSkeleton,
 } from '../../../../components';
-import { COLORS, ICON_SIZE, } from '../../../../constants';
+import { COLORS, ICON_SIZE } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.earnings';
 import AppIcon from '../../../../components/app_icon/AppIcon';
@@ -170,8 +170,8 @@ const EarningsScreen = () => {
         'error',
         'Setup Error',
         error?.response?.data?.message ||
-        error?.message ||
-        'Unable to prepare card update.',
+          error?.message ||
+          'Unable to prepare card update.',
       );
     } finally {
       setInitializingCard(false);
@@ -276,7 +276,7 @@ const EarningsScreen = () => {
           'success',
           'Card Saved Successfully',
           saveRes.message ||
-          'Card saved successfully. Account activated if previously restricted.',
+            'Card saved successfully. Account activated if previously restricted.',
         );
       } else {
         showFeedback(
@@ -291,8 +291,8 @@ const EarningsScreen = () => {
         'error',
         'Process Error',
         error?.response?.data?.message ||
-        error?.message ||
-        'Failed to save payment method.',
+          error?.message ||
+          'Failed to save payment method.',
       );
     } finally {
       setSubmittingCard(false);
@@ -370,6 +370,10 @@ const EarningsScreen = () => {
             tintColor={COLORS.primary}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* Stripe Payment Method Card Modal */}

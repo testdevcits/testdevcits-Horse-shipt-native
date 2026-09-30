@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageSourcePropType,
-  StatusBar,
   Platform,
 } from 'react-native';
 import {
@@ -29,14 +28,9 @@ import {
 } from 'lucide-react-native';
 import DeviceInfo from 'react-native-device-info';
 
-
 // Import constants & helpers
 import { COLORS } from '../../constants/colors';
-import {
-  SPACING,
-  FONT_SIZE,
-  RADIUS,
-} from '../../constants/dimensions';
+import { SPACING, FONT_SIZE, RADIUS } from '../../constants/dimensions';
 import { FONTS } from '../../constants/fonts';
 import imageIndex from '../../assets/images/imageIndex';
 import { AppText } from '../../components';
@@ -59,81 +53,80 @@ const ConfirmationModal = lazy(
   () => import('../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
-const DrawerMenuItem: React.FC<DrawerMenuItemProps> = memo(({
-  label,
-  iconSource,
-  IconComponent,
-  iconColor,
-  onPress,
-  isActive,
-  isLast,
-  hasChevron = true,
-  badgeCount,
-}) => (
-  <TouchableOpacity
-    style={[
-      styles.menuItem,
-      isActive && styles.menuItemActive,
-      isLast && { marginBottom: 0 },
-    ]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    {isActive && <View style={styles.activeLeftBar} />}
-
-    <View style={[styles.iconContainer, isActive && styles.iconContainerActive]}>
-      {IconComponent ? (
-        <IconComponent
-          size={19}
-          color={
-            iconColor || (isActive ? COLORS.primary : COLORS.grey600)
-          }
-          strokeWidth={isActive ? 2.2 : 1.8}
-        />
-      ) : iconSource ? (
-        <Image
-          source={iconSource}
-          style={[
-            styles.menuIcon,
-            isActive && { tintColor: COLORS.primary },
-          ]}
-          resizeMode="contain"
-        />
-      ) : null}
-    </View>
-
-    <AppText
+const DrawerMenuItem: React.FC<DrawerMenuItemProps> = memo(
+  ({
+    label,
+    iconSource,
+    IconComponent,
+    iconColor,
+    onPress,
+    isActive,
+    isLast,
+    hasChevron = true,
+    badgeCount,
+  }) => (
+    <TouchableOpacity
       style={[
-        styles.menuLabel,
-        isActive && styles.menuLabelActive,
-        iconColor ? { color: iconColor } : null,
+        styles.menuItem,
+        isActive && styles.menuItemActive,
+        isLast && { marginBottom: 0 },
       ]}
-      numberOfLines={1}
+      onPress={onPress}
+      activeOpacity={0.7}
     >
-      {label}
-    </AppText>
+      {isActive && <View style={styles.activeLeftBar} />}
 
-    {badgeCount !== undefined && badgeCount > 0 && (
-      <View style={styles.badgeContainer}>
-        <AppText style={styles.badgeText}>{badgeCount}</AppText>
+      <View
+        style={[styles.iconContainer, isActive && styles.iconContainerActive]}
+      >
+        {IconComponent ? (
+          <IconComponent
+            size={19}
+            color={iconColor || (isActive ? COLORS.primary : COLORS.grey600)}
+            strokeWidth={isActive ? 2.2 : 1.8}
+          />
+        ) : iconSource ? (
+          <Image
+            source={iconSource}
+            style={[styles.menuIcon, isActive && { tintColor: COLORS.primary }]}
+            resizeMode="contain"
+          />
+        ) : null}
       </View>
-    )}
 
-    {(isActive || hasChevron) && (
-      <ChevronRight
-        size={16}
-        color={iconColor || (isActive ? COLORS.primary : COLORS.grey400)}
-        style={styles.chevron}
-      />
-    )}
-  </TouchableOpacity>
-));
+      <AppText
+        style={[
+          styles.menuLabel,
+          isActive && styles.menuLabelActive,
+          iconColor ? { color: iconColor } : null,
+        ]}
+        numberOfLines={1}
+      >
+        {label}
+      </AppText>
+
+      {badgeCount !== undefined && badgeCount > 0 && (
+        <View style={styles.badgeContainer}>
+          <AppText style={styles.badgeText}>{badgeCount}</AppText>
+        </View>
+      )}
+
+      {(isActive || hasChevron) && (
+        <ChevronRight
+          size={16}
+          color={iconColor || (isActive ? COLORS.primary : COLORS.grey400)}
+          style={styles.chevron}
+        />
+      )}
+    </TouchableOpacity>
+  ),
+);
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
-  const { user } = useAppSelector(state => state.auth);
+  const { user } = useAppSelector(state => state?.auth);
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -203,7 +196,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             resizeMode="contain"
           />
           <View style={styles.roleBadge}>
-            <Sparkles size={11} color={COLORS.primary} style={{ marginRight: 4 }} />
+            <Sparkles
+              size={11}
+              color={COLORS.primary}
+              style={{ marginRight: 4 }}
+            />
             <AppText style={styles.roleBadgeText}>{userRole}</AppText>
           </View>
         </View>
@@ -228,7 +225,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
               <AppText style={styles.userNameText} numberOfLines={1}>
                 {userName}
               </AppText>
-              <BadgeCheck size={16} color={COLORS.success || '#10B981'} style={{ marginLeft: 4 }} />
+              <BadgeCheck
+                size={16}
+                color={COLORS.success}
+                style={{ marginLeft: 4 }}
+              />
             </View>
             <AppText style={styles.userEmailText} numberOfLines={1}>
               {userEmail}
@@ -344,7 +345,9 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
           <AppText style={styles.logoutText}>Log Out</AppText>
         </TouchableOpacity>
 
-        <AppText style={styles.versionText}>HorseShipt v{DeviceInfo?.getVersion()}</AppText>
+        <AppText style={styles.versionText}>
+          HorseShipt v{DeviceInfo?.getVersion()}
+        </AppText>
       </View>
 
       {/* Logout Confirmation Modal */}
@@ -372,19 +375,18 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: RADIUS.xl,
   },
   profileHeaderContainer: {
-    backgroundColor: COLORS.background || '#F8FAFC',
+    backgroundColor: COLORS.background,
     paddingHorizontal: SPACING.lg,
     // paddingTop: Platform.OS === 'ios' ? 20 : (StatusBar.currentHeight || 24) + 0,
     paddingBottom: SPACING.lg,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100 || '#F1F5F9',
+    borderBottomColor: COLORS.grey100,
   },
   headerTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: SPACING.md,
-
   },
   headerLogo: {
     width: 32,
@@ -393,15 +395,15 @@ const styles = StyleSheet.create({
   roleBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.goldLightBg || '#FEFCE8',
-    paddingHorizontal: SPACING.sm2 || 10,
+    backgroundColor: COLORS.goldLightBg,
+    paddingHorizontal: SPACING.sm2,
     paddingVertical: SPACING.xxs + 2,
     borderRadius: RADIUS.pill,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
   },
   roleBadgeText: {
-    fontSize: FONT_SIZE.xxs || 10,
+    fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.bold,
     color: COLORS.primary,
     letterSpacing: 0.6,
@@ -459,9 +461,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.sm,
   },
   sectionTitle: {
-    fontSize: FONT_SIZE.xxs || 10,
+    fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.bold,
-    color: COLORS.textLight || '#94A3B8',
+    color: COLORS.textLight,
     letterSpacing: 1,
     marginLeft: SPACING.sm,
     marginBottom: SPACING.xs,
@@ -470,14 +472,14 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.sm2 || 10,
+    paddingVertical: SPACING.sm2,
     paddingHorizontal: SPACING.md,
     marginBottom: SPACING.xxs,
     borderRadius: RADIUS.md,
     position: 'relative',
   },
   menuItemActive: {
-    backgroundColor: COLORS.goldLightBg || '#FEFCE8',
+    backgroundColor: COLORS.goldLightBg,
   },
   activeLeftBar: {
     position: 'absolute',
@@ -530,7 +532,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: COLORS.divider || '#F1F5F9',
+    backgroundColor: COLORS.divider,
     marginVertical: SPACING.sm,
     marginHorizontal: SPACING.md,
   },
@@ -539,7 +541,7 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.md,
     paddingBottom: Platform.OS === 'ios' ? SPACING.xl : SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.divider || '#F1F5F9',
+    borderTopColor: COLORS.divider,
     backgroundColor: COLORS.white,
   },
   logoutBtn: {
@@ -565,9 +567,9 @@ const styles = StyleSheet.create({
     color: COLORS.error,
   },
   versionText: {
-    fontSize: FONT_SIZE.xxs || 10,
+    fontSize: FONT_SIZE.xxs,
     fontFamily: FONTS.medium,
-    color: COLORS.textLight || '#94A3B8',
+    color: COLORS.textLight,
     textAlign: 'center',
     marginTop: SPACING.sm,
   },

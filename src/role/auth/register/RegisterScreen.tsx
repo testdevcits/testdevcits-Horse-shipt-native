@@ -99,8 +99,8 @@ const RegisterScreen = ({ navigation }: any) => {
         typeof err === 'string'
           ? err
           : err?.message ||
-          err?.errors?.[0] ||
-          'Failed to sign in with Google.';
+            err?.errors?.[0] ||
+            'Failed to sign in with Google.';
 
       if (errorMsg !== 'Google Sign-In was cancelled.') {
         showErrorToast('Google Sign-In Error', errorMsg);

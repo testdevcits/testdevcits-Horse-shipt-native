@@ -78,25 +78,18 @@ const SignupOtpStep: React.FC<SignupOtpStepProps> = ({
         </View>
       </TouchableOpacity>
 
-      {errorOtp ? (
-        <AppText style={styles.errorText}>{errorOtp}</AppText>
-      ) : null}
+      {errorOtp ? <AppText style={styles.errorText}>{errorOtp}</AppText> : null}
 
       <View style={styles.resendRow}>
         <AppText style={styles.resendText}>Didn't receive code?</AppText>
-        <TouchableOpacity
-          onPress={onResendOtp}
-          disabled={resendTimer > 0}
-        >
+        <TouchableOpacity onPress={onResendOtp} disabled={resendTimer > 0}>
           <AppText
             style={[
               styles.resendLink,
               resendTimer > 0 && { color: COLORS.grey400 },
             ]}
           >
-            {resendTimer > 0
-              ? `Resend in ${resendTimer}s`
-              : 'Resend Code'}
+            {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend Code'}
           </AppText>
         </TouchableOpacity>
       </View>

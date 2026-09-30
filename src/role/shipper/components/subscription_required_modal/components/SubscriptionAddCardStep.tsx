@@ -26,9 +26,7 @@ const SubscriptionAddCardStep: React.FC<SubscriptionAddCardStepProps> = ({
       {/* Header Title Row */}
       <View style={styles.addCardHeaderRow}>
         <AppIcon name={'CreditCard'} size={20} color={COLORS.textPrimary} />
-        <AppText style={styles.addCardHeaderTitle}>
-          Add Payment Method
-        </AppText>
+        <AppText style={styles.addCardHeaderTitle}>Add Payment Method</AppText>
       </View>
       <AppText style={styles.addCardSubTitle}>
         You won't be charged until your trial ends
@@ -76,9 +74,7 @@ const SubscriptionAddCardStep: React.FC<SubscriptionAddCardStepProps> = ({
         ) : (
           <View style={styles.actionBtnContent}>
             <AppIcon name={'Check'} size={18} color={COLORS.white} />
-            <AppText style={styles.actionBtnText}>
-              Save Card & Continue
-            </AppText>
+            <AppText style={styles.actionBtnText}>Save Card & Continue</AppText>
           </View>
         )}
       </TouchableOpacity>

@@ -463,7 +463,9 @@ const AddEditHorse = () => {
                   coggins={values.coggins}
                   healthCertificate={values.healthCertificate}
                   isPicking={isPicking}
-                  onPickDocument={field => handlePickDocument(field, setFieldValue)}
+                  onPickDocument={field =>
+                    handlePickDocument(field, setFieldValue)
+                  }
                   onRemoveDocument={field => setFieldValue(field, null)}
                 />
 

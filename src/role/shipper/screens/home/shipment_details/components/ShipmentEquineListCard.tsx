@@ -42,8 +42,7 @@ export const ShipmentEquineListCard: React.FC<ShipmentEquineListCardProps> = ({
           horse?.generalInfo ||
           horse?.notesLog?.[0]?.note ||
           'Not Available';
-        const noteDate =
-          horse?.notesLog?.[0]?.createdAt || new Date();
+        const noteDate = horse?.notesLog?.[0]?.createdAt || new Date();
 
         return (
           <View key={horse?._id || index} style={styles.horseDetailsCard}>
@@ -79,10 +78,7 @@ export const ShipmentEquineListCard: React.FC<ShipmentEquineListCardProps> = ({
                 {/* Horse Thumbnail Row */}
                 <View style={styles.horseProfileRow}>
                   {hPhoto ? (
-                    <Image
-                      source={{ uri: hPhoto }}
-                      style={styles.horseThumb}
-                    />
+                    <Image source={{ uri: hPhoto }} style={styles.horseThumb} />
                   ) : (
                     <Image
                       source={imageIndex?.Banner}
@@ -163,9 +159,7 @@ export const ShipmentEquineListCard: React.FC<ShipmentEquineListCardProps> = ({
                       {formatDate(noteDate, 'MMM D, YYYY, h:mm A')}
                     </AppText>
                   </View>
-                  <AppText style={styles.notesBodyText}>
-                    "{notesText}"
-                  </AppText>
+                  <AppText style={styles.notesBodyText}>"{notesText}"</AppText>
                 </View>
               </View>
             )}

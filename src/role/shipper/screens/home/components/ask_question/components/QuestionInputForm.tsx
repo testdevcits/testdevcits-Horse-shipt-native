@@ -67,9 +67,7 @@ const QuestionInputForm: React.FC<QuestionInputFormProps> = ({
 
       {/* Progress Bar & Hint */}
       <View style={styles.progressTrack}>
-        <View
-          style={[styles.progressFill, { width: `${progressPercent}%` }]}
-        />
+        <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
       </View>
       <AppText style={styles.hintText}>{getHintText()}</AppText>
 
@@ -81,9 +79,7 @@ const QuestionInputForm: React.FC<QuestionInputFormProps> = ({
         <AppText style={styles.tipItem}>
           2. Include relevant shipment details if needed
         </AppText>
-        <AppText style={styles.tipItem}>
-          3. Ask one question at a time
-        </AppText>
+        <AppText style={styles.tipItem}>3. Ask one question at a time</AppText>
       </View>
 
       {/* Action Buttons */}

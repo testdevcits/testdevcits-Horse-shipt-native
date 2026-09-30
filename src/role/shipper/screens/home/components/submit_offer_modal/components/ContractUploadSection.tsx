@@ -31,7 +31,8 @@ const ContractUploadSection: React.FC<ContractUploadSectionProps> = ({
             {contractFile?.fileName || 'No file chosen'}
           </AppText>
           <AppText style={styles.fileCaptionText}>
-            Optional PDF or image. Customers can review it before accepting the quote.
+            Optional PDF or image. Customers can review it before accepting the
+            quote.
           </AppText>
         </View>
 
@@ -54,9 +55,7 @@ const ContractUploadSection: React.FC<ContractUploadSectionProps> = ({
           style={styles.removeContractBtn}
           onPress={onRemoveContract}
         >
-          <AppText style={styles.removeContractText}>
-            Remove contract
-          </AppText>
+          <AppText style={styles.removeContractText}>Remove contract</AppText>
         </TouchableOpacity>
       )}
     </View>

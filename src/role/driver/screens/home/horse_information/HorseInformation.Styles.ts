@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    backgroundColor: COLORS.goldLightBg,
     borderBottomWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
     paddingVertical: 14,
     paddingHorizontal: 16,
   },
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
   },
   cardHeaderTitle: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.md,
-    color: COLORS.goldDarkText || '#92400E',
+    color: COLORS.goldDarkText,
   },
   cardHeaderSubtitle: {
     fontFamily: FONTS.medium,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: RADIUS.xs,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
   },
   manifestBadgeText: {
     fontFamily: FONTS.bold,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   nameHeaderBlock: {
     marginBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100 || '#F1F5F9',
+    borderBottomColor: COLORS.grey100,
     paddingBottom: 8,
   },
   registeredNameTitle: {
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   specBox: {
     width: '48%',
-    backgroundColor: COLORS.grey50 || '#F8FAFC',
+    backgroundColor: COLORS.grey50,
     borderWidth: 1,
     borderColor: COLORS.grey200,
     borderRadius: RADIUS.xs,
@@ -189,9 +189,9 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   notesBox: {
-    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    backgroundColor: COLORS.goldLightBg,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
     borderLeftWidth: 4,
     borderLeftColor: COLORS.primary,
     borderRadius: RADIUS.sm,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   notesBoxText: {
     fontFamily: FONTS.regular,
     fontSize: FONT_SIZE.xs,
-    color: COLORS.goldDarkText || '#92400E',
+    color: COLORS.goldDarkText,
     lineHeight: 18,
   },
   mapBtn: {

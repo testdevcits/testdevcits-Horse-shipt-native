@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.divider || '#E5E7EB',
+    backgroundColor: COLORS.divider,
   },
   dividerText: {
     marginHorizontal: SPACING.md,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.divider || '#E5E7EB',
+    borderColor: COLORS.divider,
     height: 50,
     borderRadius: RADIUS.md,
   },
@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? 52
         : StatusBar.currentHeight
-        ? StatusBar.currentHeight + 12
-        : 36,
+          ? StatusBar.currentHeight + 12
+          : 36,
     right: SPACING.lg,
     zIndex: 99,
     flexDirection: 'row',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   },
   roleButtonsRow: {
     flexDirection: 'row',
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.md,
     padding: 4,
     justifyContent: 'space-between',
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
   },
   roleTabBtnActive: {
-    backgroundColor: COLORS.primary || '#8B4513',
+    backgroundColor: COLORS.primary,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,

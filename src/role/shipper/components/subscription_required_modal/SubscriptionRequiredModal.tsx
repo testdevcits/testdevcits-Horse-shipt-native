@@ -1,10 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { Modal, View, TouchableOpacity, ScrollView } from 'react-native';
 
 import { useStripe } from '@stripe/stripe-react-native';
 import { AppText } from '../../../../components';

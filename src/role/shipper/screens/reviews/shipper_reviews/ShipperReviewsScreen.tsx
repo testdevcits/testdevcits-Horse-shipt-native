@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Image, RefreshControl } from 'react-native';
+import { View, FlatList, Image, RefreshControl, Platform } from 'react-native';
 import {
   AppHeader,
   AppText,
@@ -97,8 +97,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
             <Image
               source={
                 avatarUri &&
-                typeof avatarUri === 'string' &&
-                avatarUri.trim() !== ''
+                  typeof avatarUri === 'string' &&
+                  avatarUri.trim() !== ''
                   ? { uri: avatarUri }
                   : imageIndex?.AccountIcon
               }
@@ -167,6 +167,10 @@ const ShipperReviewsScreen = ({ route }: any) => {
             tintColor={styles.summaryRatingText.color}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
     </View>
   );

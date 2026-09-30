@@ -42,11 +42,7 @@ export const CustomerInfoSection: React.FC<CustomerInfoSectionProps> = ({
 
           <View style={styles.customerCard}>
             <View style={styles.customerAvatar}>
-              <AppIcon
-                name="User"
-                size={ICON_SIZE.lg}
-                color={COLORS.primary}
-              />
+              <AppIcon name="User" size={ICON_SIZE.lg} color={COLORS.primary} />
             </View>
             <View style={styles.customerInfo}>
               <AppText style={styles.customerName}>

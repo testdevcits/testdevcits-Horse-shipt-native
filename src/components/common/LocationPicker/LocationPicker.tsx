@@ -460,6 +460,10 @@ const LocationPickerCore: React.FC<{
                   </View>
                 </TouchableOpacity>
               )}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              windowSize={5}
+              removeClippedSubviews={Platform.OS === 'android'}
             />
           </View>
         )}

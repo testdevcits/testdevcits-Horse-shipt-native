@@ -5,6 +5,7 @@ import {
   Modal,
   FlatList,
   Pressable,
+  Platform,
 } from 'react-native';
 import { COLORS } from '../../../constants';
 import AppText from '../AppText';
@@ -126,6 +127,10 @@ export const CountryCodePicker = ({
                   </TouchableOpacity>
                 );
               }}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              windowSize={5}
+              removeClippedSubviews={Platform.OS === 'android'}
             />
           </Pressable>
         </Pressable>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, RefreshControl } from 'react-native';
+import { View, FlatList, RefreshControl, Platform } from 'react-native';
 import { MessageCircleOff } from 'lucide-react-native';
 import useShipperList from './useShipperList';
 import styles from './styles.shipperlist';
@@ -109,6 +109,10 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
               />
             ) : null
           }
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          windowSize={5}
+          removeClippedSubviews={Platform.OS === 'android'}
         />
       )}
     </View>

@@ -31,9 +31,7 @@ const HorseDocumentPickerSection: React.FC<HorseDocumentPickerSectionProps> = ({
           <View style={styles.docTextWrap}>
             <AppText style={styles.docLabel}>Coggins Test</AppText>
             <AppText style={styles.docSubtext} numberOfLines={1}>
-              {coggins?.name ||
-                coggins?.originalName ||
-                'No document selected'}
+              {coggins?.name || coggins?.originalName || 'No document selected'}
             </AppText>
           </View>
         </View>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-
   View,
   TouchableOpacity,
   ScrollView,
@@ -37,8 +36,6 @@ interface Props {
   onSuccess?: () => void;
   vehicleToEdit?: any;
 }
-
-
 
 const AddVehicleModal: React.FC<Props> = ({
   navigation,
@@ -222,9 +219,9 @@ const AddVehicleModal: React.FC<Props> = ({
         showSuccessToast(
           'Success',
           res?.message ||
-          (vehicleToEdit
-            ? 'Vehicle updated successfully'
-            : 'Vehicle added successfully'),
+            (vehicleToEdit
+              ? 'Vehicle updated successfully'
+              : 'Vehicle added successfully'),
         );
         resetForm();
         if (onSuccess) onSuccess();

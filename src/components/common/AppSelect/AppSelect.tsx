@@ -125,7 +125,7 @@ const AppSelect = memo(
       const handleDismissModal = useCallback(() => {
         try {
           bottomSheetModalRef.current?.dismiss();
-        } catch { }
+        } catch {}
         setFallbackVisible(false);
         setSearchQuery('');
       }, []);

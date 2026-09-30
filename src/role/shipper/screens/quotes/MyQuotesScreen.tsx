@@ -7,20 +7,12 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import {
-  View,
-
-  RefreshControl,
-  FlatList,
-
-} from 'react-native';
+import { View, RefreshControl, FlatList, Platform } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import {
   AppHeader,
-
   EmptyState,
-
   AppSelectRef,
   ShipmentsSkeleton,
   LazyFallback,
@@ -162,8 +154,9 @@ const MyQuotesScreen = () => {
 
     const foundVehicle =
       vehicles.find(v => {
-        const label = `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
-          })`.trim();
+        const label = `${v.make || ''} ${v.model || ''} (${
+          v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+        })`.trim();
         return (
           label === selectedLabel ||
           v.vehicleNumber === selectedLabel ||
@@ -427,6 +420,10 @@ const MyQuotesScreen = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* Contract Detail Modal */}
@@ -464,8 +461,9 @@ const MyQuotesScreen = () => {
           placeholder="Select Vehicle"
           value=""
           options={vehicles?.map(v =>
-            `${v.make || ''} ${v.model || ''} (${v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
-              })`.trim(),
+            `${v.make || ''} ${v.model || ''} (${
+              v.vehicleNumber || v.licensePlate || v.type || 'Vehicle'
+            })`.trim(),
           )}
           onSelect={handleSelectVehicle}
           searchable

@@ -69,12 +69,7 @@
 // export default memo(Skeleton);
 
 import React, { memo } from 'react';
-import {
-  DimensionValue,
-  StyleProp,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import { DimensionValue, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -96,11 +91,7 @@ const Skeleton = ({
   return (
     <ShimmerPlaceHolder
       LinearGradient={LinearGradient}
-      shimmerColors={[
-        COLORS.grey250,
-        COLORS.white,
-        COLORS.grey250,
-      ]}
+      shimmerColors={[COLORS.grey250, COLORS.white, COLORS.grey250]}
       shimmerStyle={[
         styles.skeleton,
         {
@@ -111,8 +102,8 @@ const Skeleton = ({
         style,
       ]}
       duration={1200}
-    // shimmerWidth={200}
-    // autoRun
+      // shimmerWidth={200}
+      // autoRun
     />
   );
 };

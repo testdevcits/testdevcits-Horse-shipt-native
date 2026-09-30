@@ -1,11 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  lazy,
+  Suspense,
+} from 'react';
 import {
   View,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
   FlatList,
-
+  Platform,
 } from 'react-native';
 import MapView from 'react-native-maps';
 
@@ -13,7 +21,6 @@ import {
   AppHeader,
   AppText,
   EmptyState,
-
   ShipperHomeSkeleton,
 } from '../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
@@ -339,46 +346,52 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     };
   }, []);
 
-  const handleNavigateToDetails = useCallback((item: any) => {
-    navigation.navigate('ShipperShipmentDetails', { shipment: item });
-  }, [navigation]);
+  const handleNavigateToDetails = useCallback(
+    (item: any) => {
+      navigation.navigate('ShipperShipmentDetails', { shipment: item });
+    },
+    [navigation],
+  );
 
-  const renderHeader = useCallback(() => (
-    <HomeHeaderSection
-      user={user}
-      shipperStatus={shipperStatus}
-      subscriptionStatus={subscriptionStatus}
-      quotesCount={quotes.length}
-      availableLoadsCount={filteredShipments.length}
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      selectedFilter={selectedFilter}
-      setSelectedFilter={setSelectedFilter}
-      viewMode={viewMode}
-      setViewMode={setViewMode}
-      onOpenCardModal={() => setIsCardModalVisible(true)}
-      onOpenBankModal={() => setIsBankModalVisible(true)}
-      onOpenSubModal={_openSubModal}
-      onNavigatePost={() => navigation.navigate('Post')}
-      onSelectMapFirstShipment={() => {
-        if (filteredShipments.length > 0) {
-          handleSelectMapShipment(filteredShipments[0]);
-        }
-      }}
-    />
-  ), [
-    user,
-    shipperStatus,
-    subscriptionStatus,
-    quotes.length,
-    filteredShipments,
-    searchQuery,
-    selectedFilter,
-    viewMode,
-    _openSubModal,
-    navigation,
-    handleSelectMapShipment,
-  ]);
+  const renderHeader = useCallback(
+    () => (
+      <HomeHeaderSection
+        user={user}
+        shipperStatus={shipperStatus}
+        subscriptionStatus={subscriptionStatus}
+        quotesCount={quotes.length}
+        availableLoadsCount={filteredShipments.length}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        onOpenCardModal={() => setIsCardModalVisible(true)}
+        onOpenBankModal={() => setIsBankModalVisible(true)}
+        onOpenSubModal={_openSubModal}
+        onNavigatePost={() => navigation.navigate('Post')}
+        onSelectMapFirstShipment={() => {
+          if (filteredShipments.length > 0) {
+            handleSelectMapShipment(filteredShipments[0]);
+          }
+        }}
+      />
+    ),
+    [
+      user,
+      shipperStatus,
+      subscriptionStatus,
+      quotes.length,
+      filteredShipments,
+      searchQuery,
+      selectedFilter,
+      viewMode,
+      _openSubModal,
+      navigation,
+      handleSelectMapShipment,
+    ],
+  );
 
   const renderEmpty = () => {
     if (loading) return null;
@@ -410,7 +423,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title={`Hello ${user?.name},`} subTitle='Good to see you again!' />
+      <AppHeader
+        title={`Hello ${user?.name},`}
+        subTitle="Good to see you again!"
+      />
 
       {viewMode === 'list' ? (
         <FlatList
@@ -433,6 +449,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               tintColor={COLORS.primary}
             />
           }
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          windowSize={5}
+          removeClippedSubviews={Platform.OS === 'android'}
         />
       ) : (
         /* MODE 2: MAP VIEW MODE */
@@ -493,6 +513,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
                       onNavigateDetails={handleNavigateToDetails}
                     />
                   )}
+                  initialNumToRender={5}
+                  maxToRenderPerBatch={5}
+                  windowSize={5}
+                  removeClippedSubviews={Platform.OS === 'android'}
                 />
               </View>
             </View>

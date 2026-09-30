@@ -67,11 +67,7 @@ const QuoteAcceptanceForm: React.FC<QuoteAcceptanceFormProps> = ({
         <AppText style={styles.inputLabel}>Your Signature *</AppText>
         {signature ? (
           <View style={styles.capturedBadge}>
-            <AppIcon
-              name={'Check'}
-              size={ICON_SIZE.xs}
-              color={COLORS.white}
-            />
+            <AppIcon name={'Check'} size={ICON_SIZE.xs} color={COLORS.white} />
             <AppText style={styles.capturedText}>Captured</AppText>
           </View>
         ) : (
@@ -98,11 +94,7 @@ const QuoteAcceptanceForm: React.FC<QuoteAcceptanceFormProps> = ({
             setSignature(null);
           }}
         >
-          <AppIcon
-            name={'Trash2'}
-            size={ICON_SIZE.xs}
-            color={COLORS.error}
-          />
+          <AppIcon name={'Trash2'} size={ICON_SIZE.xs} color={COLORS.error} />
           <AppText style={styles.clearText}>Clear Signature</AppText>
         </TouchableOpacity>
       )}
@@ -117,15 +109,12 @@ const QuoteAcceptanceForm: React.FC<QuoteAcceptanceFormProps> = ({
           style={[styles.checkbox, isAcceptedTerms && styles.checkboxActive]}
         >
           {isAcceptedTerms && (
-            <AppIcon
-              name={'Check'}
-              size={ICON_SIZE.xs}
-              color={COLORS.white}
-            />
+            <AppIcon name={'Check'} size={ICON_SIZE.xs} color={COLORS.white} />
           )}
         </View>
         <AppText style={styles.termsLabel}>
-          I have reviewed and agree to the terms, conditions, and cancellation policy.
+          I have reviewed and agree to the terms, conditions, and cancellation
+          policy.
         </AppText>
       </TouchableOpacity>
     </View>

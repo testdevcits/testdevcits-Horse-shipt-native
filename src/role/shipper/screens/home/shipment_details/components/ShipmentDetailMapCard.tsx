@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../../config/constants';
@@ -29,16 +29,13 @@ export const ShipmentDetailMapCard: React.FC<ShipmentDetailMapCardProps> = ({
   dLat,
   dLng,
   mapRegion,
-
 }) => {
   if (!isMapVisible) return null;
 
   return (
     <View style={styles.routeMapCard}>
       <AppText style={styles.cardHeaderTitle}>Shipment Route Map</AppText>
-      <AppText style={styles.cardHeaderSub}>
-        {shipment?.shipmentCode}
-      </AppText>
+      <AppText style={styles.cardHeaderSub}>{shipment?.shipmentCode}</AppText>
 
       <View style={styles.mapWrapper}>
         <MapView

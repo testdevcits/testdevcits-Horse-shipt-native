@@ -42,10 +42,7 @@ export const TransactionRowItem: React.FC<TransactionRowItemProps> = ({
       ]}
     >
       {/* ID */}
-      <TouchableOpacity
-        style={styles.idCol}
-        onPress={() => onSelectTx(tx)}
-      >
+      <TouchableOpacity style={styles.idCol} onPress={() => onSelectTx(tx)}>
         <AppText style={styles.idText} numberOfLines={1}>
           {formatTxId(tx.id)}
         </AppText>

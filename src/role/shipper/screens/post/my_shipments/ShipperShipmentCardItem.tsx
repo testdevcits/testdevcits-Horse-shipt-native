@@ -20,8 +20,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
   onReviewPress,
 }) => {
   const shipment = item?.shipment || item;
-  const code =
-    item?.shipmentCode || shipment.shipmentCode || 'Not available';
+  const code = item?.shipmentCode || shipment.shipmentCode || 'Not available';
   const pickupLoc =
     item?.pickupLocation ||
     shipment.pickupLocation ||
@@ -30,8 +29,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
     item?.deliveryLocation ||
     shipment.deliveryLocation ||
     'Delivery location unavailable';
-  const horsesCount =
-    shipment.numberOfHorses || shipment.horses?.length || 0;
+  const horsesCount = shipment.numberOfHorses || shipment.horses?.length || 0;
 
   const itemStatus = getItemTripStatus(item);
   const paymentStatusRaw = (item?.paymentStatus || 'pending').toLowerCase();
@@ -70,11 +68,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
           text: COLORS.redPrimary,
           label: 'CANCELLED',
           icon: (
-            <AppIcon
-              name="AlertCircle"
-              size={12}
-              color={COLORS.redPrimary}
-            />
+            <AppIcon name="AlertCircle" size={12} color={COLORS.redPrimary} />
           ),
         };
       case 'upcoming':
@@ -84,9 +78,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
           border: COLORS.amberBorder,
           text: COLORS.amberWarning,
           label: 'UPCOMING',
-          icon: (
-            <AppIcon name="Clock" size={12} color={COLORS.amberWarning} />
-          ),
+          icon: <AppIcon name="Clock" size={12} color={COLORS.amberWarning} />,
         };
     }
   };
@@ -154,10 +146,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
         <View style={styles.routeLocCol}>
           <View style={styles.locHeaderRow}>
             <View
-              style={[
-                styles.locDot,
-                { backgroundColor: COLORS.amberPrimary },
-              ]}
+              style={[styles.locDot, { backgroundColor: COLORS.amberPrimary }]}
             />
             <AppText style={styles.routeLocLabel}>PICKUP</AppText>
           </View>
@@ -170,11 +159,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
         <View style={styles.trackMiddle}>
           <View style={styles.trackLine} />
           <View style={styles.trackTruckBox}>
-            <AppIcon
-              name="ArrowRight"
-              size={12}
-              color={COLORS.amberPrimary}
-            />
+            <AppIcon name="ArrowRight" size={12} color={COLORS.amberPrimary} />
           </View>
         </View>
 
@@ -226,9 +211,7 @@ const ShipperShipmentCardItem: React.FC<ShipperShipmentCardItemProps> = ({
           activeOpacity={0.8}
         >
           <AppIcon name="FileText" size={14} color={COLORS.saddleBrown} />
-          <AppText style={styles.viewContractBtnText}>
-            View Contract
-          </AppText>
+          <AppText style={styles.viewContractBtnText}>View Contract</AppText>
         </TouchableOpacity>
         {itemStatus === 'completed' || item?.tripStatus === 'completed' ? (
           <TouchableOpacity

@@ -1,5 +1,11 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+  Platform,
+} from 'react-native';
 
 import {
   AppHeader,
@@ -200,6 +206,10 @@ const PreferredAreasScreen = () => {
             tintColor={COLORS.primary}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* ADD / EDIT MODAL */}

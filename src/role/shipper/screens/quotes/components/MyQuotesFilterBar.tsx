@@ -3,7 +3,13 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { AppText, SearchBarCompt } from '../../../../../components';
 import styles from '../styles.myquotes';
 
-type TabKey = 'all' | 'pending' | 'in_transit' | 'upcoming' | 'cancelled' | 'completed';
+type TabKey =
+  | 'all'
+  | 'pending'
+  | 'in_transit'
+  | 'upcoming'
+  | 'cancelled'
+  | 'completed';
 
 interface MyQuotesFilterBarProps {
   searchQuery: string;

@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   roleButtonsRow: {
     flexDirection: 'row',
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.md,
     padding: 4,
     justifyContent: 'space-between',

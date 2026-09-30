@@ -38,8 +38,8 @@ const PreferredAreasHeader: React.FC<PreferredAreasHeaderProps> = ({
       </View>
 
       <AppText style={styles.heroSubText}>
-        Set up to {maxAreas} operational zones to receive matched shipment notifications
-        in your active coverage regions.
+        Set up to {maxAreas} operational zones to receive matched shipment
+        notifications in your active coverage regions.
       </AppText>
 
       {/* STEP / SLOT CAPSULES */}

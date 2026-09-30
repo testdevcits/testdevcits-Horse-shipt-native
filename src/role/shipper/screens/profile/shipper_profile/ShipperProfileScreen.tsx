@@ -233,7 +233,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               <View
                 style={[
                   styles.menuIconBox,
-                  { backgroundColor: COLORS.redLight || '#FEE2E2' },
+                  { backgroundColor: COLORS.redLight },
                 ]}
               >
                 <AppIcon

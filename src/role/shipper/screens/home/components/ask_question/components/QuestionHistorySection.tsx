@@ -43,10 +43,7 @@ const QuestionHistorySection: React.FC<QuestionHistorySectionProps> = ({
 
           <AppText style={styles.pendingAskedDateText}>
             Asked on{' '}
-            {formatDate(
-              answeredQuestion.createdAt,
-              'MM/DD/YYYY [at] h:mm A',
-            )}
+            {formatDate(answeredQuestion.createdAt, 'MM/DD/YYYY [at] h:mm A')}
           </AppText>
         </View>
 
@@ -67,11 +64,7 @@ const QuestionHistorySection: React.FC<QuestionHistorySectionProps> = ({
             </View>
 
             <View style={styles.answeredBadge}>
-              <AppIcon
-                name="Check"
-                size={12}
-                color={COLORS.emeraldDark}
-              />
+              <AppIcon name="Check" size={12} color={COLORS.emeraldDark} />
               <AppText style={styles.answeredBadgeText}>Answered</AppText>
             </View>
           </View>
@@ -84,10 +77,7 @@ const QuestionHistorySection: React.FC<QuestionHistorySectionProps> = ({
 
           <AppText style={styles.responseDateText}>
             Answered on{' '}
-            {formatDate(
-              answeredQuestion.answeredAt,
-              'MM/DD/YYYY [at] h:mm A',
-            )}
+            {formatDate(answeredQuestion.answeredAt, 'MM/DD/YYYY [at] h:mm A')}
           </AppText>
         </View>
 
@@ -125,10 +115,7 @@ const QuestionHistorySection: React.FC<QuestionHistorySectionProps> = ({
 
           <AppText style={styles.pendingAskedDateText}>
             Asked on{' '}
-            {formatDate(
-              pendingQuestion.createdAt,
-              'MM/DD/YYYY [at] h:mm A',
-            )}
+            {formatDate(pendingQuestion.createdAt, 'MM/DD/YYYY [at] h:mm A')}
           </AppText>
         </View>
 
@@ -136,11 +123,7 @@ const QuestionHistorySection: React.FC<QuestionHistorySectionProps> = ({
         <View style={styles.statusCard}>
           <View style={styles.statusHeaderRow}>
             <View style={styles.statusIconSquare}>
-              <AppIcon
-                name="Clock"
-                size={16}
-                color={COLORS.amberWarning}
-              />
+              <AppIcon name="Clock" size={16} color={COLORS.amberWarning} />
             </View>
             <AppText style={styles.statusHeaderLabel}>STATUS</AppText>
           </View>

@@ -63,16 +63,16 @@ const SubscriptionTab: React.FC<Props> = ({
   // Derived status values using GET /api/shipper/stripe/subscription/status
   const isSubActive = subscriptionStatusData
     ? !!(
-      subscriptionStatusData.isActive ||
-      (subscriptionStatusData.hasAccess &&
-        !subscriptionStatusData.needsSubscription)
-    )
+        subscriptionStatusData.isActive ||
+        (subscriptionStatusData.hasAccess &&
+          !subscriptionStatusData.needsSubscription)
+      )
     : true;
 
   const isSubTrial = subscriptionStatusData
     ? !!(
-      subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing
-    )
+        subscriptionStatusData.trialActive || subscriptionStatusData.isTrialing
+      )
     : isTrialInList;
 
   const isCancelScheduled =
@@ -118,7 +118,7 @@ const SubscriptionTab: React.FC<Props> = ({
         showSuccessToast(
           'Subscription Canceled',
           res?.message ||
-          'Subscription will be canceled at the end of billing cycle.',
+            'Subscription will be canceled at the end of billing cycle.',
         );
         setCancellationResult({
           cancelAtPeriodEnd: true,

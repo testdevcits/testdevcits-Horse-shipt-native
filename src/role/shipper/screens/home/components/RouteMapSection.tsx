@@ -16,118 +16,91 @@ interface RouteMapSectionProps {
   onCloseMap: () => void;
 }
 
-export const RouteMapSection: React.FC<RouteMapSectionProps> = memo(({
-  selectedMapShipment,
-  mapRef,
-  getRegionForShipment,
-  onNavigateMapDirection,
-  onCloseMap,
-}) => {
-  if (!selectedMapShipment) return null;
+export const RouteMapSection: React.FC<RouteMapSectionProps> = memo(
+  ({
+    selectedMapShipment,
+    mapRef,
+    getRegionForShipment,
+    onNavigateMapDirection,
+    onCloseMap,
+  }) => {
+    if (!selectedMapShipment) return null;
 
-  return (
-    <View style={styles.routeMapCard}>
-      <View style={styles.routeMapHeader}>
-        <View>
-          <AppText style={styles.routeMapTitle}>Shipment Route Map</AppText>
-          <AppText style={styles.routeMapShipmentCode}>
-            {selectedMapShipment?.shipmentCode}
-          </AppText>
+    return (
+      <View style={styles.routeMapCard}>
+        <View style={styles.routeMapHeader}>
+          <View>
+            <AppText style={styles.routeMapTitle}>Shipment Route Map</AppText>
+            <AppText style={styles.routeMapShipmentCode}>
+              {selectedMapShipment?.shipmentCode}
+            </AppText>
+          </View>
+          <Pressable
+            onPress={onNavigateMapDirection}
+            style={styles.viewInFullScreenBtn}
+          >
+            <AppText style={styles.viewInFullScreenBtnText}>
+              View in Full Map
+            </AppText>
+          </Pressable>
         </View>
-        <Pressable
-          onPress={onNavigateMapDirection}
-          style={styles.viewInFullScreenBtn}
-        >
-          <AppText style={styles.viewInFullScreenBtnText}>
-            View in Full Map
-          </AppText>
-        </Pressable>
-      </View>
 
-      {/* Map Preview Container */}
-      <View style={styles.mapWrapper}>
-        <MapView
-          ref={mapRef}
-          provider={PROVIDER_GOOGLE}
-          style={styles.mapView}
-          initialRegion={getRegionForShipment(selectedMapShipment)}
-          showsUserLocation
-        >
-          {selectedMapShipment?.pickupCoords && (
-            <Marker
-              coordinate={{
-                latitude:
-                  selectedMapShipment?.pickupCoords?.lat ||
-                  selectedMapShipment?.pickupCoords?.latitude ||
-                  22.745,
-                longitude:
-                  selectedMapShipment?.pickupCoords?.lng ||
-                  selectedMapShipment?.pickupCoords?.longitude ||
-                  75.892,
-              }}
-              title="Pickup"
-              description={selectedMapShipment?.pickupLocation}
-            >
-              <View style={styles.markerCircleGreen}>
-                <AppIcon name={'MapPin'} size={14} color={COLORS.white} />
-              </View>
-            </Marker>
-          )}
+        {/* Map Preview Container */}
+        <View style={styles.mapWrapper}>
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={styles.mapView}
+            initialRegion={getRegionForShipment(selectedMapShipment)}
+            showsUserLocation
+          >
+            {selectedMapShipment?.pickupCoords && (
+              <Marker
+                coordinate={{
+                  latitude:
+                    selectedMapShipment?.pickupCoords?.lat ||
+                    selectedMapShipment?.pickupCoords?.latitude ||
+                    22.745,
+                  longitude:
+                    selectedMapShipment?.pickupCoords?.lng ||
+                    selectedMapShipment?.pickupCoords?.longitude ||
+                    75.892,
+                }}
+                title="Pickup"
+                description={selectedMapShipment?.pickupLocation}
+              >
+                <View style={styles.markerCircleGreen}>
+                  <AppIcon name={'MapPin'} size={14} color={COLORS.white} />
+                </View>
+              </Marker>
+            )}
 
-          {selectedMapShipment?.deliveryCoords && (
-            <Marker
-              coordinate={{
-                latitude:
-                  selectedMapShipment?.deliveryCoords?.lat ||
-                  selectedMapShipment?.deliveryCoords?.latitude ||
-                  23.838,
-                longitude:
-                  selectedMapShipment?.deliveryCoords?.lng ||
-                  selectedMapShipment?.deliveryCoords?.longitude ||
-                  78.737,
-              }}
-              title="Delivery"
-              description={selectedMapShipment?.deliveryLocation}
-            >
-              <View style={styles.markerCircleRed}>
-                <AppIcon name={'MapPin'} size={14} color={COLORS.white} />
-              </View>
-            </Marker>
-          )}
+            {selectedMapShipment?.deliveryCoords && (
+              <Marker
+                coordinate={{
+                  latitude:
+                    selectedMapShipment?.deliveryCoords?.lat ||
+                    selectedMapShipment?.deliveryCoords?.latitude ||
+                    23.838,
+                  longitude:
+                    selectedMapShipment?.deliveryCoords?.lng ||
+                    selectedMapShipment?.deliveryCoords?.longitude ||
+                    78.737,
+                }}
+                title="Delivery"
+                description={selectedMapShipment?.deliveryLocation}
+              >
+                <View style={styles.markerCircleRed}>
+                  <AppIcon name={'MapPin'} size={14} color={COLORS.white} />
+                </View>
+              </Marker>
+            )}
 
-          {selectedMapShipment?.pickupCoords &&
-            selectedMapShipment?.deliveryCoords && (
-              <>
-                <MapViewDirections
-                  origin={{
-                    latitude:
-                      selectedMapShipment?.pickupCoords?.lat ||
-                      selectedMapShipment?.pickupCoords?.latitude ||
-                      22.745,
-                    longitude:
-                      selectedMapShipment?.pickupCoords?.lng ||
-                      selectedMapShipment?.pickupCoords?.longitude ||
-                      75.892,
-                  }}
-                  destination={{
-                    latitude:
-                      selectedMapShipment?.deliveryCoords?.lat ||
-                      selectedMapShipment?.deliveryCoords?.latitude ||
-                      23.838,
-                    longitude:
-                      selectedMapShipment?.deliveryCoords?.lng ||
-                      selectedMapShipment?.deliveryCoords?.longitude ||
-                      78.737,
-                  }}
-                  apikey={GOOGLE_MAPS_APIKEY}
-                  strokeWidth={4}
-                  strokeColor={COLORS.brandBrown || COLORS.primary}
-                  lineDashPattern={[0]}
-                  onError={err => console.log('MapViewDirections Error:', err)}
-                />
-                <Polyline
-                  coordinates={[
-                    {
+            {selectedMapShipment?.pickupCoords &&
+              selectedMapShipment?.deliveryCoords && (
+                <>
+                  <MapViewDirections
+                    origin={{
                       latitude:
                         selectedMapShipment?.pickupCoords?.lat ||
                         selectedMapShipment?.pickupCoords?.latitude ||
@@ -136,8 +109,8 @@ export const RouteMapSection: React.FC<RouteMapSectionProps> = memo(({
                         selectedMapShipment?.pickupCoords?.lng ||
                         selectedMapShipment?.pickupCoords?.longitude ||
                         75.892,
-                    },
-                    {
+                    }}
+                    destination={{
                       latitude:
                         selectedMapShipment?.deliveryCoords?.lat ||
                         selectedMapShipment?.deliveryCoords?.latitude ||
@@ -146,23 +119,54 @@ export const RouteMapSection: React.FC<RouteMapSectionProps> = memo(({
                         selectedMapShipment?.deliveryCoords?.lng ||
                         selectedMapShipment?.deliveryCoords?.longitude ||
                         78.737,
-                    },
-                  ]}
-                  strokeColor={COLORS.primary}
-                  strokeWidth={3}
-                  lineDashPattern={[6, 6]}
-                />
-              </>
-            )}
-        </MapView>
-      </View>
+                    }}
+                    apikey={GOOGLE_MAPS_APIKEY}
+                    strokeWidth={4}
+                    strokeColor={COLORS.brandBrown || COLORS.primary}
+                    lineDashPattern={[0]}
+                    onError={err =>
+                      console.log('MapViewDirections Error:', err)
+                    }
+                  />
+                  <Polyline
+                    coordinates={[
+                      {
+                        latitude:
+                          selectedMapShipment?.pickupCoords?.lat ||
+                          selectedMapShipment?.pickupCoords?.latitude ||
+                          22.745,
+                        longitude:
+                          selectedMapShipment?.pickupCoords?.lng ||
+                          selectedMapShipment?.pickupCoords?.longitude ||
+                          75.892,
+                      },
+                      {
+                        latitude:
+                          selectedMapShipment?.deliveryCoords?.lat ||
+                          selectedMapShipment?.deliveryCoords?.latitude ||
+                          23.838,
+                        longitude:
+                          selectedMapShipment?.deliveryCoords?.lng ||
+                          selectedMapShipment?.deliveryCoords?.longitude ||
+                          78.737,
+                      },
+                    ]}
+                    strokeColor={COLORS.primary}
+                    strokeWidth={3}
+                    lineDashPattern={[6, 6]}
+                  />
+                </>
+              )}
+          </MapView>
+        </View>
 
-      {/* Close Button */}
-      <TouchableOpacity style={styles.closeMapBtn} onPress={onCloseMap}>
-        <AppText style={styles.closeMapBtnText}>Close</AppText>
-      </TouchableOpacity>
-    </View>
-  );
-});
+        {/* Close Button */}
+        <TouchableOpacity style={styles.closeMapBtn} onPress={onCloseMap}>
+          <AppText style={styles.closeMapBtnText}>Close</AppText>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
 export default RouteMapSection;
