@@ -7,22 +7,24 @@ import React, {
   Suspense,
 } from 'react';
 import { ScrollView, View, TouchableOpacity, Share } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
+import MapView from 'react-native-maps';
 
-import { COLORS, ICON_SIZE } from '../../../../../constants';
-import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
-
+import { COLORS } from '../../../../../constants';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import { AppHeader, AppText } from '../../../../../components';
+import { AppHeader } from '../../../../../components';
 import shipperService from '../../../../../api/services/shipperService';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import styles from './styles.QuoteReceivedDetails';
+
+// Sub-components
 import { HorseDetailCard } from './components/HorseDetailCard';
 import { CustomerInfoSection } from './components/CustomerInfoSection';
 import { QuoteHeroCard } from './components/QuoteHeroCard';
 import { QuoteRouteCard } from './components/QuoteRouteCard';
+import { QuoteMapCard } from './components/QuoteMapCard';
+import { QuoteSummaryCard } from './components/QuoteSummaryCard';
+import { QuoteActionBar } from './components/QuoteActionBar';
 
 const AskQuestionModal = lazy(
   () => import('../../home/components/ask_question/AskQuestionModal'),
@@ -215,7 +217,6 @@ const calculateHaversine = (
   const km = R * c;
   const miles = km * 0.621371;
 
-  // Assuming average driving speed 60 km/h (1 km / min)
   const totalMins = Math.max(1, Math.round(km));
   const hrs = Math.floor(totalMins / 60);
   const mins = totalMins % 60;
@@ -479,154 +480,29 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
         />
 
         {/* Interactive Map Card with Distance & Time Calculation */}
-        <View style={styles.mapCardContainer}>
-          <View style={styles.mapHeaderRow}>
-            <View style={styles.mapHeaderInfo}>
-              <AppIcon
-                name="Route"
-                size={ICON_SIZE.sm}
-                color={COLORS.primary}
-              />
-              <AppText style={styles.mapHeaderTitle}>
-                Interactive Route & Distance
-              </AppText>
-            </View>
-            <TouchableOpacity
-              style={styles.recenterBtn}
-              onPress={fitToRoute}
-              activeOpacity={0.8}
-            >
-              <AppIcon name="LocateFixed" size={14} color={COLORS.primary} />
-              <AppText style={styles.recenterText}>Fit Route</AppText>
-            </TouchableOpacity>
-          </View>
+        <QuoteMapCard
+          mapRef={mapRef}
+          mapRegion={mapRegion}
+          pLat={pLat}
+          pLng={pLng}
+          dLat={dLat}
+          dLng={dLng}
+          fitToRoute={fitToRoute}
+          handleDirectionsReady={handleDirectionsReady}
+          calculatedDistance={calculatedDistance}
+          calculatedDuration={calculatedDuration}
+          haversine={haversine}
+        />
 
-          <View style={styles.mapWrapper}>
-            <MapView
-              ref={mapRef}
-              provider={PROVIDER_GOOGLE}
-              style={styles.mapView}
-              initialRegion={mapRegion}
-              showsUserLocation={false}
-              showsMyLocationButton={false}
-              onMapReady={fitToRoute}
-            >
-              <Marker
-                coordinate={{ latitude: pLat, longitude: pLng }}
-                title="Pickup Location"
-              >
-                <View
-                  style={[
-                    styles.markerBadge,
-                    { backgroundColor: COLORS.greenSuccess },
-                  ]}
-                >
-                  <AppIcon name="PackageCheck" size={14} color={COLORS.white} />
-                </View>
-              </Marker>
-
-              <Marker
-                coordinate={{ latitude: dLat, longitude: dLng }}
-                title="Delivery Location"
-              >
-                <View
-                  style={[
-                    styles.markerBadge,
-                    { backgroundColor: COLORS.primary },
-                  ]}
-                >
-                  <AppIcon name="MapPin" size={14} color={COLORS.white} />
-                </View>
-              </Marker>
-
-              <MapViewDirections
-                origin={{ latitude: pLat, longitude: pLng }}
-                destination={{ latitude: dLat, longitude: dLng }}
-                apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={4}
-                strokeColor={COLORS.primary}
-                optimizeWaypoints={true}
-                onReady={handleDirectionsReady}
-              />
-            </MapView>
-
-            {/* Distance & Duration Live Overlay Card */}
-            <View style={styles.mapStatsCard}>
-              <View style={styles.mapStatItem}>
-                <AppIcon name="Navigation" size={16} color={COLORS.primary} />
-                <View style={styles.mapStatContent}>
-                  <AppText style={styles.mapStatLabel}>
-                    ESTIMATED DISTANCE
-                  </AppText>
-                  <AppText style={styles.mapStatVal}>
-                    {calculatedDistance ||
-                      `${haversine.formattedKm} (${haversine.formattedMiles})`}
-                  </AppText>
-                </View>
-              </View>
-
-              <View style={styles.mapStatDivider} />
-
-              <View style={styles.mapStatItem}>
-                <AppIcon name="Clock" size={16} color={COLORS.primary} />
-                <View style={styles.mapStatContent}>
-                  <AppText style={styles.mapStatLabel}>
-                    ESTIMATED DURATION
-                  </AppText>
-                  <AppText style={styles.mapStatVal}>
-                    {calculatedDuration || haversine.timeStr}
-                  </AppText>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Shipment Summary */}
-        <View style={styles.summaryCard}>
-          <View style={styles.summaryHeader}>
-            <View style={styles.summaryTitleRow}>
-              <View style={styles.smallIconContainer}>
-                <AppIcon
-                  name="Package"
-                  size={ICON_SIZE.sm}
-                  color={COLORS.primary}
-                />
-              </View>
-              <AppText style={styles.summaryTitle}>Shipment Summary</AppText>
-            </View>
-          </View>
-
-          <View style={styles.summaryGrid}>
-            <View style={styles.summaryItem}>
-              <AppText style={styles.summaryLabel}>HORSES</AppText>
-              <AppText style={styles.summaryValue}>
-                {shipment?.numberOfHorses || 1}
-              </AppText>
-            </View>
-
-            <View style={styles.summaryItem}>
-              <AppText style={styles.summaryLabel}>SHIPMENT</AppText>
-              <AppText style={styles.summaryValueSmall} numberOfLines={1}>
-                {shipment?.status ? getStatusLabel(shipment.status) : 'Open'}
-              </AppText>
-            </View>
-
-            <View style={styles.summaryItem}>
-              <AppText style={styles.summaryLabel}>PICKUP</AppText>
-              <AppText style={styles.summaryValueSmall}>
-                {formatDate(pickupDate)}
-              </AppText>
-            </View>
-
-            <View style={styles.summaryItem}>
-              <AppText style={styles.summaryLabel}>DELIVERY</AppText>
-              <AppText style={styles.summaryValueSmall}>
-                {formatDate(deliveryDate)}
-              </AppText>
-            </View>
-          </View>
-        </View>
+        {/* Shipment Summary Card */}
+        <QuoteSummaryCard
+          numberOfHorses={shipment?.numberOfHorses || 1}
+          shipmentStatus={shipment?.status}
+          pickupDate={pickupDate}
+          deliveryDate={deliveryDate}
+          getStatusLabel={getStatusLabel}
+          formatDate={formatDate}
+        />
 
         {/* Horse Details */}
         <HorseDetailCard horse={horse} />
@@ -641,25 +517,10 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
       </ScrollView>
 
       {/* Sticky Bottom Action Bar */}
-      <View style={styles.stickyBottomBar}>
-        <TouchableOpacity
-          style={styles.askQuestionBtn}
-          onPress={handleAskQuestionPress}
-          activeOpacity={0.8}
-        >
-          <AppIcon name="MessageSquare" size={16} color={COLORS.primary} />
-          <AppText style={styles.askQuestionBtnText}>Ask Question</AppText>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.submitOfferBtn}
-          onPress={handleSubmitOfferPress}
-          activeOpacity={0.85}
-        >
-          <AppIcon name="Send" size={16} color={COLORS.white} />
-          <AppText style={styles.submitOfferBtnText}>Submit Offer</AppText>
-        </TouchableOpacity>
-      </View>
+      <QuoteActionBar
+        onAskQuestionPress={handleAskQuestionPress}
+        onSubmitOfferPress={handleSubmitOfferPress}
+      />
 
       {/* Modals with Suspense */}
       <Suspense fallback={null}>

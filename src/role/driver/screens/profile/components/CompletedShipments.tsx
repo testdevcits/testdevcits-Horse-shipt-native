@@ -62,15 +62,23 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
               shipmentData?.pickupLocation || 'Pickup location unavailable';
             const deliveryLoc =
               shipmentData?.deliveryLocation || 'Delivery location unavailable';
-            const shipmentId = item?._id || shipmentData?._id || `shipment-${index}`;
-            const shortId = shipmentId ? `#${shipmentId.slice(0, 8)}` : `#MANIFEST`;
+            const shipmentId =
+              item?._id || shipmentData?._id || `shipment-${index}`;
+            const shortId = shipmentId
+              ? `#${shipmentId.slice(0, 8)}`
+              : `#MANIFEST`;
 
             const firstHorse: Horse | undefined = shipmentData?.horses?.[0];
             const horsePhotoUrl = firstHorse?.photo?.url;
 
             const vehicleNumber = item?.vehicle?.vehicleNumber || 'NA';
-            const priceDisplay = item?.totalPrice != null ? `$${item.totalPrice.toLocaleString()}` : '$0';
-            const paymentStatusText = item?.paymentStatus ? item.paymentStatus.toUpperCase() : 'NA';
+            const priceDisplay =
+              item?.totalPrice != null
+                ? `$${item.totalPrice.toLocaleString()}`
+                : '$0';
+            const paymentStatusText = item?.paymentStatus
+              ? item.paymentStatus.toUpperCase()
+              : 'NA';
             const notesText = item?.notes?.trim() || firstHorse?.notes?.trim();
 
             return (
@@ -78,7 +86,9 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                 key={shipmentId}
                 style={styles.shipmentCard}
                 activeOpacity={0.85}
-                onPress={() => navigation.navigate('ShipmentDetails', { shipment: item })}
+                onPress={() =>
+                  navigation.navigate('ShipmentDetails', { shipment: item })
+                }
               >
                 {/* Header Row: ID, Status, Price */}
                 <View style={styles.cardHeader}>
@@ -91,8 +101,12 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                   </View>
 
                   <View style={styles.priceBadge}>
-                    <AppText style={styles.priceAmountText}>{priceDisplay}</AppText>
-                    <AppText style={styles.priceStatusText}>{paymentStatusText}</AppText>
+                    <AppText style={styles.priceAmountText}>
+                      {priceDisplay}
+                    </AppText>
+                    <AppText style={styles.priceStatusText}>
+                      {paymentStatusText}
+                    </AppText>
                   </View>
                 </View>
 
@@ -109,7 +123,8 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                       </AppText>
                       {shipmentData?.pickupCoords && (
                         <AppText style={styles.routeCoords}>
-                          {shipmentData.pickupCoords.latitude?.toFixed(3)}° N, {shipmentData.pickupCoords.longitude?.toFixed(3)}° E
+                          {shipmentData.pickupCoords.latitude?.toFixed(3)}° N,{' '}
+                          {shipmentData.pickupCoords.longitude?.toFixed(3)}° E
                         </AppText>
                       )}
                     </View>
@@ -133,7 +148,8 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                       </AppText>
                       {shipmentData?.deliveryCoords && (
                         <AppText style={styles.routeCoords}>
-                          {shipmentData.deliveryCoords.latitude?.toFixed(3)}° N, {shipmentData.deliveryCoords.longitude?.toFixed(3)}° E
+                          {shipmentData.deliveryCoords.latitude?.toFixed(3)}° N,{' '}
+                          {shipmentData.deliveryCoords.longitude?.toFixed(3)}° E
                         </AppText>
                       )}
                     </View>
@@ -162,7 +178,9 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                           firstHorse.breed,
                           firstHorse.sex,
                           firstHorse.age ? `${firstHorse.age}yo` : null,
-                          firstHorse.barnName ? `Barn: ${firstHorse.barnName}` : null,
+                          firstHorse.barnName
+                            ? `Barn: ${firstHorse.barnName}`
+                            : null,
                         ]
                           .filter(Boolean)
                           .join(' • ')}
@@ -184,7 +202,11 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                 {/* Special Care Notes Banner */}
                 {notesText ? (
                   <View style={styles.notesBanner}>
-                    <AppIcon name="Info" size={14} color={COLORS.amberPrimary} />
+                    <AppIcon
+                      name="Info"
+                      size={14}
+                      color={COLORS.amberPrimary}
+                    />
                     <AppText style={styles.notesText} numberOfLines={2}>
                       {notesText}
                     </AppText>
@@ -199,6 +221,4 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
   );
 };
 
-
 export default memo(CompletedShipments);
-

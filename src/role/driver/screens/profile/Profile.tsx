@@ -200,7 +200,7 @@ const Profile = () => {
         </View>
 
         {/* Completed Shipments Section */}
-      
+
         <CompletedShipments
           completedShipments={completedShipments}
           completedCount={completedCount}

@@ -22,13 +22,9 @@ const DriverNavigator = () => {
         name="DeliveryVerification"
         component={DeliveryVerificationScreen}
       />
-      <Stack.Screen
-        name="ShipmentDetails"
-        component={ShipmentDetailsScreen}
-      />
+      <Stack.Screen name="ShipmentDetails" component={ShipmentDetailsScreen} />
     </Stack.Navigator>
   );
 };
 
 export default DriverNavigator;
-

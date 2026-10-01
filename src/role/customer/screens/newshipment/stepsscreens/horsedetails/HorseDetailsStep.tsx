@@ -350,9 +350,9 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
               isFormValid
                 ? onNext()
                 : showInfoToast(
-                  'Missing Info',
-                  'Please fill in registered name, breed, sex, and stall size for all horses.',
-                )
+                    'Missing Info',
+                    'Please fill in registered name, breed, sex, and stall size for all horses.',
+                  )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>

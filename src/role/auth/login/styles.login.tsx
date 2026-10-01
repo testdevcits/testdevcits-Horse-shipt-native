@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? 52
         : StatusBar.currentHeight
-          ? StatusBar.currentHeight + 12
-          : 36,
+        ? StatusBar.currentHeight + 12
+        : 36,
     right: SPACING.lg,
     zIndex: 99,
     flexDirection: 'row',

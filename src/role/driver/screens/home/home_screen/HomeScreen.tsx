@@ -147,7 +147,7 @@ const HomeScreen = ({ navigation }: any) => {
         {activeShipment && (
           <View style={styles.bottomButtonContainer}>
             {activeShipment?.tripStatus === 'inTransit' ||
-              activeShipment?.tripStatus === 'started' ? (
+            activeShipment?.tripStatus === 'started' ? (
               <Button
                 title="Complete Shipment"
                 onPress={() =>

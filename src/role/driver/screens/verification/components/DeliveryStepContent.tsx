@@ -31,12 +31,10 @@ const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
           <View style={styles.middleIconBox}>
             <AppIcon name="Send" size={26} color={COLORS.primary} />
           </View>
-          <AppText style={styles.mainActionHeading}>
-            Send Delivery Code
-          </AppText>
+          <AppText style={styles.mainActionHeading}>Send Delivery Code</AppText>
           <AppText style={styles.mainActionDescription}>
-            Send a 6-digit verification code to the customer to confirm you
-            have safely arrived at the delivery location.
+            Send a 6-digit verification code to the customer to confirm you have
+            safely arrived at the delivery location.
           </AppText>
 
           {otpSentSuccess && (
@@ -59,9 +57,7 @@ const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
           <View style={styles.middleIconBox}>
             <AppIcon name="Smartphone" size={26} color={COLORS.primary} />
           </View>
-          <AppText style={styles.mainActionHeading}>
-            Enter 6-Digit Code
-          </AppText>
+          <AppText style={styles.mainActionHeading}>Enter 6-Digit Code</AppText>
           <AppText style={styles.mainActionDescription}>
             Ask the recipient for the 6-digit verification code sent to their
             phone number.
@@ -117,9 +113,7 @@ const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
             style={{ width: 130, height: 130, marginBottom: 12 }}
             resizeMode="contain"
           />
-          <AppText style={styles.mainActionHeading}>
-            Delivery Verified!
-          </AppText>
+          <AppText style={styles.mainActionHeading}>Delivery Verified!</AppText>
           <AppText style={styles.mainActionDescription}>
             The customer PIN has been verified successfully. Click below to
             complete this shipment manifest.

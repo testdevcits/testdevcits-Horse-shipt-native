@@ -1,8 +1,20 @@
 // src/types/driver.ts
 
 export type PaymentStatus = 'paid' | 'unpaid' | 'pending' | 'refunded' | string;
-export type TripStatus = 'completed' | 'inTransit' | 'loading' | 'delivered' | 'accepted' | 'cancelled' | string;
-export type ShipmentStatus = 'accepted' | 'pending' | 'rejected' | 'cancelled' | string;
+export type TripStatus =
+  | 'completed'
+  | 'inTransit'
+  | 'loading'
+  | 'delivered'
+  | 'accepted'
+  | 'cancelled'
+  | string;
+export type ShipmentStatus =
+  | 'accepted'
+  | 'pending'
+  | 'rejected'
+  | 'cancelled'
+  | string;
 export type TransportType = 'Trucking' | 'Air' | 'Sea' | string;
 export type StallSize = '1/2 Box' | 'Full Box' | '1.5 Box' | string;
 export type HorseSex = 'Mare' | 'Stallion' | 'Gelding' | string;
@@ -169,4 +181,3 @@ export interface LocationUpdateResponse {
   };
   tripActive: boolean;
 }
-

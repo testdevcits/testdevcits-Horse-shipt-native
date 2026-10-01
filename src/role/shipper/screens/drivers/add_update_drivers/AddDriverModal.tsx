@@ -127,9 +127,9 @@ const AddDriverModal = ({
         showSuccessToast(
           'Success',
           res?.message ||
-          (driverToEdit
-            ? 'Driver updated successfully'
-            : 'Driver added successfully'),
+            (driverToEdit
+              ? 'Driver updated successfully'
+              : 'Driver added successfully'),
         );
         resetForm();
         onSuccess();

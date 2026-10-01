@@ -91,9 +91,7 @@ const CustomDriverTabBar = ({ state, navigation }: any) => {
                     />
                   );
                 case 'Location':
-                  return (
-                    <AppIcon name="Navigation" size={22} color={color} />
-                  );
+                  return <AppIcon name="Navigation" size={22} color={color} />;
                 case 'Profile':
                   return (
                     <Image
@@ -127,10 +125,7 @@ const CustomDriverTabBar = ({ state, navigation }: any) => {
                 key={index}
                 onPress={onPress}
                 activeOpacity={0.7}
-                style={[
-                  styles.tabItem,
-                  isFocused && styles.tabItemActive,
-                ]}
+                style={[styles.tabItem, isFocused && styles.tabItemActive]}
               >
                 <View style={styles.iconWrapper}>
                   {renderIcon(isFocused ? activeColor : inactiveColor)}
@@ -138,7 +133,9 @@ const CustomDriverTabBar = ({ state, navigation }: any) => {
                 <AppText
                   style={[
                     styles.tabLabel,
-                    isFocused ? styles.tabLabelFocused : styles.tabLabelInactive,
+                    isFocused
+                      ? styles.tabLabelFocused
+                      : styles.tabLabelInactive,
                   ]}
                 >
                   {getTabLabel()}
@@ -236,4 +233,3 @@ const styles = StyleSheet.create({
 });
 
 export default DriverTabs;
-

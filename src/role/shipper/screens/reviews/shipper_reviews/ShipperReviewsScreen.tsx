@@ -34,7 +34,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
     onRefresh,
   } = useShipperReviews({ initialReviews, initialProfile });
 
-  const [selectedFilter, setSelectedFilter] = useState<'all' | '5' | '4' | 'low'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<
+    'all' | '5' | '4' | 'low'
+  >('all');
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const getInitials = (name: string) => {
@@ -60,7 +62,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
     return reviews;
   }, [reviews, selectedFilter]);
 
-  const ratingNumber = typeof avgRating === 'number' ? avgRating : parseFloat(avgRating) || 5.0;
+  const ratingNumber =
+    typeof avgRating === 'number' ? avgRating : parseFloat(avgRating) || 5.0;
 
   const renderHeader = () => (
     <>
@@ -92,7 +95,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
               </View>
               <AppText style={styles.summarySubText}>
                 Based on {totalReviewsCount}{' '}
-                {totalReviewsCount === 1 ? 'customer review' : 'customer reviews'}
+                {totalReviewsCount === 1
+                  ? 'customer review'
+                  : 'customer reviews'}
               </AppText>
             </View>
           </View>
@@ -142,7 +147,12 @@ const ShipperReviewsScreen = ({ route }: any) => {
               selectedFilter === '5' && styles.filterChipTextActive,
             ]}
           >
-            5 Stars ({reviews.filter((r: any) => Math.round(r?.rating || 5) === 5).length})
+            5 Stars (
+            {
+              reviews.filter((r: any) => Math.round(r?.rating || 5) === 5)
+                .length
+            }
+            )
           </AppText>
         </TouchableOpacity>
 
@@ -160,7 +170,12 @@ const ShipperReviewsScreen = ({ route }: any) => {
               selectedFilter === '4' && styles.filterChipTextActive,
             ]}
           >
-            4 Stars ({reviews.filter((r: any) => Math.round(r?.rating || 5) === 4).length})
+            4 Stars (
+            {
+              reviews.filter((r: any) => Math.round(r?.rating || 5) === 4)
+                .length
+            }
+            )
           </AppText>
         </TouchableOpacity>
 
@@ -178,7 +193,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
               selectedFilter === 'low' && styles.filterChipTextActive,
             ]}
           >
-            3 Stars & Below ({reviews.filter((r: any) => Math.round(r?.rating || 5) <= 3).length})
+            3 Stars & Below (
+            {reviews.filter((r: any) => Math.round(r?.rating || 5) <= 3).length}
+            )
           </AppText>
         </TouchableOpacity>
       </ScrollView>
@@ -268,7 +285,9 @@ const ShipperReviewsScreen = ({ route }: any) => {
                   size={14}
                   color={COLORS.warning || '#F59E0B'}
                   fill={
-                    s <= itemRating ? COLORS.warning || '#F59E0B' : 'transparent'
+                    s <= itemRating
+                      ? COLORS.warning || '#F59E0B'
+                      : 'transparent'
                   }
                 />
               ))}
@@ -277,7 +296,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
         </View>
 
         <AppText style={styles.reviewText}>
-          {item?.reviewText || 'Great experience working together! Highly recommended.'}
+          {item?.reviewText ||
+            'Great experience working together! Highly recommended.'}
         </AppText>
 
         <View style={styles.cardFooterRow}>

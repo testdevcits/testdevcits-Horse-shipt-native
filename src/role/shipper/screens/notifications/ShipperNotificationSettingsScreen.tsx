@@ -64,7 +64,11 @@ const ShipperNotificationSettingsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Notification Preferences" showProfileImage={false} showBack={true} />
+      <AppHeader
+        title="Notification Preferences"
+        showProfileImage={false}
+        showBack={true}
+      />
 
       {loading && !refreshing ? (
         <SettingsSkeleton />

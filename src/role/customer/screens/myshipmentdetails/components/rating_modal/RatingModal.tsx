@@ -74,8 +74,8 @@ const RatingModal = ({
       showErrorToast(
         'Error',
         error?.response?.data?.message ||
-        error?.message ||
-        'Failed to submit review.',
+          error?.message ||
+          'Failed to submit review.',
       );
     } finally {
       setSubmitting(false);

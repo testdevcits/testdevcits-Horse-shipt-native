@@ -51,7 +51,10 @@ const ProgressStepper: React.FC<ProgressStepperProps> = ({
                 styles.tabItem,
                 isActive && styles.tabItemActive,
                 !isActive && isCompleted && styles.tabItemCompleted,
-                !isActive && !isCompleted && !isUnlocked && styles.tabItemLocked,
+                !isActive &&
+                  !isCompleted &&
+                  !isUnlocked &&
+                  styles.tabItemLocked,
               ]}
             >
               <View
@@ -143,8 +146,8 @@ const DeliveryVerificationScreen = () => {
               {activeTab === 1
                 ? 'Send OTP'
                 : activeTab === 2
-                  ? 'Verify Code'
-                  : 'Complete Manifest'}
+                ? 'Verify Code'
+                : 'Complete Manifest'}
             </AppText>
           </View>
         </View>

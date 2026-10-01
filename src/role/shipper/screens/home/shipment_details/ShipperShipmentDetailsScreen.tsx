@@ -1,20 +1,20 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, ScrollView, TouchableOpacity, Image, Share } from 'react-native';
+import { View, ScrollView, Share } from 'react-native';
 
 import { formatDate } from '../../../../../utils/helpers';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { AppHeader, AppText } from '../../../../../components';
-import { COLORS } from '../../../../../constants';
-import imageIndex from '../../../../../assets/images/imageIndex';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
 import ConnectBankModal from '../components/ConnectBankModal';
-import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import { ShipmentDetailMapCard } from './components/ShipmentDetailMapCard';
 import { ShipmentEquineListCard } from './components/ShipmentEquineListCard';
+import { ShipperHeroBannerCard } from './components/ShipperHeroBannerCard';
+import { ShipperRouteInfoCard } from './components/ShipperRouteInfoCard';
+import { ShipperCtaActionCard } from './components/ShipperCtaActionCard';
 
 const AskQuestionModal = lazy(
   () => import('../components/ask_question/AskQuestionModal'),
@@ -236,70 +236,19 @@ const ShipperShipmentDetailsScreen = () => {
         </View>
 
         {/* 1. Hero Horse Banner Card */}
-        <View style={styles.heroCard}>
-          <View style={styles.heroBannerContainer}>
-            {horsePhoto ? (
-              <Image
-                source={{ uri: horsePhoto }}
-                style={styles.heroBannerImage}
-              />
-            ) : (
-              <Image
-                source={imageIndex?.Banner}
-                style={styles.heroBannerImage}
-              />
-            )}
-            <View style={styles.heroBannerBadge}>
-              <AppText style={styles.heroBannerBadgeText}>
-                {(shipment?.status || 'Not Available').replace(/_/g, ' ')}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.heroBody}>
-            <View style={styles.horseCountTag}>
-              <AppText style={styles.horseCountTagText}>
-                Horse {shipment?.horses?.length || '0'}
-              </AppText>
-            </View>
-
-            <AppText style={styles.heroTitle}>
-              {heroRegisteredName} ( {heroBarnName} )
-            </AppText>
-            <AppText style={styles.heroSubtitle}>
-              {heroBreed} • {heroAge} yrs • {heroSex} • {heroColour}
-            </AppText>
-            <AppText style={styles.shipmentCodeText}>
-              {shipment?.shipmentCode}
-            </AppText>
-
-            <View style={styles.customerRow}>
-              <AppText style={styles.customerNameText}>
-                Customer: {shipment?.customer?.name || 'Not Available'}
-              </AppText>
-              <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
-                <AppIcon name="Share2" size={14} color={COLORS.textPrimary} />
-              </TouchableOpacity>
-            </View>
-
-            {/* Date Cards Row */}
-            <View style={styles.dateCardsRow}>
-              <View style={styles.dateCard}>
-                <AppText style={styles.dateCardLabel}>PICKUP</AppText>
-                <AppText style={styles.dateCardValue}>
-                  {pickupDateFormatted}
-                </AppText>
-              </View>
-
-              <View style={styles.dateCard}>
-                <AppText style={styles.dateCardLabel}>DELIVERY</AppText>
-                <AppText style={styles.dateCardValue}>
-                  {deliveryDateFormatted}
-                </AppText>
-              </View>
-            </View>
-          </View>
-        </View>
+        <ShipperHeroBannerCard
+          shipment={shipment}
+          horsePhoto={horsePhoto}
+          heroRegisteredName={heroRegisteredName}
+          heroBarnName={heroBarnName}
+          heroBreed={heroBreed}
+          heroAge={heroAge}
+          heroSex={heroSex}
+          heroColour={heroColour}
+          pickupDateFormatted={pickupDateFormatted}
+          deliveryDateFormatted={deliveryDateFormatted}
+          onShare={handleShare}
+        />
 
         {/* 2. Shipment Route Map Card */}
         <ShipmentDetailMapCard
@@ -314,103 +263,13 @@ const ShipperShipmentDetailsScreen = () => {
           navigation={navigation}
         />
 
-        {/* 3. 4-Grid Spec Cards */}
-        <View style={styles.gridContainer}>
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>DISTANCE</AppText>
-              <AppText style={styles.specStatValue}>{distanceMiles} mi</AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>HORSES</AppText>
-              <AppText style={styles.specStatValue}>
-                {shipment?.numberOfHorses || 1}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
-            </View>
-          </View>
-        </View>
-
-        {/* 4. Route Information Card */}
-        <View style={styles.routeInfoCard}>
-          <View style={styles.cardTitleRow}>
-            <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
-            <AppText style={styles.cardHeaderTitle}>Route Information</AppText>
-          </View>
-
-          <View style={styles.timelineContainer}>
-            {/* Pickup Node */}
-            <View style={styles.timelineRow}>
-              <View style={styles.timelineIconBoxPickup}>
-                <AppIcon name="MapPin" size={16} color={COLORS.saddleBrown} />
-              </View>
-
-              <View style={styles.timelineTextCol}>
-                <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
-                <AppText style={styles.timelineAddress}>
-                  {shipment?.pickupLocation || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-
-            {/* Connecting Vertical Line */}
-            <View style={styles.timelineLine} />
-
-            {/* Delivery Node */}
-            <View style={styles.timelineRow}>
-              <View style={styles.timelineIconBoxDelivery}>
-                <AppIcon name="Flag" size={16} color={COLORS.saddleBrown} />
-              </View>
-
-              <View style={styles.timelineTextCol}>
-                <AppText style={styles.timelineLabel}>
-                  DELIVERY LOCATION
-                </AppText>
-                <AppText style={styles.timelineAddress}>
-                  {shipment?.deliveryLocation || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.totalDistanceContainer}>
-            <AppText style={styles.totalDistanceLabel}>TOTAL DISTANCE</AppText>
-            <AppText style={styles.totalDistanceValue}>
-              {distanceMiles}{' '}
-              <AppText style={styles.totalDistanceSub}>
-                miles ({distanceKm} km)
-              </AppText>
-            </AppText>
-          </View>
-        </View>
+        {/* 3 & 4. Grid Specs & Route Information Card */}
+        <ShipperRouteInfoCard
+          shipment={shipment}
+          distanceMiles={distanceMiles}
+          distanceKm={distanceKm}
+          heroStallSize={heroStallSize}
+        />
 
         {isMapVisible === false && (
           <AppButton title="Open Map" onPress={() => setIsMapVisible(true)} />
@@ -424,38 +283,12 @@ const ShipperShipmentDetailsScreen = () => {
         />
 
         {/* 6. Ready to Respond CTA Card */}
-        <View style={styles.ctaCard}>
-          <AppText style={styles.ctaTitle}>Ready to Respond</AppText>
-          <AppText style={styles.ctaSub}>
-            Do you have questions about this shipment, or are you ready to
-            submit a binding proposal, providing your professional offer?
-          </AppText>
-
-          <View style={styles.summaryCodeBox}>
-            <AppText style={styles.summaryCodeLabel}>QUESTION SUMMARY</AppText>
-            <AppText style={styles.summaryCodeValue}>
-              {shipment?.shipmentCode}
-            </AppText>
-          </View>
-
-          <TouchableOpacity
-            style={styles.askQuestionBtn}
-            onPress={handleAskQuestionPress}
-            activeOpacity={0.8}
-          >
-            <AppText style={styles.askQuestionBtnText}>
-              {pendingQuestion ? 'View Pending Question' : 'Ask Question'}
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.submitOfferBtn}
-            onPress={handleSubmitOfferPress}
-            activeOpacity={0.85}
-          >
-            <AppText style={styles.submitOfferBtnText}>Submit Proposal</AppText>
-          </TouchableOpacity>
-        </View>
+        <ShipperCtaActionCard
+          shipmentCode={shipment?.shipmentCode}
+          pendingQuestion={pendingQuestion}
+          onAskQuestionPress={handleAskQuestionPress}
+          onSubmitOfferPress={handleSubmitOfferPress}
+        />
       </ScrollView>
 
       {/* Ask Question Custom Modal */}

@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../constants';
 
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -592,8 +591,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-
 });
 
 export default styles;

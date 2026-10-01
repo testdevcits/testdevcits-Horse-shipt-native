@@ -83,7 +83,6 @@ const WriteReviewComponent = ({
           value={comment}
           onChangeText={setComment}
           containerStyle={{ marginBottom: SPACING.md }}
-
         />
       </View>
 

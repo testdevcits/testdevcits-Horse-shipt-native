@@ -1,46 +1,32 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { pick, types } from '@react-native-documents/picker';
 
-import { COLORS } from '../../../../constants';
-
 import { HorseSchema } from './schema';
-import {
-  AppHeader,
-  AppLoader,
-  Input,
-  AppText,
-  LazyFallback,
-} from '../../../../components';
+import { AppHeader, AppLoader, AppText } from '../../../../components';
 import AppButton from '../../../../components/common/Button/AppButton';
 import customerService from '../../../../api/services/customerService';
-import { breedsList, sexes, stallTypes, defaultColors } from './constants';
+import { defaultColors } from './constants';
 
-import { useDispatch } from 'react-redux';
-import { setHorses } from '../../../../redux/slices/horseSlice';
 import imageIndex from '../../../../assets/images/imageIndex';
 import HorseActionModal from './HorseActionModal';
 import { Horse } from '../../../../types/customer';
-import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.AddEditHorses';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 import HorseDocumentPickerSection from './components/HorseDocumentPickerSection';
-
-const AppSelect = lazy(() =>
-  import('../../../../components').then(module => ({
-    default: module.AppSelect,
-  })),
-);
+import { HorsePhotoPickerSection } from './components/HorsePhotoPickerSection';
+import { HorseFormFieldsSection } from './components/HorseFormFieldsSection';
+import { useDispatch } from 'react-redux';
+import { setHorses } from '../../../../redux/slices/horseSlice';
 
 const AddEditHorse = () => {
   const navigation = useNavigation();
@@ -314,151 +300,21 @@ const AddEditHorse = () => {
             }) => (
               <View style={styles.form}>
                 {/* Photo Upload Section */}
-                <View style={styles.sectionCard}>
-                  <AppText style={styles.sectionTitle}>Horse Photo</AppText>
-                  <View style={styles.photoContainer}>
-                    {values?.photo?.uri || values?.photo?.url ? (
-                      <View style={styles.photoPreviewBox}>
-                        <Image
-                          source={{
-                            uri: values?.photo.uri || values?.photo.url,
-                          }}
-                          style={styles.photoPreviewImage}
-                        />
-                        <TouchableOpacity
-                          style={styles.removePhotoBadge}
-                          onPress={() => setFieldValue('photo', null)}
-                          activeOpacity={0.7}
-                        >
-                          <AppIcon
-                            name={'Trash2'}
-                            size={14}
-                            color={COLORS.white}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    ) : (
-                      <TouchableOpacity
-                        style={styles.uploadBox}
-                        onPress={() => handlePickPhoto(setFieldValue)}
-                        activeOpacity={0.7}
-                        disabled={isPicking}
-                      >
-                        <AppIcon
-                          name={'Camera'}
-                          size={26}
-                          color={COLORS.primary}
-                        />
-                        <AppText style={styles.uploadBoxText}>
-                          Upload Photo
-                        </AppText>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </View>
-
-                <Input
-                  label={'Registered Name'}
-                  placeholder="Enter Registered name ( min 3 characters )"
-                  value={values?.registeredName}
-                  onChangeText={handleChange('registeredName')}
-                  error={
-                    touched.registeredName
-                      ? (errors.registeredName as string)
-                      : ''
-                  }
+                <HorsePhotoPickerSection
+                  photo={values?.photo}
+                  isPicking={isPicking}
+                  onPickPhoto={() => handlePickPhoto(setFieldValue)}
+                  onRemovePhoto={() => setFieldValue('photo', null)}
                 />
 
-                <Input
-                  label={'Barn Name'}
-                  placeholder="Enter Barn name ( min 3 characters )"
-                  value={values?.barnName}
-                  onChangeText={handleChange('barnName')}
-                  error={touched?.barnName ? (errors.barnName as string) : ''}
-                />
-
-                <Suspense fallback={<LazyFallback />}>
-                  <AppSelect
-                    label={'Color'}
-                    placeholder="Select Color"
-                    options={colorOptions}
-                    value={values?.colour}
-                    searchable
-                    onSelect={item => setFieldValue('colour', item)}
-                    error={touched?.colour ? (errors.colour as string) : ''}
-                  />
-                </Suspense>
-
-                <Input
-                  label={'Age (years)'}
-                  placeholder="Enter age"
-                  keyboardType="numeric"
-                  value={values?.age}
-                  onChangeText={handleChange('age')}
-                  maxLength={2}
-                  error={touched?.age ? (errors.age as string) : ''}
-                />
-
-                <Suspense fallback={<LazyFallback />}>
-                  <AppSelect
-                    label={'Breed'}
-                    placeholder="Select Breed"
-                    options={breedsList}
-                    value={values?.breed}
-                    searchable
-                    onSelect={item => setFieldValue('breed', item)}
-                    error={touched?.breed ? (errors.breed as string) : ''}
-                  />
-                </Suspense>
-
-                {(values?.breed === 'Other' ||
-                  values?.breed === 'Other Breed') && (
-                  <Input
-                    label={'Other Breed'}
-                    placeholder="Enter custom breed name"
-                    value={values?.otherBreed}
-                    onChangeText={handleChange('otherBreed')}
-                    error={
-                      touched.otherBreed ? (errors.otherBreed as string) : ''
-                    }
-                  />
-                )}
-
-                <Suspense fallback={<LazyFallback />}>
-                  <AppSelect
-                    label={'Sex'}
-                    placeholder="Select Sex"
-                    options={sexes}
-                    value={values?.sex}
-                    onSelect={item => setFieldValue('sex', item)}
-                    error={touched?.sex ? (errors.sex as string) : ''}
-                  />
-                </Suspense>
-
-                <Suspense fallback={<LazyFallback />}>
-                  <AppSelect
-                    label={'Stall Type'}
-                    placeholder="Select Stall Type"
-                    options={stallTypes}
-                    value={values?.defaultStallSize}
-                    onSelect={item => setFieldValue('defaultStallSize', item)}
-                    error={
-                      touched.defaultStallSize
-                        ? (errors.defaultStallSize as string)
-                        : ''
-                    }
-                  />
-                </Suspense>
-
-                <Input
-                  label="Notes (General Info)"
-                  placeholder="Enter Notes about horse"
-                  multiline
-                  numberOfLines={4}
-                  value={values?.notes}
-                  onChangeText={handleChange('notes')}
-                  inputContainerStyle={{ height: 100 }}
-                  error={touched?.notes ? (errors.notes as string) : ''}
+                {/* Form Fields Section */}
+                <HorseFormFieldsSection
+                  values={values}
+                  touched={touched}
+                  errors={errors}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                  colorOptions={colorOptions}
                 />
                 {/* Documents Upload Section */}
                 <HorseDocumentPickerSection

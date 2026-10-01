@@ -123,8 +123,8 @@ const AddEditAreaModal = ({
       const err = !val.trim()
         ? 'Latitude is required.'
         : isNaN(lat) || lat < -90 || lat > 90
-          ? 'Invalid (-90 to 90).'
-          : undefined;
+        ? 'Invalid (-90 to 90).'
+        : undefined;
       setErrors(prev => ({ ...prev, latitude: err }));
     }
   };
@@ -136,8 +136,8 @@ const AddEditAreaModal = ({
       const err = !val.trim()
         ? 'Longitude is required.'
         : isNaN(lng) || lng < -180 || lng > 180
-          ? 'Invalid (-180 to 180).'
-          : undefined;
+        ? 'Invalid (-180 to 180).'
+        : undefined;
       setErrors(prev => ({ ...prev, longitude: err }));
     }
   };
@@ -149,8 +149,8 @@ const AddEditAreaModal = ({
       const err = !val.trim()
         ? 'Radius is required.'
         : isNaN(rad) || rad <= 0
-          ? 'Radius must be > 0 km.'
-          : undefined;
+        ? 'Radius must be > 0 km.'
+        : undefined;
       setErrors(prev => ({ ...prev, radiusKm: err }));
     }
   };

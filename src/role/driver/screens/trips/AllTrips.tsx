@@ -25,8 +25,10 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const counts = useMemo(() => {
     return {
       ALL: shipments.length,
-      PENDING: shipments?.filter((s: any) => s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted')
-        .length,
+      PENDING: shipments?.filter(
+        (s: any) =>
+          s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted',
+      ).length,
       ACTIVE: shipments?.filter((s: any) => s?.tripStatus === 'inTransit')
         .length,
       DELIVERED: shipments.filter(
@@ -40,7 +42,10 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const filteredShipments = useMemo(() => {
     switch (selectedTab) {
       case 'PENDING':
-        return shipments?.filter((s: any) => s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted');
+        return shipments?.filter(
+          (s: any) =>
+            s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted',
+        );
       case 'ACTIVE':
         return shipments?.filter((s: any) => s?.tripStatus === 'inTransit');
       case 'DELIVERED':
@@ -87,7 +92,6 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
     ),
     [handleCompleteDelivery, handleCardPress],
   );
-
 
   // Render method for active status filters (Horizontal Chip Layout)
   const renderFilterTab = (label: TabType, count: number) => {

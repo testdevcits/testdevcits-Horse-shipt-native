@@ -215,7 +215,6 @@ export const ReviewCustomerModal: React.FC<ReviewCustomerModalProps> = ({
                 placeholderTextColor={COLORS.textLight}
                 multiline
                 numberOfLines={4}
-
                 value={reviewText}
                 onChangeText={setReviewText}
                 textAlignVertical="top"
