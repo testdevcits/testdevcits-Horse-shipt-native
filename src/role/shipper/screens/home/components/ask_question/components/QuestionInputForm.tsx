@@ -53,6 +53,8 @@ const QuestionInputForm: React.FC<QuestionInputFormProps> = ({
       <Input
         placeholder="Type your question here.."
         multiline
+        numberOfLines={3}
+        inputContainerStyle={{ height: 100 }}
         maxLength={500}
         value={question}
         onChangeText={text => {

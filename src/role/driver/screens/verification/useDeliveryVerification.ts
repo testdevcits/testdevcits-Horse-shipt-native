@@ -5,6 +5,7 @@ import { CommonActions } from '@react-navigation/native';
 const useDeliveryVerification = ({ navigation, shipment }: any) => {
   // State Management
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [activeTab, setActiveTab] = useState<1 | 2 | 3>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [otpSentSuccess, setOtpSentSuccess] = useState(false);
 
@@ -19,6 +20,20 @@ const useDeliveryVerification = ({ navigation, shipment }: any) => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
   });
 
+  // Handle manual tab press
+  const handleTabPress = (tabIndex: 1 | 2 | 3) => {
+    if (tabIndex <= step) {
+      setActiveTab(tabIndex);
+    } else {
+      setModalConfig({
+        isVisible: true,
+        title: 'Step Locked',
+        description: `Please complete Step ${step} before proceeding to Step ${tabIndex}.`,
+        type: 'info',
+      });
+    }
+  };
+
   // 1. Trigger API to Send OTP
   const handleSendOtp = async () => {
     setIsLoading(true);
@@ -29,6 +44,7 @@ const useDeliveryVerification = ({ navigation, shipment }: any) => {
       if (response.success) {
         setOtpSentSuccess(true);
         setStep(2); // Progress to Verify Step
+        setActiveTab(2); // Auto switch tab to 2
       }
     } catch (error: any) {
       setModalConfig({
@@ -65,6 +81,7 @@ const useDeliveryVerification = ({ navigation, shipment }: any) => {
       );
       if (response.success) {
         setStep(3); // Progress to Complete screen
+        setActiveTab(3); // Auto switch tab to 3
       }
     } catch (error: any) {
       setModalConfig({
@@ -91,6 +108,9 @@ const useDeliveryVerification = ({ navigation, shipment }: any) => {
 
   return {
     step,
+    activeTab,
+    setActiveTab,
+    handleTabPress,
     isLoading,
     otpSentSuccess,
     setOtp,

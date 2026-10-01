@@ -329,6 +329,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
                 label="Details"
                 placeholder="Describe medication, behavior, etc."
                 multiline
+                numberOfLines={3}
+                inputContainerStyle={{ height: 100 }}
                 value={form.specialRequirementDetails}
                 onChangeText={v => updateForm({ specialRequirementDetails: v })}
                 style={{ height: 80 }}
@@ -348,9 +350,9 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
               isFormValid
                 ? onNext()
                 : showInfoToast(
-                    'Missing Info',
-                    'Please fill in registered name, breed, sex, and stall size for all horses.',
-                  )
+                  'Missing Info',
+                  'Please fill in registered name, breed, sex, and stall size for all horses.',
+                )
             }
           >
             <AppText style={styles.nextButtonText}>Next</AppText>

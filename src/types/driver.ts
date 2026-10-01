@@ -1,5 +1,84 @@
 // src/types/driver.ts
 
+export type PaymentStatus = 'paid' | 'unpaid' | 'pending' | 'refunded' | string;
+export type TripStatus = 'completed' | 'inTransit' | 'loading' | 'delivered' | 'accepted' | 'cancelled' | string;
+export type ShipmentStatus = 'accepted' | 'pending' | 'rejected' | 'cancelled' | string;
+export type TransportType = 'Trucking' | 'Air' | 'Sea' | string;
+export type StallSize = '1/2 Box' | 'Full Box' | '1.5 Box' | string;
+export type HorseSex = 'Mare' | 'Stallion' | 'Gelding' | string;
+
+export interface GeoCoordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export interface CloudinaryAsset {
+  url: string | null;
+  public_id: string | null;
+}
+
+export interface HorseDocumentItem {
+  url: string | null;
+  public_id: string | null;
+}
+
+export interface HorseDocuments {
+  coggins: HorseDocumentItem;
+  healthCertificate: HorseDocumentItem;
+  other: HorseDocumentItem;
+}
+
+export interface HorseNoteLogEntry {
+  note: string;
+  user: string;
+  userRole: 'customer' | 'driver' | 'admin' | string;
+  userName: string;
+  createdAt: string;
+}
+
+export interface Horse {
+  photo: CloudinaryAsset;
+  documents: HorseDocuments;
+  registeredName: string;
+  barnName: string;
+  breed: string;
+  otherBreed?: string;
+  sex: HorseSex;
+  colour: string;
+  age: number;
+  requestedStallSize: StallSize;
+  generalInfo: string;
+  notes: string;
+  notesLog: HorseNoteLogEntry[];
+}
+
+export interface ShipmentLocationPoint extends GeoCoordinates {
+  _id?: string;
+  updatedAt?: string;
+}
+
+export interface InnerShipment {
+  _id: string;
+  pickupCoords: GeoCoordinates;
+  deliveryCoords: GeoCoordinates;
+  pickupLocation: string;
+  deliveryLocation: string;
+  numberOfHorses: number;
+  horses: Horse[];
+  currentLocation?: ShipmentLocationPoint;
+  pickupLat: number;
+  pickupLng: number;
+  deliveryLat: number;
+  deliveryLng: number;
+}
+
+export interface VehicleSummary {
+  _id: string;
+  transportType: TransportType;
+  vehicleType: string;
+  vehicleNumber: string;
+}
+
 export interface Driver {
   _id: string;
   name: string;
@@ -7,10 +86,7 @@ export interface Driver {
   phone: string;
   licenseNumber: string;
   role: 'driver' | string;
-  profileImage: {
-    url: string | null;
-    public_id: string | null;
-  };
+  profileImage: CloudinaryAsset;
   assignedVehicles: string[];
   driverStatus: 'onTrip' | 'idle' | string;
   isActive: boolean;
@@ -25,15 +101,12 @@ export interface Vehicle {
     phone: string;
     licenseNumber: string;
     role: string;
-    profileImage: {
-      url: string | null;
-      public_id: string | null;
-    };
+    profileImage: CloudinaryAsset;
     driverStatus: string;
   };
   driverStatus: 'BUSY' | 'IDLE' | string;
   currentShipment: string;
-  transportType: string;
+  transportType: TransportType;
   vehicleType: string;
   vehicleNumber: string;
   trailerType: string;
@@ -47,88 +120,31 @@ export interface Vehicle {
   notes: string;
 }
 
-export interface Horse {
-  photo: {
-    url: string | null;
-    public_id: string | null;
-  };
-  documents: {
-    coggins: { url: string | null; public_id: string | null };
-    healthCertificate: { url: string | null; public_id: string | null };
-    other: { url: string | null; public_id: string | null };
-  };
-  registeredName: string;
-  barnName: string;
-  breed: string;
-  otherBreed: string;
-  sex: string;
-  colour: string;
-  age: number;
-  requestedStallSize: string;
-  generalInfo: string;
-  notes: string;
-  notesLog: {
-    note: string;
-    user: string;
-    userRole: string;
-    userName: string;
-    createdAt: string;
-  }[];
-}
+export interface ShipmentDetails extends InnerShipment {}
 
-export interface ShipmentDetails {
-  pickupCoords: {
-    latitude: number;
-    longitude: number;
-  };
-  deliveryCoords: {
-    latitude: number;
-    longitude: number;
-  };
+export interface DriverShipmentItem {
   _id: string;
-  pickupLocation: string;
-  deliveryLocation: string;
-  numberOfHorses: number;
-  horses: Horse[];
-  currentLocation: {
-    latitude: number;
-    longitude: number;
-    _id: string;
-    updatedAt: string;
-  };
-  pickupLat: number;
-  pickupLng: number;
-  deliveryLat: number;
-  deliveryLng: number;
-}
-
-export interface ActiveShipment {
-  _id: string;
-  shipment: ShipmentDetails;
-  vehicle: {
-    _id: string;
-    transportType: string;
-    vehicleType: string;
-    vehicleNumber: string;
-  };
+  shipment: InnerShipment;
+  vehicle: VehicleSummary;
   totalPrice: number;
-  paymentStatus: 'paid' | 'unpaid' | string;
-  transportType: string;
+  paymentStatus: PaymentStatus;
+  transportType: TransportType;
   stallsRequired: number;
-  notes: string;
-  status: 'accepted' | 'pending' | string;
-  tripStatus: 'inTransit' | 'loading' | string;
+  notes?: string;
+  status: ShipmentStatus;
+  tripStatus: TripStatus;
 }
+
+export type ActiveShipment = DriverShipmentItem;
+export type CompletedShipment = DriverShipmentItem;
 
 export interface MeResponse {
   success: boolean;
   driver: Driver;
   vehicle: Vehicle;
   shipment: ActiveShipment;
-  allShipments: ActiveShipment[];
+  allShipments: DriverShipmentItem[];
 }
-
-// src/types/driver.ts
 
 export interface LocationUpdatePayload {
   lat: number;
@@ -153,3 +169,4 @@ export interface LocationUpdateResponse {
   };
   tripActive: boolean;
 }
+

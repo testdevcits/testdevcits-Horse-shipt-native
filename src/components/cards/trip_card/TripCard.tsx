@@ -9,12 +9,14 @@ import styles from './styles.tripcard';
 interface TripCardProps {
   item: any;
   onCompletePress?: (id: string) => void;
+  onCardPress?: (item: any) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const TripCard: React.FC<TripCardProps> = ({
   item,
   onCompletePress,
+  onCardPress,
   containerStyle,
 }) => {
   const shipmentData = item?.shipment || {};
@@ -23,7 +25,11 @@ const TripCard: React.FC<TripCardProps> = ({
   const isCompleted = status === 'completed' || status === 'delivered';
 
   return (
-    <View style={[styles.card, containerStyle]}>
+    <TouchableOpacity
+      style={[styles.card, containerStyle]}
+      activeOpacity={0.9}
+      onPress={() => onCardPress?.(item)}
+    >
       {/* Route Header & Badging */}
       <View style={styles.cardHeader}>
         <View style={styles.headerTitleRow}>
@@ -127,8 +133,9 @@ const TripCard: React.FC<TripCardProps> = ({
           <AppIcon name="ChevronRight" size={16} color={COLORS.white} />
         </TouchableOpacity>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
 export default memo(TripCard);
+

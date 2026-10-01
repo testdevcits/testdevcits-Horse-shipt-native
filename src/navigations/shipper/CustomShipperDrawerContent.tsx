@@ -1,5 +1,11 @@
-import React, { lazy, Suspense } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { lazy, memo, Suspense, useState } from 'react';
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
@@ -17,18 +23,24 @@ import {
   Locate,
   FileText,
   Edit3,
+  Sparkles,
+  BadgeCheck,
+  Star,
+  Truck,
+  DollarSign,
 } from 'lucide-react-native';
+import DeviceInfo from 'react-native-device-info';
+
 import { COLORS } from '../../constants/colors';
 import {
   SPACING,
   FONT_SIZE,
-  ICON_SIZE,
   RADIUS,
 } from '../../constants/dimensions';
 import { FONTS } from '../../constants/fonts';
 import imageIndex from '../../assets/images/imageIndex';
 import { AppText } from '../../components';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { logoutUser } from '../../redux/slices/authSlice';
 
 interface DrawerItemProps {
@@ -39,68 +51,83 @@ interface DrawerItemProps {
   isActive?: boolean;
   hasChevron?: boolean;
   isExpanded?: boolean;
+  isLast?: boolean;
 }
 
 const ConfirmationModal = lazy(
   () => import('../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
-const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
-  label,
-  IconComponent,
-  imageSource,
-  onPress,
-  isActive,
-  hasChevron,
-  isExpanded,
-}) => (
-  <TouchableOpacity
-    style={[styles.menuItem, isActive && styles.menuItemActive]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    <View style={styles.iconContainer}>
-      {imageSource ? (
-        <Image
-          source={imageSource}
-          style={styles.menuImage}
-          resizeMode="contain"
-        />
-      ) : IconComponent ? (
-        <IconComponent
-          size={20}
-          color={isActive ? COLORS.brandBrown : COLORS.grey700}
-          strokeWidth={1.8}
-        />
-      ) : null}
-    </View>
-    <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
-      {label}
-    </AppText>
-    {hasChevron ? (
-      isExpanded ? (
-        <ChevronDown
-          size={18}
-          color={isActive ? COLORS.brandBrown : COLORS.textLight}
-          style={styles.chevron}
-        />
+const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = memo(
+  ({
+    label,
+    IconComponent,
+    imageSource,
+    onPress,
+    isActive,
+    hasChevron,
+    isExpanded,
+    isLast,
+  }) => (
+    <TouchableOpacity
+      style={[
+        styles.menuItem,
+        isActive && styles.menuItemActive,
+        isLast && { marginBottom: 0 },
+      ]}
+      onPress={onPress}
+      activeOpacity={0.75}
+    >
+      {isActive && <View style={styles.activeLeftBar} />}
+
+      <View
+        style={[styles.iconContainer, isActive && styles.iconContainerActive]}
+      >
+        {imageSource ? (
+          <Image
+            source={imageSource}
+            style={[
+              styles.menuImage,
+              isActive && { tintColor: COLORS.brandBrown },
+            ]}
+            resizeMode="contain"
+          />
+        ) : IconComponent ? (
+          <IconComponent
+            size={19}
+            color={isActive ? COLORS.brandBrown : COLORS.grey600}
+            strokeWidth={isActive ? 2.2 : 1.8}
+          />
+        ) : null}
+      </View>
+
+      <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
+        {label}
+      </AppText>
+
+      {hasChevron ? (
+        isExpanded ? (
+          <ChevronDown
+            size={16}
+            color={isActive ? COLORS.brandBrown : COLORS.textLight}
+            style={styles.chevron}
+          />
+        ) : (
+          <ChevronRight
+            size={16}
+            color={isActive ? COLORS.brandBrown : COLORS.textLight}
+            style={styles.chevron}
+          />
+        )
       ) : (
         <ChevronRight
-          size={18}
-          color={isActive ? COLORS.brandBrown : COLORS.textLight}
+          size={16}
+          color={isActive ? COLORS.brandBrown : COLORS.grey400}
           style={styles.chevron}
         />
-      )
-    ) : (
-      isActive && (
-        <ChevronRight
-          size={18}
-          color={COLORS.brandBrown}
-          style={styles.chevron}
-        />
-      )
-    )}
-  </TouchableOpacity>
+      )}
+    </TouchableOpacity>
+  ),
 );
 
 interface SubMenuItemProps {
@@ -109,22 +136,23 @@ interface SubMenuItemProps {
   isActive?: boolean;
 }
 
-const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
-  label,
-  onPress,
-  isActive,
-}) => (
-  <TouchableOpacity
-    style={[styles.subMenuItem, isActive && styles.subMenuItemActive]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    <AppText
-      style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
+const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = memo(
+  ({ label, onPress, isActive }) => (
+    <TouchableOpacity
+      style={[styles.subMenuItem, isActive && styles.subMenuItemActive]}
+      onPress={onPress}
+      activeOpacity={0.7}
     >
-      {isActive && '•'} {label}
-    </AppText>
-  </TouchableOpacity>
+      <View
+        style={[styles.bulletDot, isActive && styles.bulletDotActive]}
+      />
+      <AppText
+        style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
+      >
+        {label}
+      </AppText>
+    </TouchableOpacity>
+  ),
 );
 
 const CustomShipperDrawerContent: React.FC<
@@ -132,11 +160,30 @@ const CustomShipperDrawerContent: React.FC<
 > = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
-  const [isShipmentExpanded, setIsShipmentExpanded] = React.useState(true);
+  const { user } = useAppSelector(reduxState => reduxState?.auth);
+
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isShipmentExpanded, setIsShipmentExpanded] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
+  // User details
+  const userName = user?.name || (user as any)?.fullName || 'NOT AVAILABLE';
+  const userEmail = user?.email || 'Not Available';
+  const userRole = (user?.role || 'NOT AVAILABLE').toUpperCase();
+  const rawImage = (user as any)?.profileImage;
+  const profileImage = typeof rawImage === 'string' ? rawImage : rawImage?.url;
+
+  const getInitials = (name: string) => {
+    if (!name || name === 'Not Available') return 'NA';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
-  const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
+  const mainTabsRoute = state?.routes?.find((r: any) => r.name === 'MainTabs');
   const mainTabsState = mainTabsRoute?.state;
   const currentActiveTab = mainTabsState?.routes
     ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
@@ -172,22 +219,78 @@ const CustomShipperDrawerContent: React.FC<
 
   return (
     <View style={styles.safeArea}>
-      {/* Header Section */}
-      <View style={styles.headerContainer}>
-        <Image
-          source={imageIndex?.LogoIcon}
-          style={styles.logoIcon}
-          resizeMode="contain"
-        />
-        <AppText style={styles.logoText}>HorseShipt</AppText>
-      </View>
+      {/* Premium Profile & Brand Header */}
+      <TouchableOpacity
+        style={[
+          styles.profileHeaderContainer,
+          // { paddingTop: Math.max(insets.top, 20) + 6 },
+        ]}
+        activeOpacity={0.9}
+        onPress={() => navigateToTab('Home')}
+      >
+        <View style={styles.headerTopRow}>
+          <View style={styles.logoGroup}>
+            <Image
+              source={imageIndex?.LogoIcon}
+              style={styles.logoIcon}
+              resizeMode="contain"
+            />
+            <AppText style={styles.logoText}>HorseShipt</AppText>
+          </View>
+
+          <View style={styles.roleBadge}>
+            <Sparkles
+              size={11}
+              color={COLORS.brandBrown}
+              style={{ marginRight: 4 }}
+            />
+            <AppText style={styles.roleBadgeText}>{userRole}</AppText>
+          </View>
+        </View>
+
+        <View style={styles.userCardRow}>
+          {profileImage && !imageError ? (
+            <Image
+              source={{ uri: profileImage }}
+              style={styles.avatarImage}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View style={styles.avatarFallback}>
+              <AppText style={styles.avatarInitials}>
+                {getInitials(userName)}
+              </AppText>
+            </View>
+          )}
+
+          <View style={styles.userInfoCol}>
+            <View style={styles.userNameRow}>
+              <AppText style={styles.userNameText} numberOfLines={1}>
+                {userName}
+              </AppText>
+              <BadgeCheck
+                size={16}
+                color={COLORS.greenSuccess || '#10B981'}
+                style={{ marginLeft: 4 }}
+              />
+            </View>
+            <AppText style={styles.userEmailText} numberOfLines={1}>
+              {userEmail}
+            </AppText>
+          </View>
+
+          <ChevronRight size={18} color={COLORS.grey400} />
+        </View>
+      </TouchableOpacity>
 
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.drawerScroll}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.menuContainer}>
+        {/* SECTION 1: MAIN MENU */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>MAIN MENU</AppText>
           <ShipperDrawerMenuItem
             label="Home"
             IconComponent={Home}
@@ -239,42 +342,31 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => navigateToTab('MyQuotes')}
           />
           <ShipperDrawerMenuItem
-            label="My Vehicles"
-            imageSource={imageIndex?.vehicles}
-            isActive={isDrawerRouteActive('MyVehicles')}
-            onPress={() => navigateToRoute('MyVehicles')}
-          />
-          <ShipperDrawerMenuItem
-            label="Truck Driver"
-            IconComponent={User}
-            isActive={isDrawerRouteActive('TruckDriver')}
-            onPress={() => navigateToRoute('TruckDriver')}
-          />
-          <ShipperDrawerMenuItem
             label="Chat"
             IconComponent={MessageSquare}
             isActive={isTabActive('Chats')}
             onPress={() => navigateToTab('Chats')}
           />
-          <ShipperDrawerMenuItem
-            label="Earnings"
-            imageSource={imageIndex?.earnings}
-            isActive={isDrawerRouteActive('Earnings')}
-            onPress={() => navigateToRoute('Earnings')}
-          />
-          <ShipperDrawerMenuItem
-            label="Google review"
-            imageSource={imageIndex?.googlereview}
-            isActive={isDrawerRouteActive('GoogleReview')}
-            onPress={() => navigateToRoute('GoogleReview')}
-          />
-          <ShipperDrawerMenuItem
-            label="Settings"
-            IconComponent={Settings}
-            isActive={isDrawerRouteActive('Settings')}
-            onPress={() => navigateToRoute('Settings')}
-          />
+        </View>
 
+        <View style={styles.divider} />
+
+        {/* SECTION 2: FLEET & OPERATIONS */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>FLEET & OPERATIONS</AppText>
+          <ShipperDrawerMenuItem
+            label="My Vehicles"
+            imageSource={imageIndex?.vehicles}
+            IconComponent={Truck}
+            isActive={isDrawerRouteActive('MyVehicles')}
+            onPress={() => navigateToRoute('MyVehicles')}
+          />
+          <ShipperDrawerMenuItem
+            label="Truck Drivers"
+            IconComponent={User}
+            isActive={isDrawerRouteActive('TruckDriver')}
+            onPress={() => navigateToRoute('TruckDriver')}
+          />
           <ShipperDrawerMenuItem
             label="Preferred Areas"
             IconComponent={Locate}
@@ -282,7 +374,34 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => navigateToRoute('PreferredAreas')}
           />
           <ShipperDrawerMenuItem
-            label="Privacy policy"
+            label="Earnings"
+            imageSource={imageIndex?.earnings}
+            IconComponent={DollarSign}
+            isActive={isDrawerRouteActive('Earnings')}
+            onPress={() => navigateToRoute('Earnings')}
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* SECTION 3: ACCOUNT & LEGAL */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>ACCOUNT & LEGAL</AppText>
+          <ShipperDrawerMenuItem
+            label="Google Review"
+            imageSource={imageIndex?.googlereview}
+            IconComponent={Star}
+            isActive={isDrawerRouteActive('GoogleReview')}
+            onPress={() => navigateToRoute('GoogleReview')}
+          />
+          <ShipperDrawerMenuItem
+            label="Notifications Settings"
+            IconComponent={Settings}
+            isActive={isDrawerRouteActive('Settings')}
+            onPress={() => navigateToRoute('Settings')}
+          />
+          <ShipperDrawerMenuItem
+            label="Privacy Policy"
             IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
@@ -292,6 +411,7 @@ const CustomShipperDrawerContent: React.FC<
             IconComponent={FileText}
             isActive={isDrawerRouteActive('TermsAndConditions')}
             onPress={() => navigateToRoute('TermsAndConditions')}
+            isLast={true}
           />
         </View>
       </DrawerContentScrollView>
@@ -299,17 +419,19 @@ const CustomShipperDrawerContent: React.FC<
       {/* Footer / Logout */}
       <View style={styles.footerContainer}>
         <TouchableOpacity
-          style={styles.menuItem}
+          style={styles.logoutBtn}
           onPress={() => setIsLogoutModalVisible(true)}
-          activeOpacity={0.7}
+          activeOpacity={0.75}
         >
-          <View style={styles.iconContainer}>
-            <LogOut size={20} color={COLORS.error} strokeWidth={1.8} />
+          <View style={styles.logoutIconBg}>
+            <LogOut size={17} color={COLORS.error} strokeWidth={2} />
           </View>
-          <AppText style={[styles.menuLabel, { color: COLORS.error }]}>
-            Logout
-          </AppText>
+          <AppText style={styles.logoutText}>Logout</AppText>
         </TouchableOpacity>
+
+        <AppText style={styles.versionText}>
+          HorseShipt v{DeviceInfo?.getVersion() || '1.0.0'}
+        </AppText>
       </View>
 
       {/* Logout Confirmation Modal */}
@@ -319,7 +441,7 @@ const CustomShipperDrawerContent: React.FC<
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleLogoutConfirm}
           title="Log out of your account?"
-          description="You will need to sign back in with your credentials to access your profile and saved settings."
+          description="You will need to sign back in with your credentials to access your shipper profile."
           confirmText="Logout"
           cancelText="Cancel"
           type="danger"
@@ -333,86 +455,201 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.white,
+    borderTopRightRadius: RADIUS.xl,
+    borderBottomRightRadius: RADIUS.xl,
   },
-  headerContainer: {
+  /* Profile Header */
+  profileHeaderContainer: {
+    backgroundColor: COLORS.background || '#FAF9F6',
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.grey100 || '#E2E8F0',
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+  },
+  logoGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingTop: SPACING.xl,
-    paddingBottom: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100,
   },
   logoIcon: {
-    width: ICON_SIZE.xl,
-    height: ICON_SIZE.xl,
+    width: 28,
+    height: 28,
     marginRight: SPACING.xs,
   },
   logoText: {
-    fontSize: FONT_SIZE.title,
+    fontSize: FONT_SIZE.lg,
     fontFamily: FONTS.bold,
     color: COLORS.grey800,
     letterSpacing: -0.5,
   },
-  drawerScroll: {
-    paddingTop: SPACING.xs,
+  roleBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+    paddingHorizontal: SPACING.sm2,
+    paddingVertical: 3,
+    borderRadius: RADIUS.pill,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder || '#FDE68A',
   },
-  menuContainer: {
-    paddingHorizontal: 0,
+  roleBadgeText: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: COLORS.brandBrown,
+    letterSpacing: 0.6,
+  },
+  userCardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatarImage: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    borderWidth: 2,
+    borderColor: COLORS.brandBrown,
+  },
+  avatarFallback: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: COLORS.brandBrown,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarInitials: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+  },
+  userInfoCol: {
+    flex: 1,
+    marginLeft: SPACING.md,
+    marginRight: SPACING.xs,
+  },
+  userNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userNameText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.bold,
+    color: COLORS.textPrimary,
+    letterSpacing: -0.2,
+  },
+  userEmailText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+
+  /* Drawer Scroll & Items */
+  drawerScroll: {
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.lg,
+  },
+  sectionContainer: {
+    paddingHorizontal: SPACING.xs,
+  },
+  sectionTitle: {
+    fontSize: 10,
+    fontFamily: FONTS.bold,
+    color: COLORS.textLight,
+    letterSpacing: 1.1,
+    marginLeft: SPACING.md,
+    marginBottom: SPACING.xs,
+    marginTop: SPACING.xs,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.md2,
+    paddingVertical: SPACING.sm2,
     paddingHorizontal: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey50,
+    marginBottom: 2,
+    borderRadius: RADIUS.md,
+    position: 'relative',
   },
   menuItemActive: {
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.goldLightBg || '#FFFBEB',
+  },
+  activeLeftBar: {
+    position: 'absolute',
+    left: 0,
+    top: 6,
+    bottom: 6,
+    width: 3.5,
+    borderRadius: 2,
+    backgroundColor: COLORS.brandBrown,
   },
   iconContainer: {
-    width: ICON_SIZE.lg,
-    height: ICON_SIZE.lg,
+    width: 28,
+    height: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: SPACING.xs,
+    marginRight: SPACING.sm2,
+  },
+  iconContainerActive: {
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.xs,
   },
   menuImage: {
-    width: SPACING.xl,
-    height: SPACING.xl,
+    width: 20,
+    height: 20,
   },
   menuLabel: {
+    flex: 1,
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.medium,
-    color: COLORS.grey700,
-    flex: 1,
+    color: COLORS.grey800,
   },
   menuLabelActive: {
     color: COLORS.brandBrown,
     fontFamily: FONTS.bold,
   },
   chevron: {
-    marginLeft: 'auto',
+    marginLeft: SPACING.xs,
   },
+
+  /* Submenu */
   subMenuContainer: {
-    backgroundColor: COLORS.white,
-    paddingBottom: SPACING.xs,
+    backgroundColor: '#FAFAF9',
+    borderRadius: RADIUS.sm,
+    marginHorizontal: SPACING.xs,
+    marginVertical: 2,
+    paddingVertical: 2,
   },
   subMenuItem: {
-    paddingVertical: SPACING.sm + 2,
-    paddingLeft: SPACING.xl + 24,
+    paddingVertical: SPACING.xs + 2,
+    paddingLeft: SPACING.xl + 18,
     paddingRight: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
   },
   subMenuItemActive: {
-    // backgroundColor: COLORS.goldLightBg,
+    backgroundColor: '#F5F5F4',
+    borderRadius: RADIUS.xs,
+  },
+  bulletDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: COLORS.grey400,
+    marginRight: SPACING.sm,
+  },
+  bulletDotActive: {
+    backgroundColor: COLORS.brandBrown,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   subMenuLabel: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.medium,
     color: COLORS.grey700,
   },
@@ -420,11 +657,51 @@ const styles = StyleSheet.create({
     color: COLORS.brandBrown,
     fontFamily: FONTS.bold,
   },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.divider || '#F1F5F9',
+    marginVertical: SPACING.sm,
+    marginHorizontal: SPACING.md,
+  },
+
+  /* Footer & Logout */
   footerContainer: {
-    paddingVertical: SPACING.xs,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.md,
+    paddingBottom: Platform.OS === 'ios' ? SPACING.xl : SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.grey100,
+    borderTopColor: COLORS.divider || '#F1F5F9',
+    backgroundColor: COLORS.white,
+  },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
+    borderRadius: RADIUS.md,
+    backgroundColor: '#FEF2F2',
+  },
+  logoutIconBg: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#FEE2E2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: SPACING.md,
+  },
+  logoutText: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.error,
+  },
+  versionText: {
+    fontSize: FONT_SIZE.xxs,
+    fontFamily: FONTS.medium,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    marginTop: SPACING.sm,
   },
 });
 
-export default CustomShipperDrawerContent;
+export default memo(CustomShipperDrawerContent);

@@ -29,6 +29,8 @@ const CancelModal = ({
           <Input
             placeholder="Enter reason here..."
             multiline
+            numberOfLines={3}
+            inputContainerStyle={{ height: 100 }}
             value={cancelReason}
             onChangeText={text => {
               setCancelReason(text);

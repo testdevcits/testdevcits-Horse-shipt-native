@@ -219,9 +219,9 @@ const AddVehicleModal: React.FC<Props> = ({
         showSuccessToast(
           'Success',
           res?.message ||
-            (vehicleToEdit
-              ? 'Vehicle updated successfully'
-              : 'Vehicle added successfully'),
+          (vehicleToEdit
+            ? 'Vehicle updated successfully'
+            : 'Vehicle added successfully'),
         );
         resetForm();
         if (onSuccess) onSuccess();
@@ -470,6 +470,7 @@ const AddVehicleModal: React.FC<Props> = ({
             label="Notes (General Info)"
             placeholder="Enter Notes about vehicle specs, condition, etc..."
             multiline
+            inputContainerStyle={{ height: 100 }}
             numberOfLines={4}
             value={notes}
             style={styles.textArea}

@@ -74,8 +74,8 @@ const RatingModal = ({
       showErrorToast(
         'Error',
         error?.response?.data?.message ||
-          error?.message ||
-          'Failed to submit review.',
+        error?.message ||
+        'Failed to submit review.',
       );
     } finally {
       setSubmitting(false);
@@ -135,6 +135,8 @@ const RatingModal = ({
               label="Write a review about your shipper"
               placeholder="Amazing shipper! Prompt communication..."
               multiline
+              numberOfLines={3}
+              inputContainerStyle={{ height: 100 }}
               value={review}
               onChangeText={setReview}
               containerStyle={{ marginBottom: SPACING.xl }}

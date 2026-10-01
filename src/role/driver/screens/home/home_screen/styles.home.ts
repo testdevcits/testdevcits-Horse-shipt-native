@@ -1,5 +1,4 @@
-// src/screens/home/styles.home.ts
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../../../constants';
 
 const styles = StyleSheet.create({
@@ -89,6 +88,13 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+  bottomButtonContainer: {
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.sm,
+    paddingBottom: Platform.OS === 'ios' ? 95 : 82,
+    backgroundColor: COLORS.background,
+  },
 });
 
 export default styles;
+

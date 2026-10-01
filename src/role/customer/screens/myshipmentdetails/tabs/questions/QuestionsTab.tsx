@@ -126,6 +126,8 @@ const QuestionsTab = ({ questions, onRefresh }: any) => {
                   <Input
                     placeholder="Answer question"
                     multiline
+                    numberOfLines={3}
+                    inputContainerStyle={{ height: 100 }}
                     value={answers[item?._id] || ''}
                     onChangeText={text => handleInputChange(item?._id, text)}
                     containerStyle={{ marginBottom: 0 }}

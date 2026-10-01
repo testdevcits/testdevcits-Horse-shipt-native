@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 
 import { AppText, Button } from '../../../../../components';
 import { COLORS, SPACING } from '../../../../../constants';
@@ -147,7 +147,7 @@ const ActiveShipment = ({
         {/* GPS Map Nav Trigger Button */}
         {onLaunchMap && (
           <View style={{ marginTop: SPACING.md }}>
-            <Button title="Launch Live GPS Navigation" onPress={onLaunchMap} />
+            <Button title="Start GPS Navigation" onPress={onLaunchMap} />
           </View>
         )}
       </View>
@@ -155,4 +155,4 @@ const ActiveShipment = ({
   );
 };
 
-export default ActiveShipment;
+export default memo(ActiveShipment);

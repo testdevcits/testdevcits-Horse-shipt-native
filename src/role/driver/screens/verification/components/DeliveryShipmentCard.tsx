@@ -12,68 +12,78 @@ interface DeliveryShipmentCardProps {
 const DeliveryShipmentCard: React.FC<DeliveryShipmentCardProps> = ({
   shipment,
 }) => {
+  const horseName =
+    shipment?.shipment?.horses?.[0]?.registeredName || 'Horse Manifest';
+  const numberOfHorses = shipment?.shipment?.numberOfHorses || 1;
+  const pickup = shipment?.shipment?.pickupLocation || 'Pickup location N/A';
+  const delivery =
+    shipment?.shipment?.deliveryLocation || 'Delivery location N/A';
+  const vehicleNo = shipment?.vehicle?.vehicleNumber || 'Unassigned';
+
   return (
     <View style={styles.shipmentCard}>
-      <AppText style={styles.shipmentHeaderLabel}>SHIPMENT DETAILS</AppText>
-
-      <View style={styles.shipmentTitleRow}>
-        <AppText style={styles.shipmentTitle}>
-          {shipment?.shipment?.horses?.[0]?.registeredName || 'Not Available'}
-        </AppText>
+      {/* Header Row */}
+      <View style={styles.shipmentHeaderRow}>
+        <AppText style={styles.shipmentHeaderLabel}>DELIVERY MANIFEST</AppText>
         <View style={styles.passengerCountBadge}>
           <AppText style={styles.badgeText}>
-            {shipment?.shipment?.numberOfHorses}{' '}
-            {shipment?.shipment?.numberOfHorses > 1 ? 'Horses' : 'Horse'}
+            {numberOfHorses} {numberOfHorses > 1 ? 'Horses' : 'Horse'}
           </AppText>
         </View>
       </View>
 
-      {/* Pickup */}
-      <View style={styles.stopBox}>
-        <AppText style={styles.stopHeaderLabel}>PICKUP</AppText>
-        <AppText style={styles.stopName}>
-          {shipment?.shipment?.pickupLocation}
-        </AppText>
+      {/* Horse Title */}
+      <View style={styles.shipmentTitleRow}>
+        <AppText style={styles.shipmentTitle}>{horseName}</AppText>
       </View>
 
-      {/* Delivery */}
-      <View style={styles.stopBox}>
-        <AppText style={styles.stopHeaderLabel}>DELIVERY</AppText>
-        <AppText style={styles.stopName}>
-          {shipment?.shipment?.deliveryLocation}
-        </AppText>
-      </View>
+      {/* Modern Route Container */}
+      <View style={styles.routeContainer}>
+        <View style={styles.routeRow}>
+          <View style={styles.routeDotColumn}>
+            <View style={styles.dotGreen} />
+            <View style={styles.dotLine} />
+            <View style={styles.dotGold} />
+          </View>
 
-      {/* Metadata Fields */}
-      <View style={styles.metaRow}>
-        <AppIcon
-          name="User"
-          size={16}
-          color={COLORS.textLight}
-          style={styles.metaIcon}
-        />
-        <View>
-          <AppText style={styles.metaLabel}>CUSTOMER</AppText>
-          <AppText style={styles.metaValue}>
-            Customer name not available
-          </AppText>
+          <View style={styles.routeTextColumn}>
+            <View style={{ marginBottom: 12 }}>
+              <AppText style={styles.stopHeaderLabel}>PICKUP</AppText>
+              <AppText numberOfLines={1} style={styles.stopName}>
+                {pickup}
+              </AppText>
+            </View>
+
+            <View>
+              <AppText style={styles.stopHeaderLabel}>DELIVERY</AppText>
+              <AppText numberOfLines={1} style={styles.stopName}>
+                {delivery}
+              </AppText>
+            </View>
+          </View>
         </View>
       </View>
 
-      <View
-        style={[styles.metaRow, { borderBottomWidth: 0, paddingBottom: 0 }]}
-      >
-        <AppIcon
-          name="Truck"
-          size={16}
-          color={COLORS.textLight}
-          style={styles.metaIcon}
-        />
-        <View>
-          <AppText style={styles.metaLabel}>VEHICLE</AppText>
-          <AppText style={styles.metaValue}>
-            {shipment?.vehicle?.vehicleNumber || 'Not Available'}
-          </AppText>
+      {/* Meta info grid */}
+      <View style={styles.metaGrid}>
+        <View style={styles.metaItem}>
+          <View style={styles.metaIconBox}>
+            <AppIcon name="Truck" size={14} color={COLORS.primary} />
+          </View>
+          <View>
+            <AppText style={styles.metaLabel}>VEHICLE</AppText>
+            <AppText style={styles.metaValue}>{vehicleNo}</AppText>
+          </View>
+        </View>
+
+        <View style={styles.metaItem}>
+          <View style={styles.metaIconBox}>
+            <AppIcon name="Shield" size={14} color={COLORS.primary} />
+          </View>
+          <View>
+            <AppText style={styles.metaLabel}>VERIFICATION</AppText>
+            <AppText style={styles.metaValue}>PIN Code</AppText>
+          </View>
         </View>
       </View>
     </View>

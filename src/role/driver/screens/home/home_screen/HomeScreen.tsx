@@ -10,7 +10,7 @@ import {
   HomeSkeleton,
 } from '../../../../../components';
 import styles from './styles.home';
-import { COLORS, SPACING } from '../../../../../constants';
+import { COLORS } from '../../../../../constants';
 import VahicleInfoCard from '../vahicle_infocard/VahicleInfoCard';
 import ActiveShipment from '../active_shipment/ActiveShipment';
 import HorseInformation from '../horse_information/HorseInformation';
@@ -144,25 +144,28 @@ const HomeScreen = ({ navigation }: any) => {
           )}
         </ScrollView>
 
-        {activeShipment?.tripStatus === 'notStarted' ? (
-          <Button
-            title="Start trip"
-            onPress={onStartTrip}
-            isLoading={startTripLoading}
-            buttonStyle={{ margin: SPACING.md }}
-          />
-        ) : activeShipment?.tripStatus === 'inTransit' ||
-          activeShipment?.tripStatus === 'started' ? (
-          <Button
-            title="Complete Shipment"
-            onPress={() =>
-              navigation.navigate('DeliveryVerification', {
-                shipment: activeShipment,
-              })
-            }
-            buttonStyle={{ margin: SPACING.md }}
-          />
-        ) : null}
+        {activeShipment && (
+          <View style={styles.bottomButtonContainer}>
+            {activeShipment?.tripStatus === 'inTransit' ||
+              activeShipment?.tripStatus === 'started' ? (
+              <Button
+                title="Complete Shipment"
+                onPress={() =>
+                  navigation.navigate('DeliveryVerification', {
+                    shipment: activeShipment,
+                  })
+                }
+              />
+            ) : activeShipment?.tripStatus !== 'completed' &&
+              activeShipment?.tripStatus !== 'delivered' ? (
+              <Button
+                title="Start trip"
+                onPress={onStartTrip}
+                isLoading={startTripLoading}
+              />
+            ) : null}
+          </View>
+        )}
       </View>
 
       {/* Confirmation Modal Slot */}

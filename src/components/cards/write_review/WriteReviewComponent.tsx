@@ -78,9 +78,12 @@ const WriteReviewComponent = ({
         <Input
           placeholder="Tell us more about the shipment..."
           multiline
+          numberOfLines={3}
+          inputContainerStyle={{ height: 100 }}
           value={comment}
           onChangeText={setComment}
           containerStyle={{ marginBottom: SPACING.md }}
+
         />
       </View>
 

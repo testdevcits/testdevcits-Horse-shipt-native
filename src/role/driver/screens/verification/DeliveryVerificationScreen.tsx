@@ -17,75 +17,80 @@ import useDeliveryVerification from './useDeliveryVerification';
 import DeliveryShipmentCard from './components/DeliveryShipmentCard';
 import DeliveryStepContent from './components/DeliveryStepContent';
 
-const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
-  <View style={styles.stepperContainer}>
-    {/* Step 1 */}
-    <View style={styles.stepWrapper}>
-      <View
-        style={[
-          styles.stepCircle,
-          step > 1 && styles.stepCircleCompleted,
-          step === 1 && styles.stepCircleActive,
-        ]}
-      >
-        {step > 1 ? (
-          <AppIcon name="Check" size={14} color={COLORS.white} />
-        ) : (
-          <AppText
-            style={[styles.stepNumber, step === 1 && styles.stepNumberActive]}
-          >
-            1
-          </AppText>
-        )}
+interface ProgressStepperProps {
+  step: number;
+  activeTab: number;
+  onTabPress: (tab: 1 | 2 | 3) => void;
+}
+
+const ProgressStepper: React.FC<ProgressStepperProps> = ({
+  step,
+  activeTab,
+  onTabPress,
+}) => {
+  const tabs = [
+    { id: 1 as const, title: 'Send OTP' },
+    { id: 2 as const, title: 'Verify OTP' },
+    { id: 3 as const, title: 'Complete' },
+  ];
+
+  return (
+    <View style={styles.tabStepperWrapper}>
+      <View style={styles.tabStepperContainer}>
+        {tabs.map(tab => {
+          const isActive = activeTab === tab.id;
+          const isCompleted = step > tab.id;
+          const isUnlocked = tab.id <= step;
+
+          return (
+            <TouchableOpacity
+              key={tab.id}
+              activeOpacity={0.8}
+              onPress={() => onTabPress(tab.id)}
+              style={[
+                styles.tabItem,
+                isActive && styles.tabItemActive,
+                !isActive && isCompleted && styles.tabItemCompleted,
+                !isActive && !isCompleted && !isUnlocked && styles.tabItemLocked,
+              ]}
+            >
+              <View
+                style={[
+                  styles.tabBadge,
+                  isActive && styles.tabBadgeActive,
+                  !isActive && isCompleted && styles.tabBadgeCompleted,
+                ]}
+              >
+                {isCompleted && !isActive ? (
+                  <AppIcon name="Check" size={10} color="#065F46" />
+                ) : (
+                  <AppText
+                    style={[
+                      styles.tabBadgeText,
+                      isActive && styles.tabBadgeTextActive,
+                    ]}
+                  >
+                    {tab.id}
+                  </AppText>
+                )}
+              </View>
+              <AppText
+                numberOfLines={1}
+                style={[
+                  styles.tabTitle,
+                  isActive && styles.tabTitleActive,
+                  !isActive && isCompleted && styles.tabTitleCompleted,
+                ]}
+              >
+                {tab.title}
+              </AppText>
+            </TouchableOpacity>
+          );
+        })}
       </View>
-      <AppText style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}>
-        Send OTP
-      </AppText>
     </View>
-
-    <View style={[styles.stepLine, step > 1 && styles.stepLineCompleted]} />
-
-    {/* Step 2 */}
-    <View style={styles.stepWrapper}>
-      <View
-        style={[
-          styles.stepCircle,
-          step > 2 && styles.stepCircleCompleted,
-          step === 2 && styles.stepCircleActive,
-        ]}
-      >
-        {step > 2 ? (
-          <AppIcon name="Check" size={14} color={COLORS.white} />
-        ) : (
-          <AppText
-            style={[styles.stepNumber, step === 2 && styles.stepNumberActive]}
-          >
-            2
-          </AppText>
-        )}
-      </View>
-      <AppText style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}>
-        Verify OTP
-      </AppText>
-    </View>
-
-    <View style={[styles.stepLine, step > 2 && styles.stepLineCompleted]} />
-
-    {/* Step 3 */}
-    <View style={styles.stepWrapper}>
-      <View style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}>
-        <AppText
-          style={[styles.stepNumber, step === 3 && styles.stepNumberActive]}
-        >
-          3
-        </AppText>
-      </View>
-      <AppText style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}>
-        Mark Done
-      </AppText>
-    </View>
-  </View>
-);
+  );
+};
 
 const DeliveryVerificationScreen = () => {
   const ConfirmationModal = lazy(
@@ -102,6 +107,8 @@ const DeliveryVerificationScreen = () => {
 
   const {
     step,
+    activeTab,
+    handleTabPress,
     isLoading,
     otpSentSuccess,
     setOtp,
@@ -131,7 +138,14 @@ const DeliveryVerificationScreen = () => {
           )}
           <View style={styles.navTitleContainer}>
             <AppText style={styles.navTitle}>Delivery Verification</AppText>
-            <AppText style={styles.navSubtitle}>Step {step} of 3</AppText>
+            <AppText style={styles.navSubtitle}>
+              Section {activeTab} of 3 •{' '}
+              {activeTab === 1
+                ? 'Send OTP'
+                : activeTab === 2
+                  ? 'Verify Code'
+                  : 'Complete Manifest'}
+            </AppText>
           </View>
         </View>
 
@@ -141,15 +155,20 @@ const DeliveryVerificationScreen = () => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Stepper Node Progress Indicator */}
-          <ProgressStepper step={step} />
+          {/* Segmented Stepper Tabs Header */}
+          <ProgressStepper
+            step={step}
+            activeTab={activeTab}
+            onTabPress={handleTabPress}
+          />
 
-          {/* Shipment Details Box */}
+          {/* Shipment Manifest Details Card */}
           <DeliveryShipmentCard shipment={shipment} />
 
-          {/* DYNAMIC VIEWS ACCORDING TO STEPPER */}
+          {/* Dynamic Action Section corresponding to Active Tab */}
           <DeliveryStepContent
             step={step}
+            activeTab={activeTab}
             otpSentSuccess={otpSentSuccess}
             otp={otp}
             setOtp={setOtp}
@@ -157,67 +176,71 @@ const DeliveryVerificationScreen = () => {
           />
         </ScrollView>
 
-        {/* Footer Fixed Action Buttons */}
+        {/* Footer Action Button synced with Active Tab */}
         <View style={styles.footerContainer}>
-          {step === 1 && (
+          {activeTab === 1 && (
             <TouchableOpacity
               style={styles.goldActionButton}
-              onPress={handleSendOtp}
+              onPress={step > 1 ? () => handleTabPress(2) : handleSendOtp}
               disabled={isLoading}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               {isLoading ? (
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
                   <AppIcon
-                    name="Send"
+                    name={step > 1 ? 'ArrowRight' : 'Send'}
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
                   />
                   <AppText style={styles.actionBtnText}>
-                    Send OTP to Customer
+                    {step > 1
+                      ? 'Proceed to Enter Code'
+                      : 'Send OTP to Customer'}
                   </AppText>
                 </>
               )}
             </TouchableOpacity>
           )}
 
-          {step === 2 && (
+          {activeTab === 2 && (
             <TouchableOpacity
               style={styles.goldActionButton}
-              onPress={handleVerifyOtp}
+              onPress={step === 3 ? () => handleTabPress(3) : handleVerifyOtp}
               disabled={isLoading}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               {isLoading ? (
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
                   <AppIcon
-                    name="Check"
+                    name={step === 3 ? 'ArrowRight' : 'Check'}
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
                   />
-                  <AppText style={styles.actionBtnText}>Verify OTP</AppText>
+                  <AppText style={styles.actionBtnText}>
+                    {step === 3 ? 'Proceed to Complete' : 'Verify OTP Code'}
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
           )}
 
-          {step === 3 && (
+          {activeTab === 3 && (
             <TouchableOpacity
               style={[
                 styles.goldActionButton,
-                { backgroundColor: COLORS.greenSuccess },
+                { backgroundColor: '#10B981', shadowColor: '#10B981' },
               ]}
               onPress={handleDone}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               <AppIcon
-                name="Check"
+                name="CheckCircle"
                 size={18}
                 color={COLORS.white}
                 style={styles.actionBtnIcon}
@@ -227,19 +250,19 @@ const DeliveryVerificationScreen = () => {
           )}
         </View>
 
-        {/* Alert Dialog confirmation slot */}
+        {/* Confirmation & Alert Modal */}
         <Suspense fallback={null}>
           <ConfirmationModal
-            isVisible={modalConfig.isVisible}
+            isVisible={modalConfig?.isVisible}
             onClose={() =>
               setModalConfig(prev => ({ ...prev, isVisible: false }))
             }
             onConfirm={() =>
               setModalConfig(prev => ({ ...prev, isVisible: false }))
             }
-            title={modalConfig.title}
-            description={modalConfig.description}
-            type={modalConfig.type}
+            title={modalConfig?.title}
+            description={modalConfig?.description}
+            type={modalConfig?.type}
             confirmText="Got It"
             cancelText="Close"
           />

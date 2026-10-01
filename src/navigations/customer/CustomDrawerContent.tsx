@@ -126,7 +126,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
-  const { user } = useAppSelector(state => state?.auth);
+  const { user } = useAppSelector(reduxState => reduxState?.auth);
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [imageError, setImageError] = useState(false);
 

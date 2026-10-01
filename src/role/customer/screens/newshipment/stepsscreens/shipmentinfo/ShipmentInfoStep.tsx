@@ -133,7 +133,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
                   horse?.photo && styles.uploadBoxActive,
                   (errors?.[`horses[${index}].photo`] ||
                     errors?.[`horses.${index}.photo`]) &&
-                    styles.uploadBoxError,
+                  styles.uploadBoxError,
                 ]}
                 onPress={() => pickImage(index)}
               >
@@ -163,14 +163,14 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
               </TouchableOpacity>
               {(errors?.[`horses[${index}].photo`] ||
                 errors?.[`horses.${index}.photo`]) && (
-                <View style={styles.errorContainer}>
-                  <AppIcon name={'Info'} size={14} color={COLORS.error} />
-                  <AppText style={styles.errorText}>
-                    {errors[`horses[${index}].photo`] ||
-                      errors[`horses.${index}.photo`]}
-                  </AppText>
-                </View>
-              )}
+                  <View style={styles.errorContainer}>
+                    <AppIcon name={'Info'} size={14} color={COLORS.error} />
+                    <AppText style={styles.errorText}>
+                      {errors[`horses[${index}].photo`] ||
+                        errors[`horses.${index}.photo`]}
+                    </AppText>
+                  </View>
+                )}
 
               {/* DOCUMENTS */}
               <AppText style={[styles.sectionLabel, { marginTop: SPACING.md }]}>
@@ -191,6 +191,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
           <Input
             placeholder="Example: My horse needs hay every 4 hours..."
             multiline
+            inputContainerStyle={{ height: 100 }}
             numberOfLines={4}
             value={form.additionalInfo}
             onChangeText={v => updateForm({ additionalInfo: v })}

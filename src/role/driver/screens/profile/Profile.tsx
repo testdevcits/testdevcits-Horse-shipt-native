@@ -11,6 +11,7 @@ import { Button, ProfileSkeleton } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import CompletedShipments from './components/CompletedShipments';
 
 // Profile Theme Colors mapped to match the gold/beige screenshot details
 
@@ -28,9 +29,9 @@ const Profile = () => {
   const completedShipments = allShipments.filter(
     shipment =>
       shipment?.tripStatus === 'delivered' ||
-      shipment.tripStatus === 'completed',
+      shipment?.tripStatus === 'completed',
   );
-  const completedCount = completedShipments.length;
+  const completedCount = completedShipments?.length;
 
   // State to control your custom confirmation modal
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
@@ -199,42 +200,11 @@ const Profile = () => {
         </View>
 
         {/* Completed Shipments Section */}
-        <View style={styles.detailsCard}>
-          <View style={styles.detailsHeader}>
-            <View style={styles.row}>
-              <AppText style={styles.detailsHeaderTitle}>
-                Completed Shipments
-              </AppText>
-              <View style={styles.completedBadgeCount}>
-                <AppText style={styles.badgeCountText}>
-                  {completedCount}
-                </AppText>
-              </View>
-            </View>
-          </View>
-          <View style={styles.shipmentsBody}>
-            {completedCount === 0 ? (
-              <View style={styles.emptyContainer}>
-                <View style={styles.emptyIconBox}>
-                  <AppIcon name={'Box'} size={24} color={COLORS.primary} />
-                </View>
-                <AppText style={styles.emptyText}>
-                  No completed shipments yet
-                </AppText>
-              </View>
-            ) : (
-              completedShipments.map((shipment, _index) => (
-                <View key={shipment._id} style={styles.completedShipmentRow}>
-                  <AppIcon name={'Box'} size={18} color={COLORS.primary} />
-                  <AppText style={styles.completedShipmentText}>
-                    {shipment.shipment.pickupLocation} ➔{' '}
-                    {shipment.shipment.deliveryLocation}
-                  </AppText>
-                </View>
-              ))
-            )}
-          </View>
-        </View>
+      
+        <CompletedShipments
+          completedShipments={completedShipments}
+          completedCount={completedCount}
+        />
 
         {/* Action Logout Button */}
 

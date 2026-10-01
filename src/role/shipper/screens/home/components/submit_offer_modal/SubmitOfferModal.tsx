@@ -333,8 +333,10 @@ const SubmitOfferModal: React.FC<SubmitOfferModalProps> = ({
               <Input
                 placeholder="Type any additional details for the customer..."
                 multiline
+                numberOfLines={3}
                 value={notes}
                 onChangeText={setNotes}
+                inputContainerStyle={{ height: 100 }}
               />
             </View>
 

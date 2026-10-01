@@ -1,13 +1,15 @@
 import React, { memo } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
 import AppText from '../../../../../components/common/AppText';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../constants';
 import styles from '../styles.deliveryverification';
+import imageIndex from '../../../../../assets/images/imageIndex';
 
 interface DeliveryStepContentProps {
-  step: number;
+  step?: number;
+  activeTab: number;
   otpSentSuccess: boolean;
   otp: string;
   setOtp: (otp: string) => void;
@@ -15,97 +17,114 @@ interface DeliveryStepContentProps {
 }
 
 const DeliveryStepContent: React.FC<DeliveryStepContentProps> = ({
-  step,
+  step: _step,
+  activeTab,
   otpSentSuccess,
   otp,
   setOtp,
   onSendOtp,
 }) => {
-  if (step === 1) {
+  if (activeTab === 1) {
     return (
       <View style={styles.centerSection}>
-        <View style={styles.middleIconBox}>
-          <AppIcon name="Milestone" size={32} color={COLORS.primary} />
-        </View>
-        <AppText style={styles.mainActionHeading}>Ready to Deliver?</AppText>
-        <AppText style={styles.mainActionDescription}>
-          Send an OTP to the horse owner to confirm you've arrived at the
-          delivery location.
-        </AppText>
-      </View>
-    );
-  }
-
-  if (step === 2) {
-    return (
-      <View style={styles.centerSection}>
-        <View style={styles.middleIconBox}>
-          <AppIcon name="Smartphone" size={32} color={COLORS.primary} />
-        </View>
-        <AppText style={styles.mainActionHeading}>Enter OTP</AppText>
-        <AppText style={styles.mainActionDescription}>
-          Ask the horse owner for the 6-digit OTP sent to their phone.
-        </AppText>
-
-        {otpSentSuccess && (
-          <View style={styles.successBanner}>
-            <AppIcon name="Check" size={14} color={COLORS.greenSuccess} />
-            <AppText style={styles.successBannerText}>
-              OTP sent to customer successfully
-            </AppText>
+        <View style={styles.actionCard}>
+          <View style={styles.middleIconBox}>
+            <AppIcon name="Send" size={26} color={COLORS.primary} />
           </View>
-        )}
-
-        <View style={styles.otpGridContainer}>
-          <OtpInput
-            numberOfDigits={6}
-            focusColor={COLORS.primary}
-            onTextChange={text => setOtp(text)}
-            onFilled={text => setOtp(text)}
-            theme={{
-              containerStyle: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-              },
-              pinCodeContainerStyle: styles.otpInputBox,
-              pinCodeTextStyle: styles.otpPinCodeText,
-              focusedPinCodeContainerStyle: styles.activeOtpInputBox,
-            }}
-          />
-        </View>
-        <AppText style={styles.otpLabelDigits}>{otp?.length}/6 digits</AppText>
-
-        <TouchableOpacity activeOpacity={0.7} onPress={onSendOtp}>
-          <AppText style={styles.resendTextLink}>
-            Didn't receive? Resend OTP
+          <AppText style={styles.mainActionHeading}>
+            Send Delivery Code
           </AppText>
-        </TouchableOpacity>
+          <AppText style={styles.mainActionDescription}>
+            Send a 6-digit verification code to the customer to confirm you
+            have safely arrived at the delivery location.
+          </AppText>
+
+          {otpSentSuccess && (
+            <View style={styles.successBanner}>
+              <AppIcon name="Check" size={14} color="#065F46" />
+              <AppText style={styles.successBannerText}>
+                OTP Code already sent to customer
+              </AppText>
+            </View>
+          )}
+        </View>
       </View>
     );
   }
 
-  if (step === 3) {
+  if (activeTab === 2) {
     return (
       <View style={styles.centerSection}>
-        <View
-          style={[
-            styles.middleIconBox,
-            {
-              backgroundColor: COLORS.greenLightBg,
-              borderColor: COLORS.greenBorder,
-            },
-          ]}
-        >
-          <AppIcon name="CheckCircle2" size={32} color={COLORS.greenActive} />
+        <View style={styles.actionCard}>
+          <View style={styles.middleIconBox}>
+            <AppIcon name="Smartphone" size={26} color={COLORS.primary} />
+          </View>
+          <AppText style={styles.mainActionHeading}>
+            Enter 6-Digit Code
+          </AppText>
+          <AppText style={styles.mainActionDescription}>
+            Ask the recipient for the 6-digit verification code sent to their
+            phone number.
+          </AppText>
+
+          {otpSentSuccess && (
+            <View style={styles.successBanner}>
+              <AppIcon name="Check" size={14} color="#065F46" />
+              <AppText style={styles.successBannerText}>
+                OTP dispatched to customer phone
+              </AppText>
+            </View>
+          )}
+
+          <View style={styles.otpGridContainer}>
+            <OtpInput
+              numberOfDigits={6}
+              focusColor={COLORS.primary}
+              onTextChange={text => setOtp(text)}
+              onFilled={text => setOtp(text)}
+              theme={{
+                containerStyle: {
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                },
+                pinCodeContainerStyle: styles.otpInputBox,
+                pinCodeTextStyle: styles.otpPinCodeText,
+                focusedPinCodeContainerStyle: styles.activeOtpInputBox,
+              }}
+            />
+          </View>
+          <AppText style={styles.otpLabelDigits}>
+            {otp?.length || 0}/6 digits entered
+          </AppText>
+
+          <TouchableOpacity activeOpacity={0.7} onPress={onSendOtp}>
+            <AppText style={styles.resendTextLink}>
+              Didn't receive? Resend OTP
+            </AppText>
+          </TouchableOpacity>
         </View>
-        <AppText style={styles.mainActionHeading}>
-          Verified successfully
-        </AppText>
-        <AppText style={styles.mainActionDescription}>
-          The delivery PIN has been validated. You are now cleared to mark this
-          shipment route as complete.
-        </AppText>
+      </View>
+    );
+  }
+
+  if (activeTab === 3) {
+    return (
+      <View style={styles.centerSection}>
+        <View style={styles.actionCard}>
+          <Image
+            source={imageIndex?.success}
+            style={{ width: 130, height: 130, marginBottom: 12 }}
+            resizeMode="contain"
+          />
+          <AppText style={styles.mainActionHeading}>
+            Delivery Verified!
+          </AppText>
+          <AppText style={styles.mainActionDescription}>
+            The customer PIN has been verified successfully. Click below to
+            complete this shipment manifest.
+          </AppText>
+        </View>
       </View>
     );
   }

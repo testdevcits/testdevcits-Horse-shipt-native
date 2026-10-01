@@ -25,7 +25,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const counts = useMemo(() => {
     return {
       ALL: shipments.length,
-      PENDING: shipments?.filter((s: any) => s?.tripStatus === 'pending')
+      PENDING: shipments?.filter((s: any) => s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted')
         .length,
       ACTIVE: shipments?.filter((s: any) => s?.tripStatus === 'inTransit')
         .length,
@@ -40,7 +40,7 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const filteredShipments = useMemo(() => {
     switch (selectedTab) {
       case 'PENDING':
-        return shipments?.filter((s: any) => s?.tripStatus === 'pending');
+        return shipments?.filter((s: any) => s?.tripStatus === 'pending' || s?.tripStatus === 'notStarted');
       case 'ACTIVE':
         return shipments?.filter((s: any) => s?.tripStatus === 'inTransit');
       case 'DELIVERED':
@@ -69,16 +69,25 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
     [],
   );
 
+  const handleCardPress = useCallback(
+    (selectedItem: any) => {
+      navigation?.navigate('ShipmentDetails', { shipment: selectedItem });
+    },
+    [navigation],
+  );
+
   const renderItem = useCallback(
     ({ item }: { item: any }) => (
       <TripCard
         item={item}
         onCompletePress={handleCompleteDelivery}
+        onCardPress={handleCardPress}
         containerStyle={styles.cardSpacing}
       />
     ),
-    [handleCompleteDelivery],
+    [handleCompleteDelivery, handleCardPress],
   );
+
 
   // Render method for active status filters (Horizontal Chip Layout)
   const renderFilterTab = (label: TabType, count: number) => {

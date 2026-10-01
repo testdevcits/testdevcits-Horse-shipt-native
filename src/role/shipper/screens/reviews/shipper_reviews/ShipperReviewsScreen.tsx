@@ -1,17 +1,25 @@
-import React from 'react';
-import { View, FlatList, Image, RefreshControl, Platform } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import {
+  View,
+  FlatList,
+  Image,
+  RefreshControl,
+  Platform,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {
   AppHeader,
   AppText,
   EmptyState,
   ReviewsSkeleton,
 } from '../../../../../components';
-import imageIndex from '../../../../../assets/images/imageIndex';
 import { formatDate } from '../../../../../utils/helpers';
 import styles from './styles.shipperreviews';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { COLORS } from '../../../../../constants';
 import useShipperReviews from './useShipperReviews';
+import { Award, CheckCircle } from 'lucide-react-native';
 
 const ShipperReviewsScreen = ({ route }: any) => {
   const initialReviews = route?.params?.reviews || [];
@@ -26,42 +34,162 @@ const ShipperReviewsScreen = ({ route }: any) => {
     onRefresh,
   } = useShipperReviews({ initialReviews, initialProfile });
 
+  const [selectedFilter, setSelectedFilter] = useState<'all' | '5' | '4' | 'low'>('all');
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
+  const getInitials = (name: string) => {
+    if (!name) return 'CU';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  // Filter reviews dynamically based on selected filter chip
+  const filteredReviews = useMemo(() => {
+    if (selectedFilter === '5') {
+      return reviews.filter((r: any) => Math.round(r?.rating || 5) === 5);
+    }
+    if (selectedFilter === '4') {
+      return reviews.filter((r: any) => Math.round(r?.rating || 5) === 4);
+    }
+    if (selectedFilter === 'low') {
+      return reviews.filter((r: any) => Math.round(r?.rating || 5) <= 3);
+    }
+    return reviews;
+  }, [reviews, selectedFilter]);
+
+  const ratingNumber = typeof avgRating === 'number' ? avgRating : parseFloat(avgRating) || 5.0;
+
   const renderHeader = () => (
     <>
-      {/* RATING OVERVIEW SUMMARY CARD */}
+      {/* RATING OVERVIEW HERO SUMMARY CARD */}
       <View style={styles.summaryCard}>
-        <View style={styles.summaryRatingRow}>
-          <AppText style={styles.summaryRatingText}>
-            {typeof avgRating === 'number' ? avgRating.toFixed(1) : avgRating}
-          </AppText>
-          <View style={styles.starsRow}>
-            {[1, 2, 3, 4, 5].map(s => (
-              <AppIcon
-                key={s}
-                name={'Star'}
-                size={22}
-                color={COLORS.warning}
-                fill={
-                  s <= Math.round(Number(avgRating))
-                    ? COLORS.warning
-                    : 'transparent'
-                }
-              />
-            ))}
+        <View style={styles.summaryHeaderRow}>
+          <View style={styles.summaryMainCol}>
+            <View style={styles.summaryRatingBox}>
+              <AppText style={styles.summaryRatingText}>
+                {ratingNumber.toFixed(1)}
+              </AppText>
+            </View>
+
+            <View style={styles.ratingMetaCol}>
+              <View style={styles.starsRow}>
+                {[1, 2, 3, 4, 5].map(s => (
+                  <AppIcon
+                    key={s}
+                    name={'Star'}
+                    size={20}
+                    color={COLORS.warning || '#F59E0B'}
+                    fill={
+                      s <= Math.round(ratingNumber)
+                        ? COLORS.warning || '#F59E0B'
+                        : 'transparent'
+                    }
+                  />
+                ))}
+              </View>
+              <AppText style={styles.summarySubText}>
+                Based on {totalReviewsCount}{' '}
+                {totalReviewsCount === 1 ? 'customer review' : 'customer reviews'}
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.badgePill}>
+            <Award size={12} color="#065F46" />
+            <AppText style={styles.badgePillText}>Top Rated</AppText>
           </View>
         </View>
-        <AppText style={styles.summarySubText}>
-          Based on {totalReviewsCount} customer{' '}
-          {totalReviewsCount === 1 ? 'review' : 'reviews'}
-        </AppText>
       </View>
+
+      {/* FILTER CHIPS ROW */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filterScroll}
+      >
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => setSelectedFilter('all')}
+          style={[
+            styles.filterChip,
+            selectedFilter === 'all' && styles.filterChipActive,
+          ]}
+        >
+          <AppText
+            style={[
+              styles.filterChipText,
+              selectedFilter === 'all' && styles.filterChipTextActive,
+            ]}
+          >
+            All ({reviews.length})
+          </AppText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => setSelectedFilter('5')}
+          style={[
+            styles.filterChip,
+            selectedFilter === '5' && styles.filterChipActive,
+          ]}
+        >
+          <AppText
+            style={[
+              styles.filterChipText,
+              selectedFilter === '5' && styles.filterChipTextActive,
+            ]}
+          >
+            5 Stars ({reviews.filter((r: any) => Math.round(r?.rating || 5) === 5).length})
+          </AppText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => setSelectedFilter('4')}
+          style={[
+            styles.filterChip,
+            selectedFilter === '4' && styles.filterChipActive,
+          ]}
+        >
+          <AppText
+            style={[
+              styles.filterChipText,
+              selectedFilter === '4' && styles.filterChipTextActive,
+            ]}
+          >
+            4 Stars ({reviews.filter((r: any) => Math.round(r?.rating || 5) === 4).length})
+          </AppText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => setSelectedFilter('low')}
+          style={[
+            styles.filterChip,
+            selectedFilter === 'low' && styles.filterChipActive,
+          ]}
+        >
+          <AppText
+            style={[
+              styles.filterChipText,
+              selectedFilter === 'low' && styles.filterChipTextActive,
+            ]}
+          >
+            3 Stars & Below ({reviews.filter((r: any) => Math.round(r?.rating || 5) <= 3).length})
+          </AppText>
+        </TouchableOpacity>
+      </ScrollView>
 
       {/* SECTION HEADER */}
       <View style={styles.sectionHeaderRow}>
         <AppText style={styles.sectionTitle}>Reviews Received</AppText>
         <View style={styles.reviewCountBadge}>
           <AppText style={styles.reviewCountText}>
-            {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
+            {filteredReviews.length}{' '}
+            {filteredReviews.length === 1 ? 'Review' : 'Reviews'}
           </AppText>
         </View>
       </View>
@@ -71,67 +199,101 @@ const ShipperReviewsScreen = ({ route }: any) => {
   const renderEmpty = () => {
     if (loading) return null;
     return (
-      <EmptyState
-        icon={
-          <AppIcon name={'MessageSquare'} size={64} color={COLORS.zinc400} />
-        }
-        title="No Reviews Received Yet"
-        message="Reviews from customers will appear here once submitted."
-      />
+      <View style={styles.emptyCard}>
+        <EmptyState
+          icon={
+            <AppIcon name={'MessageSquare'} size={56} color={COLORS.zinc400} />
+          }
+          title="No Reviews Match Filter"
+          message="There are no customer reviews matching the selected filter criteria."
+        />
+      </View>
     );
   };
 
   const renderReviewItem = ({ item, index }: { item: any; index: number }) => {
     const customerName =
-      item?.customerName || item?.customerId?.name || 'Customer';
+      item?.customerName || item?.customerId?.name || 'Horse Owner';
     const avatarUri =
       item?.customerId?.profileImage?.url || item?.customerId?.profileImage;
+    const itemId = item?._id || index.toString();
+    const hasAvatar =
+      avatarUri &&
+      typeof avatarUri === 'string' &&
+      avatarUri.trim() !== '' &&
+      !imageErrors[itemId];
+
     const dateFormatted = item?.createdAt
       ? formatDate(item?.createdAt, 'MMM DD, YYYY')
       : 'Recent';
 
+    const itemRating = Math.min(Math.max(Number(item?.rating || 5), 1), 5);
+
     return (
-      <View key={item?._id || index} style={styles.reviewCard}>
+      <View key={itemId} style={styles.reviewCard}>
         <View style={styles.reviewerHeader}>
           <View style={styles.reviewerRow}>
-            <Image
-              source={
-                avatarUri &&
-                  typeof avatarUri === 'string' &&
-                  avatarUri.trim() !== ''
-                  ? { uri: avatarUri }
-                  : imageIndex?.AccountIcon
-              }
-              style={styles.reviewerAvatar}
-            />
+            {hasAvatar ? (
+              <Image
+                source={{ uri: avatarUri }}
+                style={styles.reviewerAvatar}
+                onError={() =>
+                  setImageErrors(prev => ({ ...prev, [itemId]: true }))
+                }
+              />
+            ) : (
+              <View style={styles.avatarFallback}>
+                <AppText style={styles.avatarInitials}>
+                  {getInitials(customerName)}
+                </AppText>
+              </View>
+            )}
+
             <View style={styles.reviewerInfo}>
-              <AppText style={styles.reviewerName}>{customerName}</AppText>
+              <View style={styles.reviewerNameRow}>
+                <AppText style={styles.reviewerName} numberOfLines={1}>
+                  {customerName}
+                </AppText>
+              </View>
               <AppText style={styles.reviewDate}>{dateFormatted}</AppText>
             </View>
           </View>
 
-          <View style={styles.starsRow}>
-            {[1, 2, 3, 4, 5].map(s => (
-              <AppIcon
-                key={s}
-                name={'Star'}
-                size={14}
-                color={COLORS.warning}
-                fill={s <= (item?.rating || 5) ? COLORS.warning : 'transparent'}
-              />
-            ))}
+          <View style={styles.starsContainer}>
+            <View style={styles.starsRow}>
+              {[1, 2, 3, 4, 5].map(s => (
+                <AppIcon
+                  key={s}
+                  name={'Star'}
+                  size={14}
+                  color={COLORS.warning || '#F59E0B'}
+                  fill={
+                    s <= itemRating ? COLORS.warning || '#F59E0B' : 'transparent'
+                  }
+                />
+              ))}
+            </View>
           </View>
         </View>
 
         <AppText style={styles.reviewText}>
-          {item?.reviewText || 'Great experience working together!'}
+          {item?.reviewText || 'Great experience working together! Highly recommended.'}
         </AppText>
 
-        {item?.source && (
-          <View style={styles.sourceBadge}>
-            <AppText style={styles.sourceBadgeText}>{item?.source}</AppText>
+        <View style={styles.cardFooterRow}>
+          <View style={styles.verifiedBadge}>
+            <CheckCircle size={12} color="#10B981" />
+            <AppText style={styles.verifiedBadgeText}>
+              Verified Transport
+            </AppText>
           </View>
-        )}
+
+          {item?.source && (
+            <View style={styles.sourceBadge}>
+              <AppText style={styles.sourceBadgeText}>{item?.source}</AppText>
+            </View>
+          )}
+        </View>
       </View>
     );
   };
@@ -150,21 +312,21 @@ const ShipperReviewsScreen = ({ route }: any) => {
       <AppHeader showBack title="Customer Reviews" />
 
       <FlatList
-        data={reviews}
+        data={filteredReviews}
         keyExtractor={(item, index) => item?._id || index.toString()}
         renderItem={renderReviewItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={[
           styles.scrollContent,
-          reviews.length === 0 && { flexGrow: 1 },
+          filteredReviews.length === 0 && { flexGrow: 1 },
         ]}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={styles.summaryRatingText.color}
+            tintColor={COLORS.brandBrown || COLORS.primary}
           />
         }
         initialNumToRender={5}

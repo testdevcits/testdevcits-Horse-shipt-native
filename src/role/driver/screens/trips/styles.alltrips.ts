@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../../constants';
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listContent: {
-    paddingBottom: SPACING.xxxl,
+    paddingBottom: Platform.OS === 'ios' ? 100 : 90,
   },
   // Horizontal scroll area padding
   tabScrollContent: {

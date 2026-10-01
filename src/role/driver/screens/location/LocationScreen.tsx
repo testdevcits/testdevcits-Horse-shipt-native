@@ -65,7 +65,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const fallbackLat =

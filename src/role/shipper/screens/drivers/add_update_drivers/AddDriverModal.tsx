@@ -127,9 +127,9 @@ const AddDriverModal = ({
         showSuccessToast(
           'Success',
           res?.message ||
-            (driverToEdit
-              ? 'Driver updated successfully'
-              : 'Driver added successfully'),
+          (driverToEdit
+            ? 'Driver updated successfully'
+            : 'Driver added successfully'),
         );
         resetForm();
         onSuccess();
@@ -256,6 +256,8 @@ const AddDriverModal = ({
                 value={notes}
                 onChangeText={setNotes}
                 multiline
+                numberOfLines={3}
+                inputContainerStyle={{ height: 100 }}
               />
 
               {submitError && (

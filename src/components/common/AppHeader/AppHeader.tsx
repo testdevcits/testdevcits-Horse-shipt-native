@@ -85,12 +85,36 @@ const AppHeader = memo(
           ) : (
             <TouchableOpacity
               onPress={() => {
+                // 1. Try navigation.openDrawer() directly
+                if (typeof (navigation as any).openDrawer === 'function') {
+                  (navigation as any).openDrawer();
+                  return;
+                }
+
+                // 2. Try dispatching DrawerActions.openDrawer()
                 try {
                   navigation.dispatch(DrawerActions.openDrawer());
-                } catch (_err) {
-                  if (navigation.canGoBack()) {
-                    navigation.goBack();
+                  return;
+                } catch (_e1) {}
+
+                // 3. Traverse parent navigators to find the Drawer navigator
+                let parent = navigation.getParent();
+                while (parent) {
+                  try {
+                    if (typeof (parent as any).openDrawer === 'function') {
+                      (parent as any).openDrawer();
+                      return;
+                    }
+                    parent.dispatch(DrawerActions.openDrawer());
+                    return;
+                  } catch (_e2) {
+                    parent = parent.getParent();
                   }
+                }
+
+                // 4. Fallback to back if no drawer exists
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
                 }
               }}
               style={styles.iconBtn}

@@ -189,8 +189,9 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({
               onChangeText={setDescription}
               placeholder="Tell horse owners about your transport service & experience..."
               multiline
+              numberOfLines={3}
+              inputContainerStyle={{ height: 100 }}
               maxLength={500}
-              inputContainerStyle={{ minHeight: 90 }}
               rightIcon={
                 <AppText style={styles.charCounter}>
                   {description?.length}/500

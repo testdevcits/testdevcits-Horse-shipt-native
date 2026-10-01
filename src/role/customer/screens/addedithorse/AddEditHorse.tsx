@@ -185,49 +185,49 @@ const AddEditHorse = () => {
     setIsSaving(true);
     try {
       const formData = new FormData();
-      formData.append('registeredName', values.registeredName);
-      formData.append('barnName', values.barnName);
-      formData.append('colour', values.colour);
-      formData.append('age', values.age);
-      formData.append('breed', values.breed);
-      formData.append(
+      formData?.append('registeredName', values?.registeredName);
+      formData?.append('barnName', values?.barnName);
+      formData?.append('colour', values?.colour);
+      formData?.append('age', values?.age);
+      formData?.append('breed', values?.breed);
+      formData?.append(
         'otherBreed',
-        values.breed === 'Other' || values.breed === 'Other Breed'
-          ? values.otherBreed
-          : values.otherBreed || '',
+        values?.breed === 'Other' || values?.breed === 'Other Breed'
+          ? values?.otherBreed
+          : values?.otherBreed || '',
       );
-      formData.append('sex', values.sex);
-      formData.append('stallType', values.defaultStallSize);
-      formData.append('notes', values.notes || '');
+      formData?.append('sex', values?.sex);
+      formData?.append('stallType', values?.defaultStallSize);
+      formData?.append('notes', values?.notes || '');
 
-      if (values.photo && values.photo.uri) {
-        formData.append('photo', {
-          uri: values.photo.uri,
-          type: values.photo.type || 'image/jpeg',
-          name: values.photo.name || 'photo.jpg',
+      if (values?.photo && values?.photo.uri) {
+        formData?.append('photo', {
+          uri: values?.photo.uri,
+          type: values?.photo.type || 'image/jpeg',
+          name: values?.photo.name || 'photo.jpg',
         } as any);
       }
 
-      if (values.coggins && values.coggins.uri) {
-        const rawName = values.coggins.name || 'coggins.pdf';
+      if (values?.coggins && values?.coggins.uri) {
+        const rawName = values?.coggins.name || 'coggins.pdf';
         const pdfName = rawName.toLowerCase().endsWith('.pdf')
           ? rawName
           : `${rawName}.pdf`;
-        formData.append('coggins', {
-          uri: values.coggins.uri,
+        formData?.append('coggins', {
+          uri: values?.coggins.uri,
           type: 'application/pdf',
           name: pdfName,
         } as any);
       }
 
-      if (values.healthCertificate && values.healthCertificate.uri) {
+      if (values?.healthCertificate && values?.healthCertificate.uri) {
         const rawName =
-          values.healthCertificate.name || 'healthCertificate.pdf';
+          values?.healthCertificate.name || 'healthCertificate.pdf';
         const pdfName = rawName.toLowerCase().endsWith('.pdf')
           ? rawName
           : `${rawName}.pdf`;
-        formData.append('healthCertificate', {
-          uri: values.healthCertificate.uri,
+        formData?.append('healthCertificate', {
+          uri: values?.healthCertificate.uri,
           type: 'application/pdf',
           name: pdfName,
         } as any);
@@ -317,10 +317,12 @@ const AddEditHorse = () => {
                 <View style={styles.sectionCard}>
                   <AppText style={styles.sectionTitle}>Horse Photo</AppText>
                   <View style={styles.photoContainer}>
-                    {values.photo?.uri || values.photo?.url ? (
+                    {values?.photo?.uri || values?.photo?.url ? (
                       <View style={styles.photoPreviewBox}>
                         <Image
-                          source={{ uri: values.photo.uri || values.photo.url }}
+                          source={{
+                            uri: values?.photo.uri || values?.photo.url,
+                          }}
                           style={styles.photoPreviewImage}
                         />
                         <TouchableOpacity
@@ -358,7 +360,7 @@ const AddEditHorse = () => {
                 <Input
                   label={'Registered Name'}
                   placeholder="Enter Registered name ( min 3 characters )"
-                  value={values.registeredName}
+                  value={values?.registeredName}
                   onChangeText={handleChange('registeredName')}
                   error={
                     touched.registeredName
@@ -370,9 +372,9 @@ const AddEditHorse = () => {
                 <Input
                   label={'Barn Name'}
                   placeholder="Enter Barn name ( min 3 characters )"
-                  value={values.barnName}
+                  value={values?.barnName}
                   onChangeText={handleChange('barnName')}
-                  error={touched.barnName ? (errors.barnName as string) : ''}
+                  error={touched?.barnName ? (errors.barnName as string) : ''}
                 />
 
                 <Suspense fallback={<LazyFallback />}>
@@ -380,10 +382,10 @@ const AddEditHorse = () => {
                     label={'Color'}
                     placeholder="Select Color"
                     options={colorOptions}
-                    value={values.colour}
+                    value={values?.colour}
                     searchable
                     onSelect={item => setFieldValue('colour', item)}
-                    error={touched.colour ? (errors.colour as string) : ''}
+                    error={touched?.colour ? (errors.colour as string) : ''}
                   />
                 </Suspense>
 
@@ -391,10 +393,10 @@ const AddEditHorse = () => {
                   label={'Age (years)'}
                   placeholder="Enter age"
                   keyboardType="numeric"
-                  value={values.age}
+                  value={values?.age}
                   onChangeText={handleChange('age')}
                   maxLength={2}
-                  error={touched.age ? (errors.age as string) : ''}
+                  error={touched?.age ? (errors.age as string) : ''}
                 />
 
                 <Suspense fallback={<LazyFallback />}>
@@ -402,19 +404,19 @@ const AddEditHorse = () => {
                     label={'Breed'}
                     placeholder="Select Breed"
                     options={breedsList}
-                    value={values.breed}
+                    value={values?.breed}
                     searchable
                     onSelect={item => setFieldValue('breed', item)}
-                    error={touched.breed ? (errors.breed as string) : ''}
+                    error={touched?.breed ? (errors.breed as string) : ''}
                   />
                 </Suspense>
 
-                {(values.breed === 'Other' ||
-                  values.breed === 'Other Breed') && (
+                {(values?.breed === 'Other' ||
+                  values?.breed === 'Other Breed') && (
                   <Input
                     label={'Other Breed'}
                     placeholder="Enter custom breed name"
-                    value={values.otherBreed}
+                    value={values?.otherBreed}
                     onChangeText={handleChange('otherBreed')}
                     error={
                       touched.otherBreed ? (errors.otherBreed as string) : ''
@@ -427,9 +429,9 @@ const AddEditHorse = () => {
                     label={'Sex'}
                     placeholder="Select Sex"
                     options={sexes}
-                    value={values.sex}
+                    value={values?.sex}
                     onSelect={item => setFieldValue('sex', item)}
-                    error={touched.sex ? (errors.sex as string) : ''}
+                    error={touched?.sex ? (errors.sex as string) : ''}
                   />
                 </Suspense>
 
@@ -438,7 +440,7 @@ const AddEditHorse = () => {
                     label={'Stall Type'}
                     placeholder="Select Stall Type"
                     options={stallTypes}
-                    value={values.defaultStallSize}
+                    value={values?.defaultStallSize}
                     onSelect={item => setFieldValue('defaultStallSize', item)}
                     error={
                       touched.defaultStallSize
@@ -449,19 +451,19 @@ const AddEditHorse = () => {
                 </Suspense>
 
                 <Input
-                  label={'Notes (General Info)'}
+                  label="Notes (General Info)"
                   placeholder="Enter Notes about horse"
                   multiline
                   numberOfLines={4}
-                  value={values.notes}
+                  value={values?.notes}
                   onChangeText={handleChange('notes')}
-                  error={touched.notes ? (errors.notes as string) : ''}
+                  inputContainerStyle={{ height: 100 }}
+                  error={touched?.notes ? (errors.notes as string) : ''}
                 />
-
                 {/* Documents Upload Section */}
                 <HorseDocumentPickerSection
-                  coggins={values.coggins}
-                  healthCertificate={values.healthCertificate}
+                  coggins={values?.coggins}
+                  healthCertificate={values?.healthCertificate}
                   isPicking={isPicking}
                   onPickDocument={field =>
                     handlePickDocument(field, setFieldValue)

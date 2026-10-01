@@ -19,16 +19,45 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
 
+  // inputContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   borderWidth: 1,
+  //   borderColor: COLORS.border,
+  //   borderRadius: RADIUS.sm,
+  //   paddingHorizontal: SPACING.md,
+  //   height: 46,
+  //   backgroundColor: COLORS.white,
+  // },
+
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
-    paddingHorizontal: SPACING.md,
-    height: 46,
-    backgroundColor: COLORS.white,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderWidth: 1,
+  borderColor: COLORS.border,
+  borderRadius: RADIUS.sm,
+  paddingHorizontal: SPACING.md,
+  height: 46,
+  backgroundColor: COLORS.white,
+},
+
+multilineContainer: {
+  alignItems: 'flex-start',
+  minHeight: 100,
+  paddingVertical: SPACING.sm,
+},
+
+input: {
+  flex: 1,
+  fontFamily: FONTS.regular,
+  fontSize: FONT_SIZE.sm,
+  color: COLORS.textPrimary,
+  paddingVertical: 0,
+},
+
+multilineInput: {
+  textAlignVertical: 'top',
+},
 
   focusedBorder: {
     borderColor: COLORS.primary,
@@ -38,12 +67,12 @@ export default StyleSheet.create({
     borderColor: COLORS.error,
   },
 
-  input: {
-    flex: 1,
-    fontFamily: FONTS.regular,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textPrimary,
-  },
+  // input: {
+  //   flex: 1,
+  //   fontFamily: FONTS.regular,
+  //   fontSize: FONT_SIZE.sm,
+  //   color: COLORS.textPrimary,
+  // },
 
   error: {
     marginTop: 2,

@@ -2,11 +2,16 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DriverTabs from './DriverTabs';
 import DeliveryVerificationScreen from '../../role/driver/screens/verification/DeliveryVerificationScreen';
+import ShipmentDetailsScreen from '../../role/driver/screens/trips/ShipmentDetailsScreen';
+import { DriverShipmentItem } from '../../types/driver';
 
-const Stack = createNativeStackNavigator<{
+export type DriverStackParamList = {
   DriverTabs: undefined;
-  DeliveryVerification: undefined;
-}>();
+  DeliveryVerification: { shipment?: any };
+  ShipmentDetails: { shipment: DriverShipmentItem };
+};
+
+const Stack = createNativeStackNavigator<DriverStackParamList>();
 
 const DriverNavigator = () => {
   return (
@@ -17,8 +22,13 @@ const DriverNavigator = () => {
         name="DeliveryVerification"
         component={DeliveryVerificationScreen}
       />
+      <Stack.Screen
+        name="ShipmentDetails"
+        component={ShipmentDetailsScreen}
+      />
     </Stack.Navigator>
   );
 };
 
 export default DriverNavigator;
+

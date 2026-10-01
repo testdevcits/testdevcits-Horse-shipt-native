@@ -61,20 +61,20 @@ export const useActiveLocationTracker = () => {
               heading: heading ?? 0,
             });
             console.log(
-              '📡 [3s Interval] Coordinates Broadcasted successfully:',
+              '📡 [10s Interval] Coordinates Broadcasted successfully:',
               { latitude, longitude },
             );
           } catch (apiError) {
-            console.warn('📡 [3s Interval] API update failed:', apiError);
+            console.warn('📡 [10s Interval] API update failed:', apiError);
           }
         },
         error => {
           console.warn(
-            '📡 [3s Interval] GPS hardware locked out:',
+            '📡 [10s Interval] GPS hardware locked out:',
             error.message,
           );
         },
-        // Low timeout/cache age parameters optimized for rapid 3-second polls
+        // Low timeout/cache age parameters optimized for rapid 10-second polls
         { enableHighAccuracy: true, timeout: 4500, maximumAge: 1000 },
       );
     } catch (err) {
@@ -97,20 +97,20 @@ export const useActiveLocationTracker = () => {
     };
   }, []);
 
-  // Control 3-second background polling lifecycle based on active state [1]
+  // Control 10-second background polling lifecycle based on active state [1]
   useEffect(() => {
     if (appStateVisible === 'active') {
       console.log(
-        '⚡ App is active. Starting location interval tracker (3000ms)...',
+        '⚡ App is active. Starting location interval tracker (10000ms)...',
       );
 
       // Execute once immediately when app is opened
       syncLocationWithBackend();
 
-      // Set up the recurring 3-second loop [1]
+      // Set up the recurring 10-second loop [1]
       intervalRef.current = setInterval(() => {
         syncLocationWithBackend();
-      }, 3000);
+      }, 10000);
     } else {
       console.log('🛑 App backgrounded. Location tracker interval paused.');
       if (intervalRef.current) {

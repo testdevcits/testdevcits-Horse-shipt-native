@@ -91,10 +91,21 @@ const Input = ({
     <View style={[styles.container, containerStyle]}>
       {label ? <AppText style={styles.label}>{label}</AppText> : null}
 
+      {/* <View
+        style={[
+          styles.inputContainer,
+          inputContainerStyle,
+          focused && styles.focusedBorder,
+          error && styles.errorBorder,
+          disabled && styles.disabledBorder,
+        ]}
+      > */}
+
       <View
         style={[
           styles.inputContainer,
           inputContainerStyle,
+          props.multiline && styles.multilineContainer,
           focused && styles.focusedBorder,
           error && styles.errorBorder,
           disabled && styles.disabledBorder,
@@ -104,12 +115,30 @@ const Input = ({
           <View style={styles.leftIconContainer}>{leftIcon}</View>
         ) : null}
 
-        <TextInput
+        {/* <TextInput
           {...props}
           accessible={true}
           accessibilityLabel={label || props.placeholder || 'Text input'}
           accessibilityHint={error || undefined}
           style={[styles.input, props.style]}
+          secureTextEntry={isSecure}
+          placeholderTextColor={COLORS.textLight}
+          allowFontScaling={false}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          editable={!disabled && props.editable !== false}
+        /> */}
+
+        <TextInput
+          {...props}
+          accessible={true}
+          accessibilityLabel={label || props.placeholder || 'Text input'}
+          accessibilityHint={error || undefined}
+          style={[
+            styles.input,
+            props.multiline && styles.multilineInput,
+            props.style,
+          ]}
           secureTextEntry={isSecure}
           placeholderTextColor={COLORS.textLight}
           allowFontScaling={false}
