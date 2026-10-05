@@ -1,6 +1,5 @@
 import React, { memo, useState } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Sparkles, BadgeCheck, ChevronRight } from 'lucide-react-native';
 import { COLORS } from '../../../constants/colors';
 import imageIndex from '../../../assets/images/imageIndex';

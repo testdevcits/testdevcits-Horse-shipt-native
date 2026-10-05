@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   statusBadgePill: {
     paddingHorizontal: 8,
     paddingVertical: 2,
-    borderRadius: RADIUS.xs || 4,
+    borderRadius: RADIUS.xs,
   },
   statusBadgeSuccess: {
     backgroundColor: COLORS.emeraldLightBg,
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.goldBorder,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: RADIUS.xs || 4,
+    borderRadius: RADIUS.xs,
   },
   viewPdfBtnText: {
     fontSize: FONT_SIZE.sm,
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.slate200,
-    padding: SPACING.xxl || 32,
+    padding: SPACING.xxl ,
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: SPACING.sm,
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.slate200,
-    padding: SPACING.xxl || 32,
+    padding: SPACING.xxl ,
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: SPACING.sm,

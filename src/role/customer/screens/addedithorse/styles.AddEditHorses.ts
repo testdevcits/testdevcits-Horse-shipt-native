@@ -161,6 +161,30 @@ const styles = StyleSheet.create({
   docDeleteBtn: {
     padding: 6,
   },
+  docActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  docActionBtn: {
+    padding: 6,
+  },
+  docChangeBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: SPACING.xs + 2,
+    paddingVertical: 5,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
+  },
+  docChangeBtnText: {
+    fontSize: FONT_SIZE.xs - 1,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.primary,
+  },
 
   btnContainer: {
     marginTop: SPACING.md,

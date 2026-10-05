@@ -283,10 +283,10 @@ const ShipperReviewsScreen = ({ route }: any) => {
                   key={s}
                   name={'Star'}
                   size={14}
-                  color={COLORS.warning || '#F59E0B'}
+                  color={COLORS.warning }
                   fill={
                     s <= itemRating
-                      ? COLORS.warning || '#F59E0B'
+                      ? COLORS.warning  
                       : 'transparent'
                   }
                 />

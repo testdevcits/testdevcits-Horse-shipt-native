@@ -154,9 +154,8 @@ const MyQuotesScreen = () => {
 
     const foundVehicle =
       vehicles.find(v => {
-        const label = `${v?.make || ''} ${v?.model || ''} (${
-          v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
-        })`.trim();
+        const label = `${v?.make || ''} ${v?.model || ''} (${v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
+          })`.trim();
         return (
           label === selectedLabel ||
           v?.vehicleNumber === selectedLabel ||
@@ -463,9 +462,8 @@ const MyQuotesScreen = () => {
           placeholder="Select Vehicle"
           value=""
           options={vehicles?.map(v =>
-            `${v?.make || ''} ${v?.model || ''} (${
-              v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
-            })`.trim(),
+            `${v?.make || ''} ${v?.model || ''} (${v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
+              })`.trim(),
           )}
           onSelect={handleSelectVehicle}
           searchable

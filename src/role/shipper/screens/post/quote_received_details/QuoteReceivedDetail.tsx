@@ -244,7 +244,7 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
 
   const shipment = quote?.shipment;
   const horse = shipment?.horses?.[0];
-  const status = quote?.status || shipment?.status || 'pending';
+  const status = quote?.status || shipment?.status || 'Not Available';
   const statusColor = getStatusColor(status);
 
   const pickupLocation =

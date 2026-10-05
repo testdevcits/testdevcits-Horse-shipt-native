@@ -64,20 +64,20 @@ const AddVehicleModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (vehicleToEdit) {
-      setTransportType(vehicleToEdit.transportType || 'Trucking');
-      setVehicleType(vehicleToEdit.vehicleType || '');
-      setVehicleNumber(vehicleToEdit.vehicleNumber || '');
-      setVinNumber(vehicleToEdit.vinNumber || '');
+      setTransportType(vehicleToEdit?.transportType || 'Trucking');
+      setVehicleType(vehicleToEdit?.vehicleType || '');
+      setVehicleNumber(vehicleToEdit?.vehicleNumber || '');
+      setVinNumber(vehicleToEdit?.vinNumber || '');
       setNumberOfStalls(
-        vehicleToEdit.numberOfStalls
-          ? String(vehicleToEdit.numberOfStalls)
+        vehicleToEdit?.numberOfStalls
+          ? String(vehicleToEdit?.numberOfStalls)
           : '',
       );
-      setStallType(vehicleToEdit.trailerType || '');
-      setStallSize(vehicleToEdit.stallSize || '');
-      setNotes(vehicleToEdit.notes || '');
-      if (vehicleToEdit.images?.[0]?.url) {
-        setSelectedImage({ uri: vehicleToEdit.images[0].url });
+      setStallType(vehicleToEdit?.trailerType || '');
+      setStallSize(vehicleToEdit?.stallSize || '');
+      setNotes(vehicleToEdit?.notes || '');
+      if (vehicleToEdit?.images?.[0]?.url) {
+        setSelectedImage({ uri: vehicleToEdit?.images[0].url });
       } else {
         setSelectedImage(null);
       }
@@ -200,7 +200,7 @@ const AddVehicleModal: React.FC<Props> = ({
 
       let res: any;
       if (vehicleToEdit?._id) {
-        res = await shipperService.updateVehicle(vehicleToEdit._id, formData);
+        res = await shipperService.updateVehicle(vehicleToEdit?._id, formData);
       } else {
         res = await shipperService.addVehicle(formData);
       }

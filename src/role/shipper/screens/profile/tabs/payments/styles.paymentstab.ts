@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
     borderColor: COLORS.redBorder,
-    borderRadius: RADIUS.xs || 6,
+    borderRadius: RADIUS.xs ,
     padding: SPACING.md - 2,
     marginBottom: SPACING.xs,
   },
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   checkSquare: {
     width: 32,
     height: 32,
-    borderRadius: RADIUS.xs || 6,
+    borderRadius: RADIUS.xs,
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,

@@ -27,8 +27,8 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
 
   const shipment = quote?.shipment || {};
   const horsePhoto =
-    shipment.horses && shipment.horses[0]?.photo?.url
-      ? shipment.horses[0].photo.url
+    shipment?.horses && shipment?.horses[0]?.photo?.url
+      ? shipment?.horses[0].photo.url
       : null;
 
   const quoteStatus = (quote?.status || '').toLowerCase();
@@ -143,7 +143,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
       {/* Card Main Info */}
       <View style={styles.cardBody}>
         <AppText style={styles.shipmentCode}>
-          {shipment.shipmentCode || 'HS-SHIP-2026-CODE'}
+          {shipment?.shipmentCode || 'Not Available'}
         </AppText>
         <AppText style={styles.cardSubText}>
           Review shipment offers, contracts, vehicles, and payment status.

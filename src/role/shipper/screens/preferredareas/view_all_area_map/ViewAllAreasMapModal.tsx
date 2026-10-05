@@ -65,7 +65,7 @@ const ViewAllAreasMapModal: React.FC<Props> = ({ visible, onClose, areas }) => {
     const coords = areasToFit.map(getAreaCoords);
 
     if (coords.length === 1) {
-      const radKm = areasToFit[0].radiusKm || 50;
+      const radKm = areasToFit[0]?.radiusKm || 50;
       mapRef.current.animateToRegion(
         {
           latitude: coords[0].latitude,

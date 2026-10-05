@@ -219,7 +219,7 @@ const ProfileTab: React.FC<Props> = ({
                         size={15}
                         color={COLORS.warning}
                         fill={
-                          s <= (rev?.rating || 5)
+                          s <= (rev?.rating || 0)
                             ? COLORS.warning
                             : 'transparent'
                         }

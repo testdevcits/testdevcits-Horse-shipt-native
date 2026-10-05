@@ -46,9 +46,9 @@ const ChatInputBar = ({
           placeholder="Type a message..."
           value={inputText}
           onChangeText={setInputText}
-          multiline
-          numberOfLines={3}
-          inputContainerStyle={{ height: 100 }}
+          // multiline
+          // numberOfLines={3}
+          // inputContainerStyle={{ height: 100 }}
           containerStyle={{ marginBottom: 0 }}
         />
       </View>
