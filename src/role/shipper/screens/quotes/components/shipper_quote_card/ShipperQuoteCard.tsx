@@ -153,7 +153,7 @@ const ShipperQuoteCard: React.FC<ShipperQuoteCardProps> = ({
         <View style={styles.priceRow}>
           <AppText style={styles.priceLabel}>Pricing : </AppText>
           <AppText style={styles.priceValue}>
-            ${quote?.totalPrice || 200}
+            ${quote?.totalPrice || 0.0}
           </AppText>
         </View>
 

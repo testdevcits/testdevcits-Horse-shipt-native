@@ -24,7 +24,7 @@ export const EmptyState = ({ title, message, icon }: EmptyStateProps) => {
     return (
       <Icon
         size={ICON_SIZE.xl || 32}
-        color={COLORS.lightGrey || COLORS.grey300}
+        color={COLORS.lightGrey}
         strokeWidth={1.5}
       />
     );

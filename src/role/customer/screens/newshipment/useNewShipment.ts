@@ -163,7 +163,7 @@ const parseShipmentDataToForm = (data: any): NewShipmentForm => {
     deliveryEndDate: data?.deliveryDateRange?.end
       ? new Date(data?.deliveryDateRange.end)
       : getDayAfterTomorrow(),
-    numberOfHorses: horses.length || data?.numberOfHorses || 1,
+    numberOfHorses: horses.length || data?.numberOfHorses || 0,
     additionalInfo: data?.additionalInfo || data?.notes || '',
     recipientEmail: data?.recipientEmail || '',
     hasSpecialRequirement: !!data?.hasSpecialRequirement,

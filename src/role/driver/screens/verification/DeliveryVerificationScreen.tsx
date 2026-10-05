@@ -237,7 +237,10 @@ const DeliveryVerificationScreen = () => {
             <TouchableOpacity
               style={[
                 styles.goldActionButton,
-                { backgroundColor: '#10B981', shadowColor: '#10B981' },
+                {
+                  backgroundColor: COLORS.success,
+                  shadowColor: COLORS.success,
+                },
               ]}
               onPress={handleDone}
               activeOpacity={0.85}

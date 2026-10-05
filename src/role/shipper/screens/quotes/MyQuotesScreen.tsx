@@ -154,8 +154,9 @@ const MyQuotesScreen = () => {
 
     const foundVehicle =
       vehicles.find(v => {
-        const label = `${v?.make || ''} ${v?.model || ''} (${v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
-          })`.trim();
+        const label = `${v?.make || ''} ${v?.model || ''} (${
+          v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
+        })`.trim();
         return (
           label === selectedLabel ||
           v?.vehicleNumber === selectedLabel ||
@@ -243,7 +244,9 @@ const MyQuotesScreen = () => {
           res.message || 'Quote deleted successfully',
         );
         setQuotes(prev =>
-          prev?.filter(q => q?._id !== quoteToDelete && q?.id !== quoteToDelete),
+          prev?.filter(
+            q => q?._id !== quoteToDelete && q?.id !== quoteToDelete,
+          ),
         );
       } else {
         showErrorToast(
@@ -460,8 +463,9 @@ const MyQuotesScreen = () => {
           placeholder="Select Vehicle"
           value=""
           options={vehicles?.map(v =>
-            `${v?.make || ''} ${v?.model || ''} (${v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
-              })`.trim(),
+            `${v?.make || ''} ${v?.model || ''} (${
+              v?.vehicleNumber || v?.licensePlate || v?.type || 'Vehicle'
+            })`.trim(),
           )}
           onSelect={handleSelectVehicle}
           searchable

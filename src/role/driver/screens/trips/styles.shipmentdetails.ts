@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   statusBadgeCompleted: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#DCFCE7',
+    backgroundColor: COLORS.greenBadgeBg,
     borderWidth: 1,
     borderColor: '#86EFAC',
     borderRadius: 12,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#EF4444',
+    backgroundColor: COLORS.error,
     borderWidth: 2,
     borderColor: COLORS.white,
     alignItems: 'center',
@@ -278,13 +278,13 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     borderWidth: 2.5,
-    borderColor: '#1E293B',
-    backgroundColor: '#10B981',
+    borderColor: COLORS.grey800,
+    backgroundColor: COLORS.success,
   },
   timelineLine: {
     flex: 1,
     width: 2,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: COLORS.grey300,
     marginVertical: 4,
   },
   dotDestination: {
@@ -292,8 +292,8 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     borderWidth: 2.5,
-    borderColor: '#1E293B',
-    backgroundColor: '#D97706',
+    borderColor: COLORS.grey800,
+    backgroundColor: COLORS.amberPrimary,
   },
   locationDetailsCol: {
     flex: 1,
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   locationTagDelivered: {
     fontFamily: FONTS.bold,
     fontSize: 11,
-    color: '#92400E',
+    color: COLORS.brandBrown,
   },
   locationSubtext: {
     fontFamily: FONTS.medium,
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     color: COLORS.slate900,
   },
   badgeTagAmber: {
-    backgroundColor: '#FEF3C7',
+    backgroundColor: COLORS.goldLightText,
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
   badgeTagAmberText: {
     fontFamily: FONTS.bold,
     fontSize: 10,
-    color: '#B45309',
+    color: COLORS.amberWarning,
   },
 
   // Horse Details
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 14,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.grey100,
   },
   horseImageFallback: {
     width: 72,
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   characteristicPill: {
-    backgroundColor: '#E0F2FE',
+    backgroundColor: COLORS.skyLightBg,
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -435,12 +435,12 @@ const styles = StyleSheet.create({
     color: '#0369A1',
   },
   careNoteBox: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: COLORS.blueLightBg,
     borderRadius: 10,
     padding: 10,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#BFDBFE',
+    borderColor: COLORS.blueBorder,
   },
   careNoteHeader: {
     flexDirection: 'row',
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
   signOffRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: 12,
     padding: 10,
     gap: 10,
@@ -501,9 +501,9 @@ const styles = StyleSheet.create({
   },
   metricCard: {
     flex: 1,
-    backgroundColor: '#F0FDF4',
+    backgroundColor: COLORS.greenLightBg2,
     borderWidth: 1,
-    borderColor: '#DCFCE7',
+    borderColor: COLORS.greenBadgeBg,
     borderRadius: 12,
     padding: 12,
     flexDirection: 'row',
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
   metricLabel: {
     fontFamily: FONTS.bold,
     fontSize: 9,
-    color: '#15803D',
+    color: COLORS.greenBadgeText,
     letterSpacing: 0.5,
     marginBottom: 2,
   },
@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
     color: COLORS.slate900,
   },
   capacityRow: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: 10,
     padding: 10,
     flexDirection: 'row',
@@ -542,7 +542,7 @@ const styles = StyleSheet.create({
 
   // Passport Section
   badgeTagGreen: {
-    backgroundColor: '#DCFCE7',
+    backgroundColor: COLORS.greenBadgeBg,
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
   badgeTagGreenText: {
     fontFamily: FONTS.bold,
     fontSize: 10,
-    color: '#15803D',
+    color: COLORS.greenBadgeText,
   },
   docRow: {
     flexDirection: 'row',

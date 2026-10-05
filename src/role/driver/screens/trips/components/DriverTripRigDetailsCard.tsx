@@ -52,12 +52,16 @@ export const DriverTripRigDetailsCard: React.FC<Props> = React.memo(
         {shipmentNotes ? (
           <View style={[styles.careNoteBox, { marginTop: 10 }]}>
             <View style={styles.careNoteHeader}>
-              <AppIcon name="Info" size={14} color="#92400E" />
-              <AppText style={[styles.careNoteTitle, { color: '#92400E' }]}>
+              <AppIcon name="Info" size={14} color={COLORS.goldBrownText} />
+              <AppText
+                style={[styles.careNoteTitle, { color: COLORS.goldBrownText }]}
+              >
                 Additional Shipment Notes
               </AppText>
             </View>
-            <AppText style={[styles.careNoteText, { color: '#78350F' }]}>
+            <AppText
+              style={[styles.careNoteText, { color: COLORS.goldDarkText }]}
+            >
               "{shipmentNotes}"
             </AppText>
           </View>

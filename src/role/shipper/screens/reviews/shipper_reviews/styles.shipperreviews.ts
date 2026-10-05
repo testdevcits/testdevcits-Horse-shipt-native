@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF9F6',
+    backgroundColor: COLORS.background,
   },
   scrollContent: {
     paddingHorizontal: SPACING.lg,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || '#FDE68A',
+    borderColor: COLORS.goldBorder,
     padding: SPACING.xl,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 4 },
@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
   summaryRatingBox: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.goldCreamBg,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: COLORS.goldBorder,
     borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   summaryRatingText: {
     fontSize: 32,
     fontFamily: FONTS.bold,
-    color: COLORS.brandBrown || COLORS.textPrimary,
+    color: COLORS.brandBrown,
     lineHeight: 36,
   },
   ratingMetaCol: {
@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
   badgePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.emeraldBorder,
     paddingHorizontal: SPACING.sm2,
     paddingVertical: 4,
     borderRadius: RADIUS.pill,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   badgePillText: {
     fontSize: 10,
     fontFamily: FONTS.bold,
-    color: '#065F46',
+    color: COLORS.emeraldBadgeText,
     marginLeft: 4,
     letterSpacing: 0.3,
   },
@@ -104,11 +104,11 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.pill,
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.grey200,
   },
   filterChipActive: {
-    backgroundColor: COLORS.brandBrown || COLORS.primary,
-    borderColor: COLORS.brandBrown || COLORS.primary,
+    backgroundColor: COLORS.brandBrown,
+    borderColor: COLORS.brandBrown,
   },
   filterChipText: {
     fontSize: FONT_SIZE.xs,
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   reviewCountBadge: {
-    backgroundColor: '#FFFBEB',
-    borderColor: '#FDE68A',
+    backgroundColor: COLORS.amberLightBg,
+    borderColor: COLORS.amberBorder,
     borderWidth: 1,
     paddingHorizontal: SPACING.md,
     paddingVertical: 3,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   reviewCountText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.brandBrown || COLORS.primary,
+    color: COLORS.brandBrown,
   },
 
   /* Review Item Card */
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     padding: SPACING.lg,
     gap: SPACING.sm,
     shadowColor: COLORS.black,
@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 21,
     borderWidth: 1.5,
-    borderColor: COLORS.brandBrown || COLORS.primary,
+    borderColor: COLORS.brandBrown,
   },
   avatarFallback: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: COLORS.brandBrown || COLORS.primary,
+    backgroundColor: COLORS.brandBrown,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   reviewText: {
     fontSize: FONT_SIZE.sm,
     fontFamily: FONTS.regular,
-    color: '#334155',
+    color: COLORS.grey700,
     lineHeight: 22,
     marginTop: 2,
   },
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs2,
     paddingTop: SPACING.sm,
     borderTopWidth: 1,
-    borderTopColor: '#F8FAFC',
+    borderTopColor: COLORS.background,
   },
   verifiedBadge: {
     flexDirection: 'row',
@@ -241,10 +241,10 @@ const styles = StyleSheet.create({
   verifiedBadgeText: {
     fontSize: 11,
     fontFamily: FONTS.bold,
-    color: '#10B981',
+    color: COLORS.greenActive,
   },
   sourceBadge: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.divider,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.xs,
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     padding: SPACING.xxl,
     alignItems: 'center',
     justifyContent: 'center',

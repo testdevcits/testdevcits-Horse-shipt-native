@@ -68,7 +68,7 @@ export const ShipmentDetailMapCard: React.FC<ShipmentDetailMapCardProps> = ({
             destination={{ latitude: dLat, longitude: dLng }}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={4}
-            strokeColor={COLORS.brandBrown || COLORS.primary}
+            strokeColor={COLORS.brandBrown}
             lineDashPattern={[0]}
             onError={err => console.log('MapViewDirections Error:', err)}
           />

@@ -109,7 +109,7 @@ const TripCard: React.FC<TripCardProps> = ({
         <View style={styles.infoBadge}>
           <AppIcon name="Truck" size={14} color={COLORS.primary} />
           <AppText style={styles.infoText}>
-            {shipmentData?.numberOfHorses || 1}{' '}
+            {shipmentData?.numberOfHorses}{' '}
             {shipmentData?.numberOfHorses === 1 ? 'Horse' : 'Horses'}
           </AppText>
         </View>

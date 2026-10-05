@@ -35,7 +35,7 @@ export const ShipperRouteInfoCard: React.FC<Props> = React.memo(
             <View style={styles.specStatTextCol}>
               <AppText style={styles.specStatLabel}>HORSES</AppText>
               <AppText style={styles.specStatValue}>
-                {shipment?.numberOfHorses || 1}
+                {shipment?.numberOfHorses || 0}
               </AppText>
             </View>
           </View>

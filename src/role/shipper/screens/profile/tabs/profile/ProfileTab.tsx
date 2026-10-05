@@ -292,11 +292,7 @@ const ProfileTab: React.FC<Props> = ({
           onPress={onLogout}
           activeOpacity={0.8}
         >
-          <AppIcon
-            name="LogOut"
-            size={18}
-            color={COLORS.redPrimary || COLORS.error}
-          />
+          <AppIcon name="LogOut" size={18} color={COLORS.redPrimary} />
           <AppText style={styles.logoutBtnText}>Logout Account</AppText>
         </TouchableOpacity>
       )}

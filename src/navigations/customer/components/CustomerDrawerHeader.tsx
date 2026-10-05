@@ -16,7 +16,7 @@ const CustomerDrawerHeader: React.FC<CustomerDrawerHeaderProps> = ({
   user,
   onPressProfile,
 }) => {
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
   const [imageError, setImageError] = useState(false);
 
   const userName = user?.name || (user as any)?.fullName || 'Not Available';
@@ -37,7 +37,7 @@ const CustomerDrawerHeader: React.FC<CustomerDrawerHeaderProps> = ({
     <TouchableOpacity
       style={[
         styles.profileHeaderContainer,
-        { paddingTop: Math.max(insets.top, 20) + 8 },
+        // { paddingTop: Math.max(insets.top, 20) + 8 },
       ]}
       activeOpacity={0.9}
       onPress={onPressProfile}

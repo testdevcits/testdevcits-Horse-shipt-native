@@ -77,7 +77,7 @@ const ActiveShipment = ({
             <View style={styles.metricChip}>
               <AppIcon name={'Truck'} size={14} color={COLORS.primary} />
               <AppText style={styles.metricChipText}>
-                {activeShipment?.shipment?.numberOfHorses || 1} Horse(s)
+                {activeShipment?.shipment?.numberOfHorses || 0} Horse(s)
               </AppText>
             </View>
             <View style={styles.metricChip}>

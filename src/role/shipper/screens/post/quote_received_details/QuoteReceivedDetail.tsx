@@ -466,7 +466,7 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
           getStatusLabel={getStatusLabel}
           formatDate={formatDate}
           quoteCreatedAt={quote?.createdAt}
-          numberOfHorses={shipment?.numberOfHorses || 1}
+          numberOfHorses={shipment?.numberOfHorses || 0}
         />
 
         {/* Route Section */}
@@ -496,7 +496,7 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
 
         {/* Shipment Summary Card */}
         <QuoteSummaryCard
-          numberOfHorses={shipment?.numberOfHorses || 1}
+          numberOfHorses={shipment?.numberOfHorses || 0}
           shipmentStatus={shipment?.status}
           pickupDate={pickupDate}
           deliveryDate={deliveryDate}

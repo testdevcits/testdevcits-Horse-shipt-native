@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: SPACING.xs,
     position: 'relative',
-    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg,
+    backgroundColor: COLORS.warmCreamDark,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
@@ -992,7 +992,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: RADIUS.xs,
-    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg,
+    backgroundColor: COLORS.warmCreamDark,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.md,
@@ -1106,7 +1106,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.redBorder,
   },
   logoutMenuItemTitle: {
-    color: COLORS.redPrimary || COLORS.error,
+    color: COLORS.redPrimary,
   },
 });
 

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: SPACING.xs,
     position: 'relative',
-    backgroundColor: COLORS.warmCreamDark || COLORS.goldLightBg,
+    backgroundColor: COLORS.warmCreamDark,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   verifiedBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.semiBold,
-    color: COLORS.goldBrownText || COLORS.saddleBrown,
+    color: COLORS.goldBrownText,
   },
 
   // QUICK STATS DASHBOARD CARD

@@ -6,7 +6,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import AppText from '../AppText';
-import { FONT_SIZE, FONTS } from '../../../constants';
+import { COLORS, FONT_SIZE, FONTS } from '../../../constants';
 
 interface CustomSwitchProps {
   value: boolean;
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   thumb: {
     position: 'absolute',
     left: 3,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -148,11 +148,11 @@ const styles = StyleSheet.create({
   },
   onText: {
     left: 10,
-    color: '#FFFFFF',
+    color: COLORS.white,
   },
   offText: {
     right: 8,
-    color: '#94A3B8',
+    color: COLORS.grey400,
     fontFamily: FONTS.semiBold,
     fontSize: FONT_SIZE.xs,
   },

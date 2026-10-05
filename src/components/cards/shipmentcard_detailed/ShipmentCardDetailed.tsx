@@ -102,7 +102,7 @@ const ShipmentHorizontalCard = memo(
                 >
                   <AppIcon
                     name="Trash2"
-                    size={ICON_SIZE.xs || 16}
+                    size={ICON_SIZE.xs}
                     color={COLORS.error}
                   />
                 </TouchableOpacity>

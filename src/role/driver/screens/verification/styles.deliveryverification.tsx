@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     padding: 4,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
   },
   tabItem: {
     flex: 1,
@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   tabItemCompleted: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.greenLightBg,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.greenBorder,
   },
   tabItemLocked: {
     opacity: 0.5,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: COLORS.grey300,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: SPACING.xs,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   tabBadgeCompleted: {
-    backgroundColor: '#10B981',
+    backgroundColor: COLORS.success,
   },
   tabBadgeText: {
     fontFamily: FONTS.bold,
@@ -177,12 +177,12 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   routeContainer: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.grey100,
   },
   routeRow: {
     flexDirection: 'row',
@@ -197,12 +197,12 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#10B981',
+    backgroundColor: COLORS.success,
   },
   dotLine: {
     width: 2,
     height: 24,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: COLORS.grey300,
     marginVertical: 2,
   },
   dotGold: {
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
+    borderTopColor: COLORS.grey100,
   },
   metaItem: {
     flexDirection: 'row',
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.03,
@@ -309,9 +309,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ECFDF5',
+    backgroundColor: COLORS.emeraldLightBg,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: COLORS.emeraldBorder,
     borderRadius: RADIUS.md,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   successBannerText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.xs,
-    color: '#065F46',
+    color: COLORS.emeraldBadgeText,
     marginLeft: SPACING.xs,
   },
   otpGridContainer: {
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 50,
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.grey300,
     borderRadius: RADIUS.sm,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   activeOtpInputBox: {
     borderColor: COLORS.primary,
     borderWidth: 2,
-    backgroundColor: '#FFFBEB',
+    backgroundColor: COLORS.amberLightBg,
   },
   otpPinCodeText: {
     fontFamily: FONTS.bold,
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: COLORS.border,
     padding: SPACING.lg,
   },
   goldActionButton: {

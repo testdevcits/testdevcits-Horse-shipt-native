@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   errorTitle: {
     fontFamily: FONTS.bold,
-    fontSize: FONT_SIZE.xxl || 20,
+    fontSize: FONT_SIZE.xxl,
     color: COLORS.textPrimary,
     marginTop: SPACING.xs,
     textAlign: 'center',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     textAlign: 'center',
     color: COLORS.textSecondary,
-    fontSize: FONT_SIZE.md || 14,
+    fontSize: FONT_SIZE.md,
     lineHeight: 22,
     marginTop: SPACING.xs,
     marginBottom: SPACING.xl,

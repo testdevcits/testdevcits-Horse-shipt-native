@@ -38,7 +38,7 @@ const ShipmentSummaryCard: React.FC<ShipmentSummaryCardProps> = ({
         <View style={styles.bannerLeft}>
           <AppText style={styles.bannerTitle}>Shipment Overview</AppText>
           <AppText style={styles.bannerSub}>
-            {numberOfHorses || horsesCount || 1} Horse(s) • {uploadedDocCount}{' '}
+            {numberOfHorses || horsesCount || 0} Horse(s) • {uploadedDocCount}{' '}
             of {totalDocCount} Papers Attached
           </AppText>
         </View>

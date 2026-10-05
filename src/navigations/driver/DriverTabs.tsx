@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.slate200,
   },
   tabBarButtonsContainer: {
     flexDirection: 'row',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   tabItemActive: {
-    backgroundColor: '#FFFBEB', // Soft gold cream active highlight capsule
+    backgroundColor: COLORS.amberLightBg, // Soft gold cream active highlight capsule
   },
   iconWrapper: {
     marginBottom: 3,

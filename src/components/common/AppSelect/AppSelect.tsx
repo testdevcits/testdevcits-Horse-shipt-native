@@ -199,7 +199,7 @@ const AppSelect = memo(
               <View style={styles.checkBadge}>
                 <AppIcon
                   name="Check"
-                  size={ICON_SIZE.xs || 14}
+                  size={ICON_SIZE.xs}
                   color={COLORS.primary}
                   strokeWidth={3}
                 />

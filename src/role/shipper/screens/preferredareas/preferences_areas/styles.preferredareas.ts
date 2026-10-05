@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   heroBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.amberPrimary || COLORS.primary,
+    color: COLORS.amberPrimary,
   },
   heroSubText: {
     fontSize: FONT_SIZE.xs,
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   radiusPillText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.amberPrimary || COLORS.primary,
+    color: COLORS.amberPrimary,
   },
 
   // COORD BOXES ROW

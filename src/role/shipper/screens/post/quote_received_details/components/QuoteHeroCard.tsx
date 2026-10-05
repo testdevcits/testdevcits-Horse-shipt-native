@@ -73,7 +73,7 @@ export const QuoteHeroCard: React.FC<QuoteHeroCardProps> = memo(
               color={COLORS.textSecondary}
             />
             <AppText style={styles.heroMetaText}>
-              {numberOfHorses || 1} {numberOfHorses === 1 ? 'Horse' : 'Horses'}
+              {numberOfHorses || 0} {numberOfHorses === 1 ? 'Horse' : 'Horses'}
             </AppText>
           </View>
         </View>

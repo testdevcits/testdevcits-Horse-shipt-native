@@ -236,11 +236,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
                   { backgroundColor: COLORS.redLight },
                 ]}
               >
-                <AppIcon
-                  name="LogOut"
-                  size={18}
-                  color={COLORS.redPrimary || COLORS.error}
-                />
+                <AppIcon name="LogOut" size={18} color={COLORS.redPrimary} />
               </View>
               <View style={styles.menuContent}>
                 <AppText
@@ -255,7 +251,7 @@ const ShipperProfileScreen = ({ navigation }: any) => {
               <AppIcon
                 name="ChevronRight"
                 size={18}
-                color={COLORS.redPrimary || COLORS.error}
+                color={COLORS.redPrimary}
               />
             </TouchableOpacity>
           </View>

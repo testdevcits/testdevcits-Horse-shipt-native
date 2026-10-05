@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: COLORS.goldBorder || COLORS.border,
+    borderColor: COLORS.goldBorder,
     padding: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoLabel: {
-    fontSize: FONT_SIZE.mini || 11,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.bold,
     color: COLORS.textSecondary,
     letterSpacing: 0.5,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   accountTypeBadgeText: {
     fontSize: FONT_SIZE.xs,
     fontFamily: FONTS.bold,
-    color: COLORS.amberPrimary || COLORS.primary,
+    color: COLORS.amberPrimary,
   },
 
   // REVIEWS RECEIVED SECTION
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   reviewDate: {
-    fontSize: FONT_SIZE.mini || 11,
+    fontSize: FONT_SIZE.mini,
     fontFamily: FONTS.regular,
     color: COLORS.textSecondary,
     marginTop: 1,
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   logoutBtnText: {
-    color: COLORS.redPrimary || COLORS.error,
+    color: COLORS.redPrimary,
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.sm,
   },

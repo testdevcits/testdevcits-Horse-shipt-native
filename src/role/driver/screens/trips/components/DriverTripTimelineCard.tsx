@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import AppText from '../../../../../components/common/AppText';
 import styles from '../styles.shipmentdetails';
+import { COLORS } from '../../../../../constants';
 
 interface Props {
   pickupLoc: string;
@@ -84,7 +85,9 @@ export const DriverTripTimelineCard: React.FC<Props> = React.memo(
           {paymentStatus && (
             <View style={styles.summaryCol}>
               <AppText style={styles.summaryLabel}>Payment</AppText>
-              <AppText style={[styles.summaryValue, { color: '#92400E' }]}>
+              <AppText
+                style={[styles.summaryValue, { color: COLORS.goldBrownText }]}
+              >
                 {paymentStatus}
               </AppText>
             </View>

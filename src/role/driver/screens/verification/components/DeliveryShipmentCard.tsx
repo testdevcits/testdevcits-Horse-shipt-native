@@ -14,7 +14,7 @@ const DeliveryShipmentCard: React.FC<DeliveryShipmentCardProps> = ({
 }) => {
   const horseName =
     shipment?.shipment?.horses?.[0]?.registeredName || 'Horse Manifest';
-  const numberOfHorses = shipment?.shipment?.numberOfHorses || 1;
+  const numberOfHorses = shipment?.shipment?.numberOfHorses || 0;
   const pickup = shipment?.shipment?.pickupLocation || 'Pickup location N/A';
   const delivery =
     shipment?.shipment?.deliveryLocation || 'Delivery location N/A';

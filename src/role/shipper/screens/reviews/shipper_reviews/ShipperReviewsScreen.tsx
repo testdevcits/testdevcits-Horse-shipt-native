@@ -346,7 +346,7 @@ const ShipperReviewsScreen = ({ route }: any) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={COLORS.brandBrown || COLORS.primary}
+            tintColor={COLORS.brandBrown}
           />
         }
         initialNumToRender={5}

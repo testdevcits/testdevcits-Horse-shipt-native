@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   selector: {
     height: 48,
     borderWidth: 1,
-    borderColor: COLORS.inputBorder || COLORS.border,
+    borderColor: COLORS.inputBorder,
     borderRadius: RADIUS.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.divider,
   },
   selectedOptionItem: {
-    backgroundColor: COLORS.goldLightBg || COLORS.goldLightBg,
+    backgroundColor: COLORS.goldLightBg,
     borderBottomColor: COLORS.transparent,
   },
   optionLeft: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: COLORS.goldTintBox || COLORS.goldTintBox,
+    backgroundColor: COLORS.goldTintBox,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: SPACING.xs,
