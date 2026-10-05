@@ -74,8 +74,8 @@ const HomeScreen = ({ navigation }: any) => {
       <View style={styles.screenWrapper}>
         {/* 1. Shared Global Driver Header */}
         <DriverHeader
-          name={driver?.name || 'Test Driver'}
-          statusText={driver?.driverStatus || ''}
+          name={driver?.name || 'Driver'}
+          statusText={driver?.driverStatus || 'Not Available'}
           profileImageUrl={driver?.profileImage?.url}
           isOnline={driver?.isActive !== false}
         />

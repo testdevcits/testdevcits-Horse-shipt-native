@@ -65,7 +65,7 @@ const LocationScreen = () => {
     type: 'success' as 'success' | 'danger' | 'info' | 'warning',
     confirmText: 'Got It',
     cancelText: 'Close',
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const fallbackLat =
@@ -246,8 +246,8 @@ const LocationScreen = () => {
     <View style={styles.safeArea}>
       <View style={styles.screenWrapper}>
         <DriverHeader
-          name={driver?.name || 'Test Driver'}
-          statusText={driver?.driverStatus || 'ON TRIP'}
+          name={driver?.name || 'Driver'}
+          statusText={driver?.driverStatus || ''}
           profileImageUrl={driver?.profileImage?.url}
           isOnline={driver?.isActive !== false}
         />

@@ -64,8 +64,8 @@ const Profile = () => {
     <View style={styles.safeArea}>
       {/* 1. Global Header Component rendered at the top of the screen */}
       <DriverHeader
-        name={driver?.name || 'Test Driver'}
-        statusText={driver?.driverStatus || 'ON TRIP'}
+        name={driver?.name || ' Driver'}
+        statusText={driver?.driverStatus || 'Not Available'}
         profileImageUrl={driver?.profileImage?.url}
         isOnline={driver?.isActive !== false}
       />
@@ -200,7 +200,6 @@ const Profile = () => {
         </View>
 
         {/* Completed Shipments Section */}
-
         <CompletedShipments
           completedShipments={completedShipments}
           completedCount={completedCount}

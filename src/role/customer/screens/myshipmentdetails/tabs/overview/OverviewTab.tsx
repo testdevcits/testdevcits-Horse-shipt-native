@@ -18,6 +18,7 @@ import styles from './styles.OverViewTab';
 import { showErrorToast } from '../../../../../../utils/toast';
 import ShipmentStatusTimeline from './ShipmentStatusTimeline';
 import HorseDetailsList from './HorseDetailsList';
+import TaxInvoicesSection from './TaxInvoicesSection';
 
 const PublishedSuccessModal = lazy(
   () => import('../../components/publish_success_modal/PublishedSuccessModal'),
@@ -232,6 +233,12 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
               onOpenUrl={openUrl}
             />
 
+            {/* Tax Invoices Section */}
+            <TaxInvoicesSection
+              taxInvoices={data?.taxInvoices || data?.tax_invoices}
+              onOpenUrl={openUrl}
+            />
+
             {/* Additional Info History Log */}
             {data?.additionalInfoLog && data?.additionalInfolog?.length > 0 && (
               <View style={styles.logSection}>
@@ -334,3 +341,6 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 };
 
 export default OverviewTab;
+
+
+

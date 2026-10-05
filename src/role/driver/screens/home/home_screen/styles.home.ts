@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.lg,
-    paddingBottom: SPACING.giant,
+    paddingBottom: SPACING.massive+10,
   },
   center: {
     flex: 1,

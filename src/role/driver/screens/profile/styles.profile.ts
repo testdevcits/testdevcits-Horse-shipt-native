@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: 10,
     color: COLORS.greenPrimary,
+    textTransform: 'capitalize',
   },
   priceBadge: {
     backgroundColor: COLORS.blueLightBg,
@@ -475,6 +476,22 @@ const styles = StyleSheet.create({
   logoutText: {
     fontFamily: FONTS.bold,
     fontSize: FONT_SIZE.md,
+    color: COLORS.white,
+  },
+  viewAllButton: {
+    marginTop: 10,
+    alignSelf: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: COLORS.primaryLight,
+    width: '90%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  viewAllButtonText: {
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.white,
   },
 });
