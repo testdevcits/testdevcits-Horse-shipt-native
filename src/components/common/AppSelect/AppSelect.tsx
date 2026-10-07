@@ -125,7 +125,7 @@ const AppSelect = memo(
       const handleDismissModal = useCallback(() => {
         try {
           bottomSheetModalRef.current?.dismiss();
-        } catch {}
+        } catch { }
         setFallbackVisible(false);
         setSearchQuery('');
       }, []);
@@ -160,19 +160,19 @@ const AppSelect = memo(
       );
 
       const renderOptionItem = (item: AppSelectOption) => {
-        const isSelected = item.value === value || item.label === value;
+        const isSelected = item?.value === value || item?.label === value;
         return (
           <TouchableOpacity
-            key={String(item.value)}
+            key={String(item?.value)}
             style={[styles.optionItem, isSelected && styles.selectedOptionItem]}
             onPress={() => handleSelect(item)}
             activeOpacity={0.7}
           >
             <View style={styles.optionLeft}>
-              {item.icon && (
+              {item?.icon && (
                 <View style={styles.optionIconBox}>
                   <AppIcon
-                    name={item.icon as any}
+                    name={item?.icon as any}
                     size={18}
                     color={COLORS.primary}
                   />
@@ -185,11 +185,11 @@ const AppSelect = memo(
                     isSelected && styles.selectedOptionText,
                   ]}
                 >
-                  {item.label}
+                  {item?.label}
                 </AppText>
-                {item.subtitle && (
+                {item?.subtitle && (
                   <AppText style={styles.optionSubtitle}>
-                    {item.subtitle}
+                    {item?.subtitle}
                   </AppText>
                 )}
               </View>
@@ -320,7 +320,7 @@ const AppSelect = memo(
               {/* Options List */}
               <BottomSheetFlatList
                 data={filteredOptions}
-                keyExtractor={(item, index) => `${String(item.value)}-${index}`}
+                keyExtractor={(item, index) => `${String(item?.value)}-${index}`}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={true}
                 ListEmptyComponent={
@@ -396,7 +396,7 @@ const AppSelect = memo(
                 <FlatList
                   data={filteredOptions}
                   keyExtractor={(item, index) =>
-                    `${String(item.value)}-${index}`
+                    `${String(item?.value)}-${index}`
                   }
                   contentContainerStyle={styles.listContent}
                   showsVerticalScrollIndicator={true}

@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
       const sId = rawId ? String(rawId) : '';
       const img =
         typeof item?.profileImage === 'string'
-          ? item.profileImage
+          ? item?.profileImage
           : item?.profileImage?.url || item?.avatar || item?.image || '';
       const shipperName =
         item?.name ||
@@ -158,19 +158,19 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
 
   const renderListItem = useCallback(
     ({ item }: { item: ListItemType }) => {
-      switch (item.type) {
+      switch (item?.type) {
         case 'SECTION_HEADER':
           return (
-            <SectionHeader title={item.title} onPress={item.onMorePress} />
+            <SectionHeader title={item?.title} onPress={item?.onMorePress} />
           );
         case 'SHIPMENT_ITEM':
           return (
             <ShipmentCardDetailed
-              item={item.data}
+              item={item?.data}
               onPress={() => {
                 navigation.navigate('MyShipmentDetails', {
-                  item: item.data,
-                  quoteId: item.data?.quoteId,
+                  item: item?.data,
+                  quoteId: item?.data?.quoteId,
                 });
               }}
             />
@@ -186,8 +186,8 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
         case 'SHIPPER_ITEM':
           return (
             <ShipperCard
-              item={item.data}
-              onPress={() => handleShipperPress(item.data)}
+              item={item?.data}
+              onPress={() => handleShipperPress(item?.data)}
               onFavoritePress={toggleWishlist}
               customstyle={{ width: SCREEN_WIDTH - 20 }}
             />
@@ -210,13 +210,13 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
   );
 
   const keyExtractor = useCallback((item: ListItemType, index: number) => {
-    if (item.type === 'SHIPMENT_ITEM') {
-      return `shipment-${item.data?._id || item.data?.id || index}`;
+    if (item?.type === 'SHIPMENT_ITEM') {
+      return `shipment-${item?.data?._id || item?.data?.id || index}`;
     }
-    if (item.type === 'SHIPPER_ITEM') {
-      return `shipper-${item.data?.id || item.data?._id || index}`;
+    if (item?.type === 'SHIPPER_ITEM') {
+      return `shipper-${item?.data?.id || item?.data?._id || index}`;
     }
-    return `${item.type}-${index}`;
+    return `${item?.type}-${index}`;
   }, []);
 
   const ListHeader = useMemo(

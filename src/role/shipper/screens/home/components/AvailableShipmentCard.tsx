@@ -30,15 +30,14 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
 
   const horseSpecs =
     item?.horses && item?.horses[0]
-      ? `${item?.horses[0]?.breed || 'Not Available'} | ${
-          item?.horses[0]?.age || '2'
-        }yr | ${item?.horses[0]?.colour || 'Not Available'}`
+      ? `${item?.horses[0]?.breed || 'Not Available'} | ${item?.horses[0]?.age || '2'
+      }yr | ${item?.horses[0]?.colour || 'Not Available'}`
       : 'Not Available | Not Available | Not Available';
 
   const locationText = item?.pickupLocation
     ? item?.pickupLocation.split(',')[0] +
-      ', ' +
-      (item?.pickupLocation.split(',')[1] || '')
+    ', ' +
+    (item?.pickupLocation.split(',')[1] || '')
     : 'Not Available';
 
   return (
@@ -74,9 +73,9 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
 
           <AppText style={styles.shipmentStatus}>
             {item?.status
-              ? item.status
-                  .replace(/_/g, ' ')
-                  .replace(/\b\w/g, (char: string) => char.toUpperCase())
+              ? item?.status
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, (char: string) => char.toUpperCase())
               : ''}
           </AppText>
         </View>

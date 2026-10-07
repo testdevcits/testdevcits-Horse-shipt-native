@@ -97,37 +97,37 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
         ) : (
           filteredList.map((item, idx) => {
             const isInvoice =
-              !!item.invoicePdf ||
-              !!item.hostedInvoiceUrl ||
-              item.displayType === 'invoice' ||
-              item.displayType === 'trial';
+              !!item?.invoicePdf ||
+              !!item?.hostedInvoiceUrl ||
+              item?.displayType === 'invoice' ||
+              item?.displayType === 'trial';
             const isPayment =
-              !!item.receiptUrl || item.paymentMethod === 'card';
+              !!item?.receiptUrl || item?.paymentMethod === 'card';
 
             const targetUrl =
-              item.invoicePdf || item.hostedInvoiceUrl || item.receiptUrl;
+              item?.invoicePdf || item?.hostedInvoiceUrl || item?.receiptUrl;
 
             const dateStr = formatDate(
-              item.createdAt || item.paidAt || item.periodStart || new Date(),
+              item?.createdAt || item?.paidAt || item?.periodStart || new Date(),
               'MMM DD, YYYY • hh:mm A',
             );
 
             const titleText =
-              item.title ||
-              item.description ||
+              item?.title ||
+              item?.description ||
               (isInvoice
                 ? 'Subscription Invoice'
                 : isPayment
-                ? 'Card Payment Receipt'
-                : 'Payout Transfer');
+                  ? 'Card Payment Receipt'
+                  : 'Payout Transfer');
 
-            const statusStr = (item.status || 'paid').toLowerCase();
+            const statusStr = (item?.status || 'paid').toLowerCase();
             const isSuccessStatus =
               statusStr === 'paid' || statusStr === 'succeeded';
 
             return (
               <View
-                key={item.id || item._id || idx}
+                key={item?.id || item?._id || idx}
                 style={[
                   styles.historyCardItem,
                   idx === filteredList.length - 1 && { borderBottomWidth: 0 },
@@ -163,20 +163,20 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
                       {titleText}
                     </AppText>
                     <AppText style={styles.itemAmountText}>
-                      {item.isNoChargeInvoice || item.amount === 0
+                      {item?.isNoChargeInvoice || item?.amount === 0
                         ? 'Free'
-                        : `$${Number(item.amount).toFixed(2)} ${(
-                            item.currency || 'USD'
-                          ).toUpperCase()}`}
+                        : `$${Number(item?.amount).toFixed(2)} ${(
+                          item?.currency || 'USD'
+                        ).toUpperCase()}`}
                     </AppText>
                   </View>
 
                   <View style={styles.itemBottomRow}>
                     <AppText style={styles.itemDateText}>{dateStr}</AppText>
 
-                    {item.cardBrand && item.last4 ? (
+                    {item?.cardBrand && item?.last4 ? (
                       <AppText style={styles.itemCardText}>
-                        • {item.cardBrand.toUpperCase()} •••• {item.last4}
+                        • {item?.cardBrand.toUpperCase()} •••• {item?.last4}
                       </AppText>
                     ) : null}
                   </View>
@@ -199,9 +199,9 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
                             : styles.statusBadgeTextTrial,
                         ]}
                       >
-                        {item.isTrialInvoice
+                        {item?.isTrialInvoice
                           ? 'Trial Invoice'
-                          : (item.status || 'paid').toUpperCase()}
+                          : (item?.status || 'paid').toUpperCase()}
                       </AppText>
                     </View>
 

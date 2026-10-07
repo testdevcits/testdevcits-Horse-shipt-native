@@ -72,7 +72,7 @@ const ShipperCard = memo(
             {(() => {
               const profileUri =
                 typeof item?.profileImage === 'string'
-                  ? item.profileImage
+                  ? item?.profileImage
                   : (item?.profileImage as any)?.url;
               const hasValidImage = Boolean(
                 profileUri && profileUri !== '/default-avatar.png',
