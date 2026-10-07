@@ -4,6 +4,7 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import GoogleMaps // 1. Add this import statement
 import RNBootSplash
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
 
-     // 2. Add this line here (replace with your actual Google Maps API Key)
+    FirebaseApp.configure()
+
+    // 2. Add this line here (replace with your actual Google Maps API Key)
     GMSServices.provideAPIKey("AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw")
 
     
