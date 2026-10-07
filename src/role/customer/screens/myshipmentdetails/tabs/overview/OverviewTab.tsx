@@ -341,6 +341,3 @@ const OverviewTab = ({ data, quoteId, onReview }: any) => {
 };
 
 export default OverviewTab;
-
-
-

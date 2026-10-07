@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.redLightBg,
     borderWidth: 1,
     borderColor: COLORS.redBorder,
-    borderRadius: RADIUS.xs ,
+    borderRadius: RADIUS.xs,
     padding: SPACING.md - 2,
     marginBottom: SPACING.xs,
   },

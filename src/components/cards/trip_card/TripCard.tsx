@@ -71,7 +71,12 @@ const TripCard: React.FC<TripCardProps> = ({
     firstHorse?.notes?.trim() ||
     shipmentData?.notes?.trim();
 
-  const tripStatusRaw = item?.tripStatus || item?.status || shipmentData?.tripStatus || shipmentData?.status || 'unknown';
+  const tripStatusRaw =
+    item?.tripStatus ||
+    item?.status ||
+    shipmentData?.tripStatus ||
+    shipmentData?.status ||
+    'unknown';
   const statusLower = tripStatusRaw.toString().toLowerCase().replace(/_/g, '');
 
   const isTransit =
@@ -79,7 +84,8 @@ const TripCard: React.FC<TripCardProps> = ({
     statusLower === 'started' ||
     statusLower === 'active' ||
     statusLower === 'intrip';
-  const isCompleted = statusLower === 'completed' || statusLower === 'delivered';
+  const isCompleted =
+    statusLower === 'completed' || statusLower === 'delivered';
   const isPending =
     statusLower === 'pending' ||
     statusLower === 'notstarted' ||
@@ -221,7 +227,8 @@ const TripCard: React.FC<TripCardProps> = ({
         <View style={styles.vehicleChip}>
           <AppIcon name="Truck" size={14} color={COLORS.slate600} />
           <AppText style={styles.vehicleText}>
-            Rig #{vehicleNumber} • {item?.stallsRequired || shipmentData?.stallsRequired || 0} Stalls
+            Rig #{vehicleNumber} •{' '}
+            {item?.stallsRequired || shipmentData?.stallsRequired || 0} Stalls
           </AppText>
         </View>
       </View>

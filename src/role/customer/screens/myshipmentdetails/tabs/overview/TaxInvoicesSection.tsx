@@ -28,13 +28,15 @@ const parseTaxInvoices = (taxInvoicesData: any): TaxInvoiceItem[] => {
   // Case 1: Array of invoices
   if (Array.isArray(taxInvoicesData)) {
     return taxInvoicesData
-      .filter((item) => item && (item?.url || item?.invoiceNumber))
+      .filter(item => item && (item?.url || item?.invoiceNumber))
       .map((item, idx) => ({
         key: item?.type || item?.id || `invoice-${idx}`,
         title:
           item?.title ||
           (item?.type
-            ? `${item?.type.charAt(0).toUpperCase() + item?.type.slice(1)} Tax Invoice`
+            ? `${
+                item?.type.charAt(0).toUpperCase() + item?.type.slice(1)
+              } Tax Invoice`
             : `Tax Invoice #${idx + 1}`),
         invoiceNumber: item?.invoiceNumber || item?.invoice_number || 'N/A',
         url: item?.url || item?.pdfUrl || null,
@@ -60,14 +62,19 @@ const parseTaxInvoices = (taxInvoicesData: any): TaxInvoiceItem[] => {
     }
 
     const list: TaxInvoiceItem[] = [];
-    Object.keys(taxInvoicesData).forEach((key) => {
+    Object.keys(taxInvoicesData).forEach(key => {
       const item = taxInvoicesData[key];
-      if (item && typeof item === 'object' && (item?.url || item?.invoiceNumber)) {
+      if (
+        item &&
+        typeof item === 'object' &&
+        (item?.url || item?.invoiceNumber)
+      ) {
         let title = 'Tax Invoice';
         const keyLower = key?.toLowerCase();
         if (keyLower === 'customer') title = 'Customer Tax Invoice';
         else if (keyLower === 'shipper') title = 'Shipper Tax Invoice';
-        else title = `${key?.charAt(0).toUpperCase() + key?.slice(1)} Tax Invoice`;
+        else
+          title = `${key?.charAt(0).toUpperCase() + key?.slice(1)} Tax Invoice`;
 
         list.push({
           key,
@@ -116,15 +123,11 @@ const TaxInvoicesSection: React.FC<TaxInvoicesSectionProps> = ({
       </View>
 
       <View style={styles.taxInvoicesBody}>
-        {invoicesList.map((inv) => (
+        {invoicesList.map(inv => (
           <View key={inv.key} style={styles.taxInvoiceCard}>
             <View style={styles.taxInvoiceCardHeader}>
               <View style={styles.taxInvoiceCardTitleRow}>
-                <AppIcon
-                  name={'FileText'}
-                  size={18}
-                  color={COLORS.primary}
-                />
+                <AppIcon name={'FileText'} size={18} color={COLORS.primary} />
                 <AppText style={styles.taxInvoiceTitle}>{inv.title}</AppText>
               </View>
               <View style={styles.taxInvoiceRoleBadge}>

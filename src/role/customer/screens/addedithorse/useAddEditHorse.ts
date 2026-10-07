@@ -75,9 +75,7 @@ const useAddEditHorse = () => {
       horse?.defaultStallSize || (horse as any)?.stallType || '',
     notes: horse?.notes || '',
     photo: horse?.photo || null,
-    coggins: getValidDoc(
-      horse?.documents?.coggins || (horse as any)?.coggins,
-    ),
+    coggins: getValidDoc(horse?.documents?.coggins || (horse as any)?.coggins),
     healthCertificate: getValidDoc(
       horse?.documents?.healthCertificate ||
         (horse as any)?.healthCert ||

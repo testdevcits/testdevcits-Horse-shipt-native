@@ -58,7 +58,7 @@ const CompletedShipments: React.FC<CompletedShipmentsProps> = ({
                 <TripCard
                   key={shipmentId}
                   item={item}
-                  onCardPress={(selectedItem) =>
+                  onCardPress={selectedItem =>
                     navigation.navigate('ShipmentDetails', {
                       shipment: selectedItem,
                     })

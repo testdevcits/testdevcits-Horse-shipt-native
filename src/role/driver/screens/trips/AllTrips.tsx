@@ -42,10 +42,7 @@ const isPendingStatus = (s: any) => {
 const isActiveStatus = (s: any) => {
   const st = getNormalizedStatus(s);
   return (
-    st === 'intransit' ||
-    st === 'started' ||
-    st === 'active' ||
-    st === 'intrip'
+    st === 'intransit' || st === 'started' || st === 'active' || st === 'intrip'
   );
 };
 
@@ -154,12 +151,14 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   return (
     <View style={styles.container}>
       {/* Shared Global Header */}
-      {!loading && <DriverHeader
-        name={driver?.name || 'Not Available'}
-        statusText={driver?.driverStatus || 'Not Available'}
-        profileImageUrl={driver?.profileImage?.url}
-        isOnline={driver?.isActive !== false}
-      />}
+      {!loading && (
+        <DriverHeader
+          name={driver?.name || 'Not Available'}
+          statusText={driver?.driverStatus || 'Not Available'}
+          profileImageUrl={driver?.profileImage?.url}
+          isOnline={driver?.isActive !== false}
+        />
+      )}
 
       {loading ? (
         <ShipmentsSkeleton />

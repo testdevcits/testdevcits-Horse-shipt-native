@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Linking,
-} from 'react-native';
-import {
-  COLORS,
-} from '../../../../constants';
+import { View, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { COLORS } from '../../../../constants';
 import { AppHeader, AppText } from '../../../../components';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import styles from './styles.HelpCenter';
 
-const HelpCenter = ({ }: any) => {
+const HelpCenter = ({}: any) => {
   const handleEmailPress = () => {
     Linking.openURL('mailto:noreply.horseshipt2026@gmail.com');
   };
@@ -143,7 +136,5 @@ const FaqItem = ({
     </TouchableOpacity>
   );
 };
-
-
 
 export default HelpCenter;

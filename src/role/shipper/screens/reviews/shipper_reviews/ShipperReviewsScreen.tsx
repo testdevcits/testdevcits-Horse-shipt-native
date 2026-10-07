@@ -283,12 +283,8 @@ const ShipperReviewsScreen = ({ route }: any) => {
                   key={s}
                   name={'Star'}
                   size={14}
-                  color={COLORS.warning }
-                  fill={
-                    s <= itemRating
-                      ? COLORS.warning  
-                      : 'transparent'
-                  }
+                  color={COLORS.warning}
+                  fill={s <= itemRating ? COLORS.warning : 'transparent'}
                 />
               ))}
             </View>

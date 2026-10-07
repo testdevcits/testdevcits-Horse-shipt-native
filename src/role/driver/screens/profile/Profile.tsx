@@ -64,7 +64,7 @@ const Profile = () => {
     <View style={styles.safeArea}>
       {/* 1. Global Header Component rendered at the top of the screen */}
       <DriverHeader
-        name={driver?.name || ' Driver'}
+        name={driver?.name || 'Driver'}
         statusText={driver?.driverStatus || 'Not Available'}
         profileImageUrl={driver?.profileImage?.url}
         isOnline={driver?.isActive !== false}
