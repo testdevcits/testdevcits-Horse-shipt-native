@@ -33,12 +33,32 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app requires access to your location to share active delivery progress with dispatchers.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Horse Shipt needs access to your camera to take a selfie for attendance verification.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Horse Shipt requires background location access to automatically track driver position during active trips even when the app is minimized or closed.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Horse Shipt requires continuous background location access for live shipment tracking.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires access to your location to share active delivery progress with dispatchers.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Horse Shipt needs permission to save images and documents to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Horse Shipt needs access to your gallery to upload profile photos and documents.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-Thin.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-ExtraLight.ttf</string>
+		<string>Montserrat-Black.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -61,23 +81,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>Horse Shipt needs access to your camera to take a selfie for attendance verification.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Horse Shipt needs access to your gallery to upload profile photos and documents.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Horse Shipt needs permission to save images and documents to your photo library.</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Montserrat-Bold.ttf</string>
-		<string>Montserrat-Thin.ttf</string>
-		<string>Montserrat-SemiBold.ttf</string>
-		<string>Montserrat-Medium.ttf</string>
-		<string>Montserrat-Light.ttf</string>
-		<string>Montserrat-ExtraLight.ttf</string>
-		<string>Montserrat-Black.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>Montserrat-ExtraBold.ttf</string>
-	</array>
 </dict>
 </plist>
