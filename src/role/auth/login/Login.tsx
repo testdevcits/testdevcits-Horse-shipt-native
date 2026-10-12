@@ -291,20 +291,22 @@ const Login = () => {
                   <AppText style={styles.googleBtnText}>
                     {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
                   </AppText>
-                </TouchableOpacity>
+                </TouchableOpacity> 
+
+                <View style={styles.footer}>
+                  <AppText style={styles.footerText}>
+                    Don't have an account?{' '}
+                  </AppText>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SignupFlowScreen')}
+                  >
+                    <AppText style={styles.footerLink}>
+                      Create an account
+                    </AppText>
+                  </TouchableOpacity>
+                </View>
               </>
             )}
-
-            <View style={styles.footer}>
-              <AppText style={styles.footerText}>
-                Don't have an account?{' '}
-              </AppText>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('SignupFlowScreen')}
-              >
-                <AppText style={styles.footerLink}>Create an account</AppText>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>

@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from '../app/store';
-import { logoutUser } from '../redux/slices/authSlice';
+import { triggerSessionExpired } from '../redux/slices/authSlice';
 import Toast from 'react-native-toast-message';
 import NetInfo from '@react-native-community/netinfo';
 import { BASE_URL } from '../config/constants';
@@ -128,14 +128,19 @@ axiosClient.interceptors.response?.use(
         'An error occurred',
     );
 
-    showErrorToast('Error', errorMessage);
+    const state = store.getState();
+    const isSession401 = status === 401 && Boolean(state.auth.token);
+
+    // Suppress generic error toast for 401 session expiration, as custom popup will be shown
+    if (!isSession401) {
+      showErrorToast('Error', errorMessage);
+    }
 
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {
-      const state = store.getState();
       if (state.auth.token) {
-        console.warn('⚠️ Session Expired: Dispatching global logout...');
-        store.dispatch(logoutUser());
+        console.warn('⚠️ Session Expired: Displaying custom session expired modal...');
+        store.dispatch(triggerSessionExpired());
         return Promise.reject({
           message: 'Session expired. Please login again.',
           status: 401,

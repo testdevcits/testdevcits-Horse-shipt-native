@@ -15,6 +15,7 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { REACT_APP_STRIPE_PUBLISHABLE_KEY } from './src/config/constants';
 import OfflineBanner from './src/components/common/OfflineBanner';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
+import { SessionExpiredModal } from './src/components';
 // import { notificationService } from './src/services/notificationService';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -59,7 +60,10 @@ const App = () => {
                 </ErrorBoundary>
               </SafeAreaView>
 
-              {/* 4. Toast at the absolute top of the visual stack */}
+              {/* 4. Global Session Expired Modal */}
+              <SessionExpiredModal />
+
+              {/* 5. Toast at the absolute top of the visual stack */}
 
               <Toast
                 config={toastConfig}

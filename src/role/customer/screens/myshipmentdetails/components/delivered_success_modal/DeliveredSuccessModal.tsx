@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, View, Image } from 'react-native';
 
 import { AppText, Button as ButtonCompt } from '../../../../../../components';
@@ -56,6 +56,8 @@ const DeliveredSuccessModal = ({
             )}
 
             <ButtonCompt
+
+            
               title="Close"
               onPress={onClose}
               buttonStyle={
@@ -72,4 +74,10 @@ const DeliveredSuccessModal = ({
   );
 };
 
-export default DeliveredSuccessModal;
+export default memo(DeliveredSuccessModal);
+
+
+
+
+
+ 

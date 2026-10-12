@@ -127,6 +127,7 @@ const initialState: AuthState = {
   token: null,
   isLoading: true,
   error: null,
+  isSessionExpired: false,
 };
 
 const authSlice = createSlice({
@@ -160,6 +161,14 @@ const authSlice = createSlice({
       state.error = null;
     },
 
+    triggerSessionExpired: state => {
+      state.isSessionExpired = true;
+    },
+
+    dismissSessionExpired: state => {
+      state.isSessionExpired = false;
+    },
+
     /**
      * Synchronous reducer to update user profile fields (e.g. profileImage, name)
      * Keeps Redux state and AsyncStorage in sync across all roles
@@ -182,6 +191,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isSessionExpired = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -195,6 +205,7 @@ const authSlice = createSlice({
       .addCase(googleLoginUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isSessionExpired = false;
       })
       .addCase(googleLoginUser.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -219,9 +230,16 @@ const authSlice = createSlice({
       state.token = null;
       state.error = null;
       state.isLoading = false;
+      state.isSessionExpired = false;
     });
   },
 });
 
-export const { clearAuthError, setCredentials, updateUser } = authSlice.actions; // Exported here
+export const {
+  clearAuthError,
+  setCredentials,
+  updateUser,
+  triggerSessionExpired,
+  dismissSessionExpired,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -30,6 +30,7 @@ import LazyFallback from './common/LazyFallback';
 import ImageViewer from './common/ImageViewer/ImageViewer';
 import ShipmentHorizontalCard from './cards/shipmentcard_detailed/ShipmentCardDetailed';
 import CustomSwitch from './common/CustomSwitch/CustomSwitch';
+import SessionExpiredModal from './common/SessionExpiredModal/SessionExpiredModal';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -89,6 +90,7 @@ export {
   ImageViewer,
   ShipmentHorizontalCard,
   CustomSwitch,
+  SessionExpiredModal,
 
   // Skeletons
   HomeSkeleton,
