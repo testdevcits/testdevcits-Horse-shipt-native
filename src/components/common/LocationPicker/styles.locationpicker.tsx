@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   fullMap: { flex: 1 },
   searchHeader: {
     position: 'absolute',
-    top: 0,
+    top: Platform.OS === "ios" ? 50 : 0,
     left: 0,
     right: 0,
     paddingHorizontal: SPACING.lg,

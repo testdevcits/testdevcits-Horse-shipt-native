@@ -144,6 +144,8 @@ const LocationPickerCore: React.FC<{
       const resp = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_APIKEY}`,
       );
+      // console.log("-------reverseGeocode-------", resp)
+
       if (resp.data?.results?.length > 0) {
         setDisplayAddress(resp.data?.results[0]?.formatted_address);
       } else {
@@ -185,6 +187,8 @@ const LocationPickerCore: React.FC<{
           signal: searchAbortController.current.signal,
         },
       );
+
+      // console.log("-------searchPlaces-------", resp)
       setSuggestions(resp.data?.predictions);
     } catch (e: any) {
       if (e.name !== 'CanceledError') console.error('Search error', e);
@@ -211,6 +215,8 @@ const LocationPickerCore: React.FC<{
           },
         },
       );
+      // console.log("-------getPlaceDetails-------", resp)
+
       const { lat, lng } = resp.data?.result.geometry.location;
       const addr = resp.data?.result.formatted_address;
 
@@ -315,6 +321,7 @@ const LocationPickerCore: React.FC<{
       {/* MAP ENGINE */}
       <MapView
         ref={mapRef}
+        // provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         provider={PROVIDER_GOOGLE}
         style={styles.fullMap}
         initialRegion={region}
