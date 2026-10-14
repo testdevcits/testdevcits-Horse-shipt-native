@@ -3,11 +3,16 @@ import {
   GOOGLE_MAPS_APIKEY as ENV_MAPS_KEY,
   REACT_APP_STRIPE_PUBLISHABLE_KEY as ENV_STRIPE_KEY,
 } from '@env';
+import { Platform } from 'react-native';
 
 export const BASE_URL = ENV_BASE_URL || 'https://horse-shipt.vercel.app';
 
 export const GOOGLE_MAPS_APIKEY =
-  ENV_MAPS_KEY || 'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw';
+  // ENV_MAPS_KEY ||
+
+  Platform.OS === 'android' ?
+  
+  'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw' : 'AIzaSyAIBX80AOVruweXYLyCDiZ_0zdzdW3G4o0';
 
 export const REACT_APP_STRIPE_PUBLISHABLE_KEY =
   ENV_STRIPE_KEY ||

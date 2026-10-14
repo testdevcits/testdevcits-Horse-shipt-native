@@ -8,6 +8,7 @@ import {
   signInWithCredential,
   signOut as firebaseSignOut,
 } from '@react-native-firebase/auth';
+import { Platform } from 'react-native';
 import axios from 'axios';
 
 declare const process: any;
@@ -28,6 +29,8 @@ let isConfigured = false;
 
 const DEFAULT_WEB_CLIENT_ID =
   '572010941912-8o2qmpdducgt69senfsfeol8jrfva0op.apps.googleusercontent.com';
+const DEFAULT_IOS_CLIENT_ID =
+  '572010941912-jdmo5rnknctegbg5odbink4djq0bef2s.apps.googleusercontent.com';
 const FIREBASE_API_KEY = 'AIzaSyAjV643Td-Q1e8FlFuh-g_epQJgvNyrr3k';
 
 export const configureGoogleSignin = (webClientId?: string) => {
@@ -40,6 +43,7 @@ export const configureGoogleSignin = (webClientId?: string) => {
 
   GoogleSignin.configure({
     webClientId: clientId,
+    iosClientId: DEFAULT_IOS_CLIENT_ID,
     offlineAccess: true,
     scopes: ['profile', 'email'],
   });
@@ -126,9 +130,11 @@ export const signInWithGoogle = async (
   try {
     configureGoogleSignin(webClientId);
 
-    await GoogleSignin.hasPlayServices({
-      showPlayServicesUpdateDialog: true,
-    });
+    if (Platform.OS === 'android') {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+    }
 
     const response = await GoogleSignin.signIn();
 
