@@ -44,6 +44,21 @@ const CustomMarker = ({
   </View>
 );
 
+const isValidCoord = (coords?: Coords | null): coords is Coords => {
+  if (!coords) return false;
+  const lat = Number(coords.latitude);
+  const lng = Number(coords.longitude);
+  return (
+    !isNaN(lat) &&
+    !isNaN(lng) &&
+    !(lat === 0 && lng === 0) &&
+    lat >= -90 &&
+    lat <= 90 &&
+    lng >= -180 &&
+    lng <= 180
+  );
+};
+
 export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
   ({
     visible,
@@ -57,9 +72,15 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
     const { getCurrentPosition, requestPermission } = useCurrentLocation();
     const [userCoords, setUserCoords] = useState<Coords | null>(null);
     const [loading, setLoading] = useState(true);
+    const [routeError, setRouteError] = useState<string | null>(null);
     const [mapType, setMapType] = useState<'standard' | 'satellite'>(
       'standard',
     );
+
+    const hasPickupCoords = isValidCoord(pickupCoords);
+    const hasDeliveryCoords = isValidCoord(deliveryCoords);
+    const hasBothCoords = hasPickupCoords && hasDeliveryCoords;
+    const showCoordsAlert = !hasBothCoords || !!routeError;
 
     // Track metrics for both legs
     const [metrics, setMetrics] = useState({
@@ -83,8 +104,8 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
       if (mapRef.current) {
         const points = [];
         if (userCoords) points.push(userCoords);
-        if (pickupCoords) points.push(pickupCoords);
-        if (deliveryCoords) points.push(deliveryCoords);
+        if (hasPickupCoords && pickupCoords) points.push(pickupCoords);
+        if (hasDeliveryCoords && deliveryCoords) points.push(deliveryCoords);
 
         if (points.length > 0) {
           mapRef.current.fitToCoordinates(points, {
@@ -93,7 +114,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           });
         }
       }
-    }, [userCoords, pickupCoords, deliveryCoords]);
+    }, [userCoords, hasPickupCoords, pickupCoords, hasDeliveryCoords, deliveryCoords]);
 
     const handleZoomIn = useCallback(() => {
       if (mapRef.current) {
@@ -129,12 +150,20 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
     useEffect(() => {
       if (visible) {
+        setRouteError(null);
+        if (!hasBothCoords) {
+          setLoading(false);
+          return;
+        }
+        setLoading(true);
         fetchUserLocation();
         const timer = setTimeout(handleFitAll, 1000);
         return () => clearTimeout(timer);
+      } else {
+        setLoading(false);
+        setRouteError(null);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [visible]);
+    }, [visible, hasBothCoords, fetchUserLocation, handleFitAll]);
 
     // Combined totals
     const totalDistance = (
@@ -166,25 +195,30 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             rotateEnabled={true}
             zoomTapEnabled={true}
           >
-            {userCoords && pickupCoords && deliveryCoords && (
+            {hasBothCoords && (
               <>
                 {/* LEG 1: DRIVER -> PICKUP (BLUE) */}
-                <MapViewDirections
-                  origin={userCoords}
-                  destination={pickupCoords}
-                  apikey={GOOGLE_MAPS_APIKEY}
-                  strokeWidth={5}
-                  strokeColor={COLORS.info}
-                  onReady={result => {
-                    setMetrics(prev => ({
-                      ...prev,
-                      leg1: {
-                        distance: result?.distance,
-                        duration: result?.duration,
-                      },
-                    }));
-                  }}
-                />
+                {userCoords && (
+                  <MapViewDirections
+                    origin={userCoords}
+                    destination={pickupCoords}
+                    apikey={GOOGLE_MAPS_APIKEY}
+                    strokeWidth={5}
+                    strokeColor={COLORS.info}
+                    onReady={result => {
+                      setMetrics(prev => ({
+                        ...prev,
+                        leg1: {
+                          distance: result?.distance,
+                          duration: result?.duration,
+                        },
+                      }));
+                    }}
+                    onError={errorMessage => {
+                      console.warn('Driver to Pickup Directions error:', errorMessage);
+                    }}
+                  />
+                )}
 
                 {/* LEG 2: PICKUP -> DROP (EMERALD) */}
                 <MapViewDirections
@@ -203,6 +237,15 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                     }));
                     setLoading(false);
                   }}
+                  onError={errorMessage => {
+                    console.warn('Pickup to Delivery Directions error:', errorMessage);
+                    setLoading(false);
+                    setRouteError(
+                      typeof errorMessage === 'string'
+                        ? errorMessage
+                        : 'Could not calculate route between pickup and delivery locations.',
+                    );
+                  }}
                 />
               </>
             )}
@@ -217,7 +260,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               </Marker>
             )}
 
-            {pickupCoords && (
+            {hasPickupCoords && pickupCoords && (
               <Marker coordinate={pickupCoords}>
                 <CustomMarker
                   color={COLORS.goldDark}
@@ -227,7 +270,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               </Marker>
             )}
 
-            {deliveryCoords && (
+            {hasDeliveryCoords && deliveryCoords && (
               <Marker coordinate={deliveryCoords}>
                 <CustomMarker
                   color={COLORS.success}
@@ -238,18 +281,26 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             )}
           </MapView>
 
-          {/* HEADER OVERLAY */}
+          {/* HEADER OVERLAY WITH BACK BUTTON */}
           <View style={styles.headerOverlay}>
-            <TouchableOpacity style={styles.circleBtn} onPress={onClose}>
-              <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
+            <TouchableOpacity
+              style={styles.circleBtn}
+              onPress={onClose}
+              accessibilityLabel="Back"
+            >
+              <AppIcon name={'ArrowLeft'} size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
 
             <View style={styles.routeHeaderInfo}>
-              <AppText style={styles.headerTitle}>Premium Route</AppText>
-              <View style={styles.liveIndicator}>
-                <View style={styles.pulseDot} />
-                <AppText style={styles.liveText}>ROAD ACTIVE</AppText>
-              </View>
+              <AppText style={styles.headerTitle}>
+                {showCoordsAlert ? 'Route Unavailable' : 'Premium Route'}
+              </AppText>
+              {!showCoordsAlert && (
+                <View style={styles.liveIndicator}>
+                  <View style={styles.pulseDot} />
+                  <AppText style={styles.liveText}>ROAD ACTIVE</AppText>
+                </View>
+              )}
             </View>
 
             <TouchableOpacity
@@ -263,84 +314,126 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           </View>
 
           {/* SIDE CONTROLS */}
-          <View style={styles.sideControls}>
-            <TouchableOpacity
-              style={styles.circleBtn}
-              onPress={handleFitAll}
-              activeOpacity={0.8}
-            >
-              <AppIcon
-                name={'LocateFixed'}
-                size={20}
-                color={COLORS.textPrimary}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.circleBtn, { marginTop: 10 }]}
-              onPress={handleZoomIn}
-              activeOpacity={0.8}
-            >
-              <AppIcon name={'Plus'} size={20} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.circleBtn, { marginTop: 10 }]}
-              onPress={handleZoomOut}
-              activeOpacity={0.8}
-            >
-              <AppIcon name={'Minus'} size={20} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-          </View>
+          {!showCoordsAlert && (
+            <View style={styles.sideControls}>
+              <TouchableOpacity
+                style={styles.circleBtn}
+                onPress={handleFitAll}
+                activeOpacity={0.8}
+              >
+                <AppIcon
+                  name={'LocateFixed'}
+                  size={20}
+                  color={COLORS.textPrimary}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.circleBtn, { marginTop: 10 }]}
+                onPress={handleZoomIn}
+                activeOpacity={0.8}
+              >
+                <AppIcon name={'Plus'} size={20} color={COLORS.textPrimary} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.circleBtn, { marginTop: 10 }]}
+                onPress={handleZoomOut}
+                activeOpacity={0.8}
+              >
+                <AppIcon name={'Minus'} size={20} color={COLORS.textPrimary} />
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* FLOATING TOTAL TRIP CARD */}
-          <View style={styles.bottomCardWrapper}>
-            <View style={styles.tripCard}>
-              <View style={styles.metricRow}>
-                <View style={styles.metricItem}>
-                  <AppIcon name={'Navigation'} size={18} color={COLORS.info} />
-                  <View style={styles.metricTextContent}>
-                    <AppText style={styles.metricLabel}>Total Distance</AppText>
-                    <AppText style={styles.metricValue}>
-                      {totalDistance} km
-                    </AppText>
+          {hasBothCoords && !showCoordsAlert && (
+            <View style={styles.bottomCardWrapper}>
+              <View style={styles.tripCard}>
+                <View style={styles.metricRow}>
+                  <View style={styles.metricItem}>
+                    <AppIcon name={'Navigation'} size={18} color={COLORS.info} />
+                    <View style={styles.metricTextContent}>
+                      <AppText style={styles.metricLabel}>Total Distance</AppText>
+                      <AppText style={styles.metricValue}>
+                        {totalDistance} km
+                      </AppText>
+                    </View>
+                  </View>
+                  <View style={styles.metricDivider} />
+                  <View style={styles.metricItem}>
+                    <AppIcon name={'Clock'} size={18} color={COLORS.success} />
+                    <View style={styles.metricTextContent}>
+                      <AppText style={styles.metricLabel}>Total ETA</AppText>
+                      <AppText style={styles.metricValue}>
+                        {totalDuration} mins
+                      </AppText>
+                    </View>
                   </View>
                 </View>
-                <View style={styles.metricDivider} />
-                <View style={styles.metricItem}>
-                  <AppIcon name={'Clock'} size={18} color={COLORS.success} />
-                  <View style={styles.metricTextContent}>
-                    <AppText style={styles.metricLabel}>Total ETA</AppText>
-                    <AppText style={styles.metricValue}>
-                      {totalDuration} mins
+
+                <View style={styles.divider} />
+
+                <View style={styles.addressSection}>
+                  <View style={styles.addressRow}>
+                    <View
+                      style={[styles.dot, { backgroundColor: COLORS.info }]}
+                    />
+                    <AppText numberOfLines={1} style={styles.addressText}>
+                      {pickupLocation}
                     </AppText>
                   </View>
-                </View>
-              </View>
-
-              <View style={styles.divider} />
-
-              <View style={styles.addressSection}>
-                <View style={styles.addressRow}>
-                  <View
-                    style={[styles.dot, { backgroundColor: COLORS.info }]}
-                  />
-                  <AppText numberOfLines={1} style={styles.addressText}>
-                    {pickupLocation}
-                  </AppText>
-                </View>
-                <View style={styles.verticalLine} />
-                <View style={styles.addressRow}>
-                  <View
-                    style={[styles.dot, { backgroundColor: COLORS.success }]}
-                  />
-                  <AppText numberOfLines={1} style={styles.addressText}>
-                    {deliveryLocation}
-                  </AppText>
+                  <View style={styles.verticalLine} />
+                  <View style={styles.addressRow}>
+                    <View
+                      style={[styles.dot, { backgroundColor: COLORS.success }]}
+                    />
+                    <AppText numberOfLines={1} style={styles.addressText}>
+                      {deliveryLocation}
+                    </AppText>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
+          )}
 
-          {loading && (
+          {/* CUSTOM ALERT BOX WHEN COORDS NOT FOUND OR ROUTE FAILS */}
+          {showCoordsAlert && (
+            <View style={styles.alertBackdrop}>
+              <View style={styles.alertCard}>
+                <View style={styles.alertIconBadge}>
+                  <AppIcon
+                    name={'AlertTriangle'}
+                    size={28}
+                    color={COLORS.warning}
+                  />
+                </View>
+
+                <AppText style={styles.alertTitle}>
+                  {routeError ? 'Route Not Found' : 'Coordinates Not Found'}
+                </AppText>
+
+                <AppText style={styles.alertDescription}>
+                  {routeError
+                    ? 'Could not calculate driving directions between pickup and delivery. Please contact dispatch.'
+                    : !hasPickupCoords && !hasDeliveryCoords
+                    ? 'Both pickup and delivery coordinates could not be found for this shipment. Please contact dispatch.'
+                    : !hasPickupCoords
+                    ? 'Pickup coordinates could not be found for this shipment. Please contact dispatch.'
+                    : 'Delivery coordinates could not be found for this shipment. Please contact dispatch.'}
+                </AppText>
+
+                <TouchableOpacity
+                  style={styles.alertBackButton}
+                  onPress={onClose}
+                  activeOpacity={0.8}
+                >
+                  <AppIcon name={'ArrowLeft'} size={18} color={COLORS.white} />
+                  <AppText style={styles.alertBackButtonText}>Go Back</AppText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
+          {loading && !showCoordsAlert && (
             <View style={styles.loader}>
               <ActivityIndicator size="large" color={COLORS.primary} />
               <AppText style={styles.loadingText}>

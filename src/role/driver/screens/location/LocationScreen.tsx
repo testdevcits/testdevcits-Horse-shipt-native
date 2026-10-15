@@ -1,6 +1,6 @@
 // src/screens/location/LocationScreen.tsx
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Platform } from 'react-native';
 
 import Geolocation from 'react-native-geolocation-service';
 
@@ -37,6 +37,7 @@ const LocationScreen = () => {
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAutoTracking, setIsAutoTracking] = useState(false);
+  const [isTogglingTrack, setIsTogglingTrack] = useState(false);
   const [liveCoords, setLiveCoords] = useState<{
     lat: number;
     lng: number;
@@ -81,158 +82,193 @@ const LocationScreen = () => {
 
   // Live Sync handler using helper
   const handleUpdateLocation = async () => {
+    if (isUpdating) return;
     setIsUpdating(true);
 
-    // Pass callback to configure modal details if permission is blocked in OS
-    const hasPermission = await requestLocationPermission((title, message) => {
-      setModalConfig({
-        isVisible: true,
-        title,
-        description: message,
-        type: 'warning',
-        confirmText: 'Configure', // Action button to settings
-        cancelText: 'Cancel',
-        onConfirm: () => {
-          closeModal();
-          openDeviceSettings(); // Open system app settings directly
-        },
-      });
-    });
-
-    if (!hasPermission) {
-      setIsUpdating(false);
-      return;
-    }
-
-    // Permission granted, query geolocation hardware
-    Geolocation.getCurrentPosition(
-      async position => {
-        const { latitude, longitude, speed, heading } = position.coords;
-        setLiveCoords({ lat: latitude, lng: longitude });
-
-        try {
-          const response = await driverService.updateLocation({
-            lat: latitude,
-            lng: longitude,
-            speed: speed ?? 0,
-            heading: heading ?? 0,
-          });
-
-          if (response.success) {
-            setModalConfig({
-              isVisible: true,
-              title: 'Location Synced',
-              description: `Success! Live position (Lat: ${latitude.toFixed(
-                5,
-              )}, Lng: ${longitude.toFixed(5)}) has been shared with dispatch.`,
-              type: 'success',
-              confirmText: 'Got It',
-              cancelText: 'Close',
-              onConfirm: closeModal,
-            });
-            setMapVisible(true);
-          }
-        } catch (apiError: any) {
-          setModalConfig({
-            isVisible: true,
-            title: 'Sync Failed',
-            description:
-              apiError?.message || 'Failed to transmit coordinates to server.',
-            type: 'danger',
-            confirmText: 'Retry',
-            cancelText: 'Close',
-            onConfirm: () => {
-              closeModal();
-              handleUpdateLocation();
-            },
-          });
-        } finally {
-          setIsUpdating(false);
-        }
-      },
-      error => {
+    try {
+      // Pass callback to configure modal details if permission is blocked in OS
+      const hasPermission = await requestLocationPermission((title, message) => {
         setModalConfig({
           isVisible: true,
-          title: 'GPS Signal Lock Failed',
-          description:
-            error.message ||
-            'Could not acquire active position markers from device hardware.',
-          type: 'danger',
-          confirmText: 'OK',
-          cancelText: 'Close',
-          onConfirm: closeModal,
+          title,
+          description: message,
+          type: 'warning',
+          confirmText: 'Configure', // Action button to settings
+          cancelText: 'Cancel',
+          onConfirm: () => {
+            closeModal();
+            openDeviceSettings(); // Open system app settings directly
+          },
         });
+      });
+
+      if (!hasPermission) {
         setIsUpdating(false);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-    );
+        return;
+      }
+
+      // Permission granted, query geolocation hardware
+      Geolocation.getCurrentPosition(
+        async position => {
+          try {
+            const { latitude, longitude, speed, heading } = position.coords;
+            setLiveCoords({ lat: latitude, lng: longitude });
+
+            const response = await driverService.updateLocation({
+              lat: latitude,
+              lng: longitude,
+              speed: speed ?? 0,
+              heading: heading ?? 0,
+            });
+
+            if (response?.success) {
+              setModalConfig({
+                isVisible: true,
+                title: 'Location Synced',
+                description: `Success! Live position (Lat: ${latitude.toFixed(
+                  5,
+                )}, Lng: ${longitude.toFixed(5)}) has been shared with dispatch.`,
+                type: 'success',
+                confirmText: 'Open Map',
+                cancelText: 'Close',
+                onConfirm: () => {
+                  closeModal();
+                  setMapVisible(true);
+                },
+              });
+            } else {
+              setModalConfig({
+                isVisible: true,
+                title: 'Sync Failed',
+                description:
+                  response?.message ||
+                  'Failed to transmit coordinates to server.',
+                type: 'danger',
+                confirmText: 'Retry',
+                cancelText: 'Close',
+                onConfirm: () => {
+                  closeModal();
+                  handleUpdateLocation();
+                },
+              });
+            }
+          } catch (apiError: any) {
+            setModalConfig({
+              isVisible: true,
+              title: 'Sync Failed',
+              description:
+                apiError?.message ||
+                'Failed to transmit coordinates to server.',
+              type: 'danger',
+              confirmText: 'Retry',
+              cancelText: 'Close',
+              onConfirm: () => {
+                closeModal();
+                handleUpdateLocation();
+              },
+            });
+          } finally {
+            setIsUpdating(false);
+          }
+        },
+        error => {
+          setModalConfig({
+            isVisible: true,
+            title: 'GPS Signal Lock Failed',
+            description:
+              error?.message ||
+              'Could not acquire active position markers from device hardware. Please ensure location services are enabled.',
+            type: 'danger',
+            confirmText: 'OK',
+            cancelText: 'Close',
+            onConfirm: closeModal,
+          });
+          setIsUpdating(false);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      );
+    } catch (err: any) {
+      console.warn('handleUpdateLocation error:', err);
+      setIsUpdating(false);
+    }
   };
 
   const handleToggleAutoTrack = async () => {
-    const nextState = !isAutoTracking;
+    if (isTogglingTrack) return;
+    setIsTogglingTrack(true);
 
-    if (nextState) {
-      // Mandate background location permission before starting auto-tracking
-      const hasPermission = await requestBackgroundLocationPermission(
-        (title, message) => {
+    try {
+      const nextState = !isAutoTracking;
+
+      if (nextState) {
+        // Mandate background location permission before starting auto-tracking
+        const hasPermission = await requestBackgroundLocationPermission(
+          (title, message) => {
+            setModalConfig({
+              isVisible: true,
+              title,
+              description: message,
+              type: 'warning',
+              confirmText: 'Configure',
+              cancelText: 'Cancel',
+              onConfirm: () => {
+                closeModal();
+                openDeviceSettings();
+              },
+            });
+          },
+        );
+
+        if (!hasPermission) {
+          return;
+        }
+
+        const started = await startAutoTracking();
+        if (!started) {
           setModalConfig({
             isVisible: true,
-            title,
-            description: message,
-            type: 'warning',
-            confirmText: 'Configure',
-            cancelText: 'Cancel',
-            onConfirm: () => {
-              closeModal();
-              openDeviceSettings();
-            },
+            title: 'Auto-Track Error',
+            description: 'Could not start background tracking service.',
+            type: 'danger',
+            confirmText: 'OK',
+            cancelText: 'Close',
+            onConfirm: closeModal,
           });
-        },
-      );
+          return;
+        }
 
-      if (!hasPermission) {
-        return;
-      }
+        setIsAutoTracking(true);
 
-      const started = await startAutoTracking();
-      if (!started) {
         setModalConfig({
           isVisible: true,
-          title: 'Auto-Track Error',
-          description: 'Could not start background tracking service.',
-          type: 'danger',
-          confirmText: 'OK',
+          title: 'Auto-Track Active',
+          description:
+            Platform.OS === 'ios'
+              ? 'Background location tracking is now active. Coordinates will sync in the background while traveling.'
+              : 'Background location tracking is now active. Coordinates are updated every 5 seconds while app is open and every 10 seconds when backgrounded or closed.',
+          type: 'success',
+          confirmText: 'Got It',
           cancelText: 'Close',
           onConfirm: closeModal,
         });
-        return;
+      } else {
+        await stopAutoTracking();
+        setIsAutoTracking(false);
+
+        setModalConfig({
+          isVisible: true,
+          title: 'Auto-Track Paused',
+          description: 'Background location tracking has been safely stopped.',
+          type: 'warning',
+          confirmText: 'Got It',
+          cancelText: 'Close',
+          onConfirm: closeModal,
+        });
       }
-
-      setIsAutoTracking(true);
-
-      setModalConfig({
-        isVisible: true,
-        title: 'Auto-Track Active',
-        description:
-          'Background location tracking is now active. Coordinates are updated every 5 seconds while app is open and every 10 seconds when backgrounded or closed.',
-        type: 'success',
-        confirmText: 'Got It',
-        cancelText: 'Close',
-        onConfirm: closeModal,
-      });
-    } else {
-      await stopAutoTracking();
-      setIsAutoTracking(false);
-
-      setModalConfig({
-        isVisible: true,
-        title: 'Auto-Track Paused',
-        description: 'Background location tracking has been safely stopped.',
-        type: 'warning',
-        confirmText: 'Got It',
-        cancelText: 'Close',
-        onConfirm: closeModal,
-      });
+    } catch (err: any) {
+      console.warn('Error toggling auto track:', err);
+    } finally {
+      setIsTogglingTrack(false);
     }
   };
 
@@ -297,6 +333,8 @@ const LocationScreen = () => {
                 styles.goldButton,
                 isAutoTracking && styles.autoTrackActiveButton,
               ]}
+              disabled={isTogglingTrack}
+              isLoading={isTogglingTrack}
               onPress={handleToggleAutoTrack}
               title={isAutoTracking ? 'Stop Auto-Track' : 'Start Auto-Track'}
               leftIcon={<AppIcon name={'Zap'} size={18} color={COLORS.white} />}
@@ -330,8 +368,26 @@ const LocationScreen = () => {
         onClose={() => setMapVisible(false)}
         pickupLocation={activeShipment?.shipment?.pickupLocation}
         deliveryLocation={activeShipment?.shipment?.deliveryLocation}
-        pickupCoords={activeShipment?.shipment?.pickupCoords}
-        deliveryCoords={activeShipment?.shipment?.deliveryCoords}
+        pickupCoords={
+          activeShipment?.shipment?.pickupCoords ||
+          (activeShipment?.shipment?.pickupLat &&
+          activeShipment?.shipment?.pickupLng
+            ? {
+                latitude: activeShipment.shipment.pickupLat,
+                longitude: activeShipment.shipment.pickupLng,
+              }
+            : undefined)
+        }
+        deliveryCoords={
+          activeShipment?.shipment?.deliveryCoords ||
+          (activeShipment?.shipment?.deliveryLat &&
+          activeShipment?.shipment?.deliveryLng
+            ? {
+                latitude: activeShipment.shipment.deliveryLat,
+                longitude: activeShipment.shipment.deliveryLng,
+              }
+            : undefined)
+        }
       />
     </View>
   );

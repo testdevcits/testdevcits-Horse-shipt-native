@@ -1,6 +1,5 @@
 import {
   BASE_URL as ENV_BASE_URL,
-  GOOGLE_MAPS_APIKEY as ENV_MAPS_KEY,
   REACT_APP_STRIPE_PUBLISHABLE_KEY as ENV_STRIPE_KEY,
 } from '@env';
 import { Platform } from 'react-native';

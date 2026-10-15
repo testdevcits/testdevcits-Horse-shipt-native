@@ -6,6 +6,12 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
+import {
+  check,
+  request,
+  PERMISSIONS,
+  RESULTS,
+} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import driverService from '../api/services/driverService';
@@ -18,8 +24,23 @@ export const useActiveLocationTracker = () => {
   // Request runtime location permissions
   const requestLocationPermission = async (): Promise<boolean> => {
     if (Platform.OS === 'ios') {
-      const auth = await Geolocation.requestAuthorization('whenInUse');
-      return auth === 'granted';
+      try {
+        const whenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (whenInUse === RESULTS.GRANTED || whenInUse === RESULTS.LIMITED) {
+          return true;
+        }
+        const always = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        if (always === RESULTS.GRANTED) {
+          return true;
+        }
+        if (whenInUse === RESULTS.DENIED) {
+          const res = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+          return res === RESULTS.GRANTED || res === RESULTS.LIMITED;
+        }
+        return false;
+      } catch {
+        return false;
+      }
     }
 
     if (Platform.OS === 'android') {
