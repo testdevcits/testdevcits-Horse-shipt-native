@@ -9,9 +9,9 @@ export const BASE_URL = ENV_BASE_URL || 'https://horse-shipt.vercel.app';
 export const GOOGLE_MAPS_APIKEY =
   // ENV_MAPS_KEY ||
 
-  Platform.OS === 'android' ?
-  
-  'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw' : 'AIzaSyAIBX80AOVruweXYLyCDiZ_0zdzdW3G4o0';
+  Platform.OS === 'android'
+    ? 'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw'
+    : 'AIzaSyAIBX80AOVruweXYLyCDiZ_0zdzdW3G4o0';
 
 export const REACT_APP_STRIPE_PUBLISHABLE_KEY =
   ENV_STRIPE_KEY ||

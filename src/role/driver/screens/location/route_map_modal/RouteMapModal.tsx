@@ -114,7 +114,13 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
           });
         }
       }
-    }, [userCoords, hasPickupCoords, pickupCoords, hasDeliveryCoords, deliveryCoords]);
+    }, [
+      userCoords,
+      hasPickupCoords,
+      pickupCoords,
+      hasDeliveryCoords,
+      deliveryCoords,
+    ]);
 
     const handleZoomIn = useCallback(() => {
       if (mapRef.current) {
@@ -215,7 +221,10 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                       }));
                     }}
                     onError={errorMessage => {
-                      console.warn('Driver to Pickup Directions error:', errorMessage);
+                      console.warn(
+                        'Driver to Pickup Directions error:',
+                        errorMessage,
+                      );
                     }}
                   />
                 )}
@@ -238,7 +247,10 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                     setLoading(false);
                   }}
                   onError={errorMessage => {
-                    console.warn('Pickup to Delivery Directions error:', errorMessage);
+                    console.warn(
+                      'Pickup to Delivery Directions error:',
+                      errorMessage,
+                    );
                     setLoading(false);
                     setRouteError(
                       typeof errorMessage === 'string'
@@ -288,7 +300,11 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               onPress={onClose}
               accessibilityLabel="Back"
             >
-              <AppIcon name={'ArrowLeft'} size={20} color={COLORS.textPrimary} />
+              <AppIcon
+                name={'ArrowLeft'}
+                size={20}
+                color={COLORS.textPrimary}
+              />
             </TouchableOpacity>
 
             <View style={styles.routeHeaderInfo}>
@@ -350,9 +366,15 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               <View style={styles.tripCard}>
                 <View style={styles.metricRow}>
                   <View style={styles.metricItem}>
-                    <AppIcon name={'Navigation'} size={18} color={COLORS.info} />
+                    <AppIcon
+                      name={'Navigation'}
+                      size={18}
+                      color={COLORS.info}
+                    />
                     <View style={styles.metricTextContent}>
-                      <AppText style={styles.metricLabel}>Total Distance</AppText>
+                      <AppText style={styles.metricLabel}>
+                        Total Distance
+                      </AppText>
                       <AppText style={styles.metricValue}>
                         {totalDistance} km
                       </AppText>

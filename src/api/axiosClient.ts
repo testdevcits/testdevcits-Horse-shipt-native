@@ -139,7 +139,9 @@ axiosClient.interceptors.response?.use(
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {
       if (state.auth.token) {
-        console.warn('⚠️ Session Expired: Displaying custom session expired modal...');
+        console.warn(
+          '⚠️ Session Expired: Displaying custom session expired modal...',
+        );
         store.dispatch(triggerSessionExpired());
         return Promise.reject({
           message: 'Session expired. Please login again.',

@@ -56,8 +56,6 @@ const DeliveredSuccessModal = ({
             )}
 
             <ButtonCompt
-
-            
               title="Close"
               onPress={onClose}
               buttonStyle={
@@ -75,9 +73,3 @@ const DeliveredSuccessModal = ({
 };
 
 export default memo(DeliveredSuccessModal);
-
-
-
-
-
- 

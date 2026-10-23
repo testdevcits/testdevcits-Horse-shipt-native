@@ -87,20 +87,22 @@ const LocationScreen = () => {
 
     try {
       // Pass callback to configure modal details if permission is blocked in OS
-      const hasPermission = await requestLocationPermission((title, message) => {
-        setModalConfig({
-          isVisible: true,
-          title,
-          description: message,
-          type: 'warning',
-          confirmText: 'Configure', // Action button to settings
-          cancelText: 'Cancel',
-          onConfirm: () => {
-            closeModal();
-            openDeviceSettings(); // Open system app settings directly
-          },
-        });
-      });
+      const hasPermission = await requestLocationPermission(
+        (title, message) => {
+          setModalConfig({
+            isVisible: true,
+            title,
+            description: message,
+            type: 'warning',
+            confirmText: 'Configure', // Action button to settings
+            cancelText: 'Cancel',
+            onConfirm: () => {
+              closeModal();
+              openDeviceSettings(); // Open system app settings directly
+            },
+          });
+        },
+      );
 
       if (!hasPermission) {
         setIsUpdating(false);
@@ -127,7 +129,9 @@ const LocationScreen = () => {
                 title: 'Location Synced',
                 description: `Success! Live position (Lat: ${latitude.toFixed(
                   5,
-                )}, Lng: ${longitude.toFixed(5)}) has been shared with dispatch.`,
+                )}, Lng: ${longitude.toFixed(
+                  5,
+                )}) has been shared with dispatch.`,
                 type: 'success',
                 confirmText: 'Open Map',
                 cancelText: 'Close',

@@ -6,12 +6,7 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import {
-  check,
-  request,
-  PERMISSIONS,
-  RESULTS,
-} from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import driverService from '../api/services/driverService';

@@ -58,7 +58,9 @@ const Profile = () => {
   }
 
   // Fallback monogram if driver profile image does not exist
-  const firstLetter = driver?.name ? driver?.name?.charAt(0)?.toUpperCase() : 'D';
+  const firstLetter = driver?.name
+    ? driver?.name?.charAt(0)?.toUpperCase()
+    : 'D';
 
   return (
     <View style={styles.safeArea}>
@@ -100,7 +102,9 @@ const Profile = () => {
             <View style={styles.statusDot} />
             <AppText style={styles.statusText}>
               {driver?.driverStatus
-                ? driver?.driverStatus?.replace(/([A-Z])/g, ' $1')?.toUpperCase()
+                ? driver?.driverStatus
+                    ?.replace(/([A-Z])/g, ' $1')
+                    ?.toUpperCase()
                 : 'ON TRIP'}
             </AppText>
           </View>

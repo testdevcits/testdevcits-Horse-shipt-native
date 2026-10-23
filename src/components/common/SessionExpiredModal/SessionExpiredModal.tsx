@@ -4,7 +4,10 @@ import { LogOut, ArrowRight } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../../../constants';
 import AppText from '../AppText';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { dismissSessionExpired, logoutUser } from '../../../redux/slices/authSlice';
+import {
+  dismissSessionExpired,
+  logoutUser,
+} from '../../../redux/slices/authSlice';
 import styles from './SessionExpiredModal.styles';
 
 const SessionExpiredModal: React.FC = () => {
@@ -32,11 +35,7 @@ const SessionExpiredModal: React.FC = () => {
         <View style={styles.container}>
           {/* Icon Badge */}
           <View style={styles.iconBadgeOuter}>
-            <LogOut
-              size={32}
-              color={COLORS.primary}
-              strokeWidth={2.2}
-            />
+            <LogOut size={32} color={COLORS.primary} strokeWidth={2.2} />
           </View>
 
           {/* Header Tag */}
@@ -47,7 +46,8 @@ const SessionExpiredModal: React.FC = () => {
 
           {/* Description */}
           <AppText style={styles.description}>
-            Your session has expired for security reasons. Please log in again to continue accessing your account.
+            Your session has expired for security reasons. Please log in again
+            to continue accessing your account.
           </AppText>
 
           {/* Action Button */}
@@ -57,7 +57,11 @@ const SessionExpiredModal: React.FC = () => {
             activeOpacity={0.88}
           >
             <AppText style={styles.buttonText}>Log In Again</AppText>
-            <ArrowRight size={ICON_SIZE.sm} color={COLORS.white} strokeWidth={2.5} />
+            <ArrowRight
+              size={ICON_SIZE.sm}
+              color={COLORS.white}
+              strokeWidth={2.5}
+            />
           </TouchableOpacity>
         </View>
       </View>

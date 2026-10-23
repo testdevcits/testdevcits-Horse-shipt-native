@@ -108,7 +108,10 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
               item?.invoicePdf || item?.hostedInvoiceUrl || item?.receiptUrl;
 
             const dateStr = formatDate(
-              item?.createdAt || item?.paidAt || item?.periodStart || new Date(),
+              item?.createdAt ||
+                item?.paidAt ||
+                item?.periodStart ||
+                new Date(),
               'MMM DD, YYYY • hh:mm A',
             );
 
@@ -118,8 +121,8 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
               (isInvoice
                 ? 'Subscription Invoice'
                 : isPayment
-                  ? 'Card Payment Receipt'
-                  : 'Payout Transfer');
+                ? 'Card Payment Receipt'
+                : 'Payout Transfer');
 
             const statusStr = (item?.status || 'paid').toLowerCase();
             const isSuccessStatus =
@@ -166,8 +169,8 @@ export const BillingHistorySection: React.FC<BillingHistorySectionProps> = ({
                       {item?.isNoChargeInvoice || item?.amount === 0
                         ? 'Free'
                         : `$${Number(item?.amount).toFixed(2)} ${(
-                          item?.currency || 'USD'
-                        ).toUpperCase()}`}
+                            item?.currency || 'USD'
+                          ).toUpperCase()}`}
                     </AppText>
                   </View>
 

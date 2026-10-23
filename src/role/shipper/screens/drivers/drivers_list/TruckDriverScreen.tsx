@@ -61,7 +61,9 @@ const TruckDriverScreen = () => {
       {/* Header Banner Card with Metrics */}
       <View style={styles.headerBannerCard}>
         <View style={styles.topTitleRow}>
-          <AppText style={styles.topTitle} numberOfLines={1}>Truck Driver Management</AppText>
+          <AppText style={styles.topTitle} numberOfLines={1}>
+            Truck Driver Management
+          </AppText>
           <TouchableOpacity
             style={styles.addDriverBtn}
             onPress={() => {
@@ -285,8 +287,9 @@ const TruckDriverScreen = () => {
           }}
           onConfirm={handleConfirmDelete}
           title="Delete Driver"
-          description={`Are you sure you want to delete driver ${selectedDriverToDelete?.name || ''
-            }?`}
+          description={`Are you sure you want to delete driver ${
+            selectedDriverToDelete?.name || ''
+          }?`}
           confirmText="Delete"
           cancelText="Cancel"
           type="danger"

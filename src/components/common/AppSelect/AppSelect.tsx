@@ -125,7 +125,7 @@ const AppSelect = memo(
       const handleDismissModal = useCallback(() => {
         try {
           bottomSheetModalRef.current?.dismiss();
-        } catch { }
+        } catch {}
         setFallbackVisible(false);
         setSearchQuery('');
       }, []);
@@ -320,7 +320,9 @@ const AppSelect = memo(
               {/* Options List */}
               <BottomSheetFlatList
                 data={filteredOptions}
-                keyExtractor={(item, index) => `${String(item?.value)}-${index}`}
+                keyExtractor={(item, index) =>
+                  `${String(item?.value)}-${index}`
+                }
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={true}
                 ListEmptyComponent={

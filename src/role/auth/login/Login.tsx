@@ -291,7 +291,7 @@ const Login = () => {
                   <AppText style={styles.googleBtnText}>
                     {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
                   </AppText>
-                </TouchableOpacity> 
+                </TouchableOpacity>
 
                 <View style={styles.footer}>
                   <AppText style={styles.footerText}>

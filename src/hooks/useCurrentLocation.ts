@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import {
-  check,
-  request,
-  PERMISSIONS,
-  RESULTS,
-} from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { LocationCoords } from '../components/common/LocationPicker/types';
 
 export const useCurrentLocation = () => {

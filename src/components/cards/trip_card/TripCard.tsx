@@ -48,8 +48,8 @@ const TripCard: React.FC<TripCardProps> = ({
   const shortId = shipmentData?.shipmentCode
     ? `#${shipmentData.shipmentCode}`
     : shipmentId
-      ? `#${shipmentId.slice(0, 8)}`
-      : `#MANIFEST`;
+    ? `#${shipmentId.slice(0, 8)}`
+    : `#MANIFEST`;
 
   const firstHorse: Horse | undefined = shipmentData?.horses?.[0];
   const horsePhotoUrl = firstHorse?.photo?.url;
@@ -59,13 +59,13 @@ const TripCard: React.FC<TripCardProps> = ({
     item?.totalPrice != null
       ? `$${item?.totalPrice?.toLocaleString()}`
       : shipmentData?.totalPrice != null
-        ? `$${shipmentData?.totalPrice?.toLocaleString()}`
-        : '$0';
+      ? `$${shipmentData?.totalPrice?.toLocaleString()}`
+      : '$0';
   const paymentStatusText = item?.paymentStatus
     ? item?.paymentStatus?.toUpperCase()
     : shipmentData?.paymentStatus
-      ? shipmentData?.paymentStatus?.toUpperCase()
-      : 'NA';
+    ? shipmentData?.paymentStatus?.toUpperCase()
+    : 'NA';
   const notesText =
     item?.notes?.trim() ||
     firstHorse?.notes?.trim() ||
@@ -116,10 +116,10 @@ const TripCard: React.FC<TripCardProps> = ({
   const displayStatus = isTransit
     ? 'In Transit'
     : isCompleted
-      ? 'Completed'
-      : isPending
-        ? 'Pending'
-        : tripStatusRaw;
+    ? 'Completed'
+    : isPending
+    ? 'Pending'
+    : tripStatusRaw;
 
   return (
     <TouchableOpacity
