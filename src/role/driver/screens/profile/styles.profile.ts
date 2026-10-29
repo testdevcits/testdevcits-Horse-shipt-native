@@ -1,5 +1,11 @@
 import { StyleSheet, Platform } from 'react-native';
-import { COLORS, FONTS, FONT_SIZE, SPACING } from '../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  FONT_SIZE,
+  RADIUS,
+  SPACING,
+} from '../../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderWidth: 2.5,
     borderColor: COLORS.primary,
-    borderRadius: 22,
+    borderRadius: RADIUS.circle,
     backgroundColor: COLORS.goldCreamBg,
     alignItems: 'center',
     justifyContent: 'center',
@@ -54,7 +60,27 @@ const styles = StyleSheet.create({
   avatarImage: {
     width: '100%',
     height: '100%',
+    borderRadius: RADIUS.circle,
+  },
+  avatarCameraBadge: {
+    position: 'absolute',
+    right: -5,
+    bottom: -5,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.white,
+  },
+  avatarUploadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
     borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   monogramBox: {
     width: '100%',

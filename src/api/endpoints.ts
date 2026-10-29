@@ -125,6 +125,8 @@ export const API_ENDPOINTS = {
     VERIFY_DELIVERY_OTP: (shipmentId: string) =>
       `/api/driver/driver/shipment/${shipmentId}/verify-delivery-otp`,
     START_TRIP: '/api/shipper/driver/start-trip',
+
+    UPDATE_PROFILE_PHOTO: '/api/driver/driver/profile-image',
   },
 
   // Tracking Endpoints

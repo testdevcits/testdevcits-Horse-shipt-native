@@ -24,7 +24,7 @@ import AppIcon from '../../components/app_icon/AppIcon';
 const Tab = createBottomTabNavigator<{
   Home: undefined;
   MyQuotes: undefined;
-  Post: undefined;
+  Shipments: undefined;
   Chats: undefined;
   Profile: undefined;
 }>();
@@ -57,9 +57,6 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.tabBarBackground}>
-        {/* The Hump behind the center button */}
-        <View style={styles.hump} />
-
         <View style={styles.tabBarButtonsContainer}>
           {state.routes.map((route: any, index: number) => {
             const isFocused = state.index === index;
@@ -75,25 +72,6 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                 navigation.navigate(route.name);
               }
             };
-
-            // Render Center Floating '+' Button
-            if (route.name === 'Post') {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={onPress}
-                  activeOpacity={0.85}
-                  style={styles.centerButton}
-                >
-                  <AppIcon
-                    name={'Plus'}
-                    size={28}
-                    color={COLORS.white}
-                    strokeWidth={2.5}
-                  />
-                </TouchableOpacity>
-              );
-            }
 
             const getTabIcon = () => {
               const iconColor = isFocused ? activeColor : inactiveColor;
@@ -114,6 +92,8 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                       resizeMode="contain"
                     />
                   );
+                case 'Shipments':
+                  return <AppIcon name="Truck" size={24} color={iconColor} />;
                 case 'Chats':
                   return (
                     <Image
@@ -141,6 +121,8 @@ const CustomShipperTabBar = ({ state, navigation }: any) => {
                   return 'Home';
                 case 'MyQuotes':
                   return 'My Quotes';
+                case 'Shipments':
+                  return 'Shipments';
                 case 'Profile':
                   return 'Profile';
                 case 'Chats':
@@ -181,7 +163,7 @@ const ShipperTabs = () => (
   >
     <Tab.Screen name="Home" component={ShipperHomeScreen} />
     <Tab.Screen name="MyQuotes" component={MyQuotesScreen} />
-    <Tab.Screen name="Post" component={ShipmentsScreen} />
+    <Tab.Screen name="Shipments" component={ShipmentsScreen} />
     <Tab.Screen name="Chats" component={ShipperChatsScreen} />
     <Tab.Screen name="Profile" component={ShipperProfileScreen} />
   </Tab.Navigator>
@@ -206,20 +188,6 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 20,
   },
-  hump: {
-    position: 'absolute',
-    top: -30,
-    left: width / 2 - 45,
-    width: 90,
-    height: 60,
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-  },
   tabBarButtonsContainer: {
     flexDirection: 'row',
     height: '100%',
@@ -238,20 +206,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.brandBrown,
     marginTop: 3,
-  },
-  centerButton: {
-    width: 62,
-    height: 62,
-    borderRadius: 31,
-    backgroundColor: COLORS.brandBrown,
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: -28,
-    shadowColor: COLORS.brandBrown,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    elevation: 10,
   },
 });
 

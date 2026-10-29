@@ -4,6 +4,20 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
+## Environment configuration
+
+Copy `.env.example` to `.env` and set `BASE_URL`, `GOOGLE_MAPS_APIKEY`,
+`REACT_APP_STRIPE_PUBLISHABLE_KEY`, and `GOOGLE_WEB_CLIENT_ID` to your
+environment's values. `BASE_URL` may include the backend `/api` prefix, for
+example `https://horse-shipt.vercel.app/api` or
+`http://10.0.2.2:5000/api` for an Android emulator. For a physical Android
+device, use the development computer's LAN IP instead of `10.0.2.2`. The app
+uses the configured backend for REST and Socket.IO; Socket.IO connects to its
+origin with the `/socket.io` path. These settings are required; there is no
+default API URL or embedded fallback key. Keep `.env` out of source control.
+Local Android HTTP may require cleartext traffic to be enabled for debug builds.
+Restart Metro after changing `.env`.
+
 ## Step 1: Start Metro
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.

@@ -10,8 +10,7 @@ import {
 } from '@react-native-firebase/auth';
 import { Platform } from 'react-native';
 import axios from 'axios';
-
-declare const process: any;
+import { GOOGLE_WEB_CLIENT_ID } from '../config/constants';
 
 export interface GoogleSignInUserResult {
   idToken: string | null;
@@ -27,8 +26,6 @@ export interface GoogleSignInUserResult {
 
 let isConfigured = false;
 
-const DEFAULT_WEB_CLIENT_ID =
-  '572010941912-8o2qmpdducgt69senfsfeol8jrfva0op.apps.googleusercontent.com';
 const DEFAULT_IOS_CLIENT_ID =
   '572010941912-jdmo5rnknctegbg5odbink4djq0bef2s.apps.googleusercontent.com';
 const FIREBASE_API_KEY = 'AIzaSyAjV643Td-Q1e8FlFuh-g_epQJgvNyrr3k';
@@ -38,8 +35,7 @@ export const configureGoogleSignin = (webClientId?: string) => {
     return;
   }
 
-  const clientId =
-    webClientId || process.env.GOOGLE_WEB_CLIENT_ID || DEFAULT_WEB_CLIENT_ID;
+  const clientId = webClientId || GOOGLE_WEB_CLIENT_ID;
 
   GoogleSignin.configure({
     webClientId: clientId,

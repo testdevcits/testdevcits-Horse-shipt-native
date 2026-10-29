@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { AppText } from '../../../../../components';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
-import { COLORS } from '../../../../../constants';
+import { COLORS, FONT_SIZE, FONTS } from '../../../../../constants';
 import styles from '../styles.AddEditHorses';
 
 interface Props {
@@ -10,10 +10,14 @@ interface Props {
   isPicking: boolean;
   onPickPhoto: () => void;
   onRemovePhoto: () => void;
+  errors: any;
 }
 
 export const HorsePhotoPickerSection: React.FC<Props> = React.memo(
-  ({ photo, isPicking, onPickPhoto, onRemovePhoto }) => {
+  ({ photo, isPicking, onPickPhoto, onRemovePhoto, errors }) => {
+    const photoError =
+      typeof errors?.photo === 'string' ? errors.photo : undefined;
+
     return (
       <View style={styles.sectionCard}>
         <AppText style={styles.sectionTitle}>Horse Photo</AppText>
@@ -36,7 +40,10 @@ export const HorsePhotoPickerSection: React.FC<Props> = React.memo(
             </View>
           ) : (
             <TouchableOpacity
-              style={styles.uploadBox}
+              style={[
+                styles.uploadBox,
+                photoError && { borderColor: COLORS.error },
+              ]}
               onPress={onPickPhoto}
               activeOpacity={0.7}
               disabled={isPicking}
@@ -46,6 +53,18 @@ export const HorsePhotoPickerSection: React.FC<Props> = React.memo(
             </TouchableOpacity>
           )}
         </View>
+        {photoError && (
+          <AppText
+            style={{
+              marginTop: 2,
+              color: COLORS.error,
+              fontSize: FONT_SIZE.xs,
+              fontFamily: FONTS.regular,
+            }}
+          >
+            {photoError}
+          </AppText>
+        )}
       </View>
     );
   },

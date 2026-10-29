@@ -46,20 +46,43 @@ const PickupStep: React.FC<PickupStepProps> = ({
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
-  const getSafeDateStr = (dateVal: any) => {
-    try {
-      const d = new Date(dateVal);
-      if (!isNaN(d.getTime())) {
-        return d.toISOString().split('T')[0];
-      }
-    } catch (_e) {}
-    return new Date().toISOString().split('T')[0];
+  const toDateString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getSafeDateStr = (dateVal: any): string | null => {
+    if (!dateVal) return null;
+    const dateOnly =
+      typeof dateVal === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateVal);
+    const d = dateOnly
+      ? new Date(
+          Number(dateVal.slice(0, 4)),
+          Number(dateVal.slice(5, 7)) - 1,
+          Number(dateVal.slice(8, 10)),
+        )
+      : new Date(dateVal);
+    return Number.isNaN(d.getTime()) ? null : toDateString(d);
   };
 
   const getTomorrowStr = () => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return toDateString(d);
+  };
+
+  const tomorrowDate = getTomorrowStr();
+  const pickupStartDate = getSafeDateStr(form.pickupStartDate);
+  const pickupEndMinDate =
+    pickupStartDate && pickupStartDate > tomorrowDate
+      ? pickupStartDate
+      : tomorrowDate;
+
+  const getCalendarInitialDate = (dateVal: any, minDate: string) => {
+    const date = getSafeDateStr(dateVal);
+    return date && date > minDate ? date : minDate;
   };
 
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
@@ -289,15 +312,13 @@ const PickupStep: React.FC<PickupStepProps> = ({
           }
           initialDate={
             activeDateType === 'start'
-              ? getSafeDateStr(form.pickupStartDate)
-              : getSafeDateStr(form.pickupEndDate)
+              ? getCalendarInitialDate(form.pickupStartDate, tomorrowDate)
+              : getCalendarInitialDate(form.pickupEndDate, pickupEndMinDate)
           }
           minDate={
             activeDateType === 'start'
-              ? getTomorrowStr()
-              : form.pickupStartDate
-              ? getSafeDateStr(form.pickupStartDate)
-              : getTomorrowStr()
+              ? tomorrowDate
+              : pickupEndMinDate
           }
         />
       </Suspense>

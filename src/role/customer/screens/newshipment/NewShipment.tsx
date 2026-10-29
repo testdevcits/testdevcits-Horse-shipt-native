@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -32,6 +32,7 @@ const NewShipment = () => {
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const stepScrollRef = useRef<ScrollView>(null);
 
   const {
     currentStep,
@@ -56,6 +57,10 @@ const NewShipment = () => {
     resetAllData,
     isDraft,
   } = useNewShipment();
+
+  useEffect(() => {
+    stepScrollRef.current?.scrollTo({ y: 0, animated: true });
+  }, [currentStep]);
 
   const handleConfirmDelete = async () => {
     const targetId = shipmentData?._id;
@@ -142,6 +147,7 @@ const NewShipment = () => {
       />
       {renderStepper()}
       <ScrollView
+        ref={stepScrollRef}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >

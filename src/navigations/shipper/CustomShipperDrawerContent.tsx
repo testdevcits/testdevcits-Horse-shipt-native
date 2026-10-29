@@ -53,7 +53,7 @@ const CustomShipperDrawerContent: React.FC<
     ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
     : 'Home';
 
-  const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Post');
+  const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Shipments');
   const activeSubTab = (postRoute?.params as any)?.initialTab || 'my_shipments';
 
   const isTabActive = (tabName: string) => {
@@ -79,7 +79,7 @@ const CustomShipperDrawerContent: React.FC<
     dispatch(logoutUser());
   };
 
-  const isPostActive = isTabActive('Post');
+  const isPostActive = isTabActive('Shipments');
 
   return (
     <View style={styles.safeArea}>
@@ -112,7 +112,7 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => {
               setIsShipmentExpanded(prev => !prev);
               if (!isPostActive) {
-                navigateToTab('Post', { initialTab: 'my_shipments' });
+                navigateToTab('Shipments', { initialTab: 'my_shipments' });
               }
             }}
           />
@@ -122,21 +122,21 @@ const CustomShipperDrawerContent: React.FC<
                 label="My Shipment"
                 isActive={isPostActive && activeSubTab === 'my_shipments'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'my_shipments' })
+                  navigateToTab('Shipments', { initialTab: 'my_shipments' })
                 }
               />
               <ShipperDrawerSubMenuItem
                 label="Quote Received"
                 isActive={isPostActive && activeSubTab === 'quote_request'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'quote_request' })
+                  navigateToTab('Shipments', { initialTab: 'quote_request' })
                 }
               />
               <ShipperDrawerSubMenuItem
                 label="All Shipments"
                 isActive={isPostActive && activeSubTab === 'all_shipment'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'all_shipment' })
+                  navigateToTab('Shipments', { initialTab: 'all_shipment' })
                 }
               />
             </View>

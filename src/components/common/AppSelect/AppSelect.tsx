@@ -263,7 +263,7 @@ const AppSelect = memo(
           {/* BottomSheet Modal */}
           <BottomSheetModal
             ref={bottomSheetModalRef}
-            index={0}
+            index={1}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
             enablePanDownToClose

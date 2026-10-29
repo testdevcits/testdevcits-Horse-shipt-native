@@ -3,8 +3,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
+   
+  
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppText from '../../../../components/common/AppText';
@@ -127,9 +127,7 @@ const ShipmentDetailsScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3F7FA" />
-
+    <View style={styles.safeArea}>
       {/* Header Bar */}
       <View style={styles.headerBar}>
         <View style={styles.headerLeft}>
@@ -211,7 +209,7 @@ const ShipmentDetailsScreen: React.FC = () => {
         {/* 5. Digital Equine Passport Documents */}
         <DriverTripPassportDocsCard docsList={docsList} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

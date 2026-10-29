@@ -174,6 +174,7 @@ const QuoteDetailModal = ({
     }
     setCancelReasonError('');
     setLoading(true);
+
     try {
       const res = await customerService.cancelQuote(quote?._id, {
         reason: cancelReason.trim(),

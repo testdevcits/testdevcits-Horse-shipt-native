@@ -191,7 +191,7 @@ const useAddEditHorse = () => {
       formData?.append('defaultStallSize', values?.defaultStallSize);
       formData?.append('notes', values?.notes || '');
 
-      if (values?.photo && values?.photo.uri) {
+      if (values?.photo && values?.photo?.uri) {
         formData?.append('photo', {
           uri: values?.photo.uri,
           type: values?.photo.type || 'image/jpeg',

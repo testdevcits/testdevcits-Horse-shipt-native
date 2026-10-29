@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, Platform, StyleSheet } from 'react-native';
+import { StatusBar, Platform, StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // CRITICAL for Map & BottomSheet
 import { Provider } from 'react-redux';
@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 // Your Imports
 import AppNavigation from './src/navigations/AppNavigation';
 import { store, persistor } from './src/redux/store';
-import { COLORS } from './src/constants';
+
 import { toastConfig } from './src/components/common/ToastConfig';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { StripeProvider } from '@stripe/stripe-react-native';
@@ -18,8 +18,12 @@ import ErrorBoundary from './src/components/common/ErrorBoundary';
 import { SessionExpiredModal } from './src/components';
 // import { notificationService } from './src/services/notificationService';
 import { PersistGate } from 'redux-persist/integration/react';
+import { COLORS } from './src/constants';
 
 const App = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const statusBarBackgroundColor = isDarkMode ? COLORS.white : COLORS.white;
+
   // useEffect(() => {
   //   let cleanup: (() => void) | undefined;
   //   notificationService
@@ -45,11 +49,16 @@ const App = () => {
             <PersistGate loading={null} persistor={persistor}>
               {/* 3. StatusBar Configuration */}
               <StatusBar
-                backgroundColor={COLORS.white}
-                barStyle={'dark-content'}
+                backgroundColor={statusBarBackgroundColor}
+                barStyle={isDarkMode ? 'dark-content' : 'dark-content'}
                 translucent={false}
               />
-              <SafeAreaView style={styles.container}>
+              <SafeAreaView
+                style={[
+                  styles.container,
+                  { backgroundColor: statusBarBackgroundColor },
+                ]}
+              >
                 <OfflineBanner />
                 <ErrorBoundary>
                   <StripeProvider

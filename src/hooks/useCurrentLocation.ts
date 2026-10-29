@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
@@ -7,7 +7,7 @@ import { LocationCoords } from '../components/common/LocationPicker/types';
 export const useCurrentLocation = () => {
   const [loading, setLoading] = useState(false);
 
-  const requestPermission = async (): Promise<boolean> => {
+  const requestPermission = useCallback(async (): Promise<boolean> => {
     if (Platform.OS === 'ios') {
       try {
         const whenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
@@ -31,9 +31,9 @@ export const useCurrentLocation = () => {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
     return granted === PermissionsAndroid.RESULTS.GRANTED;
-  };
+  }, []);
 
-  const getCurrentPosition = (): Promise<LocationCoords> => {
+  const getCurrentPosition = useCallback((): Promise<LocationCoords> => {
     return new Promise((resolve, reject) => {
       setLoading(true);
       Geolocation.getCurrentPosition(
@@ -51,7 +51,7 @@ export const useCurrentLocation = () => {
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
       );
     });
-  };
+  }, []);
 
   return { getCurrentPosition, requestPermission, loading };
 };

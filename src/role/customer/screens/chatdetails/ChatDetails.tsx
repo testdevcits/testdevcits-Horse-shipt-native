@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,7 +15,11 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, ChatDetailsSkeleton } from '../../../../components';
+import {
+  AppText,
+  ChatDetailsSkeleton,
+  ImageViewer,
+} from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -37,7 +42,13 @@ const ShipmentLocationModal = lazy(
     ),
 );
 
-const ChatMessageImage = ({ uri }: { uri?: string }) => {
+const ChatMessageImage = ({
+  uri,
+  onPress,
+}: {
+  uri?: string;
+  onPress: () => void;
+}) => {
   const [hasError, setHasError] = useState(false);
 
   if (!uri || hasError) {
@@ -52,12 +63,14 @@ const ChatMessageImage = ({ uri }: { uri?: string }) => {
   }
 
   return (
-    <Image
-      source={{ uri }}
-      style={styles.mediaImage}
-      resizeMode="cover"
-      onError={() => setHasError(true)}
-    />
+    <Pressable onPress={onPress}>
+      <Image
+        source={{ uri }}
+        style={styles.mediaImage}
+        resizeMode="cover"
+        onError={() => setHasError(true)}
+      />
+    </Pressable>
   );
 };
 
@@ -70,6 +83,8 @@ const ChatDetails = () => {
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [chatselectedImage, setChatSelectedImage] = useState<string>('');
 
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
@@ -126,7 +141,15 @@ const ChatDetails = () => {
         <View
           style={[styles.bubble, isMe ? styles.myBubble : styles.otherBubble]}
         >
-          {hasMedia && <ChatMessageImage uri={item?.media?.[0]?.url} />}
+          {hasMedia && (
+            <ChatMessageImage
+              uri={item?.media?.[0]?.url}
+              onPress={() => {
+                setChatSelectedImage(item?.media?.[0]?.url);
+                  setImageViewerVisible(true);
+              }}
+            />
+          )}
           {item?.message ? (
             <AppText
               style={[
@@ -289,6 +312,15 @@ const ChatDetails = () => {
           />
         </Suspense>
       )}
+
+      <Suspense fallback={null}>
+        <ImageViewer
+          visible={imageViewerVisible}
+          image={chatselectedImage}
+          title="Image"
+          onClose={() => setImageViewerVisible(false)}
+        />
+      </Suspense>
     </KeyboardAvoidingView>
   );
 };

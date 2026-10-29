@@ -41,6 +41,7 @@ export const ShipperHeroBannerCard: React.FC<Props> = React.memo(
             <Image
               source={{ uri: horsePhoto }}
               style={styles.heroBannerImage}
+              resizeMode='contain'
             />
           ) : (
             <Image source={imageIndex?.Banner} style={styles.heroBannerImage} />

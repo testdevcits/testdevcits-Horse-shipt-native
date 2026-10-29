@@ -44,11 +44,13 @@ const AddEditHorse = () => {
       <AppLoader visible={_loading} />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
         <ScrollView
           contentContainerStyle={styles.scroll}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
           showsVerticalScrollIndicator={false}
         >
           {/* Header Title Section */}
@@ -98,6 +100,7 @@ const AddEditHorse = () => {
                   isPicking={isPicking}
                   onPickPhoto={() => handlePickPhoto(setFieldValue)}
                   onRemovePhoto={() => setFieldValue('photo', null)}
+                  errors={errors}
                 />
 
                 {/* Form Fields Section */}

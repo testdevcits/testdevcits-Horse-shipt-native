@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
@@ -288,8 +290,9 @@ const Login = () => {
                     style={styles.googleIcon}
                     resizeMode="contain"
                   />
+
                   <AppText style={styles.googleBtnText}>
-                    {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+                    Sign in with Google
                   </AppText>
                 </TouchableOpacity>
 
@@ -326,6 +329,23 @@ const Login = () => {
           );
         }}
       />
+
+      <Modal
+        transparent
+        visible={isGoogleLoading}
+        animationType="fade"
+        statusBarTranslucent
+        onRequestClose={() => undefined}
+      >
+        <View style={styles.googleLoadingOverlay}>
+          <View style={styles.googleLoadingCard}>
+            <AppText style={styles.googleLoadingText}>
+              Signing in with Google...
+            </AppText>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

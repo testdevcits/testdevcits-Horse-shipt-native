@@ -1,10 +1,18 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 // Custom Design Systems
-import { COLORS } from '../../../../constants'; // Adjust relative path as needed
+import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
-import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
+import { useDriverMe } from '../../../../hooks/useDriverMe';
 import styles from './styles.profile';
 import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
 import { Button, ProfileSkeleton } from '../../../../components';
@@ -12,8 +20,8 @@ import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import CompletedShipments from './components/CompletedShipments';
-
-// Profile Theme Colors mapped to match the gold/beige screenshot details
+import driverService from '../../../../api/services/driverService';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const Profile = () => {
   const ConfirmationModal = lazy(
@@ -22,7 +30,7 @@ const Profile = () => {
         '../../../../components/common/ConfirmationModal/ConfirmationModal'
       ),
   );
-  const { driver, allShipments, loading, refresh: _refresh } = useDriverMe();
+  const { driver, allShipments, loading, refresh } = useDriverMe();
   const dispatch = useAppDispatch();
 
   // Extract completed shipments count
@@ -35,6 +43,72 @@ const Profile = () => {
 
   // State to control your custom confirmation modal
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+
+  const handleProfilePhotoPress = async () => {
+    if (isUploadingPhoto) return;
+
+    setIsUploadingPhoto(true);
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        mediaType: 'photo',
+        compressImageQuality: 0.8,
+      });
+
+      if (!image.path) {
+        showErrorToast('Upload Error', 'Could not read the selected image.');
+        return;
+      }
+
+      if (image.size && image.size > 1 * 1024 * 1024) {
+        showErrorToast(
+          'File Too Large',
+          'Selected profile photo must be 1 MB or less.',
+        );
+        return;
+      }
+
+      const imageMime = image.mime || 'image/jpeg';
+      const imageExtension = imageMime.split('/')[1] || 'jpeg';
+      const formData = new FormData();
+      formData.append('image', {
+        uri:
+          Platform.OS === 'android'
+            ? image.path
+            : image.path.replace('file://', ''),
+        type: imageMime,
+        name: image.filename || `driver-profile-${Date.now()}.${imageExtension}`,
+      } as any);
+
+      const response = await driverService.updateProfilePhoto(formData);
+      if (!response?.success) {
+        showErrorToast(
+          'Upload Error',
+          response?.message || 'Failed to update profile photo.',
+        );
+        return;
+      }
+
+      await refresh();
+      showSuccessToast('Success', 'Profile photo updated successfully.');
+    } catch (error: any) {
+      if (
+        error?.message !== 'User cancelled image selection' &&
+        error?.code !== 'E_PICKER_CANCELLED'
+      ) {
+        console.error('Driver profile photo upload error:', error);
+        showErrorToast(
+          'Upload Error',
+          error?.message || 'Failed to update profile photo.',
+        );
+      }
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
 
   const handleLogoutConfirm = async () => {
     setIsLogoutModalVisible(false); // 1. Close UI Modal
@@ -80,10 +154,16 @@ const Profile = () => {
         {/* Main Header Card */}
         <View style={styles.mainCard}>
           {/* Avatar Area */}
-          <View style={styles.avatarWrapper}>
+          <TouchableOpacity
+            style={styles.avatarWrapper}
+            onPress={handleProfilePhotoPress}
+            disabled={isUploadingPhoto}
+            accessibilityRole="button"
+            accessibilityLabel="Change profile photo"
+          >
             {driver?.profileImage?.url ? (
               <Image
-                source={{ uri: driver?.profileImage?.url }}
+                source={{ uri: driver.profileImage.url }}
                 style={styles.avatarImage}
               />
             ) : (
@@ -91,7 +171,16 @@ const Profile = () => {
                 <AppText style={styles.monogramText}>{firstLetter}</AppText>
               </View>
             )}
-          </View>
+            {isUploadingPhoto ? (
+              <View style={styles.avatarUploadingOverlay}>
+                <ActivityIndicator color={COLORS.white} />
+              </View>
+            ) : (
+              <View style={styles.avatarCameraBadge}>
+                <AppIcon name="Camera" size={14} color={COLORS.white} />
+              </View>
+            )}
+          </TouchableOpacity>
 
           {/* Driver Metadata */}
           <AppText style={styles.driverName}>

@@ -29,6 +29,20 @@ const checkIsDriver = async (): Promise<boolean> => {
 const getMe = async (): Promise<MeResponse> => {
   return axiosClient.get(API_ENDPOINTS.DRIVER.ME);
 };
+
+const updateProfilePhoto = async (formData: FormData): Promise<any> => {
+  return axiosClient.put(
+    API_ENDPOINTS.DRIVER.UPDATE_PROFILE_PHOTO,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      transformRequest: [data => data],
+    },
+  );
+};
+
 // New POST service to update the driver's current position
 const updateLocation = async (
   payload: LocationUpdatePayload,
@@ -75,6 +89,7 @@ const startTrip = async (
 
 const driverService = {
   getMe,
+  updateProfilePhoto,
   updateLocation,
   sendDeliveryOtp,
   verifyDeliveryOtp,

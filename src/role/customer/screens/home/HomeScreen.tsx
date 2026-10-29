@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { View, FlatList, RefreshControl, Image, Pressable } from 'react-native';
+import { View, FlatList, RefreshControl,   } from 'react-native';
 import { PackageSearch, Award } from 'lucide-react-native';
 import { COLORS, SCREEN_WIDTH } from '../../../../constants';
 import {
@@ -12,12 +12,12 @@ import {
 } from '../../../../components';
 import ShipmentCardDetailed from '../../../../components/cards/shipmentcard_detailed/ShipmentCardDetailed';
 import { useShipments } from './useShipments';
-import imageIndex from '../../../../assets/images/imageIndex';
-import { useShippers } from '../topratedshippers/shipperlist/useShippers';
+ import { useShippers } from '../topratedshippers/shipperlist/useShippers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { fetchWishlistThunk } from '../../../../redux/slices/wishlistSlice';
 import { useSelector } from 'react-redux';
 import styles from './styles.home';
+import NewShipmentBanner from './NewShipmentBanner';
 
 type ListItemType =
   | { type: 'SECTION_HEADER'; title: string; onMorePress: () => void }
@@ -219,21 +219,8 @@ const HomeScreen = ({ navigation }: { navigation?: any }) => {
     return `${item?.type}-${index}`;
   }, []);
 
-  const ListHeader = useMemo(
-    () => (
-      <Pressable onPress={() => navigation.navigate('New')}>
-        <Image
-          source={imageIndex?.Banner}
-          style={{
-            width: SCREEN_WIDTH - 16,
-            height: 216,
-            alignSelf: 'center',
-            borderRadius: 20,
-          }}
-          resizeMode="stretch"
-        />
-      </Pressable>
-    ),
+  const ListHeader = useMemo( 
+    () => <NewShipmentBanner onPress={() => navigation.navigate('New')} />,
     [navigation],
   );
 

@@ -1,14 +1,29 @@
-import React, { useRef, useEffect, useState, memo, useCallback } from 'react';
-import { View, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  memo,
+  useCallback,
+  useMemo,
+} from 'react';
+import {
+  View,
+  Modal,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+  
+} from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { Navigation, MapPin } from 'lucide-react-native';
+import { MapPin, Navigation2Icon } from 'lucide-react-native';
 import { COLORS } from '../../../../../constants';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
 import { AppText } from '../../../../../components';
 import { useCurrentLocation } from '../../../../../hooks/useCurrentLocation';
 import AppIcon from '../../../../../components/app_icon/AppIcon';
 import styles from './RouteMapModal.Styles';
+import CompassHeading from 'react-native-compass-heading';
 
 interface Coords {
   latitude: number;
@@ -44,19 +59,19 @@ const CustomMarker = ({
   </View>
 );
 
-const isValidCoord = (coords?: Coords | null): coords is Coords => {
-  if (!coords) return false;
+const normalizeCoord = (coords?: Coords | null): Coords | null => {
+  if (!coords) return null;
   const lat = Number(coords.latitude);
   const lng = Number(coords.longitude);
-  return (
-    !isNaN(lat) &&
-    !isNaN(lng) &&
+  const isValid =
+    Number.isFinite(lat) &&
+    Number.isFinite(lng) &&
     !(lat === 0 && lng === 0) &&
     lat >= -90 &&
     lat <= 90 &&
     lng >= -180 &&
-    lng <= 180
-  );
+    lng <= 180;
+  return isValid ? { latitude: lat, longitude: lng } : null;
 };
 
 export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
@@ -73,54 +88,138 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
     const [userCoords, setUserCoords] = useState<Coords | null>(null);
     const [loading, setLoading] = useState(true);
     const [routeError, setRouteError] = useState<string | null>(null);
+    const [mapReady, setMapReady] = useState(false);
     const [mapType, setMapType] = useState<'standard' | 'satellite'>(
       'standard',
     );
 
-    const hasPickupCoords = isValidCoord(pickupCoords);
-    const hasDeliveryCoords = isValidCoord(deliveryCoords);
+    const pickupPoint = useMemo(
+      () => normalizeCoord(pickupCoords),
+      [pickupCoords],
+    );
+    const deliveryPoint = useMemo(
+      () => normalizeCoord(deliveryCoords),
+      [deliveryCoords],
+    );
+    const hasPickupCoords = !!pickupPoint;
+    const hasDeliveryCoords = !!deliveryPoint;
     const hasBothCoords = hasPickupCoords && hasDeliveryCoords;
     const showCoordsAlert = !hasBothCoords || !!routeError;
+    const hasAnyMapPoints =
+      !!userCoords || hasPickupCoords || hasDeliveryCoords;
 
     // Track metrics for both legs
     const [metrics, setMetrics] = useState({
       leg1: { distance: 0, duration: 0 },
       leg2: { distance: 0, duration: 0 },
     });
+    const [heading, setHeading] = useState<number | null>(null);
+    const headingRef = useRef(0);
+    const lastUpdateRef = useRef(0);
+
+    useEffect(() => {
+      if (!visible) {
+        return;
+      }
+
+      let isActive = true;
+      headingRef.current = 0;
+      lastUpdateRef.current = 0;
+      setHeading(null);
+      const startCompass = async () => {
+        try {
+          await CompassHeading.start(
+            5,
+            ({
+              heading: newHeading,
+              accuracy,
+            }: {
+              heading: number;
+              accuracy: number;
+            }) => {
+              if (
+                !isActive ||
+                !Number.isFinite(newHeading) ||
+                !Number.isFinite(accuracy) ||
+                accuracy < 0
+              ) {
+                return;
+              }
+
+              const now = Date.now();
+              if (now - lastUpdateRef.current < 100) {
+                return;
+              }
+              lastUpdateRef.current = now;
+
+              const normalizedHeading = ((newHeading % 360) + 360) % 360;
+              const current = headingRef.current;
+              const difference =
+                ((normalizedHeading - current + 540) % 360) - 180;
+              if (Math.abs(difference) < 3) {
+                return;
+              }
+
+              const smoothedHeading =
+                (current + difference * 0.15 + 360) % 360;
+              headingRef.current = smoothedHeading;
+              setHeading(smoothedHeading);
+            },
+          );
+        } catch (error) {
+          if (isActive) {
+            console.warn('Could not read compass heading:', error);
+          }
+        }
+      };
+
+      startCompass().catch(error => {
+        console.warn('Could not start compass heading:', error);
+      });
+      return () => {
+        isActive = false;
+        CompassHeading.stop().catch((error: unknown) => {
+          console.warn('Could not stop compass heading:', error);
+        });
+      };
+    }, [visible]);
 
     const fetchUserLocation = useCallback(async () => {
-      const granted = await requestPermission();
-      if (granted) {
-        try {
+      try {
+        const granted = await requestPermission();
+        if (granted) {
           const pos = await getCurrentPosition();
           setUserCoords(pos);
-        } catch (e) {
-          console.log('Location error', e);
         }
+      } catch (error) {
+        console.warn('Could not get driver location for route map:', error);
       }
     }, [getCurrentPosition, requestPermission]);
 
     const handleFitAll = useCallback(() => {
-      if (mapRef.current) {
-        const points = [];
-        if (userCoords) points.push(userCoords);
-        if (hasPickupCoords && pickupCoords) points.push(pickupCoords);
-        if (hasDeliveryCoords && deliveryCoords) points.push(deliveryCoords);
+      const points: Coords[] = [];
+      if (userCoords) points.push(userCoords);
+      if (pickupPoint) points.push(pickupPoint);
+      if (deliveryPoint) points.push(deliveryPoint);
 
-        if (points.length > 0) {
+      if (mapRef.current && mapReady && points.length > 0) {
+        if (points.length === 1) {
+          mapRef.current.animateToRegion(
+            {
+              ...points[0],
+              latitudeDelta: 0.08,
+              longitudeDelta: 0.08,
+            },
+            300,
+          );
+        } else {
           mapRef.current.fitToCoordinates(points, {
-            edgePadding: { top: 120, right: 60, bottom: 320, left: 60 },
+            edgePadding: { top: 120, right: 60, bottom: 300, left: 60 },
             animated: true,
           });
         }
       }
-    }, [
-      userCoords,
-      hasPickupCoords,
-      pickupCoords,
-      hasDeliveryCoords,
-      deliveryCoords,
-    ]);
+    }, [userCoords, mapReady, pickupPoint, deliveryPoint]);
 
     const handleZoomIn = useCallback(() => {
       if (mapRef.current) {
@@ -157,19 +256,28 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
     useEffect(() => {
       if (visible) {
         setRouteError(null);
+        setMetrics({
+          leg1: { distance: 0, duration: 0 },
+          leg2: { distance: 0, duration: 0 },
+        });
+        setUserCoords(null);
+        setMapReady(false);
+        setLoading(hasBothCoords);
+        fetchUserLocation();
         if (!hasBothCoords) {
-          setLoading(false);
           return;
         }
-        setLoading(true);
-        fetchUserLocation();
-        const timer = setTimeout(handleFitAll, 1000);
-        return () => clearTimeout(timer);
       } else {
         setLoading(false);
         setRouteError(null);
       }
-    }, [visible, hasBothCoords, fetchUserLocation, handleFitAll]);
+    }, [visible, hasBothCoords, fetchUserLocation]);
+
+    useEffect(() => {
+      if (visible && mapReady) {
+        handleFitAll();
+      }
+    }, [visible, mapReady, userCoords, handleFitAll]);
 
     // Combined totals
     const totalDistance = (
@@ -178,6 +286,17 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
     const totalDuration = Math.ceil(
       metrics.leg1.duration + metrics.leg2.duration,
     );
+    const formatDuration = (totalMinutes: number): string => {
+      const hours = Math.floor(totalMinutes / 60);
+      const mins = totalMinutes % 60;
+
+      if (hours === 0) return `${mins} mins`;
+      if (mins === 0) return `${hours} ${hours === 1 ? 'hour' : 'hours'}`;
+
+      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ${mins} mins`;
+    };
+
+    const formattedDuration = formatDuration(totalDuration);
 
     return (
       <Modal
@@ -185,15 +304,18 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
         animationType="slide"
         transparent={false}
         onRequestClose={onClose}
+        statusBarTranslucent={Platform.OS === 'android'}
       >
+        
         <View style={styles.container}>
           <MapView
             ref={mapRef}
+            onMapReady={() => setMapReady(true)}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             mapType={mapType}
             showsUserLocation={false}
-            showsCompass={false}
+            showsCompass
             zoomEnabled={true}
             zoomControlEnabled={true}
             scrollEnabled={true}
@@ -207,7 +329,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 {userCoords && (
                   <MapViewDirections
                     origin={userCoords}
-                    destination={pickupCoords}
+                    destination={pickupPoint}
                     apikey={GOOGLE_MAPS_APIKEY}
                     strokeWidth={5}
                     strokeColor={COLORS.info}
@@ -231,8 +353,8 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
                 {/* LEG 2: PICKUP -> DROP (EMERALD) */}
                 <MapViewDirections
-                  origin={pickupCoords}
-                  destination={deliveryCoords}
+                  origin={pickupPoint}
+                  destination={deliveryPoint}
                   apikey={GOOGLE_MAPS_APIKEY}
                   strokeWidth={5}
                   strokeColor={COLORS.success}
@@ -263,17 +385,34 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
             )}
 
             {userCoords && (
-              <Marker coordinate={userCoords}>
-                <CustomMarker
-                  color={COLORS.info}
-                  icon={Navigation}
-                  label="You"
-                />
+              <Marker
+                coordinate={userCoords}
+                anchor={{ x: 0.5, y: 0.68 }}
+                tracksViewChanges
+                zIndex={3}
+              >
+                <View style={styles.driverMarkerContainer}>
+                  <View style={styles.driverMarkerLabel}>
+                    <AppText style={styles.driverMarkerLabelText}>You</AppText>
+                  </View>
+                  <View style={styles.driverMarkerBadge}>
+                    <Navigation2Icon
+                      size={16}
+                      color={COLORS.white}
+                      fill={COLORS.white}
+                      style={
+                        heading === null
+                          ? undefined
+                          : { transform: [{ rotate: `${heading}deg` }] }
+                      }
+                    />
+                  </View>
+                </View>
               </Marker>
             )}
 
-            {hasPickupCoords && pickupCoords && (
-              <Marker coordinate={pickupCoords}>
+            {pickupPoint && (
+              <Marker coordinate={pickupPoint}>
                 <CustomMarker
                   color={COLORS.goldDark}
                   icon={MapPin}
@@ -282,8 +421,8 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               </Marker>
             )}
 
-            {hasDeliveryCoords && deliveryCoords && (
-              <Marker coordinate={deliveryCoords}>
+            {deliveryPoint && (
+              <Marker coordinate={deliveryPoint}>
                 <CustomMarker
                   color={COLORS.success}
                   icon={MapPin}
@@ -299,6 +438,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               style={styles.circleBtn}
               onPress={onClose}
               accessibilityLabel="Back"
+              accessibilityRole="button"
             >
               <AppIcon
                 name={'ArrowLeft'}
@@ -309,12 +449,12 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
             <View style={styles.routeHeaderInfo}>
               <AppText style={styles.headerTitle}>
-                {showCoordsAlert ? 'Route Unavailable' : 'Premium Route'}
+                {showCoordsAlert ? 'Route Unavailable' : 'Trip Route'}
               </AppText>
               {!showCoordsAlert && (
                 <View style={styles.liveIndicator}>
                   <View style={styles.pulseDot} />
-                  <AppText style={styles.liveText}>ROAD ACTIVE</AppText>
+                  <AppText style={styles.liveText}>ROUTE READY</AppText>
                 </View>
               )}
             </View>
@@ -324,18 +464,26 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
               onPress={() =>
                 setMapType(mapType === 'standard' ? 'satellite' : 'standard')
               }
+              accessibilityRole="button"
+              accessibilityLabel={
+                mapType === 'standard'
+                  ? 'Switch to satellite map'
+                  : 'Switch to standard map'
+              }
             >
               <AppIcon name={'Map'} size={20} color={COLORS.textPrimary} />
             </TouchableOpacity>
           </View>
 
           {/* SIDE CONTROLS */}
-          {!showCoordsAlert && (
+          {hasAnyMapPoints && (
             <View style={styles.sideControls}>
               <TouchableOpacity
                 style={styles.circleBtn}
                 onPress={handleFitAll}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel="Fit route on map"
               >
                 <AppIcon
                   name={'LocateFixed'}
@@ -347,6 +495,8 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 style={[styles.circleBtn, { marginTop: 10 }]}
                 onPress={handleZoomIn}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel="Zoom in"
               >
                 <AppIcon name={'Plus'} size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
@@ -354,6 +504,8 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 style={[styles.circleBtn, { marginTop: 10 }]}
                 onPress={handleZoomOut}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel="Zoom out"
               >
                 <AppIcon name={'Minus'} size={20} color={COLORS.textPrimary} />
               </TouchableOpacity>
@@ -386,7 +538,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                     <View style={styles.metricTextContent}>
                       <AppText style={styles.metricLabel}>Total ETA</AppText>
                       <AppText style={styles.metricValue}>
-                        {totalDuration} mins
+                        {formattedDuration}
                       </AppText>
                     </View>
                   </View>
@@ -419,7 +571,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
 
           {/* CUSTOM ALERT BOX WHEN COORDS NOT FOUND OR ROUTE FAILS */}
           {showCoordsAlert && (
-            <View style={styles.alertBackdrop}>
+            <View style={styles.alertBackdrop} pointerEvents="box-none">
               <View style={styles.alertCard}>
                 <View style={styles.alertIconBadge}>
                   <AppIcon
