@@ -39,9 +39,23 @@ const ShipperPaymentsScreen = ({ navigation }: any) => {
     fetchStripeStatus();
   };
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.navigate('ShipperDrawer');
+  };
+
   return (
     <View style={styles.container}>
-      <AppHeader title="Payment Settings" showProfileImage={false} />
+      <AppHeader
+        title="Payment Settings"
+        showBack
+        onBack={handleBack}
+        showProfileImage={false}
+      />
 
       {loading && !refreshing ? (
         <View
