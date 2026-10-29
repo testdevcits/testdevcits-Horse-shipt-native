@@ -19,6 +19,19 @@ export interface SubscriptionStatus {
   remainingTrialDays?: number;
 }
 
+export const hasShipperSubscriptionAccess = (
+  status?: {
+    hasAccess?: boolean;
+    status?: string;
+  } | null,
+): boolean =>
+  Boolean(
+    status?.hasAccess ||
+      ['active', 'trialing', 'past_due'].includes(
+        status?.status?.toLowerCase() || '',
+      ),
+  );
+
 export interface PlanItem {
   priceId: string;
   amount: number;
@@ -65,7 +78,7 @@ export const useShipperSubscription = () => {
   const [plansData, setPlansData] = useState<SubscriptionPlansData | null>(
     null,
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const fetchSubscriptionData = useCallback(async () => {
@@ -86,25 +99,33 @@ export const useShipperSubscription = () => {
         });
       }
 
+      let refreshedSubscriptionStatus: SubscriptionStatus | null = null;
       if (subStatusRes?.success !== undefined) {
-        setSubscriptionStatus({
+        const status = subStatusRes.status || 'none';
+        const hasAccess = hasShipperSubscriptionAccess({
+          hasAccess: subStatusRes.hasAccess,
+          status,
+        });
+        refreshedSubscriptionStatus = {
           success: subStatusRes.success,
           hasSubscription: !!subStatusRes.hasSubscription,
-          status: subStatusRes.status || 'none',
+          status,
           planType: subStatusRes.planType || null,
-          hasAccess:
-            subStatusRes.hasAccess !== false && !subStatusRes.needsSubscription,
-          needsSubscription: !!subStatusRes.needsSubscription,
+          hasAccess,
+          needsSubscription: !hasAccess,
           trialActive: !!subStatusRes.trialActive,
           remainingTrialDays: subStatusRes.remainingTrialDays || 0,
-        });
+        };
+        setSubscriptionStatus(refreshedSubscriptionStatus);
       }
 
       if (plansRes?.data) {
         setPlansData(plansRes.data);
       }
+      return refreshedSubscriptionStatus;
     } catch (err) {
       console.error('Error fetching shipper subscription details:', err);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -122,7 +143,7 @@ export const useShipperSubscription = () => {
    * If not, opens the Subscription Required Modal.
    */
   const checkAccessAndRun = (action: () => void) => {
-    if (subscriptionStatus.hasAccess && !subscriptionStatus.needsSubscription) {
+    if (hasShipperSubscriptionAccess(subscriptionStatus)) {
       action();
     } else {
       setIsModalVisible(true);

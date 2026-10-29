@@ -13,6 +13,7 @@ interface HomeHeaderSectionProps {
   user: any;
   shipperStatus: any;
   subscriptionStatus: any;
+  showStripeAlert: boolean;
   quotesCount: number;
   availableLoadsCount: number;
   searchQuery: string;
@@ -32,6 +33,7 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
   user: _user,
   shipperStatus: _shipperStatus,
   subscriptionStatus: _subscriptionStatus,
+  showStripeAlert,
   quotesCount,
   availableLoadsCount,
   searchQuery,
@@ -41,7 +43,7 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
   viewMode,
   setViewMode,
   onOpenCardModal: _onOpenCardModal,
-  onOpenBankModal: _onOpenBankModal,
+  onOpenBankModal,
   onOpenSubModal: _onOpenSubModal,
   onNavigatePost,
   onSelectMapFirstShipment,
@@ -50,6 +52,29 @@ export const HomeHeaderSection: React.FC<HomeHeaderSectionProps> = ({
 
   return (
     <View style={{ width: '100%' }}>
+      {showStripeAlert && (
+        <View style={styles.stripeAlertBanner}>
+          <View style={styles.stripeAlertContent}>
+            <AppIcon name="Info" size={18} color={COLORS.amberWarning} />
+            <View style={styles.stripeAlertTextContainer}>
+              <AppText style={styles.stripeAlertTitle}>
+                Verify your payout account
+              </AppText>
+              <AppText style={styles.stripeAlertSub}>
+                Complete Stripe setup to receive payments.
+              </AppText>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={styles.stripeAlertButton}
+            onPress={onOpenBankModal}
+            activeOpacity={0.8}
+          >
+            <AppText style={styles.stripeAlertButtonText}>Verify Now</AppText>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* Welcome Greeting Header */}
       {/* <View style={styles.welcomeHeader}>
         <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>

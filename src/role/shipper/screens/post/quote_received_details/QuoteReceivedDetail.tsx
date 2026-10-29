@@ -14,6 +14,9 @@ import AppIcon from '../../../../../components/app_icon/AppIcon';
 import { AppHeader } from '../../../../../components';
 import shipperService from '../../../../../api/services/shipperService';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
+import useShipperSubscription, {
+  hasShipperSubscriptionAccess,
+} from '../../../../../hooks/useShipperSubscription';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
 import styles from './styles.QuoteReceivedDetails';
 
@@ -34,6 +37,12 @@ const SubmitOfferModal = lazy(
 );
 const ConnectBankModal = lazy(
   () => import('../../home/components/ConnectBankModal'),
+);
+const SubscriptionRequiredModal = lazy(
+  () =>
+    import(
+      '../../../components/subscription_required_modal/SubscriptionRequiredModal'
+    ),
 );
 
 /* -------------------------------------------------------------------------- */
@@ -266,7 +275,21 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
   const shipmentId = shipment?._id || quote?._id;
 
   // Stripe readiness
-  const { isStripeReady, loading: stripeLoading } = useStripeStatus();
+  const {
+    isStripeReady,
+    loading: stripeLoading,
+    checkStripeStatus,
+  } = useStripeStatus();
+  const {
+    shipperStatus,
+    subscriptionStatus,
+    plansData,
+    loading: isSubscriptionLoading,
+    isModalVisible: isSubscriptionModalVisible,
+    openModal: openSubscriptionModal,
+    closeModal: closeSubscriptionModal,
+    refreshStatus: refreshSubscriptionStatus,
+  } = useShipperSubscription();
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
   // Map & Route Coordinates
@@ -416,11 +439,28 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
     }
   };
 
-  const handleSubmitOfferPress = () => {
+  const handleSubmitOfferPress = async () => {
+    if (isSubscriptionLoading) return;
+    if (!hasShipperSubscriptionAccess(subscriptionStatus)) {
+      openSubscriptionModal();
+      return;
+    }
+
+    if (stripeLoading) return;
     if (!isStripeReady && !stripeLoading) {
       setIsBankModalVisible(true);
     } else {
       setIsSubmitOfferModalVisible(true);
+    }
+  };
+
+  const handleSubscriptionSuccess = async () => {
+    const refreshedStatus = await refreshSubscriptionStatus();
+    if (!hasShipperSubscriptionAccess(refreshedStatus)) return;
+
+    const stripeReady = await checkStripeStatus();
+    if (!stripeReady) {
+      setIsBankModalVisible(true);
     }
   };
 
@@ -556,7 +596,21 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
         <ConnectBankModal
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
+          onConnectBank={() => {
+            setIsBankModalVisible(false);
+            navigation.navigate('ShipperPayments');
+          }}
           navigation={navigation}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubscriptionModalVisible}
+          onClose={closeSubscriptionModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onSubscriptionSuccess={handleSubscriptionSuccess}
         />
       </Suspense>
     </View>

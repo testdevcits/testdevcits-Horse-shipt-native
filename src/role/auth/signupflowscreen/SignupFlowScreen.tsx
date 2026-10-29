@@ -11,6 +11,8 @@ import {
   Keyboard,
   LayoutAnimation,
   UIManager,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
@@ -502,6 +504,23 @@ const SignupFlowScreen = ({ navigation }: any) => {
             }}
           />
         </View>
+
+        <Modal
+          transparent
+          visible={isGoogleLoading}
+          animationType="fade"
+          statusBarTranslucent
+          onRequestClose={() => undefined}
+        >
+          <View style={styles.googleLoadingOverlay}>
+            <View style={styles.googleLoadingCard}>
+              <AppText style={styles.googleLoadingText}>
+                Signing in with Google...
+              </AppText>
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            </View>
+          </View>
+        </Modal>
       </KeyboardAvoidingView>
     </View>
   );

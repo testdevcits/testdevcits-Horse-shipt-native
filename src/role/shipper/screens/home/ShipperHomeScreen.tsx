@@ -27,7 +27,10 @@ import { MapModeSection } from './components/MapModeSection';
 import styles from './styles.shipperhome';
 
 import { useStripe } from '@stripe/stripe-react-native';
-import useShipperSubscription from '../../../../hooks/useShipperSubscription';
+import { useIsFocused } from '@react-navigation/native';
+import useShipperSubscription, {
+  hasShipperSubscriptionAccess,
+} from '../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showSuccessToast } from '../../../../utils/toast';
 
@@ -42,7 +45,10 @@ const StripePaymentMethodCardModal = lazy(
   () => import('../earnings/components/StripePaymentMethodCardModal'),
 );
 
+let stripeModalShownThisSession = false;
+
 const ShipperHomeScreen = ({ navigation }: any) => {
+  const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const { getCurrentPosition, requestPermission } = useCurrentLocation();
@@ -54,12 +60,14 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const [selectedFilter, setSelectedFilter] = useState<string>(''); // 'pickup' | 'dropoff'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
 
   const { confirmSetupIntent, createPaymentMethod } = useStripe();
 
   const {
     shipperStatus,
     subscriptionStatus,
+    loading: isSubscriptionLoading,
     plansData,
     isModalVisible: isSubModalVisible,
     openModal: _openSubModal,
@@ -223,30 +231,18 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     await Promise.all([fetchShipments(), fetchQuotes()]);
   };
 
-  const checkStripeStatus = async () => {
+  const checkStripeStatus = useCallback(async () => {
     try {
       const res = await shipperService.getStripeStatus();
-      if (!res || res.success === false) {
-        // Account not created ({"success":false,"message":"Stripe account not created"})
-        setIsBankModalVisible(true);
-        return;
-      }
-      const needsModal =
-        res.needsVerification === true ||
-        res.onboardingCompleted === false ||
-        res.chargesEnabled === false ||
-        res.payoutsEnabled === false ||
-        res.verified === false;
-      setIsBankModalVisible(needsModal);
-    } catch (err) {
-      console.log('Stripe status check error:', err);
-      setIsBankModalVisible(true);
+      setNeedsOnboarding(!res?.onboardingCompleted);
+    } catch (error) {
+      console.error('Stripe status check error:', error);
+      setNeedsOnboarding(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchAllData();
-    checkStripeStatus();
     shipperService
       .getProfile()
       .then(res => {
@@ -257,6 +253,40 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       .catch(() => null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      checkStripeStatus();
+    }
+  }, [isFocused, checkStripeStatus]);
+
+  const isSubscribed = hasShipperSubscriptionAccess(subscriptionStatus);
+  const subscriptionPromptShown = useRef(false);
+
+  useEffect(() => {
+    if (
+      isFocused &&
+      !isSubscriptionLoading &&
+      !isSubscribed &&
+      !subscriptionPromptShown.current
+    ) {
+      subscriptionPromptShown.current = true;
+      _openSubModal();
+    }
+  }, [isFocused, isSubscriptionLoading, isSubscribed, _openSubModal]);
+
+  useEffect(() => {
+    if (
+      isFocused &&
+      !isSubscriptionLoading &&
+      isSubscribed &&
+      needsOnboarding === true &&
+      !stripeModalShownThisSession
+    ) {
+      stripeModalShownThisSession = true;
+      setIsBankModalVisible(true);
+    }
+  }, [isFocused, isSubscriptionLoading, isSubscribed, needsOnboarding]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -350,6 +380,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         user={user}
         shipperStatus={shipperStatus}
         subscriptionStatus={subscriptionStatus}
+        showStripeAlert={isSubscribed && needsOnboarding === true}
         quotesCount={quotes.length}
         availableLoadsCount={filteredShipments.length}
         searchQuery={searchQuery}
@@ -381,6 +412,8 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       _openSubModal,
       navigation,
       handleSelectMapShipment,
+      isSubscribed,
+      needsOnboarding,
     ],
   );
 
@@ -465,6 +498,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         <ConnectBankModal
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
+          onConnectBank={() => {
+            setIsBankModalVisible(false);
+            navigation.navigate('ShipperPayments');
+          }}
           navigation={navigation}
         />
       </Suspense>

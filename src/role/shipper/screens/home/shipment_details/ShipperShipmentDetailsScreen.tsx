@@ -7,6 +7,9 @@ import { AppHeader, AppText } from '../../../../../components';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
+import useShipperSubscription, {
+  hasShipperSubscriptionAccess,
+} from '../../../../../hooks/useShipperSubscription';
 import ConnectBankModal from '../components/ConnectBankModal';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
@@ -22,11 +25,27 @@ const AskQuestionModal = lazy(
 const SubmitOfferModal = lazy(
   () => import('../components/submit_offer_modal/SubmitOfferModal'),
 );
+const SubscriptionRequiredModal = lazy(
+  () =>
+    import(
+      '../../../components/subscription_required_modal/SubscriptionRequiredModal'
+    ),
+);
 
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const { isStripeReady, loading } = useStripeStatus();
+  const { isStripeReady, loading, checkStripeStatus } = useStripeStatus();
+  const {
+    shipperStatus,
+    subscriptionStatus,
+    plansData,
+    loading: isSubscriptionLoading,
+    isModalVisible: isSubscriptionModalVisible,
+    openModal: openSubscriptionModal,
+    closeModal: closeSubscriptionModal,
+    refreshStatus: refreshSubscriptionStatus,
+  } = useShipperSubscription();
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
   // console.log("======ShipmentDetails checkStripeStatus======", isStripeReady, loading)
@@ -202,11 +221,28 @@ const ShipperShipmentDetailsScreen = () => {
     }
   };
 
-  const handleSubmitOfferPress = () => {
+  const handleSubmitOfferPress = async () => {
+    if (isSubscriptionLoading) return;
+    if (!hasShipperSubscriptionAccess(subscriptionStatus)) {
+      openSubscriptionModal();
+      return;
+    }
+
+    if (loading) return;
     if (!isStripeReady && !loading) {
       setIsBankModalVisible(true);
     } else {
       setIsSubmitOfferModalVisible(true);
+    }
+  };
+
+  const handleSubscriptionSuccess = async () => {
+    const refreshedStatus = await refreshSubscriptionStatus();
+    if (!hasShipperSubscriptionAccess(refreshedStatus)) return;
+
+    const stripeReady = await checkStripeStatus();
+    if (!stripeReady) {
+      setIsBankModalVisible(true);
     }
   };
 
@@ -318,9 +354,23 @@ const ShipperShipmentDetailsScreen = () => {
         <ConnectBankModal
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
+          onConnectBank={() => {
+            setIsBankModalVisible(false);
+            navigation.navigate('ShipperPayments');
+          }}
           navigation={navigation}
         />
       )}
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubscriptionModalVisible}
+          onClose={closeSubscriptionModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onSubscriptionSuccess={handleSubscriptionSuccess}
+        />
+      </Suspense>
     </View>
   );
 };

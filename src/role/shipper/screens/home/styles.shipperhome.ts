@@ -17,6 +17,46 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     paddingBottom: SPACING.xxl,
   },
+  stripeAlertBanner: {
+    backgroundColor: COLORS.amberLightBg,
+    borderWidth: 1,
+    borderColor: COLORS.amberBorder,
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+    gap: SPACING.sm,
+  },
+  stripeAlertContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  stripeAlertTextContainer: {
+    flex: 1,
+  },
+  stripeAlertTitle: {
+    fontSize: FONT_SIZE.sm,
+    fontFamily: FONTS.bold,
+    color: COLORS.amberWarning,
+  },
+  stripeAlertSub: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.regular,
+    color: COLORS.darkBrown,
+    marginTop: 2,
+  },
+  stripeAlertButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.brandBrown,
+    borderRadius: RADIUS.xs,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs + 2,
+  },
+  stripeAlertButtonText: {
+    fontSize: FONT_SIZE.xs,
+    fontFamily: FONTS.bold,
+    color: COLORS.white,
+  },
 
   // Welcome Header
   welcomeHeader: {

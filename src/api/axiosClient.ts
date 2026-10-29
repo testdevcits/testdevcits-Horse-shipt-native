@@ -51,11 +51,11 @@ axiosClient.interceptors.request.use(
 
     // --- LOGGING REQUEST ---
     if (__DEV__) {
-      // const fullUrl = `${config.baseURL}${config.url}`;
-      // console.log(' ');
-      // console.log('🚀 ╔═══════════ AXIOS REQUEST ═══════════╗');
-      // console.log(`   ║ 🔗 URL:    ${fullUrl}`);
-      // console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
+      const fullUrl = `${config.baseURL}${config.url}`;
+      console.log(' ');
+      console.log('🚀 ╔═══════════ AXIOS REQUEST ═══════════╗');
+      console.log(`   ║ 🔗 URL:    ${fullUrl}`);
+      console.log(`   ║ 📡 METHOD: ${config.method?.toUpperCase()}`);
 
       if (config.data) {
         if (
@@ -64,20 +64,20 @@ axiosClient.interceptors.request.use(
             typeof config.data === 'object' &&
             (config.data as any)._parts)
         ) {
-          // console.log('   ║ 📦 PAYLOAD: [FormData Body]');
-          // console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
+          console.log('   ║ 📦 PAYLOAD: [FormData Body]');
+          console.log('   ║ ✨ PARTS:', (config.data as any)._parts);
         } else {
           try {
-            // console.log(
-            //   '   ║ 📦 PAYLOAD:',
-            //   JSON.stringify(config.data, null, 2),
-            // );
+            console.log(
+              '   ║ 📦 PAYLOAD:',
+              JSON.stringify(config.data, null, 2),
+            );
           } catch (_e) {
-            // console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
+            console.log('   ║ 📦 PAYLOAD: [FormData / Unserializable Body]');
           }
         }
       } else {
-        // console.log('   ║ 📦 PAYLOAD: No Body');
+        console.log('   ║ 📦 PAYLOAD: No Body');
       }
       // console.log('   ╚══════════════════════════════════════╝');
     }
@@ -92,32 +92,32 @@ axiosClient.interceptors.response?.use(
   (response: AxiosResponse) => {
     // --- LOGGING SUCCESS ---
     if (__DEV__) {
-      // console.log(' ');
-      // console.log(
-      //   `✅ ╔═══════════ AXIOS RESPONSE [${response?.status}] ═══════════╗`,
-      // );
-      // console.log(`   ║ 🔗 URL:  ${response?.config.url}`);
-      // console.log('   ║ 📄 DATA:', JSON.stringify(response?.data, null, 2));
-      // console.log('   ╚════════════════════════════════════════════╝');
+      console.log(' ');
+      console.log(
+        `✅ ╔═══════════ AXIOS RESPONSE [${response?.status}] ═══════════╗`,
+      );
+      console.log(`   ║ 🔗 URL:  ${response?.config.url}`);
+      console.log('   ║ 📄 DATA:', JSON.stringify(response?.data, null, 2));
+      console.log('   ╚════════════════════════════════════════════╝');
     }
 
     return response?.data;
   },
   async (error: AxiosError) => {
     const status = error.response?.status;
-    // const url = error.config?.url;
+    const url = error.config?.url;
     const errorBody: any = error.response?.data;
 
     // --- LOGGING ERROR ---
     if (__DEV__) {
-      // console.log(' ');
-      // console.log(
-      //   `❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`,
-      // );
-      // console.log(`   ║ 🔗 URL:     ${url}`);
-      // console.log(`   ║ 📝 MESSAGE: ${error.message}`);
-      // console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
-      // console.log('   ╚══════════════════════════════════════════════╝');
+      console.log(' ');
+      console.log(
+        `❌ ╔═══════════ AXIOS ERROR [${status || 'NETWORK'}] ═══════════╗`,
+      );
+      console.log(`   ║ 🔗 URL:     ${url}`);
+      console.log(`   ║ 📝 MESSAGE: ${error.message}`);
+      console.log('   ║ 📄 BODY:   ', JSON.stringify(errorBody, null, 2));
+      console.log('   ╚══════════════════════════════════════════════╝');
     }
 
     const errorMessage: string = String(
