@@ -1,11 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-   
-  
-} from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AppText from '../../../../components/common/AppText';
 import AppIcon from '../../../../components/app_icon/AppIcon';

@@ -31,11 +31,11 @@ const ShipperPaymentsScreen = ({ navigation }: any) => {
     }
   }, []);
 
-useFocusEffect(
-  useCallback(() => {
-    fetchStripeStatus();
-  }, [fetchStripeStatus]),
-);
+  useFocusEffect(
+    useCallback(() => {
+      fetchStripeStatus();
+    }, [fetchStripeStatus]),
+  );
 
   const onRefresh = () => {
     setRefreshing(true);

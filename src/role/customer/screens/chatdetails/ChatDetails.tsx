@@ -146,7 +146,7 @@ const ChatDetails = () => {
               uri={item?.media?.[0]?.url}
               onPress={() => {
                 setChatSelectedImage(item?.media?.[0]?.url);
-                  setImageViewerVisible(true);
+                setImageViewerVisible(true);
               }}
             />
           )}

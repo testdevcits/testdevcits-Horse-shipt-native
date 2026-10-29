@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
-  
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -160,8 +159,7 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
                 return;
               }
 
-              const smoothedHeading =
-                (current + difference * 0.15 + 360) % 360;
+              const smoothedHeading = (current + difference * 0.15 + 360) % 360;
               headingRef.current = smoothedHeading;
               setHeading(smoothedHeading);
             },
@@ -306,7 +304,6 @@ export const RouteMapModal: React.FC<RouteMapModalProps> = memo(
         onRequestClose={onClose}
         statusBarTranslucent={Platform.OS === 'android'}
       >
-        
         <View style={styles.container}>
           <MapView
             ref={mapRef}

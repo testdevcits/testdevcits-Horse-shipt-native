@@ -85,7 +85,7 @@ const ShipperList = ({ navigation }: { navigation?: any }) => {
                 navigation.navigate('ChatDetails', {
                   shipmentId: item?.shipmentId,
                   isChatLocked: item?.isChatLocked,
-                  name:item?.name,
+                  name: item?.name,
                   avatar: item?.avatar
                     ? { uri: item?.avatar }
                     : imageIndex?.AccountIcon,

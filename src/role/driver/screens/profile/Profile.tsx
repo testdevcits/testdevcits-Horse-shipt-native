@@ -80,7 +80,8 @@ const Profile = () => {
             ? image.path
             : image.path.replace('file://', ''),
         type: imageMime,
-        name: image.filename || `driver-profile-${Date.now()}.${imageExtension}`,
+        name:
+          image.filename || `driver-profile-${Date.now()}.${imageExtension}`,
       } as any);
 
       const response = await driverService.updateProfilePhoto(formData);

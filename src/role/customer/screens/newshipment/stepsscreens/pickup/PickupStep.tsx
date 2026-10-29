@@ -315,11 +315,7 @@ const PickupStep: React.FC<PickupStepProps> = ({
               ? getCalendarInitialDate(form.pickupStartDate, tomorrowDate)
               : getCalendarInitialDate(form.pickupEndDate, pickupEndMinDate)
           }
-          minDate={
-            activeDateType === 'start'
-              ? tomorrowDate
-              : pickupEndMinDate
-          }
+          minDate={activeDateType === 'start' ? tomorrowDate : pickupEndMinDate}
         />
       </Suspense>
     </View>

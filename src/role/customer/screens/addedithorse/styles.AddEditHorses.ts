@@ -6,7 +6,7 @@ import {
   RADIUS,
   SPACING,
 } from '../../../../constants';
- 
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   scroll: { padding: SPACING.md },
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
   },
   uploadBox: {
-    width: "100%",
+    width: '100%',
     height: 300,
     borderRadius: RADIUS.md,
     borderWidth: 1.5,

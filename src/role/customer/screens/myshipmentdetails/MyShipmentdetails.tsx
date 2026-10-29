@@ -311,7 +311,6 @@ const MyShipmentDetails = ({ route }: any) => {
               quote={selectedQuote}
               onClose={() => setSelectedQuote(null)}
               isCompleted={data?.status === 'delivered'}
-               
             />
           </Suspense>
 

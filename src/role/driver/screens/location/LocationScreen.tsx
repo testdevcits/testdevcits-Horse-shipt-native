@@ -35,8 +35,7 @@ const ConfirmationModal = lazy(
 const LocationScreen = () => {
   const { driver, activeShipment, loading } = useDriverMe();
 
-
-  console.log("==activeShipment===",activeShipment)
+  console.log('==activeShipment===', activeShipment);
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAutoTracking, setIsAutoTracking] = useState(false);

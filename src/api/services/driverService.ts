@@ -31,16 +31,12 @@ const getMe = async (): Promise<MeResponse> => {
 };
 
 const updateProfilePhoto = async (formData: FormData): Promise<any> => {
-  return axiosClient.put(
-    API_ENDPOINTS.DRIVER.UPDATE_PROFILE_PHOTO,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      transformRequest: [data => data],
+  return axiosClient.put(API_ENDPOINTS.DRIVER.UPDATE_PROFILE_PHOTO, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  );
+    transformRequest: [data => data],
+  });
 };
 
 // New POST service to update the driver's current position

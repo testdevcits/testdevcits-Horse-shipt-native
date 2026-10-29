@@ -109,7 +109,7 @@ import {
   WalletCards,
   Landmark,
   Briefcase,
-  Navigation2Icon
+  Navigation2Icon,
 } from 'lucide-react-native';
 import { COLORS, ICON_SIZE } from '../../constants';
 import { ViewStyle } from 'react-native';
@@ -224,7 +224,7 @@ const ICONS = {
   WalletCards,
   Landmark,
   Briefcase,
-  Navigation2Icon
+  Navigation2Icon,
 } as const;
 
 export type IconName = keyof typeof ICONS;

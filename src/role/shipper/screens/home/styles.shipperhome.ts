@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
     flexWrap: 'wrap',
     gap: SPACING.xs,
-    marginTop:10
+    marginTop: 10,
   },
   filterLabel: {
     fontSize: FONT_SIZE.xs,

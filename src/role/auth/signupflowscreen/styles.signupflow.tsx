@@ -258,8 +258,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
 
-  //google 
-   googleLoadingOverlay: {
+  //google
+  googleLoadingOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

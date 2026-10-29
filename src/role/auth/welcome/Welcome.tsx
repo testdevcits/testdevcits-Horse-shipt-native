@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Image } from 'react-native';
 
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
