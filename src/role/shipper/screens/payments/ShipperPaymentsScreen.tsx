@@ -10,6 +10,7 @@ import { COLORS, FONTS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import PaymentsTab from '../profile/tabs/payments/PaymentsTab';
 import styles from '../profile/shipper_profile/styles.shipperprofile';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ShipperPaymentsScreen = ({ navigation }: any) => {
   const [stripeStatus, setStripeStatus] = useState<any>(null);
@@ -30,9 +31,11 @@ const ShipperPaymentsScreen = ({ navigation }: any) => {
     }
   }, []);
 
-  useEffect(() => {
+useFocusEffect(
+  useCallback(() => {
     fetchStripeStatus();
-  }, [fetchStripeStatus]);
+  }, [fetchStripeStatus]),
+);
 
   const onRefresh = () => {
     setRefreshing(true);

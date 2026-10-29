@@ -14,7 +14,7 @@ import { showErrorToast } from '../utils/toast';
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: API_ORIGIN,
-  timeout: 15000,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

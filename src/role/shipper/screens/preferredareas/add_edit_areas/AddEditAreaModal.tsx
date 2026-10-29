@@ -286,7 +286,9 @@ const AddEditAreaModal = ({
                 <AppIcon name="MapPin" size={18} color={COLORS.primary} />
               }
               multiline
-              inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
+              inputContainerStyle={{ height: 100 }}
+              numberOfLines={3}
+              // inputContainerStyle={{ minHeight: 48, maxHeight: 80 }}
               error={errors.locationName}
             />
 
