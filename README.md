@@ -72,6 +72,14 @@ npm run ios
 yarn ios
 ```
 
+For a physical iPhone in a **Debug** build, keep Metro running in its own terminal while using Xcode or the CLI to build and launch the app:
+
+```sh
+npm start -- --host 0.0.0.0
+```
+
+Connect the iPhone and Mac to the same Wi-Fi network. If the app cannot connect, open the iOS Dev Menu, go to **Dev Settings > Debug server host & port for device**, and enter the Mac's local IP address followed by `:8081` (for example, `192.168.1.25:8081`). Do not close the terminal running Metro; the app can remain open after Metro stops, but reload and Fast Refresh will no longer work. **Release** builds load the bundled JavaScript and do not require Metro.
+
 If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
 
 This is one way to run your app — you can also build it directly from Android Studio or Xcode.

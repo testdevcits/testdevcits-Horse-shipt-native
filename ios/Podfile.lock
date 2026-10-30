@@ -1444,6 +1444,27 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-compass-heading (2.0.2):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - react-native-document-picker (12.0.1):
     - hermes-engine
     - RCTRequired
@@ -2717,6 +2738,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-compass-heading (from `../node_modules/react-native-compass-heading`)
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -2896,6 +2918,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-compass-heading:
+    :path: "../node_modules/react-native-compass-heading"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
   react-native-geolocation-service:
@@ -3082,6 +3106,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: b41ecef79c3b1e95a3e77f17712f2fcc9ad13d57
   React-microtasksnativemodule: a146f4dd455ae81ec6860a1d2a20e76fdeabb76c
   react-native-blob-util: 9e6ff4002945d9513b6486a2d29883be7dd0c0a1
+  react-native-compass-heading: 8a096bf317fbafc81bb82e5f8f553c2f75b5ccf0
   react-native-document-picker: 6010251edf0563f11efcc3d7a87d668193674418
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-image-picker: 91b5eb7c8fc59d57ad1a88213e906b7589dc4d22
