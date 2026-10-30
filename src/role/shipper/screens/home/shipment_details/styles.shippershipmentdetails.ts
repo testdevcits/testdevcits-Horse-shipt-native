@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   horseSpecsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: SPACING.sm,
+    gap: 2,
     marginBottom: SPACING.md,
   },
   horseSpecBox: {

@@ -7,8 +7,6 @@ import axios, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from '../app/store';
 import { triggerSessionExpired } from '../redux/slices/authSlice';
-import Toast from 'react-native-toast-message';
-import NetInfo from '@react-native-community/netinfo';
 import { API_ORIGIN } from '../config/constants';
 import { showErrorToast } from '../utils/toast';
 
@@ -24,22 +22,6 @@ const axiosClient: AxiosInstance = axios.create({
 // 1. Request Interceptor
 axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const netState = await NetInfo.fetch();
-    if (
-      netState.isConnected === false ||
-      netState.isInternetReachable === false
-    ) {
-      Toast.show({
-        type: 'error',
-        text1: 'No Internet Connection',
-        text2: 'Please check your network connection and try again.',
-      });
-      return Promise.reject({
-        message: 'No internet connection. Please check your network.',
-        isOffline: true,
-      });
-    }
-
     // Auth Token Logic
     const state = store.getState();
     const token =

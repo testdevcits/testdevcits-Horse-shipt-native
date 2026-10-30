@@ -9,6 +9,7 @@ import { AppText } from '../../../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../../config/constants';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.MapDirection';
+import { formatDuration } from '../../../../../../utils/helpers';
 
 // Note: Replace with your actual Google Maps API Key
 
@@ -88,7 +89,8 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
           optimizeWaypoints={true}
           onReady={result => {
             console.log(`Distance: ${result.distance} km`);
-            setTime(result?.duration);
+            // setTime(result?.duration);
+            setTime(formatDuration(result.duration));
             console.log(`Duration: ${result.duration} min.`);
           }}
         />

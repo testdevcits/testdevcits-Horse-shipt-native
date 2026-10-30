@@ -1,4 +1,4 @@
-import React, { lazy, memo, Suspense, useState } from 'react';
+import React, { lazy, memo, Suspense, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -44,7 +44,7 @@ const CustomShipperDrawerContent: React.FC<
   const { user } = useAppSelector(reduxState => reduxState?.auth);
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
-  const [isShipmentExpanded, setIsShipmentExpanded] = useState(true);
+  const [isShipmentExpanded, setIsShipmentExpanded] = useState(false);
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
   const mainTabsRoute = state?.routes?.find((r: any) => r.name === 'MainTabs');
@@ -82,6 +82,10 @@ const CustomShipperDrawerContent: React.FC<
   };
 
   const isPostActive = isTabActive('Shipments');
+
+  useEffect(() => {
+    setIsShipmentExpanded(isPostActive);
+  }, [isPostActive]);
 
   return (
     <View style={styles.safeArea}>
