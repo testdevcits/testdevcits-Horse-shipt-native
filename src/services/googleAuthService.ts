@@ -100,7 +100,7 @@ const getFirebaseIdToken = async (
 
     if (res?.data?.idToken) {
       console.log('Successfully generated Firebase Auth ID token via REST API');
-      return res.data.idToken;
+      return res?.data?.idToken;
     }
   } catch (restErr: any) {
     restErrMsg =

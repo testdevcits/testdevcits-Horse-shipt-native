@@ -392,7 +392,7 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         onOpenCardModal={() => setIsCardModalVisible(true)}
         onOpenBankModal={() => setIsBankModalVisible(true)}
         onOpenSubModal={_openSubModal}
-        onNavigatePost={() => navigation.navigate('Post')}
+        onNavigatePost={() => navigation.navigate('Shipments')}
         onSelectMapFirstShipment={() => {
           if (filteredShipments.length > 0) {
             handleSelectMapShipment(filteredShipments[0]);

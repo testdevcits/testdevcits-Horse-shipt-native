@@ -23,7 +23,7 @@ const ShipperNotificationSettingsScreen = () => {
     try {
       const setRes = await shipperService.getSettings().catch(() => null);
       if (setRes?.data?.notifications) {
-        setNotifications(setRes.data.notifications);
+        setNotifications(setRes?.data?.notifications);
       }
     } catch (err) {
       console.error('Fetch Notifications Settings Error:', err);

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import {
   View,
   FlatList,
@@ -95,6 +95,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
   const [selectedStatus, setSelectedStatus] = useState<StatusFilterType>('all');
   const [selectedReviewItem, setSelectedReviewItem] = useState<any>(null);
   const [isReviewModalVisible, setIsReviewModalVisible] = useState(false);
+  const filterScrollRef = useRef<ScrollView>(null);
 
   const handleReviewPress = useCallback(
     (item: any) => {
@@ -186,11 +187,12 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
       {/* Sub Filter Status Bar */}
       <View style={styles.subFilterWrapper}>
         <ScrollView
+          ref={filterScrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.subFilterContainer}
         >
-          {filterTabs.map(tab => {
+          {filterTabs?.map(tab => {
             const isActive = selectedStatus === tab.key;
             return (
               <TouchableOpacity
@@ -199,7 +201,12 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                   styles.subFilterPill,
                   isActive && styles.subFilterPillActive,
                 ]}
-                onPress={() => setSelectedStatus(tab.key)}
+                onPress={() => {
+                  setSelectedStatus(tab.key);
+                  if (tab.key === filterTabs[filterTabs.length - 1]?.key) {
+                    filterScrollRef.current?.scrollToEnd({ animated: true });
+                  }
+                }}
                 activeOpacity={0.8}
               >
                 <AppText
@@ -208,7 +215,7 @@ export const MyShipmentsScreen: React.FC<MyShipmentsScreenProps> = ({
                     isActive && styles.subFilterTextActive,
                   ]}
                 >
-                  {tab.label}
+                  {tab?.label}
                 </AppText>
                 <View
                   style={[

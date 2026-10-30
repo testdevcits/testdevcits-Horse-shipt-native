@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform,
   ActivityIndicator,
   Pressable,
 } from 'react-native';
@@ -150,7 +149,16 @@ const ChatDetails = () => {
               }}
             />
           )}
-          {item?.message ? (
+          {typeof item?.message === 'string' && item.message.length === 0 ? (
+            <AppText
+              style={[
+                styles.messageText,
+                isMe ? styles.myText : styles.otherText,
+              ]}
+            >
+              This message is deleted
+            </AppText>
+          ) : item?.message ? (
             <AppText
               style={[
                 styles.messageText,
@@ -234,8 +242,9 @@ const ChatDetails = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? undefined : undefined}
       style={styles.container}
+      behavior="padding"
+      
     >
       {/* Header */}
       <ChatHeaderBar

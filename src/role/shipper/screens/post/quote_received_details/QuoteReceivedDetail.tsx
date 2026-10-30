@@ -350,12 +350,12 @@ const QuoteReceivedDetail = ({ route, navigation }: Props) => {
       const res = await shipperService.getShipmentQuestions(shipmentId);
       if (res?.success && res?.data) {
         if (res?.data?.pending?.length > 0) {
-          setPendingQuestion(res.data.pending[0]);
+          setPendingQuestion(res?.data?.pending[0]);
         } else {
           setPendingQuestion(null);
         }
         if (res?.data?.answered?.length > 0) {
-          setAnsweredQuestion(res.data.answered[0]);
+          setAnsweredQuestion(res?.data?.answered[0]);
         } else {
           setAnsweredQuestion(null);
         }

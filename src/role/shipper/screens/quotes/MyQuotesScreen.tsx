@@ -15,7 +15,6 @@ import {
   EmptyState,
   AppSelectRef,
   ShipmentsSkeleton,
-  LazyFallback,
 } from '../../../../components';
 import shipperService from '../../../../api/services/shipperService';
 import ShipperQuoteCard from './components/shipper_quote_card/ShipperQuoteCard';
@@ -429,7 +428,7 @@ const MyQuotesScreen = () => {
       />
 
       {/* Contract Detail Modal */}
-      <Suspense fallback={<LazyFallback />}>
+      <Suspense fallback={null}>
         <ContractModal
           visible={isContractModalVisible}
           onClose={() => setIsContractModalVisible(false)}
@@ -440,7 +439,7 @@ const MyQuotesScreen = () => {
       </Suspense>
 
       {/* Quote Delete Confirmation Modal */}
-      <Suspense fallback={<LazyFallback />}>
+      <Suspense fallback={null}>
         <ConfirmationModal
           isVisible={Boolean(quoteToDelete)}
           onClose={() => setQuoteToDelete(null)}
@@ -455,7 +454,7 @@ const MyQuotesScreen = () => {
       </Suspense>
 
       {/* Vehicle Selection AppSelect Sheet */}
-      <Suspense fallback={<LazyFallback />}>
+      <Suspense fallback={null}>
         <AppSelect
           ref={vehicleSelectRef}
           hideSelector
