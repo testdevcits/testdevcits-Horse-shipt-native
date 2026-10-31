@@ -92,7 +92,7 @@ const ChatDetails = () => {
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
 
-  const { messages, loading, shipment, sendMessage, sending } =
+  const { messages, loading, shipment, sendMessage, sending, partnerTyping, updateTyping } =
     useChatDetails(shipmentId);
 
   const initialContainerHeight = useRef(0);
@@ -301,6 +301,8 @@ const ChatDetails = () => {
         avatar={avatar}
         shipment={shipment}
       />
+      {partnerTyping && <AppText style={styles.headerSubtitle}>{partnerName} is typing...</AppText>}
+
       <FlatList
         data={messages}
         keyExtractor={item => item?._id}
@@ -339,7 +341,7 @@ const ChatDetails = () => {
         <ChatInputBar
           isLocked={isLocked}
           inputText={inputText}
-          setInputText={setInputText}
+          setInputText={(text: string) => { setInputText(text); updateTyping(text); }}
           setShowPhotoSheet={setShowPhotoSheet}
           showPhotoSheet={showPhotoSheet}
           canSend={canSend}

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import customerService from '../../../../api/services/customerService';
 import shipperService from '../../../../api/services/shipperService';
 import { AppState, AppStateStatus, Platform } from 'react-native';
+import type { Socket } from 'socket.io-client';
 import { createChatSocket } from '../../../../api/services/socket';
 
 const useChatDetails = (shipmentId: string) => {
@@ -14,6 +15,27 @@ const useChatDetails = (shipmentId: string) => {
   const [sending, setSending] = useState(false);
   const { user } = useSelector((state: any) => state.auth || {});
   const activeRequestRef = useRef(0);
+
+  const userId = user?.id || user?._id;
+  const socketRef = useRef<Socket | null>(null);
+  const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const peerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastTyping = useRef(0);
+  const [partnerTyping, setPartnerTyping] = useState(false);
+
+  const updateTyping = useCallback((text: string) => {
+    if (typingTimer.current) clearTimeout(typingTimer.current);
+    const socket = socketRef.current;
+    if (!socket?.connected || !roomId) return;
+    const isTyping = Boolean(text.trim());
+    if (!isTyping || Date.now() - lastTyping.current > 900) {
+      socket.emit('horse_shipt:typing', { roomId, isTyping });
+      lastTyping.current = Date.now();
+    }
+    if (isTyping) typingTimer.current = setTimeout(() => {
+      socket.emit('horse_shipt:typing', { roomId, isTyping: false });
+    }, 1500);
+  }, [roomId]);
 
   const isShipper = user?.role === 'shipper';
 
@@ -91,21 +113,33 @@ const useChatDetails = (shipmentId: string) => {
   }, [initChat]);
 
   useEffect(() => {
-    if (!roomId) {
+    if (!roomId || !userId || !['customer', 'shipper'].includes(user?.role)) {
       return;
     }
 
-    const chatSocket = createChatSocket();
-    let hasConnected = false;
+    const chatSocket = createChatSocket({ userId, role: user.role });
+    socketRef.current = chatSocket;
+    let active = true;
     const handleConnect = () => {
-      chatSocket.emit('horse_shipt:join_chat_room', { roomId });
-      if (hasConnected) {
+      chatSocket.timeout(10000).emit('horse_shipt:join_chat_room', { roomId }, (error: Error | null, result: any) => {
+        if (!active) return;
+        if (error || !result?.success) {
+          console.warn('[Chat socket] room join failed:', error?.message || result?.message);
+          return;
+        }
+        console.info('[Chat socket] room joined:', roomId);
         loadMessages(roomId).catch(error => {
           console.error('Chat reconnect history load error:', error);
         });
-      }
-      hasConnected = true;
+      });
     };
+    const handleTyping = (data: any) => {
+      if (data?.roomId !== roomId || String(data.userId) === String(userId)) return;
+      setPartnerTyping(data.isTyping === true);
+      if (peerTimer.current) clearTimeout(peerTimer.current);
+      peerTimer.current = setTimeout(() => setPartnerTyping(false), 3000);
+    };
+    const handleDisconnect = () => setPartnerTyping(false);
     const handleMessage = (message: any) => {
       const messageRoomId =
         typeof message?.chatRoom === 'object'
@@ -116,6 +150,7 @@ const useChatDetails = (shipmentId: string) => {
       }
       if (message?._id) {
         setMessages(current => mergeMessages(current, [message]));
+        if (String(message.senderId) !== String(userId)) setPartnerTyping(false);
       }
     };
     const handleConnectError = (error: Error) => {
@@ -126,9 +161,11 @@ const useChatDetails = (shipmentId: string) => {
       'change',
       nextAppState => {
         if (previousAppState !== 'active' && nextAppState === 'active') {
-          loadMessages(roomId).catch(error => {
-            console.error('Chat resume history load error:', error);
-          });
+          if (chatSocket.connected) handleConnect();
+          else chatSocket.connect();
+        }
+        if (nextAppState !== 'active' && chatSocket.connected) {
+          chatSocket.emit('horse_shipt:typing', { roomId, isTyping: false });
         }
         previousAppState = nextAppState;
       },
@@ -136,17 +173,25 @@ const useChatDetails = (shipmentId: string) => {
 
     chatSocket.on('connect', handleConnect);
     chatSocket.on('receiveMessage', handleMessage);
+    chatSocket.on('messageEdited', handleMessage);
+    chatSocket.on('messageDeleted', handleMessage);
+    chatSocket.on('horse_shipt:typing', handleTyping);
+    chatSocket.on('disconnect', handleDisconnect);
     chatSocket.on('connect_error', handleConnectError);
     chatSocket.connect();
 
     return () => {
-      chatSocket.off('connect', handleConnect);
-      chatSocket.off('receiveMessage', handleMessage);
-      chatSocket.off('connect_error', handleConnectError);
+      active = false;
+      if (typingTimer.current) clearTimeout(typingTimer.current);
+      if (peerTimer.current) clearTimeout(peerTimer.current);
+      if (chatSocket.connected) chatSocket.emit('horse_shipt:typing', { roomId, isTyping: false });
+      chatSocket.removeAllListeners();
+      socketRef.current = null;
+      setPartnerTyping(false);
       appStateSubscription.remove();
       chatSocket.disconnect();
     };
-  }, [roomId, loadMessages, mergeMessages]);
+  }, [roomId, userId, user?.role, loadMessages, mergeMessages]);
 
   const onSend = async (text?: string, imageFile?: any) => {
     if (!text?.trim() && !imageFile) return false;
@@ -154,6 +199,7 @@ const useChatDetails = (shipmentId: string) => {
 
     try {
       setSending(true);
+      updateTyping('');
       let res: any;
 
       if (imageFile) {
@@ -205,6 +251,8 @@ const useChatDetails = (shipmentId: string) => {
 
   return {
     messages,
+    partnerTyping,
+    updateTyping,
     room,
     roomId,
     shipment,
