@@ -5,4 +5,4 @@ GOOGLE_WEB_CLIENT_ID=572010941912-8o2qmpdducgt69senfsfeol8jrfva0op.apps.googleus
 
 #Socket Urls 
 REACT_APP_SOCKET_URL=https://horse-shipt.vercel.app
-REACT_APP_SOCKET_TRANSPORTS=websocket
+REACT_APP_SOCKET_TRANSPORTS=socket.io

@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   Pressable,
   Platform,
-  useWindowDimensions,
 } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -79,11 +78,10 @@ const ChatMessageImage = ({
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { height: windowHeight } = useWindowDimensions();
-  const initialWindowHeight = useRef(windowHeight);
   const { shipmentId, name, isChatLocked, avatar }: any = route.params || {};
   const [inputText, setInputText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
@@ -96,6 +94,8 @@ const ChatDetails = () => {
 
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
+
+  const initialContainerHeight = useRef(0);
 
   useEffect(() => {
     if (Platform.OS !== 'android') return;
@@ -117,7 +117,7 @@ const ChatDetails = () => {
     Platform.OS === 'android'
       ? Math.max(
           0,
-          keyboardHeight - (initialWindowHeight.current - windowHeight),
+          keyboardHeight - (initialContainerHeight.current - containerHeight),
         )
       : 0;
 
@@ -150,6 +150,8 @@ const ChatDetails = () => {
       item?.senderRole === MY_ROLE ||
       (user?._id && item?.senderId === user._id);
     const hasMedia = item?.media && item?.media?.length > 0;
+    const hasMessage =
+      typeof item?.message === 'string' && item.message.length > 0;
 
     return (
       <View
@@ -162,9 +164,11 @@ const ChatDetails = () => {
           <AppText style={styles.senderName}>
             {isMe ? 'You' : partnerName}
           </AppText>
-          <AppText style={styles.timestamp}>
-            {formatMessageTime(item?.createdAt)}
-          </AppText>
+          {!hasMedia && (
+            <AppText style={styles.timestamp}>
+              {formatMessageTime(item?.createdAt)}
+            </AppText>
+          )}
         </View>
 
         <View
@@ -179,7 +183,9 @@ const ChatDetails = () => {
               }}
             />
           )}
-          {typeof item?.message === 'string' && item.message.length === 0 ? (
+          {typeof item?.message === 'string' &&
+          item.message.length === 0 &&
+          !hasMedia ? (
             <AppText
               style={[
                 styles.messageText,
@@ -188,7 +194,7 @@ const ChatDetails = () => {
             >
               This message is deleted
             </AppText>
-          ) : item?.message ? (
+          ) : hasMessage ? (
             <AppText
               style={[
                 styles.messageText,
@@ -198,6 +204,11 @@ const ChatDetails = () => {
               {item?.message}
             </AppText>
           ) : null}
+          {hasMedia && (
+            <AppText style={styles.timestamp}>
+              {formatMessageTime(item?.createdAt)}
+            </AppText>
+          )}
         </View>
       </View>
     );
@@ -274,6 +285,13 @@ const ChatDetails = () => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      onLayout={({ nativeEvent }) => {
+        const { height } = nativeEvent.layout;
+        if (height > initialContainerHeight.current) {
+          initialContainerHeight.current = height;
+        }
+        setContainerHeight(height);
+      }}
     >
       {/* Header */}
       <ChatHeaderBar
