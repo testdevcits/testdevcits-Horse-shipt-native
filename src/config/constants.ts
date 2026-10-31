@@ -4,7 +4,7 @@ import {
   REACT_APP_STRIPE_PUBLISHABLE_KEY as ENV_STRIPE_KEY,
 } from '@env';
 
-export const BASE_URL = ENV_BASE_URL || 'https://horse-shipt.vercel.app';
+export const BASE_URL = ENV_BASE_URL || 'https://frontend.horseshipt.com';
 
 export const GOOGLE_MAPS_APIKEY =
   ENV_MAPS_KEY || 'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw';

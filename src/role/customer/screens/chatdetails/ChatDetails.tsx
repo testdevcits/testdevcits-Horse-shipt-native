@@ -72,7 +72,7 @@ const ChatDetails = () => {
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
 
-  const { messages, loading, shipment, sendMessage, sending } =
+  const { messages, loading, shipment, sendMessage, sending, partnerTyping, updateTyping } =
     useChatDetails(shipmentId);
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
@@ -253,6 +253,8 @@ const ChatDetails = () => {
         showsVerticalScrollIndicator={false}
       />
 
+      {partnerTyping && <AppText style={styles.headerSubtitle}>{partnerName} is typing...</AppText>}
+
       {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
       {selectedImage && !isLocked && (
         <View style={styles.draftPreviewContainer}>
@@ -295,7 +297,7 @@ const ChatDetails = () => {
             <Input
               placeholder="Type a message..."
               value={inputText}
-              onChangeText={setInputText}
+              onChangeText={text => { setInputText(text); updateTyping(text); }}
               multiline
               containerStyle={{ marginBottom: 0 }}
             />
