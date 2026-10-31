@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'; // 1. Added useEffect
 import {
   Keyboard, // 2. Added Keyboard
+  Platform,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 
@@ -41,12 +44,30 @@ const useLogin = () => {
 
   // 4. Keyboard Listeners Logic
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardOpen(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardOpen(false),
-    );
+    if (
+      Platform.OS === 'ios' &&
+      UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => {
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
+      setIsKeyboardOpen(true);
+    });
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
+      setIsKeyboardOpen(false);
+    });
 
     return () => {
       showSubscription.remove();
@@ -130,22 +151,22 @@ const useLogin = () => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: userRole as any,
           intent: 'login',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'

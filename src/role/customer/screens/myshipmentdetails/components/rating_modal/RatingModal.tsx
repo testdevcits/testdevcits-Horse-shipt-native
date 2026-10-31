@@ -17,6 +17,7 @@ import {
   showInfoToast,
   showSuccessToast,
 } from '../../../../../../utils/toast';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   visible: boolean;
@@ -134,6 +135,8 @@ const RatingModal = ({
               label="Write a review about your shipper"
               placeholder="Amazing shipper! Prompt communication..."
               multiline
+              numberOfLines={3}
+              inputContainerStyle={{ height: 100 }}
               value={review}
               onChangeText={setReview}
               containerStyle={{ marginBottom: SPACING.xl }}
@@ -154,6 +157,7 @@ const RatingModal = ({
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
+      <Toast />
     </Modal>
   );
 };

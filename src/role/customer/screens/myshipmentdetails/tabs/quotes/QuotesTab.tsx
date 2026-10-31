@@ -99,7 +99,7 @@ const QuotesTab: React.FC<QuotesTabProps> = ({ quotes, onSelectQuote }) => {
                   source={
                     q?.shipper?.avatar
                       ? { uri: q?.shipper?.avatar }
-                      : imageIndex.AccountIcon
+                      : imageIndex?.AccountIcon
                   }
                   style={styles.avatar}
                 />

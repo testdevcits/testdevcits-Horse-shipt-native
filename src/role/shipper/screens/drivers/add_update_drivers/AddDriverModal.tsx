@@ -256,6 +256,8 @@ const AddDriverModal = ({
                 value={notes}
                 onChangeText={setNotes}
                 multiline
+                numberOfLines={3}
+                inputContainerStyle={{ height: 100 }}
               />
 
               {submitError && (

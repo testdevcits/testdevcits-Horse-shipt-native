@@ -11,7 +11,7 @@ import ConfirmationModal from './common/ConfirmationModal/ConfirmationModal';
 import AppText from './common/AppText';
 import { AppLoader } from './common/AppLoader';
 import { EmptyState } from './common/EmptyState';
-import ErrorView from './common/ErrorView';
+import ErrorView from './common/ErrorView/ErrorView';
 import SearchBarCompt from './common/SearchBarCompt';
 import TripCard from './cards/trip_card/TripCard';
 import HorseCard from './cards/horse_card/HorseCard';
@@ -28,6 +28,9 @@ import ShipmentLocationModal from './common/ShipmentLocationModal/ShipmentLocati
 import LocationPermissionModal from './common/LocationPermissionModal/LocationPermissionModal';
 import LazyFallback from './common/LazyFallback';
 import ImageViewer from './common/ImageViewer/ImageViewer';
+import ShipmentHorizontalCard from './cards/shipmentcard_detailed/ShipmentCardDetailed';
+import CustomSwitch from './common/CustomSwitch/CustomSwitch';
+import SessionExpiredModal from './common/SessionExpiredModal/SessionExpiredModal';
 
 // Skeletons
 import HomeSkeleton, { HomeSkelaton } from './skeletons/HomeSkeleton';
@@ -85,6 +88,9 @@ export {
   COUNTRIES,
   LazyFallback,
   ImageViewer,
+  ShipmentHorizontalCard,
+  CustomSwitch,
+  SessionExpiredModal,
 
   // Skeletons
   HomeSkeleton,

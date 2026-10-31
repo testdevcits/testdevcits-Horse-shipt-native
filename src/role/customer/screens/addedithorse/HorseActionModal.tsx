@@ -33,7 +33,7 @@ const HorseActionModal = ({
           {/* 1. Horse Silhouette Image */}
           <View style={styles.imageContainer}>
             <Image
-              source={imageIndex.racinghorse} // Replace with your actual path
+              source={imageIndex?.racinghorse} // Replace with your actual path
               style={styles.horseImage}
               resizeMode="contain"
             />

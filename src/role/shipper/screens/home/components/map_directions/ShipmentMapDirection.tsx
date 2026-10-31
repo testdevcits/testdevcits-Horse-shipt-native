@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -9,6 +9,7 @@ import { AppText } from '../../../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../../../config/constants';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './styles.MapDirection';
+import { formatDuration } from '../../../../../../utils/helpers';
 
 // Note: Replace with your actual Google Maps API Key
 
@@ -36,8 +37,6 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-
       {/* Map Implementation */}
       <MapView
         ref={mapRef}
@@ -90,7 +89,8 @@ const ShipmentMapDirection = ({ route, navigation }: any) => {
           optimizeWaypoints={true}
           onReady={result => {
             console.log(`Distance: ${result.distance} km`);
-            setTime(result?.duration);
+            // setTime(result?.duration);
+            setTime(formatDuration(result.duration));
             console.log(`Duration: ${result.duration} min.`);
           }}
         />

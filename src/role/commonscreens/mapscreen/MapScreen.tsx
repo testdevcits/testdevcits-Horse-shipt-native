@@ -3,7 +3,6 @@ import {
   View,
   TouchableOpacity,
   Platform,
-  StatusBar,
   PermissionsAndroid,
   ActivityIndicator,
   Pressable,
@@ -87,12 +86,6 @@ const MapScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       {/* 1. MAP LAYER */}
       <MapView
         ref={mapRef}

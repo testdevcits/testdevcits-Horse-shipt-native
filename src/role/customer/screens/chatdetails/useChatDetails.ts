@@ -2,152 +2,199 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import customerService from '../../../../api/services/customerService';
 import shipperService from '../../../../api/services/shipperService';
-import { io, Socket } from 'socket.io-client';
-import { BASE_URL } from '../../../../config/constants';
-import { AppState, Platform } from 'react-native';
+import { AppState, AppStateStatus, Platform } from 'react-native';
+import type { Socket } from 'socket.io-client';
+import { createChatSocket } from '../../../../api/services/socket';
 
 const useChatDetails = (shipmentId: string) => {
   const [messages, setMessages] = useState<any[]>([]);
   const [room, setRoom] = useState<any>(null);
+  const [roomId, setRoomId] = useState<string | null>(null);
   const [shipment, setShipment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const { user } = useSelector((state: any) => state.auth || {});
+  const activeRequestRef = useRef(0);
 
+  const userId = user?.id || user?._id;
   const socketRef = useRef<Socket | null>(null);
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const peerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTyping = useRef(0);
   const [partnerTyping, setPartnerTyping] = useState(false);
-  const upsertMessage = useCallback((message: any) => {
-    if (!message?._id) return;
-    setMessages(previous => {
-      const found = previous.some(item => item._id === message._id);
-      const next = found ? previous.map(item => item._id === message._id ? message : item) : [message, ...previous];
-      return next.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    });
-  }, []);
+
   const updateTyping = useCallback((text: string) => {
-    const socket = socketRef.current;
     if (typingTimer.current) clearTimeout(typingTimer.current);
-    if (!socket?.connected || !room?._id) return;
+    const socket = socketRef.current;
+    if (!socket?.connected || !roomId) return;
     const isTyping = Boolean(text.trim());
     if (!isTyping || Date.now() - lastTyping.current > 900) {
-      socket.emit('horse_shipt:typing', { roomId: room._id, isTyping });
+      socket.emit('horse_shipt:typing', { roomId, isTyping });
       lastTyping.current = Date.now();
     }
     if (isTyping) typingTimer.current = setTimeout(() => {
-      socket.emit('horse_shipt:typing', { roomId: room._id, isTyping: false });
+      socket.emit('horse_shipt:typing', { roomId, isTyping: false });
     }, 1500);
-  }, [room?._id]);
+  }, [roomId]);
 
-  const userId = user?._id || user?.id;
   const isShipper = user?.role === 'shipper';
 
+  const mergeMessages = useCallback((current: any[], incoming: any[]) => {
+    const messagesById = new Map<string, any>();
+    current.forEach(message => {
+      if (message?._id) {
+        messagesById.set(String(message._id), message);
+      }
+    });
+    incoming.forEach(message => {
+      if (message?._id) {
+        messagesById.set(String(message._id), message);
+      }
+    });
+
+    return Array.from(messagesById.values()).sort((first, second) => {
+      const firstTime = new Date(first.createdAt || 0).getTime();
+      const secondTime = new Date(second.createdAt || 0).getTime();
+      return secondTime - firstTime;
+    });
+  }, []);
+
+  const loadMessages = useCallback(
+    async (targetRoomId: string) => {
+      const msgRes = isShipper
+        ? await shipperService.getChatRoomMessages(targetRoomId)
+        : await customerService.getChatMessages(targetRoomId);
+
+      if (msgRes?.success && Array.isArray(msgRes.messages)) {
+        setMessages(current => mergeMessages(current, msgRes.messages));
+      }
+    },
+    [isShipper, mergeMessages],
+  );
+
   const initChat = useCallback(async () => {
+    const requestId = activeRequestRef.current + 1;
+    activeRequestRef.current = requestId;
+    setRoom(null);
+    setRoomId(null);
+    setShipment(null);
+    setMessages([]);
     try {
       setLoading(true);
-      let roomRes: any;
-      if (isShipper) {
-        roomRes = await shipperService?.getOrCreateChatRoom(shipmentId);
-      } else {
-        roomRes = await customerService?.getChatRoom(shipmentId);
-      }
+      const roomRes = isShipper
+        ? await shipperService.getOrCreateChatRoom(shipmentId)
+        : await customerService.getChatRoom(shipmentId);
 
       if (roomRes?.success) {
-        // console.log('Chat Room:======pickupLocation========', roomRes?.shipment?.pickupLocation);
-        // console.log('Chat Room:======deliveryLocation========', roomRes?.shipment?.deliveryLocation);
-
-        setRoom({ ...roomRes?.room, _id: roomRes?.roomId || roomRes?.room?._id });
-        setShipment(roomRes?.shipment);
-        const roomId = roomRes?.roomId || roomRes?.room?._id;
-        let msgRes: any;
-        if (isShipper) {
-          msgRes = await shipperService?.getChatRoomMessages(roomId);
-        } else {
-          msgRes = await customerService?.getChatMessages(roomId);
+        const resolvedRoomId = roomRes?.roomId || roomRes?.room?._id;
+        if (!resolvedRoomId || requestId !== activeRequestRef.current) {
+          return;
         }
 
-        if (msgRes?.success) {
-          // Sort messages by latest first for inverted FlatList
-          const rawMsgs = msgRes.messages || [];
-          setMessages(previous => {
-            const merged = new Map(previous.map(item => [item._id, item]));
-            rawMsgs.forEach((item: any) => merged.set(item._id, item));
-            return [...merged.values()].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-          });
-        }
+        setRoom(roomRes.room);
+        setRoomId(String(resolvedRoomId));
+        setShipment(roomRes.shipment);
+        await loadMessages(resolvedRoomId);
       }
     } catch (error) {
       console.error('Chat Init Error:', error);
     } finally {
-      setLoading(false);
+      if (requestId === activeRequestRef.current) {
+        setLoading(false);
+      }
     }
-  }, [shipmentId, isShipper]);
+  }, [shipmentId, isShipper, loadMessages]);
 
   useEffect(() => {
-    setMessages([]);
-    setRoom(null);
     initChat();
+    return () => {
+      activeRequestRef.current += 1;
+    };
   }, [initChat]);
 
   useEffect(() => {
-    const roomId = room?._id;
-    if (!roomId || !userId || !user?.role) return;
-    const socket = io(BASE_URL.replace(/\/api\/?$/, '').replace(/\/+$/, ''), {
-      path: '/socket.io', autoConnect: false,
-      auth: { userId, role: user.role },
-      transports: ['polling', 'websocket'], reconnection: true,
-    });
-    socketRef.current = socket;
-    const join = () => socket.timeout(10000).emit('horse_shipt:join_chat_room', { roomId }, async (error: any, result: any) => {
-      if (error || !result?.success) {
-        console.warn('[Chat socket] room join failed', error?.message || result?.message);
-        return;
-      }
-      // Recover messages sent while disconnected without closing the socket.
-      try {
-        const response: any = isShipper ? await shipperService.getChatRoomMessages(roomId) : await customerService.getChatMessages(roomId);
-        if (socket.connected && response?.success) response.messages?.forEach(upsertMessage);
-      } catch { console.warn('[Chat socket] history sync failed'); }
-    });
-    const receive = (message: any) => {
-      if (String(message?.chatRoom) !== String(roomId)) return;
-      upsertMessage(message);
-      if (String(message.senderId) !== String(userId)) setPartnerTyping(false);
+    if (!roomId || !userId || !['customer', 'shipper'].includes(user?.role)) {
+      return;
+    }
+
+    const chatSocket = createChatSocket({ userId, role: user.role });
+    socketRef.current = chatSocket;
+    let active = true;
+    const handleConnect = () => {
+      chatSocket.timeout(10000).emit('horse_shipt:join_chat_room', { roomId }, (error: Error | null, result: any) => {
+        if (!active) return;
+        if (error || !result?.success) {
+          console.warn('[Chat socket] room join failed:', error?.message || result?.message);
+          return;
+        }
+        console.info('[Chat socket] room joined:', roomId);
+        loadMessages(roomId).catch(error => {
+          console.error('Chat reconnect history load error:', error);
+        });
+      });
     };
-    socket.on('connect', join);
-    socket.on('connect_error', error => console.warn('[Chat socket] connection failed', error.message));
-    socket.on('receiveMessage', receive);
-    socket.on('messageEdited', receive);
-    socket.on('messageDeleted', receive);
-    socket.on('horse_shipt:typing', data => {
-      if (data.roomId !== roomId || data.userId === userId) return;
-      setPartnerTyping(Boolean(data.isTyping));
+    const handleTyping = (data: any) => {
+      if (data?.roomId !== roomId || String(data.userId) === String(userId)) return;
+      setPartnerTyping(data.isTyping === true);
       if (peerTimer.current) clearTimeout(peerTimer.current);
       peerTimer.current = setTimeout(() => setPartnerTyping(false), 3000);
-    });
-    socket.on('disconnect', () => setPartnerTyping(false));
-    const subscription = AppState.addEventListener('change', state => {
-      if (state === 'active') { if (socket.connected) join(); else socket.connect(); }
-      else { socket.emit('horse_shipt:typing', { roomId, isTyping: false }); }
-    });
-    socket.connect();
+    };
+    const handleDisconnect = () => setPartnerTyping(false);
+    const handleMessage = (message: any) => {
+      const messageRoomId =
+        typeof message?.chatRoom === 'object'
+          ? message.chatRoom?._id
+          : message?.chatRoom;
+      if (messageRoomId && String(messageRoomId) !== roomId) {
+        return;
+      }
+      if (message?._id) {
+        setMessages(current => mergeMessages(current, [message]));
+        if (String(message.senderId) !== String(userId)) setPartnerTyping(false);
+      }
+    };
+    const handleConnectError = (error: Error) => {
+      console.warn('Chat socket connection error:', error.message);
+    };
+    let previousAppState: AppStateStatus | null = AppState.currentState;
+    const appStateSubscription = AppState.addEventListener(
+      'change',
+      nextAppState => {
+        if (previousAppState !== 'active' && nextAppState === 'active') {
+          if (chatSocket.connected) handleConnect();
+          else chatSocket.connect();
+        }
+        if (nextAppState !== 'active' && chatSocket.connected) {
+          chatSocket.emit('horse_shipt:typing', { roomId, isTyping: false });
+        }
+        previousAppState = nextAppState;
+      },
+    );
+
+    chatSocket.on('connect', handleConnect);
+    chatSocket.on('receiveMessage', handleMessage);
+    chatSocket.on('messageEdited', handleMessage);
+    chatSocket.on('messageDeleted', handleMessage);
+    chatSocket.on('horse_shipt:typing', handleTyping);
+    chatSocket.on('disconnect', handleDisconnect);
+    chatSocket.on('connect_error', handleConnectError);
+    chatSocket.connect();
+
     return () => {
-      subscription.remove();
+      active = false;
       if (typingTimer.current) clearTimeout(typingTimer.current);
       if (peerTimer.current) clearTimeout(peerTimer.current);
-      socket.emit('horse_shipt:typing', { roomId, isTyping: false });
-      socket.removeAllListeners();
-      socket.disconnect();
+      if (chatSocket.connected) chatSocket.emit('horse_shipt:typing', { roomId, isTyping: false });
+      chatSocket.removeAllListeners();
       socketRef.current = null;
       setPartnerTyping(false);
+      appStateSubscription.remove();
+      chatSocket.disconnect();
     };
-  }, [room?._id, userId, user?.role, isShipper, upsertMessage]);
+  }, [roomId, userId, user?.role, loadMessages, mergeMessages]);
 
   const onSend = async (text?: string, imageFile?: any) => {
     if (!text?.trim() && !imageFile) return false;
-    const roomId = room?._id;
     if (!roomId) return false;
 
     try {
@@ -188,7 +235,7 @@ const useChatDetails = (shipmentId: string) => {
       if (res?.success) {
         const newMsg = res.data || res.message;
         if (newMsg) {
-          upsertMessage(newMsg);
+          setMessages(current => mergeMessages(current, [newMsg]));
         }
         return true;
       }
@@ -207,6 +254,7 @@ const useChatDetails = (shipmentId: string) => {
     partnerTyping,
     updateTyping,
     room,
+    roomId,
     shipment,
     loading,
     sending,

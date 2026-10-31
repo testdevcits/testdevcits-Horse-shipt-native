@@ -44,3 +44,20 @@ export const formatFromNow = (date?: any): string => {
   const m = moment(date);
   return m.isValid() ? m.fromNow() : '';
 };
+
+export const formatDuration = (minutes: number): string => {
+  const totalMinutes = Math.round(minutes);
+
+  const hours = Math.floor(totalMinutes / 60);
+  const remainingMinutes = totalMinutes % 60;
+
+  if (hours > 0 && remainingMinutes > 0) {
+    return `${hours} hours ${remainingMinutes} mins`;
+  }
+
+  if (hours > 0) {
+    return `${hours} hours`;
+  }
+
+  return `${remainingMinutes} mins`;
+};

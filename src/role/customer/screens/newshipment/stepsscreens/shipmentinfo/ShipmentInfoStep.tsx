@@ -191,6 +191,7 @@ const ShipmentInfoStep: React.FC<ShipmentInfoStepProps> = ({
           <Input
             placeholder="Example: My horse needs hay every 4 hours..."
             multiline
+            inputContainerStyle={{ height: 100 }}
             numberOfLines={4}
             value={form.additionalInfo}
             onChangeText={v => updateForm({ additionalInfo: v })}

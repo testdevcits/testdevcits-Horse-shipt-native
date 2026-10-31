@@ -3,7 +3,7 @@ import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface || COLORS.white,
+    backgroundColor: COLORS.surface,
     borderRadius: RADIUS.md, // Smaller radius for smaller text
     padding: SPACING.sm + 2, // Slightly tighter padding (approx 10px)
     marginBottom: SPACING.md,

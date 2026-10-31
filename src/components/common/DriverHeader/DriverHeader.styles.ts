@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { COLORS, FONT_SIZE, FONTS, SPACING } from '../../../constants';
+import { COLORS, FONT_SIZE, FONTS, RADIUS, SPACING } from '../../../constants';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderWidth: 2,
     borderColor: COLORS.primary,
-    borderRadius: 14,
+    borderRadius: RADIUS.circle,
     backgroundColor: COLORS.goldCreamBg,
     alignItems: 'center',
     justifyContent: 'center',

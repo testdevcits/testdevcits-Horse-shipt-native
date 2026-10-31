@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
-import { AppHeader, AppText } from '../../../../components';
-import { COLORS, FONTS } from '../../../../constants';
+import { View, ScrollView, RefreshControl } from 'react-native';
+import { AppHeader, SettingsSkeleton } from '../../../../components';
+import { COLORS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import NotificationTab from '../profile/tabs/notifications/NotificationTab';
 import styles from '../profile/shipper_profile/styles.shipperprofile';
@@ -28,7 +23,7 @@ const ShipperNotificationSettingsScreen = () => {
     try {
       const setRes = await shipperService.getSettings().catch(() => null);
       if (setRes?.data?.notifications) {
-        setNotifications(setRes.data.notifications);
+        setNotifications(setRes?.data?.notifications);
       }
     } catch (err) {
       console.error('Fetch Notifications Settings Error:', err);
@@ -69,23 +64,14 @@ const ShipperNotificationSettingsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Notification Preferences" showProfileImage={false} />
+      <AppHeader
+        title="Notification Preferences"
+        showProfileImage={false}
+        showBack={true}
+      />
 
       {loading && !refreshing ? (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <ActivityIndicator size="large" color={COLORS.primary} />
-          <AppText
-            style={{
-              marginTop: 12,
-              fontFamily: FONTS.medium,
-              color: COLORS.textSecondary,
-            }}
-          >
-            Loading preferences...
-          </AppText>
-        </View>
+        <SettingsSkeleton />
       ) : (
         <ScrollView
           contentContainerStyle={styles.scrollContent}

@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   FlatList,
+  Platform,
 } from 'react-native';
 import {
   AppHeader,
@@ -140,7 +141,7 @@ const ShipperChatsScreen = ({ navigation }: any) => {
       navigation.navigate('ChatDetails', {
         shipmentId: item?.shipmentId,
         name: item?.name || 'Customer',
-        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex.AccountIcon,
+        avatar: item?.avatar ? { uri: item?.avatar } : imageIndex?.AccountIcon,
       });
     },
     [navigation],
@@ -250,6 +251,10 @@ const ShipperChatsScreen = ({ navigation }: any) => {
             tintColor={COLORS.primary}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
     </View>
   );

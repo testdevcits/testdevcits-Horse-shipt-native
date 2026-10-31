@@ -63,10 +63,10 @@ const TOAST_THEMES: Record<ToastType, ToastTheme> = {
     borderAccent: COLORS.warning,
   },
   info: {
-    color: COLORS.info || COLORS.primary,
-    bgTint: `${COLORS.info || COLORS.primary}15`,
+    color: COLORS.info,
+    bgTint: `${COLORS.info}15`,
     icon: Info,
-    borderAccent: COLORS.info || COLORS.primary,
+    borderAccent: COLORS.info,
   },
 };
 
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   container: {
     width: width * 0.92,
     minHeight: 64,
-    backgroundColor: COLORS.surface || COLORS.white,
+    backgroundColor: COLORS.surface,
     borderRadius: RADIUS.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   iconWrapper: {
     width: SIZES.avatarMd,
     height: SIZES.avatarMd,
-    borderRadius: RADIUS.circle || 20,
+    borderRadius: RADIUS.circle,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: SPACING.md,

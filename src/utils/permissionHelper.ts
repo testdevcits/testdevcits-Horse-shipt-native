@@ -1,6 +1,12 @@
 // src/utils/permissionHelper.ts
 import { PermissionsAndroid, Platform, Linking } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import {
+  check,
+  request,
+  PERMISSIONS,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
 
 /**
  * Handles cross-platform location permissions, including settings fallback redirect
@@ -12,18 +18,30 @@ export const requestLocationPermission = async (
   // --- iOS Handling ---
   if (Platform.OS === 'ios') {
     try {
-      const status = await Geolocation.requestAuthorization('whenInUse');
-      if (status === 'granted') {
+      const whenInUseStatus = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (
+        whenInUseStatus === RESULTS.GRANTED ||
+        whenInUseStatus === RESULTS.LIMITED
+      ) {
+        return true;
+      }
+      const alwaysStatus = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      if (alwaysStatus === RESULTS.GRANTED) {
         return true;
       }
 
-      // If blocked, prompt settings redirect
-      if (status === 'denied' || status === 'restricted') {
-        onShowSettingsPrompt(
-          'Location Services Required',
-          'GPS access is restricted. Please open system settings and enable Location permissions manually to sync active route coordinates.',
-        );
+      if (whenInUseStatus === RESULTS.DENIED) {
+        const res = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (res === RESULTS.GRANTED || res === RESULTS.LIMITED) {
+          return true;
+        }
       }
+
+      // If blocked or restricted, prompt settings redirect
+      onShowSettingsPrompt(
+        'Location Services Required',
+        'GPS access is restricted or denied. Please open system settings and enable Location permissions manually to sync active route coordinates.',
+      );
       return false;
     } catch (error) {
       console.warn('iOS Permission request error:', error);
@@ -84,14 +102,41 @@ export const requestBackgroundLocationPermission = async (
   // --- iOS Handling ---
   if (Platform.OS === 'ios') {
     try {
-      const status = await Geolocation.requestAuthorization('always');
-      if (status === 'granted') {
+      // 1. Check if Always is already granted
+      const alwaysStatus = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      if (alwaysStatus === RESULTS.GRANTED) {
         return true;
       }
 
+      // 2. Check / Request When In Use first (Apple guideline requirement before Always)
+      let whenInUseStatus = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (whenInUseStatus === RESULTS.DENIED) {
+        whenInUseStatus = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      }
+
+      if (
+        whenInUseStatus === RESULTS.GRANTED ||
+        whenInUseStatus === RESULTS.LIMITED
+      ) {
+        // Attempt to request Always permission so the user can upgrade if prompted
+        try {
+          const reqAlways = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+          if (reqAlways === RESULTS.GRANTED) {
+            return true;
+          }
+        } catch (e) {
+          console.warn('iOS Always permission request note:', e);
+        }
+
+        // On iOS, if When In Use is granted with UIBackgroundModes 'location'
+        // and showsBackgroundLocationIndicator=true, background location tracking is fully functional.
+        return true;
+      }
+
+      // If blocked or permanently denied, prompt settings redirect
       onShowSettingsPrompt(
-        'Background Location Mandate Required',
-        'Auto-Tracking requires background location access ("Always Allow") to continuously sync your location during trips even when the app is closed or minimized. Please grant "Always" location access in system settings.',
+        'Background Location Required',
+        'Auto-Tracking requires location access to continuously sync your location during trips. Please open system settings and allow location access.',
       );
       return false;
     } catch (error) {
@@ -188,8 +233,12 @@ export const requestBackgroundLocationPermission = async (
 // Simple utility to open device native Settings screen
 export const openDeviceSettings = async () => {
   try {
-    await Linking.openSettings();
-  } catch (err) {
-    console.warn('Failed to open device system settings page:', err);
+    await openSettings();
+  } catch (_err) {
+    try {
+      await Linking.openSettings();
+    } catch (e) {
+      console.warn('Failed to open device system settings page:', e);
+    }
   }
 };

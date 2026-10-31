@@ -97,8 +97,11 @@ export const useDriverMe = () => {
     refresh: fetchDriverData,
     handleStartTrip,
     isLocationPermissionModalVisible,
+    setIsLocationPermissionModalVisible,
     locationModalTitle,
+    setLocationModalTitle,
     locationModalMessage,
+    setLocationModalMessage,
     closeLocationPermissionModal: () =>
       setIsLocationPermissionModalVisible(false),
   };

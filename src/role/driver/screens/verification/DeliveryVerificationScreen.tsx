@@ -9,83 +9,91 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { OtpInput } from 'react-native-otp-entry';
-
 import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
 import styles from './styles.deliveryverification';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import useDeliveryVerification from './useDeliveryVerification';
+import DeliveryShipmentCard from './components/DeliveryShipmentCard';
+import DeliveryStepContent from './components/DeliveryStepContent';
 
-const ProgressStepper: React.FC<{ step: number }> = ({ step }) => (
-  <View style={styles.stepperContainer}>
-    {/* Step 1 */}
-    <View style={styles.stepWrapper}>
-      <View
-        style={[
-          styles.stepCircle,
-          step > 1 && styles.stepCircleCompleted,
-          step === 1 && styles.stepCircleActive,
-        ]}
-      >
-        {step > 1 ? (
-          <AppIcon name="Check" size={14} color={COLORS.white} />
-        ) : (
-          <AppText
-            style={[styles.stepNumber, step === 1 && styles.stepNumberActive]}
-          >
-            1
-          </AppText>
-        )}
+interface ProgressStepperProps {
+  step: number;
+  activeTab: number;
+  onTabPress: (tab: 1 | 2 | 3) => void;
+}
+
+const ProgressStepper: React.FC<ProgressStepperProps> = ({
+  step,
+  activeTab,
+  onTabPress,
+}) => {
+  const tabs = [
+    { id: 1 as const, title: 'Send OTP' },
+    { id: 2 as const, title: 'Verify OTP' },
+    { id: 3 as const, title: 'Complete' },
+  ];
+
+  return (
+    <View style={styles.tabStepperWrapper}>
+      <View style={styles.tabStepperContainer}>
+        {tabs.map(tab => {
+          const isActive = activeTab === tab.id;
+          const isCompleted = step > tab.id;
+          const isUnlocked = tab.id <= step;
+
+          return (
+            <TouchableOpacity
+              key={tab.id}
+              activeOpacity={0.8}
+              onPress={() => onTabPress(tab.id)}
+              style={[
+                styles.tabItem,
+                isActive && styles.tabItemActive,
+                !isActive && isCompleted && styles.tabItemCompleted,
+                !isActive &&
+                  !isCompleted &&
+                  !isUnlocked &&
+                  styles.tabItemLocked,
+              ]}
+            >
+              <View
+                style={[
+                  styles.tabBadge,
+                  isActive && styles.tabBadgeActive,
+                  !isActive && isCompleted && styles.tabBadgeCompleted,
+                ]}
+              >
+                {isCompleted && !isActive ? (
+                  <AppIcon name="Check" size={10} color="#065F46" />
+                ) : (
+                  <AppText
+                    style={[
+                      styles.tabBadgeText,
+                      isActive && styles.tabBadgeTextActive,
+                    ]}
+                  >
+                    {tab.id}
+                  </AppText>
+                )}
+              </View>
+              <AppText
+                numberOfLines={1}
+                style={[
+                  styles.tabTitle,
+                  isActive && styles.tabTitleActive,
+                  !isActive && isCompleted && styles.tabTitleCompleted,
+                ]}
+              >
+                {tab.title}
+              </AppText>
+            </TouchableOpacity>
+          );
+        })}
       </View>
-      <AppText style={[styles.stepLabel, step >= 1 && styles.stepLabelActive]}>
-        Send OTP
-      </AppText>
     </View>
-
-    <View style={[styles.stepLine, step > 1 && styles.stepLineCompleted]} />
-
-    {/* Step 2 */}
-    <View style={styles.stepWrapper}>
-      <View
-        style={[
-          styles.stepCircle,
-          step > 2 && styles.stepCircleCompleted,
-          step === 2 && styles.stepCircleActive,
-        ]}
-      >
-        {step > 2 ? (
-          <AppIcon name="Check" size={14} color={COLORS.white} />
-        ) : (
-          <AppText
-            style={[styles.stepNumber, step === 2 && styles.stepNumberActive]}
-          >
-            2
-          </AppText>
-        )}
-      </View>
-      <AppText style={[styles.stepLabel, step >= 2 && styles.stepLabelActive]}>
-        Verify OTP
-      </AppText>
-    </View>
-
-    <View style={[styles.stepLine, step > 2 && styles.stepLineCompleted]} />
-
-    {/* Step 3 */}
-    <View style={styles.stepWrapper}>
-      <View style={[styles.stepCircle, step === 3 && styles.stepCircleActive]}>
-        <AppText
-          style={[styles.stepNumber, step === 3 && styles.stepNumberActive]}
-        >
-          3
-        </AppText>
-      </View>
-      <AppText style={[styles.stepLabel, step === 3 && styles.stepLabelActive]}>
-        Mark Done
-      </AppText>
-    </View>
-  </View>
-);
+  );
+};
 
 const DeliveryVerificationScreen = () => {
   const ConfirmationModal = lazy(
@@ -97,11 +105,13 @@ const DeliveryVerificationScreen = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  // Extract shipment details from navigation parameters (fallback to mock structure if params are empty)
+  // Extract shipment details from navigation parameters
   const shipment = route.params?.shipment || {};
 
   const {
     step,
+    activeTab,
+    handleTabPress,
     isLoading,
     otpSentSuccess,
     setOtp,
@@ -131,7 +141,14 @@ const DeliveryVerificationScreen = () => {
           )}
           <View style={styles.navTitleContainer}>
             <AppText style={styles.navTitle}>Delivery Verification</AppText>
-            <AppText style={styles.navSubtitle}>Step {step} of 3</AppText>
+            <AppText style={styles.navSubtitle}>
+              Section {activeTab} of 3 •{' '}
+              {activeTab === 1
+                ? 'Send OTP'
+                : activeTab === 2
+                ? 'Verify Code'
+                : 'Complete Manifest'}
+            </AppText>
           </View>
         </View>
 
@@ -141,242 +158,95 @@ const DeliveryVerificationScreen = () => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Stepper Node Progress Indicator */}
-          <ProgressStepper step={step} />
+          {/* Segmented Stepper Tabs Header */}
+          <ProgressStepper
+            step={step}
+            activeTab={activeTab}
+            onTabPress={handleTabPress}
+          />
 
-          {/* Shipment Details Box */}
-          <View style={styles.shipmentCard}>
-            <AppText style={styles.shipmentHeaderLabel}>
-              SHIPMENT DETAILS
-            </AppText>
+          {/* Shipment Manifest Details Card */}
+          <DeliveryShipmentCard shipment={shipment} />
 
-            <View style={styles.shipmentTitleRow}>
-              <AppText style={styles.shipmentTitle}>
-                {shipment?.shipment?.horses?.[0]?.registeredName ||
-                  'Not Available'}
-              </AppText>
-              <View style={styles.passengerCountBadge}>
-                <AppText style={styles.badgeText}>
-                  {shipment?.shipment?.numberOfHorses}{' '}
-                  {shipment?.shipment?.numberOfHorses > 1 ? 'Horses' : 'Horse'}
-                </AppText>
-              </View>
-            </View>
-
-            {/* Pickup */}
-            <View style={styles.stopBox}>
-              <AppText style={styles.stopHeaderLabel}>PICKUP</AppText>
-              <AppText style={styles.stopName}>
-                {shipment?.shipment?.pickupLocation}
-              </AppText>
-            </View>
-
-            {/* Delivery */}
-            <View style={styles.stopBox}>
-              <AppText style={styles.stopHeaderLabel}>DELIVERY</AppText>
-              <AppText style={styles.stopName}>
-                {shipment?.shipment?.deliveryLocation}
-              </AppText>
-            </View>
-
-            {/* Metadata Fields */}
-            <View style={styles.metaRow}>
-              <AppIcon
-                name="User"
-                size={16}
-                color={COLORS.textLight}
-                style={styles.metaIcon}
-              />
-              <View>
-                <AppText style={styles.metaLabel}>CUSTOMER</AppText>
-                <AppText style={styles.metaValue}>
-                  Customer name not available
-                </AppText>
-              </View>
-            </View>
-
-            <View
-              style={[
-                styles.metaRow,
-                { borderBottomWidth: 0, paddingBottom: 0 },
-              ]}
-            >
-              <AppIcon
-                name="Truck"
-                size={16}
-                color={COLORS.textLight}
-                style={styles.metaIcon}
-              />
-              <View>
-                <AppText style={styles.metaLabel}>VEHICLE</AppText>
-                <AppText style={styles.metaValue}>
-                  {shipment?.vehicle?.vehicleNumber || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          {/* DYNAMIC VIEWS ACCORDING TO STEPPER */}
-
-          {/* STEP 1: Ready to Deliver (Send OTP) */}
-          {step === 1 && (
-            <View style={styles.centerSection}>
-              <View style={styles.middleIconBox}>
-                <AppIcon name="Milestone" size={32} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.mainActionHeading}>
-                Ready to Deliver?
-              </AppText>
-              <AppText style={styles.mainActionDescription}>
-                Send an OTP to the horse owner to confirm you've arrived at the
-                delivery location.
-              </AppText>
-            </View>
-          )}
-
-          {/* STEP 2: Verify OTP View */}
-          {step === 2 && (
-            <View style={styles.centerSection}>
-              <View style={styles.middleIconBox}>
-                <AppIcon name="Smartphone" size={32} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.mainActionHeading}>Enter OTP</AppText>
-              <AppText style={styles.mainActionDescription}>
-                Ask the horse owner for the 6-digit OTP sent to their phone.
-              </AppText>
-
-              {/* Success Send Banner Alert */}
-              {otpSentSuccess && (
-                <View style={styles.successBanner}>
-                  <AppIcon name="Check" size={14} color={COLORS.greenSuccess} />
-                  <AppText style={styles.successBannerText}>
-                    OTP sent to customer successfully
-                  </AppText>
-                </View>
-              )}
-
-              {/* 6 Digit Box Slots using react-native-otp-entry */}
-              <View style={styles.otpGridContainer}>
-                <OtpInput
-                  numberOfDigits={6}
-                  focusColor={COLORS.primary}
-                  onTextChange={text => setOtp(text)}
-                  onFilled={text => setOtp(text)}
-                  theme={{
-                    containerStyle: {
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    },
-                    pinCodeContainerStyle: styles.otpInputBox,
-                    pinCodeTextStyle: styles.otpPinCodeText,
-                    focusedPinCodeContainerStyle: styles.activeOtpInputBox,
-                  }}
-                />
-              </View>
-              <AppText style={styles.otpLabelDigits}>
-                {otp?.length}/6 digits
-              </AppText>
-
-              {/* Resend Action Trigger */}
-              <TouchableOpacity activeOpacity={0.7} onPress={handleSendOtp}>
-                <AppText style={styles.resendTextLink}>
-                  Didn't receive? Resend OTP
-                </AppText>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {/* STEP 3: Complete View */}
-          {step === 3 && (
-            <View style={styles.centerSection}>
-              <View
-                style={[
-                  styles.middleIconBox,
-                  {
-                    backgroundColor: COLORS.greenLightBg,
-                    borderColor: COLORS.greenBorder,
-                  },
-                ]}
-              >
-                <AppIcon
-                  name="CheckCircle2"
-                  size={32}
-                  color={COLORS.greenActive}
-                />
-              </View>
-              <AppText style={styles.mainActionHeading}>
-                Verified successfully
-              </AppText>
-              <AppText style={styles.mainActionDescription}>
-                The delivery PIN has been validated. You are now cleared to mark
-                this shipment route as complete.
-              </AppText>
-            </View>
-          )}
+          {/* Dynamic Action Section corresponding to Active Tab */}
+          <DeliveryStepContent
+            step={step}
+            activeTab={activeTab}
+            otpSentSuccess={otpSentSuccess}
+            otp={otp}
+            setOtp={setOtp}
+            onSendOtp={handleSendOtp}
+          />
         </ScrollView>
 
-        {/* Footer Fixed Action Buttons */}
+        {/* Footer Action Button synced with Active Tab */}
         <View style={styles.footerContainer}>
-          {step === 1 && (
+          {activeTab === 1 && (
             <TouchableOpacity
               style={styles.goldActionButton}
-              onPress={handleSendOtp}
+              onPress={step > 1 ? () => handleTabPress(2) : handleSendOtp}
               disabled={isLoading}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               {isLoading ? (
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
                   <AppIcon
-                    name="Send"
+                    name={step > 1 ? 'ArrowRight' : 'Send'}
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
                   />
                   <AppText style={styles.actionBtnText}>
-                    Send OTP to Customer
+                    {step > 1
+                      ? 'Proceed to Enter Code'
+                      : 'Send OTP to Customer'}
                   </AppText>
                 </>
               )}
             </TouchableOpacity>
           )}
 
-          {step === 2 && (
+          {activeTab === 2 && (
             <TouchableOpacity
               style={styles.goldActionButton}
-              onPress={handleVerifyOtp}
+              onPress={step === 3 ? () => handleTabPress(3) : handleVerifyOtp}
               disabled={isLoading}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               {isLoading ? (
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>
                   <AppIcon
-                    name="Check"
+                    name={step === 3 ? 'ArrowRight' : 'Check'}
                     size={18}
                     color={COLORS.white}
                     style={styles.actionBtnIcon}
                   />
-                  <AppText style={styles.actionBtnText}>Verify OTP</AppText>
+                  <AppText style={styles.actionBtnText}>
+                    {step === 3 ? 'Proceed to Complete' : 'Verify OTP Code'}
+                  </AppText>
                 </>
               )}
             </TouchableOpacity>
           )}
 
-          {step === 3 && (
+          {activeTab === 3 && (
             <TouchableOpacity
               style={[
                 styles.goldActionButton,
-                { backgroundColor: COLORS.greenSuccess },
+                {
+                  backgroundColor: COLORS.success,
+                  shadowColor: COLORS.success,
+                },
               ]}
               onPress={handleDone}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
               <AppIcon
-                name="Check"
+                name="CheckCircle"
                 size={18}
                 color={COLORS.white}
                 style={styles.actionBtnIcon}
@@ -386,19 +256,19 @@ const DeliveryVerificationScreen = () => {
           )}
         </View>
 
-        {/* Alert Dialog confirmation slot */}
+        {/* Confirmation & Alert Modal */}
         <Suspense fallback={null}>
           <ConfirmationModal
-            isVisible={modalConfig.isVisible}
+            isVisible={modalConfig?.isVisible}
             onClose={() =>
               setModalConfig(prev => ({ ...prev, isVisible: false }))
             }
             onConfirm={() =>
               setModalConfig(prev => ({ ...prev, isVisible: false }))
             }
-            title={modalConfig.title}
-            description={modalConfig.description}
-            type={modalConfig.type}
+            title={modalConfig?.title}
+            description={modalConfig?.description}
+            type={modalConfig?.type}
             confirmText="Got It"
             cancelText="Close"
           />

@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
-    width: '100%',
+    width: '90%',
     maxWidth: 420,
     borderWidth: 1,
     borderColor: COLORS.goldBorder,

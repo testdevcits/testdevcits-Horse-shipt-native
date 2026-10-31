@@ -29,7 +29,16 @@ const styles = StyleSheet.create({
   },
 
   logoIcon: { width: 90, height: 90, marginTop: -45, alignSelf: 'center' },
+  logoIconKeyboard: {
+    width: 48,
+    height: 48,
+    marginTop: -24,
+  },
   scrollContent: { paddingTop: SPACING.xl, paddingBottom: SPACING.giant },
+  scrollContentKeyboard: {
+    paddingTop: SPACING.xs,
+    paddingBottom: 160,
+  },
   formContainer: { gap: SPACING.md },
   title: {
     fontSize: FONT_SIZE.title,
@@ -179,7 +188,7 @@ const styles = StyleSheet.create({
   },
   roleButtonsRow: {
     flexDirection: 'row',
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.md,
     padding: 4,
     justifyContent: 'space-between',
@@ -219,7 +228,7 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.divider || '#E5E7EB',
+    backgroundColor: COLORS.divider,
   },
   dividerText: {
     marginHorizontal: SPACING.md,
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.divider || '#E5E7EB',
+    borderColor: COLORS.divider,
     height: 50,
     borderRadius: RADIUS.md,
     marginTop: SPACING.xs,
@@ -247,6 +256,31 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
     color: COLORS.textPrimary,
+  },
+
+  //google
+  googleLoadingOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.overlay50,
+    padding: SPACING.xl,
+  },
+  googleLoadingCard: {
+    width: '100%',
+    maxWidth: 280,
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
+    paddingHorizontal: SPACING.xxl,
+    paddingVertical: SPACING.xxl,
+  },
+  googleLoadingText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.lg,
+    textAlign: 'center',
   },
 });
 

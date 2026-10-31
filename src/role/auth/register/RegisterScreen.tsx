@@ -3,7 +3,6 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  StatusBar,
   Image,
   ScrollView,
 } from 'react-native';
@@ -79,22 +78,22 @@ const RegisterScreen = ({ navigation }: any) => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: selectedRole as any,
           intent: 'signup',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'
@@ -113,15 +112,9 @@ const RegisterScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       {/* 1. Top Image Section */}
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
@@ -131,7 +124,7 @@ const RegisterScreen = ({ navigation }: any) => {
       {/* 2. Content Card (Overlapping) */}
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo}
+          source={imageIndex?.Logo}
           style={styles.logoIcon}
           resizeMode="contain"
         />
@@ -164,9 +157,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'User'}
                   size={15}
                   color={
-                    selectedRole === 'customer'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'customer' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText
@@ -191,9 +182,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'Building2'}
                   size={15}
                   color={
-                    selectedRole === 'shipper'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'shipper' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText
@@ -218,9 +207,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   name={'Truck'}
                   size={15}
                   color={
-                    selectedRole === 'driver'
-                      ? COLORS.white
-                      : COLORS.primary
+                    selectedRole === 'driver' ? COLORS.white : COLORS.primary
                   }
                 />
                 <AppText
@@ -257,7 +244,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   activeOpacity={0.8}
                 >
                   <Image
-                    source={imageIndex.Google}
+                    source={imageIndex?.Google}
                     style={{ width: 20, height: 20, marginRight: 10 }}
                     resizeMode="contain"
                   />

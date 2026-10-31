@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   ImageBackground,
-  StatusBar,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -10,16 +9,23 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  LayoutAnimation,
+  UIManager,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
-import { COLORS, FONTS, SCREEN_HEIGHT } from '../../../constants';
+import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Input } from '../../../components';
 import AppButton from '../../../components/common/Button/AppButton';
 import imageIndex from '../../../assets/images/imageIndex';
 import styles from './styles.signupflow';
 import authService from '../../../api/services/authService';
 import { useAppDispatch } from '../../../hooks/redux';
-import { setCredentials, googleLoginUser } from '../../../redux/slices/authSlice';
+import {
+  setCredentials,
+  googleLoginUser,
+} from '../../../redux/slices/authSlice';
 import { signInWithGoogle } from '../../../services/googleAuthService';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,6 +37,9 @@ import {
   showInfoToast,
   showSuccessToast,
 } from '../../../utils/toast';
+import SignupRoleSelector from './components/SignupRoleSelector';
+import SignupOtpStep from './components/SignupOtpStep';
+import SignupSuccessStep from './components/SignupSuccessStep';
 
 const SignupFlowScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
@@ -56,12 +65,30 @@ const SignupFlowScreen = ({ navigation }: any) => {
   const otpInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardOpen(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardOpen(false),
-    );
+    if (
+      Platform.OS === 'ios' &&
+      UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => {
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
+      setIsKeyboardOpen(true);
+    });
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      if (Platform.OS === 'ios') {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      }
+      setIsKeyboardOpen(false);
+    });
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
@@ -168,7 +195,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
     try {
       setIsLoading(true);
-      // 1. Clear previous OTP errors
       setErrors(p => ({ ...p, otp: '' }));
 
       const activeRole = (selectedRole ||
@@ -180,14 +206,8 @@ const SignupFlowScreen = ({ navigation }: any) => {
         otp: code,
       });
 
-      // 2. Log result for debugging
-      console.log('OTP Verification Result:', result);
-
       if (result && result.token) {
-        // 4. Move to Success Step
         setStep(3);
-
-        // 3. Update Redux State
         setTimeout(() => {
           dispatch(setCredentials(result));
         }, 1500);
@@ -196,7 +216,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
       }
     } catch (err: any) {
       console.log('Verify Error:', err);
-      // ONLY set error if the API actually failed
       const msg = err?.response?.data?.message || 'Invalid or expired OTP';
       setErrors(p => ({ ...p, otp: msg }));
     } finally {
@@ -244,22 +263,22 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
       const googleUser = await signInWithGoogle();
 
-      if (!googleUser.idToken) {
+      if (!googleUser?.idToken) {
         throw new Error('Could not obtain Google ID Token.');
       }
 
       await dispatch(
         googleLoginUser({
-          idToken: googleUser.idToken,
+          idToken: googleUser?.idToken,
           role: activeRole as any,
           intent: 'signup',
-          email: googleUser.user.email,
-          name: googleUser.user.name,
-          photo: googleUser.user.photo,
+          email: googleUser?.user.email,
+          name: googleUser?.user.name,
+          photo: googleUser?.user.photo,
         }),
       ).unwrap();
 
-      showSuccessToast('Welcome!', `Signed in as ${googleUser.user.name}`);
+      showSuccessToast('Welcome!', `Signed in as ${googleUser?.user.name}`);
     } catch (err: any) {
       const errorMsg =
         typeof err === 'string'
@@ -280,7 +299,6 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   const renderStepper = (current: number) => (
     <View style={styles.stepperContainer}>
-      {/* Change [1, 2] to [1, 2, 3] */}
       {[1, 2, 3].map(item => (
         <View
           key={item}
@@ -299,24 +317,20 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.backgroundImage,
           {
-            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.08
+              : SCREEN_HEIGHT * 0.42,
           },
         ]}
         resizeMode="cover"
       >
         <View style={styles.overlay} />
-        {step < 3 && (
+        {step < 3 && !isKeyboardOpen && (
           <TouchableOpacity
             onPress={() => (step === 1 ? navigation.goBack() : setStep(1))}
             style={styles.backBtn}
@@ -332,14 +346,17 @@ const SignupFlowScreen = ({ navigation }: any) => {
       >
         <View style={styles.contentCard}>
           <Image
-            source={imageIndex.Logo}
-            style={styles.logoIcon}
+            source={imageIndex?.Logo}
+            style={[styles.logoIcon, isKeyboardOpen && styles.logoIconKeyboard]}
             resizeMode="contain"
           />
 
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[
+              styles.scrollContent,
+              isKeyboardOpen && styles.scrollContentKeyboard,
+            ]}
             keyboardShouldPersistTaps="handled"
           >
             {/* STEP 1: INFORMATION */}
@@ -348,103 +365,10 @@ const SignupFlowScreen = ({ navigation }: any) => {
                 <AppText style={styles.title}>Create Account 1/3</AppText>
 
                 {/* Professional Role Selector Buttons */}
-                <View style={styles.roleSelectionBlock}>
-                  <AppText style={styles.roleSelectionLabel}>SELECT ROLE</AppText>
-                  <View style={styles.roleButtonsRow}>
-                    <TouchableOpacity
-                      style={[
-                        styles.roleTabBtn,
-                        selectedRole === 'customer' && styles.roleTabBtnActive,
-                      ]}
-                      onPress={async () => {
-                        setSelectedRole('customer');
-                        await AsyncStorage.setItem('@user_role', 'customer');
-                      }}
-                      activeOpacity={0.75}
-                    >
-                      <AppIcon
-                        name={'User'}
-                        size={15}
-                        color={
-                          selectedRole === 'customer'
-                            ? COLORS.white
-                            : COLORS.primary
-                        }
-                      />
-                      <AppText
-                        style={[
-                          styles.roleTabBtnText,
-                          selectedRole === 'customer' &&
-                            styles.roleTabBtnTextActive,
-                        ]}
-                      >
-                        Customer
-                      </AppText>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.roleTabBtn,
-                        selectedRole === 'shipper' && styles.roleTabBtnActive,
-                      ]}
-                      onPress={async () => {
-                        setSelectedRole('shipper');
-                        await AsyncStorage.setItem('@user_role', 'shipper');
-                      }}
-                      activeOpacity={0.75}
-                    >
-                      <AppIcon
-                        name={'Building2'}
-                        size={15}
-                        color={
-                          selectedRole === 'shipper'
-                            ? COLORS.white
-                            : COLORS.primary
-                        }
-                      />
-                      <AppText
-                        style={[
-                          styles.roleTabBtnText,
-                          selectedRole === 'shipper' &&
-                            styles.roleTabBtnTextActive,
-                        ]}
-                      >
-                        Shipper
-                      </AppText>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.roleTabBtn,
-                        selectedRole === 'driver' && styles.roleTabBtnActive,
-                      ]}
-                      onPress={async () => {
-                        setSelectedRole('driver');
-                        await AsyncStorage.setItem('@user_role', 'driver');
-                      }}
-                      activeOpacity={0.75}
-                    >
-                      <AppIcon
-                        name={'Truck'}
-                        size={15}
-                        color={
-                          selectedRole === 'driver'
-                            ? COLORS.white
-                            : COLORS.primary
-                        }
-                      />
-                      <AppText
-                        style={[
-                          styles.roleTabBtnText,
-                          selectedRole === 'driver' &&
-                            styles.roleTabBtnTextActive,
-                        ]}
-                      >
-                        Driver
-                      </AppText>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                <SignupRoleSelector
+                  selectedRole={selectedRole}
+                  onRoleChange={setSelectedRole}
+                />
                 {renderStepper(1)}
 
                 <Input
@@ -520,7 +444,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
                       activeOpacity={0.8}
                     >
                       <Image
-                        source={imageIndex.Google}
+                        source={imageIndex?.Google}
                         style={styles.googleIcon}
                         resizeMode="contain"
                       />
@@ -537,119 +461,32 @@ const SignupFlowScreen = ({ navigation }: any) => {
 
             {/* STEP 2: OTP */}
             {step === 2 && (
-              <View style={styles.formContainer}>
-                <AppText style={styles.title}>Verify Email 2/3</AppText>
-                {renderStepper(2)}
-                <AppText style={[styles.subtitle, { textAlign: 'center' }]}>
-                  We sent a 6-digit code to{' '}
-                  <AppText
-                    style={{
-                      fontFamily: FONTS.bold,
-                      color: COLORS.textPrimary,
-                    }}
-                  >
-                    {email}
-                  </AppText>
-                </AppText>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={styles.otpWrapper}
-                  onPress={() => otpInputRef.current?.focus()}
-                >
-                  <TextInput
-                    ref={otpInputRef}
-                    value={otp}
-                    onChangeText={t => {
-                      setOtp(t);
-                      if (t.length === 6) handleOtpVerify(t);
-                    }}
-                    maxLength={6}
-                    keyboardType="number-pad"
-                    style={styles.hiddenOtpInput}
-                    autoFocus
-                  />
-                  <View style={styles.otpBoxContainer}>
-                    {Array(6)
-                      .fill(0)
-                      .map((_, idx) => (
-                        <View
-                          key={idx}
-                          style={[
-                            styles.otpBox,
-                            otp.length === idx && styles.otpBoxFocused,
-                            otp[idx] && styles.otpBoxFilled,
-                          ]}
-                        >
-                          <AppText style={styles.otpText}>
-                            {otp[idx] || ''}
-                          </AppText>
-                        </View>
-                      ))}
-                  </View>
-                </TouchableOpacity>
-                {errors.otp ? (
-                  <AppText style={styles.errorText}>{errors.otp}</AppText>
-                ) : null}
-
-                <View style={styles.resendRow}>
-                  <AppText style={styles.resendText}>
-                    Didn't receive code?
-                  </AppText>
-                  <TouchableOpacity
-                    onPress={handleResendOtp}
-                    disabled={resendTimer > 0}
-                  >
-                    <AppText
-                      style={[
-                        styles.resendLink,
-                        resendTimer > 0 && { color: COLORS.grey400 },
-                      ]}
-                    >
-                      {resendTimer > 0
-                        ? `Resend in ${resendTimer}s`
-                        : 'Resend Code'}
-                    </AppText>
-                  </TouchableOpacity>
-                </View>
-
-                <AppButton
-                  title="Verify & Create Account"
-                  onPress={() => handleOtpVerify()}
-                  isLoading={isLoading}
-                  disabled={otp.length !== 6}
-                  buttonStyle={styles.actionBtn}
-                />
-              </View>
+              <SignupOtpStep
+                email={email}
+                otp={otp}
+                otpInputRef={otpInputRef}
+                resendTimer={resendTimer}
+                isLoading={isLoading}
+                errorOtp={errors.otp}
+                renderStepper={renderStepper}
+                onOtpChange={t => {
+                  setOtp(t);
+                  if (t.length === 6) handleOtpVerify(t);
+                }}
+                onOtpVerify={handleOtpVerify}
+                onResendOtp={handleResendOtp}
+              />
             )}
 
-            {/* STEP 3: SUCCESS (RESTORED COMPLETELY) */}
+            {/* STEP 3: SUCCESS */}
             {step === 3 && (
-              <View style={styles.formContainer}>
-                {/* ADDED THESE TWO LINES BELOW */}
-                <AppText style={styles.title}>Complete 3/3</AppText>
-                {renderStepper(3)}
-
-                <View style={styles.successIconWrapper}>
-                  <Image
-                    source={imageIndex.HorseIcon}
-                    style={styles.successIcon}
-                    resizeMode="contain"
-                  />
-                </View>
-                <AppText style={styles.successTitle}>
-                  Your account{'\n'}was successfully created!
-                </AppText>
-                <AppText style={styles.successSub}>
-                  One tap to book your next horse shipment.
-                </AppText>
-                <AppButton
-                  title="Login"
-                  onPress={() => navigation.navigate('Main')}
-                  buttonStyle={styles.actionBtn}
-                />
-              </View>
+              <SignupSuccessStep
+                renderStepper={renderStepper}
+                onNavigateLogin={() => navigation.navigate('Main')}
+              />
             )}
           </ScrollView>
+
           {/* Role Selection Modal */}
           <RoleSelectionModal
             visible={isRoleModalVisible}
@@ -667,6 +504,23 @@ const SignupFlowScreen = ({ navigation }: any) => {
             }}
           />
         </View>
+
+        <Modal
+          transparent
+          visible={isGoogleLoading}
+          animationType="fade"
+          statusBarTranslucent
+          onRequestClose={() => undefined}
+        >
+          <View style={styles.googleLoadingOverlay}>
+            <View style={styles.googleLoadingCard}>
+              <AppText style={styles.googleLoadingText}>
+                Signing in with Google...
+              </AppText>
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            </View>
+          </View>
+        </Modal>
       </KeyboardAvoidingView>
     </View>
   );

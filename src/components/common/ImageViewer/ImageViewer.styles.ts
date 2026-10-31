@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.96)',
+    paddingTop: 15,
   },
 
   header: {

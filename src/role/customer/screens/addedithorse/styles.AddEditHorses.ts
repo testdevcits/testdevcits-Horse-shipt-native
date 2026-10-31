@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
   },
   uploadBox: {
-    width: 300,
+    width: '100%',
     height: 300,
     borderRadius: RADIUS.md,
     borderWidth: 1.5,
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     marginTop: 4,
   },
+
   photoPreviewBox: {
     position: 'relative',
     width: 300,
@@ -160,6 +161,30 @@ const styles = StyleSheet.create({
   },
   docDeleteBtn: {
     padding: 6,
+  },
+  docActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  docActionBtn: {
+    padding: 6,
+  },
+  docChangeBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: SPACING.xs + 2,
+    paddingVertical: 5,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
+  },
+  docChangeBtnText: {
+    fontSize: FONT_SIZE.xs - 1,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.primary,
   },
 
   btnContainer: {

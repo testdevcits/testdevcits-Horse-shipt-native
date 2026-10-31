@@ -1,25 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
-import { formatDate, formatFromNow } from '../../../../utils/helpers';
+import { formatDate } from '../../../../utils/helpers';
 import { COLORS } from '../../../../constants';
 import { useTracking } from './useTracking';
-import { AppText } from '../../../../components';
+import { AppText, ErrorView } from '../../../../components';
 import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
-import imageIndex from '../../../../assets/images/imageIndex';
 import AppIcon from '../../../../components/app_icon/AppIcon';
+import { DriverContactCard } from './components/DriverContactCard';
+import { TrackingBottomSheet } from './components/TrackingBottomSheet';
 import styles from './styles.Livetracking';
 
 const LiveTrackingScreen = ({ route, navigation }: any) => {
   const shipmentId = route.params?.shipmentId;
-  const {
-    data,
-    loading,
-    refreshing: _refreshing,
-    refetch,
-  } = useTracking(shipmentId);
+  const { data, loading, refreshing, error, statusCode, refetch } =
+    useTracking(shipmentId);
   const mapRef = useRef<MapView>(null);
   const [routeDirectionData, setRouteDirectionData] = useState<{
     distanceKm?: number;
@@ -39,8 +36,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
 
   const driverLat = data?.driver?.lat;
   const driverLng = data?.driver?.lng;
-
-  // Origin for route directions: Driver location if available, otherwise Pickup location
 
   // Auto-fit camera when coordinates change
   const handleRecenterMap = () => {
@@ -135,11 +130,18 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
   const statusDetails = getStatusDetails(rawTripStatus);
 
   // Driver details safely extracted
-  const driverObj = data?.driver;
+  const driverObj = data?.driverDetails || data?.driver;
   const driverName = driverObj?.name || 'Driver';
-  const _driverPhone = driverObj?.phone;
+  const driverPhone = driverObj?.phone || driverObj?.mobile;
+  const driverEmail = driverObj?.email;
+  const driverStatus = driverObj?.driverStatus;
+  const driverAvatarUri =
+    driverObj?.profileImage?.url ||
+    driverObj?.image ||
+    driverObj?.avatar ||
+    null;
   const driverUpdatedAt = driverObj?.updatedAt
-    ? `Updated ${formatFromNow(driverObj.updatedAt)}`
+    ? `Updated ${formatDate(driverObj.updatedAt, 'MMM DD, YYYY')}`
     : 'Live GPS Active';
 
   // ETA & Distance logic
@@ -181,6 +183,41 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
     );
   }
 
+  if (error && !data) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.topHeader}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.8}
+          >
+            <AppIcon name="X" size={22} color={COLORS.textPrimary} />
+          </TouchableOpacity>
+        </View>
+        <ErrorView
+          statusCode={statusCode || 500}
+          title={
+            statusCode === 500
+              ? 'Server Under Maintenance'
+              : 'Unable to Load Live Tracking'
+          }
+          subtitle={
+            statusCode === 500
+              ? 'Our tracking server encountered an issue (500 Error). Please retry in a few moments.'
+              : typeof error === 'string'
+              ? error
+              : error?.message || 'Failed to fetch live shipment location data.'
+          }
+          icon={statusCode === 500 ? 'AlertTriangle' : 'AlertCircle'}
+          onRetry={refetch}
+          isRetrying={refreshing}
+          onBack={() => navigation.goBack()}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {/* 1. GOOGLE MAP SECTION */}
@@ -196,7 +233,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
         }}
       >
         {/* Road-following Polyline Routes */}
-        {/* Segment 1: Driver -> Pickup (Rendered whenever driver coords exist) */}
         {hasDriverCoords && hasPickupCoords && (
           <MapViewDirections
             origin={{ latitude: driverLat!, longitude: driverLng! }}
@@ -208,7 +244,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           />
         )}
 
-        {/* Segment 2: Pickup -> Destination (Rendered whenever pickup & delivery coords exist) */}
         {hasPickupCoords && hasDeliveryCoords && (
           <MapViewDirections
             origin={{ latitude: pickupLat, longitude: pickupLng }}
@@ -226,7 +261,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           />
         )}
 
-        {/* Pickup Marker */}
         {hasPickupCoords && (
           <Marker
             coordinate={{ latitude: pickupLat, longitude: pickupLng }}
@@ -239,7 +273,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           </Marker>
         )}
 
-        {/* Delivery Marker */}
         {hasDeliveryCoords && (
           <Marker
             coordinate={{ latitude: deliveryLat, longitude: deliveryLng }}
@@ -248,7 +281,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           >
             <View style={styles.markerCircle}>
               <AppIcon
-                name={'MapPin'}
+                name="MapPin"
                 size={18}
                 color={COLORS.error}
                 fill={COLORS.white}
@@ -257,7 +290,6 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           </Marker>
         )}
 
-        {/* LIVE DRIVER TRUCK MARKER */}
         {hasDriverCoords && (
           <Marker
             coordinate={{ latitude: driverLat!, longitude: driverLng! }}
@@ -267,7 +299,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
             description={`Updated ${driverUpdatedAt}`}
           >
             <View style={styles.truckMarkerContainer}>
-              <AppIcon name={'Truck'} size={22} color={COLORS.saddleBrown} />
+              <AppIcon name="Truck" size={22} color={COLORS.saddleBrown} />
             </View>
           </Marker>
         )}
@@ -280,7 +312,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={() => navigation.goBack()}
           activeOpacity={0.8}
         >
-          <AppIcon name={'X'} size={22} color={COLORS.textPrimary} />
+          <AppIcon name="X" size={22} color={COLORS.textPrimary} />
         </TouchableOpacity>
 
         <View
@@ -300,7 +332,7 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={refetch}
           activeOpacity={0.8}
         >
-          <AppIcon name={'RefreshCw'} size={18} color={COLORS.textPrimary} />
+          <AppIcon name="RefreshCw" size={18} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
 
@@ -311,110 +343,29 @@ const LiveTrackingScreen = ({ route, navigation }: any) => {
           onPress={handleRecenterMap}
           activeOpacity={0.8}
         >
-          <AppIcon name={'LocateFixed'} size={20} color={COLORS.textPrimary} />
+          <AppIcon name="LocateFixed" size={20} color={COLORS.textPrimary} />
         </TouchableOpacity>
       </View>
 
       {/* 4. DRIVER QUICK INFO CARD */}
-      <View style={styles.driverCard}>
-        <View style={styles.driverInfo}>
-          <Image
-            source={
-              driverObj?.avatar
-                ? {
-                    uri: driverObj?.avatar,
-                  }
-                : imageIndex.AccountIcon
-            }
-            style={styles.driverAvatar}
-          />
-          <View style={{ flex: 1 }}>
-            <AppText style={styles.driverName} numberOfLines={1}>
-              {driverName}
-            </AppText>
-            <AppText style={styles.lastUpdated}>{driverUpdatedAt}</AppText>
-          </View>
-        </View>
-      </View>
+      <DriverContactCard
+        driverName={driverName}
+        driverPhone={driverPhone}
+        driverEmail={driverEmail}
+        driverStatus={driverStatus}
+        driverAvatarUri={driverAvatarUri}
+        driverUpdatedAt={driverUpdatedAt}
+      />
 
       {/* 5. BOTTOM TRACKING DETAILS SHEET */}
-      <View style={styles.bottomSheet}>
-        <View style={styles.sheetHandle} />
-
-        {/* ETA & Distance Row */}
-        <View style={styles.etaContainer}>
-          <View>
-            <AppText style={styles.etaLabel}>
-              {isHeadingToPickup
-                ? 'Estimated Pickup Time'
-                : 'Estimated Arrival'}
-            </AppText>
-            <AppText style={styles.etaTime}>{etaFormatted}</AppText>
-          </View>
-          <View style={styles.distanceBadge}>
-            <AppIcon name={'Navigation'} size={14} color={COLORS.white} />
-            <AppText style={styles.distanceText}>{distanceKmText}</AppText>
-          </View>
-        </View>
-
-        {/* Stepper Timeline */}
-        <View style={styles.timeline}>
-          {/* Pickup Step */}
-          <View style={styles.timelineItem}>
-            <View
-              style={[
-                styles.timelinePoint,
-                statusDetails.isPickupDone && styles.timelinePointActive,
-              ]}
-            >
-              <AppIcon
-                name={'CheckCircle2'}
-                size={16}
-                color={
-                  statusDetails.isPickupDone ? COLORS.primary : COLORS.grey400
-                }
-              />
-            </View>
-            <View style={styles.timelineContent}>
-              <AppText style={styles.locationTitle}>Pickup Point</AppText>
-              <AppText numberOfLines={1} style={styles.locationSub}>
-                {data?.pickup?.location || 'Pickup Location'}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.timelineLine} />
-
-          {/* Delivery Step */}
-          <View style={styles.timelineItem}>
-            <View
-              style={[
-                styles.timelinePoint,
-                statusDetails.isDelivered && styles.timelinePointActive,
-              ]}
-            >
-              {statusDetails.isDelivered ? (
-                <AppIcon
-                  name={'CheckCircle2'}
-                  size={16}
-                  color={COLORS.primary}
-                />
-              ) : (
-                <AppIcon name={'Clock'} size={16} color={COLORS.grey400} />
-              )}
-            </View>
-            <View style={styles.timelineContent}>
-              <AppText style={styles.locationTitle}>
-                Delivery Destination
-              </AppText>
-              <AppText numberOfLines={1} style={styles.locationSub}>
-                {data?.delivery?.location || 'Delivery Destination'}
-              </AppText>
-            </View>
-            <AppIcon name={'ChevronRight'} size={18} color={COLORS.grey300} />
-          </View>
-        </View>
-      </View>
+      <TrackingBottomSheet
+        isHeadingToPickup={isHeadingToPickup}
+        etaFormatted={etaFormatted}
+        distanceKmText={distanceKmText}
+        statusDetails={statusDetails}
+        pickupLocation={data?.pickup?.location}
+        deliveryLocation={data?.delivery?.location}
+      />
     </View>
   );
 };

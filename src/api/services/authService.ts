@@ -1,4 +1,5 @@
 import axiosClient from '../axiosClient';
+import API_ENDPOINTS from '../endpoints';
 import { AppUser, UserRole } from '../../types/auth';
 
 const transformResponse = (
@@ -54,9 +55,9 @@ const transformResponse = (
 const authService = {
   login: async (userData: any, role: UserRole) => {
     const endpoints = {
-      driver: '/api/driver/driver/login',
-      shipper: '/api/auth/login',
-      customer: '/api/auth/login',
+      driver: API_ENDPOINTS.AUTH.LOGIN_DRIVER,
+      shipper: API_ENDPOINTS.AUTH.LOGIN,
+      customer: API_ENDPOINTS.AUTH.LOGIN,
     };
     const response = await axiosClient.post(endpoints[role], userData);
     return transformResponse(response, role); // Pass role to ensure it's set
@@ -71,7 +72,7 @@ const authService = {
     photo?: string | null;
   }) => {
     try {
-      const response = await axiosClient.post('/api/auth/firebase/google', {
+      const response = await axiosClient.post(API_ENDPOINTS.AUTH.GOOGLE_LOGIN, {
         idToken: googleData.idToken,
         role: googleData.role,
         intent: googleData.intent || 'login',
@@ -91,7 +92,7 @@ const authService = {
     payload: any,
   ): Promise<{ success: boolean; requiresOtp: boolean; message: string }> => {
     // payload: { name, email, password, role }
-    return axiosClient.post('/api/auth/signup', payload);
+    return axiosClient.post(API_ENDPOINTS.AUTH.SIGNUP, payload);
   },
 
   verifySignupOtp: async (payload: {
@@ -100,7 +101,7 @@ const authService = {
     otp: string;
   }) => {
     const response = await axiosClient.post(
-      '/api/auth/signup/verify-otp',
+      API_ENDPOINTS.AUTH.VERIFY_SIGNUP_OTP,
       payload,
     );
     return transformResponse(response, payload.role);
@@ -114,7 +115,7 @@ const authService = {
     role: UserRole,
   ): Promise<{ success: boolean; message: string }> => {
     const payload = { email: email.trim().toLowerCase(), role };
-    return axiosClient.post('/api/auth/forgot-password', payload);
+    return axiosClient.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, payload);
   },
 
   verifyResetOtp: async (payload: {
@@ -122,7 +123,7 @@ const authService = {
     role: UserRole;
     otp: string;
   }): Promise<any> => {
-    return axiosClient.post('/api/auth/verify-reset-otp', payload);
+    return axiosClient.post(API_ENDPOINTS.AUTH.VERIFY_RESET_OTP, payload);
   },
 
   /**
@@ -134,7 +135,7 @@ const authService = {
     otp: string;
     newPassword: string;
   }): Promise<{ success: boolean; message: string }> => {
-    return axiosClient.post('/api/auth/reset-password', payload);
+    return axiosClient.post(API_ENDPOINTS.AUTH.RESET_PASSWORD, payload);
   },
 };
 

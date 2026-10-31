@@ -12,7 +12,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.white,
   },
   backgroundImage: {
     width: SCREEN_WIDTH,

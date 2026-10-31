@@ -329,6 +329,8 @@ const HorseDetailsStep: React.FC<HorseDetailsStepProps> = ({
                 label="Details"
                 placeholder="Describe medication, behavior, etc."
                 multiline
+                numberOfLines={3}
+                inputContainerStyle={{ height: 100 }}
                 value={form.specialRequirementDetails}
                 onChangeText={v => updateForm({ specialRequirementDetails: v })}
                 style={{ height: 80 }}

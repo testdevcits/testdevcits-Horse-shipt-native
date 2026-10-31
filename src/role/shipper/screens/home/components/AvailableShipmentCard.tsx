@@ -74,7 +74,7 @@ const AvailableShipmentCard: React.FC<AvailableShipmentCardProps> = ({
 
           <AppText style={styles.shipmentStatus}>
             {item?.status
-              ? item.status
+              ? item?.status
                   .replace(/_/g, ' ')
                   .replace(/\b\w/g, (char: string) => char.toUpperCase())
               : ''}

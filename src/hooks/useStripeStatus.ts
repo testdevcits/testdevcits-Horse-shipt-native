@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import shipperService from '../api/services/shipperService';
 
 const useStripeStatus = () => {
@@ -12,13 +13,7 @@ const useStripeStatus = () => {
       const res = await shipperService.getStripeStatus();
 
       if (res?.success) {
-        const needsVerification =
-          // res.needsVerification === true ||
-          res.onboardingCompleted === false;
-        // ||
-        // res.chargesEnabled === false ||
-        // res.payoutsEnabled === false ||
-        // res.verified === false;
+        const needsVerification = res.onboardingCompleted !== true;
 
         setIsStripeReady(!needsVerification);
 
@@ -36,9 +31,11 @@ const useStripeStatus = () => {
     }
   }, []);
 
-  useEffect(() => {
-    checkStripeStatus();
-  }, [checkStripeStatus]);
+  useFocusEffect(
+    useCallback(() => {
+      checkStripeStatus();
+    }, [checkStripeStatus]),
+  );
 
   return {
     isStripeReady,

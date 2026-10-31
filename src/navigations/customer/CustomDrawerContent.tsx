@@ -1,116 +1,45 @@
-import React, { lazy, Suspense } from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  ImageSourcePropType,
-} from 'react-native';
+import React, { lazy, memo, Suspense, useState } from 'react';
+import { View } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import {
   ShieldCheck,
-  LogOut,
   FileText,
-  ChevronRight,
   Star,
+  User,
+  Bell,
+  HelpCircle,
+  Home as HomeIcon,
+  MessageSquare,
 } from 'lucide-react-native';
 
-// Import constants
-import { COLORS } from '../../constants/colors';
-import {
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-  RADIUS,
-} from '../../constants/dimensions';
-import { FONTS } from '../../constants/fonts';
 import imageIndex from '../../assets/images/imageIndex';
 import { AppText } from '../../components';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { logoutUser } from '../../redux/slices/authSlice';
 
-interface DrawerMenuItemProps {
-  label: string;
-  iconSource?: ImageSourcePropType;
-  IconComponent?: React.ComponentType<any>;
-  iconColor?: string;
-  onPress: () => void;
-  isActive?: boolean;
-  isLast?: boolean;
-  hasChevron?: boolean;
-}
+import styles from './components/styles.customerdrawer';
+import CustomerDrawerHeader from './components/CustomerDrawerHeader';
+import { DrawerMenuItem } from './components/CustomerDrawerMenuItem';
+import CustomerDrawerFooter from './components/CustomerDrawerFooter';
 
 const ConfirmationModal = lazy(
   () => import('../../components/common/ConfirmationModal/ConfirmationModal'),
 );
 
-const DrawerMenuItem: React.FC<DrawerMenuItemProps> = ({
-  label,
-  iconSource,
-  IconComponent,
-  iconColor,
-  onPress,
-  isActive,
-  isLast,
-  hasChevron,
-}) => (
-  <TouchableOpacity
-    style={[
-      styles.menuItem,
-      isActive && styles.menuItemActive,
-      isLast ? { marginBottom: 0 } : null,
-    ]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    <View style={styles.iconContainer}>
-      {IconComponent ? (
-        <IconComponent
-          size={18}
-          color={
-            iconColor || (isActive ? COLORS.brandBrown : COLORS.textPrimary)
-          }
-          strokeWidth={1.8}
-        />
-      ) : iconSource ? (
-        <Image
-          source={iconSource}
-          style={[styles.menuIcon, isActive && styles.menuIconActive]}
-          resizeMode="contain"
-        />
-      ) : null}
-    </View>
-    <AppText
-      style={[
-        styles.menuLabel,
-        isActive && styles.menuLabelActive,
-        iconColor ? { color: iconColor } : null,
-      ]}
-    >
-      {label}
-    </AppText>
-    {(isActive || hasChevron) && (
-      <ChevronRight
-        size={18}
-        color={iconColor || (isActive ? COLORS.brandBrown : COLORS.grey400)}
-      />
-    )}
-  </TouchableOpacity>
-);
-
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
+  const { user } = useAppSelector(reduxState => reduxState?.auth);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
 
-  // Active drawer route name (e.g., 'MainTabs', 'Profile', 'HelpCenter', etc.)
+  // Active drawer route name
   const currentDrawerRoute = state?.routes[state?.index]?.name;
 
   // Active bottom tab route name inside 'MainTabs'
-  const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
+  const mainTabsRoute = state?.routes?.find((r: any) => r.name === 'MainTabs');
   const mainTabsState = mainTabsRoute?.state;
   const currentActiveTab = mainTabsState?.routes
     ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
@@ -141,55 +70,60 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
 
   return (
     <View style={styles.safeArea}>
-      {/* Header Section with Logo */}
-      <View style={styles.headerContainer}>
-        <Image
-          source={imageIndex.LogoIcon}
-          style={styles.logoIcon}
-          resizeMode="contain"
-        />
-        <AppText style={styles.logoText}>HorseShipt</AppText>
-      </View>
+      {/* Header Sub-Component */}
+      <CustomerDrawerHeader
+        user={user}
+        onPressProfile={() => navigateToRoute('Profile')}
+      />
 
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.drawerScroll}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.menuContainer}>
+        {/* SECTION 1: MAIN NAVIGATION */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>NAVIGATION</AppText>
           <DrawerMenuItem
             label="Home"
-            iconSource={imageIndex.Drawer_Home}
+            IconComponent={HomeIcon}
             isActive={isTabActive('Home')}
             onPress={() => navigateToTab('Home')}
           />
           <DrawerMenuItem
             label="New Shipping"
-            iconSource={imageIndex.Shipping}
+            iconSource={imageIndex?.Shipping}
             isActive={isTabActive('New')}
             onPress={() => navigateToTab('New')}
           />
           <DrawerMenuItem
             label="My Shipments"
-            iconSource={imageIndex.Drawer_Shipments}
+            iconSource={imageIndex?.Drawer_Shipments}
             isActive={isTabActive('Shipments')}
             onPress={() => navigateToTab('Shipments')}
           />
           <DrawerMenuItem
             label="My Horses"
-            iconSource={imageIndex.Horse}
+            iconSource={imageIndex?.Horse}
             isActive={isTabActive('Horses')}
             onPress={() => navigateToTab('Horses')}
           />
           <DrawerMenuItem
             label="Chat"
-            iconSource={imageIndex.Messages}
+            IconComponent={MessageSquare}
             isActive={isTabActive('Chats')}
             onPress={() => navigateToTab('Chats')}
           />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* SECTION 2: ACCOUNT & REVIEWS */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>ACCOUNT</AppText>
           <DrawerMenuItem
             label="Profile"
-            iconSource={imageIndex.AccountIcon}
+            IconComponent={User}
             isActive={isDrawerRouteActive('Profile')}
             onPress={() => navigateToRoute('Profile')}
           />
@@ -200,8 +134,21 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
             onPress={() => navigateToRoute('Reviews')}
           />
           <DrawerMenuItem
+            label="Settings"
+            IconComponent={Bell}
+            isActive={isDrawerRouteActive('Settings')}
+            onPress={() => navigateToRoute('Settings')}
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* SECTION 3: SUPPORT & LEGAL */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>SUPPORT & LEGAL</AppText>
+          <DrawerMenuItem
             label="Help Center"
-            iconSource={imageIndex.Help}
+            IconComponent={HelpCircle}
             isActive={isDrawerRouteActive('HelpCenter')}
             onPress={() => navigateToRoute('HelpCenter')}
           />
@@ -221,15 +168,10 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
         </View>
       </DrawerContentScrollView>
 
-      <View style={styles.footerContainer}>
-        <DrawerMenuItem
-          label="LogOut"
-          IconComponent={LogOut}
-          iconColor={COLORS.error}
-          onPress={() => setIsLogoutModalVisible(true)}
-          isLast={true}
-        />
-      </View>
+      {/* Footer Sub-Component */}
+      <CustomerDrawerFooter
+        onLogoutPress={() => setIsLogoutModalVisible(true)}
+      />
 
       {/* Logout Confirmation Modal */}
       <Suspense fallback={null}>
@@ -248,79 +190,4 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderTopRightRadius: RADIUS.lg,
-    borderBottomRightRadius: RADIUS.lg,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingTop: SPACING.xl,
-    paddingBottom: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  logoIcon: {
-    width: ICON_SIZE.xl,
-    height: ICON_SIZE.xl,
-    marginRight: SPACING.xs,
-  },
-  logoText: {
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONTS.bold,
-    color: COLORS.textPrimary,
-    letterSpacing: -0.3,
-  },
-  drawerScroll: {
-    paddingTop: SPACING.sm,
-  },
-  menuContainer: {
-    paddingHorizontal: SPACING.xs,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: SPACING.xs2,
-    paddingHorizontal: SPACING.sm,
-    marginBottom: SPACING.xs,
-    borderRadius: RADIUS.sm,
-  },
-  menuItemActive: {
-    backgroundColor: COLORS.brandBrownLightBg,
-  },
-  iconContainer: {
-    width: FONT_SIZE.display,
-    height: FONT_SIZE.display,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  menuIcon: {
-    width: ICON_SIZE.sm,
-    height: ICON_SIZE.sm,
-  },
-  menuIconActive: {
-    tintColor: COLORS.brandBrown,
-  },
-  menuLabel: {
-    flex: 1,
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-    color: COLORS.textPrimary,
-    marginLeft: SPACING.xs,
-  },
-  menuLabelActive: {
-    color: COLORS.brandBrown,
-    fontFamily: FONTS.bold,
-  },
-  footerContainer: {
-    padding: SPACING.xs,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.divider,
-  },
-});
-
-export default CustomDrawerContent;
+export default memo(CustomDrawerContent);

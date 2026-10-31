@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
-  StatusBar,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
@@ -48,32 +49,30 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       {/* Top Right Change Role Button */}
-      <TouchableOpacity
-        style={styles.changeRoleBtn}
-        onPress={() => setIsRoleModalVisible(true)}
-        activeOpacity={0.8}
-      >
-        <AppIcon name={'UserCog'} size={16} color={COLORS.primary} />
-        <AppText style={styles.changeRoleText}>
-          {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
-        </AppText>
-        <AppIcon name={'RefreshCw'} size={12} color={COLORS.primary} />
-      </TouchableOpacity>
+      {!isKeyboardOpen && (
+        <TouchableOpacity
+          style={styles.changeRoleBtn}
+          onPress={() => setIsRoleModalVisible(true)}
+          activeOpacity={0.8}
+        >
+          <AppIcon name={'UserCog'} size={16} color={COLORS.primary} />
+          <AppText style={styles.changeRoleText}>
+            {selectedRole ? selectedRole.toUpperCase() : 'ROLE'}
+          </AppText>
+          <AppIcon name={'RefreshCw'} size={12} color={COLORS.primary} />
+        </TouchableOpacity>
+      )}
 
-      {/* 5. Dynamic Header Image Height (Calculates 15% when keyboard open) */}
+      {/* Dynamic Header Image Height (Collapses when keyboard open) */}
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
-            height: isKeyboardOpen ? SCREEN_HEIGHT * 0.2 : SCREEN_HEIGHT * 0.45,
+            height: isKeyboardOpen
+              ? SCREEN_HEIGHT * 0.08
+              : SCREEN_HEIGHT * 0.42,
           },
         ]}
         resizeMode="cover"
@@ -85,25 +84,35 @@ const Login = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboardView}
       >
-        {/* 6. This View will now occupy 80-85% of the screen when keyboard is open */}
+        {/* Content Card with Smooth Transitions */}
         <View style={styles.contentCard}>
           <Image
-            source={imageIndex.Logo}
-            style={styles.logoIcon}
+            source={imageIndex?.Logo}
+            style={[styles.logoIcon, isKeyboardOpen && styles.logoIconKeyboard]}
             resizeMode="contain"
           />
 
           <ScrollView
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[
+              styles.scrollContent,
+              isKeyboardOpen && styles.scrollContentKeyboard,
+            ]}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View style={styles.textHeader}>
+            <View
+              style={[
+                styles.textHeader,
+                isKeyboardOpen && styles.textHeaderKeyboard,
+              ]}
+            >
               <AppText style={styles.welcomeTitle}>Welcome Back</AppText>
-              <AppText style={styles.subtitle}>
-                Sign in to manage your shipments, track your horses in real
-                time, and access trusted transportation services.
-              </AppText>
+              {!isKeyboardOpen && (
+                <AppText style={styles.subtitle}>
+                  Sign in to manage your shipments, track your horses in real
+                  time, and access trusted transportation services.
+                </AppText>
+              )}
             </View>
 
             {/* Professional Role Selector Buttons */}
@@ -133,7 +142,8 @@ const Login = () => {
                   <AppText
                     style={[
                       styles.roleTabBtnText,
-                      selectedRole === 'customer' && styles.roleTabBtnTextActive,
+                      selectedRole === 'customer' &&
+                        styles.roleTabBtnTextActive,
                     ]}
                   >
                     Customer
@@ -155,9 +165,7 @@ const Login = () => {
                     name={'Building2'}
                     size={15}
                     color={
-                      selectedRole === 'shipper'
-                        ? COLORS.white
-                        : COLORS.primary
+                      selectedRole === 'shipper' ? COLORS.white : COLORS.primary
                     }
                   />
                   <AppText
@@ -185,9 +193,7 @@ const Login = () => {
                     name={'Truck'}
                     size={15}
                     color={
-                      selectedRole === 'driver'
-                        ? COLORS.white
-                        : COLORS.primary
+                      selectedRole === 'driver' ? COLORS.white : COLORS.primary
                     }
                   />
                   <AppText
@@ -240,10 +246,7 @@ const Login = () => {
                 activeOpacity={0.7}
               >
                 <View
-                  style={[
-                    styles.checkbox,
-                    rememberMe && styles.checkboxActive,
-                  ]}
+                  style={[styles.checkbox, rememberMe && styles.checkboxActive]}
                 >
                   {rememberMe && (
                     <AppIcon name={'Check'} size={14} color={COLORS.white} />
@@ -283,27 +286,30 @@ const Login = () => {
                   activeOpacity={0.8}
                 >
                   <Image
-                    source={imageIndex.Google}
+                    source={imageIndex?.Google}
                     style={styles.googleIcon}
                     resizeMode="contain"
                   />
+
                   <AppText style={styles.googleBtnText}>
-                    {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+                    Sign in with Google
                   </AppText>
                 </TouchableOpacity>
+
+                <View style={styles.footer}>
+                  <AppText style={styles.footerText}>
+                    Don't have an account?{' '}
+                  </AppText>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SignupFlowScreen')}
+                  >
+                    <AppText style={styles.footerLink}>
+                      Create an account
+                    </AppText>
+                  </TouchableOpacity>
+                </View>
               </>
             )}
-
-            <View style={styles.footer}>
-              <AppText style={styles.footerText}>
-                Don't have an account?{' '}
-              </AppText>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('SignupFlowScreen')}
-              >
-                <AppText style={styles.footerLink}>Create an account</AppText>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
@@ -323,6 +329,23 @@ const Login = () => {
           );
         }}
       />
+
+      <Modal
+        transparent
+        visible={isGoogleLoading}
+        animationType="fade"
+        statusBarTranslucent
+        onRequestClose={() => undefined}
+      >
+        <View style={styles.googleLoadingOverlay}>
+          <View style={styles.googleLoadingCard}>
+            <AppText style={styles.googleLoadingText}>
+              Signing in with Google...
+            </AppText>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

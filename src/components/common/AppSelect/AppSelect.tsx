@@ -160,19 +160,19 @@ const AppSelect = memo(
       );
 
       const renderOptionItem = (item: AppSelectOption) => {
-        const isSelected = item.value === value || item.label === value;
+        const isSelected = item?.value === value || item?.label === value;
         return (
           <TouchableOpacity
-            key={String(item.value)}
+            key={String(item?.value)}
             style={[styles.optionItem, isSelected && styles.selectedOptionItem]}
             onPress={() => handleSelect(item)}
             activeOpacity={0.7}
           >
             <View style={styles.optionLeft}>
-              {item.icon && (
+              {item?.icon && (
                 <View style={styles.optionIconBox}>
                   <AppIcon
-                    name={item.icon as any}
+                    name={item?.icon as any}
                     size={18}
                     color={COLORS.primary}
                   />
@@ -185,11 +185,11 @@ const AppSelect = memo(
                     isSelected && styles.selectedOptionText,
                   ]}
                 >
-                  {item.label}
+                  {item?.label}
                 </AppText>
-                {item.subtitle && (
+                {item?.subtitle && (
                   <AppText style={styles.optionSubtitle}>
-                    {item.subtitle}
+                    {item?.subtitle}
                   </AppText>
                 )}
               </View>
@@ -199,7 +199,7 @@ const AppSelect = memo(
               <View style={styles.checkBadge}>
                 <AppIcon
                   name="Check"
-                  size={ICON_SIZE.xs || 14}
+                  size={ICON_SIZE.xs}
                   color={COLORS.primary}
                   strokeWidth={3}
                 />
@@ -263,7 +263,7 @@ const AppSelect = memo(
           {/* BottomSheet Modal */}
           <BottomSheetModal
             ref={bottomSheetModalRef}
-            index={0}
+            index={1}
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
             enablePanDownToClose
@@ -320,7 +320,9 @@ const AppSelect = memo(
               {/* Options List */}
               <BottomSheetFlatList
                 data={filteredOptions}
-                keyExtractor={(item, index) => `${String(item.value)}-${index}`}
+                keyExtractor={(item, index) =>
+                  `${String(item?.value)}-${index}`
+                }
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={true}
                 ListEmptyComponent={
@@ -396,7 +398,7 @@ const AppSelect = memo(
                 <FlatList
                   data={filteredOptions}
                   keyExtractor={(item, index) =>
-                    `${String(item.value)}-${index}`
+                    `${String(item?.value)}-${index}`
                   }
                   contentContainerStyle={styles.listContent}
                   showsVerticalScrollIndicator={true}
@@ -408,6 +410,10 @@ const AppSelect = memo(
                     </View>
                   }
                   renderItem={({ item }) => renderOptionItem(item)}
+                  initialNumToRender={10}
+                  maxToRenderPerBatch={10}
+                  windowSize={5}
+                  removeClippedSubviews
                 />
               </KeyboardAvoidingView>
             </Modal>

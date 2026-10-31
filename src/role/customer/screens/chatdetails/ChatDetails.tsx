@@ -1,12 +1,14 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform,
+  Keyboard,
   ActivityIndicator,
+  Pressable,
+  Platform,
 } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,7 +16,11 @@ import { useSelector } from 'react-redux';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
-import { AppText, Input, ChatDetailsSkeleton } from '../../../../components';
+import {
+  AppText,
+  ChatDetailsSkeleton,
+  ImageViewer,
+} from '../../../../components';
 import ImagePicker, {
   Image as PickerImage,
 } from 'react-native-image-crop-picker';
@@ -22,6 +28,8 @@ import ImagePicker, {
 import { permissionService } from '../../../../utils/cameragalleryPermission';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showErrorToast } from '../../../../utils/toast';
+import ChatHeaderBar from './ChatHeaderBar';
+import ChatInputBar from './ChatInputBar';
 
 const PhotoSourceSheet = lazy(
   () =>
@@ -35,7 +43,13 @@ const ShipmentLocationModal = lazy(
     ),
 );
 
-const ChatMessageImage = ({ uri }: { uri?: string }) => {
+const ChatMessageImage = ({
+  uri,
+  onPress,
+}: {
+  uri?: string;
+  onPress: () => void;
+}) => {
   const [hasError, setHasError] = useState(false);
 
   if (!uri || hasError) {
@@ -50,12 +64,14 @@ const ChatMessageImage = ({ uri }: { uri?: string }) => {
   }
 
   return (
-    <Image
-      source={{ uri }}
-      style={styles.mediaImage}
-      resizeMode="cover"
-      onError={() => setHasError(true)}
-    />
+    <Pressable onPress={onPress}>
+      <Image
+        source={{ uri }}
+        style={styles.mediaImage}
+        resizeMode="cover"
+        onError={() => setHasError(true)}
+      />
+    </Pressable>
   );
 };
 
@@ -64,16 +80,46 @@ const ChatDetails = () => {
   const route = useRoute();
   const { shipmentId, name, isChatLocked, avatar }: any = route.params || {};
   const [inputText, setInputText] = useState('');
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [chatselectedImage, setChatSelectedImage] = useState<string>('');
 
   const { user } = useSelector((state: any) => state.auth || {});
   const MY_ROLE = user?.role || 'customer';
 
   const { messages, loading, shipment, sendMessage, sending, partnerTyping, updateTyping } =
     useChatDetails(shipmentId);
+
+  const initialContainerHeight = useRef(0);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+
+    const showSubscription = Keyboard.addListener('keyboardDidShow', event => {
+      setKeyboardHeight(event.endCoordinates.height);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  const androidKeyboardOverlap =
+    Platform.OS === 'android'
+      ? Math.max(
+          0,
+          keyboardHeight - (initialContainerHeight.current - containerHeight),
+        )
+      : 0;
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
   const isLocked = Boolean(
@@ -103,7 +149,9 @@ const ChatDetails = () => {
     const isMe =
       item?.senderRole === MY_ROLE ||
       (user?._id && item?.senderId === user._id);
-    const hasMedia = item?.media && item?.media.length > 0;
+    const hasMedia = item?.media && item?.media?.length > 0;
+    const hasMessage =
+      typeof item?.message === 'string' && item.message.length > 0;
 
     return (
       <View
@@ -116,16 +164,37 @@ const ChatDetails = () => {
           <AppText style={styles.senderName}>
             {isMe ? 'You' : partnerName}
           </AppText>
-          <AppText style={styles.timestamp}>
-            {formatMessageTime(item?.createdAt)}
-          </AppText>
+          {!hasMedia && (
+            <AppText style={styles.timestamp}>
+              {formatMessageTime(item?.createdAt)}
+            </AppText>
+          )}
         </View>
 
         <View
           style={[styles.bubble, isMe ? styles.myBubble : styles.otherBubble]}
         >
-          {hasMedia && <ChatMessageImage uri={item?.media?.[0]?.url} />}
-          {item?.message ? (
+          {hasMedia && (
+            <ChatMessageImage
+              uri={item?.media?.[0]?.url}
+              onPress={() => {
+                setChatSelectedImage(item?.media?.[0]?.url);
+                setImageViewerVisible(true);
+              }}
+            />
+          )}
+          {typeof item?.message === 'string' &&
+          item.message.length === 0 &&
+          !hasMedia ? (
+            <AppText
+              style={[
+                styles.messageText,
+                isMe ? styles.myText : styles.otherText,
+              ]}
+            >
+              This message is deleted
+            </AppText>
+          ) : hasMessage ? (
             <AppText
               style={[
                 styles.messageText,
@@ -135,6 +204,11 @@ const ChatDetails = () => {
               {item?.message}
             </AppText>
           ) : null}
+          {hasMedia && (
+            <AppText style={styles.timestamp}>
+              {formatMessageTime(item?.createdAt)}
+            </AppText>
+          )}
         </View>
       </View>
     );
@@ -209,40 +283,25 @@ const ChatDetails = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      onLayout={({ nativeEvent }) => {
+        const { height } = nativeEvent.layout;
+        if (height > initialContainerHeight.current) {
+          initialContainerHeight.current = height;
+        }
+        setContainerHeight(height);
+      }}
     >
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AppIcon
-            name={'ChevronLeft'}
-            color={COLORS.textPrimary}
-            size={ICON_SIZE.md}
-          />
-        </TouchableOpacity>
-        <Image source={avatar} style={styles.headerAvatar} />
-        <TouchableOpacity
-          style={styles.headerInfo}
-          onPress={() => setShowLocationModal(true)}
-          activeOpacity={0.7}
-        >
-          <AppText style={styles.headerTitle}>{partnerName}</AppText>
-          <AppText style={styles.headerSubtitle}>
-            Shipment ID {shipment?.shipmentCode || 'Not Available'}
-          </AppText>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={{ paddingHorizontal: 6 }}
-          onPress={() => setShowLocationModal(true)}
-          activeOpacity={0.7}
-        >
-          <MapPin color={COLORS.primary} size={ICON_SIZE.sm} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowLocationModal(true)}>
-          <MoreVertical color={COLORS.textPrimary} size={ICON_SIZE.sm} />
-        </TouchableOpacity> */}
-      </View>
+      <ChatHeaderBar
+        navigation={navigation}
+        setShowLocationModal={setShowLocationModal}
+        partnerName={partnerName}
+        avatar={avatar}
+        shipment={shipment}
+      />
+      {partnerTyping && <AppText style={styles.headerSubtitle}>{partnerName} is typing...</AppText>}
 
       <FlatList
         data={messages}
@@ -253,86 +312,43 @@ const ChatDetails = () => {
         showsVerticalScrollIndicator={false}
       />
 
-      {partnerTyping && <AppText style={styles.headerSubtitle}>{partnerName} is typing...</AppText>}
-
-      {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
-      {selectedImage && !isLocked && (
-        <View style={styles.draftPreviewContainer}>
-          <View style={styles.draftImageWrapper}>
-            <Image
-              source={{ uri: selectedImage.path }}
-              style={styles.draftImage}
-            />
-            <TouchableOpacity
-              style={styles.cancelDraftBtn}
-              onPress={() => setSelectedImage(null)}
-            >
-              <AppIcon
-                name={'X'}
-                size={ICON_SIZE.xs}
-                color={COLORS.white}
-                strokeWidth={2.5}
+      <View style={{ marginBottom: androidKeyboardOverlap }}>
+        {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
+        {selectedImage && !isLocked && (
+          <View style={styles.draftPreviewContainer}>
+            <View style={styles.draftImageWrapper}>
+              <Image
+                source={{ uri: selectedImage.path }}
+                style={styles.draftImage}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelDraftBtn}
+                onPress={() => setSelectedImage(null)}
+              >
+                <AppIcon
+                  name={'X'}
+                  size={ICON_SIZE.xs}
+                  color={COLORS.white}
+                  strokeWidth={2.5}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
-      {/* Bottom Area: Input Bar or Locked Notice */}
-      {isLocked ? (
-        <View style={styles.lockedContainer}>
-          <AppIcon
-            name={'Lock'}
-            size={18}
-            color={COLORS.grey500}
-            style={{ marginRight: 8 }}
-          />
-          <AppText style={styles.lockedText}>
-            Chat is locked because this shipment is completed.
-          </AppText>
-        </View>
-      ) : (
-        <View style={styles.footer}>
-          <View style={{ flex: 1 }}>
-            <Input
-              placeholder="Type a message..."
-              value={inputText}
-              onChangeText={text => { setInputText(text); updateTyping(text); }}
-              multiline
-              containerStyle={{ marginBottom: 0 }}
-            />
-          </View>
+        {/* Bottom Area: Input Bar or Locked Notice */}
 
-          <TouchableOpacity
-            onPress={() => setShowPhotoSheet(!showPhotoSheet)}
-            style={styles.squareActionBtn}
-            activeOpacity={0.7}
-          >
-            <AppIcon
-              name={'Upload'}
-              size={ICON_SIZE.sm}
-              color={COLORS.textSecondary}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.squareActionBtn,
-              styles.sendBtn,
-              (!canSend || sending) && styles.disabledSendBtn,
-            ]}
-            onPress={handleSend}
-            disabled={sending || !canSend}
-            activeOpacity={0.8}
-          >
-            {sending ? (
-              <ActivityIndicator color={COLORS.white} size="small" />
-            ) : (
-              <AppIcon name={'Send'} size={ICON_SIZE.sm} color={COLORS.white} />
-            )}
-          </TouchableOpacity>
-        </View>
-      )}
+        <ChatInputBar
+          isLocked={isLocked}
+          inputText={inputText}
+          setInputText={(text: string) => { setInputText(text); updateTyping(text); }}
+          setShowPhotoSheet={setShowPhotoSheet}
+          showPhotoSheet={showPhotoSheet}
+          canSend={canSend}
+          sending={sending}
+          handleSend={handleSend}
+        />
+      </View>
 
       {showPhotoSheet && !isLocked && (
         <Suspense fallback={null}>
@@ -356,6 +372,15 @@ const ChatDetails = () => {
           />
         </Suspense>
       )}
+
+      <Suspense fallback={null}>
+        <ImageViewer
+          visible={imageViewerVisible}
+          image={chatselectedImage}
+          title="Image"
+          onClose={() => setImageViewerVisible(false)}
+        />
+      </Suspense>
     </KeyboardAvoidingView>
   );
 };

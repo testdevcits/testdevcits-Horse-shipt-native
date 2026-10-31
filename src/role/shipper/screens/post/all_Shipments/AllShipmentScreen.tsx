@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 import {
   AppText,
   Input,
@@ -109,6 +109,10 @@ export const AllShipmentScreen: React.FC<AllShipmentScreenProps> = ({
           paddingTop: 10,
         }}
         scrollEnabled={false}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
     </View>
   );

@@ -1,18 +1,27 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { View, ScrollView, Image, ActivityIndicator } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 // Custom Design Systems
-import { COLORS } from '../../../../constants'; // Adjust relative path as needed
+import { COLORS } from '../../../../constants';
 import AppText from '../../../../components/common/AppText';
-import { useDriverMe } from '../../../../hooks/useDriverMe'; // Import our GET driver/me hook
+import { useDriverMe } from '../../../../hooks/useDriverMe';
 import styles from './styles.profile';
 import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
-import { Button } from '../../../../components';
+import { Button, ProfileSkeleton } from '../../../../components';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { logoutUser } from '../../../../redux/slices/authSlice';
 import AppIcon from '../../../../components/app_icon/AppIcon';
-
-// Profile Theme Colors mapped to match the gold/beige screenshot details
+import CompletedShipments from './components/CompletedShipments';
+import driverService from '../../../../api/services/driverService';
+import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
 
 const Profile = () => {
   const ConfirmationModal = lazy(
@@ -21,19 +30,86 @@ const Profile = () => {
         '../../../../components/common/ConfirmationModal/ConfirmationModal'
       ),
   );
-  const { driver, allShipments, loading, refresh: _refresh } = useDriverMe();
+  const { driver, allShipments, loading, refresh } = useDriverMe();
   const dispatch = useAppDispatch();
 
   // Extract completed shipments count
   const completedShipments = allShipments.filter(
     shipment =>
       shipment?.tripStatus === 'delivered' ||
-      shipment.tripStatus === 'completed',
+      shipment?.tripStatus === 'completed',
   );
-  const completedCount = completedShipments.length;
+  const completedCount = completedShipments?.length;
 
   // State to control your custom confirmation modal
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+
+  const handleProfilePhotoPress = async () => {
+    if (isUploadingPhoto) return;
+
+    setIsUploadingPhoto(true);
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        mediaType: 'photo',
+        compressImageQuality: 0.8,
+      });
+
+      if (!image.path) {
+        showErrorToast('Upload Error', 'Could not read the selected image.');
+        return;
+      }
+
+      if (image.size && image.size > 1 * 1024 * 1024) {
+        showErrorToast(
+          'File Too Large',
+          'Selected profile photo must be 1 MB or less.',
+        );
+        return;
+      }
+
+      const imageMime = image.mime || 'image/jpeg';
+      const imageExtension = imageMime.split('/')[1] || 'jpeg';
+      const formData = new FormData();
+      formData.append('image', {
+        uri:
+          Platform.OS === 'android'
+            ? image.path
+            : image.path.replace('file://', ''),
+        type: imageMime,
+        name:
+          image.filename || `driver-profile-${Date.now()}.${imageExtension}`,
+      } as any);
+
+      const response = await driverService.updateProfilePhoto(formData);
+      if (!response?.success) {
+        showErrorToast(
+          'Upload Error',
+          response?.message || 'Failed to update profile photo.',
+        );
+        return;
+      }
+
+      await refresh();
+      showSuccessToast('Success', 'Profile photo updated successfully.');
+    } catch (error: any) {
+      if (
+        error?.message !== 'User cancelled image selection' &&
+        error?.code !== 'E_PICKER_CANCELLED'
+      ) {
+        console.error('Driver profile photo upload error:', error);
+        showErrorToast(
+          'Upload Error',
+          error?.message || 'Failed to update profile photo.',
+        );
+      }
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
 
   const handleLogoutConfirm = async () => {
     setIsLogoutModalVisible(false); // 1. Close UI Modal
@@ -53,22 +129,20 @@ const Profile = () => {
   };
 
   if (loading && !driver) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
+    return <ProfileSkeleton />;
   }
 
   // Fallback monogram if driver profile image does not exist
-  const firstLetter = driver?.name ? driver.name.charAt(0).toUpperCase() : 'D';
+  const firstLetter = driver?.name
+    ? driver?.name?.charAt(0)?.toUpperCase()
+    : 'D';
 
   return (
     <View style={styles.safeArea}>
       {/* 1. Global Header Component rendered at the top of the screen */}
       <DriverHeader
-        name={driver?.name || 'Test Driver'}
-        statusText={driver?.driverStatus || 'ON TRIP'}
+        name={driver?.name || 'Driver'}
+        statusText={driver?.driverStatus || 'Not Available'}
         profileImageUrl={driver?.profileImage?.url}
         isOnline={driver?.isActive !== false}
       />
@@ -81,7 +155,13 @@ const Profile = () => {
         {/* Main Header Card */}
         <View style={styles.mainCard}>
           {/* Avatar Area */}
-          <View style={styles.avatarWrapper}>
+          <TouchableOpacity
+            style={styles.avatarWrapper}
+            onPress={handleProfilePhotoPress}
+            disabled={isUploadingPhoto}
+            accessibilityRole="button"
+            accessibilityLabel="Change profile photo"
+          >
             {driver?.profileImage?.url ? (
               <Image
                 source={{ uri: driver.profileImage.url }}
@@ -92,7 +172,16 @@ const Profile = () => {
                 <AppText style={styles.monogramText}>{firstLetter}</AppText>
               </View>
             )}
-          </View>
+            {isUploadingPhoto ? (
+              <View style={styles.avatarUploadingOverlay}>
+                <ActivityIndicator color={COLORS.white} />
+              </View>
+            ) : (
+              <View style={styles.avatarCameraBadge}>
+                <AppIcon name="Camera" size={14} color={COLORS.white} />
+              </View>
+            )}
+          </TouchableOpacity>
 
           {/* Driver Metadata */}
           <AppText style={styles.driverName}>
@@ -103,7 +192,9 @@ const Profile = () => {
             <View style={styles.statusDot} />
             <AppText style={styles.statusText}>
               {driver?.driverStatus
-                ? driver.driverStatus.replace(/([A-Z])/g, ' $1').toUpperCase()
+                ? driver?.driverStatus
+                    ?.replace(/([A-Z])/g, ' $1')
+                    ?.toUpperCase()
                 : 'ON TRIP'}
             </AppText>
           </View>
@@ -203,42 +294,10 @@ const Profile = () => {
         </View>
 
         {/* Completed Shipments Section */}
-        <View style={styles.detailsCard}>
-          <View style={styles.detailsHeader}>
-            <View style={styles.row}>
-              <AppText style={styles.detailsHeaderTitle}>
-                Completed Shipments
-              </AppText>
-              <View style={styles.completedBadgeCount}>
-                <AppText style={styles.badgeCountText}>
-                  {completedCount}
-                </AppText>
-              </View>
-            </View>
-          </View>
-          <View style={styles.shipmentsBody}>
-            {completedCount === 0 ? (
-              <View style={styles.emptyContainer}>
-                <View style={styles.emptyIconBox}>
-                  <AppIcon name={'Box'} size={24} color={COLORS.primary} />
-                </View>
-                <AppText style={styles.emptyText}>
-                  No completed shipments yet
-                </AppText>
-              </View>
-            ) : (
-              completedShipments.map((shipment, _index) => (
-                <View key={shipment._id} style={styles.completedShipmentRow}>
-                  <AppIcon name={'Box'} size={18} color={COLORS.primary} />
-                  <AppText style={styles.completedShipmentText}>
-                    {shipment.shipment.pickupLocation} ➔{' '}
-                    {shipment.shipment.deliveryLocation}
-                  </AppText>
-                </View>
-              ))
-            )}
-          </View>
-        </View>
+        <CompletedShipments
+          completedShipments={completedShipments}
+          completedCount={completedCount}
+        />
 
         {/* Action Logout Button */}
 

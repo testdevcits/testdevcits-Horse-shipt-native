@@ -170,15 +170,15 @@ export interface NewShipmentForm {
   pickupLat: number;
   pickupLng: number;
   pickupTimeOption: string;
-  pickupStartDate: Date;
-  pickupEndDate: Date;
+  pickupStartDate: Date | null;
+  pickupEndDate: Date | null;
 
   deliveryLocation: string;
   deliveryLat: number;
   deliveryLng: number;
   deliveryTimeOption: string;
-  deliveryStartDate: Date;
-  deliveryEndDate: Date;
+  deliveryStartDate: Date | null;
+  deliveryEndDate: Date | null;
 
   numberOfHorses: number;
   additionalInfo: string;

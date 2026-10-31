@@ -6,15 +6,13 @@ import axios, {
 } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from '../app/store';
-import { logoutUser } from '../redux/slices/authSlice';
-import Toast from 'react-native-toast-message';
-import NetInfo from '@react-native-community/netinfo';
-import { BASE_URL } from '../config/constants';
+import { triggerSessionExpired } from '../redux/slices/authSlice';
+import { API_ORIGIN } from '../config/constants';
 import { showErrorToast } from '../utils/toast';
 
 const axiosClient: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 15000,
+  baseURL: API_ORIGIN,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -24,22 +22,6 @@ const axiosClient: AxiosInstance = axios.create({
 // 1. Request Interceptor
 axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const netState = await NetInfo.fetch();
-    if (
-      netState.isConnected === false ||
-      netState.isInternetReachable === false
-    ) {
-      Toast.show({
-        type: 'error',
-        text1: 'No Internet Connection',
-        text2: 'Please check your network connection and try again.',
-      });
-      return Promise.reject({
-        message: 'No internet connection. Please check your network.',
-        isOffline: true,
-      });
-    }
-
     // Auth Token Logic
     const state = store.getState();
     const token =
@@ -79,7 +61,7 @@ axiosClient.interceptors.request.use(
       } else {
         console.log('   ║ 📦 PAYLOAD: No Body');
       }
-      console.log('   ╚══════════════════════════════════════╝');
+      // console.log('   ╚══════════════════════════════════════╝');
     }
 
     return config;
@@ -128,14 +110,21 @@ axiosClient.interceptors.response?.use(
         'An error occurred',
     );
 
-    showErrorToast('Error', errorMessage);
+    const state = store.getState();
+    const isSession401 = status === 401 && Boolean(state.auth.token);
+
+    // Suppress generic error toast for 401 session expiration, as custom popup will be shown
+    if (!isSession401) {
+      showErrorToast('Error', errorMessage);
+    }
 
     // Handle 401 Unauthorized (Session Expired vs Invalid Credentials)
     if (status === 401) {
-      const state = store.getState();
       if (state.auth.token) {
-        console.warn('⚠️ Session Expired: Dispatching global logout...');
-        store.dispatch(logoutUser());
+        console.warn(
+          '⚠️ Session Expired: Displaying custom session expired modal...',
+        );
+        store.dispatch(triggerSessionExpired());
         return Promise.reject({
           message: 'Session expired. Please login again.',
           status: 401,

@@ -24,15 +24,14 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   imageContainer: {
-    height: 250,
+    height: 280,
     width: '100%',
-    backgroundColor: COLORS.grey100,
+    backgroundColor: COLORS.white,
     position: 'relative',
   },
   horseBanner: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
   },
   statusPill: {
     position: 'absolute',

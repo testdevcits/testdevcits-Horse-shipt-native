@@ -44,13 +44,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -45, // Half of height to center on the edge
   },
+  logoIconKeyboard: {
+    width: 48,
+    height: 48,
+    marginTop: -24,
+  },
   scrollContent: {
     paddingTop: SPACING.xl,
     paddingBottom: Platform.OS === 'ios' ? SPACING.xxxl : SPACING.xl,
     flexGrow: 1,
   },
+  scrollContentKeyboard: {
+    paddingTop: SPACING.xs,
+    paddingBottom: 160,
+  },
   textHeader: {
     marginBottom: SPACING.xl,
+  },
+  textHeaderKeyboard: {
+    marginBottom: SPACING.xs,
   },
   welcomeTitle: {
     fontSize: FONT_SIZE.heading, // 32
@@ -133,7 +145,7 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.divider || '#E5E7EB',
+    backgroundColor: COLORS.divider,
   },
   dividerText: {
     marginHorizontal: SPACING.md,
@@ -147,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.divider || '#E5E7EB',
+    borderColor: COLORS.divider,
     height: 50,
     borderRadius: RADIUS.md,
   },
@@ -160,6 +172,29 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.md,
     fontFamily: FONTS.semiBold,
     color: COLORS.textPrimary,
+  },
+  googleLoadingOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.overlay50,
+    padding: SPACING.xl,
+  },
+  googleLoadingCard: {
+    width: '100%',
+    maxWidth: 280,
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
+    paddingHorizontal: SPACING.xxl,
+    paddingVertical: SPACING.xxl,
+  },
+  googleLoadingText: {
+    fontSize: FONT_SIZE.md,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.lg,
+    textAlign: 'center',
   },
   footer: {
     flexDirection: 'row',
@@ -216,7 +251,7 @@ const styles = StyleSheet.create({
   },
   roleButtonsRow: {
     flexDirection: 'row',
-    backgroundColor: COLORS.grey100 || '#F3F4F6',
+    backgroundColor: COLORS.grey100,
     borderRadius: RADIUS.md,
     padding: 4,
     justifyContent: 'space-between',
@@ -231,7 +266,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm,
   },
   roleTabBtnActive: {
-    backgroundColor: COLORS.primary || '#8B4513',
+    backgroundColor: COLORS.primary,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,

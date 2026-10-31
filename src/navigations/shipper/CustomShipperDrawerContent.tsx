@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { lazy, memo, Suspense, useEffect, useState } from 'react';
+import { View } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
@@ -11,120 +11,29 @@ import {
   MessageSquare,
   Settings,
   ShieldCheck,
-  LogOut,
-  ChevronRight,
-  ChevronDown,
   Locate,
   FileText,
   Edit3,
+  Star,
+  Truck,
+  DollarSign,
 } from 'lucide-react-native';
-import { COLORS } from '../../constants/colors';
-import {
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-  RADIUS,
-} from '../../constants/dimensions';
-import { FONTS } from '../../constants/fonts';
+
 import imageIndex from '../../assets/images/imageIndex';
 import { AppText } from '../../components';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { logoutUser } from '../../redux/slices/authSlice';
 
-interface DrawerItemProps {
-  label: string;
-  IconComponent?: React.ElementType;
-  imageSource?: any;
-  onPress: () => void;
-  isActive?: boolean;
-  hasChevron?: boolean;
-  isExpanded?: boolean;
-}
+import styles from './components/styles.shipperdrawer';
+import ShipperDrawerHeader from './components/ShipperDrawerHeader';
+import {
+  ShipperDrawerMenuItem,
+  ShipperDrawerSubMenuItem,
+} from './components/ShipperDrawerItem';
+import ShipperDrawerFooter from './components/ShipperDrawerFooter';
 
 const ConfirmationModal = lazy(
   () => import('../../components/common/ConfirmationModal/ConfirmationModal'),
-);
-
-const ShipperDrawerMenuItem: React.FC<DrawerItemProps> = ({
-  label,
-  IconComponent,
-  imageSource,
-  onPress,
-  isActive,
-  hasChevron,
-  isExpanded,
-}) => (
-  <TouchableOpacity
-    style={[styles.menuItem, isActive && styles.menuItemActive]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    <View style={styles.iconContainer}>
-      {imageSource ? (
-        <Image
-          source={imageSource}
-          style={styles.menuImage}
-          resizeMode="contain"
-        />
-      ) : IconComponent ? (
-        <IconComponent
-          size={20}
-          color={isActive ? COLORS.brandBrown : COLORS.grey700}
-          strokeWidth={1.8}
-        />
-      ) : null}
-    </View>
-    <AppText style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
-      {label}
-    </AppText>
-    {hasChevron ? (
-      isExpanded ? (
-        <ChevronDown
-          size={18}
-          color={isActive ? COLORS.brandBrown : COLORS.textLight}
-          style={styles.chevron}
-        />
-      ) : (
-        <ChevronRight
-          size={18}
-          color={isActive ? COLORS.brandBrown : COLORS.textLight}
-          style={styles.chevron}
-        />
-      )
-    ) : (
-      isActive && (
-        <ChevronRight
-          size={18}
-          color={COLORS.brandBrown}
-          style={styles.chevron}
-        />
-      )
-    )}
-  </TouchableOpacity>
-);
-
-interface SubMenuItemProps {
-  label: string;
-  onPress: () => void;
-  isActive?: boolean;
-}
-
-const ShipperDrawerSubMenuItem: React.FC<SubMenuItemProps> = ({
-  label,
-  onPress,
-  isActive,
-}) => (
-  <TouchableOpacity
-    style={[styles.subMenuItem, isActive && styles.subMenuItemActive]}
-    onPress={onPress}
-    activeOpacity={0.7}
-  >
-    <AppText
-      style={[styles.subMenuLabel, isActive && styles.subMenuLabelActive]}
-    >
-      {isActive && '•'} {label}
-    </AppText>
-  </TouchableOpacity>
 );
 
 const CustomShipperDrawerContent: React.FC<
@@ -132,17 +41,21 @@ const CustomShipperDrawerContent: React.FC<
 > = props => {
   const { navigation, state } = props;
   const dispatch = useAppDispatch();
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
-  const [isShipmentExpanded, setIsShipmentExpanded] = React.useState(true);
+  const { user } = useAppSelector(reduxState => reduxState?.auth);
+
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isShipmentExpanded, setIsShipmentExpanded] = useState(false);
 
   const currentDrawerRoute = state?.routes[state?.index]?.name;
-  const mainTabsRoute = state?.routes?.find(r => r.name === 'MainTabs');
+  const mainTabsRoute = state?.routes?.find((r: any) => r.name === 'MainTabs');
   const mainTabsState = mainTabsRoute?.state;
   const currentActiveTab = mainTabsState?.routes
     ? mainTabsState.routes[mainTabsState.index ?? 0]?.name
     : 'Home';
 
-  const postRoute = mainTabsState?.routes?.find((r: any) => r.name === 'Post');
+  const postRoute = mainTabsState?.routes?.find(
+    (r: any) => r.name === 'Shipments',
+  );
   const activeSubTab = (postRoute?.params as any)?.initialTab || 'my_shipments';
 
   const isTabActive = (tabName: string) => {
@@ -168,26 +81,28 @@ const CustomShipperDrawerContent: React.FC<
     dispatch(logoutUser());
   };
 
-  const isPostActive = isTabActive('Post');
+  const isPostActive = isTabActive('Shipments');
+
+  useEffect(() => {
+    setIsShipmentExpanded(isPostActive);
+  }, [isPostActive]);
 
   return (
     <View style={styles.safeArea}>
-      {/* Header Section */}
-      <View style={styles.headerContainer}>
-        <Image
-          source={imageIndex.LogoIcon}
-          style={styles.logoIcon}
-          resizeMode="contain"
-        />
-        <AppText style={styles.logoText}>HorseShipt</AppText>
-      </View>
+      {/* Header Sub-Component */}
+      <ShipperDrawerHeader
+        user={user}
+        onPressProfile={() => navigateToTab('Home')}
+      />
 
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.drawerScroll}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.menuContainer}>
+        {/* SECTION 1: MAIN MENU */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>MAIN MENU</AppText>
           <ShipperDrawerMenuItem
             label="Home"
             IconComponent={Home}
@@ -203,7 +118,7 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => {
               setIsShipmentExpanded(prev => !prev);
               if (!isPostActive) {
-                navigateToTab('Post', { initialTab: 'my_shipments' });
+                navigateToTab('Shipments', { initialTab: 'my_shipments' });
               }
             }}
           />
@@ -213,21 +128,21 @@ const CustomShipperDrawerContent: React.FC<
                 label="My Shipment"
                 isActive={isPostActive && activeSubTab === 'my_shipments'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'my_shipments' })
+                  navigateToTab('Shipments', { initialTab: 'my_shipments' })
                 }
               />
               <ShipperDrawerSubMenuItem
                 label="Quote Received"
                 isActive={isPostActive && activeSubTab === 'quote_request'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'quote_request' })
+                  navigateToTab('Shipments', { initialTab: 'quote_request' })
                 }
               />
               <ShipperDrawerSubMenuItem
                 label="All Shipments"
                 isActive={isPostActive && activeSubTab === 'all_shipment'}
                 onPress={() =>
-                  navigateToTab('Post', { initialTab: 'all_shipment' })
+                  navigateToTab('Shipments', { initialTab: 'all_shipment' })
                 }
               />
             </View>
@@ -239,42 +154,31 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => navigateToTab('MyQuotes')}
           />
           <ShipperDrawerMenuItem
-            label="My Vehicles"
-            imageSource={imageIndex.vehicles}
-            isActive={isDrawerRouteActive('MyVehicles')}
-            onPress={() => navigateToRoute('MyVehicles')}
-          />
-          <ShipperDrawerMenuItem
-            label="Truck Driver"
-            IconComponent={User}
-            isActive={isDrawerRouteActive('TruckDriver')}
-            onPress={() => navigateToRoute('TruckDriver')}
-          />
-          <ShipperDrawerMenuItem
             label="Chat"
             IconComponent={MessageSquare}
             isActive={isTabActive('Chats')}
             onPress={() => navigateToTab('Chats')}
           />
-          <ShipperDrawerMenuItem
-            label="Earnings"
-            imageSource={imageIndex.earnings}
-            isActive={isDrawerRouteActive('Earnings')}
-            onPress={() => navigateToRoute('Earnings')}
-          />
-          <ShipperDrawerMenuItem
-            label="Google review"
-            imageSource={imageIndex.googlereview}
-            isActive={isDrawerRouteActive('GoogleReview')}
-            onPress={() => navigateToRoute('GoogleReview')}
-          />
-          <ShipperDrawerMenuItem
-            label="Settings"
-            IconComponent={Settings}
-            isActive={isDrawerRouteActive('Settings')}
-            onPress={() => navigateToRoute('Settings')}
-          />
+        </View>
 
+        <View style={styles.divider} />
+
+        {/* SECTION 2: FLEET & OPERATIONS */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>FLEET & OPERATIONS</AppText>
+          <ShipperDrawerMenuItem
+            label="My Vehicles"
+            imageSource={imageIndex?.vehicles}
+            IconComponent={Truck}
+            isActive={isDrawerRouteActive('MyVehicles')}
+            onPress={() => navigateToRoute('MyVehicles')}
+          />
+          <ShipperDrawerMenuItem
+            label="Truck Drivers"
+            IconComponent={User}
+            isActive={isDrawerRouteActive('TruckDriver')}
+            onPress={() => navigateToRoute('TruckDriver')}
+          />
           <ShipperDrawerMenuItem
             label="Preferred Areas"
             IconComponent={Locate}
@@ -282,7 +186,34 @@ const CustomShipperDrawerContent: React.FC<
             onPress={() => navigateToRoute('PreferredAreas')}
           />
           <ShipperDrawerMenuItem
-            label="Privacy policy"
+            label="Earnings"
+            imageSource={imageIndex?.earnings}
+            IconComponent={DollarSign}
+            isActive={isDrawerRouteActive('Earnings')}
+            onPress={() => navigateToRoute('Earnings')}
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* SECTION 3: ACCOUNT & LEGAL */}
+        <View style={styles.sectionContainer}>
+          <AppText style={styles.sectionTitle}>ACCOUNT & LEGAL</AppText>
+          <ShipperDrawerMenuItem
+            label="Google Review"
+            imageSource={imageIndex?.googlereview}
+            IconComponent={Star}
+            isActive={isDrawerRouteActive('GoogleReview')}
+            onPress={() => navigateToRoute('GoogleReview')}
+          />
+          <ShipperDrawerMenuItem
+            label="Notifications Settings"
+            IconComponent={Settings}
+            isActive={isDrawerRouteActive('Settings')}
+            onPress={() => navigateToRoute('Settings')}
+          />
+          <ShipperDrawerMenuItem
+            label="Privacy Policy"
             IconComponent={ShieldCheck}
             isActive={isDrawerRouteActive('PrivacyPolicy')}
             onPress={() => navigateToRoute('PrivacyPolicy')}
@@ -292,25 +223,15 @@ const CustomShipperDrawerContent: React.FC<
             IconComponent={FileText}
             isActive={isDrawerRouteActive('TermsAndConditions')}
             onPress={() => navigateToRoute('TermsAndConditions')}
+            isLast={true}
           />
         </View>
       </DrawerContentScrollView>
 
-      {/* Footer / Logout */}
-      <View style={styles.footerContainer}>
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => setIsLogoutModalVisible(true)}
-          activeOpacity={0.7}
-        >
-          <View style={styles.iconContainer}>
-            <LogOut size={20} color={COLORS.error} strokeWidth={1.8} />
-          </View>
-          <AppText style={[styles.menuLabel, { color: COLORS.error }]}>
-            Logout
-          </AppText>
-        </TouchableOpacity>
-      </View>
+      {/* Footer Sub-Component */}
+      <ShipperDrawerFooter
+        onLogoutPress={() => setIsLogoutModalVisible(true)}
+      />
 
       {/* Logout Confirmation Modal */}
       <Suspense fallback={null}>
@@ -319,7 +240,7 @@ const CustomShipperDrawerContent: React.FC<
           onClose={() => setIsLogoutModalVisible(false)}
           onConfirm={handleLogoutConfirm}
           title="Log out of your account?"
-          description="You will need to sign back in with your credentials to access your profile and saved settings."
+          description="You will need to sign back in with your credentials to access your shipper profile."
           confirmText="Logout"
           cancelText="Cancel"
           type="danger"
@@ -329,102 +250,4 @@ const CustomShipperDrawerContent: React.FC<
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingTop: SPACING.xl,
-    paddingBottom: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey100,
-  },
-  logoIcon: {
-    width: ICON_SIZE.xl,
-    height: ICON_SIZE.xl,
-    marginRight: SPACING.xs,
-  },
-  logoText: {
-    fontSize: FONT_SIZE.title,
-    fontFamily: FONTS.bold,
-    color: COLORS.grey800,
-    letterSpacing: -0.5,
-  },
-  drawerScroll: {
-    paddingTop: SPACING.xs,
-  },
-  menuContainer: {
-    paddingHorizontal: 0,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: SPACING.md2,
-    paddingHorizontal: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey50,
-  },
-  menuItemActive: {
-    backgroundColor: COLORS.goldLightBg,
-    borderRadius: RADIUS.md,
-  },
-  iconContainer: {
-    width: ICON_SIZE.lg,
-    height: ICON_SIZE.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: SPACING.xs,
-  },
-  menuImage: {
-    width: SPACING.xl,
-    height: SPACING.xl,
-  },
-  menuLabel: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-    color: COLORS.grey700,
-    flex: 1,
-  },
-  menuLabelActive: {
-    color: COLORS.brandBrown,
-    fontFamily: FONTS.bold,
-  },
-  chevron: {
-    marginLeft: 'auto',
-  },
-  subMenuContainer: {
-    backgroundColor: COLORS.white,
-    paddingBottom: SPACING.xs,
-  },
-  subMenuItem: {
-    paddingVertical: SPACING.sm + 2,
-    paddingLeft: SPACING.xl + 24,
-    paddingRight: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  subMenuItemActive: {
-    // backgroundColor: COLORS.goldLightBg,
-  },
-  subMenuLabel: {
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.medium,
-    color: COLORS.grey700,
-  },
-  subMenuLabelActive: {
-    color: COLORS.brandBrown,
-    fontFamily: FONTS.bold,
-  },
-  footerContainer: {
-    paddingVertical: SPACING.xs,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.grey100,
-  },
-});
-
-export default CustomShipperDrawerContent;
+export default memo(CustomShipperDrawerContent);

@@ -63,8 +63,6 @@ export const useShippers = () => {
               combinedMap.set(String(id), {
                 ...existing,
                 ...s,
-                isWishlisted: true,
-                isFavorite: true,
               });
             }
           });
@@ -87,10 +85,10 @@ export const useShippers = () => {
 
   // Map shippers with real-time wishlist state from Redux
   const shippersWithFavState = useMemo(() => {
-    const wishSet = new Set(wishlistIds);
+    const wishSet = new Set((wishlistIds || []).map(id => String(id)));
     return shippers.map(s => {
-      const sId = s.id || s._id;
-      const isFav = wishSet.has(sId) || s?.isWishlisted === true;
+      const sId = String(s.id || s._id || '');
+      const isFav = wishSet.has(sId);
       const img =
         typeof s?.profileImage === 'string'
           ? s.profileImage
@@ -110,7 +108,7 @@ export const useShippers = () => {
         profileImage: img,
         name: shipperName,
         region: locationRegion,
-        rating: Number(s?.rating) || 5,
+        rating: Number(s?.rating) || 0,
         reviewCount: Number(s?.reviewCount) || 0,
         isFavorite: isFav,
         isWishlisted: isFav,
@@ -122,7 +120,12 @@ export const useShippers = () => {
     (shipperItem: any) => {
       const targetId = shipperItem?.id || shipperItem?._id;
       if (targetId) {
-        dispatch(toggleWishlistThunk({ shipperId: targetId, shipperItem }));
+        dispatch(
+          toggleWishlistThunk({
+            shipperId: String(targetId),
+            shipperItem,
+          }),
+        );
       }
     },
     [dispatch],

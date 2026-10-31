@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   fullMap: { flex: 1 },
   searchHeader: {
     position: 'absolute',
-    top: 0,
+    top: Platform.OS === 'ios' ? 50 : 0,
     left: 0,
     right: 0,
     paddingHorizontal: SPACING.lg,
@@ -225,18 +225,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey50,
     borderRadius: RADIUS.xs,
     marginTop: 10,
-  },
-  confirmButton: {
-    backgroundColor: COLORS.primary,
-    height: 58,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: COLORS.white,
-    fontSize: FONT_SIZE.sm,
-    fontFamily: FONTS.bold,
   },
 });
 

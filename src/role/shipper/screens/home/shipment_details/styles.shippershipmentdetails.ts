@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   heroBannerContainer: {
     width: '100%',
-    height: 220,
+    height: 260,
     position: 'relative',
   },
   heroBannerImage: {
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   horseSpecsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: SPACING.sm,
+    gap: 2,
     marginBottom: SPACING.md,
   },
   horseSpecBox: {

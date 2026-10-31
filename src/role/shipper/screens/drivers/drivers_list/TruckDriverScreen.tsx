@@ -1,5 +1,11 @@
 import React, { useCallback, lazy, Suspense } from 'react';
-import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+  Platform,
+} from 'react-native';
 import {
   AppHeader,
   AppText,
@@ -55,7 +61,9 @@ const TruckDriverScreen = () => {
       {/* Header Banner Card with Metrics */}
       <View style={styles.headerBannerCard}>
         <View style={styles.topTitleRow}>
-          <AppText style={styles.topTitle}>Truck Driver Management</AppText>
+          <AppText style={styles.topTitle} numberOfLines={1}>
+            Truck Driver Management
+          </AppText>
           <TouchableOpacity
             style={styles.addDriverBtn}
             onPress={() => {
@@ -252,6 +260,10 @@ const TruckDriverScreen = () => {
             tintColor={COLORS.primary}
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* Add / Edit Driver Modal */}

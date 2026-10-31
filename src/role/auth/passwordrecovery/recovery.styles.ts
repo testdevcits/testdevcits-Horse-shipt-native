@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   recaptchaLogo: { width: RADIUS.pill, height: RADIUS.pill },
   submitBtn: {
     backgroundColor: COLORS.primary,
-    height: SIZES.headerHeight,
+
     borderRadius: RADIUS.md,
   },
 });

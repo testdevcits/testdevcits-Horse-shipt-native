@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Modal,
+  Platform,
 } from 'react-native';
 import { COLORS, ICON_SIZE, SCREEN_WIDTH } from '../../../../../constants';
 import { useShippers } from './useShippers';
@@ -201,6 +202,10 @@ const TopShippersScreen = () => {
             message="Try adjusting your filters or search query."
           />
         }
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
       />
 
       {/* Premium Filter Modal */}

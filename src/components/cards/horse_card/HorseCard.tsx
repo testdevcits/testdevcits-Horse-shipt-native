@@ -37,7 +37,7 @@ const HorseCard = memo(({ item, onEdit, onDelete }: HorseCardProps) => {
           ) : (
             <View style={styles.avatarPlaceholder}>
               <Image
-                source={imageIndex.addedithorseiocn}
+                source={imageIndex?.addedithorseiocn}
                 style={styles.avatarPlaceholderIcon}
                 resizeMode="contain"
               />

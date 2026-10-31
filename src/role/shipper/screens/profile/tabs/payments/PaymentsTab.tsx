@@ -254,7 +254,6 @@ const PaymentsTab: React.FC<Props> = ({
         onRequestClose={() => setWebViewUrl(null)}
       >
         <SafeAreaView style={modalStyles.safeArea}>
-          <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
           <View style={modalStyles.headerRow}>
             <TouchableOpacity
               style={modalStyles.backBtn}

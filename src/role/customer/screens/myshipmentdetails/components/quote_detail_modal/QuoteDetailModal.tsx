@@ -1,25 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useEffect, useState, useRef, memo } from 'react';
+import { Modal, View, TouchableOpacity, ScrollView } from 'react-native';
 
 import { formatDate } from '../../../../../../utils/helpers';
-import SignatureScreen from 'react-native-signature-canvas';
-import {
-  COLORS,
-  FONTS,
-  SPACING,
-  FONT_SIZE,
-  ICON_SIZE,
-} from '../../../../../../constants';
-import { AppText, Input } from '../../../../../../components';
+import { COLORS, FONTS, SPACING, ICON_SIZE } from '../../../../../../constants';
+import { AppText } from '../../../../../../components';
 import { useNavigation } from '@react-navigation/native';
 import customerService from '../../../../../../api/services/customerService';
-import { CardField, useStripe } from '@stripe/stripe-react-native';
+import { useStripe } from '@stripe/stripe-react-native';
 
 import AppIcon, {
   IconName,
@@ -29,6 +16,10 @@ import {
   showErrorToast,
   showSuccessToast,
 } from '../../../../../../utils/toast';
+import CancelModal from './CancelModal';
+import QuoteActionButtons from './QuoteActionButtons';
+import QuoteContractsSection from './QuoteContractsSection';
+import QuoteAcceptanceForm from './QuoteAcceptanceForm';
 
 const SummaryBox = ({
   icon: Icon,
@@ -183,6 +174,7 @@ const QuoteDetailModal = ({
     }
     setCancelReasonError('');
     setLoading(true);
+
     try {
       const res = await customerService.cancelQuote(quote?._id, {
         reason: cancelReason.trim(),
@@ -321,232 +313,23 @@ const QuoteDetailModal = ({
             </View>
 
             {/* CONTRACTS / DOCUMENTS SECTION */}
-            {(quote?.contract?.url ||
-              quote?.contract ||
-              quote?.shipperContract?.url ||
-              quote?.shipperContract) && (
-              <View style={styles.cardContainer}>
-                <AppText style={styles.cardTitle}>
-                  Contracts & Documents
-                </AppText>
-
-                {(quote?.contract?.url ||
-                  typeof quote?.contract === 'string') && (
-                  <TouchableOpacity
-                    style={styles.docItem}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const contractUrl =
-                        typeof quote?.contract === 'string'
-                          ? quote?.contract
-                          : quote?.contract.url;
-                      if (contractUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: contractUrl,
-                          title: 'Shipment Contract',
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <AppIcon
-                          name={'FileText'}
-                          size={ICON_SIZE.sm}
-                          color={COLORS.primary}
-                        />
-                      </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName}>
-                          Shipment Contract
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Official shipment agreement
-                        </AppText>
-                      </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <AppIcon
-                        name={'ChevronRight'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.primary}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
-
-                {(quote?.shipperContract?.url ||
-                  typeof quote?.shipperContract === 'string') && (
-                  <TouchableOpacity
-                    style={[
-                      styles.docItem,
-                      (quote?.contract?.url ||
-                        typeof quote?.contract === 'string') && {
-                        marginTop: SPACING.sm,
-                      },
-                    ]}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      const shipperUrl =
-                        typeof quote?.shipperContract === 'string'
-                          ? quote?.shipperContract
-                          : quote?.shipperContract.url;
-                      const docTitle =
-                        quote?.shipperContract?.originalName || 'Not Available';
-                      if (shipperUrl) {
-                        onClose();
-                        navigation.navigate('PdfViewer', {
-                          url: shipperUrl,
-                          title: docTitle,
-                        });
-                      }
-                    }}
-                  >
-                    <View style={styles.docLeftRow}>
-                      <View style={styles.docIconBox}>
-                        <AppIcon
-                          name={'FileText'}
-                          size={ICON_SIZE.sm}
-                          color={COLORS.primary}
-                        />
-                      </View>
-                      <View style={styles.docInfo}>
-                        <AppText style={styles.docName} numberOfLines={1}>
-                          {quote?.shipperContract?.originalName ||
-                            'Shipper Contract'}
-                        </AppText>
-                        <AppText style={styles.docSub}>
-                          Uploaded contract terms
-                        </AppText>
-                      </View>
-                    </View>
-                    <View style={styles.docActionWrap}>
-                      <AppText style={styles.docActionText}>View</AppText>
-                      <AppIcon
-                        name={'ChevronRight'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.primary}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+            <QuoteContractsSection
+              quote={quote}
+              onClose={onClose}
+              navigation={navigation}
+            />
 
             {/* FORM: ONLY SHOWN IF PENDING */}
             {isPending && (
-              <View style={[styles.cardContainer, styles.highlightCard]}>
-                <View style={styles.highlightHeader}>
-                  <AppIcon
-                    name={'ShieldCheck'}
-                    size={ICON_SIZE.sm}
-                    color={COLORS.primary}
-                  />
-                  <AppText style={styles.highlightTitle}>
-                    Acceptance & Payment
-                  </AppText>
-                </View>
-                <AppText style={styles.highlightSub}>
-                  Enter your card details and sign below to accept this quote?.
-                </AppText>
-
-                {/* 1. STRIPE CARD FIELD */}
-                <View style={styles.inputLabelRow}>
-                  <AppIcon
-                    name={'CreditCard'}
-                    size={ICON_SIZE.sm}
-                    color={COLORS.grey700}
-                  />
-                  <AppText style={styles.inputLabel}>Card Details</AppText>
-                </View>
-                <View style={styles.stripeCardContainer}>
-                  <CardField
-                    postalCodeEnabled={true}
-                    style={styles.stripeCardField}
-                    cardStyle={{
-                      backgroundColor: COLORS.white,
-                      textColor: COLORS.textPrimary,
-                      fontSize: FONT_SIZE.md,
-                    }}
-                    onCardChange={setCardDetails}
-                  />
-                </View>
-
-                {/* 2. SIGNATURE CANVAS */}
-                <View style={styles.signatureHeader}>
-                  <AppText style={styles.inputLabel}>Your Signature *</AppText>
-                  {signature ? (
-                    <View style={styles.capturedBadge}>
-                      <AppIcon
-                        name={'Check'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.white}
-                      />
-                      <AppText style={styles.capturedText}>Captured</AppText>
-                    </View>
-                  ) : (
-                    <AppText style={styles.signatureSub}>
-                      Draw inside box
-                    </AppText>
-                  )}
-                </View>
-                <View style={styles.signatureWrap}>
-                  <SignatureScreen
-                    ref={sigRef}
-                    onBegin={() => setScrollEnabled(false)}
-                    onEnd={() => {
-                      setScrollEnabled(true);
-                      sigRef.current.readSignature();
-                    }}
-                    onOK={setSignature}
-                    webStyle={`.m-signature-pad--footer {display: none;}`}
-                  />
-                </View>
-                {signature && (
-                  <TouchableOpacity
-                    style={styles.clearBtn}
-                    onPress={() => {
-                      sigRef.current.clearSignature();
-                      setSignature(null);
-                    }}
-                  >
-                    <AppIcon
-                      name={'Trash2'}
-                      size={ICON_SIZE.xs}
-                      color={COLORS.error}
-                    />
-                    <AppText style={styles.clearText}>Clear Signature</AppText>
-                  </TouchableOpacity>
-                )}
-
-                {/* 3. TERMS & CONDITIONS CHECKBOX */}
-                <TouchableOpacity
-                  style={styles.termsRow}
-                  activeOpacity={0.8}
-                  onPress={() => setIsAcceptedTerms(!isAcceptedTerms)}
-                >
-                  <View
-                    style={[
-                      styles.checkbox,
-                      isAcceptedTerms && styles.checkboxActive,
-                    ]}
-                  >
-                    {isAcceptedTerms && (
-                      <AppIcon
-                        name={'Check'}
-                        size={ICON_SIZE.xs}
-                        color={COLORS.white}
-                      />
-                    )}
-                  </View>
-                  <AppText style={styles.termsLabel}>
-                    I have reviewed and agree to the terms, conditions, and
-                    cancellation policy.
-                  </AppText>
-                </TouchableOpacity>
-              </View>
+              <QuoteAcceptanceForm
+                sigRef={sigRef}
+                setScrollEnabled={setScrollEnabled}
+                setCardDetails={setCardDetails}
+                signature={signature}
+                setSignature={setSignature}
+                isAcceptedTerms={isAcceptedTerms}
+                setIsAcceptedTerms={setIsAcceptedTerms}
+              />
             )}
 
             {/* NOTES */}
@@ -559,134 +342,38 @@ const QuoteDetailModal = ({
           </ScrollView>
 
           {/* FOOTER ACTIONS */}
-          <View style={styles.footerActionContainer}>
-            {isAccepted && !quote?.isCancelled && (
-              <View style={styles.acceptedContainer}>
-                <View style={styles.successMessageCard}>
-                  <AppIcon
-                    name={'CheckCircle2'}
-                    size={ICON_SIZE.md}
-                    color={COLORS.greenPrimary}
-                  />
-                  <View style={{ flex: 1 }}>
-                    <AppText style={styles.successTitle}>
-                      Quote Accepted & Secured
-                    </AppText>
-                    <AppText style={styles.successSub}>
-                      Your shipment is confirmed.
-                    </AppText>
-                  </View>
-                </View>
-                {isCancellationWindowActive && isCompleted === false && (
-                  <TouchableOpacity
-                    style={styles.cancelBookingBtn}
-                    activeOpacity={0.8}
-                    onPress={() => setIsCancelModalVisible(true)}
-                  >
-                    <AppIcon
-                      name={'AlertCircle'}
-                      size={ICON_SIZE.sm}
-                      color={COLORS.error}
-                    />
-                    <AppText style={styles.cancelBookingText}>
-                      Cancel Shipment
-                    </AppText>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
-
-            {isPending && (
-              <TouchableOpacity
-                style={[
-                  styles.acceptBtn,
-                  (!isAcceptedTerms ||
-                    !signature ||
-                    !cardDetails?.complete ||
-                    loading) &&
-                    styles.disabledBtn,
-                ]}
-                disabled={
-                  !isAcceptedTerms ||
-                  !signature ||
-                  !cardDetails?.complete ||
-                  loading
-                }
-                activeOpacity={0.85}
-                onPress={handleProcessFlow}
-              >
-                {loading ? (
-                  <ActivityIndicator color={COLORS.white} />
-                ) : (
-                  <View style={styles.acceptBtnInner}>
-                    <AppIcon
-                      name={'ShieldCheck'}
-                      size={ICON_SIZE.sm}
-                      color={COLORS.white}
-                    />
-                    <AppText style={styles.acceptBtnText}>
-                      Pay & Accept Quote
-                    </AppText>
-                  </View>
-                )}
-              </TouchableOpacity>
-            )}
-
-            {(isRejected || isCancelled) && (
-              <View style={styles.inactiveState}>
-                <AppText style={styles.inactiveText}>
-                  This quote is no longer active.
-                </AppText>
-              </View>
-            )}
-          </View>
+          <QuoteActionButtons
+            isAccepted={isAccepted}
+            quote={quote}
+            isCancellationWindowActive={isCancellationWindowActive}
+            isCompleted={isCompleted}
+            setIsCancelModalVisible={setIsCancelModalVisible}
+            isPending={isPending}
+            isAcceptedTerms={isAcceptedTerms}
+            signature={signature}
+            cardDetails={cardDetails}
+            loading={loading}
+            handleProcessFlow={handleProcessFlow}
+            isRejected={isRejected}
+            isCancelled={isCancelled}
+          />
         </View>
       </View>
 
       {/* CANCEL MODAL */}
       {isCancelModalVisible && (
-        <Modal visible={isCancelModalVisible} transparent animationType="fade">
-          <View style={styles.promptOverlay}>
-            <View style={styles.promptContent}>
-              <AppText style={styles.promptTitle}>Cancel Shipment</AppText>
-              <AppText style={styles.promptSub}>
-                Please state the reason for cancelling this shipment quote:
-              </AppText>
-              <Input
-                placeholder="Enter reason here..."
-                multiline
-                value={cancelReason}
-                onChangeText={text => {
-                  setCancelReason(text);
-                  if (cancelReasonError) setCancelReasonError('');
-                }}
-                containerStyle={{ marginBottom: SPACING.md }}
-                error={cancelReasonError}
-              />
-              <View style={styles.promptFooter}>
-                <TouchableOpacity
-                  style={styles.promptBtnSecondary}
-                  onPress={() => setIsCancelModalVisible(false)}
-                >
-                  <AppText style={styles.promptBtnTextSecondary}>
-                    Keep Booking
-                  </AppText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.promptBtnPrimary}
-                  onPress={handleCancelShipment}
-                >
-                  <AppText style={styles.promptBtnTextPrimary}>
-                    Confirm Cancel
-                  </AppText>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        <CancelModal
+          isCancelModalVisible={isCancelModalVisible}
+          cancelReason={cancelReason}
+          setCancelReason={setCancelReason}
+          cancelReasonError={cancelReasonError}
+          setCancelReasonError={setCancelReasonError}
+          setIsCancelModalVisible={setIsCancelModalVisible}
+          handleCancelShipment={handleCancelShipment}
+        />
       )}
     </Modal>
   );
 };
 
-export default QuoteDetailModal;
+export default memo(QuoteDetailModal);

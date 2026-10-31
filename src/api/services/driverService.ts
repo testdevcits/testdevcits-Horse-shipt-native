@@ -5,6 +5,7 @@ import {
   MeResponse,
 } from '../../types/driver';
 import axiosClient from '../axiosClient';
+import API_ENDPOINTS from '../endpoints';
 
 const checkIsDriver = async (): Promise<boolean> => {
   try {
@@ -26,8 +27,18 @@ const checkIsDriver = async (): Promise<boolean> => {
 };
 
 const getMe = async (): Promise<MeResponse> => {
-  return axiosClient.get('/api/driver/driver/me');
+  return axiosClient.get(API_ENDPOINTS.DRIVER.ME);
 };
+
+const updateProfilePhoto = async (formData: FormData): Promise<any> => {
+  return axiosClient.put(API_ENDPOINTS.DRIVER.UPDATE_PROFILE_PHOTO, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    transformRequest: [data => data],
+  });
+};
+
 // New POST service to update the driver's current position
 const updateLocation = async (
   payload: LocationUpdatePayload,
@@ -42,16 +53,14 @@ const updateLocation = async (
       message: 'Skipped: user role is not driver',
     } as any;
   }
-  return axiosClient.post('/api/shipper/driver/update-location', payload);
+  return axiosClient.post(API_ENDPOINTS.DRIVER.UPDATE_LOCATION, payload);
 };
 
 // 1. Service to request delivery OTP code
 const sendDeliveryOtp = async (
   shipmentId: string,
 ): Promise<{ success: boolean; message: string }> => {
-  return axiosClient.post(
-    `/api/driver/driver/shipment/${shipmentId}/send-delivery-otp`,
-  );
+  return axiosClient.post(API_ENDPOINTS.DRIVER.SEND_DELIVERY_OTP(shipmentId));
 };
 
 // 2. Service to verify OTP code
@@ -60,7 +69,7 @@ const verifyDeliveryOtp = async (
   otp: string,
 ): Promise<{ success: boolean; message: string }> => {
   return axiosClient.post(
-    `/api/driver/driver/shipment/${shipmentId}/verify-delivery-otp`,
+    API_ENDPOINTS.DRIVER.VERIFY_DELIVERY_OTP(shipmentId),
     { otp },
   );
 };
@@ -69,13 +78,14 @@ const verifyDeliveryOtp = async (
 const startTrip = async (
   quoteId: string,
 ): Promise<{ success: boolean; message: string }> => {
-  return axiosClient.post('/api/shipper/driver/start-trip', {
+  return axiosClient.post(API_ENDPOINTS.DRIVER.START_TRIP, {
     quoteId,
   });
 };
 
 const driverService = {
   getMe,
+  updateProfilePhoto,
   updateLocation,
   sendDeliveryOtp,
   verifyDeliveryOtp,

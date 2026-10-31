@@ -10,7 +10,6 @@ import {
   Keyboard,
   Platform,
   PermissionsAndroid,
-  StatusBar,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import axios from 'axios';
@@ -145,8 +144,10 @@ const LocationPickerCore: React.FC<{
       const resp = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_APIKEY}`,
       );
-      if (resp.data?.results.length > 0) {
-        setDisplayAddress(resp.data?.results[0].formatted_address);
+      // console.log("-------reverseGeocode-------", resp)
+
+      if (resp.data?.results?.length > 0) {
+        setDisplayAddress(resp.data?.results[0]?.formatted_address);
       } else {
         setDisplayAddress('Unnamed Road');
       }
@@ -186,6 +187,8 @@ const LocationPickerCore: React.FC<{
           signal: searchAbortController.current.signal,
         },
       );
+
+      // console.log("-------searchPlaces-------", resp)
       setSuggestions(resp.data?.predictions);
     } catch (e: any) {
       if (e.name !== 'CanceledError') console.error('Search error', e);
@@ -212,6 +215,8 @@ const LocationPickerCore: React.FC<{
           },
         },
       );
+      // console.log("-------getPlaceDetails-------", resp)
+
       const { lat, lng } = resp.data?.result.geometry.location;
       const addr = resp.data?.result.formatted_address;
 
@@ -313,11 +318,10 @@ const LocationPickerCore: React.FC<{
 
   return (
     <View style={styles.modalContainer}>
-      <StatusBar barStyle="dark-content" />
-
       {/* MAP ENGINE */}
       <MapView
         ref={mapRef}
+        // provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         provider={PROVIDER_GOOGLE}
         style={styles.fullMap}
         initialRegion={region}
@@ -463,6 +467,10 @@ const LocationPickerCore: React.FC<{
                   </View>
                 </TouchableOpacity>
               )}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              windowSize={5}
+              removeClippedSubviews={Platform.OS === 'android'}
             />
           </View>
         )}
@@ -501,16 +509,6 @@ const LocationPickerCore: React.FC<{
               </View>
             </View>
 
-            {/* <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => onConfirm({
-                address: displayAddress,
-                latitude: region.latitude,
-                longitude: region.longitude
-              })}
-            >
-              <AppText style={styles.confirmButtonText}>Confirm and Continue</AppText>
-            </TouchableOpacity> */}
             <Button
               title={'Confirm and Continue'}
               onPress={() =>

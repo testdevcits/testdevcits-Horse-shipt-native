@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   ScrollView,
@@ -10,6 +10,7 @@ import { COLORS, FONTS } from '../../../../constants';
 import shipperService from '../../../../api/services/shipperService';
 import PaymentsTab from '../profile/tabs/payments/PaymentsTab';
 import styles from '../profile/shipper_profile/styles.shipperprofile';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ShipperPaymentsScreen = ({ navigation }: any) => {
   const [stripeStatus, setStripeStatus] = useState<any>(null);
@@ -30,18 +31,34 @@ const ShipperPaymentsScreen = ({ navigation }: any) => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchStripeStatus();
-  }, [fetchStripeStatus]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchStripeStatus();
+    }, [fetchStripeStatus]),
+  );
 
   const onRefresh = () => {
     setRefreshing(true);
     fetchStripeStatus();
   };
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.navigate('ShipperDrawer');
+  };
+
   return (
     <View style={styles.container}>
-      <AppHeader title="Payment Settings" showProfileImage={false} />
+      <AppHeader
+        title="Payment Settings"
+        showBack
+        onBack={handleBack}
+        showProfileImage={false}
+      />
 
       {loading && !refreshing ? (
         <View

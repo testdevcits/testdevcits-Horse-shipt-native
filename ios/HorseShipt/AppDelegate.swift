@@ -4,6 +4,8 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import GoogleMaps // 1. Add this import statement
 import RNBootSplash
+import FirebaseCore
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,8 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
 
-     // 2. Add this line here (replace with your actual Google Maps API Key)
-    GMSServices.provideAPIKey("AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw")
+    FirebaseApp.configure()
+
+    // 2. Add this line here (replace with your actual Google Maps API Key)
+    GMSServices.provideAPIKey("AIzaSyAIBX80AOVruweXYLyCDiZ_0zdzdW3G4o0")
 
     
     let delegate = ReactNativeDelegate()
@@ -37,6 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     return true
+  }
+
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+  ) -> Bool {
+    return GIDSignIn.sharedInstance.handle(url)
   }
 }
 

@@ -8,20 +8,14 @@ import {
   Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {
-  ShieldCheck,
-  X,
-  Info,
-  Landmark,
-  Lock,
-  Link as LinkIcon,
-} from 'lucide-react-native';
+
 import { COLORS } from '../../../../constants';
 import { AppText } from '../../../../components';
 
 import shipperService from '../../../../api/services/shipperService';
 import styles from './styles.connectbankmodal';
 import { showErrorToast, showSuccessToast } from '../../../../utils/toast';
+import AppIcon from '../../../../components/app_icon/AppIcon';
 
 interface ConnectBankModalProps {
   isVisible: boolean;
@@ -124,11 +118,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
           {/* 1. Header Banner */}
           <View style={styles.headerBanner}>
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-              <X size={18} color={COLORS.white} />
+              <AppIcon name={'X'} size={18} color={COLORS.white} />
             </TouchableOpacity>
 
             <View style={styles.badgeRow}>
-              <ShieldCheck size={16} color={COLORS.white} />
+              <AppIcon name={'ShieldCheck'} size={16} color={COLORS.white} />
               <AppText style={styles.badgeText}>VERIFICATION REQUIRED</AppText>
             </View>
 
@@ -148,7 +142,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
             {/* Why is this required section */}
             <View style={styles.sectionHeader}>
               <View style={styles.infoIconWrapper}>
-                <Info size={16} color={COLORS.goldBrownText} />
+                <AppIcon name={'Info'} size={16} color={COLORS.goldBrownText} />
               </View>
               <AppText style={styles.sectionTitle}>
                 Why is this required?
@@ -160,7 +154,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 1: Receive Payments */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <Landmark size={20} color={COLORS.goldBrownText} />
+                  <AppIcon
+                    name={'Landmark'}
+                    size={20}
+                    color={COLORS.goldBrownText}
+                  />
                 </View>
                 <AppText style={styles.cardTitle}>Receive Payments</AppText>
                 <AppText style={styles.cardSub}>
@@ -171,7 +169,11 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
               {/* Card 2: Secure Transactions */}
               <View style={styles.featureCard}>
                 <View style={styles.cardIconBox}>
-                  <Lock size={20} color={COLORS.goldBrownText} />
+                  <AppIcon
+                    name={'Lock'}
+                    size={20}
+                    color={COLORS.goldBrownText}
+                  />
                 </View>
                 <AppText style={styles.cardTitle}>Secure Transactions</AppText>
                 <AppText style={styles.cardSub}>
@@ -182,7 +184,12 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
 
             {/* Security Encryption Notice */}
             <View style={styles.encryptionCard}>
-              <Lock size={18} color={COLORS.grey700} style={{ marginTop: 2 }} />
+              <AppIcon
+                name={'Lock'}
+                size={18}
+                color={COLORS.grey700}
+                style={{ marginTop: 2 }}
+              />
               <AppText style={styles.encryptionText}>
                 Your banking information is encrypted and process only by
                 stripe. We never store your bank details.
@@ -228,7 +235,7 @@ const ConnectBankModal: React.FC<ConnectBankModalProps> = ({
                 <ActivityIndicator color={COLORS.white} size="small" />
               ) : (
                 <>
-                  <LinkIcon size={18} color={COLORS.white} />
+                  <AppIcon name={'Link'} size={18} color={COLORS.white} />
                   <AppText style={styles.connectBtnText}>
                     Connect Bank Account
                   </AppText>

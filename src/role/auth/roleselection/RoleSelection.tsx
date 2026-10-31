@@ -3,7 +3,6 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  StatusBar,
   Image,
   ScrollView,
 } from 'react-native';
@@ -122,14 +121,8 @@ const RoleSelection = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={styles.headerImage}
         resizeMode="cover"
       >
@@ -138,7 +131,7 @@ const RoleSelection = ({ navigation }: any) => {
 
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo}
+          source={imageIndex?.Logo}
           style={styles.logoIcon}
           resizeMode="contain"
         />

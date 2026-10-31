@@ -3,18 +3,53 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
-  ScrollView, // Imported ScrollView for the horizontal chip layout
+  ScrollView,
   Platform,
 } from 'react-native';
 import { useDriverMe } from '../../../../hooks/useDriverMe';
 import DriverHeader from '../../../../components/common/DriverHeader/DriverHeader';
 import { COLORS, ICON_SIZE } from '../../../../constants';
-import { AppText, TripCard } from '../../../../components';
+import { AppText, TripCard, ShipmentsSkeleton } from '../../../../components';
 import styles from './styles.alltrips';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 
 type TabType = 'ALL' | 'PENDING' | 'ACTIVE' | 'DELIVERED';
+
+const getNormalizedStatus = (s: any) => {
+  const st = (
+    s?.tripStatus ||
+    s?.status ||
+    s?.shipment?.tripStatus ||
+    s?.shipment?.status ||
+    ''
+  )
+    .toString()
+    .toLowerCase()
+    .replace(/_/g, '');
+  return st;
+};
+
+const isPendingStatus = (s: any) => {
+  const st = getNormalizedStatus(s);
+  return (
+    st === 'pending' ||
+    st === 'notstarted' ||
+    st === 'assigned' ||
+    st === 'upcoming'
+  );
+};
+
+const isActiveStatus = (s: any) => {
+  const st = getNormalizedStatus(s);
+  return (
+    st === 'intransit' || st === 'started' || st === 'active' || st === 'intrip'
+  );
+};
+
+const isDeliveredStatus = (s: any) => {
+  const st = getNormalizedStatus(s);
+  return st === 'completed' || st === 'delivered';
+};
 
 const AllTrips = ({ navigation }: { navigation?: any }) => {
   const { loading, allShipments, driver, activeShipment } = useDriverMe();
@@ -26,14 +61,9 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const counts = useMemo(() => {
     return {
       ALL: shipments.length,
-      PENDING: shipments?.filter((s: any) => s?.tripStatus === 'pending')
-        .length,
-      ACTIVE: shipments?.filter((s: any) => s?.tripStatus === 'inTransit')
-        .length,
-      DELIVERED: shipments.filter(
-        (s: any) =>
-          s.tripStatus === 'completed' || s.tripStatus === 'delivered',
-      ).length,
+      PENDING: shipments.filter(isPendingStatus).length,
+      ACTIVE: shipments.filter(isActiveStatus).length,
+      DELIVERED: shipments.filter(isDeliveredStatus).length,
     };
   }, [shipments]);
 
@@ -41,14 +71,11 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const filteredShipments = useMemo(() => {
     switch (selectedTab) {
       case 'PENDING':
-        return shipments?.filter((s: any) => s?.tripStatus === 'pending');
+        return shipments.filter(isPendingStatus);
       case 'ACTIVE':
-        return shipments?.filter((s: any) => s?.tripStatus === 'inTransit');
+        return shipments.filter(isActiveStatus);
       case 'DELIVERED':
-        return shipments.filter(
-          (s: any) =>
-            s?.tripStatus === 'completed' || s?.tripStatus === 'delivered',
-        );
+        return shipments.filter(isDeliveredStatus);
       default:
         return shipments;
     }
@@ -57,16 +84,28 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   const handleCompleteDelivery = useCallback(
     (tripId: string) => {
       console.log('Complete delivery triggered for trip id: ', tripId);
+      const targetShipment =
+        shipments.find(
+          (s: any) => (s?._id || s?.id || s?.shipment?._id) === tripId,
+        ) || activeShipment;
       navigation?.navigate('DeliveryVerification', {
-        shipment: activeShipment,
+        shipment: targetShipment,
       });
     },
-    [navigation, activeShipment],
+    [navigation, shipments, activeShipment],
   );
 
   const keyExtractor = useCallback(
-    (item: any) => item?._id || String(Math.random()),
+    (item: any, index: number) =>
+      item?._id || item?.id || item?.shipmentCode || index.toString(),
     [],
+  );
+
+  const handleCardPress = useCallback(
+    (selectedItem: any) => {
+      navigation?.navigate('ShipmentDetails', { shipment: selectedItem });
+    },
+    [navigation],
   );
 
   const renderItem = useCallback(
@@ -74,10 +113,11 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
       <TripCard
         item={item}
         onCompletePress={handleCompleteDelivery}
+        onCardPress={handleCardPress}
         containerStyle={styles.cardSpacing}
       />
     ),
-    [handleCompleteDelivery],
+    [handleCompleteDelivery, handleCardPress],
   );
 
   // Render method for active status filters (Horizontal Chip Layout)
@@ -111,17 +151,17 @@ const AllTrips = ({ navigation }: { navigation?: any }) => {
   return (
     <View style={styles.container}>
       {/* Shared Global Header */}
-      <DriverHeader
-        name={driver?.name || 'Not Available'}
-        statusText={driver?.driverStatus || 'Not Available'}
-        profileImageUrl={driver?.profileImage?.url}
-        isOnline={driver?.isActive !== false}
-      />
+      {!loading && (
+        <DriverHeader
+          name={driver?.name || 'Not Available'}
+          statusText={driver?.driverStatus || 'Not Available'}
+          profileImageUrl={driver?.profileImage?.url}
+          isOnline={driver?.isActive !== false}
+        />
+      )}
 
       {loading ? (
-        <View style={styles.centered}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
+        <ShipmentsSkeleton />
       ) : (
         <FlatList
           data={filteredShipments}

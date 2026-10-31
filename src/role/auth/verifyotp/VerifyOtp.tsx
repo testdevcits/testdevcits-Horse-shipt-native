@@ -9,7 +9,6 @@ import {
   Keyboard,
   Image,
   ImageBackground,
-  StatusBar,
 } from 'react-native';
 import { COLORS, SCREEN_HEIGHT } from '../../../constants';
 import { AppText, Button } from '../../../components';
@@ -106,14 +105,8 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       <ImageBackground
-        source={imageIndex.HorseBg}
+        source={imageIndex?.HorseBg}
         style={[
           styles.headerImage,
           {
@@ -141,7 +134,7 @@ const VerifyResetOtp = ({ navigation, route }: any) => {
           <View style={styles.logoOuterRing}>
             <View style={styles.logoInnerRing}>
               <Image
-                source={imageIndex.LogoIcon}
+                source={imageIndex?.LogoIcon}
                 style={styles.logoIcon}
                 resizeMode="contain"
               />

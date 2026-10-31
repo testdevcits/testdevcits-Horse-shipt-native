@@ -1,17 +1,38 @@
 import {
   BASE_URL as ENV_BASE_URL,
-  GOOGLE_MAPS_APIKEY as ENV_MAPS_KEY,
+  GOOGLE_MAPS_APIKEY as ENV_GOOGLE_MAPS_APIKEY,
+  GOOGLE_WEB_CLIENT_ID as ENV_GOOGLE_WEB_CLIENT_ID,
   REACT_APP_STRIPE_PUBLISHABLE_KEY as ENV_STRIPE_KEY,
 } from '@env';
 
-export const BASE_URL = ENV_BASE_URL || 'https://frontend.horseshipt.com';
+const requireEnv = (name: string, value: string): string => {
+  const configuredValue = value.trim();
+  if (!configuredValue) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return configuredValue;
+};
 
-export const GOOGLE_MAPS_APIKEY =
-  ENV_MAPS_KEY || 'AIzaSyBUX8zHtnnP48SEh0Ur1mtAr2tckIugLsw';
+const configuredBaseUrl = requireEnv('BASE_URL', ENV_BASE_URL);
+if (!/^https?:\/\/\S+$/i.test(configuredBaseUrl)) {
+  throw new Error('BASE_URL must be an absolute HTTP or HTTPS URL');
+}
 
-export const REACT_APP_STRIPE_PUBLISHABLE_KEY =
-  ENV_STRIPE_KEY ||
-  'pk_test_51T6oVICVoPk11ijL51FMIuNhin8FIjyoJSOITwlK6AqEutL9Jl4bwdOrhziWtZdaBesLZSJheByHGV5RNHbMrYfH00yf77nS4r';
+export const BASE_URL = configuredBaseUrl.replace(/\/+$/, '');
+export const API_ORIGIN = BASE_URL.replace(/\/api$/i, '');
+
+export const GOOGLE_MAPS_APIKEY = requireEnv(
+  'GOOGLE_MAPS_APIKEY',
+  ENV_GOOGLE_MAPS_APIKEY,
+);
+export const GOOGLE_WEB_CLIENT_ID = requireEnv(
+  'GOOGLE_WEB_CLIENT_ID',
+  ENV_GOOGLE_WEB_CLIENT_ID,
+);
+export const REACT_APP_STRIPE_PUBLISHABLE_KEY = requireEnv(
+  'REACT_APP_STRIPE_PUBLISHABLE_KEY',
+  ENV_STRIPE_KEY,
+);
 
 // export const MAP_DELTA = {
 //   latitudeDelta: 0.005,

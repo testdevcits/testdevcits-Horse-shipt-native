@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   View,
   Image,
@@ -117,4 +117,4 @@ const DriverHeader: React.FC<DriverHeaderProps> = ({
   );
 };
 
-export default DriverHeader;
+export default memo(DriverHeader);

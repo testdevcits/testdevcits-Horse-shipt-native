@@ -1,21 +1,23 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { View, ScrollView, TouchableOpacity, Image, Share } from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
-import { GOOGLE_MAPS_APIKEY } from '../../../../../config/constants';
+import { View, ScrollView, Share } from 'react-native';
 
 import { formatDate } from '../../../../../utils/helpers';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { AppHeader, AppText } from '../../../../../components';
-import { COLORS } from '../../../../../constants';
-import imageIndex from '../../../../../assets/images/imageIndex';
 import shipperService from '../../../../../api/services/shipperService';
 import styles from './styles.shippershipmentdetails';
 import useStripeStatus from '../../../../../hooks/useStripeStatus';
+import useShipperSubscription, {
+  hasShipperSubscriptionAccess,
+} from '../../../../../hooks/useShipperSubscription';
 import ConnectBankModal from '../components/ConnectBankModal';
-import AppIcon from '../../../../../components/app_icon/AppIcon';
 import AppButton from '../../../../../components/common/Button/AppButton';
 import { showErrorToast, showSuccessToast } from '../../../../../utils/toast';
+import { ShipmentDetailMapCard } from './components/ShipmentDetailMapCard';
+import { ShipmentEquineListCard } from './components/ShipmentEquineListCard';
+import { ShipperHeroBannerCard } from './components/ShipperHeroBannerCard';
+import { ShipperRouteInfoCard } from './components/ShipperRouteInfoCard';
+import { ShipperCtaActionCard } from './components/ShipperCtaActionCard';
 
 const AskQuestionModal = lazy(
   () => import('../components/ask_question/AskQuestionModal'),
@@ -23,11 +25,27 @@ const AskQuestionModal = lazy(
 const SubmitOfferModal = lazy(
   () => import('../components/submit_offer_modal/SubmitOfferModal'),
 );
+const SubscriptionRequiredModal = lazy(
+  () =>
+    import(
+      '../../../components/subscription_required_modal/SubscriptionRequiredModal'
+    ),
+);
 
 const ShipperShipmentDetailsScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const { isStripeReady, loading } = useStripeStatus();
+  const { isStripeReady, loading, checkStripeStatus } = useStripeStatus();
+  const {
+    shipperStatus,
+    subscriptionStatus,
+    plansData,
+    loading: isSubscriptionLoading,
+    isModalVisible: isSubscriptionModalVisible,
+    openModal: openSubscriptionModal,
+    closeModal: closeSubscriptionModal,
+    refreshStatus: refreshSubscriptionStatus,
+  } = useShipperSubscription();
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
 
   // console.log("======ShipmentDetails checkStripeStatus======", isStripeReady, loading)
@@ -203,11 +221,28 @@ const ShipperShipmentDetailsScreen = () => {
     }
   };
 
-  const handleSubmitOfferPress = () => {
+  const handleSubmitOfferPress = async () => {
+    if (isSubscriptionLoading) return;
+    if (!hasShipperSubscriptionAccess(subscriptionStatus)) {
+      openSubscriptionModal();
+      return;
+    }
+
+    if (loading) return;
     if (!isStripeReady && !loading) {
       setIsBankModalVisible(true);
     } else {
       setIsSubmitOfferModalVisible(true);
+    }
+  };
+
+  const handleSubscriptionSuccess = async () => {
+    const refreshedStatus = await refreshSubscriptionStatus();
+    if (!hasShipperSubscriptionAccess(refreshedStatus)) return;
+
+    const stripeReady = await checkStripeStatus();
+    if (!stripeReady) {
+      setIsBankModalVisible(true);
     }
   };
 
@@ -237,425 +272,59 @@ const ShipperShipmentDetailsScreen = () => {
         </View>
 
         {/* 1. Hero Horse Banner Card */}
-        <View style={styles.heroCard}>
-          <View style={styles.heroBannerContainer}>
-            {horsePhoto ? (
-              <Image
-                source={{ uri: horsePhoto }}
-                style={styles.heroBannerImage}
-              />
-            ) : (
-              <Image
-                source={imageIndex.Banner}
-                style={styles.heroBannerImage}
-              />
-            )}
-            <View style={styles.heroBannerBadge}>
-              <AppText style={styles.heroBannerBadgeText}>
-                {(shipment?.status || 'Not Available').replace(/_/g, ' ')}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.heroBody}>
-            <View style={styles.horseCountTag}>
-              <AppText style={styles.horseCountTagText}>
-                Horse {shipment?.horses?.length || '0'}
-              </AppText>
-            </View>
-
-            <AppText style={styles.heroTitle}>
-              {heroRegisteredName} ( {heroBarnName} )
-            </AppText>
-            <AppText style={styles.heroSubtitle}>
-              {heroBreed} • {heroAge} yrs • {heroSex} • {heroColour}
-            </AppText>
-            <AppText style={styles.shipmentCodeText}>
-              {shipment?.shipmentCode}
-            </AppText>
-
-            <View style={styles.customerRow}>
-              <AppText style={styles.customerNameText}>
-                Customer: {shipment?.customer?.name || 'Not Available'}
-              </AppText>
-              <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
-                <AppIcon name="Share2" size={14} color={COLORS.textPrimary} />
-              </TouchableOpacity>
-            </View>
-
-            {/* Date Cards Row */}
-            <View style={styles.dateCardsRow}>
-              <View style={styles.dateCard}>
-                <AppText style={styles.dateCardLabel}>PICKUP</AppText>
-                <AppText style={styles.dateCardValue}>
-                  {pickupDateFormatted}
-                </AppText>
-              </View>
-
-              <View style={styles.dateCard}>
-                <AppText style={styles.dateCardLabel}>DELIVERY</AppText>
-                <AppText style={styles.dateCardValue}>
-                  {deliveryDateFormatted}
-                </AppText>
-              </View>
-            </View>
-          </View>
-        </View>
+        <ShipperHeroBannerCard
+          shipment={shipment}
+          horsePhoto={horsePhoto}
+          heroRegisteredName={heroRegisteredName}
+          heroBarnName={heroBarnName}
+          heroBreed={heroBreed}
+          heroAge={heroAge}
+          heroSex={heroSex}
+          heroColour={heroColour}
+          pickupDateFormatted={pickupDateFormatted}
+          deliveryDateFormatted={deliveryDateFormatted}
+          onShare={handleShare}
+        />
 
         {/* 2. Shipment Route Map Card */}
-        {isMapVisible && (
-          <View style={styles.routeMapCard}>
-            <AppText style={styles.cardHeaderTitle}>Shipment Route Map</AppText>
-            <AppText style={styles.cardHeaderSub}>
-              {shipment?.shipmentCode}
-            </AppText>
+        <ShipmentDetailMapCard
+          shipment={shipment}
+          isMapVisible={isMapVisible}
+          setIsMapVisible={setIsMapVisible}
+          pLat={pLat}
+          pLng={pLng}
+          dLat={dLat}
+          dLng={dLng}
+          mapRegion={mapRegion}
+          navigation={navigation}
+        />
 
-            <View style={styles.mapWrapper}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.mapView}
-                initialRegion={mapRegion}
-              >
-                <Marker
-                  coordinate={{ latitude: pLat, longitude: pLng }}
-                  title="Pickup Location"
-                  description={shipment?.pickupLocation}
-                >
-                  <View style={styles.markerCircleGreen}>
-                    <AppIcon name="MapPin" size={14} color={COLORS.white} />
-                  </View>
-                </Marker>
-
-                <Marker
-                  coordinate={{ latitude: dLat, longitude: dLng }}
-                  title="Delivery Location"
-                  description={shipment?.deliveryLocation}
-                >
-                  <View style={styles.markerCircleRed}>
-                    <AppIcon name="MapPin" size={14} color={COLORS.white} />
-                  </View>
-                </Marker>
-
-                <MapViewDirections
-                  origin={{ latitude: pLat, longitude: pLng }}
-                  destination={{ latitude: dLat, longitude: dLng }}
-                  apikey={GOOGLE_MAPS_APIKEY}
-                  strokeWidth={4}
-                  strokeColor={COLORS.brandBrown || COLORS.primary}
-                  lineDashPattern={[0]}
-                  onError={err => console.log('MapViewDirections Error:', err)}
-                />
-
-                <Polyline
-                  coordinates={[
-                    { latitude: pLat, longitude: pLng },
-                    { latitude: dLat, longitude: dLng },
-                  ]}
-                  strokeColor={COLORS.primary}
-                  strokeWidth={3}
-                  lineDashPattern={[6, 6]}
-                />
-              </MapView>
-            </View>
-
-            <TouchableOpacity
-              style={styles.closeMapBtn}
-              onPress={() => setIsMapVisible(false)}
-            >
-              <AppText style={styles.closeMapBtnText}>Close Map</AppText>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* 3. 4-Grid Spec Cards */}
-        <View style={styles.gridContainer}>
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>DISTANCE</AppText>
-              <AppText style={styles.specStatValue}>{distanceMiles} mi</AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>HORSES</AppText>
-              <AppText style={styles.specStatValue}>
-                {shipment?.numberOfHorses || 1}
-              </AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
-            </View>
-          </View>
-
-          <View style={styles.specStatCard}>
-            <View style={styles.specStatIconBox}>
-              <AppIcon name="Box" size={18} color={COLORS.saddleBrown} />
-            </View>
-            <View style={styles.specStatTextCol}>
-              <AppText style={styles.specStatLabel}>STALL</AppText>
-              <AppText style={styles.specStatValue}>{heroStallSize}</AppText>
-            </View>
-          </View>
-        </View>
-
-        {/* 4. Route Information Card */}
-        <View style={styles.routeInfoCard}>
-          <View style={styles.cardTitleRow}>
-            <AppIcon name="Compass" size={18} color={COLORS.saddleBrown} />
-            <AppText style={styles.cardHeaderTitle}>Route Information</AppText>
-          </View>
-
-          <View style={styles.timelineContainer}>
-            {/* Pickup Node */}
-            <View style={styles.timelineRow}>
-              <View style={styles.timelineIconBoxPickup}>
-                <AppIcon name="MapPin" size={16} color={COLORS.saddleBrown} />
-              </View>
-
-              <View style={styles.timelineTextCol}>
-                <AppText style={styles.timelineLabel}>PICKUP LOCATION</AppText>
-                <AppText style={styles.timelineAddress}>
-                  {shipment?.pickupLocation || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-
-            {/* Connecting Vertical Line */}
-            <View style={styles.timelineLine} />
-
-            {/* Delivery Node */}
-            <View style={styles.timelineRow}>
-              <View style={styles.timelineIconBoxDelivery}>
-                <AppIcon name="Flag" size={16} color={COLORS.saddleBrown} />
-              </View>
-
-              <View style={styles.timelineTextCol}>
-                <AppText style={styles.timelineLabel}>
-                  DELIVERY LOCATION
-                </AppText>
-                <AppText style={styles.timelineAddress}>
-                  {shipment?.deliveryLocation || 'Not Available'}
-                </AppText>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.totalDistanceContainer}>
-            <AppText style={styles.totalDistanceLabel}>TOTAL DISTANCE</AppText>
-            <AppText style={styles.totalDistanceValue}>
-              {distanceMiles}{' '}
-              <AppText style={styles.totalDistanceSub}>
-                miles ({distanceKm} km)
-              </AppText>
-            </AppText>
-          </View>
-        </View>
+        {/* 3 & 4. Grid Specs & Route Information Card */}
+        <ShipperRouteInfoCard
+          shipment={shipment}
+          distanceMiles={distanceMiles}
+          distanceKm={distanceKm}
+          heroStallSize={heroStallSize}
+        />
 
         {isMapVisible === false && (
           <AppButton title="Open Map" onPress={() => setIsMapVisible(true)} />
         )}
 
         {/* 5. Horse Details Accordion Cards for All Horses */}
-        {horsesList.map((horse: any, index: number) => {
-          const isExpanded = expandedHorseIndices.includes(index);
-          const hPhoto =
-            typeof horse?.photo === 'string'
-              ? horse.photo
-              : horse?.photo?.url || null;
-          const registeredName = horse?.registeredName || 'Not Available';
-          const barnName = horse?.barnName || 'Not Available';
-          const breed = horse?.breed || 'Not Available';
-          const sex = horse?.sex || 'Not Available';
-          const colour = horse?.colour || horse?.color || 'Not Available';
-          const age =
-            horse?.age !== undefined && horse?.age !== null
-              ? `${horse?.age}`
-              : 'Not Available';
-          const stallSize =
-            horse?.requestedStallSize || horse?.stallSize || 'Not Available';
-          const notesText =
-            horse?.notes ||
-            horse?.generalInfo ||
-            horse?.notesLog?.[0]?.note ||
-            'Not Available';
-          const noteDate =
-            horse?.notesLog?.[0]?.createdAt || shipment?.publishedAt;
-
-          return (
-            <View key={horse?._id || index} style={styles.horseDetailsCard}>
-              <TouchableOpacity
-                style={styles.accordionHeader}
-                onPress={() => toggleHorseExpanded(index)}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordionTitleRow}>
-                  <AppIcon name="Box" size={18} color={COLORS.brandBrown} />
-                  <AppText style={styles.cardHeaderTitle}>
-                    Horse Details {index + 1}/{horsesList?.length}
-                  </AppText>
-                </View>
-
-                {isExpanded ? (
-                  <AppIcon
-                    name="ChevronUp"
-                    size={20}
-                    color={COLORS.textSecondary}
-                  />
-                ) : (
-                  <AppIcon
-                    name="ChevronDown"
-                    size={20}
-                    color={COLORS.textSecondary}
-                  />
-                )}
-              </TouchableOpacity>
-
-              {isExpanded && (
-                <View style={styles.accordionContent}>
-                  {/* Horse Thumbnail Row */}
-                  <View style={styles.horseProfileRow}>
-                    {hPhoto ? (
-                      <Image
-                        source={{ uri: hPhoto }}
-                        style={styles.horseThumb}
-                      />
-                    ) : (
-                      <Image
-                        source={imageIndex.Banner}
-                        style={styles.horseThumb}
-                      />
-                    )}
-
-                    <View style={styles.horseProfileInfo}>
-                      <AppText style={styles.horseNameText}>
-                        {registeredName} - {barnName}
-                      </AppText>
-                      <AppText style={styles.horseBreedText}>
-                        Breed: {breed} | Sex: {sex}
-                      </AppText>
-
-                      <View style={styles.horsePillsRow}>
-                        <View style={styles.horseMiniPill}>
-                          <AppText style={styles.horseMiniPillText}>
-                            STALL: {stallSize}
-                          </AppText>
-                        </View>
-                        <View style={styles.horseMiniPill}>
-                          <AppText style={styles.horseMiniPillText}>
-                            AGE: {age}{' '}
-                            {typeof age === 'number' || !isNaN(Number(age))
-                              ? 'YRS'
-                              : ''}
-                          </AppText>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-
-                  {/* 2x2 Horse Specs Grid */}
-                  <View style={styles.horseSpecsGrid}>
-                    <View style={styles.horseSpecBox}>
-                      <AppText style={styles.horseSpecLabel}>BREED</AppText>
-                      <AppText style={styles.horseSpecValue}>{breed}</AppText>
-                    </View>
-
-                    <View style={styles.horseSpecBox}>
-                      <AppText style={styles.horseSpecLabel}>COLOR</AppText>
-                      <AppText style={styles.horseSpecValue}>{colour}</AppText>
-                    </View>
-
-                    <View style={styles.horseSpecBox}>
-                      <AppText style={styles.horseSpecLabel}>SEX</AppText>
-                      <AppText style={styles.horseSpecValue}>{sex}</AppText>
-                    </View>
-
-                    <View style={styles.horseSpecBox}>
-                      <AppText style={styles.horseSpecLabel}>AGE</AppText>
-                      <AppText style={styles.horseSpecValue}>
-                        {age}{' '}
-                        {typeof age === 'number' || !isNaN(Number(age))
-                          ? 'Yrs'
-                          : ''}
-                      </AppText>
-                    </View>
-
-                    <View style={[styles.horseSpecBox, { width: '100%' }]}>
-                      <AppText style={styles.horseSpecLabel}>
-                        REGISTERED NAME
-                      </AppText>
-                      <AppText style={styles.horseSpecValue}>
-                        {registeredName}
-                      </AppText>
-                    </View>
-                  </View>
-
-                  {/* Chronological Notes */}
-                  <View style={styles.notesBox}>
-                    <View style={styles.notesHeaderRow}>
-                      <AppText style={styles.notesTitle}>
-                        Chronological Notes
-                      </AppText>
-                      <AppText style={styles.notesDateText}>
-                        {formatDate(noteDate, 'MMM D, YYYY, h:mm A')}
-                      </AppText>
-                    </View>
-                    <AppText style={styles.notesBodyText}>
-                      "{notesText}"
-                    </AppText>
-                  </View>
-                </View>
-              )}
-            </View>
-          );
-        })}
+        <ShipmentEquineListCard
+          horsesList={horsesList}
+          expandedHorseIndices={expandedHorseIndices}
+          toggleHorseExpanded={toggleHorseExpanded}
+        />
 
         {/* 6. Ready to Respond CTA Card */}
-        <View style={styles.ctaCard}>
-          <AppText style={styles.ctaTitle}>Ready to Respond</AppText>
-          <AppText style={styles.ctaSub}>
-            Do you have questions about this shipment, or are you ready to
-            submit a binding proposal, providing your professional offer?
-          </AppText>
-
-          <View style={styles.summaryCodeBox}>
-            <AppText style={styles.summaryCodeLabel}>QUESTION SUMMARY</AppText>
-            <AppText style={styles.summaryCodeValue}>
-              {shipment?.shipmentCode}
-            </AppText>
-          </View>
-
-          <TouchableOpacity
-            style={styles.askQuestionBtn}
-            onPress={handleAskQuestionPress}
-            activeOpacity={0.8}
-          >
-            <AppText style={styles.askQuestionBtnText}>
-              {pendingQuestion ? 'View Pending Question' : 'Ask Question'}
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.submitOfferBtn}
-            onPress={handleSubmitOfferPress}
-            activeOpacity={0.85}
-          >
-            <AppText style={styles.submitOfferBtnText}>Submit Proposal</AppText>
-          </TouchableOpacity>
-        </View>
+        <ShipperCtaActionCard
+          shipmentCode={shipment?.shipmentCode}
+          pendingQuestion={pendingQuestion}
+          onAskQuestionPress={handleAskQuestionPress}
+          onSubmitOfferPress={handleSubmitOfferPress}
+        />
       </ScrollView>
 
       {/* Ask Question Custom Modal */}
@@ -685,9 +354,23 @@ const ShipperShipmentDetailsScreen = () => {
         <ConnectBankModal
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
+          onConnectBank={() => {
+            setIsBankModalVisible(false);
+            navigation.navigate('ShipperPayments');
+          }}
           navigation={navigation}
         />
       )}
+      <Suspense fallback={null}>
+        <SubscriptionRequiredModal
+          visible={isSubscriptionModalVisible}
+          onClose={closeSubscriptionModal}
+          shipperStatus={shipperStatus}
+          subscriptionStatus={subscriptionStatus}
+          plansData={plansData}
+          onSubscriptionSuccess={handleSubscriptionSuccess}
+        />
+      </Suspense>
     </View>
   );
 };

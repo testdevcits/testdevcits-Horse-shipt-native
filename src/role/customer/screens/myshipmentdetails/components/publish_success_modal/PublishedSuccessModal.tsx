@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, View, TouchableOpacity, Image } from 'react-native';
 
 import { AppText } from '../../../../../../components';
@@ -28,7 +28,7 @@ const PublishedSuccessModal = ({
           {/* LOGO SECTION */}
           <View style={styles.logoContainer}>
             <Image
-              source={imageIndex.LogoIcon} // Replace with your actual path
+              source={imageIndex?.LogoIcon} // Replace with your actual path
               style={styles.logo}
               resizeMode="contain"
             />
@@ -70,4 +70,4 @@ const PublishedSuccessModal = ({
   );
 };
 
-export default PublishedSuccessModal;
+export default memo(PublishedSuccessModal);

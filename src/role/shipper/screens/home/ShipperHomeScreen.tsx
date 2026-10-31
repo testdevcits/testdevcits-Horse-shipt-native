@@ -1,36 +1,36 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
-  Pressable,
-} from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  lazy,
+  Suspense,
+} from 'react';
+import { View, RefreshControl, FlatList, Platform } from 'react-native';
+import MapView from 'react-native-maps';
 
 import {
   AppHeader,
-  AppText,
   EmptyState,
-  Input,
-  SectionHeader,
   ShipperHomeSkeleton,
 } from '../../../../components';
 import { COLORS, ICON_SIZE, SPACING } from '../../../../constants';
-import MapViewDirections from 'react-native-maps-directions';
-import { GOOGLE_MAPS_APIKEY } from '../../../../config/constants';
 import shipperService from '../../../../api/services/shipperService';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { updateUser } from '../../../../redux/slices/authSlice';
 import { useCurrentLocation } from '../../../../hooks/useCurrentLocation';
 import AvailableShipmentCard from './components/AvailableShipmentCard';
-import MapShipmentSelectItem from './components/MapShipmentSelectItem';
+import { HomeHeaderSection } from './components/HomeHeaderSection';
+import { MapModeSection } from './components/MapModeSection';
 import styles from './styles.shipperhome';
 
 import { useStripe } from '@stripe/stripe-react-native';
-import useShipperSubscription from '../../../../hooks/useShipperSubscription';
+import { useIsFocused } from '@react-navigation/native';
+import useShipperSubscription, {
+  hasShipperSubscriptionAccess,
+} from '../../../../hooks/useShipperSubscription';
 import AppIcon from '../../../../components/app_icon/AppIcon';
 import { showSuccessToast } from '../../../../utils/toast';
 
@@ -45,7 +45,10 @@ const StripePaymentMethodCardModal = lazy(
   () => import('../earnings/components/StripePaymentMethodCardModal'),
 );
 
+let stripeModalShownThisSession = false;
+
 const ShipperHomeScreen = ({ navigation }: any) => {
+  const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth || {});
   const { getCurrentPosition, requestPermission } = useCurrentLocation();
@@ -57,12 +60,14 @@ const ShipperHomeScreen = ({ navigation }: any) => {
   const [selectedFilter, setSelectedFilter] = useState<string>(''); // 'pickup' | 'dropoff'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [isBankModalVisible, setIsBankModalVisible] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
 
   const { confirmSetupIntent, createPaymentMethod } = useStripe();
 
   const {
     shipperStatus,
     subscriptionStatus,
+    loading: isSubscriptionLoading,
     plansData,
     isModalVisible: isSubModalVisible,
     openModal: _openSubModal,
@@ -226,30 +231,18 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     await Promise.all([fetchShipments(), fetchQuotes()]);
   };
 
-  const checkStripeStatus = async () => {
+  const checkStripeStatus = useCallback(async () => {
     try {
       const res = await shipperService.getStripeStatus();
-      if (!res || res.success === false) {
-        // Account not created ({"success":false,"message":"Stripe account not created"})
-        setIsBankModalVisible(true);
-        return;
-      }
-      const needsModal =
-        res.needsVerification === true ||
-        res.onboardingCompleted === false ||
-        res.chargesEnabled === false ||
-        res.payoutsEnabled === false ||
-        res.verified === false;
-      setIsBankModalVisible(needsModal);
-    } catch (err) {
-      console.log('Stripe status check error:', err);
-      setIsBankModalVisible(true);
+      setNeedsOnboarding(!res?.onboardingCompleted);
+    } catch (error) {
+      console.error('Stripe status check error:', error);
+      setNeedsOnboarding(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchAllData();
-    checkStripeStatus();
     shipperService
       .getProfile()
       .then(res => {
@@ -261,45 +254,59 @@ const ShipperHomeScreen = ({ navigation }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onRefresh = () => {
+  useEffect(() => {
+    if (isFocused) {
+      checkStripeStatus();
+    }
+  }, [isFocused, checkStripeStatus]);
+
+  const isSubscribed = hasShipperSubscriptionAccess(subscriptionStatus);
+  const subscriptionPromptShown = useRef(false);
+
+  useEffect(() => {
+    if (
+      isFocused &&
+      !isSubscriptionLoading &&
+      !isSubscribed &&
+      !subscriptionPromptShown.current
+    ) {
+      subscriptionPromptShown.current = true;
+      _openSubModal();
+    }
+  }, [isFocused, isSubscriptionLoading, isSubscribed, _openSubModal]);
+
+  useEffect(() => {
+    if (
+      isFocused &&
+      !isSubscriptionLoading &&
+      isSubscribed &&
+      needsOnboarding === true &&
+      !stripeModalShownThisSession
+    ) {
+      stripeModalShownThisSession = true;
+      setIsBankModalVisible(true);
+    }
+  }, [isFocused, isSubscriptionLoading, isSubscribed, needsOnboarding]);
+
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAllData();
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const userName = user?.name || user?.firstName || 'Not available';
-
-  // Dynamic stats calculation
-  const submittedQuotesCount = quotes.length;
-  const upcomingShipmentsCount = quotes.filter(q => {
-    const s = (q.shipment?.status || '').toLowerCase();
-    return (
-      s === 'accepted' ||
-      s === 'assigned' ||
-      s === 'in_transit' ||
-      s === 'on_the_way' ||
-      s === 'open' ||
-      s === 'published' ||
-      s === 'upcoming' ||
-      s === 'pending' ||
-      s === 'open_for_offers'
-    );
-  }).length;
-
-  const formatCount = (count: number) => {
-    return String(count).padStart(2, '0');
-  };
-
-  // Filter shipments
-  const filteredShipments = shipments.filter(item => {
-    if (!searchQuery.trim()) return true;
+  // Filter shipments (Memoized)
+  const filteredShipments = useMemo(() => {
+    if (!searchQuery.trim()) return shipments;
     const q = searchQuery.toLowerCase();
-    const pickup = (item?.pickupLocation || '').toLowerCase();
-    const delivery = (item?.deliveryLocation || '').toLowerCase();
-    const code = (item?.shipmentCode || '').toLowerCase();
-    return pickup.includes(q) || delivery.includes(q) || code.includes(q);
-  });
+    return shipments.filter(item => {
+      const pickup = (item?.pickupLocation || '').toLowerCase();
+      const delivery = (item?.deliveryLocation || '').toLowerCase();
+      const code = (item?.shipmentCode || '').toLowerCase();
+      return pickup.includes(q) || delivery.includes(q) || code.includes(q);
+    });
+  }, [shipments, searchQuery]);
 
-  const handleSelectMapShipment = (item: any) => {
+  const handleSelectMapShipment = useCallback((item: any) => {
     setSelectedMapShipment(item);
     if (item?.pickupCoords && item?.deliveryCoords && mapRef.current) {
       const coords = [
@@ -325,9 +332,9 @@ const ShipperHomeScreen = ({ navigation }: any) => {
         animated: true,
       });
     }
-  };
+  }, []);
 
-  const getRegionForShipment = (item: any) => {
+  const getRegionForShipment = useCallback((item: any) => {
     if (!item?.pickupCoords) {
       return {
         latitude: 22.745,
@@ -358,203 +365,56 @@ const ShipperHomeScreen = ({ navigation }: any) => {
       latitudeDelta: Math.max(latDelta, 0.1),
       longitudeDelta: Math.max(lngDelta, 0.1),
     };
-  };
+  }, []);
 
-  const handleNavigateToDetails = (item: any) => {
-    navigation.navigate('ShipperShipmentDetails', { shipment: item });
-  };
+  const handleNavigateToDetails = useCallback(
+    (item: any) => {
+      navigation.navigate('ShipperShipmentDetails', { shipment: item });
+    },
+    [navigation],
+  );
 
-  const renderHeader = () => (
-    <View style={{ width: '100%' }}>
-      {/* Welcome Greeting Header */}
-      <View style={styles.welcomeHeader}>
-        <AppText style={styles.welcomeTitle}>Hello {userName},</AppText>
-        <AppText style={styles.welcomeSub}>Good to see you again!</AppText>
-      </View>
-
-      {/* Stats Row Cards */}
-      <View style={styles.statsRow}>
-        <TouchableOpacity
-          style={styles.statCard}
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate('MyQuotes')}
-        >
-          <View style={styles.statTextCol}>
-            <AppText style={styles.statTitle}>Upcoming Shipments</AppText>
-            <AppText style={styles.statCount}>
-              {formatCount(upcomingShipmentsCount)}
-            </AppText>
-          </View>
-          <View style={styles.statIconBox}>
-            <AppIcon name={'Truck'} size={24} color={COLORS.saddleBrown} />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.statCard}
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate('MyQuotes')}
-        >
-          <View style={styles.statTextCol}>
-            <AppText style={styles.statTitle}>Submitted Quotes</AppText>
-            <AppText style={styles.statCount}>
-              {formatCount(submittedQuotesCount)}
-            </AppText>
-          </View>
-          <View style={styles.statIconBox}>
-            <AppIcon name={'FileText'} size={24} color={COLORS.saddleBrown} />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      {/* New Opportunities Section */}
-      <View style={styles.opportunitiesCard}>
-        <View style={styles.sectionHeaderRow}>
-          <AppText style={styles.sectionTitle}>New Opportunities</AppText>
-          <TouchableOpacity
-            style={styles.viewAllBtn}
-            onPress={() => navigation.navigate('MyQuotes')}
-          >
-            <AppText style={styles.viewAllText}>View All</AppText>
-            <AppIcon
-              name={'ChevronRight'}
-              size={16}
-              color={COLORS.saddleBrown}
-            />
-          </TouchableOpacity>
-        </View>
-        <AppText style={styles.sectionSub}>
-          Browse available horse shipments & bid now
-        </AppText>
-
-        {/* Search Input Bar */}
-        <Input
-          placeholder="Search by pickup or delivery location..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          leftIcon={
-            <AppIcon name={'Search'} size={18} color={COLORS.textSecondary} />
+  const renderHeader = useCallback(
+    () => (
+      <HomeHeaderSection
+        user={user}
+        shipperStatus={shipperStatus}
+        subscriptionStatus={subscriptionStatus}
+        showStripeAlert={isSubscribed && needsOnboarding === true}
+        quotesCount={quotes.length}
+        availableLoadsCount={filteredShipments.length}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        onOpenCardModal={() => setIsCardModalVisible(true)}
+        onOpenBankModal={() => setIsBankModalVisible(true)}
+        onOpenSubModal={_openSubModal}
+        onNavigatePost={() => navigation.navigate('Shipments')}
+        onSelectMapFirstShipment={() => {
+          if (filteredShipments.length > 0) {
+            handleSelectMapShipment(filteredShipments[0]);
           }
-          containerStyle={{ marginBottom: SPACING.md }}
-        />
-
-        {/* Filter By Row */}
-        <View style={styles.filterRow}>
-          <AppText style={styles.filterLabel}>Filter By :</AppText>
-          <View style={styles.filterPillsGroup}>
-            <TouchableOpacity
-              style={[
-                styles.filterPill,
-                selectedFilter === 'pickup' && styles.filterPillActive,
-              ]}
-              onPress={() =>
-                setSelectedFilter(selectedFilter === 'pickup' ? '' : 'pickup')
-              }
-            >
-              <AppText
-                style={[
-                  styles.filterPillText,
-                  selectedFilter === 'pickup' && styles.filterPillTextActive,
-                ]}
-              >
-                Pickup Distance
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.filterPill,
-                selectedFilter === 'dropoff' && styles.filterPillActive,
-              ]}
-              onPress={() =>
-                setSelectedFilter(selectedFilter === 'dropoff' ? '' : 'dropoff')
-              }
-            >
-              <AppText
-                style={[
-                  styles.filterPillText,
-                  selectedFilter === 'dropoff' && styles.filterPillTextActive,
-                ]}
-              >
-                Dropoff Distance
-              </AppText>
-            </TouchableOpacity>
-
-            {/* <TouchableOpacity style={styles.filterIconBtn}>
-              <SlidersHorizontal size={18} color={COLORS.goldDarkText} />
-            </TouchableOpacity> */}
-          </View>
-        </View>
-
-        {/* View Toggle Row (List View vs View Map) */}
-        <View style={styles.viewToggleRow}>
-          <TouchableOpacity
-            style={[
-              styles.viewToggleBtn,
-              viewMode === 'list'
-                ? styles.viewToggleBtnActive
-                : styles.viewToggleBtnInactive,
-            ]}
-            onPress={() => setViewMode('list')}
-          >
-            <AppIcon
-              name={'List'}
-              size={16}
-              color={viewMode === 'list' ? COLORS.white : COLORS.saddleBrown}
-            />
-            <AppText
-              style={[
-                styles.viewToggleBtnText,
-                viewMode === 'list' && styles.viewToggleBtnTextActive,
-              ]}
-            >
-              List View
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.viewToggleBtn,
-              viewMode === 'map'
-                ? styles.viewToggleBtnActive
-                : styles.viewToggleBtnInactive,
-            ]}
-            onPress={() => {
-              setViewMode('map');
-              if (filteredShipments.length > 0 && !selectedMapShipment) {
-                setSelectedMapShipment(filteredShipments[0]);
-              }
-            }}
-          >
-            <AppIcon
-              name={'Map'}
-              size={16}
-              color={viewMode === 'map' ? COLORS.white : COLORS.saddleBrown}
-            />
-            <AppText
-              style={[
-                styles.viewToggleBtnText,
-                viewMode === 'map' && styles.viewToggleBtnTextActive,
-              ]}
-            >
-              View Map
-            </AppText>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Current Shipments Section Title */}
-      {viewMode === 'list' && (
-        <View style={{ marginTop: SPACING.sm, marginBottom: SPACING.xs }}>
-          <SectionHeader
-            title="New Shipment"
-            showAction={true}
-            onPress={() => navigation.navigate('Post')}
-            containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }}
-          />
-        </View>
-      )}
-    </View>
+        }}
+      />
+    ),
+    [
+      user,
+      shipperStatus,
+      subscriptionStatus,
+      quotes.length,
+      filteredShipments,
+      searchQuery,
+      selectedFilter,
+      viewMode,
+      _openSubModal,
+      navigation,
+      handleSelectMapShipment,
+      isSubscribed,
+      needsOnboarding,
+    ],
   );
 
   const renderEmpty = () => {
@@ -587,7 +447,10 @@ const ShipperHomeScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="" />
+      <AppHeader
+        title={`Hello ${user?.name},`}
+        subTitle="Good to see you again!"
+      />
 
       {viewMode === 'list' ? (
         <FlatList
@@ -610,240 +473,35 @@ const ShipperHomeScreen = ({ navigation }: any) => {
               tintColor={COLORS.primary}
             />
           }
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          windowSize={5}
+          removeClippedSubviews={Platform.OS === 'android'}
         />
       ) : (
         /* MODE 2: MAP VIEW MODE */
-        <ScrollView
-          contentContainerStyle={{ padding: SPACING.md, paddingBottom: 120 }}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={COLORS.primary}
-            />
-          }
-        >
-          {renderHeader()}
-
-          <View style={styles.mapModeContainer}>
-            {/* Shipments List Selection Card */}
-            <View style={styles.mapShipmentsListCard}>
-              <View style={styles.sectionHeaderRow}>
-                <View
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
-                >
-                  <AppIcon name={'List'} size={18} color={COLORS.saddleBrown} />
-                  <AppText style={styles.mapSectionTitle}>
-                    Shipments ({filteredShipments.length})
-                  </AppText>
-                </View>
-
-                <TouchableOpacity style={styles.viewAllBtn}>
-                  <AppText style={styles.viewAllText}>View All</AppText>
-                  <AppIcon
-                    name={'ChevronRight'}
-                    size={16}
-                    color={COLORS.saddleBrown}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <AppText style={styles.mapSectionSub}>
-                Select a shipment to view route on map
-              </AppText>
-
-              {/* Selection Items Table using FlatList */}
-              <View style={styles.mapSelectionTable}>
-                <FlatList
-                  data={filteredShipments}
-                  keyExtractor={(item, index) =>
-                    item?._id || item?.id || String(index)
-                  }
-                  scrollEnabled={false}
-                  renderItem={({ item, index }) => (
-                    <MapShipmentSelectItem
-                      item={item}
-                      isSelected={selectedMapShipment?._id === item?._id}
-                      isLast={index === filteredShipments.length - 1}
-                      onSelect={handleSelectMapShipment}
-                      onNavigateDetails={handleNavigateToDetails}
-                    />
-                  )}
-                />
-              </View>
-            </View>
-
-            {/* Shipment Route Map Card */}
-
-            {filteredShipments.length > 0 && (
-              <View style={styles.routeMapCard}>
-                <View style={styles.routeMapHeader}>
-                  <View>
-                    <AppText style={styles.routeMapTitle}>
-                      Shipment Route Map
-                    </AppText>
-                    <AppText style={styles.routeMapShipmentCode}>
-                      {selectedMapShipment?.shipmentCode}
-                    </AppText>
-                  </View>
-                  <Pressable
-                    onPress={() => {
-                      navigation.navigate('ShipmentMapDirection', {
-                        shipmentData: selectedMapShipment,
-                      });
-                    }}
-                    style={styles.viewInFullScreenBtn}
-                  >
-                    <AppText style={styles.viewInFullScreenBtnText}>
-                      View in Full Map
-                    </AppText>
-                  </Pressable>
-                </View>
-
-                {/* Map Preview Container */}
-                <View style={styles.mapWrapper}>
-                  <MapView
-                    ref={mapRef}
-                    provider={PROVIDER_GOOGLE}
-                    style={styles.mapView}
-                    initialRegion={getRegionForShipment(selectedMapShipment)}
-                    showsUserLocation
-                  >
-                    {selectedMapShipment?.pickupCoords && (
-                      <Marker
-                        coordinate={{
-                          latitude:
-                            selectedMapShipment?.pickupCoords?.lat ||
-                            selectedMapShipment?.pickupCoords?.latitude ||
-                            22.745,
-                          longitude:
-                            selectedMapShipment?.pickupCoords?.lng ||
-                            selectedMapShipment?.pickupCoords?.longitude ||
-                            75.892,
-                        }}
-                        title="Pickup"
-                        description={selectedMapShipment?.pickupLocation}
-                      >
-                        <View style={styles.markerCircleGreen}>
-                          <AppIcon
-                            name={'MapPin'}
-                            size={14}
-                            color={COLORS.white}
-                          />
-                        </View>
-                      </Marker>
-                    )}
-
-                    {selectedMapShipment?.deliveryCoords && (
-                      <Marker
-                        coordinate={{
-                          latitude:
-                            selectedMapShipment?.deliveryCoords?.lat ||
-                            selectedMapShipment?.deliveryCoords?.latitude ||
-                            23.838,
-                          longitude:
-                            selectedMapShipment?.deliveryCoords?.lng ||
-                            selectedMapShipment?.deliveryCoords?.longitude ||
-                            78.737,
-                        }}
-                        title="Delivery"
-                        description={selectedMapShipment?.deliveryLocation}
-                      >
-                        <View style={styles.markerCircleRed}>
-                          <AppIcon
-                            name={'MapPin'}
-                            size={14}
-                            color={COLORS.white}
-                          />
-                        </View>
-                      </Marker>
-                    )}
-
-                    {selectedMapShipment?.pickupCoords &&
-                      selectedMapShipment?.deliveryCoords && (
-                        <>
-                          <MapViewDirections
-                            origin={{
-                              latitude:
-                                selectedMapShipment?.pickupCoords?.lat ||
-                                selectedMapShipment?.pickupCoords?.latitude ||
-                                22.745,
-                              longitude:
-                                selectedMapShipment?.pickupCoords?.lng ||
-                                selectedMapShipment?.pickupCoords?.longitude ||
-                                75.892,
-                            }}
-                            destination={{
-                              latitude:
-                                selectedMapShipment?.deliveryCoords?.lat ||
-                                selectedMapShipment?.deliveryCoords?.latitude ||
-                                23.838,
-                              longitude:
-                                selectedMapShipment?.deliveryCoords?.lng ||
-                                selectedMapShipment?.deliveryCoords
-                                  ?.longitude ||
-                                78.737,
-                            }}
-                            apikey={GOOGLE_MAPS_APIKEY}
-                            strokeWidth={4}
-                            strokeColor={COLORS.brandBrown || COLORS.primary}
-                            lineDashPattern={[0]}
-                            onError={err =>
-                              console.log('MapViewDirections Error:', err)
-                            }
-                          />
-                          <Polyline
-                            coordinates={[
-                              {
-                                latitude:
-                                  selectedMapShipment?.pickupCoords?.lat ||
-                                  selectedMapShipment?.pickupCoords?.latitude ||
-                                  22.745,
-                                longitude:
-                                  selectedMapShipment?.pickupCoords?.lng ||
-                                  selectedMapShipment?.pickupCoords
-                                    ?.longitude ||
-                                  75.892,
-                              },
-                              {
-                                latitude:
-                                  selectedMapShipment?.deliveryCoords?.lat ||
-                                  selectedMapShipment?.deliveryCoords
-                                    ?.latitude ||
-                                  23.838,
-                                longitude:
-                                  selectedMapShipment?.deliveryCoords?.lng ||
-                                  selectedMapShipment?.deliveryCoords
-                                    ?.longitude ||
-                                  78.737,
-                              },
-                            ]}
-                            strokeColor={COLORS.primary}
-                            strokeWidth={3}
-                            lineDashPattern={[6, 6]}
-                          />
-                        </>
-                      )}
-                  </MapView>
-                </View>
-
-                {/* Close Button */}
-                <TouchableOpacity
-                  style={styles.closeMapBtn}
-                  onPress={() => setViewMode('list')}
-                >
-                  <AppText style={styles.closeMapBtnText}>Close</AppText>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </ScrollView>
+        <MapModeSection
+          filteredShipments={filteredShipments}
+          selectedMapShipment={selectedMapShipment}
+          mapRef={mapRef}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          renderHeader={renderHeader}
+          handleSelectMapShipment={handleSelectMapShipment}
+          handleNavigateToDetails={handleNavigateToDetails}
+          getRegionForShipment={getRegionForShipment}
+          navigation={navigation}
+          setViewMode={setViewMode}
+        />
       )}
       <Suspense fallback={null}>
         <ConnectBankModal
           isVisible={isBankModalVisible}
           onClose={() => setIsBankModalVisible(false)}
+          onConnectBank={() => {
+            setIsBankModalVisible(false);
+            navigation.navigate('ShipperPayments');
+          }}
           navigation={navigation}
         />
       </Suspense>

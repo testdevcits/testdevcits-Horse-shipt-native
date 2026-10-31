@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border || COLORS.skeletonBg,
+    borderColor: COLORS.border,
   },
   opportunitiesCard: {
     backgroundColor: COLORS.beigeBg,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border || COLORS.skeletonBg,
+    borderColor: COLORS.border,
     alignItems: 'center',
   },
   cardInfoCol: {

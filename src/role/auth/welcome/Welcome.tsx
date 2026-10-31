@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  StatusBar,
-  Image,
-} from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Image } from 'react-native';
 
 import { AppText, Button } from '../../../components';
 import imageIndex from '../../../assets/images/imageIndex';
@@ -14,15 +8,9 @@ import styles from './styles.Welcome';
 const WelcomeScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
       {/* 1. Background Image Section */}
       <ImageBackground
-        source={imageIndex.HorseBg} // Add your horse image here
+        source={imageIndex?.HorseBg} // Add your horse image here
         style={styles.backgroundImage}
         resizeMode="cover"
       >
@@ -32,7 +20,7 @@ const WelcomeScreen = ({ navigation }: any) => {
       {/* 2. Bottom Content Card */}
       <View style={styles.contentCard}>
         <Image
-          source={imageIndex.Logo} // Stylized horse head icon
+          source={imageIndex?.Logo} // Stylized horse head icon
           style={styles.logoIcon}
           resizeMode="contain"
         />

@@ -7,6 +7,7 @@ import LocationPicker from '../../../../../../components/common/LocationPicker/L
 import { NewShipmentForm } from '../../interfaces';
 import AppIcon from '../../../../../../components/app_icon/AppIcon';
 import styles from './pickupstepstyles';
+import PickupTimeframeCard from './PickupTimeframeCard';
 
 interface PickupStepProps {
   form: NewShipmentForm;
@@ -45,20 +46,43 @@ const PickupStep: React.FC<PickupStepProps> = ({
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
-  const getSafeDateStr = (dateVal: any) => {
-    try {
-      const d = new Date(dateVal);
-      if (!isNaN(d.getTime())) {
-        return d.toISOString().split('T')[0];
-      }
-    } catch (_e) {}
-    return new Date().toISOString().split('T')[0];
+  const toDateString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getSafeDateStr = (dateVal: any): string | null => {
+    if (!dateVal) return null;
+    const dateOnly =
+      typeof dateVal === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateVal);
+    const d = dateOnly
+      ? new Date(
+          Number(dateVal.slice(0, 4)),
+          Number(dateVal.slice(5, 7)) - 1,
+          Number(dateVal.slice(8, 10)),
+        )
+      : new Date(dateVal);
+    return Number.isNaN(d.getTime()) ? null : toDateString(d);
   };
 
   const getTomorrowStr = () => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return toDateString(d);
+  };
+
+  const tomorrowDate = getTomorrowStr();
+  const pickupStartDate = getSafeDateStr(form.pickupStartDate);
+  const pickupEndMinDate =
+    pickupStartDate && pickupStartDate > tomorrowDate
+      ? pickupStartDate
+      : tomorrowDate;
+
+  const getCalendarInitialDate = (dateVal: any, minDate: string) => {
+    const date = getSafeDateStr(dateVal);
+    return date && date > minDate ? date : minDate;
   };
 
   const handleOpenStart = useCallback(() => setActiveDateType('start'), []);
@@ -224,116 +248,14 @@ const PickupStep: React.FC<PickupStepProps> = ({
         </View>
 
         {/* SECTION 2: AVAILABILITY WINDOW CARD */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View style={styles.cardHeaderLeft}>
-              <View style={styles.iconCircle}>
-                <AppIcon name={'Calendar'} size={16} color={COLORS.primary} />
-              </View>
-              <AppText style={styles.cardTitle}>PICKUP TIMEFRAME</AppText>
-            </View>
-            <View style={styles.infoTag}>
-              <AppIcon name={'Clock'} size={12} color={COLORS.primary} />
-              <AppText style={styles.infoTagText}>Flexible Window</AppText>
-            </View>
-          </View>
-
-          <AppText style={styles.sectionSubtitle}>
-            Select the earliest and latest dates you are ready for pickup.
-          </AppText>
-
-          {/* DUAL DATE CARDS WITH CONNECTING RANGE */}
-          <View style={styles.datesContainer}>
-            {/* START DATE CARD */}
-            <View style={styles.dateColumn}>
-              <AppText style={styles.fieldLabel}>Earliest Pickup</AppText>
-              <TouchableOpacity
-                style={[
-                  styles.dateCard,
-                  activeDateType === 'start' && styles.dateCardActive,
-                  errors.pickupStartDate && styles.dateCardError,
-                ]}
-                onPress={handleOpenStart}
-                activeOpacity={0.85}
-              >
-                <View style={styles.dateCardTop}>
-                  <AppIcon
-                    name={'Calendar'}
-                    size={16}
-                    color={
-                      form.pickupStartDate ? COLORS.primary : COLORS.grey400
-                    }
-                  />
-                  <AppText style={styles.dateLabelBadge}>START</AppText>
-                </View>
-                <AppText
-                  style={[
-                    styles.dateValueText,
-                    !form.pickupStartDate && styles.dateValuePlaceholder,
-                  ]}
-                  numberOfLines={1}
-                >
-                  {formatDateDisplay(form.pickupStartDate) || 'Select Date'}
-                </AppText>
-              </TouchableOpacity>
-              {errors.pickupStartDate && (
-                <AppText style={styles.errorText}>
-                  {errors.pickupStartDate}
-                </AppText>
-              )}
-            </View>
-
-            {/* CONNECTOR DIVIDER */}
-            <View style={styles.dateConnector}>
-              <View style={styles.connectorLine} />
-              <View style={styles.connectorIconBox}>
-                <AppIcon
-                  name={'ChevronRight'}
-                  size={14}
-                  color={COLORS.grey400}
-                />
-              </View>
-              <View style={styles.connectorLine} />
-            </View>
-
-            {/* END DATE CARD */}
-            <View style={styles.dateColumn}>
-              <AppText style={styles.fieldLabel}>Latest Pickup</AppText>
-              <TouchableOpacity
-                style={[
-                  styles.dateCard,
-                  activeDateType === 'end' && styles.dateCardActive,
-                  errors.pickupEndDate && styles.dateCardError,
-                ]}
-                onPress={handleOpenEnd}
-                activeOpacity={0.85}
-              >
-                <View style={styles.dateCardTop}>
-                  <AppIcon
-                    name={'Calendar'}
-                    size={16}
-                    color={form.pickupEndDate ? COLORS.primary : COLORS.grey400}
-                  />
-                  <AppText style={styles.dateLabelBadge}>END</AppText>
-                </View>
-                <AppText
-                  style={[
-                    styles.dateValueText,
-                    !form.pickupEndDate && styles.dateValuePlaceholder,
-                  ]}
-                  numberOfLines={1}
-                >
-                  {formatDateDisplay(form.pickupEndDate) || 'Select Date'}
-                </AppText>
-              </TouchableOpacity>
-              {errors.pickupEndDate && (
-                <AppText style={styles.errorText}>
-                  {errors.pickupEndDate}
-                </AppText>
-              )}
-            </View>
-          </View>
-        </View>
+        <PickupTimeframeCard
+          form={form}
+          errors={errors}
+          activeDateType={activeDateType}
+          formatDateDisplay={formatDateDisplay}
+          onOpenStart={handleOpenStart}
+          onOpenEnd={handleOpenEnd}
+        />
 
         {/* PRO-TIP BANNER CARD */}
         <View style={styles.tipCard}>
@@ -390,16 +312,10 @@ const PickupStep: React.FC<PickupStepProps> = ({
           }
           initialDate={
             activeDateType === 'start'
-              ? getSafeDateStr(form.pickupStartDate)
-              : getSafeDateStr(form.pickupEndDate)
+              ? getCalendarInitialDate(form.pickupStartDate, tomorrowDate)
+              : getCalendarInitialDate(form.pickupEndDate, pickupEndMinDate)
           }
-          minDate={
-            activeDateType === 'start'
-              ? getTomorrowStr()
-              : form.pickupStartDate
-              ? getSafeDateStr(form.pickupStartDate)
-              : getTomorrowStr()
-          }
+          minDate={activeDateType === 'start' ? tomorrowDate : pickupEndMinDate}
         />
       </Suspense>
     </View>

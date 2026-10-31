@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, View, Image } from 'react-native';
 
 import { AppText, Button as ButtonCompt } from '../../../../../../components';
@@ -28,7 +28,7 @@ const DeliveredSuccessModal = ({
           {/* SUCCESS GIF ANIMATION */}
           <View style={styles.gifContainer}>
             <Image
-              source={imageIndex.success}
+              source={imageIndex?.success}
               style={styles.successGif}
               resizeMode="contain"
             />
@@ -72,4 +72,4 @@ const DeliveredSuccessModal = ({
   );
 };
 
-export default DeliveredSuccessModal;
+export default memo(DeliveredSuccessModal);

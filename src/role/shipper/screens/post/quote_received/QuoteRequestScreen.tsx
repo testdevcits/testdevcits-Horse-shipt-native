@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 import { AppText, QuoteRequestSkeleton } from '../../../../../components';
 import { COLORS } from '../../../../../constants';
 import AvailableShipmentCard from '../../home/components/AvailableShipmentCard';
@@ -57,6 +57,10 @@ export const QuoteRequestScreen: React.FC<QuoteRequestScreenProps> = ({
       ListEmptyComponent={renderEmpty}
       contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 10 }}
       scrollEnabled={false}
+      initialNumToRender={5}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+      removeClippedSubviews={Platform.OS === 'android'}
     />
   );
 };
