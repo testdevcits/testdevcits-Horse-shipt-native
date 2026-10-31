@@ -1,12 +1,15 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import {
   View,
   FlatList,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
+  Keyboard,
   ActivityIndicator,
   Pressable,
+  Platform,
+  useWindowDimensions,
 } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -76,8 +79,11 @@ const ChatMessageImage = ({
 const ChatDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { height: windowHeight } = useWindowDimensions();
+  const initialWindowHeight = useRef(windowHeight);
   const { shipmentId, name, isChatLocked, avatar }: any = route.params || {};
   const [inputText, setInputText] = useState('');
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
   const [selectedImage, setSelectedImage] = useState<PickerImage | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
@@ -90,6 +96,30 @@ const ChatDetails = () => {
 
   const { messages, loading, shipment, sendMessage, sending } =
     useChatDetails(shipmentId);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+
+    const showSubscription = Keyboard.addListener('keyboardDidShow', event => {
+      setKeyboardHeight(event.endCoordinates.height);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  const androidKeyboardOverlap =
+    Platform.OS === 'android'
+      ? Math.max(
+          0,
+          keyboardHeight - (initialWindowHeight.current - windowHeight),
+        )
+      : 0;
 
   const partnerName = name || (MY_ROLE === 'shipper' ? 'Customer' : 'Shipper');
   const isLocked = Boolean(
@@ -119,7 +149,7 @@ const ChatDetails = () => {
     const isMe =
       item?.senderRole === MY_ROLE ||
       (user?._id && item?.senderId === user._id);
-    const hasMedia = item?.media && item?.media.length > 0;
+    const hasMedia = item?.media && item?.media?.length > 0;
 
     return (
       <View
@@ -243,8 +273,7 @@ const ChatDetails = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior="padding"
-      
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Header */}
       <ChatHeaderBar
@@ -263,41 +292,43 @@ const ChatDetails = () => {
         showsVerticalScrollIndicator={false}
       />
 
-      {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
-      {selectedImage && !isLocked && (
-        <View style={styles.draftPreviewContainer}>
-          <View style={styles.draftImageWrapper}>
-            <Image
-              source={{ uri: selectedImage.path }}
-              style={styles.draftImage}
-            />
-            <TouchableOpacity
-              style={styles.cancelDraftBtn}
-              onPress={() => setSelectedImage(null)}
-            >
-              <AppIcon
-                name={'X'}
-                size={ICON_SIZE.xs}
-                color={COLORS.white}
-                strokeWidth={2.5}
+      <View style={{ marginBottom: androidKeyboardOverlap }}>
+        {/* --- IMAGE DRAFT PREVIEW SECTION --- */}
+        {selectedImage && !isLocked && (
+          <View style={styles.draftPreviewContainer}>
+            <View style={styles.draftImageWrapper}>
+              <Image
+                source={{ uri: selectedImage.path }}
+                style={styles.draftImage}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelDraftBtn}
+                onPress={() => setSelectedImage(null)}
+              >
+                <AppIcon
+                  name={'X'}
+                  size={ICON_SIZE.xs}
+                  color={COLORS.white}
+                  strokeWidth={2.5}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
-      {/* Bottom Area: Input Bar or Locked Notice */}
+        {/* Bottom Area: Input Bar or Locked Notice */}
 
-      <ChatInputBar
-        isLocked={isLocked}
-        inputText={inputText}
-        setInputText={setInputText}
-        setShowPhotoSheet={setShowPhotoSheet}
-        showPhotoSheet={showPhotoSheet}
-        canSend={canSend}
-        sending={sending}
-        handleSend={handleSend}
-      />
+        <ChatInputBar
+          isLocked={isLocked}
+          inputText={inputText}
+          setInputText={setInputText}
+          setShowPhotoSheet={setShowPhotoSheet}
+          showPhotoSheet={showPhotoSheet}
+          canSend={canSend}
+          sending={sending}
+          handleSend={handleSend}
+        />
+      </View>
 
       {showPhotoSheet && !isLocked && (
         <Suspense fallback={null}>

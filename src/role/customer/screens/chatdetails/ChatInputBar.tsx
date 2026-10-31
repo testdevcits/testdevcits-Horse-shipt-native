@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey100,
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
-    paddingBottom: Platform.OS === 'ios' ? 28 : SPACING.md,
+    paddingBottom: SPACING.md,
   },
   lockedText: {
     fontSize: FONT_SIZE.sm,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
     borderTopColor: COLORS.divider,
-    paddingBottom: Platform.OS === 'ios' ? 24 : SPACING.sm,
+    paddingBottom: SPACING.sm,
     gap: SPACING.xs,
   },
   inputBox: {
