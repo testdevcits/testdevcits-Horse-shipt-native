@@ -301,7 +301,6 @@ const ChatDetails = () => {
         avatar={avatar}
         shipment={shipment}
       />
-      {partnerTyping && <AppText style={styles.headerSubtitle}>{partnerName} is typing...</AppText>}
 
       <FlatList
         data={messages}
@@ -337,6 +336,12 @@ const ChatDetails = () => {
         )}
 
         {/* Bottom Area: Input Bar or Locked Notice */}
+
+        {partnerTyping && !isLocked && (
+          <AppText style={[styles.headerSubtitle, { marginHorizontal: 16, marginBottom: 6 }]}>
+            {partnerName} is typing...
+          </AppText>
+        )}
 
         <ChatInputBar
           isLocked={isLocked}
