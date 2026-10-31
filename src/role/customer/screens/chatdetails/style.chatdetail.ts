@@ -10,6 +10,13 @@ import {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.white },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  headerSubtitle: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.textSecondary,
+    fontFamily: FONTS.regular,
+  },
 
   // Message List
   listContent: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.md },
