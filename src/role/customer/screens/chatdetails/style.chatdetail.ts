@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   COLORS,
   RADIUS,
@@ -8,7 +8,7 @@ import {
 } from '../../../../constants';
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
+  container: { flex: 1, backgroundColor: COLORS.white,  },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   headerSubtitle: {
     paddingHorizontal: SPACING.md,

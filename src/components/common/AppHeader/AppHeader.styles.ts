@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
-    // backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.surface,
     borderBottomWidth: SIZES.borderWidthThin,
     borderBottomColor: COLORS.divider,
   },

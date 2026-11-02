@@ -13,6 +13,7 @@ import {
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styles from './style.chatdetail';
 import { COLORS, ICON_SIZE } from '../../../../constants';
 import useChatDetails from './useChatDetails';
@@ -76,6 +77,7 @@ const ChatMessageImage = ({
 };
 
 const ChatDetails = () => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const route = useRoute();
   const { shipmentId, name, isChatLocked, avatar }: any = route.params || {};
@@ -285,6 +287,7 @@ const ChatDetails = () => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? (insets.top > 0 ? insets.top : 50) : 0}
       onLayout={({ nativeEvent }) => {
         const { height } = nativeEvent.layout;
         if (height > initialContainerHeight.current) {
@@ -309,6 +312,7 @@ const ChatDetails = () => {
         inverted
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
       />
 
       <View style={{ marginBottom: androidKeyboardOverlap }}>

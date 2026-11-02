@@ -50,6 +50,8 @@ const ChatInputBar = ({
           // numberOfLines={3}
           // inputContainerStyle={{ height: 100 }}
           containerStyle={{ marginBottom: 0 }}
+          editable={!sending}
+          disabled={sending}
         />
       </View>
 
